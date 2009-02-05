@@ -53,7 +53,7 @@ module='shares/printer'
 operations=['add','edit','remove','search','move']
 
 childs=0
-short_description=_('Print-Share: Printer')
+short_description=_('Printer share: Printer')
 long_description=''
 options={
 }
@@ -89,7 +89,7 @@ property_descriptions={
 			identifies = 0
 		),
 	'spoolHost': univention.admin.property(
-			short_description=_('Spool Host'),
+			short_description=_('Spool host'),
 			long_description='',
 			syntax=univention.admin.syntax.spoolHost,
 			multivalue=1,
@@ -109,7 +109,7 @@ property_descriptions={
 			identifies=0
 		),
 	'model': univention.admin.property(
-			short_description=_('Printer Model'),
+			short_description=_('Printer model'),
 			long_description='',
 			syntax=univention.admin.syntax.printersList,
 			multivalue=0,
@@ -119,7 +119,7 @@ property_descriptions={
 			identifies=0
 		),
 	'sambaName': univention.admin.property(
-			short_description=_('Samba Name'),
+			short_description=_('Samba name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -130,7 +130,7 @@ property_descriptions={
 			unique=1
 		),
 	'setQuota': univention.admin.property(
-			short_description=_('Enable Quota Support'),
+			short_description=_('Enable quota support'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -140,7 +140,7 @@ property_descriptions={
 			identifies=0
 		),
 	'pagePrice': univention.admin.property(
-			short_description=_('Price per Page'),
+			short_description=_('Price per page'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -150,7 +150,7 @@ property_descriptions={
 			identifies=0
 		),
 	'jobPrice': univention.admin.property(
-			short_description=_('Price per Print Job'),
+			short_description=_('Price per print job'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -192,14 +192,14 @@ property_descriptions={
 		),
 }
 layout=[
-	univention.admin.tab(_('General'),_('General Settings'),[
+	univention.admin.tab(_('General'),_('General settings'),[
 			[univention.admin.field('name'), univention.admin.field('spoolHost')],
 			[univention.admin.field('sambaName'), univention.admin.field('uri')],
 			[ univention.admin.field( 'location' ), univention.admin.field( 'description' ) ],
 			[univention.admin.field('setQuota'), univention.admin.field('model')],
 			[univention.admin.field('pagePrice'),univention.admin.field('jobPrice')],
 			]),
-	univention.admin.tab(_('Access Control'),_('Access Control for users and groups'),[
+	univention.admin.tab(_('Access Control'),_('Access control for users and groups'),[
 			[univention.admin.field('ACLtype')],
 			[univention.admin.field('ACLUsers')],
 			[univention.admin.field('ACLGroups')],

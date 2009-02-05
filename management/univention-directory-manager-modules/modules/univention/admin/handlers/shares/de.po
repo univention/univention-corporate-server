@@ -25,27 +25,27 @@ msgid "Name"
 msgstr "Name"
 
 #: printergroup.py:61 printer.py:92 print.py:69
-msgid "Spool Host"
+msgid "Spool host"
 msgstr "Server"
 
 #: printergroup.py:71
-msgid "Group Members"
+msgid "Group members"
 msgstr "Gruppenmitglieder"
 
 #: printergroup.py:81 printer.py:122 print.py:79 share.py:217
-msgid "Samba Name"
+msgid "Samba name"
 msgstr "Samba-Name"
 
 #: printergroup.py:92 printer.py:133 print.py:90
-msgid "Enable Quota Support"
+msgid "Enable quota support"
 msgstr "Quota aktivieren"
 
 #: printergroup.py:102 printer.py:143 print.py:100
-msgid "Price per Page"
+msgid "Price per page"
 msgstr "Preis pro Seite"
 
 #: printergroup.py:112 printer.py:153
-msgid "Price per Print Job"
+msgid "Price per print job"
 msgstr "Preis pro Druckauftrag"
 
 #: printergroup.py:123 printer.py:195 share.py:652
@@ -53,7 +53,7 @@ msgid "General"
 msgstr "Allgemein"
 
 #: printergroup.py:123 printer.py:195 share.py:652
-msgid "General Settings"
+msgid "General settings"
 msgstr "Grundeinstellungen"
 
 #: printergroup.py:194 printer.py:276
@@ -89,7 +89,7 @@ msgid "Deny choosen users/groups."
 msgstr "Zugriff für ausgewählte Benutzer/Gruppen verweigern."
 
 #: printer.py:56
-msgid "Print-Share: Printer"
+msgid "Printer share: Printer"
 msgstr "Druckerfreigabe: Drucker"
 
 #: printer.py:72
@@ -105,7 +105,7 @@ msgid "Protocol"
 msgstr "Protokoll"
 
 #: printer.py:112
-msgid "Printer Model"
+msgid "Printer model"
 msgstr "Drucker-Modell"
 
 #: printer.py:163
@@ -134,7 +134,7 @@ msgid "For the given groups printing is explicitly allowed or denied."
 msgstr "Für die angegebenen Gruppen wird der Zugriff erlaubt oder abgewiesen."
 
 #: printer.py:202
-msgid "Access Control"
+msgid "Access control"
 msgstr "Zugriffskontrolle"
 
 #: printer.py:202
@@ -146,7 +146,7 @@ msgid "Printers"
 msgstr "Drucker"
 
 #: print.py:45
-msgid "Add, edit and delete print shares"
+msgid "Add, edit and delete printer shares"
 msgstr "Hinzufügen, bearbeiten und löschen von Druckerfreigaben"
 
 #: print.py:46 share.py:52
@@ -154,23 +154,23 @@ msgid "Add"
 msgstr "Hinzufügen"
 
 #: print.py:46
-msgid "Add Printer Object"
+msgid "Add printer object"
 msgstr "Drucker-Objekt hinzufügen"
 
 #: print.py:46 share.py:52
-msgid "Find"
+msgid "Search"
 msgstr "Suchen"
 
 #: print.py:46
-msgid "Find Printer Object(s)"
+msgid "Search printer object(s)"
 msgstr "Drucker-Objekt(e) suchen"
 
 #: print.py:51
-msgid "Print Share"
+msgid "Printer share"
 msgstr "Druckerfreigabe"
 
 #: print.py:110
-msgid "Price per Printjob"
+msgid "Price per print job"
 msgstr "Preis pro Druckauftrag"
 
 #: share.py:44
@@ -198,11 +198,11 @@ msgid "Add, edit and delete shares"
 msgstr "Hinzufügen, bearbeiten und löschen von Verzeichnisfreigaben"
 
 #: share.py:52
-msgid "Add Share Object"
+msgid "Add share object"
 msgstr "Freigabe-Objekt hinzufügen"
 
 #: share.py:52
-msgid "Find Shares Object(s)"
+msgid "Search share object(s)"
 msgstr "Freigabe-Objekt(e) suchen"
 
 #: share.py:60
@@ -210,19 +210,19 @@ msgid "Share: Directory"
 msgstr "Freigabe: Verzeichnis"
 
 #: share.py:64
-msgid "Export for Samba Clients"
+msgid "Export for Samba clients"
 msgstr "Für Samba-Clients exportieren"
 
 #: share.py:69
-msgid "Export for NFS Clients"
+msgid "Export for NFS clients"
 msgstr "Für NFS-Clients exportieren"
 
 #: share.py:74
-msgid "Export for Web Clients"
+msgid "Export for Web clients"
 msgstr "Für Web-Clients exportieren"
 
 #: share.py:91 share.py:92
-msgid "Printable Name"
+msgid "Printable name"
 msgstr "Anzeigename"
 
 #: share.py:101
@@ -230,11 +230,11 @@ msgid "Host"
 msgstr "Server"
 
 #: share.py:102
-msgid "The computer that exports this share"
+msgid "The server exporting this share"
 msgstr "Der Rechner, auf dem die Freigabe eingerichtet wird."
 
 #: share.py:111
-msgid "Path"
+msgid "Directory"
 msgstr "Pfad"
 
 #: share.py:112
@@ -242,7 +242,7 @@ msgid "Directory that is exported."
 msgstr "Verzeichnis, das freigegeben wird."
 
 #: share.py:121
-msgid "Directory Owner"
+msgid "Directory owner"
 msgstr "Verzeichnis-Besitzer"
 
 #: share.py:122
@@ -250,7 +250,7 @@ msgid "The owner of the directory. If none is given root will be owner."
 msgstr "Besitzer des freigegebenen Verzeichnisses. Vorgabe ist root."
 
 #: share.py:132
-msgid "Directory Group"
+msgid "Directory owner group"
 msgstr "Verzeichnisgruppe"
 
 #: share.py:133
@@ -258,7 +258,7 @@ msgid "The primary group of the directory, if none give group 0 will be used."
 msgstr "Primäre Gruppe des Verzeichnisses. Ohne Angabe wird 0 verwendet."
 
 #: share.py:143 share.py:284
-msgid "Directory Mode"
+msgid "Directory mode"
 msgstr "Verzeichnis-Modus"
 
 #: share.py:144
@@ -266,7 +266,7 @@ msgid "Mode of the directory."
 msgstr "Verzeichnis-Modus"
 
 #: share.py:155
-msgid "NFS Writeable"
+msgid "NFS write access"
 msgstr "NFS-Schreibzugriff"
 
 #: share.py:156
@@ -274,11 +274,11 @@ msgid "Define if the share is writable when accessed via NFS."
 msgstr "Gibt an, ob die Freigabe beim Zugriff über NFS schreibbar ist."
 
 #: share.py:166
-msgid "NFS Synchronisation"
+msgid "NFS synchronisation"
 msgstr "NFS-Synchronisation"
 
 #: share.py:167
-msgid "Use synchronous or asynchronous mode for the NFS share."
+msgid "Use synchronous or asynchronous mode for NFS share."
 msgstr "Synchroner oder asynchroner Modus für die NFS-Freigabe."
 
 #: share.py:176
@@ -297,7 +297,7 @@ msgstr ""
 "umbenannten Dateien verursachen.)"
 
 #: share.py:186
-msgid "Rewrite root Access"
+msgid "Redirect root access"
 msgstr "Root-Zugriff umlenken"
 
 #: share.py:187
@@ -305,7 +305,7 @@ msgid "Rewrite accesses to a non-privileged ID."
 msgstr "Zugriff auf eine nicht privilegierte Kennung umlenken."
 
 #: share.py:196 share.py:456
-msgid "Allowed Hosts"
+msgid "Allowed hosts"
 msgstr "Zugelassene Rechner"
 
 #: share.py:197
@@ -315,7 +315,7 @@ msgstr ""
 "dürfen."
 
 #: share.py:206
-msgid "Samba Writeable"
+msgid "Samba write access"
 msgstr "Samba-Schreibzugriff"
 
 #: share.py:207
@@ -334,7 +334,7 @@ msgid "Browseable"
 msgstr "Sichtbar"
 
 #: share.py:229
-msgid "Share is listed in the Windows Network Neighborhood"
+msgid "Share is listed in the Windows Network environment"
 msgstr "Freigabe wird in der Windows-Netzwerkumgebung angezeigt"
 
 #: share.py:239
@@ -346,12 +346,12 @@ msgid "Allow guest access"
 msgstr "Gastzugriff erlauben"
 
 #: share.py:250
-msgid "users who has write access may modify permissions"
+msgid "Users with write access may modify permissions"
 msgstr "Benutzer mit Schreibrechten dürfen die Berechtigungen verändern"
 
 #: share.py:251
 msgid ""
-"users who has write access to a file or directory are able to change the permissions"
+"Wsers who have write access to a file or directory are able to change the permissions"
 msgstr ""
 "Benutzer, die Schreibrechte an Dateien und/oder Verzeichnissen haben, dürfen die "
 "Zugriffsrechte verändern"
@@ -367,7 +367,7 @@ msgstr ""
 "Verzeichnisse erhalten die Zugriffsrechte des übergeordneten Verzeichnisses."
 
 #: share.py:272
-msgid "File Mode"
+msgid "File mode"
 msgstr "Dateimodus"
 
 #: share.py:273
@@ -401,7 +401,7 @@ msgstr ""
 "wird."
 
 #: share.py:296
-msgid "Force File Mode"
+msgid "Force file mode"
 msgstr "Erzwinge Dateimodus"
 
 #: share.py:297
@@ -417,7 +417,7 @@ msgstr ""
 "Zugriffsrechte bekommen. Dies wird nach der 'Dateimodus' Maske ausgewertet."
 
 #: share.py:308
-msgid "Force Directory Mode"
+msgid "Force directory mode"
 msgstr "Erzwinge Verzeichnismodus"
 
 #: share.py:309
@@ -435,7 +435,7 @@ msgstr ""
 "'Verzeichnismodus' Maske ausgewertet."
 
 #: share.py:320
-msgid "Security Mode"
+msgid "Security mode"
 msgstr "Sicherheitsmodus"
 
 #: share.py:321
@@ -454,7 +454,7 @@ msgstr ""
 "Bits, die der Benutzer nicht ändern darf."
 
 #: share.py:332
-msgid "Directory Security Mode"
+msgid "Directory security mode"
 msgstr "Verzeichnis-Sicherheitsmodus"
 
 #: share.py:333
@@ -473,7 +473,7 @@ msgstr ""
 "werden als Bits, die der Benutzer nicht ändern darf."
 
 #: share.py:344
-msgid "Force Security Mode"
+msgid "Force security mode"
 msgstr "Erzwinge Sicherheitsmodus"
 
 #: share.py:345
@@ -495,7 +495,7 @@ msgstr ""
 "geändert wird, dass diese Bits immer 'an' bleiben."
 
 #: share.py:356
-msgid "Force Directory Security Mode"
+msgid "Force directory security mode"
 msgstr "Erzwinge Verzeichnis-Sicherheitsmodus"
 
 #: share.py:357
@@ -531,7 +531,7 @@ msgstr ""
 "empfohlen, da es zu Datenverlusten führen kann. "
 
 #: share.py:379
-msgid "Blocking Locks"
+msgid "Blocking locks"
 msgstr "Blocking Locks"
 
 #: share.py:380
@@ -550,7 +550,7 @@ msgstr ""
 "Timeout auftritt."
 
 #: share.py:390
-msgid "Strict Locking"
+msgid "Strict locking"
 msgstr "Strict Locking"
 
 #: share.py:391
@@ -665,11 +665,11 @@ msgstr ""
 "werden!"
 
 #: share.py:435
-msgid "Block Size"
+msgid "Block size"
 msgstr "Block Größe"
 
 #: share.py:445
-msgid "Client-side Caching Policy"
+msgid "Client-side caching policy"
 msgstr "Richtlinie für das Caching beim Client"
 
 #: share.py:446
@@ -679,19 +679,19 @@ msgstr ""
 "Bestimmt das Verfahren, mit dem Clients Dateiinhalte lokal zwischenspeichern."
 
 #: share.py:466
-msgid "Denied Hosts"
+msgid "Denied hosts"
 msgstr "Nicht zugelassene Rechner"
 
 #: share.py:476
-msgid "Valid Users"
+msgid "Valid users"
 msgstr "Gültiger Benutzer"
 
 #: share.py:486
-msgid "Invalid Users"
+msgid "Invalid users"
 msgstr "Nicht erlaubte Benutzer"
 
 #: share.py:496
-msgid "Force User"
+msgid "Force user"
 msgstr "Erzwungener Benutzer"
 
 #: share.py:497
@@ -708,7 +708,7 @@ msgstr ""
 "Benutzung Sicherheitsprobleme verursachen kann."
 
 #: share.py:506
-msgid "Force Group"
+msgid "Force group"
 msgstr "Erzwungene Gruppen"
 
 #: share.py:507
@@ -729,11 +729,11 @@ msgstr ""
 "deren gemeinsame Nutzung einschränken, oder erlauben."
 
 #: share.py:516
-msgid "Hide Files"
+msgid "Hide files"
 msgstr "Verstecke Dateien"
 
 #: share.py:526
-msgid "NT ACL Support"
+msgid "NT ACL support"
 msgstr "NT ACL Support"
 
 #: share.py:527
@@ -764,7 +764,7 @@ msgstr ""
 "dass die standard verzeichnis ACLs weitergegeben werden."
 
 #: share.py:548
-msgid "Postexec Script"
+msgid "Postexec script"
 msgstr "Postexec-Skript"
 
 #: share.py:549
@@ -776,7 +776,7 @@ msgstr ""
 "ausgeführt. Die üblichen Platzhalter werden ersetzt."
 
 #: share.py:558
-msgid "Preexec Script"
+msgid "Preexec script"
 msgstr "Preexec-Skript"
 
 #: share.py:559
@@ -788,11 +788,11 @@ msgstr ""
 "ausgeführt. Die üblichen Platzhalter werden ersetzt."
 
 #: share.py:568
-msgid "Write List"
+msgid "Users with write access"
 msgstr "Liste von Schreibberechtigten"
 
 #: share.py:578
-msgid "VFS Objects"
+msgid "VFS objects"
 msgstr "VFS-Objekte"
 
 #: share.py:579
@@ -800,7 +800,7 @@ msgid "Specifies which VFS Objects to use."
 msgstr "Spezifiziert welche VFS-Objekte benutzt werden sollen"
 
 #: share.py:588
-msgid "MSDFS Root"
+msgid "MSDFS root"
 msgstr "MSDFS-Wurzel"
 
 #: share.py:589
@@ -808,7 +808,7 @@ msgid "Export share as MSDFS root"
 msgstr "Freigabe als MSDFS-Wurzel freigeben"
 
 #: share.py:599
-msgid "Inherit Owner"
+msgid "Inherit owner"
 msgstr "Besitzer erben"
 
 #: share.py:600
@@ -820,7 +820,7 @@ msgstr ""
 "Verzeichnisses."
 
 #: share.py:610
-msgid "Inherit Permissions"
+msgid "Inherit permissions"
 msgstr "Rechte erben"
 
 #: share.py:611
@@ -838,11 +838,11 @@ msgid "Set new custom share settings"
 msgstr "Setzen von erweiterten Einstellungen im Key-Value-Format"
 
 #: share.py:632
-msgid "Name of the webaccess share."
+msgid "Name of the web access share."
 msgstr "Name der Webzugriff Freigabe"
 
 #: share.py:641
-msgid "IP Address"
+msgid "IP address"
 msgstr "IP Adresse"
 
 #: share.py:642
@@ -850,59 +850,59 @@ msgid "IP address of the webaccess share host."
 msgstr "Die IP Adresse des Rechners, der die Freigabe bereitstellt"
 
 #: share.py:658
-msgid "NFS General"
+msgid "NFS general"
 msgstr "NFS-Allgemein"
 
 #: share.py:658
-msgid "General NFS Settings"
+msgid "General NFS settings"
 msgstr "NFS-Grundeinstellungen"
 
 #: share.py:663
-msgid "Webaccess General"
+msgid "Web access general"
 msgstr "Webzugriff-Allgemein"
 
 #: share.py:663
-msgid "General Webaccess Settings"
+msgid "General web access settings"
 msgstr "Allgemeine Webzugriff-Einstellungen"
 
 #: share.py:666
-msgid "Samba General"
+msgid "Samba general"
 msgstr "Samba-Allgemein"
 
 #: share.py:666
-msgid "General Samba Settings"
+msgid "General Samba settings"
 msgstr "Samba-Grundeinstellungen"
 
 #: share.py:673
-msgid "Samba Permissions"
+msgid "Samba permissions"
 msgstr "Samba-Rechte"
 
 #: share.py:673
-msgid "Samba Permission Settings"
+msgid "Samba permission settings"
 msgstr "Samba-Zugriffsrechte"
 
 #: share.py:681
-msgid "Samba Extended Permissions"
+msgid "Samba extended permissions"
 msgstr "Samba-Erweiterte-Rechte"
 
 #: share.py:681
-msgid "Samba Extended Permission Settings"
+msgid "Samba extended permission settings"
 msgstr "Samba Erweiterte Zugriffsrechte"
 
 #: share.py:687
-msgid "Samba Performance"
+msgid "Samba performance"
 msgstr "Samba-Performance"
 
 #: share.py:687
-msgid "Samba Performance Settings"
+msgid "Samba performance settings"
 msgstr "Samba-Performance-Einstellungen"
 
 #: share.py:693
-msgid "Samba Custom Settings"
+msgid "Samba custom settings"
 msgstr "Samba-Erweiterte-Einstellungen"
 
 #: share.py:693
-msgid "Custom Settings for Samba Shares"
+msgid "Custom settings for Samba shares"
 msgstr "Erweiterte Einstellungen für Samba-Freigaben"
 
 #: share.py:856

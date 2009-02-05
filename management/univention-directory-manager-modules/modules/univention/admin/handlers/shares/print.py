@@ -43,12 +43,12 @@ module='shares/print'
 usewizard=1
 wizardmenustring=_("Printers")
 wizarddescription=_("Add, edit and delete print shares")
-wizardoperations={"add":[_("Add"), _("Add Printer Object")],"find":[_("Find"), _("Find Printer Object(s)")]}
+wizardoperations={"add":[_("Add"), _("Add printer object")],"find":[_("Search"), _("Search printer object(s)")]}
 wizardpath='univentionPrintersObject'
 childmodules=['shares/printer','shares/printergroup']
 
 childs=0
-short_description=_('Print Share')
+short_description=_('Printer share')
 long_description=''
 operations=['search']
 virtual=1
@@ -66,7 +66,7 @@ property_descriptions={
 			identifies=1
 		),
 	'spoolHost': univention.admin.property(
-			short_description=_('Spool Host'),
+			short_description=_('Spool host'),
 			long_description='',
 			syntax=univention.admin.syntax.spoolHost,
 			multivalue=1,
@@ -76,7 +76,7 @@ property_descriptions={
 			identifies=0
 		),
 	'sambaName': univention.admin.property(
-			short_description=_('Samba Name'),
+			short_description=_('Samba name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -87,7 +87,7 @@ property_descriptions={
 			unique=1
 		),
 	'setQuota': univention.admin.property(
-			short_description=_('Enable Quota Support'),
+			short_description=_('Enable quota support'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -97,7 +97,7 @@ property_descriptions={
 			identifies=0
 		),
 	'pagePrice': univention.admin.property(
-			short_description=_('Price per Page'),
+			short_description=_('Price per page'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -107,7 +107,7 @@ property_descriptions={
 			identifies=0
 		),
 	'jobPrice': univention.admin.property(
-			short_description=_('Price per Printjob'),
+			short_description=_('Price per print job'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
