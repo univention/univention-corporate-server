@@ -16,7 +16,7 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 #: alias.py:45
-msgid "DNS: Alias Record"
+msgid "DNS: Alias record"
 msgstr "DNS: Alias Record"
 
 #: alias.py:51 alias.py:86
@@ -29,7 +29,7 @@ msgid "Zone Time-to-Live"
 msgstr "Zone Time-to-Live"
 
 #: alias.py:72
-msgid "Canonical Name"
+msgid "Canonical name"
 msgstr "Kanonischer Name"
 
 #: alias.py:73 ptr_record.py:60
@@ -43,11 +43,11 @@ msgstr "Allgemein"
 
 #: alias.py:82 dns.py:78 forward_zone.py:179 host_record.py:99
 #: ptr_record.py:69 reverse_zone.py:161 srv_record.py:82
-msgid "Basic Values"
+msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
 #: alias.py:86
-msgid "Alias for this Host"
+msgid "Alias for this host"
 msgstr "Alias des Rechners"
 
 #: dns.py:51 dns.py:55
@@ -55,7 +55,7 @@ msgid "DNS"
 msgstr "DNS"
 
 #: dns.py:56
-msgid "Add, edit and delete DNS Objects"
+msgid "Add, edit and delete DNS objects"
 msgstr "Hinzufügen, bearbeiten und löschen eines DNS-Objektes"
 
 #: dns.py:57
@@ -63,15 +63,15 @@ msgid "Add"
 msgstr "Hinzufügen"
 
 #: dns.py:57
-msgid "Add DNS Object"
+msgid "Add DNS object"
 msgstr "DNS-Objekt hinzufügen"
 
 #: dns.py:57
-msgid "Find"
+msgid "Search"
 msgstr "Suchen"
 
 #: dns.py:57
-msgid "Find DNS Object(s)"
+msgid "Searchx DNS object(s)"
 msgstr "DNS-Objekt(e) suchen"
 
 #: dns.py:68 srv_record.py:51
@@ -79,31 +79,31 @@ msgid "Name"
 msgstr "Name"
 
 #: forward_zone.py:47
-msgid "DNS: Forward Lookup Zone"
+msgid "DNS: Forward lookup zone"
 msgstr "DNS: Forward Lookup Zone"
 
 #: forward_zone.py:53
-msgid "Zone Name"
+msgid "Zone name"
 msgstr "Name der Zone"
 
 #: forward_zone.py:74 reverse_zone.py:74
-msgid "Responsible Person"
+msgid "Contact person"
 msgstr "Verantwortliche Person"
 
 #: forward_zone.py:85 reverse_zone.py:85
-msgid "Serial Number"
+msgid "Serial number"
 msgstr "Seriennummer"
 
 #: forward_zone.py:96 reverse_zone.py:96
-msgid "Refresh Interval"
+msgid "Refresh interval"
 msgstr "Aktualisierungsintervall"
 
 #: forward_zone.py:107 reverse_zone.py:107
-msgid "Retry Interval"
+msgid "Retry interval"
 msgstr "Intervall für erneute Versuche"
 
 #: forward_zone.py:118 reverse_zone.py:118
-msgid "Expire Interval"
+msgid "Expiry interval"
 msgstr "Ablaufintervall"
 
 #: forward_zone.py:129 reverse_zone.py:129
@@ -111,51 +111,51 @@ msgid "Minimum Time-to-Live"
 msgstr "Minimum Time-to-Live"
 
 #: forward_zone.py:140
-msgid "Name Server"
+msgid "Name server"
 msgstr "Nameserver"
 
 #: forward_zone.py:160
-msgid "Mail Exchanger Host"
+msgid "Mail Exchanger host"
 msgstr "Mail Exchanger Rechner"
 
 #: forward_zone.py:169
-msgid "TXT Record"
+msgid "TXT record"
 msgstr "TXT Record"
 
 #: forward_zone.py:183 reverse_zone.py:165
-msgid "Start of Authority"
+msgid "Start of Authority entry"
 msgstr "Start of Authority Eintrag"
 
 #: forward_zone.py:183 reverse_zone.py:165
-msgid "Primary Name Server Information"
+msgid "Primary name server information"
 msgstr "Primäre Nameserver Informationen"
 
 #: forward_zone.py:185 reverse_zone.py:167
-msgid "Primary Name Server"
+msgid "Primary name server"
 msgstr "Primärer Nameserver"
 
 #: forward_zone.py:189 reverse_zone.py:140 reverse_zone.py:171
-msgid "Name Servers"
+msgid "Name servers"
 msgstr "Nameserver"
 
 #: forward_zone.py:189 reverse_zone.py:171
-msgid "Additional Name Servers"
+msgid "Additional name servers"
 msgstr "Zusätzliche Nameserver"
 
 #: forward_zone.py:192
-msgid "MX Records"
+msgid "MX records"
 msgstr "MX Records"
 
 #: forward_zone.py:192
-msgid "Mail Exchanger Records"
+msgid "Mail exchanger records"
 msgstr "Mailserver-Einträge"
 
 #: forward_zone.py:195
-msgid "TXT Records"
+msgid "TXT records"
 msgstr "TXT Records"
 
 #: forward_zone.py:195
-msgid "Text Records"
+msgid "Text records"
 msgstr "Text Records"
 
 #: forward_zone.py:235 host_record.py:157 ptr_record.py:98 reverse_zone.py:210
@@ -168,27 +168,27 @@ msgid "Hostname"
 msgstr "Rechnername"
 
 #: host_record.py:71
-msgid "IP Address"
+msgid "IP address"
 msgstr "IP-Adresse"
 
 #: host_record.py:80
-msgid "Mail Exchanger"
+msgid "Mail exchanger"
 msgstr "Mail Exchanger"
 
 #: host_record.py:89
-msgid "Text Record"
+msgid "Text record"
 msgstr "Text Record"
 
 #: host_record.py:101
-msgid "Primary IP-Address"
+msgid "Primary IP address"
 msgstr "Primäre IP-Adresse"
 
 #: host_record.py:104
-msgid "IP-Addresses"
+msgid "IP addresses"
 msgstr "IP-Adressen"
 
 #: host_record.py:104
-msgid "IP Addresses of the Host"
+msgid "IP addresses of host"
 msgstr "IP-Adressen des Rechners"
 
 #: host_record.py:107
@@ -196,7 +196,7 @@ msgid "Mail"
 msgstr "Mail"
 
 #: host_record.py:107
-msgid "Mail Exchangers for this Host"
+msgid "Mail exchangers for this host"
 msgstr "Mail Exchanger für diesen Rechner"
 
 #: host_record.py:110
@@ -204,11 +204,11 @@ msgid "Text"
 msgstr "Text"
 
 #: host_record.py:110
-msgid "Optional Text"
+msgid "Optional text"
 msgstr "Optionaler Text"
 
 #: host_record.py:155 ptr_record.py:96 srv_record.py:133
-msgid "superordinate object not present"
+msgid "Superordinate object not present"
 msgstr "Ein übergeordnetes Objekt ist nicht vorhanden"
 
 #: ptr_record.py:44
@@ -224,7 +224,7 @@ msgid "Pointer"
 msgstr "Pointer"
 
 #: reverse_zone.py:47
-msgid "DNS: Reverse Lookup Zone"
+msgid "DNS: Reverse lookup zone"
 msgstr "DNS: Reverse Lookup Zone"
 
 #: reverse_zone.py:53
@@ -232,7 +232,7 @@ msgid "Subnet"
 msgstr "Subnetz"
 
 #: srv_record.py:45
-msgid "DNS: Service Record"
+msgid "DNS: Service record"
 msgstr "DNS: Service Record"
 
 #: srv_record.py:61

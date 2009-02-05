@@ -42,7 +42,7 @@ operations=['add','edit','remove','search']
 superordinate='dns/forward_zone'
 usewizard=1
 childs=0
-short_description=_('DNS: Alias Record')
+short_description=_('DNS: Alias record')
 long_description=''
 options={
 }
@@ -69,7 +69,7 @@ property_descriptions={
 			default=('10800', [])
 		),
 	'cname': univention.admin.property(
-			short_description=_('Canonical Name'),
+			short_description=_('Canonical name'),
 			long_description=_("FQDNs must end with '.'"),
 			syntax=univention.admin.syntax.dnsName,
 			multivalue=0,
@@ -79,11 +79,11 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'), _('Basic Values'), fields=[
+	univention.admin.tab(_('General'), _('Basic settings'), fields=[
 		[univention.admin.field('name')],
 		[univention.admin.field('zonettl')],
 	]),	
-	univention.admin.tab(_('Alias'), _('Alias for this Host'), fields=[
+	univention.admin.tab(_('Alias'), _('Alias for this host'), fields=[
 		[univention.admin.field('cname')],
 	])
 ]

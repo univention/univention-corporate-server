@@ -44,7 +44,7 @@ module='dns/reverse_zone'
 operations=['add','edit','remove','search']
 usewizard=1
 childs=1
-short_description=_('DNS: Reverse Lookup Zone')
+short_description=_('DNS: Reverse lookup zone')
 long_description=''
 options={
 }
@@ -71,7 +71,7 @@ property_descriptions={
 			default=('10800', [])
 		),
 	'contact': univention.admin.property(
-			short_description=_('Responsible Person'),
+			short_description=_('Contact person'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -82,7 +82,7 @@ property_descriptions={
 			default=(makeContactPerson, [], ''),
 		),
 	'serial': univention.admin.property(
-			short_description=_('Serial Number'),
+			short_description=_('Serial number'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -93,7 +93,7 @@ property_descriptions={
 			default=('1', [])
 		),
 	'refresh': univention.admin.property(
-			short_description=_('Refresh Interval'),
+			short_description=_('Refresh interval'),
 			long_description='',
 			syntax=univention.admin.syntax.unixTimeInterval,
 			multivalue=0,
@@ -104,7 +104,7 @@ property_descriptions={
 			default=('28800', [])
 		),
 	'retry': univention.admin.property(
-			short_description=_('Retry Interval'),
+			short_description=_('Retry interval'),
 			long_description='',
 			syntax=univention.admin.syntax.unixTimeInterval,
 			multivalue=0,
@@ -115,7 +115,7 @@ property_descriptions={
 			default=('7200', [])
 		),
 	'expire': univention.admin.property(
-			short_description=_('Expire Interval'),
+			short_description=_('Expiry interval'),
 			long_description='',
 			syntax=univention.admin.syntax.unixTimeInterval,
 			multivalue=0,
@@ -137,7 +137,7 @@ property_descriptions={
 			default=('86400', [])
 		),
 	'nameserver': univention.admin.property(
-			short_description=_('Name Servers'),
+			short_description=_('Name servers'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsName,
 			multivalue=1,
@@ -158,17 +158,17 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'), _('Basic Values'), [
+	univention.admin.tab(_('General'), _('Basic settings'), [
 		[univention.admin.field('subnet')],
 		[univention.admin.field('zonettl')]
 	]),
-	univention.admin.tab(_('Start of Authority'), _('Primary Name Server Information'), [
+	univention.admin.tab(_('Start of Authority'), _('Primary name server information'), [
 		[univention.admin.field('contact'), univention.admin.field('filler')],
 		[univention.admin.field('nameserver', first_only=1, short_description=_('Primary Name Server')), univention.admin.field('serial')],
 		[univention.admin.field('refresh'), univention.admin.field('retry')],
 		[univention.admin.field('expire'), univention.admin.field('ttl')]
 	]),
-	univention.admin.tab(_('Name Servers'), _('Additional Name Servers'), [
+	univention.admin.tab(_('Name servers'), _('Additional name servers'), [
 		[univention.admin.field('nameserver')]
 	])
 ]

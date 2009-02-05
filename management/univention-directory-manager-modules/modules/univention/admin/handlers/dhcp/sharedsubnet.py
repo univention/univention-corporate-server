@@ -42,13 +42,13 @@ module='dhcp/sharedsubnet'
 operations=['add','edit','remove','search','move']
 superordinate='dhcp/shared'
 childs=1
-short_description=_('DHCP: Shared Subnet')
+short_description=_('DHCP: Shared subnet')
 long_description=''
 options={
 }
 property_descriptions={
 	'subnet': univention.admin.property(
-			short_description=_('Subnet Address'),
+			short_description=_('Subnet address'),
 			long_description='',
 			syntax=univention.admin.syntax.ipAddress,
 			multivalue=0,
@@ -68,7 +68,7 @@ property_descriptions={
 			identifies=0
 		),
 	'broadcastaddress': univention.admin.property(
-			short_description=_('Broadcast Address'),
+			short_description=_('Broadcast address'),
 			long_description='',
 			syntax=univention.admin.syntax.ipAddress,
 			multivalue=0,
@@ -78,7 +78,7 @@ property_descriptions={
 			identifies=0
 		),
 	'range': univention.admin.property(
-			short_description=_('Dynamic Range'),
+			short_description=_('Dynamic range'),
 			long_description='',
 			syntax=univention.admin.syntax.ipRange,
 			multivalue=1,
@@ -101,11 +101,11 @@ property_descriptions={
 options={
 }
 layout=[
-	univention.admin.tab(_('General'), _('Basic Values'), [
+	univention.admin.tab(_('General'), _('Basic settings'), [
 		[univention.admin.field('subnet'),univention.admin.field('subnetmask')],
 		[univention.admin.field('broadcastaddress'),univention.admin.field('filler')]
 	]),
-	univention.admin.tab(_('Dynamic Address Assignment'), _('Define a pool of addresses available for dynamic address assignment.'), [
+	univention.admin.tab(_('Dynamic address assignment'), _('Define a pool of addresses available for dynamic address assignment.'), [
 		[univention.admin.field('range')]
 	]),
 ]

@@ -46,7 +46,7 @@ options={
 }
 property_descriptions={
 	'service': univention.admin.property(
-			short_description=_('Service Name'),
+			short_description=_('Service name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -57,7 +57,7 @@ property_descriptions={
 		),
 }
 layout=[
-	univention.admin.tab(_('General'), _('Basic Values'), [
+	univention.admin.tab(_('General'), _('Basic settings'), [
 		[univention.admin.field('service')],
 	]),
 ]

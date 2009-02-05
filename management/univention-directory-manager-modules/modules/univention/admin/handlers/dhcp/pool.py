@@ -58,7 +58,7 @@ property_descriptions={
 			identifies=1
 		),
 	'range': univention.admin.property(
-			short_description=_('Dynamic Range'),
+			short_description=_('Dynamic range'),
 			long_description='',
 			syntax=univention.admin.syntax.ipRange,
 			multivalue=1,
@@ -68,7 +68,7 @@ property_descriptions={
 			identifies=0
 		),
 	'failover_peer': univention.admin.property(
-			short_description=_('Failover Peer'),
+			short_description=_('Failover peer'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -78,7 +78,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'known_clients': univention.admin.property(
-			short_description=_('Allow Known Clients'),
+			short_description=_('Allow known clients'),
 			long_description='',
 			syntax=univention.admin.syntax.AllowDeny,
 			multivalue=0,
@@ -88,7 +88,7 @@ property_descriptions={
 			identifies=0
 		),
 	'unknown_clients': univention.admin.property(
-			short_description=_('Allow Unknown Clients'),
+			short_description=_('Allow unknown clients'),
 			long_description='',
 			syntax=univention.admin.syntax.AllowDeny,
 			multivalue=0,
@@ -98,7 +98,7 @@ property_descriptions={
 			identifies=0
 		),
 	'dynamic_bootp_clients': univention.admin.property(
-			short_description=_('Allow Dynamic BOOTP Clients'),
+			short_description=_('Allow dynamic BOOTP clients'),
 			long_description='',
 			syntax=univention.admin.syntax.AllowDeny,
 			multivalue=0,
@@ -108,7 +108,7 @@ property_descriptions={
 			identifies=0
 		),
 	'all_clients': univention.admin.property(
-			short_description=_('All Clients'),
+			short_description=_('All clients'),
 			long_description='',
 			syntax=univention.admin.syntax.AllowDeny,
 			multivalue=0,
@@ -131,10 +131,10 @@ property_descriptions={
 options={
 }
 layout=[
-	univention.admin.tab(_('General'), _('Basic Values'), [
+	univention.admin.tab(_('General'), _('Basic settings'), [
 		[univention.admin.field('name'), univention.admin.field('range')]
 	]),
-	univention.admin.tab(_('Advanced'), _('Advanced DHCP Pool Options'), [
+	univention.admin.tab(_('Advanced'), _('Advanced DHCP pool options'), [
 		[univention.admin.field('failover_peer'), univention.admin.field('filler')],
 		[univention.admin.field('known_clients'),univention.admin.field('unknown_clients')],
 		[univention.admin.field('dynamic_bootp_clients'),univention.admin.field('all_clients') ]

@@ -42,7 +42,7 @@ operations=['add','edit','remove','search']
 superordinate='dns/forward_zone'
 usewizard=1
 childs=0
-short_description=_('DNS: Service Record')
+short_description=_('DNS: Service record')
 long_description=''
 options={
 }
@@ -79,7 +79,7 @@ property_descriptions={
 		),
 }
 layout=[
-	univention.admin.tab(_('General'), _('Basic Values'), fields=[
+	univention.admin.tab(_('General'), _('Basic settings'), fields=[
 		[univention.admin.field('name')],
 		[univention.admin.field('location')],
 		[univention.admin.field('zonettl')]

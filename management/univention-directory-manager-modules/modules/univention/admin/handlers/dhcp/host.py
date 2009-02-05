@@ -57,7 +57,7 @@ property_descriptions={
 			identifies=1
 		),
 	'hwaddress': univention.admin.property(
-			short_description=_('Hardware Address'),
+			short_description=_('Hardware address'),
 			long_description=_('Currently, only the ethernet and token-ring types are recognized. \
 The hardware-address should be a set of hexadecimal octets (numbers from 0 through ff) separated by colons.'),
 			syntax=univention.admin.syntax.dhcpHWAddress,
@@ -68,7 +68,7 @@ The hardware-address should be a set of hexadecimal octets (numbers from 0 throu
 			identifies=0
 		),
 	'fixedaddress': univention.admin.property(
-			short_description=_('Fixed IP Address'),
+			short_description=_('Fixed IP address'),
 			long_description=_('Assign one or more fixed IP addresses. \
 Each address should be either an IP address or a domain name that resolves to one or more IP addresses'),
 			syntax=univention.admin.syntax.string,
@@ -80,11 +80,11 @@ Each address should be either an IP address or a domain name that resolves to on
 		),
 }
 layout=[
-	univention.admin.tab(_('General'), _('Basic Values'), [
+	univention.admin.tab(_('General'), _('Basic settings'), [
 		[univention.admin.field('host')],
 		[univention.admin.field('hwaddress')]
 	]),
-	univention.admin.tab(_('Fixed IP Addresses'), _('Fixed IP Addresses of the Host'), [
+	univention.admin.tab(_('Fixed IP addresses'), _('Fixed IP Addresses of the Host'), [
 		[univention.admin.field('fixedaddress')]
 	])
 ]

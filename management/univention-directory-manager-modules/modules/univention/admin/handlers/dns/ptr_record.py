@@ -66,7 +66,7 @@ property_descriptions={
 		),
 }
 layout=[
-	univention.admin.tab(_('General'), _('Basic Values'), fields=[
+	univention.admin.tab(_('General'), _('Basic settings'), fields=[
 		[univention.admin.field('address'), univention.admin.field('ptr_record')],
 	]),
 ]

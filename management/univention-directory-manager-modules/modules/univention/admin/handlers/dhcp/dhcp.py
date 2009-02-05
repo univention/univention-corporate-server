@@ -54,8 +54,8 @@ long_description=''
 operations=['search']
 usewizard=1
 wizardmenustring=_("DHCP")
-wizarddescription=_("Add, edit and delete DHCP Objects")
-wizardoperations={"add":[_("Add"), _("Add DHCP Object")],"find":[_("Find"), _("Find DHCP Object(s)")]}
+wizarddescription=_("Add, edit and delete DHCP objects")
+wizardoperations={"add":[_("Add"), _("Add DHCP object")],"find":[_("Find"), _("Search DHCP object(s)")]}
 wizardpath="univentionDhcpObject"
 wizardsuperordinates=["None","dhcp/service"]
 wizardtypesforsuper={"None":["dhcp/service"],"dhcp/service":["dhcp/host","dhcp/pool","dhcp/server","dhcp/shared","dhcp/sharedsubnet","dhcp/subnet"]}
@@ -76,7 +76,7 @@ property_descriptions={
 			identifies=1
 		)
 }
-layout=[ univention.admin.tab(_('General'),_('Basic Values'),[ [univention.admin.field("name")] ]) ]
+layout=[ univention.admin.tab(_('General'),_('Basic settings'),[ [univention.admin.field("name")] ]) ]
 
 mapping=univention.admin.mapping.mapping()
 

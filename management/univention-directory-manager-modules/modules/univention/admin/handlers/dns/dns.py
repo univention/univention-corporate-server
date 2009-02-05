@@ -53,8 +53,8 @@ long_description=''
 operations=['search']
 usewizard=1
 wizardmenustring=_("DNS")
-wizarddescription=_("Add, edit and delete DNS Objects")
-wizardoperations={"add":[_("Add"), _("Add DNS Object")],"find":[_("Find"), _("Find DNS Object(s)")]}
+wizarddescription=_("Add, edit and delete DNS objects")
+wizardoperations={"add":[_("Add"), _("Add DNS object")],"find":[_("Search"), _("Search DNS object(s)")]}
 wizardpath="univentionDnsObject"
 wizardsuperordinates=["None","dns/forward_zone","dns/reverse_zone"]
 wizardtypesforsuper={"None":["dns/forward_zone","dns/reverse_zone"],"dns/forward_zone":["dns/alias","dns/host_record","dns/srv_record"],"dns/reverse_zone":["dns/ptr_record"]}
@@ -75,7 +75,7 @@ property_descriptions={
 			identifies=1
 		)
 }
-layout=[ univention.admin.tab(_('General'),_('Basic Values'),[ [univention.admin.field("name")] ]) ]
+layout=[ univention.admin.tab(_('General'),_('Basic settings'),[ [univention.admin.field("name")] ]) ]
 
 mapping=univention.admin.mapping.mapping()
 

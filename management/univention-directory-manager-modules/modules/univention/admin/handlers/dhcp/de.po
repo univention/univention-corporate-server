@@ -20,7 +20,7 @@ msgid "DHCP"
 msgstr "DHCP"
 
 #: dhcp.py:56
-msgid "Add, edit and delete DHCP Objects"
+msgid "Add, edit and delete DHCP objects"
 msgstr "Hinzufügen, bearbeiten und löschen von DHCP-Objekten"
 
 #: dhcp.py:57
@@ -32,11 +32,11 @@ msgid "Add DHCP Object"
 msgstr "DHCP-Objekt hinzufügen"
 
 #: dhcp.py:57
-msgid "Find"
+msgid "Search"
 msgstr "Suchen"
 
 #: dhcp.py:57
-msgid "Find DHCP Object(s)"
+msgid "Search DHCP object(s)"
 msgstr "DHCP-Objekt(e) suchen"
 
 #: dhcp.py:68 pool.py:50
@@ -50,7 +50,7 @@ msgstr "Allgemein"
 
 #: dhcp.py:78 host.py:82 pool.py:133 service.py:59 shared.py:63
 #: sharedsubnet.py:103 subnet.py:104
-msgid "Basic Values"
+msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
 #: host.py:43
@@ -62,7 +62,7 @@ msgid "Hostname"
 msgstr "Rechnername"
 
 #: host.py:59
-msgid "Hardware Address"
+msgid "Hardware address"
 msgstr "Hardware-Adresse"
 
 #: host.py:60
@@ -76,7 +76,7 @@ msgstr ""
 "durch Doppelpunkte angegeben werden."
 
 #: host.py:70
-msgid "Fixed IP Address"
+msgid "Fixed IP address"
 msgstr "Feste IP-Adresse"
 
 #: host.py:71
@@ -89,11 +89,11 @@ msgstr ""
 "auflösen lässt, sein."
 
 #: host.py:86
-msgid "Fixed IP Addresses"
+msgid "Fixed IP addresses"
 msgstr "Feste IP-Adressen"
 
 #: host.py:86
-msgid "Fixed IP Addresses of the Host"
+msgid "Fixed IP addresses of the host"
 msgstr "Feste IP-Adressen des Rechners"
 
 #: pool.py:44
@@ -101,27 +101,27 @@ msgid "DHCP: Pool"
 msgstr "DHCP: Pool"
 
 #: pool.py:60 sharedsubnet.py:80 subnet.py:81
-msgid "Dynamic Range"
+msgid "Dynamic range"
 msgstr "Dynamischer Bereich"
 
 #: pool.py:70
-msgid "Failover Peer"
+msgid "Failover peer"
 msgstr "Failover Peer"
 
 #: pool.py:80
-msgid "Allow Known Clients"
+msgid "Allow known clients"
 msgstr "Erlaube bekannte Clients"
 
 #: pool.py:90
-msgid "Allow Unknown Clients"
+msgid "Allow unknown clients"
 msgstr "Erlaube unbekannte Clients"
 
 #: pool.py:100
-msgid "Allow Dynamic BOOTP Clients"
+msgid "Allow dynamic BOOTP clients"
 msgstr "Dynamische BOOTP-Clients erlauben"
 
 #: pool.py:110
-msgid "All Clients"
+msgid "All clients"
 msgstr "Alle Clients"
 
 #: pool.py:136
@@ -129,7 +129,7 @@ msgid "Advanced"
 msgstr "Fortgeschritten"
 
 #: pool.py:136
-msgid "Advanced DHCP Pool Options"
+msgid "Advanced DHCP pool options"
 msgstr "Fortgeschrittene DHCP-Pool-Optionen"
 
 #: server.py:44
@@ -137,11 +137,11 @@ msgid "DHCP: Server"
 msgstr "DHCP: Server"
 
 #: server.py:51
-msgid "Server Name"
+msgid "Server name"
 msgstr "Servername"
 
 #: server.py:63
-msgid "General Settings"
+msgid "General settings"
 msgstr "Grundeinstellungen"
 
 #: service.py:42
@@ -149,23 +149,23 @@ msgid "DHCP: Service"
 msgstr "DHCP: Service"
 
 #: service.py:48
-msgid "Service Name"
+msgid "Service name"
 msgstr "Service-Name"
 
 #: shared.py:44
-msgid "DHCP: Shared Network"
+msgid "DHCP: Shared network"
 msgstr "DHCP: Shared Network"
 
 #: shared.py:50
-msgid "Shared Network Name"
+msgid "Shared network name"
 msgstr "Shared Network Name"
 
 #: sharedsubnet.py:44
-msgid "DHCP: Shared Subnet"
+msgid "DHCP: Shared subnet"
 msgstr "DHCP: Shared Subnet"
 
 #: sharedsubnet.py:50 subnet.py:51
-msgid "Subnet Address"
+msgid "Subnet address"
 msgstr "Subnetz-Adresse"
 
 #: sharedsubnet.py:60 subnet.py:61
@@ -173,11 +173,11 @@ msgid "Netmask"
 msgstr "Netzmaske"
 
 #: sharedsubnet.py:70 subnet.py:71
-msgid "Broadcast Address"
+msgid "Broadcast address"
 msgstr "Broadcast-Adresse"
 
 #: sharedsubnet.py:107 subnet.py:108
-msgid "Dynamic Address Assignment"
+msgid "Dynamic address assignment"
 msgstr "Dynamische Adresszuweisung"
 
 #: sharedsubnet.py:107 subnet.py:108
