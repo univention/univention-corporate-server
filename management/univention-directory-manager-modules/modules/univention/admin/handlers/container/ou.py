@@ -42,7 +42,7 @@ _=translation.translate
 module='container/ou'
 operations=['add','edit','remove','search','move','subtree_move']
 childs=1
-short_description=_('Container: Organizational Unit')
+short_description=_('Container: Organisational Unit')
 long_description=''
 options={
 }
@@ -58,7 +58,7 @@ property_descriptions={
 			identifies=1
 		),
 	'policyPath': univention.admin.property(
-			short_description=_('Add to Standard Policy Container'),
+			short_description=_('Add to standard policy containers'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -68,7 +68,7 @@ property_descriptions={
 			identifies=0
 		),
 	'dhcpPath': univention.admin.property(
-			short_description=_('Add to Standard DHCP Container'),
+			short_description=_('Add to standard DHCP containers'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -78,7 +78,7 @@ property_descriptions={
 			identifies=0
 		),
 	'dnsPath': univention.admin.property(
-			short_description=_('Add to Standard DNS Container'),
+			short_description=_('Add to standard DNS containers'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -88,7 +88,7 @@ property_descriptions={
 			identifies=0
 		),
 	'userPath': univention.admin.property(
-			short_description=_('Add to Standard User Container'),
+			short_description=_('Add to standard user containers'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -98,7 +98,7 @@ property_descriptions={
 			identifies=0
 		),
 	'groupPath': univention.admin.property(
-			short_description=_('Add to Standard Group Container'),
+			short_description=_('Add to standard group containers'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -108,7 +108,7 @@ property_descriptions={
 			identifies=0
 		),
 	'computerPath': univention.admin.property(
-			short_description=_('Add to Standard Computer Container'),
+			short_description=_('Add to standard computer containers'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -118,7 +118,7 @@ property_descriptions={
 			identifies=0
 		),
 	'networkPath': univention.admin.property(
-			short_description=_('Add to Standard Network Container'),
+			short_description=_('Add to standard network containers'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -128,7 +128,7 @@ property_descriptions={
 			identifies=0
 		),
 	'sharePath': univention.admin.property(
-			short_description=_('Add to Standard Share Container'),
+			short_description=_('Add to standard share containers'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -138,7 +138,7 @@ property_descriptions={
 			identifies=0
 		),
 	'printerPath': univention.admin.property(
-			short_description=_('Add to Standard Printer Container'),
+			short_description=_('Add to standard printer containers'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -148,7 +148,7 @@ property_descriptions={
 			identifies=0
 		),
 	'mailPath': univention.admin.property(
-			short_description=_('Add to Standard mail container'),
+			short_description=_('Add to standard mail containers'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -158,7 +158,7 @@ property_descriptions={
 			identifies=0
 		),
 	'licensePath': univention.admin.property(
-			short_description=_('Add to Standard License Container'),
+			short_description=_('Add to standard license containers'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -189,10 +189,10 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[
+	univention.admin.tab(_('General'),_('Basic settings'),[
 			[univention.admin.field("name"), univention.admin.field("description")]
 			]),
-	univention.admin.tab(_('Path Settings'),_('Default positions for adding objects'),[
+	univention.admin.tab(_('Path Settings'),_('Default position when adding objects'),[
 			[univention.admin.field("userPath"), univention.admin.field("groupPath")],
 			[univention.admin.field("computerPath"), univention.admin.field("policyPath")],
 			[univention.admin.field("dnsPath"), univention.admin.field("dhcpPath")],
