@@ -42,7 +42,7 @@ operations=['add','edit','remove','search','move']
 usewizard=1
 
 childs=0
-short_description=_('Mail: Mail Domain')
+short_description=_('Mail: Mail domain')
 long_description=''
 
 module_search_filter=univention.admin.filter.conjunction('&', [
@@ -62,7 +62,7 @@ property_descriptions={
 }
 
 layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[
+	univention.admin.tab(_('General'),_('Basic settings'),[
 	[univention.admin.field("name")],
 	] ),
 ]

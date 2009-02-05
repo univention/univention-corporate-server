@@ -50,8 +50,8 @@ long_description=''
 operations=['search']
 usewizard=1
 wizardmenustring=_("Mail")
-wizarddescription=_("Add, edit and delete Mail Objects")
-wizardoperations={"add":[_("Add"), _("Add Mail Object")],"find":[_("Find"), _("Find Mail Object(s)")]}
+wizarddescription=_("Add, edit and delete mail objects")
+wizardoperations={"add":[_("Add"), _("Add mail object")],"find":[_("Search"), _("Search mail object(s)")]}
 
 childmodules=["mail/folder","mail/domain", "mail/lists"]
 wizardpath='univentionMailObject'
@@ -70,7 +70,7 @@ property_descriptions={
 			identifies=1
 		)
 }
-layout=[ univention.admin.tab(_('General'),_('Basic Values'),[ [univention.admin.field("name")] ]) ]
+layout=[ univention.admin.tab(_('General'),_('Basic settings'),[ [univention.admin.field("name")] ]) ]
 
 mapping=univention.admin.mapping.mapping()
 

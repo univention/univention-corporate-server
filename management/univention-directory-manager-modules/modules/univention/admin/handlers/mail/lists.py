@@ -42,7 +42,7 @@ operations=['add','edit','remove','search','move']
 usewizard=1
 
 childs=0
-short_description=_('Mail: Mailing Lists')
+short_description=_('Mail: Mailing lists')
 long_description=''
 
 module_search_filter=univention.admin.filter.expression('objectClass', 'univentionKolabGroup'),
@@ -77,7 +77,7 @@ property_descriptions={
 			identifies=0
 		),
 	'mailAddress': univention.admin.property(
-			short_description=_('Mail Address'),
+			short_description=_('Mail address'),
 			long_description='',
 			syntax=univention.admin.syntax.emailAddress,
 			multivalue=0,
@@ -89,7 +89,7 @@ property_descriptions={
 }
 
 layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[
+	univention.admin.tab(_('General'),_('Basic settings'),[
 	[univention.admin.field("name"), univention.admin.field("description")],
 	[univention.admin.field("mailAddress")],
 	[univention.admin.field("members")]

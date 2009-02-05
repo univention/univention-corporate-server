@@ -44,7 +44,7 @@ usewizard=1
 
 
 childs=0
-short_description=_('Mail: IMAP Folder')
+short_description=_('Mail: IMAP folder')
 long_description=''
 
 module_search_filter=univention.admin.filter.conjunction('&', [
@@ -62,7 +62,7 @@ property_descriptions={
 			identifies=1
 		),
 	'mailDomain': univention.admin.property(
-			short_description=_('Mail Domain'),
+			short_description=_('Mail domain'),
 			long_description='',
 			syntax=univention.admin.syntax.mailDomain,
 			multivalue=0,
@@ -89,7 +89,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'cyrus-userquota': univention.admin.property(
-			short_description=_('Maximum Quota in MB'),
+			short_description=_('Quota in MB'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -98,7 +98,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'kolabHomeServer': univention.admin.property(
-			short_description=_('Kolab Home Server'),
+			short_description=_('Kolab home server'),
 			long_description='',
 			syntax=univention.admin.syntax.kolabHomeServer,
 			multivalue=0,
@@ -107,7 +107,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'userNamespace': univention.admin.property(
-			short_description=_( 'Should Be Visible For Outlook' ),
+			short_description=_( 'Should be visible for Outlook' ),
 			long_description=_( "Outlook does not display folders outside of the 'user' namespace." ),
 			syntax=univention.admin.syntax.TrueFalseUp,
 			multivalue=0,
@@ -117,7 +117,7 @@ property_descriptions={
 			default=''
 		),
 	'mailPrimaryAddress': univention.admin.property(
-			short_description=_('E-Mail Address'),
+			short_description=_('E-Mail address'),
 			long_description='',
 			syntax=univention.admin.syntax.emailAddress,
 			multivalue=0,
@@ -139,7 +139,7 @@ property_descriptions={
 }
 
 layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[
+	univention.admin.tab(_('General'),_('Basic settings'),[
 	[univention.admin.field("name"), univention.admin.field("mailDomain")],
 	[univention.admin.field("kolabHomeServer"), univention.admin.field("cyrus-userquota")],
 	[univention.admin.field("folderType"), univention.admin.field("mailPrimaryAddress")],

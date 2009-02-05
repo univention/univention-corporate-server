@@ -27,15 +27,15 @@ msgid "General"
 msgstr "Allgemein"
 
 #: domain.py:65 folder.py:141 lists.py:92 mail.py:73
-msgid "Basic Values"
+msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
 #: folder.py:46
-msgid "Mail: IMAP Folder"
+msgid "Mail: IMAP folder"
 msgstr "Mail: IMAP Ordner"
 
 #: folder.py:64
-msgid "Mail Domain"
+msgid "Mail domain"
 msgstr "Mail-Domäne"
 
 #: folder.py:73
@@ -47,15 +47,15 @@ msgid "Group ACL"
 msgstr "Gruppen ACL"
 
 #: folder.py:91
-msgid "Maximum Quota in MB"
+msgid "Quota in MB"
 msgstr "Maximale Quota in MB"
 
 #: folder.py:100
-msgid "Kolab Home Server"
+msgid "Kolab home server"
 msgstr "Kolab-Home-Server"
 
 #: folder.py:109
-msgid "Should Be Visible For Outlook"
+msgid "Should be visible for Outlook"
 msgstr "Soll für Outlook sichtbar sein"
 
 #: folder.py:110
@@ -63,7 +63,7 @@ msgid "Outlook does not display folders outside of the 'user' namespace."
 msgstr " Outlook kann keine Ordner außerhalb des 'user' Namensraum anzeigen."
 
 #: folder.py:119
-msgid "E-Mail Address"
+msgid "E-Mail address"
 msgstr "Mail-Adresse"
 
 #: folder.py:129
@@ -79,7 +79,7 @@ msgid "Access rights for shared folder"
 msgstr "Zugriffsrechte für gemeinsamen Ordner"
 
 #: lists.py:45
-msgid "Mail: Mailing Lists"
+msgid "Mail: Mailing lists"
 msgstr "Mail: Mailinglisten"
 
 #: lists.py:61
@@ -99,7 +99,7 @@ msgid "Mail"
 msgstr "Mail"
 
 #: mail.py:53
-msgid "Add, edit and delete Mail Objects"
+msgid "Add, edit and delete mail objects"
 msgstr "Hinzufügen, bearbeiten und löschen von Mail-Objekten"
 
 #: mail.py:54
@@ -107,13 +107,13 @@ msgid "Add"
 msgstr "Hinzufügen"
 
 #: mail.py:54
-msgid "Add Mail Object"
+msgid "Add mail object"
 msgstr "Mail-Objekt hinzufügen"
 
 #: mail.py:54
-msgid "Find"
+msgid "Search"
 msgstr "Suchen"
 
 #: mail.py:54
-msgid "Find Mail Object(s)"
+msgid "Find mail object(s)"
 msgstr "Mail-Objekt(e) suchen"
