@@ -43,7 +43,7 @@ _=translation.translate
 class clientDevicesFixedAttributes(univention.admin.syntax.select):
 	name='releaseFixedAttributes'
 	choices=[
-		('univentionClientDevice',_('Client Devices')),
+		('univentionClientDevice',_('Client devices')),
 		]
 
 module='policies/clientdevices'
@@ -54,8 +54,8 @@ policy_apply_to=["computers/thinclient"]
 policy_position_dn_prefix="cn=thinclient"
 
 childs=0
-short_description=_('Policy: Client Devices')
-policy_short_description=_('Client Devices')
+short_description=_('Policy: Client devices')
+policy_short_description=_('Client devices')
 long_description=''
 options={
 }
@@ -71,7 +71,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'clientDevicesActivate': univention.admin.property(
-			short_description=_('Activate access to Client Devices'),
+			short_description=_('Activate access to client devices'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -81,7 +81,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -91,7 +91,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -101,7 +101,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=clientDevicesFixedAttributes,
 			multivalue=1,
@@ -111,7 +111,7 @@ property_descriptions={
 			identifies=0
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=clientDevicesFixedAttributes,
 			multivalue=1,
@@ -132,7 +132,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Client Devices'), [
+	univention.admin.tab(_('General'),_('Client devices'), [
 		[univention.admin.field('name', hide_in_resultmode=1) ],
 		[univention.admin.field('clientDevicesActivate') ]
 	]),

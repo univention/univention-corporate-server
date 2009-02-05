@@ -39,8 +39,8 @@ _=translation.translate
 
 class dhcp_bootFixedAttributes(univention.admin.syntax.select):
 	name='dvcp_bootFixedAttributes'
-	choices=[(('univentionDhcpBootServer'),_('Boot Server')),
-			 (('univentionDhcpBootFilename'),_('Boot Filename'))
+	choices=[(('univentionDhcpBootServer'),_('Boot server')),
+			 (('univentionDhcpBootFilename'),_('Boot filename'))
 			 ]
 
 
@@ -54,7 +54,7 @@ policies_group="dhcp"
 usewizard=1
 childs=0
 short_description=_('Policy: DHCP Boot')
-policy_short_description=_('Boot Parameters')
+policy_short_description=_('Boot parameters')
 long_description=''
 options={
 }
@@ -70,7 +70,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'boot_server': univention.admin.property(
-			short_description=_('Boot Server'),
+			short_description=_('Boot server'),
 			long_description=_('Numeric IP address or name of the \
 server from which the initial boot file is retrieved.'),
 			syntax=univention.admin.syntax.string,
@@ -81,7 +81,7 @@ server from which the initial boot file is retrieved.'),
 			identifies=0
 		),
 	'boot_filename': univention.admin.property(
-			short_description=_('Boot Filename'),
+			short_description=_('Boot filename'),
 			long_description=_('Initial boot file to be loaded by a client'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -91,7 +91,7 @@ server from which the initial boot file is retrieved.'),
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -101,7 +101,7 @@ server from which the initial boot file is retrieved.'),
 			identifies=0
 			),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -111,7 +111,7 @@ server from which the initial boot file is retrieved.'),
 			identifies=0
 			),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=dhcp_bootFixedAttributes,
 			multivalue=1,
@@ -121,7 +121,7 @@ server from which the initial boot file is retrieved.'),
 			identifies=0
 			),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=dhcp_bootFixedAttributes,
 			multivalue=1,
@@ -142,7 +142,7 @@ server from which the initial boot file is retrieved.'),
 		)
 }
 layout=[
-	univention.admin.tab(_('Boot'), _('Boot Information'), [
+	univention.admin.tab(_('Boot'), _('Boot settings'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_resultmode=1)],
 		[univention.admin.field('boot_server'), univention.admin.field('boot_filename')]
 	]),

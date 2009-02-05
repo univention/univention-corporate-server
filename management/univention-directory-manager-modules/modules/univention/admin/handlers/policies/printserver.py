@@ -43,7 +43,7 @@ _=translation.translate
 class printServerFixedAttributes(univention.admin.syntax.select):
 	name='updateFixedAttributes'
 	choices=[
-		('univentionPrintServer',_('Print Server')),
+		('univentionPrintServer',_('Print server')),
 		]
 
 module='policies/printserver'
@@ -54,8 +54,8 @@ policy_apply_to=["computers/memberserver", "computers/managedclient", "computers
 policy_position_dn_prefix="cn=printservers"
 
 childs=0
-short_description=_('Policy: Print Server')
-policy_short_description=_('Print Server')
+short_description=_('Policy: Print server')
+policy_short_description=_('Print server')
 long_description=''
 options={
 }
@@ -71,7 +71,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'printServer': univention.admin.property(
-			short_description=_('Print Server'),
+			short_description=_('Print server'),
 			long_description='',
 			syntax=univention.admin.syntax.policyPrinterServer,
 			multivalue=0,
@@ -81,7 +81,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -91,7 +91,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -101,7 +101,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=printServerFixedAttributes,
 			multivalue=1,
@@ -111,7 +111,7 @@ property_descriptions={
 			identifies=0
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=printServerFixedAttributes,
 			multivalue=1,
@@ -132,7 +132,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Basic Values'), [
+	univention.admin.tab(_('General'),_('Basic settings'), [
 		[univention.admin.field('name', hide_in_resultmode=1) ],
 		[univention.admin.field('printServer') ]
 	]),

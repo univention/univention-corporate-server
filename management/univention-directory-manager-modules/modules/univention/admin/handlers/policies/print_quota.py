@@ -56,9 +56,9 @@ policy_apply_to=["shares/printer","shares/printergroup"]
 policy_position_dn_prefix="cn=printquota,cn=shares"
 
 childs=0
-short_description=_('Policy: Print Quota')
+short_description=_('Policy: Print quota')
 policy_short_description=_('Print Quota')
-long_description=_('Print Quota for Users/Groups on a Printer')
+long_description=_('Print Quota for users/groups per printer')
 
 options={}
 
@@ -74,7 +74,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'quotaGroups': univention.admin.property(
-			short_description=_('Print Quota for Groups'),
+			short_description=_('Print quota for groups'),
 			long_description=_('Soft- and Hardlimit for each allowed group'),
 			syntax=univention.admin.syntax.printQuotaGroup,
 			multivalue=1,
@@ -84,7 +84,7 @@ property_descriptions={
 			identifies=0
 		),
 	'quotaGroupsPerUsers': univention.admin.property(
-			short_description=_('Print Quota For Groups per User'),
+			short_description=_('Print quota for groups per user'),
 			long_description=_('Soft- and Hardlimit for each member of allowed group'),
 			syntax=univention.admin.syntax.printQuotaGroup,
 			multivalue=1,
@@ -94,7 +94,7 @@ property_descriptions={
 			identifies=0
 		),
 	'quotaUsers': univention.admin.property(
-			short_description=_('Print Quota for Users'),
+			short_description=_('Print quota for users'),
 			long_description=_('Soft- and Hardlimit for each allowed user'),
 			syntax=univention.admin.syntax.printQuotaUser,
 			multivalue=1,
@@ -104,7 +104,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -114,7 +114,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -124,7 +124,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=sharePrintQuotaFixedAttributes,
 			multivalue=1,
@@ -134,7 +134,7 @@ property_descriptions={
 			identifies=0
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=sharePrintQuotaFixedAttributes,
 			multivalue=1,
@@ -155,7 +155,7 @@ property_descriptions={
 			)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Print Quota'), [
+	univention.admin.tab(_('General'),_('Print quota'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_resultmode=1)],
 		[univention.admin.field('quotaUsers'), univention.admin.field('quotaGroupsPerUsers') ],
 		[univention.admin.field('quotaGroups')]

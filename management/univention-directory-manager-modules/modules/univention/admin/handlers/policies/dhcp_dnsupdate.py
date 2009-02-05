@@ -40,14 +40,14 @@ _=translation.translate
 class dhcp_dnsupdateFixedAttributes(univention.admin.syntax.select):
 	name='dhcp_dnsupdateFixedAttributes'
 	choices=[
-		('univentionDhcpDdnsHostname',_('DDNS Hostname')),
-		('univentionDhcpDdnsDomainname',_('DDNS Domainname')),
-		('univentionDhcpDdnsRevDomainname',_('DDNS Reverse Domainname')),
-		('univentionDhcpDdnsUpdates',_('DDNS Updates')),
-		('univentionDhcpDdnsDdnsUpdateStyle',_('DDNS Update Style')),
-		('univentionDhcpDdnsDoForwardUpdates',_('DDNS Do Forward Update')),
-		('univentionDhcpDdnsUpdateStaticLeases',_('Update Static Leases')),
-		('univentionDhcpDdnsClientUpdates',_('Client Updates'))
+		('univentionDhcpDdnsHostname',_('DDNS hostname')),
+		('univentionDhcpDdnsDomainname',_('DDNS domain name')),
+		('univentionDhcpDdnsRevDomainname',_('DDNS reverse domain name')),
+		('univentionDhcpDdnsUpdates',_('DDNS updates')),
+		('univentionDhcpDdnsDdnsUpdateStyle',_('DDNS update style')),
+		('univentionDhcpDdnsDoForwardUpdates',_('DDNS forward update')),
+		('univentionDhcpDdnsUpdateStaticLeases',_('Update static leases')),
+		('univentionDhcpDdnsClientUpdates',_('Client updates'))
 		]
 
 module='policies/dhcp_dnsupdate'
@@ -59,8 +59,8 @@ policy_position_dn_prefix="cn=dnsupdate,cn=dhcp"
 policies_group="dhcp"
 usewizard=1
 childs=0
-short_description=_('Policy: DHCP DNS Update')
-policy_short_description=_('DNS Update')
+short_description=_('Policy: DHCP Dynamic DNS')
+policy_short_description=_('Dynamic DNS')
 long_description=''
 options={
 }
@@ -76,7 +76,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'ddnsHostname': univention.admin.property(
-			short_description=_('DDNS Hostname'),
+			short_description=_('DDNS hostname'),
 			long_description=_("Hostname that will be used for the client's A and PTR records"),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -86,7 +86,7 @@ property_descriptions={
 			identifies=0
 			),
 	'ddnsDomainname': univention.admin.property(
-			short_description=_('DDNS Domainname'),
+			short_description=_('DDNS domain name'),
 			long_description=_("Domain name that will be appended to the client's hostname to form a fully-qualified domain-name (FQDN)"),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -96,7 +96,7 @@ property_descriptions={
 			identifies=0
 			),
 	'ddnsRevDomainname': univention.admin.property(
-			short_description=_('DDNS Reverse Domainname'),
+			short_description=_('DDNS reverse domain name'),
 			long_description=_("Domain name that will be appended to the client's hostname to produce a name for use in the client's PTR record"),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -106,7 +106,7 @@ property_descriptions={
 			identifies=0
 			),
 	'ddnsUpdates': univention.admin.property(
-			short_description=_('DDNS Updates'),
+			short_description=_('DDNS updates'),
 			long_description=_("Attempt to do a DNS update when a DHCP lease is confirmed"),
 			syntax=univention.admin.syntax.ddnsUpdates,
 			multivalue=0,
@@ -116,7 +116,7 @@ property_descriptions={
 			identifies=0
 			),
 	'ddnsUpdateStyle': univention.admin.property(
-			short_description=_('DDNS Update Style'),
+			short_description=_('DDNS update style'),
 			long_description=_("Specify the DDNS Update Style to use for a DHCP Service"),
 			syntax=univention.admin.syntax.ddnsUpdateStyle,
 			multivalue=0,
@@ -126,7 +126,7 @@ property_descriptions={
 			identifies=0
 			),
 	'ddnsDoForwardUpdate': univention.admin.property(
-			short_description=_('DDNS Do Forward Update'),
+			short_description=_('DDNS forward update'),
 			long_description=_("Attempt to update a DHCP client's A record when the client acquires or renews a lease"),
 			syntax=univention.admin.syntax.TrueFalse,
 			multivalue=0,
@@ -136,7 +136,7 @@ property_descriptions={
 			identifies=0
 			),
 	'updateStaticLeases': univention.admin.property(
-			short_description=_('Update Static Leases'),
+			short_description=_('Update static leases'),
 			long_description=_("Do DNS updates for clients even their IP addresses are assigned using fixed addresses"),
 			syntax=univention.admin.syntax.TrueFalse,
 			multivalue=0,
@@ -146,7 +146,7 @@ property_descriptions={
 			identifies=0
 			),
 	'clientUpdates': univention.admin.property(
-			short_description=_('Client Updates'),
+			short_description=_('Client updates'),
 			long_description=_("Honor the client's intention to do its own update of its A record"),
 			syntax=univention.admin.syntax.AllowDeny,
 			multivalue=0,
@@ -156,7 +156,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -166,7 +166,7 @@ property_descriptions={
 			identifies=0
 			),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -176,7 +176,7 @@ property_descriptions={
 			identifies=0
 			),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=dhcp_dnsupdateFixedAttributes,
 			multivalue=1,
@@ -186,7 +186,7 @@ property_descriptions={
 			identifies=0
 			),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=dhcp_dnsupdateFixedAttributes,
 			multivalue=1,
@@ -207,7 +207,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('DNS Update'), _('Dynamic DNS Update'), [
+	univention.admin.tab(_('DNS Update'), _('Dynamic DNS update'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('ddnsHostname'), univention.admin.field('filler', hide_in_normalmode=1)],
 		[univention.admin.field('ddnsDomainname'), univention.admin.field('ddnsRevDomainname')],
 		[univention.admin.field('ddnsUpdates'), univention.admin.field('ddnsUpdateStyle')],

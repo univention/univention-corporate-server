@@ -71,7 +71,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'activate': univention.admin.property(
-			short_description=_('Activate the Policy'),
+			short_description=_('Activate policy'),
 			long_description='',
 			syntax=univention.admin.syntax.TrueFalseUp,
 			multivalue=0,
@@ -81,7 +81,7 @@ property_descriptions={
 			identifies=0
 		),
 	'releaseVersion': univention.admin.property(
-			short_description=_('Release Version'),
+			short_description=_('Release version'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -91,7 +91,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -101,7 +101,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -111,7 +111,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=releaseFixedAttributes,
 			multivalue=1,
@@ -121,7 +121,7 @@ property_descriptions={
 			identifies=0
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=releaseFixedAttributes,
 			multivalue=1,

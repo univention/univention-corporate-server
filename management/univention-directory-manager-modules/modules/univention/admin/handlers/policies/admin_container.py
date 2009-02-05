@@ -43,7 +43,7 @@ _=translation.translate
 class adminFixedAttributes(univention.admin.syntax.select):
         name='adminFixedAttributes'
 	choices=[
-	('univentionAdminListModules',_('List of Directory Manager Modules')),
+	('univentionAdminListModules',_('List of Univention Directory Manager modules')),
 	]
 
 
@@ -56,8 +56,8 @@ policy_position_dn_prefix="cn=container,cn=admin"
 
 usewizard=1
 childs=0
-short_description=_('Policy: Univention Directory Manager Container Settings')
-policy_short_description=_('Univention Directory Manager Container Settings')
+short_description=_('Policy: Univention Directory Manager container settings')
+policy_short_description=_('Univention Directory Manager container settings')
 long_description=''
 options={
 }
@@ -73,7 +73,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'listModules': univention.admin.property(
-			short_description=_('Available Univention Directory Manager Modules'),
+			short_description=_('Available Univention Directory Manager modules'),
 			long_description='',
 			syntax=univention.admin.syntax.univentionAdminModules,
 			multivalue=1,
@@ -83,7 +83,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -93,7 +93,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -103,7 +103,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=adminFixedAttributes,
 			multivalue=1,
@@ -113,7 +113,7 @@ property_descriptions={
 			identifies=0
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=adminFixedAttributes,
 			multivalue=1,
@@ -124,7 +124,7 @@ property_descriptions={
 		),
 }
 layout=[
-	univention.admin.tab(_('General'),_('Univention Directory Manager Settings'), [
+	univention.admin.tab(_('General'),_('Univention Directory Manager settings'), [
 		[univention.admin.field('name', hide_in_resultmode=1)],
 		[univention.admin.field('listModules')],
 	]),

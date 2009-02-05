@@ -41,11 +41,11 @@ class dhcp_statementsFixedAttributes(univention.admin.syntax.select):
 	name='dhcp_statementsFixedAttributes'
 	choices=[
 		('univentionDhcpAuthoritative',_('Authoritative')),
-		('univentionDhcpBootUnknownClients',_('Boot Unknown Clients')),
-		('univentionDhcpPingCheck',_('Ping Check')),
-		('univentionDhcpGetLeaseHostnames',_('Get Lease Hostnames')),
-		('univentionDhcpServerIdentifier',_('Server Identifier')),
-		('univentionDhcpServerName',_('Server Name')),
+		('univentionDhcpBootUnknownClients',_('Boot unknown clients')),
+		('univentionDhcpPingCheck',_('Ping check')),
+		('univentionDhcpGetLeaseHostnames',_('Add hostnames to leases')),
+		('univentionDhcpServerIdentifier',_('Server identifier')),
+		('univentionDhcpServerName',_('Server name')),
 		]
 
 module='policies/dhcp_statements'
@@ -57,8 +57,8 @@ policy_position_dn_prefix="cn=statements,cn=dhcp"
 policies_group="dhcp"
 usewizard=1
 childs=0
-short_description=_('Policy: DHCP Statements')
-policy_short_description=_('DHCP Statement')
+short_description=_('Policy: DHCP statements')
+policy_short_description=_('DHCP statement')
 long_description=''
 options={
 }
@@ -84,7 +84,7 @@ property_descriptions={
 			identifies=0
 			),
 	'boot-unknown-clients': univention.admin.property(
-			short_description=_('Boot Unknown Clients'),
+			short_description=_('Boot unknown clients'),
 			long_description=_('Enable clients for which there is no host declaration to obtain IP addresses. Allow and deny statements within pool declarations will still be respected.'),
 			syntax=univention.admin.syntax.TrueFalse,
 			multivalue=0,
@@ -94,7 +94,7 @@ property_descriptions={
 			identifies=0
 			),
 	'pingCheck': univention.admin.property(
-			short_description=_('Ping Check'),
+			short_description=_('Ping check'),
 			long_description=_('First send an ICMP Echo request (a ping) when considering dynamically allocating an IP address. Should only be disabled if the delay of one second introduced by this is a problem for a client.'),
 			syntax=univention.admin.syntax.TrueFalse,
 			multivalue=0,
@@ -104,7 +104,7 @@ property_descriptions={
 			identifies=0
 			),
 	'getLeaseHostnames': univention.admin.property(
-			short_description=_('Get Lease Hostnames'),
+			short_description=_('Add hostnames to leases'),
 			long_description=_('Look up the domain name corresponding to the IP address of each address in the lease pool and use that address for the DHCP hostname option. Disabled by default.'),
 			syntax=univention.admin.syntax.TrueFalse,
 			multivalue=0,
@@ -114,7 +114,7 @@ property_descriptions={
 			identifies=0
 			),
 	'serverIdentifier': univention.admin.property(
-			short_description=_('Server Identifier'),
+			short_description=_('Server identifier'),
 			long_description=_('An IP address identifing the server that should be used by the clients for further requests. Using this is not recommended.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -124,7 +124,7 @@ property_descriptions={
 			identifies=0
 			),
 	'serverName': univention.admin.property(
-			short_description=_('Server Name'),
+			short_description=_('Server name'),
 			long_description=_('Define the IP address of the boot server'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -134,7 +134,7 @@ property_descriptions={
 			identifies=0
 			),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -144,7 +144,7 @@ property_descriptions={
 			identifies=0
 			),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -154,7 +154,7 @@ property_descriptions={
 			identifies=0
 			),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=dhcp_statementsFixedAttributes,
 			multivalue=1,
@@ -164,7 +164,7 @@ property_descriptions={
 			identifies=0
 			),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=dhcp_statementsFixedAttributes,
 			multivalue=1,
@@ -185,7 +185,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('DHCP Statements'), _('Miscellaneous DHCP Statements'), [
+	univention.admin.tab(_('DHCP statements'), _('Miscellaneous DHCP statements'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_resultmode=1)],
 		[univention.admin.field('authoritative'),univention.admin.field('boot-unknown-clients')],
 		[univention.admin.field('pingCheck'), univention.admin.field('getLeaseHostnames')],

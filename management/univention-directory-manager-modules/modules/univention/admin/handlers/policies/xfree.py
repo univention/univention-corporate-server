@@ -41,18 +41,18 @@ class xfreeFixedAttributes(univention.admin.syntax.select):
 	name='xfreeFixedAttributes'
 	choices=[
 		('univentionXResolution',_('Resolution')),
-		('univentionXColorDepth',_('Color Depth')),
-		('univentionXMouseProtocol',_('Mouse Protocol')),
-		('univentionXMouseDevice',_('Mouse Device')),
-		('univentionXKeyboardDevice',_('Keyboard Layout')),
-		('univentionXKeyboardVariant',_('Keyboard Variant')),
-		('univentionXHsync',_('Horizontal Sync')),
-		('univentionXVRefresh',_('Vertical Refresh')),
-		('univentionXModule',_('Graphics Board Driver')),
-		('univentionXDisplaySize',_('Display Size')),
-		('univentionXVNCExportType',_('Enable VNC Export')),
-		('univentionXVNCExportViewonly',_('Viewonly VNC Export')),
-		('univentionXVideoRam',_('Amount of RAM on the Graphics Board')),
+		('univentionXColorDepth',_('Color depth')),
+		('univentionXMouseProtocol',_('Mouse protocol')),
+		('univentionXMouseDevice',_('Mouse device')),
+		('univentionXKeyboardDevice',_('Keyboard layout')),
+		('univentionXKeyboardVariant',_('Keyboard variant')),
+		('univentionXHsync',_('Horizontal sync')),
+		('univentionXVRefresh',_('Vertical refresh')),
+		('univentionXModule',_('Graphics adapter driver')),
+		('univentionXDisplaySize',_('Display size')),
+		('univentionXVNCExportType',_('Enable VNC export')),
+		('univentionXVNCExportViewonly',_('Viewonly VNC export')),
+		('univentionXVideoRam',_('Amount of RAM on the graphics adapter')),
 		]
 
 module='policies/xfree'
@@ -92,7 +92,7 @@ property_descriptions={
 			configAttributeName='univentionXResolutionChoices'
 		),
 	'colorDepth': univention.admin.property(
-			short_description=_('Color Depth'),
+			short_description=_('Color depth'),
 			long_description='',
 			syntax=univention.admin.syntax.XColorDepth,
 			multivalue=0,
@@ -104,7 +104,7 @@ property_descriptions={
 			configAttributeName='univentionXColorDepthChoices'
 		),
 	'mouseProtocol': univention.admin.property(
-			short_description=_('Mouse Protocol'),
+			short_description=_('Mouse protocol'),
 			long_description='',
 			syntax=univention.admin.syntax.XMouseProtocol,
 			multivalue=0,
@@ -116,7 +116,7 @@ property_descriptions={
 			configAttributeName='univentionXMouseProtocolChoices'
 		),
 	'mouseDevice': univention.admin.property(
-			short_description=_('Mouse Device'),
+			short_description=_('Mouse device'),
 			long_description='',
 			syntax=univention.admin.syntax.XMouseDevice,
 			multivalue=0,
@@ -128,7 +128,7 @@ property_descriptions={
 			configAttributeName='univentionXMouseDeviceChoices'
 		),
 	'keyboardLayout': univention.admin.property(
-			short_description=_('Keyboard Layout'),
+			short_description=_('Keyboard layout'),
 			long_description='',
 			syntax=univention.admin.syntax.XKeyboardLayout,
 			multivalue=0,
@@ -140,7 +140,7 @@ property_descriptions={
 			configAttributeName='univentionXKeyboardLayoutChoices'
 		),
 	'keyboardVariant': univention.admin.property(
-			short_description=_('Keyboard Variant'),
+			short_description=_('Keyboard variant'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -152,7 +152,7 @@ property_descriptions={
 			configAttributeName='univentionXKeyboardVariantChoices'
 		),
 	'hSync': univention.admin.property(
-			short_description=_('Horizontal Sync'),
+			short_description=_('Horizontal sync'),
 			long_description='',
 			syntax=univention.admin.syntax.XSync,
 			multivalue=0,
@@ -164,7 +164,7 @@ property_descriptions={
 			configAttributeName='univentionXHSyncChoices'
 		),
 	'vRefresh': univention.admin.property(
-			short_description=_('Vertical Refresh'),
+			short_description=_('Vertical refresh'),
 			long_description='',
 			syntax=univention.admin.syntax.XSync,
 			multivalue=0,
@@ -176,7 +176,7 @@ property_descriptions={
 			configAttributeName='univentionXVRefreshChoices'
 		),
 	'xModule': univention.admin.property(
-			short_description=_('Graphics Board Driver'),
+			short_description=_('Graphics adapter driver'),
 			long_description='',
 			syntax=univention.admin.syntax.XModule,
 			multivalue=0,
@@ -188,7 +188,7 @@ property_descriptions={
 			configAttributeName='univentionXModuleChoices'
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -198,7 +198,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -208,7 +208,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=xfreeFixedAttributes,
 			multivalue=1,
@@ -228,7 +228,7 @@ property_descriptions={
 			identifies=0
 		),
 	'displaySize': univention.admin.property(
-			short_description=_('Display Size (mm)'),
+			short_description=_('Display size (mm)'),
 			long_description='',
 			syntax=univention.admin.syntax.XResolution,
 			multivalue=0,
@@ -240,7 +240,7 @@ property_descriptions={
 			configAttributeName='univentionXDisplaySizeChoices'
 		),
 	'vncExport': univention.admin.property(
-			short_description=_('Enable VNC Export'),
+			short_description=_('Enable VNC export'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -251,7 +251,7 @@ property_descriptions={
 			default=('0', [])
 		),
 	'vncExportViewonly': univention.admin.property(
-			short_description=_('Viewonly VNC Export'),
+			short_description=_('Viewonly VNC export'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -262,7 +262,7 @@ property_descriptions={
 			default=('1', [])
 		),
 	'videoRam': univention.admin.property(
-			short_description=_('RAM on the Graphics Board in kB'),
+			short_description=_('RAM on the graphics adapter in kB'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -283,7 +283,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Display Settings'), [
+	univention.admin.tab(_('General'),_('Display settings'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('xModule'), univention.admin.field('filler', hide_in_normalmode=1) ],
 		[univention.admin.field('resolution'), univention.admin.field('colorDepth')],
 		[univention.admin.field('mouseProtocol'), univention.admin.field('mouseDevice')],

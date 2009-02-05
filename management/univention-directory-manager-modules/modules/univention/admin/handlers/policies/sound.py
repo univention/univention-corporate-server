@@ -43,8 +43,8 @@ _=translation.translate
 class soundFixedAttributes(univention.admin.syntax.select):
 	name='soundFixedAttributes'
 	choices=[
-		('univentionSoundEnabled',_('Sound Enabled')),
-		('univentionSoundModule',_('Sound Module'))
+		('univentionSoundEnabled',_('Sound enabled')),
+		('univentionSoundModule',_('Sound module'))
 		]
 
 module='policies/sound'
@@ -72,7 +72,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'enable': univention.admin.property(
-			short_description=_('Sound Enabled'),
+			short_description=_('Sound enabled'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -82,7 +82,7 @@ property_descriptions={
 			identifies=0
 		),
 	'soundModule': univention.admin.property(
-			short_description=_('Sound Module'),
+			short_description=_('Sound module'),
 			long_description='',
 			syntax=univention.admin.syntax.soundModule,
 			multivalue=0,
@@ -92,7 +92,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -102,7 +102,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -112,7 +112,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=soundFixedAttributes,
 			multivalue=1,
@@ -122,7 +122,7 @@ property_descriptions={
 			identifies=0
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=soundFixedAttributes,
 			multivalue=1,
@@ -143,7 +143,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Sound Settings'), [
+	univention.admin.tab(_('General'),_('Sound settings'), [
 		[univention.admin.field('name', hide_in_resultmode=1) ],
 		[univention.admin.field('enable') ],
 		[univention.admin.field('soundModule')]

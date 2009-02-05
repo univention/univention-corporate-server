@@ -43,8 +43,8 @@ _=translation.translate
 class clientPackagesFixedAttributes(univention.admin.syntax.select):
 	name='clientPackagesFixedAttributes'
 	choices=[
-		('univentionClientPackages', _('Managed Client Package Installation List')),
-		('univentionClientPackagesRemove', _('Managed Client Package Removal List')),
+		('univentionClientPackages', _('Managed client package installation list')),
+		('univentionClientPackagesRemove', _('Managed client package removal list')),
 		]
 
 module='policies/managedclientpackages'
@@ -55,8 +55,8 @@ policy_apply_to=["computers/managedclient"]
 policy_position_dn_prefix="cn=packages,cn=update"
 
 childs=0
-short_description=_('Policy: Packages Managed Client')
-policy_short_description=_('Packages Managed Client')
+short_description=_('Policy: Packages managed client')
+policy_short_description=_('Packages managed client')
 long_description=''
 options={
 }
@@ -72,7 +72,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'clientPackages': univention.admin.property(
-			short_description=_('Managed Client Package Installation List'),
+			short_description=_('Managed client package installation list'),
 			long_description='',
 			syntax=univention.admin.syntax.packageList,
 			multivalue=1,
@@ -82,7 +82,7 @@ property_descriptions={
 			identifies=0
 		),
 	'clientPackagesRemove': univention.admin.property(
-			short_description=_('Managed Client Package Remove List'),
+			short_description=_('Managed client package removal list'),
 			long_description='',
 			syntax=univention.admin.syntax.packageList,
 			multivalue=1,
@@ -92,7 +92,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -102,7 +102,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -112,7 +112,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=clientPackagesFixedAttributes,
 			multivalue=1,
@@ -122,7 +122,7 @@ property_descriptions={
 			identifies=0
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=clientPackagesFixedAttributes,
 			multivalue=1,
@@ -143,7 +143,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Client Packages'), [
+	univention.admin.tab(_('General'),_('Client packages'), [
 		[univention.admin.field('name', hide_in_resultmode=1) ],
 		[univention.admin.field('clientPackages') ],
 		[univention.admin.field('clientPackagesRemove') ]

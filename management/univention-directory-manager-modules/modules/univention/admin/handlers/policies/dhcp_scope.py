@@ -40,7 +40,7 @@ _=translation.translate
 class dhcp_scopeFixedAttributes(univention.admin.syntax.select):
 	name='dhcp_scopeFixedAttributes'
 	choices=[
-		('univentionDhcpUnknownClients',_('Unknown Clients')),
+		('univentionDhcpUnknownClients',_('Unknown clients')),
 		('univentionDhcpBootp',_('BOOTP')),
 		('univentionDhcpBooting',_('Booting')),
 		('univentionDhcpDuplicates',_('Duplicates')),
@@ -73,7 +73,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'scopeUnknownClients': univention.admin.property(
-			short_description=_('Unknown Clients'),
+			short_description=_('Unknown clients'),
 			long_description=_('Dynamically assign addresses to unknown clients. Allowed by default. This option should not be used anymore.'),
 			syntax=univention.admin.syntax.AllowDenyIgnore,
 			multivalue=0,
@@ -123,7 +123,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -133,7 +133,7 @@ property_descriptions={
 			identifies=0
 			),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -143,7 +143,7 @@ property_descriptions={
 			identifies=0
 			),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=dhcp_scopeFixedAttributes,
 			multivalue=1,
@@ -153,7 +153,7 @@ property_descriptions={
 			identifies=0
 			),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=dhcp_scopeFixedAttributes,
 			multivalue=1,
@@ -174,7 +174,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('Allow/Deny'), _('Allow/Deny/Ignore Statements'), [
+	univention.admin.tab(_('Allow/Deny'), _('Allow/Deny/Ignore statements'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_resultmode=1)],
 		[univention.admin.field('scopeUnknownClients'),univention.admin.field('bootp')],
 		[univention.admin.field('booting'),univention.admin.field('duplicates')],

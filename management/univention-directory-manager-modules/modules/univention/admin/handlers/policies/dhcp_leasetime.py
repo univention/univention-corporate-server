@@ -40,9 +40,9 @@ _=translation.translate
 class dhcp_leasetimeFixedAttributes(univention.admin.syntax.select):
 	name='dhcp_leasetimeFixedAttributes'
 	choices=[
-		('univentionDhcpLeaseTimeDefault',_('Default Lease Time')),
-		('univentionDhcpLeaseTimeMax',_('Maximum Lease Time')),
-		('univentionDhcpLeaseTimeMin',_('Minimum Lease Time'))
+		('univentionDhcpLeaseTimeDefault',_('Default lease time')),
+		('univentionDhcpLeaseTimeMax',_('Maximum lease time')),
+		('univentionDhcpLeaseTimeMin',_('Minimum lease time'))
 		]
 	
 module='policies/dhcp_leasetime'
@@ -54,8 +54,8 @@ policy_position_dn_prefix="cn=leasetime,cn=dhcp"
 policies_group="dhcp"
 usewizard=1
 childs=0
-short_description=_('Policy: DHCP Lease Time')
-policy_short_description=_('Lease Time')
+short_description=_('Policy: DHCP lease time')
+policy_short_description=_('Lease time')
 long_description=''
 options={
 }
@@ -71,7 +71,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'lease_time_default': univention.admin.property(
-			short_description=_('Default Lease Time'),
+			short_description=_('Default lease time'),
 			long_description=_('Lease time used, if the client does not request a specific expiration time'),
 			syntax=univention.admin.syntax.unixTimeInterval,
 			multivalue=0,
@@ -81,7 +81,7 @@ property_descriptions={
 			identifies=0
 		),
 	'lease_time_max': univention.admin.property(
-			short_description=_('Maximum Lease Time'),
+			short_description=_('Maximum lease time'),
 			long_description=_('Maximum lease time, that the server will accept if asked for'),
 			syntax=univention.admin.syntax.unixTimeInterval,
 			multivalue=0,
@@ -91,7 +91,7 @@ property_descriptions={
 			identifies=0
 		),
 	'lease_time_min': univention.admin.property(
-			short_description=_('Minimum Lease Time'),
+			short_description=_('Minimum lease time'),
 			long_description=_('Minimum granted lease time'),
 			syntax=univention.admin.syntax.unixTimeInterval,
 			multivalue=0,
@@ -101,7 +101,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -111,7 +111,7 @@ property_descriptions={
 			identifies=0
 			),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -121,7 +121,7 @@ property_descriptions={
 			identifies=0
 			),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=dhcp_leasetimeFixedAttributes,
 			multivalue=1,
@@ -131,7 +131,7 @@ property_descriptions={
 			identifies=0
 			),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=dhcp_leasetimeFixedAttributes,
 			multivalue=1,
@@ -152,7 +152,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('Lease Time'), _('DHCP Lease Time'), [
+	univention.admin.tab(_('Lease Time'), _('DHCP lease time'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('lease_time_default'), univention.admin.field('filler', hide_in_normalmode=1)],
 		[univention.admin.field('lease_time_max'), univention.admin.field('lease_time_min')],
 	]),

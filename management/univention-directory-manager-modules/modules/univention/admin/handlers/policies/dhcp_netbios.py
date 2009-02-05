@@ -40,9 +40,9 @@ _=translation.translate
 class dhcp_netbiosFixedAttributes(univention.admin.syntax.select):
 	name='dhcp_netbiosFixedAttributes'
 	choices=[
-		('univentionDhcpNetbiosNameServers',_('NetBIOS Name Servers')),
-		('univentionDhcpNetbiosScope',_('NetBIOS Scope')),
-		('univentionDhcpNetbiosNodeType',_('NetBIOS Node Type'))
+		('univentionDhcpNetbiosNameServers',_('NetBIOS name servers')),
+		('univentionDhcpNetbiosScope',_('NetBIOS scope')),
+		('univentionDhcpNetbiosNodeType',_('NetBIOS node type'))
 		]
 
 module='policies/dhcp_netbios'
@@ -71,7 +71,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'netbios_name_servers': univention.admin.property(
-			short_description=_('NetBIOS Name Servers'),
+			short_description=_('NetBIOS name servers'),
 			long_description=_('List of WINS servers listed in order of preference'),
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -81,7 +81,7 @@ property_descriptions={
 			identifies=0
 		),
 	'netbios_scope': univention.admin.property(
-			short_description=_('NetBIOS Scope'),
+			short_description=_('NetBIOS scope'),
 			long_description=_('NetBIOS over TCP/IP scope parameter'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -91,7 +91,7 @@ property_descriptions={
 			identifies=0
 		),
 	'netbios_node_type': univention.admin.property(
-			short_description=_('NetBIOS Node Type'),
+			short_description=_('NetBIOS node type'),
 			long_description=_('The node type of clients for NetBIOS over TCP/IP'),
 			syntax=univention.admin.syntax.netbiosNodeType,
 			multivalue=0,
@@ -101,7 +101,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -111,7 +111,7 @@ property_descriptions={
 			identifies=0
 			),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -121,7 +121,7 @@ property_descriptions={
 			identifies=0
 			),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=dhcp_netbiosFixedAttributes,
 			multivalue=1,
@@ -131,7 +131,7 @@ property_descriptions={
 			identifies=0
 			),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=dhcp_netbiosFixedAttributes,
 			multivalue=1,
@@ -152,7 +152,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('Netbios'),_('SMB/CIFS Name Resolution'), [
+	univention.admin.tab(_('Netbios'),_('SMB/CIFS name resolution'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('netbios_name_servers'), univention.admin.field('filler', hide_in_normalmode=1)],
 		[univention.admin.field('netbios_scope'), univention.admin.field('netbios_node_type')],
 	]),

@@ -43,7 +43,7 @@ _=translation.translate
 class windowsinstallationFixedAttributes(univention.admin.syntax.select):
 	name='windowsinstallationFixedAttributes'
 	choices=[
-		('univentionWindowsInstallationUnattendFile',_('Filename of unattend file'))
+		('univentionWindowsInstallationUnattendFile',_('Filename of unattend installation profile'))
 		]
 
 module='policies/windowsinstallation'
@@ -54,8 +54,8 @@ policy_apply_to=["computers/windows"]
 policy_position_dn_prefix="cn=windowsinstallations"
 usewizard=1
 childs=0
-short_description=_('Policy: Windows Installation')
-policy_short_description=_('Windows Installation')
+short_description=_('Policy: Windows installation')
+policy_short_description=_('Windows installation')
 long_description=''
 options={
 }
@@ -71,7 +71,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'unattendFile': univention.admin.property(
-			short_description=_('Filename of unattend File'),
+			short_description=_('Filename of unattend installation profile'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -81,7 +81,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -91,7 +91,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -101,7 +101,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=windowsinstallationFixedAttributes,
 			multivalue=1,
@@ -111,7 +111,7 @@ property_descriptions={
 			identifies=0
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=windowsinstallationFixedAttributes,
 			multivalue=1,
@@ -132,7 +132,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Windows Installation'), [
+	univention.admin.tab(_('General'),_('Windows installation'), [
 		[univention.admin.field('name', hide_in_resultmode=1) ],
 		[univention.admin.field('unattendFile')],
 	]),

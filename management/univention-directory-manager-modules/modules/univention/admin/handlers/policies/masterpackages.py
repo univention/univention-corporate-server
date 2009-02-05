@@ -43,8 +43,8 @@ _=translation.translate
 class masterPackagesFixedAttributes(univention.admin.syntax.select):
 	name='masterPackagesFixedAttributes'
 	choices=[
-		('univentionMasterPackages', _('Master Package Installation List')),
-		('univentionMasterPackagesRemove', _('Master Package Remove List')),
+		('univentionMasterPackages', _('Package installation list')),
+		('univentionMasterPackagesRemove', _('Package removal list')),
 		]
 
 module='policies/masterpackages'
@@ -72,7 +72,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'masterPackages': univention.admin.property(
-			short_description=_('Master Package Installation List'),
+			short_description=_('Package installation list'),
 			long_description='',
 			syntax=univention.admin.syntax.packageList,
 			multivalue=1,
@@ -82,7 +82,7 @@ property_descriptions={
 			identifies=0
 		),
 	'masterPackagesRemove': univention.admin.property(
-			short_description=_('Master Package Remove List'),
+			short_description=_('Package removal list'),
 			long_description='',
 			syntax=univention.admin.syntax.packageList,
 			multivalue=1,
@@ -92,7 +92,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -102,7 +102,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -112,7 +112,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=masterPackagesFixedAttributes,
 			multivalue=1,
@@ -122,7 +122,7 @@ property_descriptions={
 			identifies=0
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=masterPackagesFixedAttributes,
 			multivalue=1,
@@ -143,7 +143,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Master Packages'), [
+	univention.admin.tab(_('General'),_('DC Master packages'), [
 		[univention.admin.field('name', hide_in_resultmode=1) ],
 		[univention.admin.field('masterPackages') ],
 		[univention.admin.field('masterPackagesRemove') ]

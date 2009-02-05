@@ -43,8 +43,8 @@ _=translation.translate
 class consoleAccessFixedAttributes(univention.admin.syntax.select):
 	name='updateFixedAttributes'
 	choices=[
-		('univentionConsoleAllow',_('Allowed Operations')),
-		('univentionConsoleDisallow',_('Disallowed Operations')),
+		('univentionConsoleAllow',_('Allowed operations')),
+		('univentionConsoleDisallow',_('Disallowed operations')),
 		]
 
 module='policies/console_access'
@@ -55,8 +55,8 @@ policy_apply_to=["users/user", "groups/group"]
 policy_position_dn_prefix="cn=console"
 
 childs=0
-short_description=_('Policy: UMC Access')
-policy_short_description=_('UMC Access')
+short_description=_('Policy: UMC access')
+policy_short_description=_('UMC access')
 long_description=''
 options={
 }
@@ -92,7 +92,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -102,7 +102,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -112,7 +112,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=consoleAccessFixedAttributes,
 			multivalue=1,
@@ -122,7 +122,7 @@ property_descriptions={
 			identifies=0
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=consoleAccessFixedAttributes,
 			multivalue=1,
@@ -143,7 +143,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Basic Values'), [
+	univention.admin.tab(_('General'),_('Basic settings'), [
 		[univention.admin.field('name', hide_in_resultmode=1) ],
 		[univention.admin.field('allow'), univention.admin.field('disallow') ]
 	]),

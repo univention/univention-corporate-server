@@ -40,8 +40,8 @@ _=translation.translate
 class dhcp_dnsFixedAttributes(univention.admin.syntax.select):
 	name='dhcp_dnsFixedAttributes'
 	choices=[
-		('univentionDhcpDomainName',_('Domain Name')),
-		('univentionDhcpDomainNameServers',_('Domain Name Servers'))
+		('univentionDhcpDomainName',_('Domain name')),
+		('univentionDhcpDomainNameServers',_('Domain name servers'))
 		]
 
 module='policies/dhcp_dns'
@@ -70,7 +70,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'domain_name': univention.admin.property(
-			short_description=_('Domain Name'),
+			short_description=_('Domain name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -80,7 +80,7 @@ property_descriptions={
 			identifies=0
 		),
 	'domain_name_servers': univention.admin.property(
-			short_description=_('Domain Name Servers'),
+			short_description=_('Domain name servers'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -90,7 +90,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -100,7 +100,7 @@ property_descriptions={
 			identifies=0
 			),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -110,7 +110,7 @@ property_descriptions={
 			identifies=0
 			),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=dhcp_dnsFixedAttributes,
 			multivalue=1,
@@ -120,7 +120,7 @@ property_descriptions={
 			identifies=0
 			),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=dhcp_dnsFixedAttributes,
 			multivalue=1,
@@ -141,7 +141,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Basic DNS Settings'), [
+	univention.admin.tab(_('General'),_('Basic DNS settings'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_resultmode=1)],
 		[univention.admin.field('domain_name'), univention.admin.field('domain_name_servers')]
 	]),

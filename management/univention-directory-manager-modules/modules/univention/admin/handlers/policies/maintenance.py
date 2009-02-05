@@ -72,7 +72,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'startup': univention.admin.property(
-			short_description=_('System Startup'),
+			short_description=_('System startup'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -82,7 +82,7 @@ property_descriptions={
 			identifies=0
 		),
 	'shutdown': univention.admin.property(
-			short_description=_('System Shutdown'),
+			short_description=_('System shutdown'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -102,7 +102,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'cron': univention.admin.property(
-			short_description=_('Use Cron Settings'),
+			short_description=_('Use Cron settings'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -132,7 +132,7 @@ property_descriptions={
 			identifies=0
 		),
 	'weekday': univention.admin.property(
-			short_description=_('Weekday'),
+			short_description=_('Day of week'),
 			long_description='',
 			syntax=univention.admin.syntax.Weekday,
 			multivalue=1,
@@ -162,7 +162,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -172,7 +172,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -182,7 +182,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=maintenanceFixedAttributes,
 			multivalue=1,
@@ -192,7 +192,7 @@ property_descriptions={
 			identifies=0
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=maintenanceFixedAttributes,
 			multivalue=1,
@@ -213,7 +213,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Maintenance Settings'), [
+	univention.admin.tab(_('General'),_('Maintenance settings'), [
 		[univention.admin.field('name', hide_in_resultmode=1) ],
 		[univention.admin.field('startup'), univention.admin.field('shutdown') ],
 		[univention.admin.field('cron'),univention.admin.field('reboot')],

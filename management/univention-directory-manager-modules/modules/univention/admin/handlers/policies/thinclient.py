@@ -43,11 +43,11 @@ _=translation.translate
 class thinclientFixedAttributes(univention.admin.syntax.select):
 	name='thinclientFixedAttributes'
 	choices=[
-		('univentionFileServer',_('File Server')),
-		('univentionDesktopServer',_('Linux Terminal Server')),
-		('univentionWindowsTerminalServer',_('Windows Terminal Server')),
-		('univentionWindowsDomain',_('Windows Domain')),
-		('univentionAuthServer',_('Authentication Server')),
+		('univentionFileServer',_('File server')),
+		('univentionDesktopServer',_('Linux terminal server')),
+		('univentionWindowsTerminalServer',_('Windows terminal server')),
+		('univentionWindowsDomain',_('Windows domain')),
+		('univentionAuthServer',_('Authentication server')),
 		]
 
 
@@ -59,8 +59,8 @@ policy_apply_to=["computers/thinclient"]
 policy_position_dn_prefix="cn=thinclient"
 usewizard=1
 childs=0
-short_description=_('Policy: Thin Client')
-policy_short_description=_('Thin Client Configuration')
+short_description=_('Policy: Thin client')
+policy_short_description=_('Thin client configuration')
 long_description=''
 options={
 }
@@ -76,7 +76,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'linuxTerminalServer': univention.admin.property(
-			short_description=_('Linux Terminal Server'),
+			short_description=_('Linux terminal server'),
 			long_description='Linux Terminal Server of the Thin Client',
 			syntax=univention.admin.syntax.linuxTerminalServer,
 			multivalue=1,
@@ -86,7 +86,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fileServer': univention.admin.property(
-			short_description=_('File Server'),
+			short_description=_('File server'),
 			long_description='File server of the Thin Client',
 			syntax=univention.admin.syntax.fileServer,
 			multivalue=1,
@@ -96,7 +96,7 @@ property_descriptions={
 			identifies=0
 		),
 	'authServer': univention.admin.property(
-			short_description=_('Authentication Server'),
+			short_description=_('Authentication server'),
 			long_description='Authentication Server of the Thin Client',
 			syntax=univention.admin.syntax.authenticationServer,
 			multivalue=1,
@@ -106,7 +106,7 @@ property_descriptions={
 			identifies=0
 		),
 	'windowsTerminalServer': univention.admin.property(
-			short_description=_('Windows Terminal Server'),
+			short_description=_('Windows terminal server'),
 			long_description='Windows Terminal Server for Windows Login',
 			syntax=univention.admin.syntax.windowsTerminalServer,
 			multivalue=1,
@@ -116,7 +116,7 @@ property_descriptions={
 			identifies=0
 		),
 	'windowsDomain': univention.admin.property(
-			short_description=_('Windows Domain'),
+			short_description=_('Windows domain'),
 			long_description='Windows Domain for Windows Login',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -126,7 +126,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -136,7 +136,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -146,7 +146,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=thinclientFixedAttributes,
 			multivalue=1,
@@ -156,7 +156,7 @@ property_descriptions={
 			identifies=0
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=thinclientFixedAttributes,
 			multivalue=1,
@@ -177,7 +177,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Servers to Use'), [
+	univention.admin.tab(_('General'),_('Servers to use'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_resultmode=1) ],
 		[univention.admin.field('authServer'), univention.admin.field('fileServer')],
 		[univention.admin.field('linuxTerminalServer'), univention.admin.field('windowsTerminalServer')],

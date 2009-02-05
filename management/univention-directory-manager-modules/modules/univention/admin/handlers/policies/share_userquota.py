@@ -43,10 +43,10 @@ _=translation.translate
 class shareUserQuotaFixedAttributes(univention.admin.syntax.select):
 	name='shareUserQuotaFixedAttributes'
 	choices=[
-		('univentionQuotaSoftLimitSpace',_('Soft Limit (Bytes)')),
-		('univentionQuotaHardLimitSpace',_('Hard Limit (Bytes)')),
-		('univentionQuotaSoftLimitInodes',_('Soft Limit (Files)')),
-		('univentionQuotaHardLimitInodes',_('Hard Limit (Files)'))
+		('univentionQuotaSoftLimitSpace',_('Soft limit (Bytes)')),
+		('univentionQuotaHardLimitSpace',_('Hard limit (Bytes)')),
+		('univentionQuotaSoftLimitInodes',_('Soft limit (Files)')),
+		('univentionQuotaHardLimitInodes',_('Hard limit (Files)'))
 		]
 
 module='policies/share_userquota'
@@ -74,7 +74,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'softLimitSpace': univention.admin.property(
-			short_description=_('Soft Limit (Bytes)'),
+			short_description=_('Soft limit (Bytes)'),
 			long_description=_('Soft Limit. If exceeded users can be warned.'),
 			syntax=univention.admin.syntax.filesize,
 			multivalue=0,
@@ -85,7 +85,7 @@ property_descriptions={
 		),
 	'hardLimitSpace': univention.admin.property(
 			short_description=_('Hard Limit (Bytes)'),
-			long_description=_('Hard Limit. Can not be exceeded.'),
+			long_description=_('Hard limit. Can not be exceeded.'),
 			syntax=univention.admin.syntax.filesize,
 			multivalue=0,
 			options=[],
@@ -94,7 +94,7 @@ property_descriptions={
 			identifies=0
 		),
 	'softLimitInodes': univention.admin.property(
-			short_description=_('Soft Limit (Files)'),
+			short_description=_('Soft limit (Files)'),
 			long_description=_('Soft Limit. If exceeded users can be warned.'),
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -104,7 +104,7 @@ property_descriptions={
 			identifies=0
 		),
 	'hardLimitInodes': univention.admin.property(
-			short_description=_('Hard Limit (Files)'),
+			short_description=_('Hard limit (Files)'),
 			long_description=_('Hard Limit. Can not be exceeded.'),
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -114,7 +114,7 @@ property_descriptions={
 			identifies=0
 		),
 	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required Object Classes'),
+			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -124,7 +124,7 @@ property_descriptions={
 			identifies=0
 		),
 	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Prohibited Object Classes'),
+			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -134,7 +134,7 @@ property_descriptions={
 			identifies=0
 		),
 	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed Attributes'),
+			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=shareUserQuotaFixedAttributes,
 			multivalue=1,
@@ -144,7 +144,7 @@ property_descriptions={
 			identifies=0
 		),
 	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty Attributes'),
+			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=shareUserQuotaFixedAttributes,
 			multivalue=1,
