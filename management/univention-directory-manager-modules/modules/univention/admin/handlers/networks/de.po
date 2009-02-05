@@ -16,7 +16,7 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 #: network.py:45 network.py:64
-msgid "Network"
+msgid "Networks"
 msgstr "Netzwerk"
 
 #: network.py:46
@@ -28,7 +28,7 @@ msgid "Add"
 msgstr "Hinzufügen"
 
 #: network.py:47
-msgid "Add Network Object"
+msgid "Add network object"
 msgstr "Netz-Objekte hinzufügen"
 
 #: network.py:47
@@ -36,7 +36,7 @@ msgid "Find"
 msgstr "Suchen"
 
 #: network.py:47
-msgid "Find Network Object(s)"
+msgid "Search network object(s)"
 msgstr "Netz-Objekt(e) suchen"
 
 #: network.py:50
@@ -60,15 +60,15 @@ msgid "IP Address Range"
 msgstr "IP-Adressbereich"
 
 #: network.py:101
-msgid "DNS Entry Position"
+msgid "DNS forward lookup zone"
 msgstr "Forward Lookup Zone für DNS-Einträge"
 
 #: network.py:112
-msgid "DNS Entry Zone Reverse"
+msgid "DNS reverse lookup zone"
 msgstr "Reverse Lookup Zone für DNS-Einträge"
 
 #: network.py:123
-msgid "DHCP Entry"
+msgid "DHCP service"
 msgstr "DHCP-Einträge"
 
 #: network.py:146

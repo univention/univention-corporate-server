@@ -72,7 +72,7 @@ property_descriptions={
 			identifies=0
 		),	
 	'mac': univention.admin.property(
-			short_description=_('MAC Address'),
+			short_description=_('MAC address'),
 			long_description='',
 			syntax=univention.admin.syntax.macAddress,
 			multivalue=1,
@@ -92,7 +92,7 @@ property_descriptions={
 			identifies=0
 		),
 	'ip': univention.admin.property(
-			short_description=_('IP Address'),
+			short_description=_('IP address'),
 			long_description='',
 			syntax=univention.admin.syntax.ipAddress,
 			multivalue=1,
@@ -124,7 +124,7 @@ property_descriptions={
 			identifies=0
 		),
 	'dhcpEntryZone': univention.admin.property(
-			short_description=_('Service for DHCP entry'),
+			short_description=_('DHCP service'),
 			long_description='',
 			syntax=univention.admin.syntax.dhcpEntry,
 			multivalue=1,
@@ -135,7 +135,7 @@ property_descriptions={
 			identifies=0
 		),
 	'inventoryNumber': univention.admin.property(
-			short_description=_('Inventory Number'),
+			short_description=_('Inventory number'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -166,7 +166,7 @@ property_descriptions={
 		),
 }
 layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[
+	univention.admin.tab(_('General'),_('Basic settings'),[
 			[univention.admin.field("name"), univention.admin.field('description')],
 			[univention.admin.field("mac"), univention.admin.field('network')],
 			[univention.admin.field("inventoryNumber")],
@@ -181,7 +181,7 @@ layout=[
 	univention.admin.tab(_('DHCP'),_('DHCP'),[
 			[univention.admin.field("dhcpEntryZone")]
 		]),
-	univention.admin.tab(_('Groups'),_('Group Memberships'),[
+	univention.admin.tab(_('Groups'),_('Group memberships'),[
 			[univention.admin.field("groups")],
 		], advanced = True)
 ]

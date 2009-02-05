@@ -32,11 +32,12 @@ msgid "Add Computer"
 msgstr "Rechner hinzufügen"
 
 #: computer.py:55
-msgid "Find"
+msgid "Search"
 msgstr "Suchen"
 
 #: computer.py:55
-msgid "Find Computer(s)"
+#, fuzzy
+msgid "Search computer(s)"
 msgstr "Rechner suchen"
 
 #: computer.py:68 thinclient.py:56 trustaccount.py:55
@@ -47,21 +48,21 @@ msgstr "Name"
 #: domaincontroller_slave.py:94 ipmanagedclient.py:76 macos.py:85
 #: managedclient.py:94 memberserver.py:94 mobileclient.py:94 thinclient.py:75
 #: windows.py:83
-msgid "MAC Address"
+msgid "MAC address"
 msgstr "MAC-Adresse"
 
 #: computer.py:88 domaincontroller_backup.py:114
 #: domaincontroller_master.py:114 domaincontroller_slave.py:114
 #: ipmanagedclient.py:96 macos.py:105 managedclient.py:114 memberserver.py:114
 #: mobileclient.py:114 thinclient.py:95 windows.py:103
-msgid "IP Address"
+msgid "IP address"
 msgstr "IP-Adresse"
 
 #: computer.py:98 domaincontroller_backup.py:251
 #: domaincontroller_master.py:251 domaincontroller_slave.py:251
 #: ipmanagedclient.py:139 macos.py:192 managedclient.py:231
 #: memberserver.py:251 mobileclient.py:231 thinclient.py:138 windows.py:179
-msgid "Inventory Number"
+msgid "Inventory number"
 msgstr "Inventarnummer"
 
 #: domaincontroller_backup.py:52
@@ -82,7 +83,7 @@ msgstr "Kerberos Prinzipal"
 
 #: domaincontroller_backup.py:66 domaincontroller_master.py:66
 #: domaincontroller_slave.py:66
-msgid "Domain Controller Name"
+msgid "Domain controller name"
 msgstr "Domänencontroller Name"
 
 #: domaincontroller_backup.py:76 domaincontroller_master.py:76
@@ -108,7 +109,7 @@ msgstr "Netzwerk"
 
 #: domaincontroller_backup.py:124 domaincontroller_master.py:124
 #: domaincontroller_slave.py:124 memberserver.py:124
-msgid "Server Role"
+msgid "System role"
 msgstr "Systemrolle"
 
 #: domaincontroller_backup.py:134 domaincontroller_master.py:134
@@ -134,7 +135,7 @@ msgstr "Reverse Zone für DNS-Eintrag"
 #: domaincontroller_slave.py:166 ipmanagedclient.py:128 macos.py:137
 #: managedclient.py:146 memberserver.py:166 mobileclient.py:146
 #: thinclient.py:127 windows.py:135
-msgid "Service for DHCP entry"
+msgid "DHCP service"
 msgstr "Service für DHCP-Eintrag"
 
 #: domaincontroller_backup.py:177 domaincontroller_master.py:177
@@ -146,37 +147,37 @@ msgstr "Passwort"
 #: domaincontroller_backup.py:188 domaincontroller_master.py:188
 #: domaincontroller_slave.py:188 macos.py:159 managedclient.py:168
 #: memberserver.py:188 mobileclient.py:168
-msgid "Unix Home Directory"
+msgid "Unix home directory"
 msgstr "Unix Heimatverzeichnis"
 
 #: domaincontroller_backup.py:199 domaincontroller_master.py:199
 #: domaincontroller_slave.py:199 macos.py:170 managedclient.py:179
 #: memberserver.py:199 mobileclient.py:179
-msgid "Login Shell"
+msgid "Login shell"
 msgstr "Anmelde-Shell"
 
 #: domaincontroller_backup.py:210 domaincontroller_master.py:210
 #: domaincontroller_slave.py:210 macos.py:181 managedclient.py:190
 #: memberserver.py:210 mobileclient.py:190
-msgid "Primary Group"
+msgid "Primary group"
 msgstr "Primäre Gruppe"
 
 #: domaincontroller_backup.py:221 domaincontroller_master.py:221
 #: domaincontroller_slave.py:221 managedclient.py:201 memberserver.py:221
 #: mobileclient.py:201 windows.py:168
-msgid "(Re-)install on Next Boot"
+msgid "(Re-)install on next boot"
 msgstr "(Neu-)Installieren bei nächstem Systemstart"
 
 #: domaincontroller_backup.py:231 domaincontroller_master.py:231
 #: domaincontroller_slave.py:231 managedclient.py:211 memberserver.py:231
 #: mobileclient.py:211
-msgid "Use Text Installation"
+msgid "Use text mode"
 msgstr "Textbasierte Installation"
 
 #: domaincontroller_backup.py:241 domaincontroller_master.py:241
 #: domaincontroller_slave.py:241 managedclient.py:221 memberserver.py:241
 #: mobileclient.py:221
-msgid "Unique Installation Profile Name"
+msgid "Name of installation profile"
 msgstr "Eindeutiger Installationsprofilname"
 
 #: domaincontroller_backup.py:261 domaincontroller_backup.py:302
@@ -219,13 +220,13 @@ msgstr "Konto"
 #: domaincontroller_backup.py:285 domaincontroller_master.py:285
 #: domaincontroller_slave.py:285 macos.py:235 managedclient.py:265
 #: memberserver.py:285 mobileclient.py:265
-msgid "Unix Account"
+msgid "Unix account"
 msgstr "Unix-Konto"
 
 #: domaincontroller_backup.py:285 domaincontroller_master.py:285
 #: domaincontroller_slave.py:285 macos.py:235 managedclient.py:265
 #: memberserver.py:285 mobileclient.py:265
-msgid "Unix Account Settings"
+msgid "Unix account settings"
 msgstr "Unix-Konto-Einstellungen"
 
 #: domaincontroller_backup.py:288 domaincontroller_master.py:288
@@ -264,7 +265,7 @@ msgstr "(Re)installation"
 #: domaincontroller_slave.py:302 ipmanagedclient.py:185 macos.py:245
 #: managedclient.py:279 memberserver.py:302 mobileclient.py:279
 #: thinclient.py:184 windows.py:232
-msgid "Group Memberships"
+msgid "Group memberships"
 msgstr "Gruppenmitgliedschaften"
 
 #: domaincontroller_master.py:52
@@ -276,11 +277,11 @@ msgid "Computer: Domain Controller Slave"
 msgstr "Rechner: Domänencontroller Slave"
 
 #: ipmanagedclient.py:51
-msgid "Computer: IP Managed Client"
+msgid "Computer: IP managed client"
 msgstr "Rechner: IP-Managed-Client"
 
 #: ipmanagedclient.py:57
-msgid "IP Managed Client Name"
+msgid "IP managed client name"
 msgstr "Name des IP-Managed-Client"
 
 #: macos.py:52
@@ -320,15 +321,15 @@ msgid "Computer: Domain Trust Account"
 msgstr "Rechner: Domain Trust Account"
 
 #: trustaccount.py:74
-msgid "Machine Password"
+msgid "Machine password"
 msgstr "Rechner Passwort"
 
 #: trustaccount.py:89
-msgid "Domain Trust Account"
+msgid "Domain trust account"
 msgstr "Domain Trust Account"
 
 #: trustaccount.py:89
-msgid "Trust Account Settings"
+msgid "Trust account settings"
 msgstr "Domain Trust Account-Einstellungen"
 
 #: windows.py:54
@@ -336,31 +337,31 @@ msgid "Computer: Windows"
 msgstr "Rechner: Windows"
 
 #: windows.py:58
-msgid "Samba Account"
+msgid "Samba account"
 msgstr "Samba-Konto"
 
 #: windows.py:64 windows.py:332 windows.py:343
-msgid "Host Name"
+msgid "Hostname"
 msgstr "Rechnername"
 
 #: windows.py:146
-msgid "Machine Account Group"
+msgid "Machine account group"
 msgstr "Primäre Rechnergruppe"
 
 #: windows.py:157
-msgid "Initialize Password with Hostname"
+msgid "Initialize password with hostname"
 msgstr "Passwort mit dem Rechnernamen initialisieren"
 
 #: windows.py:210
-msgid "Windows Computer"
+msgid "Windows computer"
 msgstr "Windows-Rechner"
 
 #: windows.py:218
-msgid "Machine Account"
+msgid "Machine account"
 msgstr "Rechnerkonto"
 
 #: windows.py:218
-msgid "Machine Account Settings"
+msgid "Machine account settings"
 msgstr "Rechnerkonto-Einstellungen"
 
 #~ msgid "Computer Manager"

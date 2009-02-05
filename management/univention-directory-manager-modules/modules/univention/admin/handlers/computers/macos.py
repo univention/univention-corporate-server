@@ -53,17 +53,17 @@ short_description=_('Computer: Mac OS X Client')
 long_description=''
 options={
 	'posix': univention.admin.option(
-			short_description=_('Posix Account'),
+			short_description=_('Posix account'),
 			default=1
 		),
 	'kerberos': univention.admin.option(
-			short_description=_('Kerberos Principal'),
+			short_description=_('Kerberos principal'),
 			default=1
 		)
 }
 property_descriptions={
 	'name': univention.admin.property(
-			short_description=_('Client Name'),
+			short_description=_('Client name'),
 			long_description='',
 			syntax=univention.admin.syntax.hostName,
 			multivalue=0,
@@ -82,7 +82,7 @@ property_descriptions={
 			identifies=0
 		),
 	'mac': univention.admin.property(
-			short_description=_('MAC Address'),
+			short_description=_('MAC address'),
 			long_description='',
 			syntax=univention.admin.syntax.macAddress,
 			multivalue=1,
@@ -134,7 +134,7 @@ property_descriptions={
 			identifies=0
 		),
 	'dhcpEntryZone': univention.admin.property(
-			short_description=_('Service for DHCP entry'),
+			short_description=_('DHCP service'),
 			long_description='',
 			syntax=univention.admin.syntax.dhcpEntry,
 			multivalue=1,
@@ -156,7 +156,7 @@ property_descriptions={
 			dontsearch=1
 		),
 	'unixhome': univention.admin.property(
-			short_description=_('Unix Home Directory'),
+			short_description=_('Unix home directory'),
 			long_description='',
 			syntax=univention.admin.syntax.absolutePath,
 			multivalue=0,
@@ -167,7 +167,7 @@ property_descriptions={
 			default=('/dev/null', [])
 		),
 	'shell': univention.admin.property(
-			short_description=_('Login Shell'),
+			short_description=_('Login shell'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -178,7 +178,7 @@ property_descriptions={
 			default=('/bin/bash', [])
 		),
 	'primaryGroup': univention.admin.property(
-			short_description=_('Primary Group'),
+			short_description=_('Primary group'),
 			long_description='',
 			syntax=univention.admin.syntax.primaryGroup2,
 			multivalue=0,
@@ -189,7 +189,7 @@ property_descriptions={
 			identifies=0
 		),
 	'inventoryNumber': univention.admin.property(
-			short_description=_('Inventory Number'),
+			short_description=_('Inventory number'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -220,7 +220,7 @@ property_descriptions={
 		),
 }
 layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[
+	univention.admin.tab(_('General'),_('Basic settings'),[
 			[univention.admin.field("name"), univention.admin.field('description')],
 			[univention.admin.field("mac"), univention.admin.field('network')],
 			[univention.admin.field("inventoryNumber")],
@@ -232,7 +232,7 @@ layout=[
 			[univention.admin.field("password")],
 			[univention.admin.field("primaryGroup")]
 		], advanced = True),
-	univention.admin.tab(_('Unix Account'),_('Unix Account Settings'), [
+	univention.admin.tab(_('Unix Account'),_('Unix account settings'), [
 			[univention.admin.field("unixhome"), univention.admin.field("shell")]
 		], advanced = True),
 	univention.admin.tab(_('DNS'),_('DNS Forward and Reverse Lookup Zone'),[
@@ -242,7 +242,7 @@ layout=[
 	univention.admin.tab(_('DHCP'),_('DHCP'),[
 			[univention.admin.field("dhcpEntryZone")]
 		]),
-	univention.admin.tab(_('Groups'),_('Group Memberships'),[
+	univention.admin.tab(_('Groups'),_('Group memberships'),[
 			[univention.admin.field("groups")],
 		], advanced = True),
 ]

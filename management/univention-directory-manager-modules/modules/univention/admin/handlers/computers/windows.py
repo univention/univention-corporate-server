@@ -55,13 +55,13 @@ short_description=_('Computer: Windows')
 long_description=''
 options={
 	'samba': univention.admin.option(
-			short_description=_('Samba Account'),
+			short_description=_('Samba account'),
 			default=1
 		)
 }
 property_descriptions={
 	'name': univention.admin.property(
-			short_description=_('Host Name'),
+			short_description=_('Hostname'),
 			long_description='',
 			syntax=univention.admin.syntax.windowsHostName,
 			multivalue=0,
@@ -80,7 +80,7 @@ property_descriptions={
 			identifies=0
 		),
 	'mac': univention.admin.property(
-			short_description=_('MAC Address'),
+			short_description=_('MAC address'),
 			long_description='',
 			syntax=univention.admin.syntax.macAddress,
 			multivalue=1,
@@ -100,7 +100,7 @@ property_descriptions={
 			identifies=0
 		),
 	'ip': univention.admin.property(
-			short_description=_('IP Address'),
+			short_description=_('IP address'),
 			long_description='',
 			syntax=univention.admin.syntax.ipAddress,
 			multivalue=1,
@@ -132,7 +132,7 @@ property_descriptions={
 			identifies=0
 		),
 	'dhcpEntryZone': univention.admin.property(
-			short_description=_('Service for DHCP entry'),
+			short_description=_('DHCP service'),
 			long_description='',
 			syntax=univention.admin.syntax.dhcpEntry,
 			multivalue=1,
@@ -143,7 +143,7 @@ property_descriptions={
 			identifies=0
 		),
 	'machineAccountGroup': univention.admin.property(
-			short_description=_('Machine Account Group'),
+			short_description=_('Machine account group'),
 			long_description='',
 			syntax=univention.admin.syntax.primaryGroup,
 			multivalue=0,
@@ -154,7 +154,7 @@ property_descriptions={
 			identifies=0
 		),
 	'ntCompatibility': univention.admin.property(
-			short_description=_('Initialize Password with Hostname'),
+			short_description=_('Initialize password with hostname'),
 			long_description='Needed To Join NT4 Worstations',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -165,7 +165,7 @@ property_descriptions={
 			identifies=0
 		),
 	'reinstall': univention.admin.property(
-			short_description=_('(Re-)install on Next Boot'),
+			short_description=_('(Re-)install on next boot'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -176,7 +176,7 @@ property_descriptions={
 		),
 
 	'inventoryNumber': univention.admin.property(
-			short_description=_('Inventory Number'),
+			short_description=_('Inventory number'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -207,7 +207,7 @@ property_descriptions={
 		),
 }
 layout=[
-	univention.admin.tab(_('General'),_('Windows Computer'),[
+	univention.admin.tab(_('General'),_('Windows computer'),[
 			[univention.admin.field("name"), univention.admin.field("description")],
 			[univention.admin.field("mac"), univention.admin.field('network')],
 			[univention.admin.field("inventoryNumber")],
@@ -215,7 +215,7 @@ layout=[
 	univention.admin.tab(_('IP'),_('IP'),[
 			[univention.admin.field("ip")],
 		]),
-	univention.admin.tab(_('Machine Account'),_('Machine Account Settings'),[
+	univention.admin.tab(_('Machine account'),_('Machine Account Settings'),[
 			[univention.admin.field("machineAccountGroup")],
 			[univention.admin.field("ntCompatibility")]
 		], advanced = True),
@@ -229,7 +229,7 @@ layout=[
 	univention.admin.tab(_('Deployment'),_('Deployment'),[
 			[univention.admin.field("reinstall")]
 		], advanced = True),
-	univention.admin.tab(_('Groups'),_('Group Memberships'),[
+	univention.admin.tab(_('Groups'),_('Group memberships'),[
 			[univention.admin.field("groups")],
 		], advanced = True)
 ]
@@ -329,7 +329,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.uid_umlauts=umlauts
 		if umlauts:
 			self.descriptions['name'] = univention.admin.property(
-				short_description=_('Host Name'),
+				short_description=_('Hostname'),
 				long_description='',
 				syntax=univention.admin.syntax.dnsName_umlauts,
 				multivalue=0,
@@ -340,7 +340,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				)
 		else:
 			self.descriptions['name'] = univention.admin.property(
-				short_description=_('Host Name'),
+				short_description=_('Hostname'),
 				long_description='',
 				syntax=univention.admin.syntax.dnsName,
 				multivalue=0,

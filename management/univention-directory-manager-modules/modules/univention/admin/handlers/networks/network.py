@@ -43,9 +43,9 @@ _=translation.translate
 module='networks/network'
 operations=['add','edit','remove','search']
 usewizard=1
-wizardmenustring=_("Network")
+wizardmenustring=_("Networks")
 wizarddescription=_("Add, edit and delete networks")
-wizardoperations={"add":[_("Add"), _("Add Network Object")],"find":[_("Find"), _("Find Network Object(s)")]}
+wizardoperations={"add":[_("Add"), _("Add network object")],"find":[_("Find"), _("Search network object(s)")]}
 
 childs=0
 short_description=_('Networks: Network')
@@ -62,7 +62,7 @@ property_descriptions={
 			identifies=1
 		),
 	'network': univention.admin.property(
-			short_description=_('Network'),
+			short_description=_('Networks'),
 			long_description='',
 			syntax=univention.admin.syntax.ipAddress,
 			multivalue=0,
@@ -99,7 +99,7 @@ property_descriptions={
 			identifies=0
 		),
 	'dnsEntryZoneForward': univention.admin.property(
-			short_description=_('DNS Entry Position'),
+			short_description=_('DNS forward lookup zone'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsEntryNetwork,
 			multivalue=0,
@@ -110,7 +110,7 @@ property_descriptions={
 			identifies=0
 		),
 	'dnsEntryZoneReverse': univention.admin.property(
-			short_description=_('DNS Entry Zone Reverse'),
+			short_description=_('DNS reverse lookup zone'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsEntryReverseNetwork,
 			multivalue=0,
@@ -121,7 +121,7 @@ property_descriptions={
 			identifies=0
 		),
 	'dhcpEntryZone': univention.admin.property(
-			short_description=_('DHCP Entry'),
+			short_description=_('DHCP service'),
 			long_description='',
 			syntax=univention.admin.syntax.dhcpEntryNetwork,
 			multivalue=0,
