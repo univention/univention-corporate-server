@@ -45,7 +45,7 @@ usewizard = 1
 wizardmenustring = _('Nagios')
 wizarddescription =  _('Add, edit, delete and search Nagios objects')
 wizardoperations = { 'add' : [ _('Add'), _('Add new Nagios object') ],
-					 'find' : [ _('Find'), _('Find Nagios objects') ] }
+					 'find' : [ _('Search'), _('Search Nagios objects') ] }
 
 default_containers = [ 'cn=nagios' ]
 
@@ -53,7 +53,7 @@ childmodules=[ 'nagios/service',
 			   'nagios/timeperiod' ]
 
 childs=0
-short_description=_('Nagios Object')
+short_description=_('Nagios object')
 long_description=''
 operations=[]
 virtual=1

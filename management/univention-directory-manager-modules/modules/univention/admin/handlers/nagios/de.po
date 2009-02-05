@@ -32,19 +32,19 @@ msgid "Add new Nagios object"
 msgstr "Hinzufügen von neuen Nagios-Objekten"
 
 #: nagios.py:48
-msgid "Find"
+msgid "Search"
 msgstr "Suchen"
 
 #: nagios.py:48
-msgid "Find Nagios objects"
+msgid "Search Nagios objects"
 msgstr "Suchen von Nagios-Objekten"
 
 #: nagios.py:56
-msgid "Nagios Object"
+msgid "Nagios object"
 msgstr "Nagios-Objekt"
 
 #: service.py:44
-msgid "Nagios Service"
+msgid "Nagios service"
 msgstr "Nagios-Dienst"
 
 #: service.py:56 timeperiod.py:74 timeperiod.py:75
@@ -52,7 +52,7 @@ msgid "Name"
 msgstr "Name"
 
 #: service.py:57
-msgid "Name of Service"
+msgid "Service name"
 msgstr "Name des Dienstes"
 
 #: service.py:66 timeperiod.py:84
@@ -60,11 +60,11 @@ msgid "Description"
 msgstr "Beschreibung"
 
 #: service.py:67
-msgid "Service-Description"
+msgid "Service description"
 msgstr "Dienst-Beschreibung"
 
 #: service.py:76
-msgid "Plugin Command"
+msgid "Plugin command"
 msgstr "Plugin-Kommando"
 
 #: service.py:77
@@ -72,7 +72,7 @@ msgid "Command name of Nagios plugin"
 msgstr "Zu verwendendes Nagios-Plugin"
 
 #: service.py:86
-msgid "Plugin Command Arguments"
+msgid "Plugin command arguments"
 msgstr "Plugin-Kommando-Parameter"
 
 #: service.py:87
@@ -88,7 +88,7 @@ msgid "Use NRPE to check remote services"
 msgstr "NRPE benutzen, um entfernte Dienste zu überprüfen"
 
 #: service.py:106
-msgid "Check Period"
+msgid "Check period"
 msgstr "Prüfzeitraum"
 
 #: service.py:107
@@ -108,7 +108,7 @@ msgstr ""
 "wird"
 
 #: service.py:127
-msgid "Check Interval"
+msgid "Check interval"
 msgstr "Prüfintervall"
 
 #: service.py:128
@@ -116,7 +116,7 @@ msgid "Interval between checks"
 msgstr "Zeit zwischen zwei Überprüfungen"
 
 #: service.py:138
-msgid "Retry Check Interval"
+msgid "Retry check interval"
 msgstr "Prüfintervall im Fehlerfall"
 
 #: service.py:139
@@ -124,7 +124,7 @@ msgid "Interval between re-checks if service is in non-OK-state"
 msgstr "Zeit zwischen zwei Überprüfungen, wenn Dienst im Nicht-OK-Zustand ist"
 
 #: service.py:149
-msgid "Notification Interval"
+msgid "Notification interval"
 msgstr "Benachrichtigungsintervall"
 
 #: service.py:150
@@ -132,7 +132,7 @@ msgid "Interval between notifications"
 msgstr "Zeit zwischen zwei Benachrichtigungen für das gleiche Problem"
 
 #: service.py:160
-msgid "Notification Period"
+msgid "Notification period"
 msgstr "Benachrichtigungszeitraum"
 
 #: service.py:161
@@ -156,7 +156,7 @@ msgid "Notify if service state changes to RECOVERED"
 msgstr "Benachrichtigen, wenn Zustand RECOVERED erreicht wird"
 
 #: service.py:210 service.py:237
-msgid "Assigned Hosts"
+msgid "Assigned hosts"
 msgstr "Zugeordnete Rechner"
 
 #: service.py:211
@@ -168,7 +168,7 @@ msgid "General"
 msgstr "Allgemein"
 
 #: service.py:223
-msgid "Basic Values"
+msgid "Basic settings"
 msgstr "Allgemein"
 
 #: service.py:228
@@ -176,7 +176,7 @@ msgid "Interval"
 msgstr "Intervall"
 
 #: service.py:228
-msgid "Check Settings"
+msgid "Check settings"
 msgstr "Intervalle"
 
 #: service.py:232
@@ -184,7 +184,7 @@ msgid "Notification"
 msgstr "Benachrichtigungen"
 
 #: service.py:232
-msgid "Notification Settings"
+msgid "Notification settings"
 msgstr "Benachrichtigungen"
 
 #: service.py:237
@@ -192,7 +192,7 @@ msgid "Hosts"
 msgstr "Rechner"
 
 #: timeperiod.py:45
-msgid "Nagios Time Period"
+msgid "Nagios time period"
 msgstr "Nagios-Zeitraum"
 
 #: timeperiod.py:61 timeperiod.py:63 timeperiod.py:67 timeperiod.py:69
@@ -209,7 +209,7 @@ msgstr "Montag"
 
 #: timeperiod.py:95 timeperiod.py:105 timeperiod.py:115 timeperiod.py:125
 #: timeperiod.py:135 timeperiod.py:145 timeperiod.py:155
-msgid "enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)"
+msgid "Enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)"
 msgstr "Angabe von Zeiträumen (z.B. 00:00-07.15,23:12-24:00)"
 
 #: timeperiod.py:104
@@ -237,5 +237,5 @@ msgid "Sunday"
 msgstr "Sonntag"
 
 #: timeperiod.py:167
-msgid "Time Period Settings"
+msgid "Time period settings"
 msgstr "Zeitraum-Einstellungen"
