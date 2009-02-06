@@ -686,7 +686,7 @@ msgid "apply"
 msgstr "Zuweisen"
 
 #: modedit.py:605
-msgid "Select Configuration:"
+msgid "Select configuration:"
 msgstr "Konfiguration auswählen:"
 
 #: modedit.py:605
@@ -1017,7 +1017,7 @@ msgid "select Packages"
 msgstr "Pakete auswählen"
 
 #: modedit.py:3782
-msgid "Self Tabs List"
+msgid "Visible tabs for personal settings"
 msgstr "Sichtbare Karteikarten"
 
 #: modedit.py:4044

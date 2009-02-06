@@ -626,7 +626,7 @@ class modedit(unimodule.unimodule):
 				if current_policydn_selected=='inherited':
 					displaypolicydnlist[0]['selected']='1'
 				self.policydn_select_button=button(_("apply"),{'icon':'/style/ok.gif'},{"helptext":""})
-				self.policydn_select=question_select(_("Select Configuration:"),{},{"helptext":_("Choose a configuration for your object"),"choicelist":displaypolicydnlist,"button":self.policydn_select_button})
+				self.policydn_select=question_select(_("Select configuration:"),{},{"helptext":_("Choose a configuration for your object"),"choicelist":displaypolicydnlist,"button":self.policydn_select_button})
 
 				cols.append(tablecol('',{'type':'tab_layout'},{'obs':[self.policydn_select]}))
 
@@ -3803,7 +3803,7 @@ class modedit(unimodule.unimodule):
 							#minput does not have all needed fields.
 							update_choices=button('lmanusel',{},{'helptext':_('select package list')})
 							self.xinput[name].append(update_choices)
-							self.xinput[name].append(question_select(_('Self Tabs List'),atts,
+							self.xinput[name].append(question_select(_('Visible tabs for personal settings'),atts,
 																{'choicelist':tablist,'helptext':_('select tab'),
 																'button':update_choices}))
 							self.minput[name].append(question_select(property.short_description,atts,{'choicelist':attrlist,'helptext':''}))
