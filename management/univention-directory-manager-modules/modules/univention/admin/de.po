@@ -141,7 +141,7 @@ msgid "Windows Advanced"
 msgstr "Windows Erweiterungen"
 
 #: mungeddial.py:309
-msgid "Windows Terminal Server Settings"
+msgid "Windows Terminal server settings"
 msgstr "Windows Terminalservereinstellungen"
 
 #: nagios.py:44

@@ -56,8 +56,8 @@ policy_apply_to=["users/user"]
 policy_position_dn_prefix="cn=pwhistory,cn=users"
 usewizard=1
 childs=0
-short_description=_('Policy: Password Policy')
-policy_short_description=_('Password Policy')
+short_description=_('Policy: Passwords')
+policy_short_description=_('Passwords')
 long_description=''
 options={
 }
@@ -154,7 +154,7 @@ property_descriptions={
 			)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Password policy'), [
+	univention.admin.tab(_('General'),_('Passwords'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_resultmode=1)],
 		[univention.admin.field('length'), univention.admin.field('expiryInterval') ],
 		[univention.admin.field('pwLength') ]

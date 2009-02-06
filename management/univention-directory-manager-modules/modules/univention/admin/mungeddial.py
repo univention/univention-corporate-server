@@ -330,7 +330,7 @@ properties = {
 
 }
 
-tab = univention.admin.tab( _( 'Windows Advanced' ), _( 'Windows Terminal Server Settings' ), [
+tab = univention.admin.tab( _( 'Windows Advanced' ), _( 'Windows Terminal server settings' ), [
 		[ univention.admin.field( "CtxWFHomeDir" ), univention.admin.field( "CtxWFHomeDirDrive" ) ],
 		[ univention.admin.field( "filler" ), univention.admin.field( "filler" ) ],
 		[ univention.admin.field( "CtxInitialProgram" ), univention.admin.field( "CtxWorkDirectory" ) ],

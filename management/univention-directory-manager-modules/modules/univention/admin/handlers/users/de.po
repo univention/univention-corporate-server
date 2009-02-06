@@ -121,11 +121,11 @@ msgid "Group ID"
 msgstr "Gruppen-ID"
 
 #: user.py:174
-msgid "First Name"
+msgid "First name"
 msgstr "Vorname"
 
 #: user.py:184
-msgid "Last Name"
+msgid "Last name"
 msgstr "Nachname"
 
 #: user.py:193
@@ -173,7 +173,7 @@ msgid "Street"
 msgstr "Straße"
 
 #: user.py:310
-msgid "E-mail address"
+msgid "E-mail address(es)"
 msgstr "E-Mail-Adresse"
 
 #: user.py:321
@@ -185,7 +185,7 @@ msgid "City"
 msgstr "Stadt"
 
 #: user.py:341
-msgid "Telephone number"
+msgid "Telephone number(s)"
 msgstr "Telefonnummer"
 
 #: user.py:351
@@ -257,7 +257,7 @@ msgid "Groups"
 msgstr "Gruppen"
 
 #: user.py:526
-msgid "Primary Group"
+msgid "Primary group"
 msgstr "Primäre Gruppe"
 
 #: user.py:537
@@ -311,23 +311,23 @@ msgid "Samba User Login Times"
 msgstr "Samba Anmeldezeitraum"
 
 #: user.py:637
-msgid "Forward Mail"
+msgid "Forward mail"
 msgstr "Mails weiterleiten"
 
 #: user.py:648
-msgid "Forward Address"
+msgid "Forwarding address"
 msgstr "E-Mail-Adresse für Mailweiterleitung"
 
 #: user.py:659
-msgid "Forward Keep Copy"
+msgid "Keep a copy of forwarded mail"
 msgstr "Kopie erstellen bei  Mailweiterleitung"
 
 #: user.py:670
-msgid "Kolab Home Server"
+msgid "Kolab home server"
 msgstr "Kolab Home Server"
 
 #: user.py:681
-msgid "Forward Spam"
+msgid "Forward spam"
 msgstr "Spam weiterleiten"
 
 #: user.py:692
@@ -339,7 +339,7 @@ msgid "Folder for incoming mail"
 msgstr "Ordner für eingehende Mails"
 
 #: user.py:714
-msgid "E-mail addresses of delegate users"
+msgid "E-mail addresses of delegated users"
 msgstr "E-Mail-Adressen von bevollmächtigten Benutzern"
 
 #: user.py:725
@@ -347,23 +347,23 @@ msgid "E-mail adresses for vacation notice"
 msgstr "E-Mail-Adressen für Abwesenheitsnotiz"
 
 #: user.py:736
-msgid "Activate Vacation Notice"
+msgid "Activate out of office notice"
 msgstr "Aktiviere Abwesenheitsnotiz"
 
 #: user.py:747
-msgid "Vacation Text"
+msgid "Text of out of office notice"
 msgstr "Abwesenheitstext"
 
 #: user.py:758
-msgid "Vacation Notice Resend Interval"
+msgid "Out of office notice resend interval"
 msgstr "Erneutes senden der Abwesenheitsnotiz nach"
 
 #: user.py:770
-msgid "Vacation Notice Spam Reply"
+msgid "Send out of office notice to spam mails"
 msgstr "Abwesenheitsnotiz als Antwort an Spam Mails senden"
 
 #: user.py:781
-msgid "Vacation Notice To"
+msgid "Limit out of office notices to some mail domains"
 msgstr "Abwesenheitsnotiz an"
 
 #: user.py:782
@@ -372,7 +372,7 @@ msgstr ""
 "Enthält eine Liste von Domänen an die Abwesenheitsnotizen geschickt werden."
 
 #: user.py:792
-msgid "No Vacation Notice To"
+msgid "Exclude mail domains from out of office notices"
 msgstr "Keine Abwesenheitsnotiz an"
 
 #: user.py:793
@@ -382,20 +382,20 @@ msgstr ""
 "werden."
 
 #: user.py:803
-msgid "Invitation Policy"
+msgid "Policies for automatic acceptance of invitations"
 msgstr "Richtlinien automatische Terminannahme"
 
 #: user.py:814
-msgid "Disable Kolab Sieve Scripts"
+msgid "Disable Kolab Sieve scripts"
 msgstr "Deaktiviere Kolab Sieve Skripte"
 
 #: user.py:825
-msgid "PKI User Certificate"
+msgid "PKI user certificate"
 msgstr "PKI Benutzerzertifikat"
 
 #: user.py:826
-msgid "Public Key Infrastructure - User Certificate "
-msgstr "Public Key Infrastruktur - Benutzerzertifikat"
+msgid "Public key infrastructure - user certificate "
+msgstr "Public key infrastruktur - Benutzerzertifikat"
 
 #: user.py:836
 msgid "Issuer Country"
@@ -534,7 +534,7 @@ msgid "Certificate Serial"
 msgstr "Zertifikatsseriennummer"
 
 #: user.py:1052 user.py:1056
-msgid "Basic Values"
+msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
 #: user.py:1059 user.py:1063
@@ -542,7 +542,7 @@ msgid "User account"
 msgstr "Benutzer-Konto"
 
 #: user.py:1059 user.py:1063
-msgid "Account Settings"
+msgid "Account settings"
 msgstr "Konto-Einstellungen"
 
 #: user.py:1064 user.py:1068
@@ -550,7 +550,7 @@ msgid "Mail"
 msgstr "Mail"
 
 #: user.py:1064 user.py:1068
-msgid "Mail Preferences"
+msgid "Mail preferences"
 msgstr "Maileinstellungen"
 
 #: user.py:1069 user.py:1073
@@ -558,19 +558,19 @@ msgid "Contact"
 msgstr "Kontakt"
 
 #: user.py:1069 user.py:1073
-msgid "Contact Information"
+msgid "Contact information"
 msgstr "Kontaktinformationen"
 
 #: user.py:1074 user.py:1078
-msgid "Organisational Information"
+msgid "Organisational information"
 msgstr "Organisations-/Mitarbeiterinformationen"
 
 #: user.py:1081 user.py:1085
-msgid "Private Contact"
+msgid "Private contact"
 msgstr "Kontakt privat"
 
 #: user.py:1081 user.py:1085
-msgid "Private Contact Information"
+msgid "Private contact information"
 msgstr "Private Kontaktinformationen"
 
 #: user.py:1085 user.py:1089
@@ -578,7 +578,7 @@ msgid "Linux/UNIX"
 msgstr "Linux/UNIX"
 
 #: user.py:1085 user.py:1089
-msgid "Unix Account Settings"
+msgid "Unix account settings"
 msgstr "UNIX-Kontoeinstellungen"
 
 #: user.py:1091 user.py:1095
@@ -586,15 +586,15 @@ msgid "Windows"
 msgstr "Windows"
 
 #: user.py:1091 user.py:1095
-msgid "Windows Account Settings"
+msgid "Windows account settings"
 msgstr "Windows-Kontoeinstellungen"
 
 #: user.py:1097 user.py:1101
-msgid "Group Memberships"
+msgid "Group memberships"
 msgstr "Gruppenmitgliedschaften"
 
 #: user.py:1101 user.py:1105
-msgid "Vacation Notice"
+msgid "Out of office notice"
 msgstr "Abwesenheitsnotiz"
 
 #: user.py:1109 user.py:1113
@@ -602,11 +602,11 @@ msgid "Groupware"
 msgstr "Groupware"
 
 #: user.py:1109 user.py:1113
-msgid "Groupware Settings"
+msgid "Groupware settings"
 msgstr "Groupware-Einstellungen"
 
 #: user.py:1120 user.py:1124
-msgid "Invitation"
+msgid "Invitation acceptance"
 msgstr "Terminannahme"
 
 #: user.py:1123 user.py:1127

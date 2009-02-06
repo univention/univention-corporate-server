@@ -142,7 +142,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Update'), [
+	univention.admin.tab(_('General'),_('Release updates'), [
 		[univention.admin.field('name', hide_in_resultmode=1) ],
 		[univention.admin.field('activate'), univention.admin.field('releaseVersion') ]
 	]),

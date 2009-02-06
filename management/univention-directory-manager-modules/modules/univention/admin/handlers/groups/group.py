@@ -43,7 +43,7 @@ operations=['add','edit','remove','search','move']
 usewizard=1
 wizardmenustring=_("Groups")
 wizarddescription=_("Add, edit and delete groups")
-wizardoperations={"add":[_("Add"), _("Add Group Object")],"find":[_("Find"), _("Find Group Object(s)")]}
+wizardoperations={"add":[_("Add"), _("Add group object")],"find":[_("Search"), _("Search group object(s)")]}
 
 childs=0
 short_description=_('Group: Group')
@@ -178,7 +178,7 @@ ucr_properties = ['dontsearch']
 univention.admin.ucr_overwrite_properties (module, ucr_properties, property_descriptions)
 
 layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[
+	univention.admin.tab(_('General'),_('Basic settings'),[
 		[univention.admin.field("name"), univention.admin.field("description")],
 		[univention.admin.field("gidNumber"),univention.admin.field("sambaRID")],
 		[univention.admin.field("sambaGroupType"), univention.admin.field("mailAddress")]
@@ -186,13 +186,13 @@ layout=[
 	univention.admin.tab(_('Members'),_('Members of this Group'),[
 		[univention.admin.field("users")]
 	] ),
-	univention.admin.tab(_('Host members'),_('Host Members of this group'),[
+	univention.admin.tab(_('Host members'),_('Host members of this group'),[
 		[univention.admin.field("hosts")]
 	], advanced = True ),
 	univention.admin.tab(_('Nested groups'),_('Membership of other groups'),[
 		[univention.admin.field("nestedGroup")]
 	], advanced = True ),
-	univention.admin.tab(_('Member of'),_('Membership in other Groups'),[
+	univention.admin.tab(_('Member of'),_('Membership in other groups'),[
 			[univention.admin.field("memberOf")]
 	], advanced = True )
 ]

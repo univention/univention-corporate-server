@@ -32,7 +32,7 @@ msgid "Add network object"
 msgstr "Netz-Objekte hinzufügen"
 
 #: network.py:47
-msgid "Find"
+msgid "Search"
 msgstr "Suchen"
 
 #: network.py:47

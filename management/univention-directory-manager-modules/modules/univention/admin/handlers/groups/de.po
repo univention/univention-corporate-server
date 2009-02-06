@@ -28,15 +28,15 @@ msgid "Add"
 msgstr "Hinzufügen"
 
 #: group.py:44
-msgid "Add Group Object"
+msgid "Add group object"
 msgstr "Gruppe hinzufügen"
 
 #: group.py:44
-msgid "Find"
+msgid "Search"
 msgstr "Suchen"
 
 #: group.py:44
-msgid "Find Group Object(s)"
+msgid "Search group object(s)"
 msgstr "Suche Gruppen Objekt(e)"
 
 #: group.py:47
@@ -96,7 +96,7 @@ msgid "General"
 msgstr "Allgemein"
 
 #: group.py:174
-msgid "Basic Values"
+msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
 #: group.py:179
@@ -124,7 +124,7 @@ msgid "Membership of other groups"
 msgstr "Mitgliedschaft von weiteren Gruppen"
 
 #: group.py:188
-msgid "Membership in other Groups"
+msgid "Membership in other groups"
 msgstr "Mitgliedschaft in weiteren Gruppen"
 
 #~ msgid "memberOf"

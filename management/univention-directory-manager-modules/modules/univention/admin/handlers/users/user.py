@@ -171,7 +171,7 @@ property_descriptions={
 			options=['posix','samba']
 		),
 	'firstname': univention.admin.property(
-			short_description=_('First Name'),
+			short_description=_('First name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -181,7 +181,7 @@ property_descriptions={
 			identifies=0
 		),
 	'lastname': univention.admin.property(
-			short_description=_('Last Name'),
+			short_description=_('Last name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -307,7 +307,7 @@ property_descriptions={
 			identifies=0
 		),
 	'e-mail': univention.admin.property(
-			short_description=_('E-mail address'),
+			short_description=_('E-mail address(es)'),
 			long_description='',
 			syntax=univention.admin.syntax.emailAddress,
 			multivalue=1,
@@ -338,7 +338,7 @@ property_descriptions={
 			identifies=0
 		),
 	'phone': univention.admin.property(
-			short_description=_('Telephone number'),
+			short_description=_('Telephone number(s)'),
 			long_description='',
 			syntax=univention.admin.syntax.phone,
 			multivalue=1,
@@ -408,7 +408,7 @@ property_descriptions={
 			identifies=0
 		),
 	'homeTelephoneNumber': univention.admin.property(
-			short_description=_('Private telephone Number'),
+			short_description=_('Private telephone number'),
 			long_description='',
 			syntax=univention.admin.syntax.phone,
 			multivalue=1,
@@ -438,7 +438,7 @@ property_descriptions={
 			identifies=0
 		),
 	'unixhome': univention.admin.property(
-			short_description=_('Unix home Directory'),
+			short_description=_('Unix home directory'),
 			long_description='',
 			syntax=univention.admin.syntax.absolutePath,
 			multivalue=0,
@@ -523,7 +523,7 @@ property_descriptions={
 			identifies=0
 		),
 	'primaryGroup': univention.admin.property(
-			short_description=_('Primary Group'),
+			short_description=_('Primary group'),
 			long_description='',
 			syntax=univention.admin.syntax.primaryGroup,
 			multivalue=0,
@@ -634,7 +634,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'kolabForwardActive': univention.admin.property(
-			short_description=_("Forward Mail"),
+			short_description=_("Forward mail"),
 			long_description='',
 			syntax=univention.admin.syntax.TrueFalseUp,
 			multivalue=0,
@@ -645,7 +645,7 @@ property_descriptions={
 			identifies=0
 		),
 	'kolabForwardAddress': univention.admin.property(
-			short_description=_("Forward Address"),
+			short_description=_("Forwarding address"),
 			long_description='',
 			syntax=univention.admin.syntax.emailAddress,
 			multivalue=0,
@@ -656,7 +656,7 @@ property_descriptions={
 			identifies=0
 		),
 	'kolabForwardKeepCopy': univention.admin.property(
-			short_description=_("Forward Keep Copy"),
+			short_description=_("Keep a copy of forwarded mail"),
 			long_description='',
 			syntax=univention.admin.syntax.TrueFalseUp,
 			multivalue=0,
@@ -667,7 +667,7 @@ property_descriptions={
 			identifies=0
 		),
 	'kolabHomeServer': univention.admin.property(
-			short_description=_("Kolab Home Server"),
+			short_description=_("Kolab home server"),
 			long_description='',
 			syntax=univention.admin.syntax.kolabHomeServer,
 			multivalue=0,
@@ -678,7 +678,7 @@ property_descriptions={
 			identifies=0
 		),
 	'kolabForwardUCE': univention.admin.property(
-			short_description=_("Forward Spam"),
+			short_description=_("Forward spam"),
 			long_description='',
 			syntax=univention.admin.syntax.TrueFalseUp,
 			multivalue=0,
@@ -711,7 +711,7 @@ property_descriptions={
 			identifies=0
 		),
 	'kolabDelegate': univention.admin.property(
-			short_description=_("E-mail addresses of delegate users"),
+			short_description=_("E-mail addresses of delegated users"),
 			long_description='',
 			syntax=univention.admin.syntax.emailAddress,
 			multivalue=1,
@@ -733,7 +733,7 @@ property_descriptions={
 			identifies=0
 		),
 	'kolabVacationActive': univention.admin.property(
-			short_description=_("Activate Vacation Notice"),
+			short_description=_("Activate out of office notice"),
 			long_description='',
 			syntax=univention.admin.syntax.TrueFalseUp,
 			multivalue=0,
@@ -744,7 +744,7 @@ property_descriptions={
 			identifies=0
 		),
 	'kolabVacationText': univention.admin.property(
-			short_description=_("Vacation Text"),
+			short_description=_("Text of out of office notice"),
 			long_description='',
 			syntax=univention.admin.syntax.long_string,
 			multivalue=0,
@@ -755,7 +755,7 @@ property_descriptions={
 			identifies=0
 		),
 	'kolabVacationResendInterval':univention.admin.property(
-			short_description=_("Vacation Notice Resend Interval"),
+			short_description=_("Out of office notice resend interval"),
 			long_description='',
 			syntax=vacationResendDays,
 			multivalue=0,
@@ -767,7 +767,7 @@ property_descriptions={
 			default='7'
 		),
 	'kolabVacationReplyToUCE': univention.admin.property(
-			short_description=_("Vacation Notice Spam Reply"),
+			short_description=_("Send out of office notice to spam mails"),
 			long_description='',
 			syntax=univention.admin.syntax.TrueFalseUp,
 			multivalue=0,
@@ -778,7 +778,7 @@ property_descriptions={
 			identifies=0
 		),
 	'kolabVacationReactDomain': univention.admin.property(
-			short_description=_("Vacation Notice To"),
+			short_description=_("Limit out of office notices to some mail domains"),
 			long_description=_( 'Contains a list of sender domains the vacation notice is send to.' ),
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -789,7 +789,7 @@ property_descriptions={
 			identifies=0
 		),
 	'kolabVacationNoReactDomain': univention.admin.property(
-			short_description=_("No Vacation Notice To"),
+			short_description=_("Exclude mail domains from out of office notices"),
 			long_description=_('Contains a list of sender domains the vacation notice is not send to.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -800,7 +800,7 @@ property_descriptions={
 			identifies=0
 		),
 	'kolabInvitationPolicy': univention.admin.property(
-			short_description=_("Invitation Policy"),
+			short_description=_("Policies for automatic acceptance of invitations"),
 			long_description='',
 			syntax=univention.admin.syntax.kolabInvitationPolicy,
 			multivalue=1,
@@ -811,7 +811,7 @@ property_descriptions={
 			identifies=0
 		),
 	'kolabDisableSieve': univention.admin.property(
-			short_description=_("Disable Kolab Sieve Scripts"),
+			short_description=_("Disable Kolab Sieve scripts"),
 			long_description='',
 			syntax=univention.admin.syntax.TrueFalseUp,
 			multivalue=0,
@@ -822,8 +822,8 @@ property_descriptions={
 			identifies=0
 		),
 	'userCertificate': univention.admin.property(
-			short_description=_("PKI User Certificate"),
-			long_description=_( 'Public Key Infrastructure - User Certificate ' ),
+			short_description=_("PKI user certificate"),
+			long_description=_( 'Public key infrastructure - user certificate ' ),
 			syntax=univention.admin.syntax.binaryfile,
 			multivalue=0,
 			required=0,
@@ -1053,56 +1053,56 @@ univention.admin.ucr_overwrite_properties (module, ucr_properties, property_desc
 default_property_descriptions=copy.deepcopy(property_descriptions) # for later reset of descriptions
 
 layout=[
-	univention.admin.tab(_('General'),_('Basic Values'),[
+	univention.admin.tab(_('General'),_('Basic settings'),[
 		[univention.admin.field("username"), univention.admin.field("description",width=300)],
 		[univention.admin.field("password"),
 		 [univention.admin.field("overridePWHistory"), univention.admin.field("overridePWLength")]],
 		[univention.admin.field("firstname"), univention.admin.field("lastname")],
 		[univention.admin.field("title"), univention.admin.field("organisation")],
 	]),
-	univention.admin.tab(_('User account'),_('Account Settings'),[
+	univention.admin.tab(_('User account'),_('Account settings'),[
 		[univention.admin.field("userexpiry"), univention.admin.field("passwordexpiry")],
 		[univention.admin.field("disabled"), univention.admin.field("pwdChangeNextLogin")],
 		[univention.admin.field("locked")],
 	]),
-	univention.admin.tab(_('Mail'),_('Mail Preferences'),[
+	univention.admin.tab(_('Mail'),_('Mail preferences'),[
 		[univention.admin.field("mailPrimaryAddress")],
 		[univention.admin.field("mailAlternativeAddress")],
 		[univention.admin.field("mailGlobalSpamFolder")],
 	]),
-	univention.admin.tab(_('Contact'),_('Contact Information'),[
+	univention.admin.tab(_('Contact'),_('Contact information'),[
 		[univention.admin.field("e-mail"), univention.admin.field("phone")],
 		[univention.admin.field("street"), univention.admin.field("filler")],
 		[univention.admin.field("postcode"), univention.admin.field("city")],
 	]),
-	univention.admin.tab(_('Organisation'),_('Organisational Information'),[
+	univention.admin.tab(_('Organisation'),_('Organisational information'),[
 		[univention.admin.field("employeeNumber")],
 		[univention.admin.field("employeeType")],
 		[univention.admin.field("roomNumber")],
 		[univention.admin.field("departmentNumber")],
 		[univention.admin.field("secretary")]
 	]),
-	univention.admin.tab(_('Private Contact'),_('Private Contact Information'),[
+	univention.admin.tab(_('Private Contact'),_('Private contact information'),[
 		[univention.admin.field("mobileTelephoneNumber"), univention.admin.field("homeTelephoneNumber")],
 		[univention.admin.field("pagerTelephoneNumber"),univention.admin.field("homePostalAddress")]
 	]),
-	univention.admin.tab(_('Linux/UNIX'),_('Unix Account Settings'), [
+	univention.admin.tab(_('Linux/UNIX'),_('Unix account Settings'), [
 		[univention.admin.field("unixhome"), univention.admin.field("shell")],
 		[univention.admin.field("uidNumber"), univention.admin.field("gidNumber")],
 		[univention.admin.field("homeShare"), univention.admin.field("homeSharePath")],
 		[univention.admin.field("gecos"),]
 	], advanced = True),
-	univention.admin.tab(_('Windows'),_('Windows Account Settings'),[
+	univention.admin.tab(_('Windows'),_('Windows account settings'),[
 		[univention.admin.field("sambahome"), univention.admin.field("homedrive")],
 		[univention.admin.field("scriptpath"), univention.admin.field("profilepath")],
 		[univention.admin.field("sambaRID")],
 		[univention.admin.field("sambaLogonHours"), univention.admin.field("sambaUserWorkstations")]
 	]),
-	univention.admin.tab(_('Groups'),_('Group Memberships'), [
+	univention.admin.tab(_('Groups'),_('Group memberships'), [
 		[univention.admin.field("primaryGroup")],
 		[univention.admin.field("groups")]
 	]),
-	univention.admin.tab(_('Vacation Notice'),_('Vacation Notice'), [
+	univention.admin.tab(_('Out of office notice'),_('Out of office notice'), [
 		[univention.admin.field('kolabVacationText'),
 		 [univention.admin.field('kolabVacationActive'),
 		  univention.admin.field('kolabVacationReplyToUCE'),
@@ -1110,7 +1110,7 @@ layout=[
 		[univention.admin.field('kolabVacationAddress')],
 		[univention.admin.field('kolabVacationReactDomain'), univention.admin.field('kolabVacationNoReactDomain')]
 	]),
-	univention.admin.tab(_('Groupware'),_('Groupware Settings'), [
+	univention.admin.tab(_('Groupware'),_('Groupware settings'), [
 		[univention.admin.field('kolabHomeServer'), univention.admin.field('kolabDisableSieve')],
 		[univention.admin.field('kolabForwardAddress'),
 		 [univention.admin.field('kolabForwardActive'),
@@ -1121,7 +1121,7 @@ layout=[
 		[univention.admin.field("filler"), univention.admin.field("filler")],
 		[univention.admin.field('kolabDelegate')]
 	]),
-	univention.admin.tab(_('Invitation'),_('Invitation'), [
+	univention.admin.tab(_('Invitation'),_('Invitation acceptance'), [
 		[univention.admin.field('kolabInvitationPolicy')],
 	], advanced = True),
 	univention.admin.tab(_('User Certificate'),_('User Certificate'), [

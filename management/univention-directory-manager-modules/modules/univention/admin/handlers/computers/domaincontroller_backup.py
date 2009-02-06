@@ -238,7 +238,7 @@ property_descriptions={
 			identifies=0
 		),
 	'instprofile': univention.admin.property(
-			short_description=_('Unique Installation Profile Name'),
+			short_description=_('Name of installation profile'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
