@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.27-2) unstable; urgency=low
+
+  * Update translations (Bug #12861)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  6 Feb 2009 10:26:43 +0100
+
 univention-directory-manager-modules (3.0.27-1) unstable; urgency=low
 
   * show the certificate  tab in the advanced view. Part of Bug #13121
