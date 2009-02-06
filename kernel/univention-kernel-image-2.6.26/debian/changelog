@@ -1,3 +1,10 @@
+univention-kernel-image-2.6.26 (3.0.5-1) unstable; urgency=low
+
+  * don't build meta packages for the bigmem (64gb) kernel on 64 bit
+    systems. Bug #11839
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  6 Feb 2009 20:17:30 +0100
+
 univention-kernel-image-2.6.26 (3.0.4-1) unstable; urgency=low
 
   * depend on the correct amd64 xen image. Bug #12908

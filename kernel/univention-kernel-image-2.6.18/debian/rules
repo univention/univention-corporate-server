@@ -136,33 +136,41 @@ binary-arch: build install
 	dh_md5sums -punivention-kernel-image-2.6
 	dh_builddeb -punivention-kernel-image-2.6
 
+ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-kernel-image-2.6-64gb -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-kernel-image-2.6-64gb
 	dh_builddeb -punivention-kernel-image-2.6-64gb
+endif
 
 	dh_gencontrol -punivention-kernel-headers-2.6 -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-kernel-headers-2.6
 	dh_builddeb -punivention-kernel-headers-2.6
 
+ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-kernel-headers-2.6-64gb -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-kernel-headers-2.6-64gb
 	dh_builddeb -punivention-kernel-headers-2.6-64gb
+endif
 
 	dh_gencontrol -punivention-kernel-image -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-kernel-image
 	dh_builddeb -punivention-kernel-image
 
+ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-kernel-image-64gb -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-kernel-image-64gb
 	dh_builddeb -punivention-kernel-image-64gb
+endif
 
 	dh_gencontrol -punivention-kernel-headers -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-kernel-headers
 	dh_builddeb -punivention-kernel-headers
 
+ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-kernel-headers-64gb -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-kernel-headers-64gb
 	dh_builddeb -punivention-kernel-headers-64gb
+endif
 
 	dh_gencontrol -punivention-avm-capi-fcpci-modules-2.6.18 -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-avm-capi-fcpci-modules-2.6.18
@@ -188,22 +196,27 @@ binary-arch: build install
 	dh_md5sums -punivention-vmware-player-modules-2.6.18
 	dh_builddeb -punivention-vmware-player-modules-2.6.18
 
+ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-kernel-image-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
 	dh_md5sums -punivention-kernel-image-2.6.18-64gb
 	dh_builddeb -punivention-kernel-image-2.6.18-64gb
+endif
 
 	dh_gencontrol -punivention-kernel-image-2.6.18-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
 	dh_md5sums -punivention-kernel-image-2.6.18-xen
 	dh_builddeb -punivention-kernel-image-2.6.18-xen
 
+ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-kernel-headers-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
 	dh_md5sums -punivention-kernel-headers-2.6.18-64gb
 	dh_builddeb -punivention-kernel-headers-2.6.18-64gb
+endif
 
 	dh_gencontrol -punivention-kernel-headers-2.6.18-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
 	dh_md5sums -punivention-kernel-headers-2.6.18-xen
 	dh_builddeb -punivention-kernel-headers-2.6.18-xen
 
+ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-kernel-source-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
 	dh_md5sums -punivention-kernel-source-2.6.18-64gb
 	dh_builddeb -punivention-kernel-source-2.6.18-64gb
@@ -227,6 +240,7 @@ binary-arch: build install
 	dh_gencontrol -punivention-vmware-player-modules-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
 	dh_md5sums -punivention-vmware-player-modules-2.6.18-64gb
 	dh_builddeb -punivention-vmware-player-modules-2.6.18-64gb
+endif
 
 	# Mobileclient kernel packages
 	dh_gencontrol -punivention-kernel-image-mobileclient-2.6.18 -u-VF:KernelVersion="${KERNELVERSION_MOBILECLIENT}"
@@ -265,6 +279,7 @@ binary-arch: build install
 	dh_md5sums -punivention-vmware-player-modules-mobileclient-2.6.18
 	dh_builddeb -punivention-vmware-player-modules-mobileclient-2.6.18
 
+ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-kernel-image-mobileclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MOBILECLIENT64}"
 	dh_md5sums -punivention-kernel-image-mobileclient-2.6.18-64gb
 	dh_builddeb -punivention-kernel-image-mobileclient-2.6.18-64gb
@@ -296,6 +311,7 @@ binary-arch: build install
 	dh_gencontrol -punivention-vmware-player-modules-mobileclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MOBILECLIENT64}"
 	dh_md5sums -punivention-vmware-player-modules-mobileclient-2.6.18-64gb
 	dh_builddeb -punivention-vmware-player-modules-mobileclient-2.6.18-64gb
+endif
 
 	# Managedclient kernel packages
 	dh_gencontrol -punivention-kernel-image-managedclient-2.6.18 -u-VF:KernelVersion="${KERNELVERSION_MANAGEDCLIENT}"
@@ -334,6 +350,7 @@ binary-arch: build install
 	dh_md5sums -punivention-vmware-player-modules-managedclient-2.6.18
 	dh_builddeb -punivention-vmware-player-modules-managedclient-2.6.18
 
+ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-kernel-image-managedclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MANAGEDCLIENT64}"
 	dh_md5sums -punivention-kernel-image-managedclient-2.6.18-64gb
 	dh_builddeb -punivention-kernel-image-managedclient-2.6.18-64gb
@@ -365,14 +382,17 @@ binary-arch: build install
 	dh_gencontrol -punivention-vmware-player-modules-managedclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MANAGEDCLIENT64}"
 	dh_md5sums -punivention-vmware-player-modules-managedclient-2.6.18-64gb
 	dh_builddeb -punivention-vmware-player-modules-managedclient-2.6.18-64gb
+endif
 
 	dh_gencontrol -punivention-drbd-modules-2.6.18 -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-drbd-modules-2.6.18
 	dh_builddeb -punivention-drbd-modules-2.6.18
 
+ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-drbd-modules-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
 	dh_md5sums -punivention-drbd-modules-2.6.18-64gb
 	dh_builddeb -punivention-drbd-modules-2.6.18-64gb
+endif
 
 	dh_gencontrol -punivention-drbd-modules-2.6.18-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
 	dh_md5sums -punivention-drbd-modules-2.6.18-xen
