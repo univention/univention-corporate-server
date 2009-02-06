@@ -819,10 +819,6 @@ msgstr "Paketpflege Einstellungen"
 msgid "Managed client package installation list"
 msgstr "Managed Client Paket Installationsliste"
 
-#: managedclientpackages.py:47
-msgid "Managed client package removal list"
-msgstr "Managed Client Paket Deinstallationsliste"
-
 #: managedclientpackages.py:58
 msgid "Policy: Packages managed client"
 msgstr "Richtlinie: Pakete Managed Client"
@@ -831,7 +827,7 @@ msgstr "Richtlinie: Pakete Managed Client"
 msgid "Packages managed client"
 msgstr "Pakete Managed Client"
 
-#: managedclientpackages.py:85
+#: managedclientpackages.py:85 managedclientpackages.py:47
 msgid "Managed client package removal list"
 msgstr "Managed Client Paket Deinstallationsliste"
 
@@ -839,13 +835,9 @@ msgstr "Managed Client Paket Deinstallationsliste"
 msgid "Client packages"
 msgstr "Client Pakete"
 
-#: masterpackages.py:46 masterpackages.py:75
+#: masterpackages.py:46 masterpackages.py:75 memberpackages.py:46 memberpackages.py:75 mobileclientpackages.py:46 mobileclientpackages.py:75 slavepackages.py:46 slavepackages.py:75
 msgid "Package installation list"
 msgstr "Master Pakete Installationsliste"
-
-#: masterpackages.py:47 masterpackages.py:85
-msgid "Package removal list"
-msgstr "Master Pakete Deinstallationsliste"
 
 #: masterpackages.py:58
 msgid "Policy: Packages Master"
@@ -859,11 +851,7 @@ msgstr "Pakete Master"
 msgid "Master Packages"
 msgstr "Master Pakete"
 
-#: memberpackages.py:46 memberpackages.py:75
-msgid "Package installation list"
-msgstr "Member Pakete Installationsliste"
-
-#: memberpackages.py:47 memberpackages.py:85
+#: memberpackages.py:47 memberpackages.py:85 masterpackages.py:47 masterpackages.py:85 mobileclientpackages.py:47 mobileclientpackages.py:85
 msgid "Package removal list"
 msgstr "Member Pakete Deinstallationsliste"
 
@@ -879,14 +867,6 @@ msgstr "Pakete Member"
 msgid "Member server packages"
 msgstr "Member Pakete"
 
-#: mobileclientpackages.py:46 mobileclientpackages.py:75
-msgid "Package installation list"
-msgstr "Mobile Client Pakete Installationsliste"
-
-#: mobileclientpackages.py:47 mobileclientpackages.py:85
-msgid "Package removal list"
-msgstr "Mobile Client Pakete Deinstallationsliste"
-
 #: mobileclientpackages.py:58
 msgid "Policy: Packages mobile client"
 msgstr "Richtlinie: Pakete Mobile Client"
@@ -897,7 +877,7 @@ msgstr "Pakete Mobile Client"
 
 #: nfsmounts.py:46
 msgid "Mount NFS shares"
-msgstr ""
+msgstr "Einzubindende NFS-Freigaben"
 
 #: nfsmounts.py:57
 msgid "Policy: NFS mounts"
@@ -1000,7 +980,7 @@ msgstr "Druckserver"
 msgid "Policy: Print server"
 msgstr "Richtlinie: Druckserver"
 
-#: pwhistory.py:46
+#: pwhistory.py:46 pwhistory.py:76
 msgid "History length"
 msgstr "History-Länge"
 
@@ -1019,10 +999,6 @@ msgstr "Richtlinie: Passwort"
 #: pwhistory.py:60 pwhistory.py:157
 msgid "Password Policy"
 msgstr "Passwort-Richtlinie"
-
-#: pwhistory.py:76
-msgid "History length"
-msgstr "History-Länge"
 
 #: registry.py:54
 msgid "Policy: Config Registry"
@@ -1116,10 +1092,6 @@ msgstr "Harte Grenze, die nicht überschritten werden kann."
 #: share_userquota.py:168
 msgid "Quota"
 msgstr "Speicherplatzbegrenzung für Benutzer"
-
-#: slavepackages.py:46 slavepackages.py:75
-msgid "Package installation list"
-msgstr "Slave Pakete Installationsliste"
 
 #: slavepackages.py:47 slavepackages.py:85
 msgid "Package Removal list"
@@ -1322,9 +1294,6 @@ msgstr "RAM auf der Grafikkarte in kB"
 
 #~ msgid "Password-Policy"
 #~ msgstr "Passwort"
-
-#~ msgid "Mouse protocol"
-#~ msgstr "Maus-Treiber"
 
 #~ msgid "hSync"
 #~ msgstr "Horizontale Zeilenfrequenz"

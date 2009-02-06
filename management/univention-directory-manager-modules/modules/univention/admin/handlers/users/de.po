@@ -160,10 +160,6 @@ msgstr "Passwort-Ablaufdatum"
 msgid "Change password on next login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
-#: user.py:257
-msgid "Change password on next login"
-msgstr "Passwort bei der nächsten Anmeldung ändern"
-
 #: user.py:267
 msgid "Disabled"
 msgstr "Deaktiviert"

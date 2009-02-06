@@ -169,10 +169,6 @@ msgstr "Drucker-Objekt(e) suchen"
 msgid "Printer share"
 msgstr "Druckerfreigabe"
 
-#: print.py:110
-msgid "Price per print job"
-msgstr "Preis pro Druckauftrag"
-
 #: share.py:44
 msgid "manual"
 msgstr "manuell"

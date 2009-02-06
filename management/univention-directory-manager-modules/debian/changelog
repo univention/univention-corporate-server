@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.27-3) unstable; urgency=low
+
+  * Collate duplicated entries (Bug #12861)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  6 Feb 2009 12:02:19 +0100
+
 univention-directory-manager-modules (3.0.27-2) unstable; urgency=low
 
   * Update translations (Bug #12861)
