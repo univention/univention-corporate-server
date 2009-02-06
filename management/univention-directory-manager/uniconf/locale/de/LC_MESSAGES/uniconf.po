@@ -43,7 +43,7 @@ msgstr "Assistenten"
 #: main.py:127 unidialog.py:108
 msgid ""
 "Common tasks like administration of users, groups, servers, desktops and "
-"printers can easily be handled using the wizards."
+"printers can easily be handled by using the wizards."
 msgstr ""
 "Alltägliche Aufgaben wie die Verwaltung von Benutzern, Gruppen, Server- oder "
 "Desktopsystemen können direkt über die Assistenten (Benutzerverwaltung, "
@@ -418,7 +418,7 @@ msgid "none"
 msgstr "Keine"
 
 #: modbrowse.py:397 modedit.py:4030 modwizard.py:931
-msgid "property"
+msgid "Property"
 msgstr "Eigenschaft"
 
 #: modbrowse.py:403 modwizard.py:930
@@ -434,7 +434,7 @@ msgid "show"
 msgstr "Anzeigen"
 
 #: modbrowse.py:406 modwizard.py:938
-msgid "results per page"
+msgid "Results per page"
 msgstr "Ergebnisse pro Seite"
 
 #: modbrowse.py:406 modwizard.py:938
@@ -1494,11 +1494,11 @@ msgid "Select Type"
 msgstr "Typ auswählen:"
 
 #: modwizard.py:931
-msgid "choose property"
+msgid "Choose property"
 msgstr "Wählen Sie die Eigenschaft"
 
 #: modwizard.py:940
-msgid "search"
+msgid "Search"
 msgstr "Suchen"
 
 #: modwizard.py:940
@@ -1533,6 +1533,31 @@ msgstr "%d Suchergebnis(se)"
 msgid "Do with selected objects...."
 msgstr "Die ausgewählten Objekten ..."
 
+#: unidialog.py:102
+msgid "Welcome to Univention Directory Manager"
+msgstr "Willkommen zu Univention Directory Manager"
+
+#: unidialog.py:104
+msgid ""
+"Univention Directory Manager enables you to manage all components of your "
+"Univention Corporate Server (UCS) Domain."
+msgstr ""
+"Univention Directory Manager ermöglicht Ihnen die Administration aller "
+"Elemente Ihrer Univention Corporate Server (UCS) Domäne."
+
+#: unidialog.py:110
+msgid ""
+"Besides everything you can do with the wizards, the navigation provides you "
+"also with an interface for many other settings, including structural extensions "
+"like containers, organizational units and connected policies, advanced DNS "
+"and DHCP configuration or settings for Univention Directory Manager itself."
+msgstr ""
+"Neben allen Möglichkeiten, die die Assistenten bieten, erlaubt die "
+"Navigation die Administration der gesamten Domänenstruktur einschliesslich "
+"Containern, Organisationseinheiten und zugehörigen Richtlinien, die "
+"fortgeschrittene Verwaltung von DNS und DHCP oder die Konfiguration von "
+"Univention Directory Manager."
+
 #: unidialog.py:111
 msgid "Univention Management Console"
 msgstr "Univention Management Console"
@@ -1543,7 +1568,7 @@ msgid ""
 "Management Console</a> provides the possibilty to configure local settings "
 "on every UCS managed machine, e.g. network configuration or local software-"
 "installation. A link to the Univention Management Console for a machine can "
-"be found at the UCS object in the computer wizard."
+"be found at the computer object wizard."
 msgstr ""
 "<a target=parent href=/univention-management-console/>Univention Management "
 "Console</a> ermöglicht die Konfiguration von lokalen Systemeinstellungen wie "

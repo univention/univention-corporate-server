@@ -124,7 +124,7 @@ class dialog(unimodule.unimodule):
 
 				component_texts = []
 				component_texts.append([_("Wizards"),
-						       _("Common tasks like administration of users, groups, servers, desktops and printers can easily be handled using the wizards.")])
+						       _("Common tasks like administration of users, groups, servers, desktops and printers can easily be handled by using the wizards.")])
 				component_texts.append([_("Navigation"),
 						       _("Besides everything you can do with the wizards, the navigation provides you also an interface for many other settings, including structural extensions like containers, organizational units and connected policies, advanced DNS and DHCP configuration or settings for Univention Directory Manager itself.")])
 				component_texts.append([_("Console"),_("The <a target=parent href=/console/>Univention Console</a> provides the possibilty to configure local settings on every UCS managed machine, e.g. network configuration or local software-installation. A link to the Univention Console for a machine can be found at the UCS object in the computer wizard.")])

@@ -949,7 +949,7 @@ class modwizard(unimodule.unimodule):
 			self.search_input=text('',{},{'text':['']})
 
 		self.search_property_button=button(_('go'),{},{'helptext':_('go ahead')})
-		self.search_property_select=question_select(_('property'),{'width':'200'},{'helptext':_('choose property'),'choicelist':search_properties,'button':self.search_property_button})
+		self.search_property_select=question_select(_('Property'),{'width':'200'},{'helptext':_('Choose property'),'choicelist':search_properties,'button':self.search_property_button})
 
 		searchcols.append(tablecol('',{'type':'wizard_layout'},{'obs':[self.search_property_select]}))
 		if child_ids:
@@ -963,7 +963,7 @@ class modwizard(unimodule.unimodule):
 			searchcols.append(tablecol('',{'type':'wizard_layout'},{'obs':[self.search_input]}))
 			rows.append(tablerow("",{},{"obs":[tablecol('',{'colspan':'2'},{'obs':[table('',{},{'obs':[tablerow("",{},{"obs":searchcols})]})]})]}))
 
-		self.search_visible=question_text(_('results per page'), {'width':'100', 'validregex':'\d*', 'invalidmessage':str(_('Please enter a number.'))},
+		self.search_visible=question_text(_('Results per page'), {'width':'100', 'validregex':'\d*', 'invalidmessage':str(_('Please enter a number.'))},
 						  {'usertext': str(visible)})
 		self.search_button=button(_('search'),{'icon':'/style/ok.gif'},{'helptext':_('Display (new) search results')})
 		self.reset_button=button(_('reset'),{'icon':'/style/cancel.gif'},{'helptext':_("reset search")})

@@ -105,10 +105,10 @@ class unidialog(unimodule.unimodule):
 
 				component_texts = []
 				component_texts.append([_("Wizards"),
-						       _("Common tasks like administration of users, groups, servers, desktops and printers can easily be handled using the wizards.")])
+						       _("Common tasks like administration of users, groups, servers, desktops and printers can easily be handled by using the wizards.")])
 				component_texts.append([_("Navigation"),
-						       _("Besides everything you can do with the wizards, the navigation provides you also an interface for many other settings, including structural extensions like containers, organizational units and connected policies, advanced DNS and DHCP configuration or settings for Univention Directory Manager itself.")])
-				component_texts.append([_("Univention Management Console"),_("The <a target=parent href=/univention-management-console/>Univention Management Console</a> provides the possibilty to configure local settings on every UCS managed machine, e.g. network configuration or local software-installation. A link to the Univention Management Console for a machine can be found at the UCS object in the computer wizard.")])
+						       _("Besides everything you can do with the wizards, the navigation provides you also with an interface for many other settings, including structural extensions like containers, organizational units and connected policies, advanced DNS and DHCP configuration or settings for Univention Directory Manager itself.")])
+				component_texts.append([_("Univention Management Console"),_("The <a target=parent href=/univention-management-console/>Univention Management Console</a> provides the possibilty to configure local settings on every UCS managed machine, e.g. network configuration or local software-installation. A link to the Univention Management Console for a machine can be found at the computer object wizard.")])
 				if self.save.get( 'personal_use' ) == '1':
 					component_texts.append([_("License"),_("You are using the \"Free for personal use\" edition. Find more information on the about page.")])
 				component_texts.append([_("Further Information"),_("For more information about UCS, Univention Directory Manager and other Univention Tools take a look at the documentation or the online-forum on <a target=parent href=http://www.univention.de>www.univention.de</a>.")])

@@ -4067,7 +4067,7 @@ class modedit(unimodule.unimodule):
 							self.search_input=text('',{},{'text':['']})
 
 						self.search_property_button=button('go',{},{'helptext':_('go ahead')})
-						self.search_property_select=question_select(_('property'),{},{'helptext':_('select attribute'),'choicelist':search_properties,'button':self.search_property_button})
+						self.search_property_select=question_select(_('Property'),{},{'helptext':_('select attribute'),'choicelist':search_properties,'button':self.search_property_button})
 
 						# make fields available in apply
 						search_property_select=self.search_property_select

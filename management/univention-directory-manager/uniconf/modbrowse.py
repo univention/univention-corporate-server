@@ -402,7 +402,7 @@ class modbrowse(unimodule.unimodule):
 				self.search_input=text('',{},{'text':['']})
 
 			self.search_property_button=button('go',{},{'helptext':'go'})# TODO helptext
-			self.search_property_select=question_select(_('property'),{'width':'200'},{'helptext':_('property'),'choicelist':search_properties,'button':self.search_property_button}) # TODO helptext
+			self.search_property_select=question_select(_('property'),{'width':'200'},{'helptext':_('Property'),'choicelist':search_properties,'button':self.search_property_button}) # TODO helptext
 
 			# make fields available in apply
 			search_property_select=self.search_property_select
@@ -411,7 +411,7 @@ class modbrowse(unimodule.unimodule):
 		self.search_type_button=button(_('go'),{},{'helptext':_('go')})# TODO helptexs
 		self.search_type_select=question_select(_('type'),{'width':'200'},{"helptext":_('type'),"choicelist":search_types,'button':self.search_type_button})# TODO helptext
 		self.search_button=button(_('show'),{'icon':'/style/ok.gif'},{'helptext':_('show')})# TODO helptext
-		self.search_visible=question_text(_('results per page'), {'width':'100', 'validregex':'\d*', 'invalidmessage':str(_('Please enter a number.'))},
+		self.search_visible=question_text(_('Results per page'), {'width':'100', 'validregex':'\d*', 'invalidmessage':str(_('Please enter a number.'))},
 						  {'usertext': str(visible)})
 
 		searchcols.append(tablecol('',{'type':'browse_layout'},{'obs':[self.search_type_select]}))
