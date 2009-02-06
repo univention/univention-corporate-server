@@ -1533,18 +1533,6 @@ msgstr "%d Suchergebnis(se)"
 msgid "Do with selected objects...."
 msgstr "Die ausgewählten Objekten ..."
 
-#: unidialog.py:102
-msgid "Welcome to Univention Directory Manager"
-msgstr "Willkommen zu Univention Directory Manager"
-
-#: unidialog.py:104
-msgid ""
-"Univention Directory Manager enables you to manage all components of your "
-"Univention Corporate Server (UCS) Domain."
-msgstr ""
-"Univention Directory Manager ermöglicht Ihnen die Administration aller "
-"Elemente Ihrer Univention Corporate Server (UCS) Domäne."
-
 #: unidialog.py:110
 msgid ""
 "Besides everything you can do with the wizards, the navigation provides you "

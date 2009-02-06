@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.6-4) unstable; urgency=low
+
+  * Collate duplicated i18n strings.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  6 Feb 2009 11:50:34 +0100
+
 univention-directory-manager (6.0.6-3) unstable; urgency=low
 
   * Update English translations
