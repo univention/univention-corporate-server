@@ -272,7 +272,7 @@ class question_syntax(uniconf.uniconf):
 				required=" (*)"
 
 			self.subfields.append(question_secure("%s%s" % (_("Password"), required),self.atts,{"usertext":"","helptext":_("A password must have at least 8 characters")}))
-			self.subfields.append(question_secure("%s%s" % (_("Password (again)"), required),self.atts,{"usertext":"","helptext":_("Please retype the password to rule out typos.")}))
+			self.subfields.append(question_secure("%s%s" % (_("Password (retype)"), required),self.atts,{"usertext":"","helptext":_("Please retype the password to rule out typos.")}))
 
 			rows=[]
 			rows.append(tablerow("",{},{"obs":[\

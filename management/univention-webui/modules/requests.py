@@ -341,10 +341,10 @@ class session:
 				atts[ att ] = self.save.get( att , False)
 
 		if len(info) > 0 and info[0] == univention.admin.uexceptions.ldapError:
-			return genErrorMessage(_("Can not process LDAP-Request:"),["%s: %s"%(_('LDAP error'),info[1]),_("You need to login again.")], atts = atts)
+			return genErrorMessage(_("Can not process LDAP request:"),["%s: %s"%(_('LDAP error'),info[1]),_("You need to login again.")], atts = atts)
 		else:
 			lines = traceback.format_exception(*info)
-			return genErrorMessage(_("A Python Exception has occured:"), lines, genErrorMailto(lines), atts = atts)
+			return genErrorMessage(_("A Python exception has occured:"), lines, genErrorMailto(lines), atts = atts)
 
 	# This method takes the input XML and session number as input and returns
 	# the output XML.

@@ -55,7 +55,7 @@ msgid "actual result"
 msgstr "Beobachtetes Ergebnis"
 
 #: requests.py:344
-msgid "Can not process LDAP-Request:"
+msgid "Can not process LDAP request:"
 msgstr "LDAP-Anfrage konnte nicht verarbeitet werden:"
 
 #: requests.py:344
@@ -67,7 +67,7 @@ msgid "You need to login again."
 msgstr "Bitte melden Sie sich erneut an."
 
 #: requests.py:347
-msgid "A Python Exception has occured:"
+msgid "A Python exception has occured:"
 msgstr "Ein Python-Fehler ist aufgetreten:"
 
 #: requests.py:354
@@ -138,7 +138,7 @@ msgid "A password must have at least 8 characters"
 msgstr "Ein Passwort muss mindestens 8 Zeichen lang sein."
 
 #: syntax.py:275
-msgid "Password (again)"
+msgid "Password (retype)"
 msgstr "Passwort (Wiederholung)"
 
 #: syntax.py:275
