@@ -313,15 +313,15 @@ class base(object):
 			raise univention.admin.uexceptions.noObject
 
 		if self.dn.lower() == newdn.lower():
-			raise univention.admin.uexceptions.ldapError, _('Move not possible: old and new DN are the same.')
+			raise univention.admin.uexceptions.ldapError, _('Moving not possible: old and new DN are identical.')
 		if self.dn.lower() == newdn.lower()[-len(self.dn):]:
-			raise univention.admin.uexceptions.ldapError, _('Move into subcontainer of self not allowed.')
+			raise univention.admin.uexceptions.ldapError, _("Moving into one's own sub container not allowed.")
 
 		goaldn = newdn[newdn.find(',')+1:]
 		goalmodule = univention.admin.modules.identifyOne(goaldn, self.lo.get(goaldn))
 		goalmodule = univention.admin.modules.get(goalmodule)
 		if not goalmodule or not hasattr(goalmodule,'childs') or not goalmodule.childs == 1:
-			raise univention.admin.uexceptions.invalidOperation, _("Destination object can't have childs.")
+			raise univention.admin.uexceptions.invalidOperation, _("Destination object can't have sub objects.")
 
 		if univention.admin.modules.supports(self.module,'subtree_move'):
 			# check if is subtree:
@@ -348,7 +348,7 @@ class base(object):
 						subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
 						if not subobject or not (univention.admin.modules.supports(submodule,'move') or
 												 univention.admin.modules.supports(submodule,'subtree_move')):
-							raise univention.admin.uexceptions.invalidOperation, _('Unable to move Object %s (%s) in Subtree, trying to undo move.'
+							raise univention.admin.uexceptions.invalidOperation, _('Unable to move object %s (%s) in sub tree, trying to revert changes.'
 																				   % (subolddn[:subolddn.find(',')],univention.admin.modules.identifyOne(subolddn, suboldattrs)))
 						subobject.open()
 						subobject.move(subnewdn)
@@ -386,7 +386,7 @@ class base(object):
 					subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
 					if not subobject or not (univention.admin.modules.supports(submodule, 'move') or
 								 univention.admin.modules.supports(submodule, 'subtree_move')):
-						raise univention.admin.uexceptions.invalidOperation, _('Unable to move Object %s (%s) in Subtree, trying to undo move.'
+						raise univention.admin.uexceptions.invalidOperation, _('Unable to move object %s (%s) in subtree, trying to revert changes.'
 												       % (subolddn[:subolddn.find(',')], univention.admin.modules.identifyOne(subolddn, suboldattrs)))
 					subobject.open()
 					subobject._move(subnewdn)
@@ -1162,7 +1162,7 @@ class simpleComputer( simpleLdap ):
 			subnet = string.join( subnet, '.' ) + '.'
 			ipPart = ip.replace( subnet, '' )
 			if ipPart == ip:
-				raise univention.admin.uexceptions.missingInformation, _( 'Reverse Zone and IP address incompatible' )
+				raise univention.admin.uexceptions.missingInformation, _( 'Reverse zone and IP address are incompatible.' )
 
 			pointer = string.split( ipPart, '.' )
 			pointer.reverse( )
@@ -1699,7 +1699,7 @@ class simpleComputer( simpleLdap ):
 				try:
 					self.__remove_dns_forward_object( self[ 'name' ], dn, None )
 				except Exception,e:
-					self.exceptions.append([_('DNS Forward Zone'), _('delete'), e])
+					self.exceptions.append([_('DNS forward zone'), _('delete'), e])
 
 		if self['dnsEntryZoneReverse']:
 			for dnsEntryZoneReverse in self['dnsEntryZoneReverse']:
@@ -1707,7 +1707,7 @@ class simpleComputer( simpleLdap ):
 				try:
 					self.__remove_dns_reverse_object( self[ 'name' ], dn , ip )
 				except Exception,e:
-					self.exceptions.append([_('DNS Reverse Zone'), _('delete'), e])
+					self.exceptions.append([_('DNS reverse zone'), _('delete'), e])
 
 		if self['dhcpEntryZone']:
 			for dhcpEntryZone in self['dhcpEntryZone']:
@@ -1876,8 +1876,8 @@ class simplePolicy(simpleLdap):
 			self.descriptions[ '_view_referencing_objects' ] = prop
 
 			# add property to layout
-			tab = univention.admin.tab( _( 'Referencing Objects' ),
-										_( 'Objects that reference this policy object' ),
+			tab = univention.admin.tab( _( 'Referencing objects' ),
+										_( 'Objects referencing this policy object' ),
 										[ [ univention.admin.field( '_view_referencing_objects' ) ] ] )
 			self.layout.append( tab )
 

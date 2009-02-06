@@ -558,7 +558,7 @@ def wizardPath(module_name):
 def wizardOperations(module_name):
 	'''return wizard operations supported by module'''
 	module = get(module_name)
-	return getattr(module, 'wizardoperations', {"find":[_("Find"), _("Find Object(s)")], "add":[_("Add"), _("Add Object(s)")]})
+	return getattr(module, 'wizardoperations', {"find":[_("Search"), _("Search object(s)")], "add":[_("Add"), _("Add object(s)")]})
 
 def childModules(module_name):
 	'''return child modules if module is a super module'''

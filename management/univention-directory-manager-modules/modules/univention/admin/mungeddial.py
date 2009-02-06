@@ -52,7 +52,7 @@ properties = {
 			identifies=0,
 		),
 	'CtxCfgTSLogon': univention.admin.property(
-			short_description=_('Allow Logon to Terminal Server'),
+			short_description=_('Allow Windows terminal server login'),
 			long_description=(''),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -64,7 +64,7 @@ properties = {
 			identifies=0,
 			),
 	'CtxCfgClientDrivers': univention.admin.property(
-			short_description=_('Connect client drives at Logon'),
+			short_description=_('Connect client drives at login'),
 			long_description=(''),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -76,7 +76,7 @@ properties = {
 			identifies=0,
 			),
 	'CtxCfgClientPrinters': univention.admin.property(
-			short_description=_('Connect client printers at Logon'),
+			short_description=_('Connect client printers at login'),
 			long_description=(''),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -88,7 +88,7 @@ properties = {
 			identifies=0,
 			),
 	'CtxCfgDefaultClientPrinters': univention.admin.property(
-			short_description=_('Default to main client printer'),
+			short_description=_('Make client default printer the default printer for Windows terminal services'),
 			long_description=(''),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -124,7 +124,7 @@ properties = {
 			identifies=0,
 		),
 	'CtxShadow': univention.admin.property(
-			short_description=_('CTX Shadow'),
+			short_description=_('CTX Mirroring'),
 			long_description=(''),
 			syntax=univention.admin.syntax.CTX_Shadow,
 			multivalue=0,
@@ -136,7 +136,7 @@ properties = {
 			identifies=0,
 		),
 	'CtxBrokenSession' : univention.admin.property(
-			short_description = _( 'Broken or Timed out Session' ),
+			short_description = _( 'Terminated or timed-out sessions' ),
 			long_description = ( ''),
 			syntax = univention.admin.syntax.CTX_BrokenTimedoutSession,
 			multivalue = 0,
@@ -148,7 +148,7 @@ properties = {
 			identifies = 0,
 		),
 	'CtxReconnectSession' : univention.admin.property(
-			short_description = _( 'Reconnect Session' ),
+			short_description = _( 'Reconnect session' ),
 			long_description = ( '' ),
 			syntax = univention.admin.syntax.CTX_ReconnectSession,
 			multivalue = 0,
@@ -160,7 +160,7 @@ properties = {
 			identifies = 0,
 		),
 	'CtxMaxConnectionTime': univention.admin.property(
-			short_description=_('CTX Maximum Connection Time'),
+			short_description=_('CTX maximum connection time'),
 			long_description=(''),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -172,7 +172,7 @@ properties = {
 			identifies=0,
 		),
 	'CtxMaxDisconnectionTime': univention.admin.property(
-			short_description=_('CTX Maximum Disconnection Time'),
+			short_description=_('CTX maximum disconnection time'),
 			long_description=(''),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -184,7 +184,7 @@ properties = {
 			identifies=0,
 		),
 	'CtxMaxIdleTime': univention.admin.property(
-			short_description=_('CTX Maximum Idle Time'),
+			short_description=_('CTX maximum idle time'),
 			long_description=(''),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -196,7 +196,7 @@ properties = {
 			identifies=0,
 		),
 	'CtxKeyboardLayout': univention.admin.property(
-			short_description=_('Keyboard Layout'),
+			short_description=_('Keyboard layout'),
 			long_description=(''),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -208,7 +208,7 @@ properties = {
 			identifies=0,
 		),
 	'CtxMinEncryptionLevel': univention.admin.property(
-			short_description=_('CTX Minimal Encryption Level'),
+			short_description=_('CTX minimal encryption level'),
 			long_description=(''),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -220,7 +220,7 @@ properties = {
 			identifies=0,
 		),
 	'CtxWorkDirectory': univention.admin.property(
-			short_description=_('Start Program Work Directory'),
+			short_description=_('Working directory for startup command'),
 			long_description=(''),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -244,7 +244,7 @@ properties = {
 			identifies=0,
 		),
 	'CtxWFHomeDir': univention.admin.property(
-			short_description=_('Terminal Server Base Directory'),
+			short_description=_('Home directory for Windows terminal services'),
 			long_description=(''),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -256,7 +256,7 @@ properties = {
 			identifies=0,
 		),
 	'CtxWFHomeDirDrive': univention.admin.property(
-			short_description=_('Terminal Server Base Directory Drive Letter'),
+			short_description=_('Home drive for Windows terminal services'),
 			long_description=(''),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -268,7 +268,7 @@ properties = {
 			identifies=0,
 		),
 	'CtxWFProfilePath': univention.admin.property(
-			short_description=_('Windows Terminal Server Profile Path'),
+			short_description=_('Profile directory for Windows terminal services'),
 			long_description=(''),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -280,7 +280,7 @@ properties = {
 			identifies=0,
 		),
 	'CtxStartprogramClient': univention.admin.property(
-			short_description=_('Start Program Use Client Configuration'),
+			short_description=_('Use client configuration for startup command'),
 			long_description=(''),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -292,7 +292,7 @@ properties = {
 			identifies=0,
 		),
 	'CtxInitialProgram': univention.admin.property(
-			short_description=_('Start Program Commandline'),
+			short_description=_('Startup command'),
 			long_description=(''),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,

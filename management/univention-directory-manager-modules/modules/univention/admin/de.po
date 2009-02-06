@@ -25,11 +25,11 @@ msgid "Custom"
 msgstr "Benutzerdefiniert"
 
 #: modules.py:557
-msgid "Find"
+msgid "Search"
 msgstr "Suchen"
 
 #: modules.py:557
-msgid "Find Object(s)"
+msgid "Search object(s)"
 msgstr "Objekt(e) suchen"
 
 #: modules.py:557
@@ -37,7 +37,7 @@ msgid "Add"
 msgstr "Hinzufügen"
 
 #: modules.py:557
-msgid "Add Object(s)"
+msgid "Add object(s)"
 msgstr "Objekt(e) hinzufügen"
 
 #: mungeddial.py:43
@@ -45,19 +45,19 @@ msgid "CTX Present"
 msgstr "CTX Present"
 
 #: mungeddial.py:54
-msgid "Allow Logon to Terminal Server"
+msgid "Allow Windows terminal server login"
 msgstr "Anmeldung am Terminalserver zulassen"
 
 #: mungeddial.py:65
-msgid "Connect client drives at Logon"
+msgid "Connect client drives at login"
 msgstr "Client-Laufwerke beim Anmelden verbinden"
 
 #: mungeddial.py:76
-msgid "Connect client printers at Logon"
+msgid "Connect client printers at login"
 msgstr "Client-Drucker beim Anmelden verbinden"
 
 #: mungeddial.py:87
-msgid "Default to main client printer"
+msgid "Make client default printer the default printer for Windows terminal services"
 msgstr "Standardmäßig der Client Hauptdrucker"
 
 #: mungeddial.py:98
@@ -69,39 +69,39 @@ msgid "CTX Callback"
 msgstr "CTX Callback"
 
 #: mungeddial.py:120
-msgid "CTX Shadow"
+msgid "CTX Mirroring"
 msgstr "CTX Spiegelung"
 
 #: mungeddial.py:131
-msgid "Broken or Timed out Session"
+msgid "Terminated or timed-out sessions"
 msgstr "Beendete oder abgelaufene Verbindungen"
 
 #: mungeddial.py:142
-msgid "Reconnect Session"
+msgid "Reconnect session"
 msgstr "Wiederherstellung von beendeten Verbindungen"
 
 #: mungeddial.py:153
-msgid "CTX Maximum Connection Time"
+msgid "CTX maximum connection time"
 msgstr "CTX maximale Verbindungsdauer"
 
 #: mungeddial.py:164
-msgid "CTX Maximum Disconnection Time"
+msgid "CTX maximum disconnect time"
 msgstr "CTX maximale Verbindungstrennungsdauer"
 
 #: mungeddial.py:175
-msgid "CTX Maximum Idle Time"
+msgid "CTX maximum idle time"
 msgstr "CTX Maximale Untätigkeitsdauer"
 
 #: mungeddial.py:186
-msgid "Keyboard Layout"
+msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
 #: mungeddial.py:197
-msgid "CTX Minimal Encryption Level"
+msgid "CTX minimal encryption level"
 msgstr "CTX minimales Verschlüssungslevel"
 
 #: mungeddial.py:208
-msgid "Start Program Work Directory"
+msgid "Working directory for startup command"
 msgstr "Startprogramm Arbeitsverzeichnis"
 
 #: mungeddial.py:219
@@ -109,23 +109,23 @@ msgid "CTX NW Logon Server"
 msgstr "CTX NW Logon Server"
 
 #: mungeddial.py:230
-msgid "Terminal Server Base Directory"
+msgid "Home directory for Windows terminal services"
 msgstr "Basisverzeichnis des Terminalservers"
 
 #: mungeddial.py:241
-msgid "Terminal Server Base Directory Drive Letter"
+msgid "Home drive for Windows terminal services"
 msgstr "Laufwerksbuchstabe für das Basisverzeichnis des Terminalservers"
 
 #: mungeddial.py:252
-msgid "Windows Terminal Server Profile Path"
+msgid "Profile directory for Windows terminal services"
 msgstr "Windows Terminalserver Profilpfad"
 
 #: mungeddial.py:263
-msgid "Start Program Use Client Configuration"
+msgid "Use client configuration for startup command"
 msgstr "Client Konfiguration übernehmen für das Startprogramm"
 
 #: mungeddial.py:274
-msgid "Start Program Commandline"
+msgid "Startup command"
 msgstr "Startprogramm Befehlszeile"
 
 #: mungeddial.py:285

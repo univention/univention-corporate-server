@@ -26,26 +26,26 @@ msgid "The property %s is required"
 msgstr "Die Eigenschaft %s wird benötigt."
 
 #: __init__.py:314
-msgid "Move not possible: old and new DN are the same."
+msgid "Moving not possible: old and new DN are identical."
 msgstr "Verschieben ist nicht möglich: alter und neuer DN sind identisch."
 
 #: __init__.py:316
-msgid "Move into subcontainer of self not allowed."
+msgid "Move into one's own sub container is not allowed."
 msgstr "Verschieben in einen Container innerhalb des zu verschiebenden Objektes nicht erlaubt."
 
 #: __init__.py:322
-msgid "Destination object can't have childs."
+msgid "Destination object can't have sub objects."
 msgstr "Zielobjekt kann keine Unterobjekte haben."
 
 #: __init__.py:349 __init__.py:387
 #, python-format
-msgid "Unable to move Object %s (%s) in Subtree, trying to undo move."
+msgid "Unable to move object %s (%s) in sub tree, trying to revert changes."
 msgstr ""
 "Das Object %s (%s) im Teilbaum kann nicht verschoben werden, Versuche den "
 "Ausgangzustand wiederherzustellen"
 
 #: __init__.py:1133
-msgid "Reverse Zone and IP address incompatible"
+msgid "Reverse zone and IP address are incompatible."
 msgstr "Reverse Zone und IP-Adresse sind inkompatibel."
 
 #: __init__.py:1428
@@ -57,7 +57,7 @@ msgstr ""
 "MAC-Adresse enthalten."
 
 #: __init__.py:1636
-msgid "DNS Forward Zone"
+msgid "DNS forward zone"
 msgstr "DNS Forward Zone"
 
 # __init__.py:chen"024
@@ -66,7 +66,7 @@ msgid "delete"
 msgstr "Löschen"
 
 #: __init__.py:1644
-msgid "DNS Reverse Zone"
+msgid "DNS reverse zone"
 msgstr "DNS Reverse Zone"
 
 #: __init__.py:1652
@@ -74,11 +74,11 @@ msgid "DHCP"
 msgstr "DHCP"
 
 #: __init__.py:1812
-msgid "Referencing Objects"
+msgid "Referencing objects"
 msgstr "Referenzierende Objekte"
 
 #: __init__.py:1813
-msgid "Objects that reference this policy object"
+msgid "Objects referencing this policy object"
 msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 
 #~ msgid "There is more than one DNS Forward-Zone-Entry."
