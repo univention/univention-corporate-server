@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.29-1) unstable; urgency=low
+
+  * removed duplicated entries. Bug #12861
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat,  7 Feb 2009 12:46:46 +0100
+
 univention-directory-manager-modules (3.0.28-1) unstable; urgency=low
 
   * modify the dhcp object if the ip address was changed. Bug #9908
