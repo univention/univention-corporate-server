@@ -1099,6 +1099,14 @@ class simpleComputer( simpleLdap ):
 				object = univention.admin.objects.get( univention.admin.modules.get( 'dhcp/host' ), self.co, self.lo, position = self.position, dn = dn )
 				object.remove( )
 
+		elif ip:
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Remove the following ip: "%s"' % ip )
+			results = self.lo.search( base = tmppos.getBase( ), scope = 'domain', attr = [ 'univentionDhcpFixedAddress' ], filter = 'univentionDhcpFixedAddress=%s' % ip, unique = 0 )
+			for dn, attr in results:
+				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, '... done' )
+				object = univention.admin.objects.get( univention.admin.modules.get( 'dhcp/host' ), self.co, self.lo, position = self.position, dn = dn )
+				object.remove( )
+
 	def __split_dhcp_line( self, entry ):
 
 		mac = entry.split( ' ' )[ -1 ]
@@ -1361,17 +1369,21 @@ class simpleComputer( simpleLdap ):
 
 		changed_ip = False
 		for entry in self.__changes[ 'ip' ][ 'remove' ]:
-			self.__remove_from_dhcp_object(  ip = entry )
+			# self.__remove_from_dhcp_object(  ip = entry )
 			if not self.__multiip:
 				if len( self.__changes[ 'ip' ][ 'add' ]) > 0:
 					# we change
 					self.__modify_dns_forward_object( self[ 'name' ], None, self.__changes[ 'ip' ][ 'add' ][ 0 ], self.__changes[ 'ip' ][ 'remove' ][ 0 ] )
 					changed_ip = True
+					if len (self[ 'mac' ] ) > 0:
+						self.__remove_from_dhcp_object(  None, self[ 'name' ], entry,  self[ 'mac' ][ 0 ])
+						self.__modify_dhcp_object( None, self[ 'name' ], self.__changes[ 'ip' ][ 'add' ][ 0 ],  self[ 'mac' ][ 0 ] )
 				else:
 					# remove the dns objects
 					self.__remove_dns_forward_object( self[ 'name' ], None, entry )
 			else:
 				self.__remove_dns_forward_object( self[ 'name' ], None, entry )
+			 	self.__remove_from_dhcp_object(  ip = entry )
 
 			self.__remove_dns_reverse_object( self[ 'name' ], None, entry )
 
@@ -1790,7 +1802,7 @@ class simpleComputer( simpleLdap ):
 						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1:
 							self['dnsEntryZoneReverse'] = '%s %s' % (self.network_object['dnsEntryZoneReverse'], self[ 'ip' ][ 0 ] )
 					if self.network_object['dhcpEntryZone']:
-						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1 and self.has_key('mac') and self[ 'mac' ] and len( self[ 'mac' ] ) == 1:
+						if self.has_key( 'ip' ) and self[ 'ip' ] and len( self[ 'ip' ]) == 1 and self.has_key('mac') and self[ 'mac' ] and len( self[ 'mac' ] ) > 0:
 							self['dhcpEntryZone'] = '%s %s %s' % ( self.network_object['dhcpEntryZone'], self[ 'ip' ][ 0 ], self[ 'mac' ][ 0 ] )
 						else:
 							self.__saved_dhcp_entry = self.network_object['dhcpEntryZone']
