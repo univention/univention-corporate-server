@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.18 (3.0.1-2) unstable; urgency=low
+
+  * update kernel image. Bug #12593
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat,  7 Feb 2009 08:11:22 +0100
+
 univention-kernel-image-2.6.18 (3.0.1-1) unstable; urgency=low
 
   * don't build meta packages for the bigmem (64gb) kernel on 64 bit
