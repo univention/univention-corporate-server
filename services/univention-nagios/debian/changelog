@@ -1,4 +1,4 @@
-univention-nagios (2.0.1-1) unstable; urgency=low
+univention-nagios (2.0.1-2) unstable; urgency=low
 
   * set the nrpe connection time out via UCR. Bug #13002
 

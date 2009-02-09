@@ -34,5 +34,6 @@ Variables: auth/user/services
 Variables: auth/admin/services
 Variables: auth/nagios/accessfile
 
-Type: etc/nagios-plugins/config/check_nrpe.cfg
+Type: file
+File: etc/nagios-plugins/config/check_nrpe.cfg
 Variables: nagios/plugin/check_nrpe/timeout
