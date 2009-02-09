@@ -4,10 +4,12 @@
 
 set -e
 
-# previously : FP9_plugin_beta_112006.tar.gz and flash-player-plugin-9.0.21.78/
-# currently  : install_flash_player_9_linux.tar.gz and install_flash_player_9_linux/
-
 eval $(univention-baseconfig shell)
+
+DOWNLOAD_DIR=/var/cache/flashplugin-nonfree
+DOWNLOAD_FILE=install_flash_player_9.tar.gz
+DOWNLOAD_URL=http://download.macromedia.com/pub/flashplayer/installers/current/9/install_flash_player_9.tar.gz
+TARGET_DIR=/usr/lib/flashplugin-nonfree
 
 fp_exit_with_error() {
 	echo $1
@@ -17,13 +19,11 @@ fp_exit_with_error() {
 
 fp_download_and_unpack() {
 
-	cd /var/cache/flashplugin-nonfree
+	cd $DOWNLOAD_DIR
 
-	if [ -d "$RET" -a -f "$RET"/install_flash_player_9_linux.tar.gz ]; then
+	if [ -d "$DOWNLOAD_DIR" -a -f "$DOWNLOAD_DIR/$DOWNLOAD_FILE" ]; then
 
-		echo "Installing from local file $RET/install_flash_player_9_linux.tar.gz"
-		cp -f -p "$RET"/install_flash_player_9_linux.tar.gz install_flash_player_9_linux.tar.gz_TEMP
-		mv -f install_flash_player_9_linux.tar.gz_TEMP install_flash_player_9_linux.tar.gz
+		echo "Installing from local file $DOWNLOAD_DIR/$DOWNLOAD_FILE"
 
 	else # no local file
 
@@ -37,30 +37,23 @@ fp_download_and_unpack() {
 
 		# downloading the plugin
 		echo "Downloading..."
-		rm -f install_flash_player_9_linux.tar.gz
+		rm -f $DOWNLOAD_FILE
 		if [ ! -z $flashplugin_downloadserver ]; then
 		    if [ ! -z $flashplugin_downloadpath ]; then
-			WGETRC=wgetrc wget $flashplugin_downloadserver$flashplugin_downloadpath \
-				|| fp_exit_with_error "download failed"
+			    WGETRC=wgetrc wget $flashplugin_downloadserver$flashplugin_downloadpath
 		    fi
 		else
-			WGETRC=wgetrc wget http://fpdownload.macromedia.com/get/flashplayer/current/install_flash_player_9_linux.tar.gz \
-				|| fp_exit_with_error "download failed"
+			WGETRC=$DOWNLOAD_URL
 		fi
+		wget $WGETRC || fp_exit_with_error "download failed"
 		rm -f wgetrc
 		echo "Download done."
 
 	fi # end if local file
 
-	# verify MD5 checksum of (copied or downloaded) tarball
+        # unpacking the plugin
 	rm -rf install_flash_player_9_linux/
-	echo "a311fd97aa6c214f63dc089a20cf7a39  install_flash_player_9_linux.tar.gz"| md5sum -c > /dev/null 2>&1 \
-		|| fp_exit_with_error "md5sum mismatch install_flash_player_9_linux.tar.gz"
-
-	# unpacking and checking the plugin
-	tar xzf install_flash_player_9_linux.tar.gz || fp_exit_with_error "cannot unpack plugin"
-	echo "1f26a6eeb8c06acf0af9433da2312d54  install_flash_player_9_linux/libflashplayer.so"| md5sum -c > /dev/null 2>&1 \
-		|| fp_exit_with_error "plugin changed, not trusted"
+	tar xzf install_flash_player_9.tar.gz || fp_exit_with_error "cannot unpack plugin"
 }
 
 OLDDIR=/usr/lib/flashplugin-nonfree-unpackdir
@@ -73,10 +66,8 @@ safe_move() {
 
 fp_download_and_unpack
 
-install -m 644 install_flash_player_9_linux/libflashplayer.so /usr/lib/flashplugin-nonfree
-# nicht mehr im Paket enthalten: install_flash_player_9_linux/flashplayer.xpt
-rm -f /usr/lib/flashplugin-nonfree/flashplayer.xpt
-echo "Flash Plugin installed."
+install -m 644 install_flash_player_9_linux/libflashplayer.so $TARGET_DIR
+rm -f $TARGET_DIR/flashplayer.xpt
 rm -rf install_flash_player_9_linux/
 
 safe_move FP9_plugin_beta_101806.tar.gz
@@ -86,9 +77,7 @@ safe_move install_flash_player_9_linux.tar.gz
 rmdir $OLDDIR 2> /dev/null || true
 
 if [ -e /usr/bin/nspluginwrapper ] ; then
-	nspluginwrapper -n -i /usr/lib/flashplugin-nonfree/libflashplayer.so
+	nspluginwrapper -n -i $TARGET_DIR/libflashplayer.so
 fi
 
 exit 0
-
-# vim: ts=2 sw=2
