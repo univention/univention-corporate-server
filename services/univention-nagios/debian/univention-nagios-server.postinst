@@ -41,7 +41,8 @@ univention-config-registry set 'nagios/server/refreshrate?90' \
 						  'nagios/server/hostcheck/enable?yes' \
 						  'nagios/server/hostcheck/notificationinterval?180' \
                           'nagios/server/theme?nuvola' \
-						  'nagios/server/autostart?yes'
+						  'nagios/server/autostart?yes' \
+						  'nagios/plugin/check_nrpe/timeout?10'
 
 USERSERVICES=$(univention-config-registry get auth/user/services | egrep "(^| )nagios( |$)" -c)
 ADMINSERVICES=$(univention-config-registry get auth/admin/services | egrep "(^| )nagios( |$)" -c)

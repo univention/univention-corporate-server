@@ -1,3 +1,9 @@
+univention-nagios (2.0.1-1) unstable; urgency=low
+
+  * set the nrpe connection time out via UCR. Bug #13002
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Feb 2009 13:55:15 +0100
+
 univention-nagios (1.0.15-2) unstable; urgency=low
 
   * Added UCR Warning.

@@ -75,3 +75,10 @@ Description[de]=Dateiname für die Konfigurationsdatei zur Zugangskontrolle übe
 Description[en]=Filename of pam_access config file for nagios access control
 Type=str
 Categories=System
+
+[nagios/plugin/check_nrpe/timeout]
+Description[de]=Zeitspanne in Sekunden bevor die NRPE-Verbindung in einen Timeout läßuft
+Description[en]=Number of seconds before the nrpe connection times out
+Type=str
+Categories=System
+
