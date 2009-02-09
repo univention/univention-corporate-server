@@ -1,4 +1,4 @@
-univention-directory-manager (6.0.7-2) unstable; urgency=low
+univention-directory-manager (6.0.8-1) unstable; urgency=low
 
   * added the udm version to the feedback mail
   * added ucr variables for the feedback mail recipient

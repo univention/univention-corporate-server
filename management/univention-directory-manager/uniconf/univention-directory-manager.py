@@ -103,7 +103,7 @@ def main(argv):
 		uaccess.requireLicense()
 	except:
 		uaccess=None
-	session=requests.session(uaccess, name = 'Univention Directory Manager')
+	session=requests.session(uaccess)
 
 	sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 	sock.bind(socket_filename)
