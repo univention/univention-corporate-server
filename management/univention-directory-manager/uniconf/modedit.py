@@ -1902,13 +1902,16 @@ class modedit(unimodule.unimodule):
 
 						host_choicelist=[]
 
-						host_choicelist_has_current=0
+						host_choicelist_has_current=False
 						for dn, attr in self.lo.search('objectClass=univentionMailDomainname', attr=['cn']):
 							if attr['cn'][0] == value:
 								host_choicelist.append({'name': attr['cn'][0], 'description': attr['cn'][0], 'selected': '1'})
+								host_choicelist_has_current=True
 							else:
 								host_choicelist.append({'name': attr['cn'][0], 'description': attr['cn'][0]})
 
+						if not host_choicelist_has_current:
+							host_choicelist[0]['selected']='1'
 
 						host_choicelist.sort()
 
