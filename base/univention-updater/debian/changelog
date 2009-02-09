@@ -1,3 +1,9 @@
+univention-updater (4.0.12-1) unstable; urgency=low
+
+  * set LC_ALL to C in univention-actualise. Bug #10158
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Feb 2009 15:11:52 +0100
+
 univention-updater (4.0.11-1) unstable; urgency=low
 
   * adapt univention-repository-addpackage to new repositories (Bug
