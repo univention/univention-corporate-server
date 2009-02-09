@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention Baseconfig
 #  postinst for the univention-config package
@@ -30,31 +30,64 @@
 
 rm -f /var/cache/univention-config/cache
 
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.1; then
+	for group in scanner nvram rdma fuse kvm; do
+		gidNumber=`getent group $group | awk -F':' '{print $3}'`
+		if [ -z "$gidNumber" ]; then
+			continue
+		fi
+
+		if [ "$gidNumber" -lt 1000 ]; then
+			continue
+		fi
+
+		members=`getent group $group | awk -F':' '{print $4}'`
+		delgroup $group
+		nscd -i group
+		addgroup --system $group
+		if [ -n "$members" ]; then
+			for member in `echo $members | sed -e 's|,| |g'`; do
+				adduser $member $group
+			done
+		fi
+	done
+	
+	uidNumber=`getent passwd tss | awk -F':' '{print $3}'`
+	if [ "$uidNumber" -gt 999 ]; then
+		userdel tss
+		useradd --system tss
+		if [ -d /home/tss ]; then
+			chown -R tss /home/tss
+		fi
+	fi
+fi
 
 if ! getent passwd tss | grep -q '^tss'; then
-    useradd tss
+    useradd --system tss
 fi
 
 if ! getent group scanner | grep -q '^scanner'; then
-    groupadd scanner
+    groupadd --system scanner
 fi
 
 if ! getent group nvram | grep -q '^nvram'; then
-    groupadd nvram
+    groupadd --system nvram
 fi
 
 if ! getent group rdma | grep -q '^rdma'; then
-    groupadd rdma
+    groupadd --system rdma
 fi
 
 if ! getent group fuse | grep -q '^fuse'; then
-    groupadd fuse
+    groupadd --system fuse
 fi
 
 if ! getent group kvm | grep -q '^kvm'; then
-    groupadd kvm
+    groupadd --system kvm
 fi
 
 
 #DEBHELPER#
+
+exit 0
 

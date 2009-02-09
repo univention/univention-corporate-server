@@ -1,3 +1,10 @@
+univention-config-registry (4.0.1-1) unstable; urgency=low
+
+  * migrate the user tss to a system user and the groups scanner, nvram,
+    rdma, fuse and kvm to system groups. Closes Bug #13153
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Feb 2009 12:14:30 +0100
+
 univention-config-registry (3.0.7-2) unstable; urgency=low
 
   * added bash completion for 'ucr set key="currentvalue"' (Bug #5905)
