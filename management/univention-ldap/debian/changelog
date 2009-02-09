@@ -1,3 +1,10 @@
+univention-ldap (4.0.1-1) unstable; urgency=low
+
+  * copy the CAcert file to /var/www during the backup2master act. Bug
+    #11110
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Feb 2009 10:20:26 +0100
+
 univention-ldap (3.0.13-2) unstable; urgency=low
 
   * added missing file: schema/univention-directory.schema. Closes Bug #12642

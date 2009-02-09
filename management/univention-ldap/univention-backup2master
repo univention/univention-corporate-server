@@ -3,7 +3,7 @@
 # Univention LDAP Server
 #  converts a UCS backup into a UCS master
 #
-# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007 Univention GmbH
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -48,6 +48,10 @@ univention-baseconfig set server/role=domaincontroller_master
 univention-baseconfig set kerberos/adminserver=$hostname.$domainname
 univention-baseconfig set windows/wins-support=yes
 univention-baseconfig set ldap/translogfile=/var/lib/univention-ldap/listener/listener
+
+if [ -e /etc/univention/ssl/ucsCA/CAcert.pem ]; then
+	cp /etc/univention/ssl/ucsCA/CAcert.pem /var/www/ucs-root-ca.crt
+fi
 
 # start openldap, samba, kerberos, notifier and listener
 test -x /etc/init.d/slapd && /etc/init.d/slapd start
