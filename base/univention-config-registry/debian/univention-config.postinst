@@ -67,23 +67,23 @@ if ! getent passwd tss | grep -q '^tss'; then
 fi
 
 if ! getent group scanner | grep -q '^scanner'; then
-    groupadd --system scanner
+    addgroup --system scanner
 fi
 
 if ! getent group nvram | grep -q '^nvram'; then
-    groupadd --system nvram
+    addgroup --system nvram
 fi
 
 if ! getent group rdma | grep -q '^rdma'; then
-    groupadd --system rdma
+    addgroup --system rdma
 fi
 
 if ! getent group fuse | grep -q '^fuse'; then
-    groupadd --system fuse
+    addgroup --system fuse
 fi
 
 if ! getent group kvm | grep -q '^kvm'; then
-    groupadd --system kvm
+    addgroup --system kvm
 fi
 
 

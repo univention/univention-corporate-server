@@ -1,3 +1,9 @@
+univention-config-registry (4.0.2-1) unstable; urgency=low
+
+  * switch from groupadd to addgroup for the system groups. Bug #13153
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Feb 2009 14:53:43 +0100
+
 univention-config-registry (4.0.1-1) unstable; urgency=low
 
   * migrate the user tss to a system user and the groups scanner, nvram,
