@@ -1,4 +1,4 @@
-univention-directory-manager-modules (3.0.30-1) unstable; urgency=low
+univention-directory-manager-modules (4.0.1-1) unstable; urgency=low
 
   * overwrite the unixhome with the new username if the old username is
     already used. Bug #11813
