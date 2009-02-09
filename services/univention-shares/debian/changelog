@@ -1,3 +1,9 @@
+univention-shares (2.0.1-1) unstable; urgency=low
+
+  * cleanup the univention-share-replication. Bug #12320
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Feb 2009 11:30:27 +0100
+
 univention-shares (1.0.0-7) unstable; urgency=low
 
   * fix broken cron-job Syntax (Bug #6539)

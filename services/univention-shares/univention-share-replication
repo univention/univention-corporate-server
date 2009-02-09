@@ -4,7 +4,7 @@
 # Univention Share
 #  share replication script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,28 +29,39 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os, ldap, univention.debug
+import os, sys, ldap, univention.debug
+
 univention.debug.init('/var/log/univention/share-replication.log', 0, 0)
 
 import univention.uldap
-import univention_baseconfig
+import univention.config_registry
 
-bc = univention_baseconfig.baseConfig()
-bc.load()
-localhost = bc['hostname']
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+localhost = configRegistry['hostname']
 
-lo = univention.uldap.getAdminConnection()
-for dn, attrs in lo.search(filter='(&(objectClass=univentionShareReplication)(univentionShareHost=%s.%s))' % (bc['hostname'], bc['domainname'])):
-        try:
-                share = lo.get(attrs['univentionShareReplicateFrom'][0], required=1)
-        except ldap.LDAPError, IndexError:
-                univention.debug.debug(univention.debug.ERROR, univention.debug.MAIN, 'Could not locate remote share for %s' % dn)
-                continue
-        localpath = attrs['univentionSharePath'][0]
-        remhost = share['univentionShareHost'][0]
-        rempath = share['univentionSharePath'][0]
+if configRegistry['server/role'] == 'basesystem':
+	# on a basesystem this share replication don't work
+	sys.exit(0)
 
-        if os.system('/usr/sbin/univention-ssh-rsync /etc/machine.secret -az --delete -e ssh "%s\\$@%s:%s/*" %s' %\
-                        (localhost, remhost, rempath, localpath)) != 0:
-                univention.debug.debug(univention.debug.ERROR, univention.debug.MAIN, 'Replication of share %s failed.' % dn)
+if configRegistry['server/role'] in ['domaincontroller_master', 'domaincontroller_backup']:
+	lo = univention.uldap.getAdminConnection()
+else:
+	lo = univention.uldap.getMachineConnection()
+
+for dn, attrs in lo.search(filter='(&(objectClass=univentionShareReplication)(univentionShareHost=%s.%s))' % (configRegistry['hostname'], configRegistry['domainname'])):
+	try:
+		share = lo.get(attrs['univentionShareReplicateFrom'][0], required=1)
+  	except ldap.LDAPError, IndexError:
+		univention.debug.debug(univention.debug.WARN, univention.debug.MAIN, 'Could not locate remote share for %s' % dn)
+ 		continue
+	localpath = attrs['univentionSharePath'][0]
+	remhost = share['univentionShareHost'][0]
+	rempath = share['univentionSharePath'][0]
+
+	if os.system('/usr/sbin/univention-ssh-rsync /etc/machine.secret -az --delete -e ssh "%s\\$@%s:%s/*" %s' %\
+			(localhost, remhost, rempath, localpath)) != 0:
+ 		univention.debug.debug(univention.debug.ERROR, univention.debug.MAIN, 'Replication of share %s failed.' % dn)
+
+sys.exit(0)
 
