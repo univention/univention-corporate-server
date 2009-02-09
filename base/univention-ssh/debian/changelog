@@ -1,3 +1,9 @@
+univention-ssh (2.0.1-1) unstable; urgency=low
+
+  * added a dependency to the openssh client package. Bug #12404
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Feb 2009 11:37:10 +0100
+
 univention-ssh (1.0.0-5) unstable; urgency=low
 
   * New script to recreate host keys

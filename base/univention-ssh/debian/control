@@ -8,7 +8,7 @@ Build-Depends: debhelper
 Package: univention-ssh
 Architecture: all
 Conflicts: univention-join (<< 0.2)
-Depends: univention-config-registry, python-pexpect, rsync
+Depends: univention-config-registry, python-pexpect, rsync, openssh-client
 Description: UCS - ssh scripts
  This package contain the UCS ssh script.
  .
