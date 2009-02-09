@@ -1,3 +1,10 @@
+univention-directory-manager-modules (4.0.2-1) unstable; urgency=low
+
+  * Now univention-sync-memberuid sorts the member list before the
+    compare will be started. Bug #12901
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Feb 2009 11:52:10 +0100
+
 univention-directory-manager-modules (4.0.1-1) unstable; urgency=low
 
   * overwrite the unixhome with the new username if the old username is

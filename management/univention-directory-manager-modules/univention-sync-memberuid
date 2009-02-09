@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  synchronise attributes uniqueMember and memberUID of group objects
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007, 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -71,6 +71,10 @@ for grp in groups:
 	if attrs.has_key( 'memberUid' ):
 		old = attrs[ 'memberUid' ]
 	new = map( lambda x: x[ x.find( '=' ) + 1 : x.find( ',' ) ], attrs.get( 'uniqueMember', [] ) )
+
+	old.sort()
+	new.sort()
+
 	if old != new:
 		ud.debug( ud.ADMIN, ud.PROCESS, 'Group: %s' % dn )
 		ud.debug( ud.ADMIN, ud.INFO, '  members: %s' % attrs.get( 'uniqueMember', [] ) )
