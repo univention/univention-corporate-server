@@ -1,3 +1,11 @@
+univention-webui (2.0.8-1) stable; urgency=low
+
+  * added the udm version to the feedback mail
+  * added ucr variables for the feedback mail recipient
+    Bug #13072
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Feb 2009 09:56:30 +0100
+
 univention-webui (2.0.7-2) stable; urgency=low
 
   * Update translations (Bug #12861)

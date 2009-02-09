@@ -36,6 +36,8 @@ from localwebui import _
 from uniparts import *
 import uniwait
 import waitdialog
+import univention.config_registry
+import v
 
 ldir = '/usr/share/univention-admin/uniconf/'
 
@@ -84,6 +86,8 @@ class new_saver:
 				del self.dict[key]
 
 def genErrorMessage(head, messagelines, mailto = None, atts = None):
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
 	# options for a default-layout
 	myatts = {  'layout_type'     : '' ,
 		    'site_title'      : _('Univention Directory Manager') ,
@@ -131,7 +135,7 @@ def genErrorMessage(head, messagelines, mailto = None, atts = None):
 		return result
 	utfxml += htmltext('&nbsp;')
 	if mailto:
-		text = _('Report this error to Univention Feedback &lt;feedback@univention.de&gt;')
+		text = _('Report this error to %s &lt;%s&gt;' % (ucr.get('directory/manager/web/feedback/description', 'Univention Feedback'), ucr.get('directory/manager/web/feedback/mail', 'feedback@univention.de')))
 		link = '<a href="%s">%s</a>' % (mailto, text)
 		utfxml += htmltext(link)
 		utfxml += htmltext('&nbsp;')
@@ -141,10 +145,12 @@ def genErrorMessage(head, messagelines, mailto = None, atts = None):
 	return utfxml
 
 def genErrorMailto(messagelines):
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
 	from urllib import quote, urlencode
 	from urlparse import urlunparse
 	scheme = 'mailto'
-	address = quote('Univention Feedback <feedback@univention.de>')
+	address = quote('%s <%s>' % (ucr.get('directory/manager/web/feedback/description', 'Univention Feedback'), ucr.get('directory/manager/web/feedback/mail', 'feedback@univention.de')))
 	subject = _('Bugreport: Univention Directory Manager Traceback')
 	body = '''%s:
 1) %s
@@ -159,6 +165,11 @@ def genErrorMailto(messagelines):
        _('actual result'))
 	for line in messagelines:
 		body += line
+	body += '''
+----------
+
+'''
+	body += 'Univention Directory Manager Version: %s - %s' % (v.version, v.build)
 	query = { 'subject': subject,
 		  'body':    body }
 	url = urlunparse((scheme, '', address, '', urlencode(query), ''))

@@ -1,3 +1,11 @@
+univention-directory-manager (6.0.7-2) unstable; urgency=low
+
+  * added the udm version to the feedback mail
+  * added ucr variables for the feedback mail recipient
+    Bug #13072
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Feb 2009 09:57:02 +0100
+
 univention-directory-manager (6.0.7-1) unstable; urgency=low
 
   * select one of the mail domains, otherwise the imap folder couldn't

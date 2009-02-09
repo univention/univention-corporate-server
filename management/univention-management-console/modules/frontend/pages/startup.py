@@ -36,11 +36,18 @@ import univention.management.console.tools as umc_tools
 from urllib import quote, urlencode
 from urlparse import urlunparse
 
+import univention.config_registry
+import v
+
 _ = umc.Translation( 'univention.management.console.frontend' ).translate
 
 class Command( object ):
-	MAIL_ADDRESS = quote( 'Univention Feedback <feedback@univention.de>' )
-	MAIL_SUBJECT = _( 'Bugreport: Univention Management Console' )
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+	MAIL_ADDRESS_EMAIL =  ucr.get('umc/web/feedback/mail', 'feedback@univention.de')
+	MAIL_ADDRESS_DESCRIPTION = ucr.get('umc/web/feedback/description', 'Univention Feedback')
+	MAIL_ADDRESS = quote('%s <%s>' % (MAIL_ADDRESS_DESCRIPTION, MAIL_ADDRESS_EMAIL))
+	MAIL_SUBJECT = _( 'Bugreport: Univention Management Console Traceback' )
 	MAIL_TEXT = _( '''
 Please take a second to provide the following information
 
@@ -50,7 +57,15 @@ Please take a second to provide the following information
 
 3) Actual result
 
+----------
+
 ''' )
+	VERSION = '''
+----------
+
+Univention Management Console Version: %s - %s'
+''' % (v.version, v.build)
+
 
 	def __init__( self, request, name, description, priority, caching ):
 		self.request = request
@@ -63,7 +78,7 @@ Please take a second to provide the following information
 		self.__error_dialog = None
 
 	def __mail_report_link( self, report ):
-		body = Command.MAIL_TEXT + report
+		body = Command.MAIL_TEXT + report + Command.VERSION
 		url = urlunparse( ( 'mailto', '', Command.MAIL_ADDRESS, '',
 							urlencode( { 'subject' : unicode( Command.MAIL_SUBJECT ),
 										 'body' : unicode( body ) } ), '' ) )
@@ -76,7 +91,7 @@ Please take a second to provide the following information
 			if exception:
 				lst.add_row( [ umcd.Image( 'actions/critical', umc_tools.SIZE_MEDIUM ),
 							   umcd.HTML( '<pre>%s</pre>' % report ) ] )
-				text = _( 'Report this error to Univention Feedback &lt;feedback@univention.de&gt;' )
+				text = _( 'Report this error to %s &lt;%s&gt;' % (Command.MAIL_ADDRESS_DESCRIPTION, Command.MAIL_ADDRESS_EMAIL) )
 				lst.add_row( [ '', umcd.Link( text, self.__mail_report_link( report ) ) ] )
 			else:
 				lst.add_row( [ umcd.Image( 'actions/critical', umc_tools.SIZE_MEDIUM ), report ] )

@@ -123,7 +123,7 @@ def main(argv):
 		uaccess.requireLicense()
 	except:
 		uaccess=None
-	session=requests.session(uaccess)
+	session=requests.session(uaccess, name = 'Univention Management Console')
 
 	sock = socket.socket( socket.AF_UNIX, socket.SOCK_STREAM )
 	fcntl.fcntl(sock.fileno(), fcntl.F_SETFD, 1)
