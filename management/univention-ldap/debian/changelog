@@ -1,3 +1,10 @@
+univention-ldap (4.0.1-2) unstable; urgency=low
+
+  * Include samba.schema from Samba 3.2.0 providing new objectclass
+    sambaTrustedDomainPassword  (for Bug #11406)
+
+ -- Arvid Requate <requate@univention.de>  Mon,  9 Feb 2009 14:04:17 +0100
+
 univention-ldap (4.0.1-1) unstable; urgency=low
 
   * copy the CAcert file to /var/www during the backup2master act. Bug
