@@ -1425,6 +1425,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		self.locked=0
 
+		self.old_username = None
+
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
 		mungeddial.Support.__init__( self )
 
@@ -1919,12 +1921,15 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						return []
 			try:
 				uid=univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])
+				if self['unixhome'] == '/home/%s' % self.old_username:
+					self['unixhome'] = '/home/%s' % self['username']
 			except univention.admin.uexceptions.noLock, e:
 				username=self['username']
 				del(self.info['username'])
 				self.oldinfo={}
 				self.dn=None
 				self._exists=0
+				self.old_username = username
 				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
 				raise univention.admin.uexceptions.uidAlreadyUsed, ': %s' % username
 
@@ -2057,6 +2062,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				self.oldinfo={}
 				self.dn=None
 				self._exists=0
+				self.old_username = username
 				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
 				raise univention.admin.uexceptions.uidAlreadyUsed, ': %s' % username
 
