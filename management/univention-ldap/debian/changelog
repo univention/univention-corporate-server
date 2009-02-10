@@ -1,3 +1,10 @@
+univention-ldap (4.0.2-1) unstable; urgency=low
+
+  * ldap/acl/nestedgroups: Support of nested groups in the ACL
+    interpretation. Bug #13147
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Feb 2009 07:25:28 +0100
+
 univention-ldap (4.0.1-2) unstable; urgency=low
 
   * Include samba.schema from Samba 3.2.0 providing new objectclass
