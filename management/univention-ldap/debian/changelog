@@ -1,4 +1,4 @@
-univention-ldap (4.0.2-1) unstable; urgency=low
+univention-ldap (4.0.2-2) unstable; urgency=low
 
   * ldap/acl/nestedgroups: Support of nested groups in the ACL
     interpretation. Bug #13147

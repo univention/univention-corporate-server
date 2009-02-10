@@ -6,7 +6,7 @@ if baseConfig['ldap/server/type']=="master":
 else:
 	usr="read"
 
-nestedGroups = baseConfig.get('ldap/aclnestedgroups', 'yes')
+nestedGroups = baseConfig.get('ldap/acl/nestedgroups', 'yes')
 if nestedGroups.lower() in ['true', 'yes', 'on', '1']:
 	nestedGroups = True
 else:
