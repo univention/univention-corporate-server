@@ -60,7 +60,7 @@ test_retval $? "Could not chroot to $instmnt."
 # packages
 chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
 dpkg -l | egrep "^i[^i]" >/tmp/failed-packages.txt
-if [ 0 -eq $? ]; then
+if [ 0 -eq \$? ]; then
 	exit 1
 else
 	exit 0
