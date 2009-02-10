@@ -1,3 +1,9 @@
+univention-xnumlock (2.0.1-1) unstable; urgency=low
+
+  * x11 binaries now going to usr/bin too (Bug: #12921)
+
+ -- Felix Botner <botner@univention.de>  Tue, 10 Feb 2009 21:38:27 +0100
+
 univention-xnumlock (2.0.0-5) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-

@@ -54,11 +54,9 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-
-	mkdir -p $(CURDIR)/debian/univention-xnumlock/usr/X11R6/bin/
 	find -type d -name CVS -exec rm -rf {} \; || true
-	gcc -L/usr/X11R6/lib -lXtst -o $(CURDIR)/debian/univention-xnumlock/usr/X11R6/bin/xnumlock xnumlock.c
-	strip $(CURDIR)/debian/univention-xnumlock/usr/X11R6/bin/xnumlock
+	gcc -L/usr/X11R6/lib -lXtst -o $(CURDIR)/debian/univention-xnumlock/usr/bin/xnumlock xnumlock.c
+	strip $(CURDIR)/debian/univention-xnumlock/usr/bin/xnumlock
 	univention-install-baseconfig
 
 
