@@ -1,3 +1,9 @@
+univention-installer (3.0.9-1) unstable; urgency=low
+
+  * quote the md5 password of root. Bug #9739
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Feb 2009 08:03:49 +0100
+
 univention-installer (3.0.8-1) unstable; urgency=low
 
   * encrypt the root password with md5. Bug #9739
