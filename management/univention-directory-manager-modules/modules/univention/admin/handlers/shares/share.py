@@ -129,7 +129,7 @@ property_descriptions={
 			default="0"
 		),
 	'group': univention.admin.property(
-			short_description=_('Directory group'),
+			short_description=_('Directory owner group'),
 			long_description=_('The primary group of the directory, if none give group 0 will be used.'),
 			syntax=univention.admin.syntax.groupID,
 			multivalue=0,
@@ -432,7 +432,7 @@ property_descriptions={
 			default='0'
 		),
 	'sambaBlockSize': univention.admin.property(
-			short_description=_('Block Size'),
+			short_description=_('Block size'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -442,7 +442,7 @@ property_descriptions={
 			identifies=0
 		),
 	'sambaCscPolicy': univention.admin.property(
-			short_description=_('Client-side Caching Policy'),
+			short_description=_('Client-side caching policy'),
 			long_description=_('The way clients capable of offline caching will cache the files in the share.'),
 			syntax=cscPolicy,
 			multivalue=0,
@@ -655,22 +655,22 @@ layout=[
 			[univention.admin.field('owner'), univention.admin.field('group')],
 			[univention.admin.field('directorymode')]
 		]),
-	univention.admin.tab(_('NFS General'),_('General NFS settings'),[
+	univention.admin.tab(_('NFS general'),_('General NFS settings'),[
 			[univention.admin.field('writeable'), univention.admin.field('sync')],
 			[univention.admin.field('subtree_checking'), univention.admin.field('root_squash')],
 			[univention.admin.field('nfs_hosts')],
 		]),
-	univention.admin.tab(_('Webaccess General'),_('General Webaccess Settings'),[
+	univention.admin.tab(_('Web access general'),_('General Webaccess Settings'),[
 			[univention.admin.field('webaccessName'), univention.admin.field('webaccessIpaddress')],
 		]),
-	univention.admin.tab(_('Samba General'),_('General Samba settings'),[
+	univention.admin.tab(_('Samba general'),_('General Samba settings'),[
 			[univention.admin.field('sambaName')],
 			[univention.admin.field('sambaBrowseable'), univention.admin.field('sambaPublic')],
 			[univention.admin.field('sambaPostexec'), univention.admin.field('sambaPreexec')],
 			[univention.admin.field('sambaVFSObjects'), univention.admin.field('sambaMSDFSRoot') ],
 			[univention.admin.field('sambaDosFilemode'), univention.admin.field('sambaHideUnreadable') ],
 		]),
-	univention.admin.tab(_('Samba Permissions'),_('Samba permission settings'),[
+	univention.admin.tab(_('Samba permissions'),_('Samba permission settings'),[
 			[univention.admin.field('sambaWriteable')],
 			[univention.admin.field('sambaForceUser'), univention.admin.field('sambaForceGroup')],
 			[univention.admin.field('sambaValidUsers'), univention.admin.field('sambaInvalidUsers') ],
@@ -679,19 +679,19 @@ layout=[
 			[univention.admin.field('sambaNtAclSupport'), univention.admin.field('sambaInheritAcls')],
 			[univention.admin.field('sambaInheritOwner'), univention.admin.field('sambaInheritPermissions')],
 		], advanced = True),
-	univention.admin.tab(_('Samba Extended Permissions'),_('Samba extended permission settings'),[
+	univention.admin.tab(_('Samba extended permissions'),_('Samba extended permission settings'),[
 			[univention.admin.field('sambaCreateMode'), univention.admin.field('sambaDirectoryMode')],
 			[univention.admin.field('sambaForceCreateMode'), univention.admin.field('sambaForceDirectoryMode')],
 			[univention.admin.field('sambaSecurityMode'), univention.admin.field('sambaDirectorySecurityMode')],
 			[univention.admin.field('sambaForceSecurityMode'), univention.admin.field('sambaForceDirectorySecurityMode')],
 		], advanced = True),
-	univention.admin.tab(_('Samba Performance'),_('Samba performance settings'),[
+	univention.admin.tab(_('Samba performance'),_('Samba performance settings'),[
 			[univention.admin.field('sambaLocking'), univention.admin.field('sambaBlockingLocks')],
 			[univention.admin.field('sambaStrictLocking'), univention.admin.field('sambaOplocks')],
 			[univention.admin.field('sambaLevel2Oplocks'), univention.admin.field('sambaFakeOplocks')],
 			[univention.admin.field('sambaBlockSize'), univention.admin.field('sambaCscPolicy')],
 		], advanced = True),
-	univention.admin.tab(_('Samba Custom Settings'),_('Custom settings for Samba shares'), [
+	univention.admin.tab(_('Samba custom settings'),_('Custom settings for Samba shares'), [
 			[univention.admin.field('sambaCustomSettings') , ],
 		], advanced = True),
 ]

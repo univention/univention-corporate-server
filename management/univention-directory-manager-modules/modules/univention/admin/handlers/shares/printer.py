@@ -160,7 +160,7 @@ property_descriptions={
 			identifies=0
 		),
 	'ACLtype': univention.admin.property(
-			short_description=_('Access list'),
+			short_description=_('Access control'),
 			long_description=_('Access list can allow or deny listed users and groups.'),
 			syntax=printerACLTypes,
 			multivalue=0,

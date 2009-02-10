@@ -1082,11 +1082,11 @@ layout=[
 		[univention.admin.field("departmentNumber")],
 		[univention.admin.field("secretary")]
 	]),
-	univention.admin.tab(_('Private Contact'),_('Private contact information'),[
+	univention.admin.tab(_('Contact (private)'),_('Private contact information'),[
 		[univention.admin.field("mobileTelephoneNumber"), univention.admin.field("homeTelephoneNumber")],
 		[univention.admin.field("pagerTelephoneNumber"),univention.admin.field("homePostalAddress")]
 	]),
-	univention.admin.tab(_('Linux/UNIX'),_('Unix account Settings'), [
+	univention.admin.tab(_('Linux/UNIX'),_('Unix account settings'), [
 		[univention.admin.field("unixhome"), univention.admin.field("shell")],
 		[univention.admin.field("uidNumber"), univention.admin.field("gidNumber")],
 		[univention.admin.field("homeShare"), univention.admin.field("homeSharePath")],

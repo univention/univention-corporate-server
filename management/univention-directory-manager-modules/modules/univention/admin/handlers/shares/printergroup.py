@@ -120,7 +120,7 @@ property_descriptions={
 		),
 }
 layout=[
-	univention.admin.tab(_('General'),_('General Settings'),[
+	univention.admin.tab(_('General'),_('General settings'),[
 			[univention.admin.field('name'), univention.admin.field('spoolHost')],
 			[univention.admin.field('sambaName'), univention.admin.field('groupMember')],
 			[univention.admin.field('setQuota')],

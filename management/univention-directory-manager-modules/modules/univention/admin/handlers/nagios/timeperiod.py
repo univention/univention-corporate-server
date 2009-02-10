@@ -42,7 +42,7 @@ _=translation.translate
 module = 'nagios/timeperiod'
 
 childs = 0
-short_description = _('Nagios Time Period')
+short_description = _('Nagios time period')
 long_description = ''
 operations = [ 'search', 'edit', 'add', 'remove' ]
 

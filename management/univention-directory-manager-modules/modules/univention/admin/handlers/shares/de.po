@@ -1,22 +1,20 @@
-# Copyright (C) 2006 Univention GmbH
-# Univention GmbH <packages@univention.de>
-# This file is distributed under the same license as this package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-11 11:32+0200\n"
-"PO-Revision-Date: 2008-07-30 08:13+0200\n"
+"PO-Revision-Date: 2009-02-10 16:32+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: unicode\n"
-"Generated-By: pygettext.py 1.5\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: printergroup.py:45
-msgid "Print-Share: Printer Group"
+msgid "Print share: Printer Group"
 msgstr "Druckerfreigabe: Druckergruppe"
 
 #: printergroup.py:51 printer.py:62 print.py:59 share.py:81 share.py:82

@@ -64,7 +64,7 @@ policy_position_dn_prefix="cn=xfree"
 usewizard=1
 childs=0
 short_description=_('Policy: Display')
-policy_short_description=_('Display Settings')
+policy_short_description=_('Display settings')
 long_description=''
 options={
 }
