@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-01-26 14:30+0100\n"
-"PO-Revision-Date: 2009-01-27 08:08+0100\n"
+"PO-Revision-Date: 2009-02-10 16:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -372,7 +372,7 @@ msgid "add"
 msgstr "Hinzufügen"
 
 #: modbrowse.py:284
-msgid "add new object of selected type at current position"
+msgid "Add new object of selected type at current position"
 msgstr "Neues Objekt des ausgewählten Typs an aktueller Position hinzufügen"
 
 #: modbrowse.py:299
@@ -380,11 +380,11 @@ msgid "Make your choice..."
 msgstr "Treffen Sie Ihre Wahl"
 
 #: modbrowse.py:300
-msgid "add new object at current position"
+msgid "Add new object at current position"
 msgstr "Neues Objekt an aktueller Position hinzufügen"
 
 #: modbrowse.py:300
-msgid "select type of object to add"
+msgid "Select type of object to add"
 msgstr "Gewünschten Objekttyp auswählen"
 
 #: modbrowse.py:311
@@ -993,15 +993,15 @@ msgid "Self Attribute Results"
 msgstr "Ergebnislisten Attribute"
 
 #: modedit.py:3493
-msgid "select manufacturer"
+msgid "Select manufacturer"
 msgstr "Wählen Sie den Hersteller aus."
 
 #: modedit.py:3495
-msgid "manufacturer"
+msgid "Manufacturer"
 msgstr "Hersteller"
 
 #: modedit.py:3496
-msgid "select printer-manufacturer"
+msgid "Select manufacturer of printer"
 msgstr "Wählen Sie den Druckerhersteller aus"
 
 #: modedit.py:3498
@@ -1362,7 +1362,7 @@ msgid "Wizard"
 msgstr "Assistent"
 
 #: modwizard.py:182 modwizard.py:707
-msgid "Select Domain:"
+msgid "Select domain:"
 msgstr "Domäne auswählen:"
 
 #: modwizard.py:182
@@ -1370,7 +1370,7 @@ msgid "Where to create the new object"
 msgstr "Wo soll das neue Objekt erzeugt werden"
 
 #: modwizard.py:240
-msgid "Select Container:"
+msgid "Select container:"
 msgstr "Container auswählen:"
 
 #: modwizard.py:240

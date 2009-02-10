@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.8-2) unstable; urgency=low
+
+  * Update translations, Bug #11674
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 10 Feb 2009 16:17:15 +0100
+
 univention-directory-manager (6.0.8-1) unstable; urgency=low
 
   * added the udm version to the feedback mail

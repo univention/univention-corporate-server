@@ -179,7 +179,7 @@ class modwizard(unimodule.unimodule):
 				domainlist.append({"name":domainpos.getDn(),"description":domainpos.getPrintable()})
 		# create select box
 		self.select_domain_button=button(_("apply"),{},{"helptext":""})
-		self.domain_select=question_select(_("Select Domain:"),{},{"helptext":_("Where to create the new object"),"choicelist":domainlist,"button":self.select_domain_button})
+		self.domain_select=question_select(_("Select domain:"),{},{"helptext":_("Where to create the new object"),"choicelist":domainlist,"button":self.select_domain_button})
 		domain_select_col=tablecol("",{'type':'wizard_layout'},{"obs":[self.domain_select]})
 
 		###########################################################################
@@ -237,7 +237,7 @@ class modwizard(unimodule.unimodule):
 					i['selected']=''
 
 		if displaypathlist:
-			self.path_select=question_select(_("Select Container:"),{},{"helptext":_("Choose a position for your object"),"choicelist":displaypathlist})
+			self.path_select=question_select(_("Select container:"),{},{"helptext":_("Choose a position for your object"),"choicelist":displaypathlist})
 			path_select_col=tablecol("",{'type':'wizard_layout'},{"obs":[self.path_select]})
 		else:
 			path_select_col=tablecol("",{'type':'wizard_layout'},{"obs":[text('',{},{'text':[_('no default path found')]})]})
@@ -704,7 +704,7 @@ class modwizard(unimodule.unimodule):
 				domainlist.append({"name":domainpos.getDn(),"description":domainpos.getPrintable()})
 		# create select box
 		self.select_domain_button=button(_("apply"),{},{"helptext":""})
-		self.domain_select=question_select(_("Select Domain:"),{},{"helptext":_("Select Domain"),"choicelist":domainlist,"button":self.select_domain_button})
+		self.domain_select=question_select(_("Select domain:"),{},{"helptext":_("Select domain"),"choicelist":domainlist,"button":self.select_domain_button})
 		domain_select_col=tablecol("",{'type':'wizard_layout'},{"obs":[self.domain_select]})
 
 		###########################################################################

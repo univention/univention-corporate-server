@@ -281,7 +281,7 @@ class modbrowse(unimodule.unimodule):
 		# add select
 		###########################################################################
 
-		self.add_button = button(_('add'),{},{'helptext':_('add new object of selected type at current position')})
+		self.add_button = button(_('add'),{},{'helptext':_('Add new object of selected type at current position')})
 		add_types = []
 
 		list_types = []
@@ -297,7 +297,7 @@ class modbrowse(unimodule.unimodule):
 			add_types.append({'name': univention.admin.modules.name(m), 'description': univention.admin.modules.short_description(m)})
 		add_types.sort()
 		add_types.insert(0, {'name': "uidummy098", 'description': _("Make your choice...")})
-		self.add_select=question_select(_('add new object at current position'),{},{"helptext":_("select type of object to add"),"choicelist":add_types,"button":self.add_button})
+		self.add_select=question_select(_('Add new object at current position'),{},{"helptext":_("Select type of object to add"),"choicelist":add_types,"button":self.add_button})
 
 		cols.append(tablecol('',{'colspan':'2','type':'browse_layout'},{'obs':[self.add_select]}))
 

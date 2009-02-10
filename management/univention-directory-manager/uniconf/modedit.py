@@ -3517,10 +3517,10 @@ class modedit(unimodule.unimodule):
 						printer_manufs.sort(compare_dicts_by_attr('name'))
 						printer_models.sort(compare_dicts_by_attr('name'))
 
-						self.search_property_button=button('pmanusel',{},{'helptext':_('select manufacturer')})
+						self.search_property_button=button('pmanusel',{},{'helptext':_('Select manufacturer')})
 
-						printer_manufs_select=question_select(_('manufacturer'),atts,
-															  {'choicelist':printer_manufs,'helptext':_('select printer-manufacturer'),
+						printer_manufs_select=question_select(_('Manufacturer'),atts,
+															  {'choicelist':printer_manufs,'helptext':_('Select manufacturer of printer'),
 															   'button':self.search_property_button})
 						printer_models_select=question_select(property.short_description,atts,{'choicelist':printer_models,'helptext':_('select printer-model')})
 						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [
