@@ -1,3 +1,11 @@
+univention-updater (4.0.13-1) unstable; urgency=low
+
+  * minor fixes in univention-actualise and univention-repository-addpackage
+  * do not ask anything when running univention-repository-create with
+    '-n' option (Bug #12511)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 10 Feb 2009 13:22:06 +0100
+
 univention-updater (4.0.12-1) unstable; urgency=low
 
   * set LC_ALL to C in univention-actualise. Bug #10158

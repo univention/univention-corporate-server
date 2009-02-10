@@ -50,10 +50,12 @@ def check_preconditions( options ):
 	if os.path.exists( os.path.join( _mirror_base, 'mirror' ) ):
 		print >> sys.stderr, 'Warning: The path %s/mirror already exists.' % _mirror_base
 
-	print "Are you sure you want to create a local repository? [yN] ",
-	if not sys.stdin.readline().startswith( 'y' ):
-		print 'Aborted.'
-		sys.exit( 1 )
+	if options.interactive:
+		print "Are you sure you want to create a local repository? [yN] ",
+		sys.stdin.flush()
+		if not sys.stdin.readline().startswith( 'y' ):
+			print 'Aborted.'
+			sys.exit( 1 )
 
 	p = subprocess.Popen( [ 'dpkg-query', '-s', 'univention-debmirror' ], stdout = subprocess.PIPE )
 	output = p.communicate()[ 0 ]
@@ -168,8 +170,10 @@ def mount( options ):
 		sys.stdin.readline()
 	if options.mount:
 		print "Mounting %s ..." % options.mount_point,
-		ret = subprocess.call( [ 'mount', options.mount_point ] )
+		devnull = open( os.path.devnull, 'w' )
+		ret = subprocess.call( [ 'mount', options.mount_point ], stdout = devnull, stderr = subprocess.STDOUT )
 		# if exit code is 0 or 32 (already mounted)
+		devnull.close()
 		if not ret or ret == 32:
 			print 'done.'
 		else:

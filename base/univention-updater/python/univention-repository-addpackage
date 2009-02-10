@@ -28,11 +28,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import exceptions
 import os, string
 import shutil, sys
 import getopt, time
+import re
+import subprocess
+
 import univention_baseconfig
-import exceptions
 
 def usage(fd=sys.stdout):
 	print >>fd, 'univention-repository-addpackage: tool for adding packages to local repository'
@@ -57,6 +60,7 @@ def rewrite_url(url):
 
 def create_packages( base_dir, source_dir ):
 	# create Packages file
+	print os.path.join( base_dir, source_dir, 'Packages' )
 	if not os.path.isfile( os.path.join( base_dir, source_dir, 'Packages' ) ):
 		return True
 
@@ -191,9 +195,9 @@ if __name__ == '__main__':
 			if not match:
 				print >> sys.stderr, 'Warning: Could not determine architecture of package %s. It will not be added' % file
 				continue
-			arch = mach.groups()
+			arch = match.groups()
+			targetfilename = os.path.join( packages_path, arch[ 0 ], rewrite_url( file.split( '/' )[ -1 ] ) )
 			try:
-				targetfilename = os.path.join( packages_path, arch, rewrite_url( file.split( '/' )[ -1 ] ) )
 				shutil.copyfile( os.path.join( file ), targetfilename )
 			except Exception, e:
 				print >> sys.stderr, "Warning: copying of %s failed: %s" % (file, str(e))
@@ -220,8 +224,8 @@ if __name__ == '__main__':
 	# these might not exist if creating a new repository
 	create_packages( packages_path, '.' )
 	if packages_path[ -1 ] == '/':
-		packages_path = packages_path[ -1 ]
-	head, tail = os.path.split( packages_path )
+		packages_path = packages_path[ : -1 ]
 
+	head, tail = os.path.split( packages_path )
 	for arch in ( 'all', 'i386', 'amd64' ):
 		create_packages( head, '%s/%s' % ( tail, arch ) )

@@ -68,10 +68,10 @@ def waitForLock():
 
 def createLock():
 	try:
-		fd = open( '/var/run/apt-get.lock' )
+		fd = open( '/var/run/apt-get.lock', 'w' )
+		fd.close()
 	except:
 		pass
-	fd.close()
 
 def getUpdate( baseConfig ):
 	# Small function waiting for apt lockfile to vanish then starts apt-get update
