@@ -1,3 +1,9 @@
+univention-policy (2.0.1-1) unstable; urgency=low
+
+  * removed double free from the ldap lib. Bug #11460
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Feb 2009 08:13:41 +0100
+
 univention-policy (1.0.4-1) unstable; urgency=low
 
   * replace - and ; in univention-policy-result shell output mode with _
