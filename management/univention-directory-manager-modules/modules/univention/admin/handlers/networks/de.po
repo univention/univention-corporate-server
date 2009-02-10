@@ -52,7 +52,7 @@ msgid "Netmask"
 msgstr "Netzmaske"
 
 #: network.py:82
-msgid "Next IP Address"
+msgid "Next IP address"
 msgstr "nächste IP-Adresse"
 
 #: network.py:91
@@ -76,7 +76,7 @@ msgid "General"
 msgstr "Allgemein"
 
 #: network.py:146
-msgid "Basic Values"
+msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
 #: network.py:150
@@ -84,7 +84,7 @@ msgid "IP"
 msgstr "IP"
 
 #: network.py:150
-msgid "IP Address Ranges"
+msgid "IP address ranges"
 msgstr "IP-Adressbereiche"
 
 #: network.py:153
@@ -92,7 +92,7 @@ msgid "DNS"
 msgstr "DNS"
 
 #: network.py:153
-msgid "DNS Preferences"
+msgid "DNS preferences"
 msgstr "DNS-Einstellungen"
 
 #: network.py:157

@@ -80,7 +80,7 @@ property_descriptions={
 			identifies=0
 		),
 	'nextIp': univention.admin.property(
-			short_description=_('Next IP Address'),
+			short_description=_('Next IP address'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -144,14 +144,14 @@ property_descriptions={
 }
 
 layout=[
-	univention.admin.tab(_('General'),_('Basic Values'), [
+	univention.admin.tab(_('General'),_('Basic settings'), [
 		[univention.admin.field('name'), univention.admin.field('filler')],
 		[univention.admin.field('network'), univention.admin.field('netmask')],
 	]),
-	univention.admin.tab(_('IP'),_('IP Address Ranges'), [
+	univention.admin.tab(_('IP'),_('IP address ranges'), [
 		[univention.admin.field('ipRange')],
 	]),
-	univention.admin.tab(_('DNS'),_('DNS Preferences'), [
+	univention.admin.tab(_('DNS'),_('DNS preferences'), [
 		[univention.admin.field('dnsEntryZoneForward') ],
 		[ univention.admin.field('dnsEntryZoneReverse')],
 	]),

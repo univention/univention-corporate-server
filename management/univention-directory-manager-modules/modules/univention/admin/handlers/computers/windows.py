@@ -215,7 +215,7 @@ layout=[
 	univention.admin.tab(_('IP'),_('IP'),[
 			[univention.admin.field("ip")],
 		]),
-	univention.admin.tab(_('Machine account'),_('Machine Account Settings'),[
+	univention.admin.tab(_('Machine account'),_('Machine account settings'),[
 			[univention.admin.field("machineAccountGroup")],
 			[univention.admin.field("ntCompatibility")]
 		], advanced = True),

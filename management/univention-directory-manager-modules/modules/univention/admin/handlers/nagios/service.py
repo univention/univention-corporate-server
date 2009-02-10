@@ -73,7 +73,7 @@ property_descriptions={
 			identifies=0
 		),
 	'checkCommand': univention.admin.property(
-			short_description= _('Plugin Command'),
+			short_description= _('Plugin command'),
 			long_description= _('Command name of Nagios plugin'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -83,7 +83,7 @@ property_descriptions={
 			identifies=0
 		),
 	'checkArgs': univention.admin.property(
-			short_description = _('Plugin Command Arguments'),
+			short_description = _('Plugin command arguments'),
 			long_description = _('Arguments of used Nagios plugin'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
