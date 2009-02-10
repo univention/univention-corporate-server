@@ -545,8 +545,8 @@ class handler(umch.simpleHandler):
 		# get bind password if UCR variable is already set and file exists
 		fn = self.configRegistry.get('connector/ad/ldap/bindpw')
 		if not fn or not os.path.exists( fn ):
-			self.msg['hint'].append( _('Password of replication user has not been set yet!') )
-			debugmsg( ud.ADMIN, ud.WARN, 'Password of replication user has not been set yet' )
+			self.msg['hint'].append( _('The password of specified replication user has not been set yet!') )
+			debugmsg( ud.ADMIN, ud.WARN, 'password of replication user has not been set yet' )
 
 		# ask for ldap_bindpwd
 		inp_ldap_bindpwd = umcd.make( self['adconnector/configure']['ad_ldap_bindpw'], default = '' )

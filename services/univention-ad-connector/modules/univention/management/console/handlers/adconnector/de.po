@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-29 10:42+0100\n"
-"PO-Revision-Date: 2009-01-29 10:44+0100\n"
+"POT-Creation-Date: 2009-02-10 15:44+0100\n"
+"PO-Revision-Date: 2009-02-10 15:44+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -120,7 +120,7 @@ msgstr "sync (AD <--> UCS)"
 msgid "Active Directory Connector group mapping language"
 msgstr "Verwendete Sprache für das Gruppen-Mapping"
 
-#: __init__.py:107 __init__.py:108 __init__.py:596 __init__.py:659
+#: __init__.py:107 __init__.py:108 __init__.py:596 __init__.py:660
 msgid "Upload Active Directory Certificate"
 msgstr "Active Directory-Zertifikat hochladen"
 
@@ -180,11 +180,13 @@ msgstr "Zertifikatsinstallation oder -konvertierung fehlgeschlagen."
 
 #: __init__.py:371
 msgid "Active Directory Connector is already running. Nothing to do."
-msgstr "Der Active Directory Connector ist bereits aktiv. Keine Aktion notwendig."
+msgstr ""
+"Der Active Directory Connector ist bereits aktiv. Keine Aktion notwendig."
 
 #: __init__.py:375
 msgid "Active Directory Connector is already stopped. Nothing to do."
-msgstr "Der Active Directory Connector ist bereits gestoppt. Keine Aktion notwendig."
+msgstr ""
+"Der Active Directory Connector ist bereits gestoppt. Keine Aktion notwendig."
 
 #: __init__.py:385
 #, python-format
@@ -210,7 +212,9 @@ msgstr "Der Active Directory Connector wurde beendet."
 msgid ""
 "The configuration process has been finished and all required settings\n"
 "for Active Directory Connector are set."
-msgstr "Der Konfigurationsvorgang ist beendet und alle vom Active Directory Connector benötigten Einstellungen sind gesetzt."
+msgstr ""
+"Der Konfigurationsvorgang ist beendet und alle vom Active Directory "
+"Connector benötigten Einstellungen sind gesetzt."
 
 #: __init__.py:468
 msgid "The Active Directory certificate has been sucessfully installed."
@@ -250,8 +254,8 @@ msgstr ""
 "Replikationsbenutzer wurde automatisch gesetzt."
 
 #: __init__.py:548
-msgid "Password of replication user has not been set yet!"
-msgstr "Passwort des Replikationsbenutzers wurde noch nicht gesetzt!"
+msgid "The password of specified replication user has not been set yet!"
+msgstr "Das Passwort des Replikationsbenutzers wurde noch nicht gesetzt!"
 
 #: __init__.py:588
 msgid "Save Changes"
@@ -265,41 +269,48 @@ msgstr "Download des .msi-Pakets und UCS-Zertifikats"
 msgid "Upload Active Directory certificate"
 msgstr "Active Directory-Zertifikat hochladen"
 
-#: __init__.py:610
+#: __init__.py:599
 msgid ""
 "Hint: all settings become operative after (re)start of Active Directory "
 "Connector."
-msgstr "Hinweis: alle Einstellungen werden erst nach dem (Neu)Start des Active Directory Connectors wirksam."
+msgstr ""
+"Hinweis: alle Einstellungen werden erst nach dem (Neu)Start des Active "
+"Directory Connectors wirksam."
 
-#: __init__.py:613
+#: __init__.py:614
 msgid "Active Directory Connector Configuration"
 msgstr "Active Directory Connector-Konfiguration"
 
-#: __init__.py:616
+#: __init__.py:617
 msgid ""
 "After the above configuration values have been set, the Active Directory "
 "certificate has to be uploaded to Active Directory Connector."
-msgstr "Nachdem die oben gemachten Einstellungen speichert wurden, muss das Active-Directory-Zertifikat für den Active Directory Connector hochgeladen werden."
+msgstr ""
+"Nachdem die oben gemachten Einstellungen speichert wurden, muss das Active-"
+"Directory-Zertifikat für den Active Directory Connector hochgeladen werden."
 
-#: __init__.py:617
+#: __init__.py:618
 msgid ""
 "Finally on the Active Directory Server some files have to be installed for "
 "correct function of Active Directory Connector. Press button to get these "
 "files."
-msgstr "Abschließend müssen auf dem Active Directory Server einige Programme/Dateien für die korrekte Funktion installiert werden. Klicken Sie auf den Button, um diese Dateien herunterzuladen."
+msgstr ""
+"Abschließend müssen auf dem Active Directory Server einige Programme/Dateien "
+"für die korrekte Funktion installiert werden. Klicken Sie auf den Button, um "
+"diese Dateien herunterzuladen."
 
-#: __init__.py:618
+#: __init__.py:619
 msgid "Additional Configuration Steps"
 msgstr "Active Directory Connector-Konfiguration"
 
-#: __init__.py:628 __init__.py:669
+#: __init__.py:629 __init__.py:670
 msgid "Notice"
 msgstr "Hinweis"
 
-#: __init__.py:650
+#: __init__.py:651
 msgid "Save"
 msgstr "Speichern"
 
-#: __init__.py:656
+#: __init__.py:657
 msgid "Please select the file containing the Active Directory certificate."
 msgstr "Bitte das Active Directory-Zertifikat auswählen und hochladen."

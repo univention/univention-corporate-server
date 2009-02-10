@@ -1,3 +1,10 @@
+univention-ad-connector (2.0.5-2) unstable; urgency=low
+
+  * fixed translation string (Bug #8736)
+  * added missing images (Bug #8736)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 Feb 2009 16:03:49 +0100
+
 univention-ad-connector (2.0.5-1) unstable; urgency=low
 
   * fixed layout of UMC module (Bug #8736)
