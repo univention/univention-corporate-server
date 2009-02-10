@@ -45,22 +45,20 @@ test_retval () {
 
 	echo "Installation error: " >> $log
 	echo -e "$msg" >> $log
-	echo "Installation error: "
-	echo -e "$msg"
 }
 
 # is instmnt mounted
-mount | grep $instmnt >/dev/null 
+mount | grep $instmnt 2>/dev/null >/dev/null 
 test_retval $? "Something wrong with the installation root,\nit is not mounted."
 
 # chroot
-chroot $instmnt << __EOF__
+chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
 exit
 __EOF__
 test_retval $? "Could not chroot to $instmnt."
 
 # packages
-chroot $instmnt << __EOF__
+chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
 dpkg -l | egrep "^i[^i]" >/tmp/failed-packages.txt
 if [ 0 -eq $? ]; then
 	exit 1
@@ -74,13 +72,13 @@ if [ -e "$instmnt/tmp/failed-packages.txt" ]; then
 fi
 
 # Administrator
-chroot $instmnt << __EOF__
-id Administrator >/dev/null || exit 1
+chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
+id Administrator 1>/dev/null || exit 1
 __EOF__
 test_retval $? "User Administrator was not created."
 
 # Administrator in admin group
-chroot $instmnt << __EOF__
+chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
 getent group | grep "Domain Admins" | grep Administrator >/dev/null || exit 1
 __EOF__
 test_retval $? "User Administrator is not member of \"Domain Admins\" group."

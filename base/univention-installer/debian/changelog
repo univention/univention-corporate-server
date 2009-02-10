@@ -1,3 +1,9 @@
+univention-installer (3.0.9-2) unstable; urgency=low
+
+  * less verbose test script (Bug: #12190)
+
+ -- Felix Botner <botner@univention.de>  Tue, 10 Feb 2009 10:07:51 +0100
+
 univention-installer (3.0.9-1) unstable; urgency=low
 
   * quote the md5 password of root. Bug #9739
