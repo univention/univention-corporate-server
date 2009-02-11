@@ -141,6 +141,7 @@ univention-config-registry set samba/script/adduser?true \
 				samba/guest_account?nobody \
 				samba/map_to_guest?"Bad User" \
 				samba/invalid_users?"daemon bin sys sync games man lp mail news uucp proxy majordom postgres www-data backup msql operator list irc gnats alias qmaild qmails qmailr qmailq qmaill qmailp telnetd identd ftp rwhod gdm fetchmail faxmaster" \
+				samba/netlogon/sync?sync \
 				samba/domain/logons?auto
 
 if [ "$1" = "configure" -a -n "$2" ];

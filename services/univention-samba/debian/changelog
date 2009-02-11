@@ -1,3 +1,10 @@
+univention-samba (3.0.2-1) unstable; urgency=low
+
+  * added UCR variable samba/netlogon/sync to control sync of samba
+    netlogon scripts (Bug #12178 and Bug #12830)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 11 Sep 2008 15:48:21 +0200
+
 univention-samba (3.0.1-1) unstable; urgency=low
 
   * include common-password instead of common-passwd in the pam

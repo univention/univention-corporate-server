@@ -280,3 +280,9 @@ Description[en]=Enable/Disable support for nested groups
 Type=str
 Categories=Network
 
+[samba/netlogon/sync]
+Description[de]=Verhalten der Samba-Netlogon-Skript-Synchronisation
+Description[en]=Adjust synchronisation of samba netlogon scripts
+Type=str
+Categories=Network
+

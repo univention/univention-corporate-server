@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-eval `/usr/sbin/univention-baseconfig shell ldap/master server/role hostname`
+eval $(/usr/sbin/univention-baseconfig shell ldap/master server/role hostname samba/netlogon/sync)
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "memberserver" ]; then
 	exit 0
@@ -38,13 +38,21 @@ PDC=$ldap_master
 NETLOGON_PATH=/var/lib/samba/netlogon
 ACCOUNT_PATH=/var/lib/samba/account-policy
 ACCOUNT_FILE=policy.txt
+RSYNC_OPTS="--delete"
+
+if [ "$samba_netlogon_sync" = "none" ] ; then
+	exit 0
+fi
+if [ "$samba_netlogon_sync" = "download" ] ; then
+	RSYNC_OPTS=""
+fi
 
 # copy netlogon share
 mkdir -p $NETLOGON_PATH
-univention-ssh-rsync /etc/machine.secret -aAz --delete -e ssh "$hostname\$@$PDC:$NETLOGON_PATH/" "$NETLOGON_PATH"
+univention-ssh-rsync /etc/machine.secret -aAz $RSYNC_OPTS -e ssh "$hostname\$@$PDC:$NETLOGON_PATH/" "$NETLOGON_PATH"
 
 mkdir -p $ACCOUNT_PATH
-univention-ssh-rsync /etc/machine.secret -aAz --delete -e ssh "$hostname\$@$PDC:$ACCOUNT_PATH/" "$ACCOUNT_PATH"
+univention-ssh-rsync /etc/machine.secret -aAz $RSYNC_OPTS -e ssh "$hostname\$@$PDC:$ACCOUNT_PATH/" "$ACCOUNT_PATH"
 
 if [ -e "$ACCOUNT_PATH/$ACCOUNT_FILE" ]; then
 	cat "$ACCOUNT_PATH/$ACCOUNT_FILE" | /usr/share/univention-samba/set_account_policy_from_pdbedit
