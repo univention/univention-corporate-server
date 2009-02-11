@@ -37,13 +37,13 @@ import subprocess
 import sys
 
 import univention.config_registry as ucr
+import univention.repository as urepo
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
 _mirror_base = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
 _repo_base = os.path.join( _mirror_base, 'mirror', configRegistry.get( 'version/version' ), 'maintained', '%s-0' % configRegistry.get( 'version/version' ) )
-_architectures = ( 'i386', 'amd64', 'all', 'extern' )
 
 def check_preconditions( options ):
 	# check directories
@@ -85,7 +85,7 @@ def  prepare( options ):
 		# already exists -> ignore
 		if e.errno != 17:
 			raise e
-	for arch in _architectures:
+	for arch in urepo.ARCHITECTURES:
 		try:
 			os.makedirs( os.path.join( _repo_base, arch ) )
 		except OSError, e:
@@ -192,7 +192,7 @@ def mount( options ):
 def setup_repository( options ):
 	print 'Creating indexes ...',
 	sys.stdout.flush()
-	for arch in _architectures:
+	for arch in urepo.ARCHITECTURES:
 		print arch,
 		sys.stdout.flush()
 		# create Packages file

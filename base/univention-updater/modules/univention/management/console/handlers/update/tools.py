@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: manages updates
 #
-# Copyright (C) 2008 Univention GmbH
+# Copyright (C) 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #

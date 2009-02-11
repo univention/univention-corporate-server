@@ -3,7 +3,7 @@
 # Univention Updater
 #  repository addpackage
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -36,6 +36,7 @@ import re
 import subprocess
 
 import univention_baseconfig
+import  univention.repository as urepo
 
 def usage(fd=sys.stdout):
 	print >>fd, 'univention-repository-addpackage: tool for adding packages to local repository'
@@ -57,54 +58,6 @@ def rewrite_url(url):
         tmp = tmp.replace(i, '_')
 
     return tmp
-
-def create_packages( base_dir, source_dir ):
-	# create Packages file
-	print os.path.join( base_dir, source_dir, 'Packages' )
-	if not os.path.isfile( os.path.join( base_dir, source_dir, 'Packages' ) ):
-		return True
-
-	pkg_file = os.path.join( base_dir, source_dir, 'Packages' )
-	pkg_file_lock = os.path.join( base_dir, source_dir, 'Packages.lock' )
-	pkg_file_gz = os.path.join( base_dir, source_dir, 'Packages.gz' )
-	# create a backup
-	if os.path.exists( pkg_file ):
-		shutil.copyfile( pkg_file, '%s.SAVE' % pkg_file )
-	if os.path.exists( pkg_file_gz ):
-		shutil.copyfile( pkg_file_gz, '%s.SAVE' % pkg_file_gz )
-
-	packages_fd = open( os.path.join( base_dir, source_dir, 'Packages' ), 'w' )
-	try:
-		fd = open( pkg_file_lock, 'w' )
-		fd.close()
-	except:
-		pass
-
-	ret = subprocess.call( [ 'apt-ftparchive', 'packages', source_dir ], stdout = packages_fd, cwd = base_dir )
-	packages_fd.close()
-
-	if ret:
-		print >> sys.stderr, "Error: Failed to create Packages file for '%s'" % os.path.join( base_dir, source_dir )
-		# restore backup
-		if os.path.exists( '%s.SAVE' % pkg_file ):
-			shutil.copyfile( '%s.SAVE' % pkg_file, pkg_file )
-		if os.path.exists( '%s.SAVE' % pkg_file_gz ):
-			shutil.copyfile( '%s.SAVE' % pkg_file_gz, pkg_file_gz )
-		if os.path.exists( pkg_file_lock ):
-			os.unlink( pkg_file_lock )
-		return False
-
-	# create Packages.gz file
-	packages_fd = open( os.path.join( base_dir, source_dir, 'Packages' ), 'r' )
-	packagesgz_fd = open( os.path.join( base_dir, source_dir, 'Packages.gz' ), 'w' )
-	ret = subprocess.call( [ 'gzip' ], stdout = packagesgz_fd, stdin = packages_fd )
-	packages_fd.close()
-	packagesgz_fd.close()
-
-	if os.path.exists( pkg_file_lock ):
-		os.unlink( pkg_file_lock )
-
-	return True
 
 # parse options
 if __name__ == '__main__':
@@ -156,32 +109,7 @@ if __name__ == '__main__':
 		print 'Error: The local repository is diabled. Check if univention-debmirror ist installed.'
 		sys.exit(1)
 
-	# cut off trailing '/'
-	if packages_dir[ -1 ] == '/':
-		pacakges_dir = packages_dir[ : -1 ]
-
-	# find repository base directory
-	has_arch_dirs = False
-	has_packages = False
-	for entry in os.listdir( packages_dir ):
-		if os.path.isdir( os.path.join( packages_dir, entry ) ) and entry in ( 'i386', 'all', 'amd64', 'extern' ):
-			has_arch_dirs = True
-		elif os.path.isfile( os.path.join( packages_dir, entry ) ) and entry == 'Packages':
-			has_packages = True
-
-	if not has_arch_dirs:
-		# might not be a repository
-		if not has_packages:
-			print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
-			sys.exit( 1 )
-		head, tail = os.path.split( packages_dir )
-		if tail in ( 'i386', 'all', 'amd64', 'extern' ):
-			packages_path = head
-		else:
-			print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
-			sys.exit( 1 )
-	else:
-		packages_path = packages_dir
+	packages_path = urepo.get_repo_basedir( packages_dir )
 
 	# if file expansion is used (as in --file /tmp/*.deb), and no such file exists,
 	# we should issue a warning
@@ -222,10 +150,10 @@ if __name__ == '__main__':
 		count=count+1
 
 	# these might not exist if creating a new repository
-	create_packages( packages_path, '.' )
+	urepo.create_packages( packages_path, '.' )
 	if packages_path[ -1 ] == '/':
 		packages_path = packages_path[ : -1 ]
 
 	head, tail = os.path.split( packages_path )
-	for arch in ( 'all', 'i386', 'amd64' ):
-		create_packages( head, '%s/%s' % ( tail, arch ) )
+	for arch in urepo.ARCHITECTURES:
+		urepo.create_packages( head, '%s/%s' % ( tail, arch ) )

@@ -30,22 +30,50 @@
 
 # TODO: use UCR variables for update, upgrade, install and remove commands
 
-import os, sys, string, time, tempfile, univention_baseconfig, commands
+import os, sys, string, time, tempfile, commands
 import subprocess
 
-class TeeFile( object ):
+import univention.config_registry as ucr
+
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
+
+cmd_dist_upgrade_sim = configRegistry.get( 'update/commands/distupgrade/simulate', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes -us dist-upgrade' )
+cmd_upgrade_sim = configRegistry.get( 'update/commands/upgrade/simulate', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes -us upgrade' )
+cmd_dist_upgrade = configRegistry.get( 'update/commands/distupgrade', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade' )
+cmd_upgrade = configRegistry.get( 'update/commands/upgrade', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes -u upgrade' )
+cmd_update = configRegistry.get( 'update/commands/update', 'apt-get update' )
+cmd_show = configRegistry.get( 'update/commands/show', 'apt-get show' )
+cmd_config = configRegistry.get( 'update/commands/configure', 'dpkg --configure -a' )
+cmd_remove = configRegistry.get( 'update/commands/remove', 'apt-get --yes remove' )
+cmd_install = configRegistry.get( 'update/commands/install', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes install' )
+
+class Tee( object ):
 	'''Writes the given string to serveral files at once. Could by used
 	with the print statement'''
-	def __init__( self, fds = [] ):
-		if not fds:
-			self.fds = [ sys.stdout ]
-		else:
-			self._fds = fds
+	def __init__( self, files = [], stdout = True, filter = None ):
+		self.stdout = stdout
+		self.files = files
+		self.filter = filter
 
-	def write( self, str ):
-		for fd in self._fds:
-			print >> fd, str
-			fd.flush()
+	def call( self, command, **kwargs ):
+		p = subprocess.Popen( command, stdout = subprocess.PIPE, stderr = subprocess.STDOUT, **kwargs )
+		tee_command = [ 'tee', '-a' ] + self.files
+		if self.stdout:
+			if self.filter:
+				tee = subprocess.Popen( tee_command, stdin = p.stdout, stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
+				egrep = subprocess.Popen( [ 'egrep', self.filter ], stdin = tee.stdout )
+				return egrep.wait()
+			else:
+				tee = subprocess.Popen( tee_command, stdin = p.stdout )
+		else:
+			devnull = open( os.path.devnull, 'a' )
+			tee = subprocess.Popen( tee_command, stdin = p.stdout, stdout = devnull )
+
+		ret = tee.wait()
+		devnull.close()
+
+		return ret
 
 def usage():
 	print "univention-actualise: Perform a (dist-)upgrade and (un-)install packages as set"
@@ -73,9 +101,8 @@ def createLock():
 	except:
 		pass
 
-def getUpdate( baseConfig ):
+def getUpdate( configRegistry ):
 	# Small function waiting for apt lockfile to vanish then starts apt-get update
-	cmd_update = baseConfig.get( 'update/commands/update', 'apt-get update' )
 
 	print "Running apt-get update"
 	waitForLock()
@@ -113,19 +140,17 @@ def deactivateSourcesListMethods( methods = [ 'cdrom' ] ):
 		debug_file.write( '   %s\n' % '\n   '.join(deactivated_lines) )
 		debug_file.close()
 
-def check( baseConfig, dist_upgrade = False):
+def check( configRegistry, dist_upgrade = False):
 	# Just probe if there are packages to add or remove
-	cmd_dist_upgrade = baseConfig.get( 'update/commands/distupgrade/simulate', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes -us dist-upgrade' )
-	cmd_upgrade = baseConfig.get( 'update/commands/upgrade/simulate', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes -us upgrade' )
 
 	actualise = False
-	getUpdate( baseConfig )
+	getUpdate( configRegistry )
 
 	# Probe for packages to actualise
 	if dist_upgrade:
-		cmd = cmd_dist_upgrade
+		cmd = cmd_dist_upgrade_sim
 	else:
-		cmd = cmd_upgrade
+		cmd = cmd_upgrade_sim
 
 	waitForLock()
 	createLock()
@@ -145,49 +170,49 @@ def check( baseConfig, dist_upgrade = False):
 		actualise = True
 
 	# Probe for policies
-	rem_packages=getPackageList(baseConfig, 'remove')
-	add_packages=getPackageList(baseConfig, 'add')
+	rem_packages=getPackageList(configRegistry, 'remove')
+	add_packages=getPackageList(configRegistry, 'add')
 
 	if rem_packages or add_packages or actualise:
 		return 1
 	else:
 		return 0
 
-def getPackageList(baseConfig, job):
+def getPackageList(configRegistry, job):
 	# Get a list of packages to remove or add, depending on the value of job
-	# getPackageList(baseConfigObject, pkgdb, job={add,remove})
+	# getPackageList(configRegistryObject, pkgdb, job={add,remove})
 
 	packageList=[]
 	packages_name=""
 
 	if job == 'remove':
-		if baseConfig['server/role'] == 'fatclient':
+		if configRegistry['server/role'] == 'fatclient':
 			packages_name='univentionClientPackagesRemove='
-		elif baseConfig['server/role'] == 'mobileclient':
+		elif configRegistry['server/role'] == 'mobileclient':
 			packages_name='univentionMobileClientPackagesRemove='
-		elif baseConfig['server/role'] == 'memberserver':
+		elif configRegistry['server/role'] == 'memberserver':
 			packages_name='univentionMemberPackagesRemove='
-		elif baseConfig['server/role'] == 'domaincontroller_slave':
+		elif configRegistry['server/role'] == 'domaincontroller_slave':
 			packages_name='univentionSlavePackagesRemove='
-		elif baseConfig['server/role'] == 'domaincontroller_master' or baseConfig['server/role'] == 'domaincontroller_backup':
+		elif configRegistry['server/role'] == 'domaincontroller_master' or configRegistry['server/role'] == 'domaincontroller_backup':
 			packages_name='univentionMasterPackagesRemove='
 	elif job == 'add':
-		if baseConfig['server/role'] == 'fatclient':
+		if configRegistry['server/role'] == 'fatclient':
 			packages_name='univentionClientPackages='
-		elif baseConfig['server/role'] == 'mobileclient':
+		elif configRegistry['server/role'] == 'mobileclient':
 			packages_name='univentionMobileClientPackages='
-		elif baseConfig['server/role'] == 'memberserver':
+		elif configRegistry['server/role'] == 'memberserver':
 			packages_name='univentionMemberPackages='
-		elif baseConfig['server/role'] == 'domaincontroller_slave':
+		elif configRegistry['server/role'] == 'domaincontroller_slave':
 			packages_name='univentionSlavePackages='
-		elif baseConfig['server/role'] == 'domaincontroller_master' or baseConfig['server/role'] == 'domaincontroller_backup':
+		elif configRegistry['server/role'] == 'domaincontroller_master' or configRegistry['server/role'] == 'domaincontroller_backup':
 			packages_name='univentionMasterPackages='
 	else:
 		print >>sys.stderr, "E: no valid job defined"
 		sys.exit(1)
 
 	tmpfile=tempfile.mktemp()
-	res=os.system('univention_policy_result -s "%s" >>%s' %  (baseConfig['ldap/hostdn'], tmpfile))
+	res=os.system('univention_policy_result -s "%s" >>%s' %  (configRegistry['ldap/hostdn'], tmpfile))
 	if res != 0:
 		print >>sys.stderr, 'failed to execute univention_policy_result'
 		sys.exit(res)
@@ -207,9 +232,6 @@ def main():
 	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
 	os.environ['LC_ALL'] = 'C'
 
-	baseConfig=univention_baseconfig.baseConfig()
-	baseConfig.load()
-
 	pkgdb = None
 	silent = False
 	print_usage = False
@@ -217,7 +239,7 @@ def main():
 	check_only = False
 
 	try:
-		if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
+		if configRegistry.has_key('ldap/hostdn') and configRegistry['ldap/hostdn']:
 
 			# parse arguments
 			for arg in sys.argv[1:]:
@@ -243,7 +265,7 @@ def main():
 
 			if check_only:
 				# Only probe for packages to add/remove
-				res=check(baseConfig, dist_upgrade)
+				res=check(configRegistry, dist_upgrade)
 				sys.exit(res)
 
 
@@ -251,20 +273,16 @@ def main():
 			logfile.write('***** Starting univention-actualise at %s\n' % time.ctime())
 
 			deactivateSourcesListMethods( methods = [ 'cdrom' ] )
-			cmd_show = baseConfig.get( 'update/commands/show', 'apt-get show' )
-			cmd_config = baseConfig.get( 'update/commands/configure', 'dpkg --configure -a' )
-			cmd_remove = baseConfig.get( 'update/commands/remove', 'apt-get --yes remove' )
-			cmd_install = baseConfig.get( 'update/commands/install', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes install' )
 
-			getUpdate( baseConfig )
+			getUpdate( configRegistry )
 
-			if baseConfig.has_key('pkgdb/scan') and baseConfig['pkgdb/scan']:
-				pkgdb=baseConfig['pkgdb/scan']
+			if configRegistry.has_key('pkgdb/scan') and configRegistry['pkgdb/scan']:
+				pkgdb=configRegistry['pkgdb/scan']
 
 			if pkgdb:
-				univention_baseconfig.handler_set(['pkgdb/scan=no'])
+				ucr.handler_set(['pkgdb/scan=no'])
 
-			rem_packages=getPackageList(baseConfig, 'remove')
+			rem_packages=getPackageList(configRegistry, 'remove')
 			for package in rem_packages:
 				waitForLock()
 
@@ -273,9 +291,10 @@ def main():
 				if res == 0:
 					print "Removing packages: %s" % package
 					createLock()
-					res = subprocess.call( cmd_config.split( ' ' ), env = { 'DEBIAN_FRONTEND' : 'noninteractive' }, stdout = logfile, stderr = logfile )
+					os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
+					res = subprocess.call( cmd_config.split( ' ' ), stdout = logfile, stderr = logfile )
 					if not res:
-						res = subprocess.call( cmd_remove.split( ' ' ) + [ package ], env = { 'DEBIAN_FRONTEND' : 'noninteractive' }, stdout = logfile, stderr = logfile )
+						res = subprocess.call( cmd_remove.split( ' ' ) + [ package ], stdout = logfile, stderr = logfile )
 				else:
 					print("The package %s doesn't exists." % package)
 					res=0
@@ -284,20 +303,21 @@ def main():
 				if res != 0:
 					print >>sys.stderr, "E: failed to remove %s" % package
 					if pkgdb:
-						univention_baseconfig.handler_set(['pkgdb/scan=%s' % pkgdb])
+						ucr.handler_set(['pkgdb/scan=%s' % pkgdb])
 					sys.exit(res)
 
 
-			add_packages=getPackageList(baseConfig, 'add')
+			add_packages=getPackageList(configRegistry, 'add')
 			for package in add_packages:
 				waitForLock()
 				res = subprocess.call( cmd_show.split( ' ' ) + [ package ] )
 				if res == 0:
 					print "Installing packages: %s" % package
 					createLock()
-					res = subprocess.call( cmd_config.split( ' ' ), env = { 'DEBIAN_FRONTEND' : 'noninteractive' }, stdout = logfile, stderr = logfile )
+					os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
+					res = subprocess.call( cmd_config.split( ' ' ), stdout = logfile, stderr = logfile )
 					if not res:
-						res = subprocess.call( cmd_install.split( ' ' ) + [ package ], env = { 'DEBIAN_FRONTEND' : 'noninteractive' }, stdout = logfile, stderr = logfile )
+						res = subprocess.call( cmd_install.split( ' ' ) + [ package ], stdout = logfile, stderr = logfile )
 				else:
 					print("The package %s doesn't exists." % package)
 					res=0
@@ -307,50 +327,47 @@ def main():
 				if res != 0:
 					print >>sys.stderr, "E: failed to install %s" % package
 					if pkgdb:
-						univention_baseconfig.handler_set(['pkgdb/scan=%s' % pkgdb])
+						ucr.handler_set(['pkgdb/scan=%s' % pkgdb])
 					sys.exit(res)
 
 			waitForLock()
 
 		else:
 			# ldap/hostdn is not set
-			if baseConfig['server/role'] != 'basesystem':
+			if configRegistry['server/role'] != 'basesystem':
 				print >>sys.stderr, "W: ldap/hostdn is not set - please run univention-join"
 
 		if dist_upgrade:
 			msg = "Dist-upgrading system"
-			cmd = cmd_distupgrade
+			cmd = cmd_dist_upgrade
 		else:
 			msg = "Upgrading system"
 			cmd = cmd_upgrade
 
-		print(msg)
+		print msg
 		# TODO: use mkstemp and close directly the file descriptor
-		tmpfd, tmpfile = tempfile.mkstemp()
-		teefile = TeeFile( [ logfile, tmpfd ] )
 
 		createLock()
-		res = subprocess.call( cmd_configure.split( ' ' ), env = { 'DEBIAN_FRONTEND' : 'noninteractive' }, stdout = logfile, stderr = logfile )
+		os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
+		tee = Tee( [ '/var/log/univention/actualise.log' ], stdout = not silent  )
+		res = tee.call( cmd_config.split( ' ' ) )
 		if res == 0:
-			res = subprocess.call( cmd.split( ' ' ), env = { 'DEBIAN_FRONTEND' : 'noninteractive' }, stdout = teefile, stderr = teefile )
+			tee = Tee( [ '/var/log/univention/actualise.log' ], stdout = not silent, filter = '(^Get|^Unpacking|^Preparing|^Setting up|packages upgraded)' )
+			res = tee.call( cmd.split( ' ' ) )
 
-		if not silent:
-			#TODO: support for more languages
-			subprocess.call( [ 'egrep', '(^Get|^Unpacking|^Preparing|^Setting up|packages upgraded)', tmpfile ] )
-		os.unlink( tmpfile )
 		if os.path.exists('/var/run/apt-get.lock'):
 			os.unlink('/var/run/apt-get.lock')
 
-		if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
+		if configRegistry.has_key('ldap/hostdn') and configRegistry['ldap/hostdn']:
 			if res != 0:
 				print >>sys.stderr, "E: failed to upgrade"
 				if pkgdb:
-					univention_baseconfig.handler_set(['pkgdb/scan=%s' % pkgdb])
+					ucr.handler_set(['pkgdb/scan=%s' % pkgdb])
 				sys.exit(res)
 
 	finally:
 		if pkgdb:
-			univention_baseconfig.handler_set(['pkgdb/scan=%s' % pkgdb])
+			ucr.handler_set(['pkgdb/scan=%s' % pkgdb])
 			if not silent:
 				os.system('/usr/sbin/univention-pkgdb-scan')
 			else:

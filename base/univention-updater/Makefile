@@ -1,4 +1,4 @@
-MODULES=$(shell find modules/univention/management -name '*.py')
+MODULES=$(shell find modules/univention -name '*.py')
 MO_FILES_BACKEND=$(shell find modules/univention/management -name '*.po' | sed 's/\.po/\.mo/g')
 IMAGES=$(shell find images -name '*.gif' -o -name '*.png')
 

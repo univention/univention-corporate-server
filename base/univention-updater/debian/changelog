@@ -1,3 +1,11 @@
+univention-updater (4.0.14-1) unstable; urgency=low
+
+  * adapt univention-repository-delpackage to new repositories (Bug
+    #12511)
+  * minor bug fixes in univention-actualise
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 11 Feb 2009 11:28:32 +0100
+
 univention-updater (4.0.13-1) unstable; urgency=low
 
   * minor fixes in univention-actualise and univention-repository-addpackage
