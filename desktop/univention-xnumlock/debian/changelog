@@ -1,3 +1,9 @@
+univention-xnumlock (2.0.1-2) unstable; urgency=low
+
+  * fixed debian control (Bug: #12921)
+
+ -- Felix Botner <botner@univention.de>  Wed, 11 Feb 2009 09:21:52 +0100
+
 univention-xnumlock (2.0.1-1) unstable; urgency=low
 
   * x11 binaries now going to usr/bin too (Bug: #12921)

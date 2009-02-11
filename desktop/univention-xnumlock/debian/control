@@ -2,7 +2,7 @@ Source: univention-xnumlock
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev, xlibs-static-dev, libxtst-dev
+Build-Depends: debhelper, univention-config-dev, libx11-dev, libxtst-dev
 Standards-Version: 3.5.2
 
 Package: univention-xnumlock
