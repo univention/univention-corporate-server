@@ -1,4 +1,4 @@
-Copyright 2002,2003,2004,2005,2006,2007 by
+Copyright 2002-2009 by
 
 Univention GmbH
 http://www.univention.de/
@@ -7,8 +7,8 @@ All rights reserved.
 
 The source code of the software contained in this package
 as well as the source package itself are made available
-under the terms of the GNU General Public License version 2
-(GNU GPL V2) as published by the Free Software Foundation.
+under the terms of the GNU General Public License version 3
+(GNU GPL V3) as published by the Free Software Foundation.
 
 Binary versions of this package provided by Univention to you as
 well as other copyrighted, protected or trademarked materials like
@@ -16,7 +16,7 @@ Logos, graphics, fonts, specific documentations and configurations,
 cryptographic keys etc. are subject to a license agreement between
 you and Univention.
 
-In the case you use the software under the terms of the GNU GPL V2,
+In the case you use the software under the terms of the GNU GPL V3,
 the program is provided in the hope hat it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -28,6 +28,6 @@ the Debian GNU/Linux or Univention distribution in file
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 On Univention and Debian systems, the complete text of the GNU General Public
-License, version 2, can be found in /usr/share/common-licenses/GPL-2.
+License, version 3, can be found in /usr/share/common-licenses/GPL-3.
 
 
