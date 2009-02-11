@@ -1,3 +1,10 @@
+univention-samba (3.0.1-1) unstable; urgency=low
+
+  * include common-password instead of common-passwd in the pam
+    configuration for samba. Bug #12830
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Feb 2009 10:45:27 +0100
+
 univention-samba (2.0.9-1) unstable; urgency=low
 
   * added samba/domain/logons (Bug 12406)

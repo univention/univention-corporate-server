@@ -12,5 +12,5 @@
 @include common-account
 @include common-auth
 @include common-session
-@include common-passwd
+@include common-password
 
