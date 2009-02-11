@@ -197,7 +197,7 @@ msgid "Room number"
 msgstr "Raumnummer"
 
 #: user.py:371
-msgid "Secretary"
+msgid "Superior"
 msgstr "Vorgesetzter"
 
 #: user.py:381

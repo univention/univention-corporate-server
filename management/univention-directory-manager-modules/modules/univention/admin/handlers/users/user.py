@@ -368,7 +368,7 @@ property_descriptions={
 			identifies=0
 		),
 	'secretary': univention.admin.property(
-			short_description=_('Secretary'),
+			short_description=_('Superior'),
 			long_description='',
 			syntax=univention.admin.syntax.userDn,
 			multivalue=1,
