@@ -1,3 +1,10 @@
+univention-winprinters (1.0.0-2) unstable; urgency=low
+
+  * relicensed to GPL-3 due to python-samba (Bug #12895)
+  * adjusted Univention copyright to 2009 (Bug #6875)
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Wed, 11 Feb 2009 10:46:43 +0100
+
 univention-winprinters (1.0.0-1) unstable; urgency=low
 
   * Update to UCS 2.0 policies
