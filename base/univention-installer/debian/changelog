@@ -1,6 +1,12 @@
+univention-installer (3.0.10-1) unstable; urgency=low
+
+  * empty sources.list file created during installation (Bug #13159)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 12 Feb 2009 09:01:51 +0100
+
 univention-installer (3.0.9-3) unstable; urgency=low
 
-  * fix in test script ($ must be quoted in bash here documents) (Bug: #12190) 
+  * fix in test script ($ must be quoted in bash here documents) (Bug: #12190)
 
  -- Felix Botner <botner@univention.de>  Tue, 10 Feb 2009 12:52:52 +0100
 
@@ -30,19 +36,19 @@ univention-installer (3.0.7-15) unstable; urgency=low
 
 univention-installer (3.0.7-14) unstable; urgency=low
 
-  * fix in test script (Bug: #12190) 
+  * fix in test script (Bug: #12190)
 
  -- Felix Botner <botner@univention.de>  Wed,  4 Feb 2009 09:46:04 +0100
 
 univention-installer (3.0.7-13) unstable; urgency=low
 
-  * removed mdadm from package list (Bug: #13201) 
+  * removed mdadm from package list (Bug: #13201)
 
  -- Felix Botner <botner@univention.de>  Tue,  3 Feb 2009 17:24:08 +0100
 
 univention-installer (3.0.7-12) unstable; urgency=low
 
-  * install mdadm if necessary and before univention-grub (Bug: #13201) 
+  * install mdadm if necessary and before univention-grub (Bug: #13201)
 
  -- Felix Botner <botner@univention.de>  Tue,  3 Feb 2009 17:08:39 +0100
 
@@ -60,7 +66,7 @@ univention-installer (3.0.7-10) unstable; urgency=low
 
 univention-installer (3.0.7-9) unstable; urgency=low
 
-  * 02_disk_check: set ucr partition variables only if they are not already set 
+  * 02_disk_check: set ucr partition variables only if they are not already set
   * 04_mouting: get partition info from ucr not from profile (Bug: #13204)
 
  -- Felix Botner <botner@univention.de>  Thu, 29 Jan 2009 15:52:05 +0100
@@ -103,7 +109,7 @@ univention-installer (3.0.7-3) unstable; urgency=low
 
 univention-installer (3.0.7-2) unstable; urgency=low
 
-  * profile mode for expert_partition (Bug: #13202) 
+  * profile mode for expert_partition (Bug: #13202)
 
  -- Felix Botner <botner@univention.de>  Wed, 28 Jan 2009 13:44:17 +0100
 

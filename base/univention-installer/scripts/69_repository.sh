@@ -3,7 +3,7 @@
 # Univention Installer
 #  setup repository
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -45,8 +45,14 @@ if [ -n "$local_repository" ]; then
 fi
 
 # create sources.list
-chroot /intmnt univention-config-registry commit \
+chroot /instmnt univention-config-registry commit \
 					/etc/apt/sources.list.d/15_ucs-online-version.list \
 					/etc/apt/sources.list.d/18_ucs-online-security.list \
 					/etc/apt/sources.list.d/20_ucs-online-component.list \
 					/etc/apt/mirror.list
+
+#create an empty sources.list
+if [ -e "/etc/apt/sources.list" ]; then
+	mv /etc/apt/sources.list /etc/apt/sources.list.unused
+	touch /etc/apt/sources.list
+fi
