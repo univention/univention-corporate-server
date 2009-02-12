@@ -1,3 +1,9 @@
+univention-bind (3.0.1-1) unstable; urgency=low
+
+  * use a ucr template for the bind9 init script. Bug #12521
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Feb 2009 08:14:10 +0100
+
 univention-bind (2.0.5-8) unstable; urgency=low
 
   * don't check the autostart setting in the runit file otherwise the

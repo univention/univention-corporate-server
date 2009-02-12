@@ -3,3 +3,7 @@ File: etc/bind/named.conf.proxy
 Variables: dns/forwarder1
 Variables: dns/forwarder2
 Variables: dns/forwarder3
+
+Type: file
+Mode: 755
+File: etc/init.d/bind9

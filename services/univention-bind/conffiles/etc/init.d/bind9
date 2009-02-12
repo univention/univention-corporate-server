@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo "The init script /etc/init.d/bind9 was disabled."
+echo "Please start and stop the domain name server via"
+echo "   /etc/init.d/univention-bind-proxy"
+
+exit 0
+
