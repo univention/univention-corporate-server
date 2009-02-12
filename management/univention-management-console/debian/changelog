@@ -1,4 +1,4 @@
-univention-management-console (1.0.5-1) unstable; urgency=low
+univention-management-console (1.0.5-2) unstable; urgency=low
 
   * added the umc version to the feedback mail
   * added ucr variables for the feedback mail recipient
