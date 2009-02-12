@@ -68,6 +68,7 @@ fi
 __EOF__
 test_retval $? "Not all software packages were correctly installed."
 if [ -e "$instmnt/tmp/failed-packages.txt" ]; then
+	echo "missing packages:" >> $log
 	cat $instmnt/tmp/failed-packages.txt >> $log
 fi
 
