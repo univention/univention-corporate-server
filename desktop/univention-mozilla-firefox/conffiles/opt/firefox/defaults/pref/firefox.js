@@ -406,6 +406,7 @@ pref("intl.charset.default",  "chrome://global-platform/locale/intl.properties")
 pref("font.language.group", "chrome://global/locale/intl.properties");
 pref("intl.menuitems.alwaysappendaccesskeys","chrome://global/locale/intl.properties");
 pref("intl.menuitems.insertseparatorbeforeaccesskeys","chrome://global/locale/intl.properties");
+pref("intl.locale.matchOS", true);
 
 // 0=lines, 1=pages, 2=history , 3=text size
 //@line 423 "/builds/tinderbox/Fx-Mozilla1.9-Release/Linux_2.6.18-53.1.13.el5_Depend/mozilla/browser/app/profile/firefox.js"
