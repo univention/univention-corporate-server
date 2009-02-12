@@ -57,6 +57,7 @@ class Tee( object ):
 		self.filter = filter
 
 	def call( self, command, **kwargs ):
+		devnull = None
 		p = subprocess.Popen( command, stdout = subprocess.PIPE, stderr = subprocess.STDOUT, **kwargs )
 		tee_command = [ 'tee', '-a' ] + self.files
 		if self.stdout:
@@ -69,9 +70,11 @@ class Tee( object ):
 		else:
 			devnull = open( os.path.devnull, 'a' )
 			tee = subprocess.Popen( tee_command, stdin = p.stdout, stdout = devnull )
+			devnull.close()
 
 		ret = tee.wait()
-		devnull.close()
+		if devnull:
+			devnull.close()
 
 		return ret
 

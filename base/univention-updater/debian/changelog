@@ -1,3 +1,10 @@
+univention-updater (4.0.15-1) unstable; urgency=low
+
+  * minor bug fix in univention-actualise (Bug #12511)
+  * univention-repository-create: exit on failure during pre-condition checks
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 12 Feb 2009 10:50:18 +0100
+
 univention-updater (4.0.14-1) unstable; urgency=low
 
   * adapt univention-repository-delpackage to new repositories (Bug
