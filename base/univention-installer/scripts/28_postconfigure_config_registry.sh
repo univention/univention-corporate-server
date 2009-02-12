@@ -254,6 +254,7 @@ if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 else
 	cp /usr/share/keymaps/i386/*/$keymap.kmap.gz /etc/console/boottime.kmap.gz
 fi
+univention-config-registry set xorg/keyboard/options/XkbLayout=$(echo $keymap | sed -e 's|-.*||')
 
 univention-config-registry set version/version=$version_version
 univention-config-registry set version/patchlevel=$version_patchlevel

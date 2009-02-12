@@ -45,4 +45,6 @@ cp /usr/share/keymaps/i386/*/$keymap.kmap.gz /etc/console/boottime.kmap.gz
 
 loadkeys $keymap
 
+univention-config-registry set xorg/keyboard/options/XkbLayout=$(echo $keymap | sed -e 's|-.*||')
+
 exit 0
