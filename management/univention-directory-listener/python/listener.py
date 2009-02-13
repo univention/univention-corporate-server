@@ -56,7 +56,11 @@ def run(file, argv, uid=-1, wait=1):
 			waitp = os.P_WAIT
 		else:
 			waitp = os.P_NOWAIT
-		os.spawnv(waitp, file, argv)
-	finally:
+		rc = os.spawnv(waitp, file, argv)
+	except:
+		rc = 100
 		if uid > -1:
 			setuid(olduid)
+	if uid > -1:
+		setuid(olduid)
+	return rc
