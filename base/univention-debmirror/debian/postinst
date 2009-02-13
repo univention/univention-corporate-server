@@ -51,8 +51,10 @@ else
 	univention-config-registry set repository/mirror/server="apt.univention.de"
 fi
 
-# activate local repository
-univention-config-registry set local/repository?yes
+# activate local repository on installation only
+if [ "$1" = "configure" -a -z "$2" ]; then
+	univention-config-registry set local/repository?yes
+fi
 
 a2ensite univention-repository
 /etc/init.d/apache2 reload || true

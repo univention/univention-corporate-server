@@ -1,3 +1,10 @@
+univention-debmirror (2.0.5-1) unstable; urgency=low
+
+  * set local/repository to yes on installation only (Bug #12511)
+  * add Indexes option for repository web site
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 Feb 2009 10:43:03 +0100
+
 univention-debmirror (2.0.4-1) unstable; urgency=low
 
   * set local/repository to yes (Bug #12511)
