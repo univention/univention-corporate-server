@@ -3,7 +3,7 @@
 # Univention Updater
 #  read the repository server
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,38 +28,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import datetime
 import os
-import shutil
-import urllib2
+import sys
 import univention_baseconfig
 
 baseConfig=univention_baseconfig.baseConfig()
 baseConfig.load()
-sourcesList = '/etc/apt/sources.list'
 
 def exit(result, message = None):
-	import sys
 	script = os.path.basename(sys.argv[0])
 	if message:
 		print '%s: %s' % (script, message)
 	sys.exit(result)
-
-def query_baseconfig():
-	hostdn = None
-	if baseConfig.has_key('ldap/hostdn'):
-		hostdn = baseConfig['ldap/hostdn']
-	server = None
-	if baseConfig.has_key('update/server'):
-		server = baseConfig['update/server']
-	local  = '%s.%s' % (baseConfig['hostname'],baseConfig['domainname'])
-	repo   = baseConfig.has_key('local/repository') and \
-		 baseConfig['local/repository'].lower() in ('yes', 'true')
-
-	fqdn  = '%s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
-
-	update = '%s-%s' % (baseConfig['version/version'], baseConfig['version/patchlevel'])
-	return hostdn, server, local, repo, fqdn, update
 
 def query_policy(dn, update):
 	server = None
@@ -78,105 +58,37 @@ def query_policy(dn, update):
 		server = server.replace('http://', '', 1)
 	return (server, update)
 
-def fetch_sourceslist(server):
-	path = os.path.join('/', 'univention-cdrom', 'ucs-updates', 'index.list')
-	url = 'http://%s%s' % (server, path)
-	fd = urllib2.urlopen(url)
-	lines = [ line.strip() for line in fd ]
-	fd.close()
-	return lines
-
-def parse_sourceslist(server):
-
-	serv = 'http://%s/univention-cdrom' % server
-	mark = 'end univention-updater section'
-	path = "/etc/apt/sources.list"
-
-	if os.path.exists(path):
-		fd = open(path)
-		lines = [ line.strip() for line in fd ]
-		fd.close()
-		if [ line for line in lines
-				if not line.startswith('#') and serv in line ]:
-			# new server already in sources.list
-			return False, [], []
-		comment = True
-		keep = []
-		for line in lines:
-			if mark in line:
-				comment = False
-				keep = []
-			else:
-				keep.append(line)
-		if comment:
-			return True, [], keep
-		return True, keep, []
-	return True, [], []
-
-def write_sourceslist(new, keep, cmnt, server, update):
-	mark = '#### end univention-updater section -- place changes after this line'
-	time = datetime.datetime.now().strftime('%y%m%d%k%M%S')
-	shutil.copyfile(sourcesList, '/tmp/sources.list.%s' % time)
-	first=True
-	fd = open(sourcesList, 'w')
-	for line in new:
-		if line:
-			if first:
-				fd.write('deb http://%s/univention-cdrom/packages ./\n' % server)
-				first=False
-			else:
-				fd.write('deb http://%s/univention-cdrom/ucs-updates/%s/ ./\n' % (server, line))
-			if line == update:
-				break
-	fd.write('%s\n' % mark)
-	for line in keep:
-		fd.write('%s\n' % line)
-	for line in cmnt:
-		fd.write('## %s\n' % line)
-	fd.close()
-
 def main():
 	restore_server = None
-	ldap_host_dn, old_server, local_server, local_repo, fqdn, update = query_baseconfig()
-	if not ldap_host_dn:
+	hostdn = baseConfig.get( 'ldap/hostdn', None )
+	online_server = baseConfig.get( 'repository/online/server', None )
+	mirror_server = baseConfig.get( 'repository/mirror/server', None )
+	local_repo = baseConfig.get( 'local/repository', None ) in ('yes', 'true')
+	fqdn  = '%s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
+	update = '%s-%s' % (baseConfig['version/version'], baseConfig['version/patchlevel'])
+	# ldap_host_dn, old_server, local_server, local_repo, fqdn, update = query_baseconfig()
+
+	ucr_variables = []
+	if not hostdn:
 		# can't query policy without host-dn
 		exit(0)
-	new_server, update = query_policy(ldap_host_dn, update)
-	if (not new_server or new_server == old_server) and not local_repo:
-		# no new server specified
-		exit(0)
-	elif not new_server and local_repo:
-		new_server=fqdn
-	elif not new_server:
-		exit(0)
-	if new_server == old_server:
-		exit(0)
-	univention_baseconfig.handler_set(['update/server=%s' % new_server])
+
+	new_server, update = query_policy( host_dn, update )
+	# without a local repository
 	if not local_repo:
-		restore_server = old_server
+		if not new_server or new_server == online_server:
+			# no new server specified
+			exit(0)
+		else:
+			ucr_variables.append( [ 'repository/online/server=%s' % new_server ] )
 	else:
-		new_server = local_server
-	try:
-		new_lines = fetch_sourceslist(new_server)
-	except IOError, err:
-		if restore_server:
-			univention_baseconfig.handler_set(['update/server=%s' % restore_server])
-		exit(1, "WARN: failed to download data from new repository-server: %s" % err)
-	try:
-		write, keep, cmnt = parse_sourceslist(new_server)
-	except IOError, err:
-		if restore_server:
-			univention_baseconfig.handler_set(['update/server=%s' % restore_server])
-		exit(1, "WARN: failed to read %s: %s" % (sourcesList, err))
-	try:
-		if write:
-			write_sourceslist(new_lines, keep, cmnt, new_server, update)
-			os.system('apt-get update')
-	except IOError, err:
-		if restore_server:
-			univention_baseconfig.handler_set(['update/server=%s' % restore_server])
-		exit(1, "WARN: failed to write %s: %s" % (sourcesList, err))
-	exit(0)
+		# on a repository server
+		if not new_server:
+			ucr_variables.append( [ 'repository/online/server?%s' % fqdn ] )
+		elif new_server != mirror_server:
+			ucr_variables.append( [ 'repository/mirror/server=%s' % new_server ] )
+
+	univention_baseconfig.handler_set( ucr_variables )
 
 if __name__ == '__main__':
 	main()

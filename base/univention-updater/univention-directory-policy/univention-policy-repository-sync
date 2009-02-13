@@ -32,10 +32,8 @@ import os, string, sys
 import tempfile
 import univention_baseconfig
 
-
 baseConfig=univention_baseconfig.baseConfig()
 baseConfig.load()
-
 
 if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
 	tempfile=tempfile.mktemp()
@@ -67,5 +65,3 @@ if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
 
 
 sys.exit(0)
-
-

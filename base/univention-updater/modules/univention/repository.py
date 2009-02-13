@@ -29,18 +29,97 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import gzip
 import os
 import shutil
 import subprocess
 import sys
 
+import univention.config_registry as ucr
+
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
+
 # constants
 ARCHITECTURES = ( 'i386', 'amd64', 'all', 'extern' )
 
+def gzip_file( filename ):
+	f_in = open( filename, 'rb')
+	f_out = gzip.open( '%s.gz' % filename, 'wb' )
+	f_out.writelines( f_in )
+	f_out.close()
+	f_in.close()
+
+def copy_package_files( source_dir, dest_dir ):
+	# copy package files
+	for filename in os.listdir( source_dir ):
+		if os.path.isfile( os.path.join( source_dir, filename ) ) and filename.endswith( '.deb' ):
+			try:
+				arch = filename[ filename.rfind( '_' ) + 1 : -4 ]
+			except:
+				print >> sys.stderr, "Warning: Could not determine architecture of package '%s'" % filename
+				continue
+			src = os.path.join( source_dir, filename )
+			src_size = os.stat( src )[ 6 ]
+			dest = os.path.join( dest_dir, arch, filename )
+			# package already exists with correct size
+			if os.path.isfile( dest ) and os.stat( dest )[ 6 ] == src_size:
+				continue
+			try:
+				shutil.copy2( src, dest )
+			except shutil.Error, e:
+				print >> sys.stderr, "Copying package '%s' failed." % filename
+
+def update_indexes( base_dir, update_only = False ):
+	print 'Creating indexes ...',
+	sys.stdout.flush()
+	for arch in ARCHITECTURES:
+		if not os.path.isdir( os.path.join( base_dir, arch ) ):
+			continue
+		if update_only and not os.path.isfile( os.path.join( base_dir, arch, 'Packages' ) ):
+			continue
+		print arch,
+		sys.stdout.flush()
+		# create Packages file
+		packages_fd = open( os.path.join( base_dir, arch, 'Packages' ), 'w' )
+		pwd, child = os.path.split( base_dir )
+		ret = subprocess.call( [ 'apt-ftparchive', 'packages', os.path.join( child, arch ) ], stdout = packages_fd, cwd = pwd )
+		packages_fd.close()
+
+		if ret:
+			print >> sys.stderr, "Error: Failed to create Packages file for '%s'" % os.path.join( base_dir, arch )
+			sys.exit( 1 )
+
+		# create Packages.gz file
+		gzip_file( os.path.join( base_dir, arch, 'Packages' ) )
+
+		if ret:
+			print 'failed.'
+			print >> sys.stderr, "Error: Failed to create Packages.gz file for '%s'" % os.path.join( _repo_path, arch )
+			sys.exit( 1 )
+
+	# create Packages file in dists directory if it exists
+	if os.path.isdir( os.path.join(  base_dir, 'dists' ) ):
+		version = configRegistry.get( 'version/version' )
+		src_base = os.path.join( '../../../', version , 'maintained', '%s-0' % version )
+		for arch in ( 'i386', 'amd64' ):
+			if not os.path.isdir( os.path.join( base_dir, 'dists/univention/main', 'binary-%s' % arch ) ):
+				continue
+			packages_file = os.path.join( base_dir, 'dists/univention/main', 'binary-%s' % arch, 'Packages' )
+			packages_fd = open( packages_file, 'w' )
+			ret = subprocess.call( [ 'apt-ftparchive', 'packages', '%s/all' % src_base ], stdout = packages_fd, cwd = base_dir )
+			packages_fd.close()
+			packages_fd = open( packages_file, 'a' )
+			ret = subprocess.call( [ 'apt-ftparchive', 'packages', '%s/%s' % ( src_base, arch ) ], stdout = packages_fd, cwd = base_dir )
+			packages_fd.close()
+			gzip_file( packages_file )
+
+	print 'done.'
+
 def create_packages( base_dir, source_dir ):
-	# create Packages file
-	if not os.path.isfile( os.path.join( base_dir, source_dir, 'Packages' ) ):
-		return True
+	# recreate Packages file
+	if not os.path.isdir( os.path.join( base_dir, source_dir ) ) or not os.path.isfile( os.path.join( base_dir, source_dir, 'Packages' ) ):
+		return
 
 	pkg_file = os.path.join( base_dir, source_dir, 'Packages' )
 	pkg_file_lock = os.path.join( base_dir, source_dir, 'Packages.lock' )
@@ -70,19 +149,13 @@ def create_packages( base_dir, source_dir ):
 			shutil.copyfile( '%s.SAVE' % pkg_file_gz, pkg_file_gz )
 		if os.path.exists( pkg_file_lock ):
 			os.unlink( pkg_file_lock )
-		return False
+		sys.exit( 1 )
 
 	# create Packages.gz file
-	packages_fd = open( os.path.join( base_dir, source_dir, 'Packages' ), 'r' )
-	packagesgz_fd = open( os.path.join( base_dir, source_dir, 'Packages.gz' ), 'w' )
-	ret = subprocess.call( [ 'gzip' ], stdout = packagesgz_fd, stdin = packages_fd )
-	packages_fd.close()
-	packagesgz_fd.close()
+	gzip_file( os.path.join( base_dir, source_dir, 'Packages' ) )
 
 	if os.path.exists( pkg_file_lock ):
 		os.unlink( pkg_file_lock )
-
-	return True
 
 def get_repo_basedir( packages_dir ):
 	# cut off trailing '/'

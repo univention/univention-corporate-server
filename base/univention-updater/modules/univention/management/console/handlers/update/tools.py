@@ -185,6 +185,10 @@ class UniventionUpdater:
 		self.version_major = self.ucs_version.split('.')[0]
 		self.version_minor = self.ucs_version.split('.')[-1]
 
+		# check for prefix on repository server
+		if not self.repository_prefix and self.net_patch_exists( 'univention-repository' ):
+			self.repository_prefix = 'univention-repository'
+
 	def net_path_exists (self, path, server='', port='', prefix='', username='', password=''):
 		# path MUST NOT contain the schema and hostname
 		proxy_headers = self.open_connection(server=server, port=port)

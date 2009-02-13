@@ -28,17 +28,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import gzip
+from optparse import OptionParser
 import os
 import re
 import string
 import shutil
-import socket
+import subprocess
 import sys
 import time
-from optparse import OptionParser
 
 import univention.config_registry as ucr
+import univention.repository as urepo
 from univention.management.console.handlers.update.mirror import UniventionMirror
 
 configRegistry = ucr.ConfigRegistry()
@@ -51,8 +51,6 @@ _mirror_base = configRegistry.get( 'repository/mirror/basepath', '/var/lib/unive
 # directory of current version's repository
 _current_version = '%s-%s' % ( configRegistry.get( 'version/version' ), configRegistry.get( 'version/patchlevel' ) )
 _repo_base = os.path.join( _mirror_base, 'mirror', configRegistry.get( 'version/version' ), 'maintained', '%s-0' % configRegistry.get( 'version/version' ) )
-# sub directories of repository
-_architectures = ( 'i386', 'amd64', 'all', 'extern' )
 
 class TeeFile( object ):
 	'''Writes the given string to serveral files at once. Could by used
@@ -72,88 +70,62 @@ def copy_repository( options, source, version ):
 	print 'Copying packages. Please be patient ...',
 	sys.stdout.flush()
 
-	version = _exp_version.match().groupdict()
-	dest_repo = os.path.join( _mirror_base, '%(major)s.%(minor)s/maintained/%(major)s.%(minor)s-%(patch)s' % version )
+	version = _exp_version.match( version ).groupdict()
+	dest_repo = os.path.join( _mirror_base, 'mirror', '%(major)s.%(minor)s/maintained/%(major)s.%(minor)s-%(patch)s' % version )
 
 	# check if repository already exists
-	if os.path.isdir( os.path.join( _mirror_base ) ):
-		print >> options.teefile, 'Warning: repository for UCS version %s alresady exists' % version
-
-	# create directory structure
-	for arch in _architecture:
-		os.makedirs( os.path.join( dest_repo, arch ) )
+	if os.path.isdir( os.path.join( dest_repo ) ):
+		print >> options.teefile, 'Warning: repository for UCS version %s already exists' % version
+	else:
+		# create directory structure
+		for arch in urepo.ARCHITECTURES:
+			os.makedirs( os.path.join( dest_repo, arch ) )
 
 	# copy packages to new directory structure
-	for filename in os.listdir( source ):
-		if os.path.isfile( os.path.join( source, filename ) ) and filename.endswith( '.deb' ):
-			try:
-				arch = filename[ filename.rfind( '_' ) + 1 : -4 ]
-			except:
-				print >> options.teefile, "Warning: Could not determine architecture of package '%s'" % filename
-				continue
-			src = os.path.join( source, filename )
-			src_size = os.stat( src )[ 6 ]
-			dest = os.path.join( _repo_base, arch, filename )
-			# package already exists with correct size
-			if os.path.isfile( dest ) and os.stat( dest )[ 6 ] == src_size:
-				continue
-			try:
-				shutil.copy2( src, dest )
-			except shutil.Error, e:
-				print >> options.teefile, "Copying package '%s' failed." % filename
-	print "done."
+	urepo.copy_package_files( source, dest_repo )
 
-	# copy dists directory structure
-	print '  copying dists ...',
-	dists_dest = os.path.join( _repo_base, 'dists' )
-	if os.path.isdir( dists_dest ):
-		shutil.rmtree( dists_dest )
-	try:
-		shutil.copytree( os.path.join( options.mount_point, 'packages', 'dists' ), dists_dest )
-	except shutil.Error, e:
-		print "failed (%s)." % str( e )
-	else:
-		print 'done.'
+	# create Packages files
+	urepo.update_indexes( dest_repo )
 
 def update_cdrom( options ):
 	# try to mount update ISO image or DVD
 	if options.iso_file:
-		ret = subprocess.call( [ 'mount', '-o', 'loop',  options.iso_file, options.cdrom ], stdout = options.logfile, stderr = options.logfile )
+		ret = subprocess.call( [ 'mount', '-o', 'loop',  options.iso_file, options.mount_point ], stdout = options.logfile, stderr = options.logfile )
 	elif options.device:
-		ret = subprocess.call( [ 'mount', options.device, options.cdrom ], stdout = options.logfile, stderr = options.logfile )
+		ret = subprocess.call( [ 'mount', options.device, options.mount_point ], stdout = options.logfile, stderr = options.logfile )
 	else:
-		ret = subprocess.call( [ 'mount', options.cdrom ], stdout = options.logfile, stderr = options.logfile )
+		ret = subprocess.call( [ 'mount', options.mount_point ], stdout = options.logfile, stderr = options.logfile )
 
 	# 0 == success, 32 == already mounted
 	if not ret in ( 0, 32 ):
 		if options.iso_file:
 			print >> options.teefile, 'Error: Failed to mount ISO image %s' % options.iso_file
 		else:
-			print >> options.teefile, 'Error: Failed to mount CD-ROM device at %s' % options.cdrom
+			print >> options.teefile, 'Error: Failed to mount CD-ROM device at %s' % options.mount_point
 		sys.exit( 1 )
 
 	# check update medium
-	if not os.path.exists( os.path.join( options.cdrom, 'ucs-updates' ) ):
+	if not os.path.exists( os.path.join( options.mount_point, 'ucs-updates' ) ):
 		print >> options.teefile, 'Error: This is not a valid UCS update medium'
-		ret = subprocess.call( [ 'umount', options.cdrom ], stdout = options.logfile, stderr = options.logfile )
+		ret = subprocess.call( [ 'umount', options.mount_point ], stdout = options.logfile, stderr = options.logfile )
 		if ret != 0:
-			print >> options.teefile, 'Error: Failed to umount %s' % options.cdrom
+			print >> options.teefile, 'Error: Failed to umount %s' % options.mount_point
 			sys.exit( ret )
 		sys.exit( 1 )
-		if not os.path.exists( os.path.join( options.cdrom, 'ucs-updates', 'ucs_%s-%s.txt' % _current_version ) ):
+		if not os.path.exists( os.path.join( options.mount_point, 'ucs-updates', 'ucs_%s-%s.txt' % _current_version ) ):
 			print >> options.teefile, 'Error: This is not the correct UCS update medium for version %s' % _current_version
 			sys.exit( 1 )
 
 	# find UCS version
-	for entry in os.listdir( os.path.join( options.cdrom, 'ucs-updates' ) ):
-		directory = os.path.join( options.cdrom, 'ucs-updates', entry )
+	for entry in os.listdir( os.path.join( options.mount_point, 'ucs-updates' ) ):
+		directory = os.path.join( options.mount_point, 'ucs-updates', entry )
 		if os.path.isdir( directory ) and _exp_version.match( entry ):
 			# copy repository
-			cop_repository( options, directory, entry )
+			copy_repository( options, directory, entry )
 
-	ret = subprocess.call( [ 'umount', options.cdrom ], stdout = options.logfile, stderr = options.logfile )
+	ret = subprocess.call( [ 'umount', options.mount_point ], stdout = options.logfile, stderr = options.logfile )
 	if ret != 0:
-		print >> options.teefile, 'Error: Failed to umount %s' % options.cdrom
+		print >> options.teefile, 'Error: Failed to umount %s' % options.mount_point
 		sys.exit( ret )
 
 def update_net( options ):
@@ -191,7 +163,7 @@ if __name__ == '__main__':
 					   dest = 'device',
 					   help = 'defines the device name of the CD-ROM drive' )
 	parser.add_option( '-c', '--cdrom', action = 'store',
-					   dest = 'cdrom', default = '/cdrom',
+					   dest = 'mount_point', default = '/cdrom',
 					   help = 'devices mount point for CD-ROM drive' )
 	parser.add_option( '-s', '--sync-only', action = 'store_true',
 					   dest = 'sync', default = False,

@@ -134,23 +134,7 @@ def copy_repository( options ):
 	# copy packages to new directory structure
 	print '  copying packages ...',
 	sys.stdout.flush()
-	for filename in os.listdir( os.path.join( options.mount_point, 'packages' ) ):
-		if os.path.isfile( os.path.join( options.mount_point, 'packages', filename ) ) and filename.endswith( '.deb' ):
-			try:
-				arch = filename[ filename.rfind( '_' ) + 1 : -4 ]
-			except:
-				print >> sys.stderr, "Warning: Could not determine architecture of package '%s'" % filename
-				continue
-			src = os.path.join( options.mount_point, 'packages', filename )
-			src_size = os.stat( src )[ 6 ]
-			dest = os.path.join( _repo_base, arch, filename )
-			# package already exists witg correct size
-			if os.path.isfile( dest ) and os.stat( dest )[ 6 ] == src_size:
-				continue
-			try:
-				shutil.copy2( src, dest )
-			except shutil.Error, e:
-				print >> sys.stderr, "Copying package '%s' failed." % filename
+	urepo.copy_package_files( os.path.join( options.mount_point, 'packages' ), _repo_base )
 	print "done."
 
 	# copy dists directory structure
@@ -192,34 +176,7 @@ def mount( options ):
 	return True
 
 def setup_repository( options ):
-	print 'Creating indexes ...',
-	sys.stdout.flush()
-	for arch in urepo.ARCHITECTURES:
-		print arch,
-		sys.stdout.flush()
-		# create Packages file
-		packages_fd = open( os.path.join( _repo_base, arch, 'Packages' ), 'w' )
-		pwd, child = os.path.split( _repo_base )
-		ret = subprocess.call( [ 'apt-ftparchive', 'packages', os.path.join( child, arch ) ], stdout = packages_fd, cwd = pwd )
-		packages_fd.close()
-
-		if ret:
-			print >> sys.stderr, "Error: Failed to create Packages file for '%s'" % os.path.join( _repo_base, arch )
-			return False
-
-		# create Packages.gz file
-		packages_fd = open( os.path.join( _repo_base, arch, 'Packages' ), 'r' )
-		packagesgz_fd = open( os.path.join( _repo_base, arch, 'Packages.gz' ), 'w' )
-		ret = subprocess.call( [ 'gzip' ], stdout = packagesgz_fd, stdin = packages_fd )
-		packages_fd.close()
-		packagesgz_fd.close()
-
-		if ret:
-			print 'failed.'
-			print >> sys.stderr, "Error: Failed to create Packages.gz file for '%s'" % os.path.join( _repo_path, arch )
-			return False
-	print 'done.'
-	return True
+	urepo.update_indexes( _repo_base )
 
 def setup_pxe( options ):
 	'''setup network installation (PXE)'''
@@ -262,6 +219,9 @@ if __name__ == '__main__':
 	copy_repository( options )
 	setup_repository( options )
 	setup_pxe( options )
+
+	if options.mount:
+		subprocess.call( [ 'umount', options.mount_point ] )
 
 	# set repository server to local system
 	fqdn = '%s.%s' % ( configRegistry.get( 'hostname' ), configRegistry.get( 'domainname' ) )

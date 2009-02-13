@@ -1,3 +1,12 @@
+univention-updater (4.0.16-1) unstable; urgency=low
+
+  * also generate Packages files for dists directories in mjaor release
+    repositories (Bug #12511)
+  * update Univention Directory Policy tools to use new repository UCR
+    variables
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 Feb 2009 15:24:55 +0100
+
 univention-updater (4.0.15-1) unstable; urgency=low
 
   * minor bug fix in univention-actualise (Bug #12511)
