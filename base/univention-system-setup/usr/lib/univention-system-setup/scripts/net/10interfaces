@@ -152,6 +152,11 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 			server_role="client"
 		fi
 
+		if [ -z "$old_ip" ]; then
+			# There was a new interface created
+			continue
+		fi
+
 		if [ $ldap_available = 1 ]; then
 		    ldap_dn=`univention-directory-manager computers/$server_role list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(&(cn=$hostname)(aRecord=$old_ip))" | grep ^DN | sed -e 's|^DN: ||'`
 		    if [ -n "$ldap_dn" ]; then

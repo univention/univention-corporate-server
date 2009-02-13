@@ -1,3 +1,10 @@
+univention-system-setup (2.0.2-1) unstable; urgency=low
+
+  * don't replace the local ip address configuration if a new interface
+    was added via system setup. Bug #9191
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Feb 2009 13:41:58 +0100
+
 univention-system-setup (2.0.1-1) unstable; urgency=low
 
   * set the X keymap to the default keymap. Bug #11680
