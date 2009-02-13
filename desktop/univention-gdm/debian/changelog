@@ -1,3 +1,9 @@
+univention-gdm (4.0.1-1) unstable; urgency=low
+
+  * dependency to univention-x-core > 2.0.1-0 (Bug: #12921)
+
+ -- Felix Botner <botner@univention.de>  Fri, 13 Feb 2009 13:16:15 +0100
+
 univention-gdm (3.0.9-6) unstable; urgency=low
 
   * Added UCR Warning.
