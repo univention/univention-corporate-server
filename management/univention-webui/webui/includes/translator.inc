@@ -81,6 +81,8 @@ class webui_translator{
 						case 'url': $attrib_str.="src=\"".$value."\""; break;
 						case 'size': $size=$value; break;
 						case 'nofill': $attrib_str .= "width=\"1\""; break;
+						case 'onmouseover': $attrib_str .= "onmouseover=\"".$value."\""; break;
+						case 'onmouseout': $attrib_str .= "onmouseout=\"".$value."\""; break;
 						}
     				}
 			if(!$this->not_valid){

@@ -1,3 +1,9 @@
+univention-webui (2.0.10-1) unstable; urgency=low
+
+  * added onmouseover and onmouseout attributes. Ticket #2008102010000213
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 11 Feb 2009 17:31:11 +0100
+
 univention-webui (2.0.9-1) stable; urgency=low
 
   * pass php session id to frontend process (Bug #13259)
