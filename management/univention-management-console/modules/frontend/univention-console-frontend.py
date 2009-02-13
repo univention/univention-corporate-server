@@ -29,7 +29,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, locale, os, getopt, string, copy, socket, select, fcntl
+import sys, locale, os, socket, select, fcntl, time, cPickle, threading, struct
 from optparse import OptionParser
 
 sys.path.append('/usr/share/univention-webui/modules/')
@@ -37,12 +37,18 @@ ldir = '/usr/share/univention-management-console/frontend/'
 sys.path.append(ldir)
 os.chdir(ldir)
 
-import univention.debug as ud
+import univention.debug2 as ud
+import univention.management.console.protocol as umcp
 
-import univention.baseconfig
+import univention.config_registry
 
-baseConfig = univention.baseconfig.baseConfig()
-baseConfig.load()
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+
+watchdog = time.time()
+watchdog_timeout = 60 * 5
+
+THREAD_ERRORS = []
 
 def daemonize():
 	pid = os.fork()
@@ -55,7 +61,167 @@ def daemonize():
 	os.dup2(null, sys.stderr.fileno())
 	os.setsid()
 
+
+def reset_watchdog():
+	global watchdog
+	watchdog = time.time()
+
+
+def watchdog_timed_out():
+	return watchdog + watchdog_timeout < time.time()
+
+
+def rawsock_send_error( conn, msg ):
+	ud.debug(ud.ADMIN, ud.ERROR, 'univention-console-frontend.py: rawsock_error: msg=%s' % msg)
+	response = { 'Content-Type': 'text/plain',
+				 'data': msg }
+	data = cPickle.dumps( response )
+	conn.send( struct.pack( '!I', len(data) ) )
+	conn.send( data )
+	conn.close()
+
+def handle_rawsock( conn ):
+	global THREAD_ERRORS
+	try:
+		ud.debug( ud.ADMIN, ud.INFO, 'univention-console-frontend.py: rawsock: loading request' )
+
+		# receive input
+		data = ''
+		while len(data) < 4:
+			buf = conn.recv( 4 )
+			if not buf:
+				ud.debug( ud.ADMIN, ud.ERROR, 'univention-console-frontend.py: rawsock: client connection closed unexpectedly' )
+				conn.close()
+				return
+			data = data + buf
+		datalen = struct.unpack('!I', data[0:4])[0]
+		data = data[4:]
+		while len(data) < datalen:
+			buf = conn.recv( 8192 )
+			if not buf:
+				ud.debug( ud.ADMIN, ud.ERROR, 'univention-console-frontend.py: rawsock: client connection closed unexpectedly' )
+				conn.close()
+				return
+			data = data + buf
+			ud.debug( ud.ADMIN, ud.INFO, 'univention-console-frontend.py: rawsock: got chunk of %s bytes - %s of %s bytes received' % ( len(buf), len(data), datalen ) )
+		ud.debug( ud.ADMIN, ud.INFO, 'univention-console-frontend.py: rawsock: request complete' )
+
+		sockdata = cPickle.loads( data )
+
+		# enable output only during debugging session: contains sessionid ==> possible security hole
+		# ud.debug( ud.ADMIN, ud.INFO, 'univention-console-frontend.py: rawsock: request=%s' % sockdata )
+
+		if type(sockdata) != type( {} ) or not sockdata.get('UMCP-CMD'):
+			rawsock_send_error( conn, '<h1>no UMCP-CMD given</h1>' )
+			return
+
+		req = umcp.Command( [ sockdata.get('UMCP-CMD') ], opts = sockdata.get('UMCP-DATA', {}) )
+
+		import client
+		reqid = client.request_send( req )
+		ud.debug( ud.ADMIN, ud.INFO, 'univention-console-frontend.py: rawsock: request id = %s' % reqid )
+		response = client.response_wait( reqid, timeout = int(configRegistry.get('umc/raw/request/timeout', 30)) )
+		if not response:
+			rawsock_send_error( conn, '<h1>cmd not successful: no response yet</h1>' )
+			return
+		elif response.status() != 200:
+			rawsock_send_error( conn,
+								'<h1>cmd not successful: status=%s msg=%s</h1>' % (response.status(),
+																					umcp.status_information( response.status() )))
+			return
+
+		if type(response.dialog) == type({}) and \
+			   ( ( 'Content-Type' in response.dialog.keys() and 'Content' in response.dialog.keys() ) or \
+				 'Location' in response.dialog.keys() ):
+			sockresponse = response.dialog
+		else:
+			sockresponse = { 'Content-Type': 'application/binary',
+							 'Content': response.dialog }
+
+		data = cPickle.dumps( sockresponse )
+		conn.send( struct.pack( '!I', len(data) ) )
+		conn.send( data )
+
+		conn.close()
+
+		ud.debug( ud.ADMIN, ud.INFO, 'univention-console-frontend.py: rawsock: response sent - socket closed')
+
+		reset_watchdog()
+
+	except Exception, e:
+		import traceback
+		THREAD_ERRORS.append( traceback.format_exc() )
+
+
+def handle_sock( conn, session, options ):
+	# receive input
+	input = ''
+	while 1:
+		buf = conn.recv( 1024 )
+
+		#				if not buf: continue
+		if buf[ -1 ] == '\0':
+			buf = buf[ : -1 ]
+			input += buf
+			break
+		else:
+			input += buf
+
+	# split into meta text and xml text
+	pos = input.find('\n\n')
+	if pos >= 0:
+		metatext = input[:pos]
+		xmlin = input[pos+2:]
+	else:
+		metatext = ''
+		xmlin = input
+
+	# parse metatext
+	meta = {}
+	for line in metatext.split('\n'):
+		pos = line.find(': ')
+		if pos < 1:
+			continue
+		meta[line[:pos]] = line[pos+2:]
+
+	# get session id from index.php and pass it to UMCP client wrapper
+	import client
+	if not client._sessionId:
+		client.set_sessionid( meta.get('SessionId', 'NO-SESSION-ID') )
+		ud.debug(ud.ADMIN, ud.INFO, 'univention-console-frontend.py: sessionId = %s' % client._sessionId)
+
+	number = int(meta.get('Number', '-1'))
+
+	if options.debug >= 2:
+		open('/tmp/xmlin', 'w').write(xmlin)
+	xmlout = session.startRequest( xmlin, number, ignore_ldap_connection=True, timeout = None )
+	if options.debug >= 2:
+		open('/tmp/xmlout', 'w').write( xmlout )
+
+	# send output
+	conn.send( xmlout + '\0' )
+	conn.close()
+
+	# Do cleanup work after the connection has been closed,
+	# so that the response will not be delayed
+	session.finishRequest(number)
+
+	reset_watchdog()
+
+
+
+def log_errors():
+	global THREAD_ERRORS
+	if THREAD_ERRORS:
+		for msg in THREAD_ERRORS:
+			ud.debug( ud.ADMIN, ud.ERROR, 'univention-console-frontend.py: thread error=\n%s' % msg )
+	THREAD_ERRORS = []
+
+
+
 def main(argv):
+	global watchdog_timeout
+
 	parser = OptionParser( usage = "usage: %prog [options]" )
 	parser.add_option( '-s', '--socket', type = 'string', action = 'store',
 					   dest = 'socket', help = 'defines the socket to bind to',
@@ -72,7 +238,7 @@ def main(argv):
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
 					   dest = 'debug', default = 0,
 					   help = 'if given than debugging is activated and set to the specified level' )
-	parser.add_option( '-e', '--https', action = 'store', type = 'int', 
+	parser.add_option( '-e', '--https', action = 'store', type = 'int',
 					   dest = 'https', default = 0,
 					   help = 'if set to 1 HTTPS is used' )
 
@@ -85,7 +251,7 @@ def main(argv):
 		ud.set_level( ud.ADMIN, options.debug )
 	else:
 		ud.init('/dev/null', 0, 0)
-	
+
 	os.environ["HTTPS"] = "%s" % options.https
 
 	if options.socket == '-':
@@ -94,6 +260,9 @@ def main(argv):
 			options.socket = filename[ : -1 ]
 		else:
 			options.socket = filename
+#		filename = sys.stdin.read().rstrip('\n')
+
+	watchdog_timeout = options.timeout
 
 	localeok = False
 	try:
@@ -102,13 +271,12 @@ def main(argv):
 	except:
 		ud.debug(ud.ADMIN, ud.ERROR, 'univention-console-frontend.py: specified locale is not available (cmdline: %s)' % options.language)
 	if not localeok:
-		if baseConfig.has_key('umc/web/language') and baseConfig['umc/web/language']:
+		if configRegistry.get('umc/web/language'):
 			try:
-				locale.setlocale( locale.LC_MESSAGES, locale.normalize( baseConfig['umc/web/language'] ) )
+				locale.setlocale( locale.LC_MESSAGES, locale.normalize( configRegistry.get('umc/web/language') ) )
 				localeok = True
 			except:
-				ud.debug(ud.ADMIN, ud.ERROR, 'univention-console-frontend.py: specified locale is not available (baseconfig: %s)' % baseConfig['umc/web/language'])
-
+				ud.debug(ud.ADMIN, ud.ERROR, 'univention-console-frontend.py: specified locale is not available (baseconfig: %s)' % configRegistry.get('umc/web/language'))
 
 	import client
 	from uniparts import *
@@ -128,8 +296,17 @@ def main(argv):
 	sock = socket.socket( socket.AF_UNIX, socket.SOCK_STREAM )
 	fcntl.fcntl(sock.fileno(), fcntl.F_SETFD, 1)
 	sock.bind( options.socket )
+
+	rawsockfn = '%s.raw' % options.socket
+	rawsock = socket.socket( socket.AF_UNIX, socket.SOCK_STREAM )
+	rawsock.bind( rawsockfn )
+	ud.debug(ud.ADMIN, ud.INFO, 'univention-console-frontend.py: opened raw sock: %s' % rawsockfn)
+
+	threadlist = []
+
 	try:
 		sock.listen(1)
+		rawsock.listen( int( configRegistry.get('umc/raw/backlog', '5') ) )
 
 		if options.daemon_mode:
 			daemonize()
@@ -137,68 +314,56 @@ def main(argv):
 		# initialize UMCP client
 		print 'CLIENT', client.run()
 
+		reset_watchdog()
+
 		while 1:
-			rfds, wfds, xfds = \
-				  select.select( [ sock ], [], [], options.timeout )
+			rfds, wfds, xfds = select.select( [ sock, rawsock ], [], [], 60 )
+			log_errors()
 			if not rfds:
+				# select timeout occurred - check if watchdog is overdue
+				if not watchdog_timed_out():
+					# watchdog is NOT overdue ==> continue
+					continue
+
 				ud.debug(ud.ADMIN, ud.INFO, 'TIMED OUT! EXIT!')
 				raise Exception( 'timeout' ) # timeout
-			conn, addr = sock.accept()
 
-			# receive input
-			input = ''
-			while 1:
-				buf = conn.recv( 1024 )
+			reset_watchdog()
 
-# 				if not buf: continue
-				if buf[ -1 ] == '\0':
-					buf = buf[ : -1 ]
-					input += buf
-					break
-				else:
-					input += buf
+			if sock in rfds:
+				conn, addr = sock.accept()
+				ud.debug( ud.ADMIN, ud.WARN, 'univention-console-frontend.py: sock: new connection' )
+				thr = threading.Thread( target = handle_sock, args = (conn, session, options) )
+				thr.start()
+				threadlist.append(thr)
 
-			# split into meta text and xml text
-			pos = input.find('\n\n')
-			if pos >= 0:
-				metatext = input[:pos]
-				xmlin = input[pos+2:]
-			else:
-				metatext = ''
-				xmlin = input
+			if rawsock in rfds:
+				conn, addr = rawsock.accept()
+				ud.debug( ud.ADMIN, ud.WARN, 'univention-console-frontend.py: rawsock: new connection' )
+				thr = threading.Thread( target = handle_rawsock, args = (conn,) )
+				thr.start()
+				threadlist.append(thr)
 
-			# parse metatext
-			meta = {}
-			for line in metatext.split('\n'):
-				pos = line.find(': ')
-				if pos < 1:
-					continue
-				meta[line[:pos]] = line[pos+2:]
+			newlist = []
+			for th in threadlist:
+				if th.isAlive():
+					newlist.append( th )
+			threadlist = newlist
 
-			number = int(meta.get('Number', '-1'))
+			log_errors()
 
-			if options.debug >= 2:
-				open('/tmp/xmlin', 'w').write(xmlin)
-			xmlout = session.startRequest( xmlin, number, ignore_ldap_connection=True, timeout = None )
-			if options.debug >= 2:
-				open('/tmp/xmlout', 'w').write( xmlout )
-
-			# send output
-			conn.send( xmlout + '\0' )
-			conn.close()
-
-			# Do cleanup work after the connection has been closed,
-			# so that the response will not be delayed
-			session.finishRequest(number)
 	except Exception, e:
 		import traceback
 		ud.debug( ud.ADMIN, ud.ERROR, "EXCEPTION: %s" % str( e ) )
 		ud.debug( ud.ADMIN, ud.ERROR, traceback.format_exc() )
 
 	os.unlink(options.socket)
+	os.unlink(rawsockfn)
 	# kill process, because the UMCP client thread keeps it alive
 	client.stop()
 	sys.exit( 0 )
 
 if __name__ == '__main__':
 	main(sys.argv)
+
+

@@ -55,7 +55,9 @@ def html_map( storage, umcp_part ):
 mapper.add( umcd.HTML, html_map )
 
 def icon_map( storage, umcp_part ):
-	return icon( '', { 'url' : umcp_part.get_image() }, {} )
+	attrs = utils.layout_attrs( storage, umcp_part )
+	attrs.update ({ 'url' : umcp_part.get_image() })
+	return icon( '', attrs, {} )
 
 mapper.add( umcd.Image, icon_map )
 mapper.add( umcd.ImageURL, icon_map )

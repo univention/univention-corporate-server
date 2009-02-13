@@ -137,7 +137,7 @@ class Message( object ):
 			if command_has_arguments( self.command ):
 				self.arguments = groups[ 'arguments' ].split( ' ' )
 			else:
-				raise InvalidArgumentsError( 402, _( "The command '%s' do not have any arguments" % self.command ) )
+				raise InvalidArgumentsError( 402, _( "The command '%s' do not have any arguments" ) % self.command )
 		# invalid/missing message body?
 		if len( lines ) < 2 or self._length > len( lines[ 1 ] ):
 			if len(lines) >= 2:

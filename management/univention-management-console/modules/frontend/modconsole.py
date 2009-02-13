@@ -329,10 +329,21 @@ class modconsole(unimodule.unimodule):
 						else:
 							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
 												   'modconsole.py: setting locale timed out')
+
+					# pass sessionid to UMC server after successful authentication
+					req = umcp.Request( 'SET', args = ('sessionid', client._sessionId ) )
+					id = client.request_send( req )
+					response = client.response_wait( id, timeout = 10 )
+					if response:
+						(status, statusinformation) = ( response.status(), umcp.status_information( response.status() ) )
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
+											   'modconsole.py: sessionid set (%s): status: %s (%s)' % (client._sessionId, status, statusinformation))
+					else:
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modconsole.py: setting sessionid timed out')
 				else:
 					self.save.put( 'consolemode', None )
 					self.save.put( 'auth_ok', False )
-					self.usermessage( _('Authentication failed: %s' % statusinformation) )
+					self.usermessage( _('Authentication failed: %s') % statusinformation )
 
 		elif self.save.get('consolemode') == 'logout':
 			if self.cabut.pressed():

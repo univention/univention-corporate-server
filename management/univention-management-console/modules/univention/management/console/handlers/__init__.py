@@ -73,6 +73,7 @@ class simpleHandler( signals.Provider ):
 		self.__interface = None
 		self._username = None
 		self._password = None
+		self._sessionid = None
 
 	def __getitem__( self, command ):
 		'''returns a tuple of a valid command argument name and its
@@ -89,6 +90,9 @@ class simpleHandler( signals.Provider ):
 
 	def set_password( self, pwd ):
 		self._password = pwd
+
+	def set_sessionid( self, sessid ):
+		self._sessionid = sessid
 
 	def _exec_if( self, prefix, method, args ):
 		symbol = '%s_%s' % ( prefix, method )
@@ -230,13 +234,14 @@ class simpleHandler( signals.Provider ):
 
 
 
-	def revamped( self, id, res ):
+	def revamped( self, id, res, rawresult = False ):
 		"""this method should in invoked by '_revamp' functions that are
 		called after a command was successfully processed. It should be
 		used to modify the result dialog to fit the specified client
 		interface"""
 		if self.__requests.has_key( id ):
-			res.dialog = self.__verify_dialog( res.dialog )
+			if not rawresult:
+				res.dialog = self.__verify_dialog( res.dialog )
 			self.result( res )
 
 	def result( self, response ):

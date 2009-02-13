@@ -148,7 +148,7 @@ class IP_Address( String ):
 			m = self.regex( value ).groupdict()
 			for net, val in m.items():
 				if not 0 <= int( val ) <= 255:
-					self.error = _( 'Invalid number (%s). Must be between 0 and 255' % val )
+					self.error = _( 'Invalid number (%s). Must be between 0 and 255' ) % val
 					return False
 		return ret
 

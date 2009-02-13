@@ -71,6 +71,7 @@ class ModuleServer( Server ):
 		self.__queue = ''
 		self.__username = None
 		self.__password = None
+		self.__sessionid = None
 		self._load_module()
 
 	def _load_module( self ):
@@ -186,6 +187,9 @@ class ModuleServer( Server ):
 				self.__password = msg.options[ 'password' ]
 				self.__handler.set_username( self.__username )
 				self.__handler.set_password( self.__password )
+			elif 'sessionid' in msg.arguments:
+				self.__sessionid = msg.options[ 'sessionid' ]
+				self.__handler.set_sessionid( self.__sessionid )
 			elif 'locale' in msg.arguments:
 				self.__locale = msg.options[ 'locale' ]
 				try:

@@ -54,7 +54,7 @@ def layout_attrs( storage, umcp_part ):
 	args = storage.create_tag_attributes( umcp_part )
 	if umcp_part.has_attributes():
 		attrs = umcp_part.attributes()
-		for key in ( 'colspan', 'rowspan', 'align', 'type', 'width', 'warning' ):
+		for key in ( 'colspan', 'rowspan', 'align', 'type', 'width', 'warning', 'onmouseover', 'onmouseout' ):
 			if attrs.has_key( key ):
 				args[ key ] = attrs[ key ]
 	return args

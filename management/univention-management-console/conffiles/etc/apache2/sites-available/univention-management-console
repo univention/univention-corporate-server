@@ -10,3 +10,8 @@
 RedirectMatch ^/umc(/$|$) /univention-management-console/
 RedirectMatch ^/univention-management-console$ /univention-management-console/
 RedirectMatch ^/univention-management-console/style/(.*) /style/$1
+
+<Directory /var/www/univention-management-console>
+	Options +ExecCGI
+	AddHandler cgi-script .py
+</Directory>

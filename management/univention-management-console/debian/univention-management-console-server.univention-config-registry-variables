@@ -22,3 +22,14 @@ Description[en]=Language of the Univention Management Console
 Type=str
 Categories=Management
 
+[umc/raw/debug/level]
+Description[de]=Debuglevel des Univention Management Console AJAX-Frontends
+Description[en]=Debug level of the Univention Management Console ajax frontend
+Type=str
+Categories=Management
+
+[umc/raw/request/timeout]
+Description[de]=Timeout für UMC-Requests des Univention Management Console AJAX-Frontends
+Description[en]=Timeout for UMC requests of the Univention Management Console AJAX frontend
+Type=str
+Categories=Management

@@ -137,6 +137,7 @@ class Processor( signals.Provider ):
 		# stores the module processes [ modulename ] = <>
 		self.__processes = {}
 		self.__locale = None
+		self.__sessionid = None
 
 		self.__killtimer = {}
 
@@ -265,6 +266,11 @@ class Processor( signals.Provider ):
 						 self.__locale )
 			self.signal_emit( 'response', res )
 
+		elif msg.arguments[ 0 ] == 'sessionid':
+			res.status( 200 )
+			self.__sessionid = msg.arguments[ 1 ]
+			self.signal_emit( 'response', res )
+
 		elif msg.arguments[ 0 ] == 'interface':
 			if len( msg.arguments ) == 2 and msg.arguments[ 1 ]:
 				self.__interface = msg.arguments[ 1 ]
@@ -344,6 +350,12 @@ class Processor( signals.Provider ):
 			if self.__locale:
 				req = Request( 'SET', args = [ 'locale' ],
 								opts = { 'locale' : self.__locale } )
+				mod.request( req )
+
+			# set sessionid
+			if self.__sessionid:
+				req = Request( 'SET', args = [ 'sessionid' ],
+								opts = { 'sessionid' : self.__sessionid } )
 				mod.request( req )
 
 			mod.request( msg )

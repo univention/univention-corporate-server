@@ -149,9 +149,14 @@ class UMCP_Client( object ):
 
 _client = None
 _thread = None
+_sessionId = None
 
 def __loop():
 	notifier.loop()
+
+def set_sessionid( sessid ):
+	global _sessionId
+	_sessionId = sessid
 
 def run():
 	global _thread, _client
