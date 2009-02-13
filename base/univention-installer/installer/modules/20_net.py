@@ -218,10 +218,16 @@ class object(content):
 				self.mapping.append([_('New Virtual Device'),count])
 				count+=1
 
-			if l[6] == 'virtual':
-				tmpinterfaces.append('   %-10s%-18s%-16s' %(l[0], l[1], l[2]))
+			if l[5] == 'dynamic':
+				if l[6] == 'virtual':
+					tmpinterfaces.append('   %-10s %s' %(l[0], _('Dynamic (DHCP)')))
+				else:
+					tmpinterfaces.append('%-10s %s' %(l[0], _('Dynamic (DHCP)')))
 			else:
-				tmpinterfaces.append('%-10s%-18s%-16s' %(l[0], l[1], l[2]))
+				if l[6] == 'virtual':
+					tmpinterfaces.append('   %-10s%-18s%-16s' %(l[0], l[1], l[2]))
+				else:
+					tmpinterfaces.append('%-10s%-18s%-16s' %(l[0], l[1], l[2]))
 
 			self.mapping.append([l[0],count])
 
@@ -611,7 +617,7 @@ class object(content):
 					selectmode=1
 				else:
 					selectmode=0
-			elif self.parent.all_results.has_key('system_role') and (self.parent.all_results['system_role'] == 'managed_client' or self.parent.all_results['system_role'] == 'mobile_client' or self.parent.all_results['system_role'] == 'basesystem' or self.parent.all_results['system_role'] == 'fatclient'):
+			elif self.parent.all_results.has_key('system_role') and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
 				selectmode=0
 			else:
 				selectmode=1
@@ -623,7 +629,7 @@ class object(content):
 			else:
 				self.elements.append(input('%s' %self.parent.getnext()[1], self.pos_y+2, self.pos_x+10, 10))#1
 
-			if self.parent.all_results.has_key('system_role') and (self.parent.all_results['system_role'] == 'managed_client' or self.parent.all_results['system_role'] == 'mobile_client' or self.parent.all_results['system_role'] == 'basesystem' or self.parent.all_results['system_role'] == 'fatclient'):
+			if self.parent.all_results.has_key('system_role') and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
 				dict={_('Dynamic (DHCP)'): ['dynamic',0], _('Static'): ['static',1]}
 				self.elements.append(radiobutton(dict,self.pos_y+4,self.pos_x+2,18,2,[selectmode]))#2
 			else:
@@ -822,7 +828,7 @@ class object(content):
 			elif key in [ 10, 32 ] and self.elements[12].usable() and self.elements[12].get_status(): #Cancel
 					return 0
 			elif key in [ 10, 32 ] and self.elements[2].usable(): #Space in Radiobutton
-				if self.parent.all_results.has_key('system_role') and (self.parent.all_results['system_role'] == 'managed_client' or self.parent.all_results['system_role'] == 'mobile_client' or self.parent.all_results['system_role'] == 'basesystem' or self.parent.all_results['system_role'] == 'fatclient'):
+				if self.parent.all_results.has_key('system_role') and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
 					self.elements[self.current].key_event(32)
 					if self.elements[2].result().strip() in [ 'dynamic', 'dhcp']:
 						self.disable()

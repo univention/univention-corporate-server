@@ -1,3 +1,10 @@
+univention-installer (3.0.12-1) unstable; urgency=low
+
+  * if a dhcp interface was configured then show this in the interface
+    overview. Bug #11798
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Feb 2009 13:27:07 +0100
+
 univention-installer (3.0.11-2) unstable; urgency=low
 
   * the test script again (Bug: #12190)
