@@ -1,6 +1,7 @@
-/etc/cups
-/usr/lib/univention-directory-listener/system
-/usr/lib/univention-install/
-/usr/sbin/
-/usr/bin/
-/etc/samba/printers.conf.d
+etc/cups
+usr/lib/univention-directory-listener/system
+usr/lib/univention-install/
+usr/sbin/
+usr/bin/
+etc/samba/printers.conf.d
+var/cache/univention-printserver

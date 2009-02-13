@@ -4,7 +4,7 @@
 # Univention Print Server
 #  wrapper script for lpadmin
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -56,13 +56,33 @@ machine_password=re.sub('\n','',pwdLine)
 machine_uid=pwd.getpwnam('%s$' % (baseConfig['hostname']))[2]
 old_uid=os.getuid()
 os.setuid(machine_uid)
-child = spawn('%s %s' % (lpadminexec, string.join(args, ' ')))
+
+command = '%s ' % lpadminexec
+for arg in args:
+	command += ' "%s"' % arg
+
+child = spawn( command )
+
 i=0
 timeout=60
+attempt=0
+rc = 0
+
 while not i == 3:
 	i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s\?' % baseConfig['hostname'], 'localhost\?', EOF], timeout=timeout)
 	if i in [0,1,2]:
 		child.sendline(machine_password)
+		attempt += 1
+
+	if attempt > 3:
+		print 'Failed to create the printer with the following command: '
+		print '  %s %s' % (lpadminexec, string.join(args, ' '))
+		print 'Please check the machine account or the PAM configuration.'
+		sys.exit(1)
+		
+	if child.exitstatus and child.exitstatus != 0:
+		print 'The command "%s %s" returned %d' % (lpadminexec, string.join(args, ' ') , child.exitstatus)
+		sys.exit(child.exitstatus)
 
 if '-c' in args:
 	groupname = args[args.index('-c')+1]
@@ -74,6 +94,11 @@ if '-c' in args:
 		#print "enable %s" % i
 		if i in [0,1,2]:
 			child.sendline(machine_password)
+
+	if child.exitstatus and child.exitstatus != 0:
+		print 'The command "%s %s" returned %d' % (enableexec, groupname, cild.exitstatus)
+		sys.exit(child.exitstatus)
+
 	i = 0
 	child = spawn('%s %s' % (acceptexec, groupname))
 	while not i == 3:
@@ -81,3 +106,10 @@ if '-c' in args:
 		#print "accept %s" % i
 		if i in [0,1,2]:
 			child.sendline(machine_password)
+
+	if child.exitstatus and child.exitstatus != 0:
+		print 'The command "%s %s" returned %d' % (acceptexec, groupname, child.exitstatus)
+		sys.exit(child.exitstatus)
+
+sys.exit(0)
+

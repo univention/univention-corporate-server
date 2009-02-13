@@ -37,6 +37,7 @@ univention-baseconfig set cups/location/base?"networks"
 univention-baseconfig set cups/location/admin?"networks"
 univention-baseconfig set cups/filedevice?yes
 univention-baseconfig set cups/autostart?yes
+univention-baseconfig set cups/printserver?yes
 
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.2-1; then
 	if [ "`univention-baseconfig get cups/server`" = "$hostname" ]; then

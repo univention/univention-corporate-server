@@ -1,3 +1,15 @@
+univention-printserver (2.0.1-1) unstable; urgency=low
+
+  * catch an endless loop during the printer creation. Bug #12777
+  * don't overwrite the loal print server setting with the print server
+    policy if the UCR variable cups/printserver is set to true. Bug
+    #10124
+  * if the printer creation failed, for example the cupsys isn't
+    available, the command will be saved. During the next cupsys start
+    it will be tried again. Bug #9991
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Feb 2009 08:34:05 +0100
+
 univention-printserver (1.0.11-2) unstable; urgency=low
 
   * fixed parser function for print jobs in handlers/cups/tools.py

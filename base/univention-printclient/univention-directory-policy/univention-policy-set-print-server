@@ -35,6 +35,13 @@ import univention_baseconfig
 baseConfig=univention_baseconfig.baseConfig()
 baseConfig.load()
 
+local_printserver = baseConfig.get('cups/printserver', 'no')
+
+if local_printserver.lower() in ['yes', 'true', 'on', '1']:
+	# This host is a printserver. We don't overwrite the UCR variable for the printserver,
+	# because in most instances this makes no sense. Bug #10124
+	sys.exit(0)
+
 if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
 	fd, filename = tempfile.mkstemp()
 	os.close( fd )

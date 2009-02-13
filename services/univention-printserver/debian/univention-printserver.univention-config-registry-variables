@@ -28,3 +28,9 @@ Description[en]=Groups with printer administration access
 Type=str
 Categories=Printing
 
+[cups/printserver]
+Description[de]=Wenn diese Variable auf true gesetzt ist, so wird die Druckserver-Richtlinie nicht ausgewertet
+Description[en]=If this variable is set to true the printer server policy wouldn't be evaluated
+Type=str
+Categories=Printing
+

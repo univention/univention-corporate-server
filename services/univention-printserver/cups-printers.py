@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import listener
-import os, string
+import os, string, time
 import univention.debug
 
 hostname=listener.baseConfig['hostname']
@@ -42,9 +42,18 @@ filter='(|(objectClass=univentionPrinter)(objectClass=univentionPrinterGroup))'
 attributes=['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName','univentionPrinterPricePerPage','univentionPrinterPricePerJob','univentionPrinterQuotaSupport','univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype',]
 
 def lpadmin(args):
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "cups-printers: lpadmin args=%s" % args)
+	# Show this info message by default
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "cups-printers: info: univention-lpadmin %s" % string.join(args, ' '))
 
-	listener.run('/usr/sbin/univention-lpadmin', ['univention-lpadmin']+args, uid=0)
+	rc = listener.run('/usr/sbin/univention-lpadmin', ['univention-lpadmin']+args, uid=0)
+	if rc != 0:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "cups-printers: Failed to execute the univention-lpadmin command. Please check the cupsys state.")
+		filename=os.path.join('/var/cache/univention-printserver/','%f.sh' % time.time())
+		f=open(filename, 'w+')
+		os.chmod(filename, 0755)
+		print >>f, '#!/bin/sh'
+		print >>f, '/usr/sbin/univention-lpadmin %s' % string.join(args, ' ')
+		f.close()
 
 def pkprinters(args):
 	listener.setuid(0)

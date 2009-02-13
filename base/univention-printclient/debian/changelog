@@ -1,3 +1,11 @@
+univention-printclient (2.0.1-1) unstable; urgency=low
+
+  * don't overwrite the loal print server setting with the print server
+    policy if the UCR variable cups/printserver is set to true. Bug
+    #10124
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Feb 2009 08:12:56 +0100
+
 univention-printclient (1.0.0-9) unstable; urgency=low
 
   * Added UCR Warning.
