@@ -112,6 +112,7 @@ if(!isset($logout))
 	if ($sessioninvalid == '1') {
 		fwrite($pipe, "Sessioninvalid: 1\n");
 	}
+	fwrite($pipe, "SessionId: ".$config->session_id."\n");
 	fwrite($pipe, "Number: -1\n\n\0");
 
 	$fp=fopen($config->session_dir.$config->number, "w");
