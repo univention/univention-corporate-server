@@ -1,3 +1,11 @@
+univention-debmirror (2.0.6-1) unstable; urgency=low
+
+  * set mirror server to univention-repository, only if it is not an alias
+    for the local system (Bug #12511)
+  * set repository prefix for online server
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 Feb 2009 15:21:21 +0100
+
 univention-debmirror (2.0.5-1) unstable; urgency=low
 
   * set local/repository to yes on installation only (Bug #12511)

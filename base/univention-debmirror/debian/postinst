@@ -39,14 +39,19 @@ fi
 # on installation, definitely set local repository
 if [ "$1" = configure -a -z "$2" ]; then
 	univention-config-registry set repository/online/server="$hostname.$domainname"
+	univention-config-registry set repository/online/prefix="univention-repository"
 # on update, only if not set already
 else
 	univention-config-registry set repository/online/server?"$hostname.$domainname"
+	univention-config-registry set repository/online/prefix?"univention-repository"
 fi
 
-# set the mirror server
+# set the mirror server to univention-repository if it exists ...
 if host univention-repository.$domainname &> /dev/null; then
-	univention-config-registry set repository/mirror/server="univention-repository.$domainname"
+	# ... and if it is not the local system
+	if ! host univention-repository.$domainname | grep "$hostname.$domainname"; then
+		univention-config-registry set repository/mirror/server="univention-repository.$domainname"
+	fi
 else
 	univention-config-registry set repository/mirror/server="apt.univention.de"
 fi
