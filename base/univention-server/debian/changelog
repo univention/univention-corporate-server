@@ -1,3 +1,9 @@
+univention-server (3.0.2-1) unstable; urgency=low
+
+  * removed dependency to univention-debmirror (Bug #12511)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 Feb 2009 10:28:22 +0100
+
 univention-server (3.0.1-2) unstable; urgency=low
 
   * disable windows/wins-server on DC-Slave server only if not set (Bug #11667)
@@ -13,7 +19,7 @@ univention-server (3.0.1-1) unstable; urgency=low
 
 univention-server (3.0.0-3) unstable; urgency=low
 
-  * quote bash command in univention-set-ldap-server 
+  * quote bash command in univention-set-ldap-server
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Fri, 15 Aug 2008 12:48:30 +0200
 
@@ -363,7 +369,7 @@ univention-server (1.21) unstable; urgency=low
 
 univention-server (1.20) unstable; urgency=low
 
-  * added sendmail as alternative for dependency on univention-mail*  
+  * added sendmail as alternative for dependency on univention-mail*
 
  -- Wolf Wiegand <wiegand@univention.de>  Tue,  8 Aug 2006 18:18:49 +0200
 
@@ -388,7 +394,7 @@ univention-server (1.16) unstable; urgency=low
 
 univention-server (1.13) unstable; urgency=low
 
-  * new background images for the bootsplash 
+  * new background images for the bootsplash
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 12 Dec 2005 11:25:06 +0100
 

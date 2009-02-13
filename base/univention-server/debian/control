@@ -7,7 +7,7 @@ Standards-Version: 3.5.2
 
 Package: univention-server-master
 Architecture: all
-Depends: univention-config-registry, univention-join, univention-ssl, univention-ldap-server, univention-maintenance, univention-showload, univention-heimdal-kdc, univention-directory-notifier, univention-directory-listener, univention-updater, nscd, univention-debmirror, univention-policy-tools, univention-ldap-client, univention-ldap-acl-master, ntp | ntp-server, univention-home-mounter, univention-nfs-server, univention-license-import, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, python-univention-directory-manager,  univention-directory-manager-tools, univention-system-setup, univention-bind, univention-firewall, univention-lilo | univention-grub, univention-archive-key
+Depends: univention-config-registry, univention-join, univention-ssl, univention-ldap-server, univention-maintenance, univention-showload, univention-heimdal-kdc, univention-directory-notifier, univention-directory-listener, univention-updater, nscd, univention-policy-tools, univention-ldap-client, univention-ldap-acl-master, ntp | ntp-server, univention-home-mounter, univention-nfs-server, univention-license-import, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, python-univention-directory-manager,  univention-directory-manager-tools, univention-system-setup, univention-bind, univention-firewall, univention-lilo | univention-grub, univention-archive-key
 Conflicts: exim
 Description: UCS - master domain controller
  This package installs a UCS master domain controller.
@@ -19,7 +19,7 @@ Description: UCS - master domain controller
 
 Package: univention-server-backup
 Architecture: all
-Depends: univention-config-registry, univention-join, univention-ssl, univention-ldap-server, univention-directory-replication, univention-maintenance, univention-showload, univention-heimdal-kdc, univention-directory-notifier, univention-directory-listener, univention-updater, nscd, univention-policy-tools, univention-ldap-client, univention-ldap-acl-master, univention-debmirror, ntp | ntp-server, univention-home-mounter, univention-nfs-server, univention-license-import, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, univention-directory-manager-tools, univention-system-setup, univention-firewall, univention-lilo | univention-grub, univention-archive-key
+Depends: univention-config-registry, univention-join, univention-ssl, univention-ldap-server, univention-directory-replication, univention-maintenance, univention-showload, univention-heimdal-kdc, univention-directory-notifier, univention-directory-listener, univention-updater, nscd, univention-policy-tools, univention-ldap-client, univention-ldap-acl-master, ntp | ntp-server, univention-home-mounter, univention-nfs-server, univention-license-import, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, univention-directory-manager-tools, univention-system-setup, univention-firewall, univention-lilo | univention-grub, univention-archive-key
 Conflicts: exim
 Description: UCS - backup domain controller
  This package installs a UCS backup domain controller.
@@ -96,4 +96,3 @@ Description: UCS - Basesytem
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
-
