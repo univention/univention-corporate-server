@@ -77,7 +77,7 @@ class object(content):
 		return ""
 
 	def start(self):
-		self.sub = self.active(self,_('Preparing Package List'),_('Please wait ...'))
+		self.sub = self.active(self,_('Preparing package list'),_('Please wait ...'))
 		self.sub.action='preparing-package-list'
 		self.sub.draw()
 

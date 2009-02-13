@@ -437,11 +437,11 @@ class object(content):
 
 		if not root_device:
 			self.move_focus( 1 )
-			return _('Missing \'/\' as mountpoint')
+			return _('Missing \'/\' as mount point')
 
 		if root_fs:
 			self.move_focus( 1 )
-			return _('Wrong file system type \'%s\' for mountpoint \'/\'' % root_fs)
+			return _('Wrong file system type \'%s\' for mount point \'/\'' % root_fs)
 
 		# check if LVM is enabled, /-partition is LVM LV and /boot is missing
 		rootfs_is_lvm = False

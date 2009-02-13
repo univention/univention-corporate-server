@@ -1,3 +1,10 @@
+univention-installer (3.0.12-2) unstable; urgency=low
+
+  * reedited the translation file and added missing elements. Bug #13326
+  * fixed a bug in the script to refresh the translation files.
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri, 13 Feb 2009 14:26:46 +0100
+
 univention-installer (3.0.12-1) unstable; urgency=low
 
   * if a dhcp interface was configured then show this in the interface

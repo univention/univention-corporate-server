@@ -85,7 +85,7 @@ class object(content):
 		return 0
 
 	def helptext(self):
-		return _('Partitioner (export mode):\n\nCTRL+ALT+F2 interactive shell\nCTRL+ALT+F1 installation screen')
+		return _('Partitioner (expert mode):\n\nCTRL+ALT+F2 interactive shell\nCTRL+ALT+F1 installation screen')
 
 	def modheader(self):
 		return _('Part. expert mode')

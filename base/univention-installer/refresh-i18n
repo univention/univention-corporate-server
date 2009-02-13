@@ -44,6 +44,8 @@ grep "Content-Type: text/plain; charset=CHARSET" $po.pot.tmp
 if [ $? -eq 0 ]; then
 	echo "Rewriting encoding information from CHARSET to ISO-8859-15"
 	sed "s#Content-Type: text/plain; charset=CHARSET#Content-Type: text/plain; charset=ISO-8859-15#" $po.pot.tmp > $po.pot
+else
+	mv $po.pot.tmp $po.pot
 fi
 
 echo "Merging old gettext data with newly introduced strings"
