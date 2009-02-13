@@ -181,6 +181,7 @@ chmod 755 "/sbin/start-stop-daemon"
 	if test -e /etc/network/run; then rm -rf /etc/network/run; fi
 	ln -fs /ramdisk/etc/network/run /etc/network/run
 	ln -fs /ramdisk/etc/udev/rules.d/z25_persistent-net.rules /etc/udev/rules.d/z25_persistent-net.rules
+	ln -fs /ramdisk/etc/udev/rules.d/z25_persistent-cd.rules /etc/udev/rules.d/z25_persistent-cd.rules
 
 	rm -f /etc/univention/disable_baseconfig
 

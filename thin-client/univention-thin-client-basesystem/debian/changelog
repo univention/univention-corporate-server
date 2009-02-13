@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (5.0.1-1) unstable; urgency=low
+
+  * removed some boot error messages. Bug #11634
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Feb 2009 14:39:49 +0100
+
 univention-thin-client-basesystem (4.1.15-3) unstable; urgency=low
 
   * replaced .../etc/locale.gen with a symlink to /ramdisk/etc/locale.gen. Bug #12288
