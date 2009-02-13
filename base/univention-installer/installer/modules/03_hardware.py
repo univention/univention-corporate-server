@@ -224,7 +224,7 @@ class object(content):
 		return _('Detects the source device. \n \n Please select \"Add CD-ROM device\" or \"Add network device\" if the needed device is missing. \n \n Please use "Rescan" if you want to autodetect devices again.')
 
 	def modheader(self):
-		return _('Source Device')
+		return _('Source device')
 
 	def result(self):
 		result={}

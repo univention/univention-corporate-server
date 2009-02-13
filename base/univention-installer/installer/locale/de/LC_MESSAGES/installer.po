@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-13 14:01+0100\n"
+"POT-Creation-Date: 2009-02-13 15:12+0100\n"
 "PO-Revision-Date: 2008-05-06 13:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -821,7 +821,7 @@ msgstr ""
 "durchsuchen soll."
 
 #: installer/modules/03_hardware.py:227
-msgid "Source Device"
+msgid "Source device"
 msgstr "Quellmedium"
 
 #: installer/modules/03_hardware.py:265
@@ -968,7 +968,7 @@ msgstr "Bitte wählen Sie die Standardsprache für dieses System"
 
 #: installer/modules/07_dl.py:108
 msgid ""
-"Default Language \n"
+"Default language \n"
 " \n"
 " Select a default system language."
 msgstr ""
@@ -977,7 +977,7 @@ msgstr ""
 " Wählen Sie die Standardsprache."
 
 #: installer/modules/07_dl.py:111
-msgid "Default Language"
+msgid "Default language"
 msgstr "Standardsprache"
 
 #: installer/modules/10_role.py:78
@@ -1236,6 +1236,7 @@ msgid "Reading LVM config"
 msgstr "Suche LVM-Geräte"
 
 #: installer/modules/12_partition.py:247
+#, python-format
 msgid ""
 "Not enough space for autopartitioning: sum of disk sizes=%(disksizeall)s  "
 "required=%(required)s"
@@ -1311,7 +1312,7 @@ msgstr "USB-Geräte während der Auto-Partitionierung verwenden?"
 
 #: installer/modules/12_partition.py:1708
 #: installer/modules/12_partition.py:1929
-msgid "WARNING: choosing \"Yes\" prepares for deletion of all"
+msgid "WARNING: Choosing \"yes\" prepares for deletion of all"
 msgstr "WARNUNG: \"Ja\" bereitet das Löschen aller Partitionen auf"
 
 #: installer/modules/12_partition.py:1709
@@ -2152,7 +2153,7 @@ msgstr "Zertifikat"
 
 #: installer/modules/31_join.py:58 installer/modules/31_join.py:82
 #: installer/modules/31_join.py:140
-msgid "Join-Account"
+msgid "Join account"
 msgstr "Join-Account"
 
 #: installer/modules/31_join.py:63 installer/modules/31_join.py:85
@@ -2164,12 +2165,12 @@ msgid "Start join at the end of installation."
 msgstr "Starte den Join-Vorgang am Ende der Installation"
 
 #: installer/modules/31_join.py:77
-msgid "Search DC Master in DNS"
-msgstr "DNS nach DC Master durchsuchen"
+msgid "Search Domain controller Master in DNS"
+msgstr "DNS nach Domain Controller Master durchsuchen"
 
 #: installer/modules/31_join.py:79 installer/modules/31_join.py:138
-msgid "Hostname of DC Master"
-msgstr "Systemname des DC Master"
+msgid "Hostname of Domain controller Master"
+msgstr "Systemname des Domain Controller Master"
 
 #: installer/modules/31_join.py:88
 msgid "Password (retype)"
@@ -2189,18 +2190,18 @@ msgstr "Passwörter stimmen nicht überein."
 
 #: installer/modules/31_join.py:150
 msgid ""
-"Join-Settings \n"
+"Join settings \n"
 " \n"
 " All settings to join this system into given domain."
 msgstr ""
-"Join-Optionen \n"
+"Join-Einstellungen \n"
 " \n"
 " Alle Optionen die zum Joinen in eine vorkonfigurierte Domäne benötigt "
 "werden."
 
 #: installer/modules/31_join.py:153
-msgid "Join-Settings"
-msgstr "Join-Optionen"
+msgid "Join settings"
+msgstr "Join-Einstellungen"
 
 #: installer/modules/50_security.py:70
 msgid "Activate filtering of system services:"
@@ -2306,10 +2307,12 @@ msgid "Press \"Start installation\" to begin process"
 msgstr "Wählen Sie 'Installation starten', um fortzufahren."
 
 #: installer/modules/95_overview.py:69
+#, python-format
 msgid "System role:    %s"
 msgstr "Systemrolle:   %s"
 
 #: installer/modules/95_overview.py:71
+#, python-format
 msgid "Domain name:    %s"
 msgstr "Domänenname:   %s"
 
@@ -2318,6 +2321,7 @@ msgid "No package will download files from the internet."
 msgstr "Es werden keine Dateien aus dem Internet geladen"
 
 #: installer/modules/95_overview.py:101
+#, python-format
 msgid "%s will download files from the internet."
 msgstr "%s wird Dateien aus dem Internet laden"
 

@@ -55,7 +55,7 @@ class object(content):
 
 		if self.all_results['domain_controller_account'].strip() == '':
 			if not self.ignore('domain_controller_account'):
-				self.message=message+_('Join-Account')
+				self.message=message+_('Join account')
 				return False
 
 		if self.all_results['domain_controller_password'].strip() == '':
@@ -74,12 +74,12 @@ class object(content):
 		self.elements.append(checkbox({" ": [" ", 0]},self.minY+1,self.minX+2,4, 1, [0])) #3
 
 		self.elements.append(checkbox({" ": [" ", 0]},self.minY+4,self.minX+2,4, 1, [0])) #4
-		self.elements.append(textline(_('Search DC Master in DNS'),self.minY+3,self.minX+2)) #5
+		self.elements.append(textline(_('Search Domain controller Master in DNS'),self.minY+3,self.minX+2)) #5
 
-		self.elements.append(textline(_('Hostname of DC Master'),self.minY+6,self.minX+2)) #6
+		self.elements.append(textline(_('Hostname of Domain controller Master'),self.minY+6,self.minX+2)) #6
 		self.elements.append(input('',self.minY+7,self.minX+2,30)) #7
 
-		self.elements.append(textline(_('Join-Account'),self.minY+9,self.minX+2)) #8
+		self.elements.append(textline(_('Join account'),self.minY+9,self.minX+2)) #8
 		self.elements.append(input('Administrator',self.minY+10,self.minX+2,30)) #9
 
 		self.elements.append(textline(_('Password'),self.minY+12,self.minX+2)) #10
@@ -135,9 +135,9 @@ class object(content):
 
 		message=_('The following value is missing: ')
 		if self.elements[7].result().strip() == '' and not " " in self.elements[4].result():
-			return message+_('Hostname of DC Master')
+			return message+_('Hostname of Domain controller Master')
 		if self.elements[9].result().strip() == '':
-			return message+_('Join-Account')
+			return message+_('Join account')
 		elif self.elements[11].result().strip() == '':
 			return message+_('Password for Root')
 		elif self.elements[13].result().strip() == '':
@@ -147,10 +147,10 @@ class object(content):
 		return 0
 
 	def helptext(self):
-		return _('Join-Settings \n \n All settings to join this system into given domain.')
+		return _('Join settings \n \n All settings to join this system into given domain.')
 
 	def modheader(self):
-		return _('Join-Settings')
+		return _('Join settings')
 
 	def result(self):
 		result={}

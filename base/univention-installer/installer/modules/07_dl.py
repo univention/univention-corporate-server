@@ -105,10 +105,10 @@ class object(content):
 		return 0
 
 	def helptext(self):
-		return _('Default Language \n \n Select a default system language.')
+		return _('Default language \n \n Select a default system language.')
 
 	def modheader(self):
-		return _('Default Language')
+		return _('Default language')
 
 	def result(self):
 		result={}

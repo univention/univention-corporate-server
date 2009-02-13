@@ -1,3 +1,9 @@
+univention-installer (3.0.12-3) unstable; urgency=low
+
+  * included changes suggestest by the QA. Bug #13326
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri, 13 Feb 2009 15:13:29 +0100
+
 univention-installer (3.0.12-2) unstable; urgency=low
 
   * reedited the translation file and added missing elements. Bug #13326

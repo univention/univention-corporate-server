@@ -1705,7 +1705,7 @@ class object(content):
 				self.parent.debug('requesting user input: use usb storage devices?')
 				msglist=[ _('Include USB storage devices while auto partitioning?'),
 						  '',
-						  _('WARNING: choosing "Yes" prepares for deletion of all'),
+						  _('WARNING: Choosing "yes" prepares for deletion of all'),
 						  _('partitions on all disks! This includes USB harddisks'),
 						  _('and USB sticks. In any case *ALL* LVM LV and LVM VG'),
 						  _('will be deleted!'),
@@ -1926,7 +1926,7 @@ class object(content):
 				self.parent.debug('requesting user input: use autopart?')
 				msglist=[ _('Do you want to use auto-partitioning?'),
 						  '',
-						  _('WARNING: choosing "Yes" prepares for deletion of all'),
+						  _('WARNING: Choosing "yes" prepares for deletion of all'),
 						  _('partitions on all disks! If auto-partition result is'),
 						  _('unsuitable press F5 to restart partitioning.')
 						  ]
