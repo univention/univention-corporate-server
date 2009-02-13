@@ -1,4 +1,4 @@
-univention-management-console (0.10.4-1) unstable; urgency=low
+univention-management-console (1.0.10-1) unstable; urgency=low
 
   * fixed traceback in handle_rawsock
   * switched to configRegistry
@@ -9,13 +9,13 @@ univention-management-console (0.10.4-1) unstable; urgency=low
 
  -- Sönke Schwardt <schwardt@univention.de>  Thu, 12 Feb 2009 13:39:34 +0100
 
-univention-management-console (0.10.3-2) unstable; urgency=low
+univention-management-console (1.0.9-1) unstable; urgency=low
 
   * added onmouseover and onmouseout attributes to umcp.Image. Ticket #2008102010000213
 
  -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 11 Feb 2009 17:28:22 +0100
 
-univention-management-console (0.10.3-1) unstable; urgency=low
+univention-management-console (1.0.8-1) unstable; urgency=low
 
   * added missing UCR description
   * added missing GPL header in postinst files
@@ -27,7 +27,7 @@ univention-management-console (0.10.3-1) unstable; urgency=low
 
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 Feb 2009 14:39:30 +0100
 
-univention-management-console (0.10.2-1) unstable; urgency=low
+univention-management-console (1.0.7-1) unstable; urgency=low
 
   * added simple UMC handler for debugging purposes ("umc-handler-rawtest")
   * fixed typo in ajax.py
@@ -38,7 +38,7 @@ univention-management-console (0.10.2-1) unstable; urgency=low
   
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 Feb 2009 14:03:37 +0100
 
-Univention-management-console (0.10.1-1) unstable; urgency=low
+Univention-management-console (1.0.6-1) unstable; urgency=low
 
   * enable python cgi execution (Bug #13259)
 
