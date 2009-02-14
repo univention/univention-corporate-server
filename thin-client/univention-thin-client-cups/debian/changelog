@@ -1,3 +1,9 @@
+univention-thin-client-cups (3.0.1-1) unstable; urgency=low
+
+  * rebuild for UCS 2.2. Bug #13399
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 14 Feb 2009 12:20:16 +0100
+
 univention-thin-client-cups (2.0.3-1) unstable; urgency=low
 
   * add cupsys as univention-thin-client-cups-config dependency
