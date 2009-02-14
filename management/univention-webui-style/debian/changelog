@@ -1,3 +1,10 @@
+univention-webui-style (3.0.8-1) unstable; urgency=low
+
+  * more merge univention-webui-style-base to univention-webui-styl. Bug
+    #13304 and Bug #12925
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 14 Feb 2009 12:41:27 +0100
+
 univention-webui-style (3.0.7-1) unstable; urgency=low
 
   * don't use a background image for the combo box. Closes Bug #13237
