@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.3-1) unstable; urgency=low
+
+  * modify the dhcp object if the ip address was changed. Bug #9908
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 14 Feb 2009 13:28:41 +0100
+
 univention-directory-manager-modules (4.0.2-3) unstable; urgency=low
 
   * Update translations (Bug #12861)

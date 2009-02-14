@@ -1073,6 +1073,8 @@ class simpleComputer( simpleLdap ):
 		# if we only got the ip addres, we remove the ip address
 
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dhcp object: position="%s", name="%s", oldname="%s", mac="%s", ip="%s"' % ( position, name, oldname, mac, ip ) )
+		
+		dn = None
 
 		tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
 		if ip and mac:
@@ -1089,6 +1091,7 @@ class simpleComputer( simpleLdap ):
 						object.remove( )
 					else:
 						object.modify( )
+					dn = object.dn
 
 		elif mac:
 			ethernet = 'ethernet %s' % mac
@@ -1098,6 +1101,7 @@ class simpleComputer( simpleLdap ):
 				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, '... done' )
 				object = univention.admin.objects.get( univention.admin.modules.get( 'dhcp/host' ), self.co, self.lo, position = self.position, dn = dn )
 				object.remove( )
+				dn = object.dn
 
 		elif ip:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Remove the following ip: "%s"' % ip )
@@ -1106,6 +1110,9 @@ class simpleComputer( simpleLdap ):
 				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, '... done' )
 				object = univention.admin.objects.get( univention.admin.modules.get( 'dhcp/host' ), self.co, self.lo, position = self.position, dn = dn )
 				object.remove( )
+				dn = object.dn
+
+		return dn
 
 	def __split_dhcp_line( self, entry ):
 
@@ -1376,8 +1383,12 @@ class simpleComputer( simpleLdap ):
 					self.__modify_dns_forward_object( self[ 'name' ], None, self.__changes[ 'ip' ][ 'add' ][ 0 ], self.__changes[ 'ip' ][ 'remove' ][ 0 ] )
 					changed_ip = True
 					if len (self[ 'mac' ] ) > 0:
-						self.__remove_from_dhcp_object(  None, self[ 'name' ], entry,  self[ 'mac' ][ 0 ])
-						self.__modify_dhcp_object( None, self[ 'name' ], self.__changes[ 'ip' ][ 'add' ][ 0 ],  self[ 'mac' ][ 0 ] )
+						dn = self.__remove_from_dhcp_object(  None, self[ 'name' ], entry,  self[ 'mac' ][ 0 ])
+						try:
+							dn = string.join(dn.split(',')[1:],',')
+						except:
+							dn = None
+						self.__modify_dhcp_object( dn, self[ 'name' ], self.__changes[ 'ip' ][ 'add' ][ 0 ],  self[ 'mac' ][ 0 ] )
 				else:
 					# remove the dns objects
 					self.__remove_dns_forward_object( self[ 'name' ], None, entry )
