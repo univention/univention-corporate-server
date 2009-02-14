@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (5.0.1-2) unstable; urgency=low
+
+  * removed some more boot error messages. Bug #11634
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 14 Feb 2009 13:33:16 +0100
+
 univention-thin-client-basesystem (5.0.1-1) unstable; urgency=low
 
   * removed some boot error messages. Bug #11634

@@ -81,6 +81,7 @@ univention-baseconfig commit /etc/default/bootsplash >>/dev/tty8 2>&1
 
 #make udev happy
 univention-baseconfig commit /etc/udev/rules.d/040_univention-thin-client-sound.rules >>/dev/tty8 2>&1
+touch /ramdisk/etc/udev/rules.d/z25_persistent-cd.rules >>/dev/tty8 2>&1
 
 mkdir -p /var/lib/initscripts
 touch /var/log/dmesg
