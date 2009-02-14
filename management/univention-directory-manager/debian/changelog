@@ -1,3 +1,11 @@
+univention-directory-manager (6.0.9-1) unstable; urgency=low
+
+  * move the overview icons into the webui-style directory, otherwise it
+    is possible that the default icon directory will be overwritten. Bug
+    #8443
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 14 Feb 2009 12:58:22 +0100
+
 univention-directory-manager (6.0.8-2) unstable; urgency=low
 
   * Update translations, Bug #11674

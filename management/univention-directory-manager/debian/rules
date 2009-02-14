@@ -58,7 +58,7 @@ install: build
 	msgfmt -o uniconf/locale/de/LC_MESSAGES/uniconf.mo uniconf/locale/de/LC_MESSAGES/uniconf.po
 	install -m 0644 uniconf/locale/de/LC_MESSAGES/uniconf.mo debian/univention-directory-manager/usr/share/locale/de/LC_MESSAGES/univention-directory-manager-webfrontend.mo
 
-	install -m644 icons/var/www/* debian/univention-directory-manager/var/www/icon/
+	install -m644 icons/var/www/* debian/univention-directory-manager/usr/share/univention-webui-style/icon/
 	install -m644 icons/32x32/* debian/univention-directory-manager/usr/share/univention-webui-style/icon/applications/32x32
 	install -m644 icons/64x64/* debian/univention-directory-manager/usr/share/univention-webui-style/icon/applications/64x64
 	install -m644 icons/128x128/* debian/univention-directory-manager/usr/share/univention-webui-style/icon/applications/128x128
