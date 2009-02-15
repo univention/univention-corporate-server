@@ -1,3 +1,12 @@
+univention-updater (4.0.17-1) unstable; urgency=low
+
+  * add support for hotfix repositories (Bug #13395)
+  * update german translation
+  * add a few more options to the UMC module
+  * minor fix in support for repository prefixes
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 15 Feb 2009 17:44:20 +0100
+
 univention-updater (4.0.16-1) unstable; urgency=low
 
   * also generate Packages files for dists directories in mjaor release

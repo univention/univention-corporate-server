@@ -185,8 +185,11 @@ class UniventionUpdater:
 		self.version_major = self.ucs_version.split('.')[0]
 		self.version_minor = self.ucs_version.split('.')[-1]
 
+		# should hotfixes be used
+		self.hotfixes = self.configRegistry.get( 'repository/online/hotfixes', 'no' ).lower() in ( 'true', 'yes' )
+
 		# check for prefix on repository server
-		if not self.repository_prefix and self.net_patch_exists( 'univention-repository' ):
+		if not self.repository_prefix and self.net_path_exists( '/univention-repository/' ):
 			self.repository_prefix = 'univention-repository'
 
 	def net_path_exists (self, path, server='', port='', prefix='', username='', password=''):
@@ -209,6 +212,7 @@ class UniventionUpdater:
 			self.connection.putrequest('GET', site, skip_host=1, skip_accept_encoding=1)
 		else:
 			self.connection.putrequest('GET', site)
+
 
 		if username and password:
 			auth = 'Basic ' + string.strip(base64.encodestring(username + ':' + password))
@@ -256,6 +260,7 @@ class UniventionUpdater:
 					path='/%s/%s/sec%s/%s/' % (self.ucs_version, part, next_security_version, arch)
 					if self.net_path_exists(path):
 						sources_list.append('deb http://%s/%s/%s/%s/ sec%s/%s/' % (self.repository_server, self.repository_prefix, self.ucs_version, part, next_security_version, arch))
+
 		return sources_list
 
 	def security_update_available(self):
@@ -417,12 +422,32 @@ class UniventionUpdater:
 						if not self.net_path_exists(path):
 							continue
 						printed = True
-						repos += 'deb http://%s/%d.%d/%s/ sec%s/%s/\n' % ( self.repository_server, start.major, start.minor, part, p, arch)
+						if self.repository_prefix:
+							repos += 'deb http://%s/%s/%d.%d/%s/ sec%s/%s/\n' % ( self.repository_server, self.repository_prefix, start.major, start.minor, part, p, arch)
+						else:
+							repos += 'deb http://%s/%d.%d/%s/ sec%s/%s/\n' % ( self.repository_server, start.major, start.minor, part, p, arch)
 					if clean:
-						repos += 'clean http://%s/%d.%d/%s/sec%s/%s/\n' % ( self.repository_server, start.major, start.minor, part, p )
+						if self.repository_prefix:
+							repos += 'clean http://%s/%s/%d.%d/%s/sec%s/%s/\n' % ( self.repository_server, self.repository_prefix, start.major, start.minor, part, p )
+						else:
+							repos += 'clean http://%s/%d.%d/%s/sec%s/%s/\n' % ( self.repository_server, start.major, start.minor, part, p )
 					if printed:
 						repos += '\n'
 						printed = False
+
+				# check for hotfixes?
+				if not self.hotfixes:
+					continue
+				path = '/%s/%s/hotfixes/' % ( self.ucs_version, part )
+				if self.net_path_exists( path ):
+					for arch in [ 'all', 'extern' ] + self.architectures:
+						path='/%s/%s/hotfixes/%s/' % ( self.ucs_version, part, arch )
+						if self.net_path_exists( path ):
+							if self.repository_prefix:
+								repos += 'deb http://%s/%s/%s/%s/ hotfixes/%s/\n' % ( self.repository_server, self.repository_prefix, self.ucs_version, part, arch )
+							else:
+								repos += 'deb http://%s/%s/%s/ hotfixes/%s/\n' % ( self.repository_server, self.ucs_version, part, arch )
+
 			start.minor += 1
 			# is there a minor version update
 			path='/%d.%d/%s/' % ( start.major, start.minor, 'maintained' )

@@ -185,6 +185,7 @@ univention-config-registry set	repository/online?yes \
 								repository/online/port?80 \
 								repository/online/maintained?yes \
 								repository/online/unmaintained?no \
+								repository/online/hotfixes?no \
 								repository/mirror/threads?10 \
 								repository/mirror/basepath?/var/lib/univention-repository
 

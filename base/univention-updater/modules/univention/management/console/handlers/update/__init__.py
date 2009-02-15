@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: manage updates
 #
-# Copyright (C) 2008 Univention GmbH
+# Copyright (C) 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -71,7 +71,10 @@ command_description = {
 		method = 'release_settings',
 		values = {
 			'repository_server': umc.String(_('Repository Server')),
-			'repository_prefix': umc.String(_('Repository Prefix'), required = False)
+			'repository_prefix': umc.String(_('Repository Prefix'), required = False),
+			'use_hotfixes': umc.Boolean( _( 'Use Hotfix Repositories' ), required = False ),
+			'use_maintained': umc.Boolean( _( 'Use Maintained Repositories' ), required = False ),
+			'use_unmaintained': umc.Boolean( _( 'Use Unmaintained Repositories' ), required = False ),
 			},
 		caching = False
 	),
@@ -86,7 +89,7 @@ command_description = {
 		values = { },
 	),
 	'update/components_settings': umch.command(
-		short_description = _('Component settings updates'),
+		short_description = _('Component Settings'),
 		method = 'components_settings',
 		values = {
 			'component_activated': umc.Boolean(_('Enabled'), required = False),
@@ -100,12 +103,12 @@ command_description = {
 		},
 	),
 	'update/install_release_updates': umch.command(
-		short_description = _('Component settings updates'),
+		short_description = _('Installs a release update'),
 		method = 'install_release_updates',
 		values = { },
 	),
 	'update/install_security_updates': umch.command(
-		short_description = _('Component settings updates'),
+		short_description = _('Installs security updates'),
 		method = 'install_security_updates',
 		values = { },
 	),
@@ -121,7 +124,7 @@ command_description = {
 		values = {
 		},
 	),
-	
+
 }
 
 
@@ -151,20 +154,57 @@ class handler(umch.simpleHandler):
 		_d = ud.function('update.handler.release_settings')
 
 		reset = False
+		set_variables = []
 
-		if object.options.has_key('repository_server'):
+		if object.options.has_key('repository_server') and self.updater.repository_server != object.options[ 'repository_server' ]:
 			ud.debug(ud.ADMIN, ud.INFO, 'Updater: release_settings: repository_server was set to: %s' % object.options['repository_server'])
-			univention.config_registry.handler_set(['repository/online/server=%s' % object.options['repository_server']])
+			set_variables.append( 'repository/online/server=%s' % object.options['repository_server'] )
 			self.updater.repository_server=object.options['repository_server']
 			reset = True
 		if object.options.has_key('repository_prefix'):
-			if object.options['repository_prefix']:
+			if object.options['repository_prefix'] and object.options['repository_prefix'] != self.updater.repository_prefix:
 				ud.debug(ud.ADMIN, ud.INFO, 'Updater: release_settings: repository_prefix was set to: %s' % object.options['repository_prefix'])
-				univention.config_registry.handler_set(['repository/online/prefix=%s' % object.options['repository_prefix']])
+				set_variables.append( 'repository/online/prefix=%s' % object.options['repository_prefix'] )
 				self.updater.repository_prefix=object.options['repository_prefix']
 			else:
-				univention.config_registry.handler_unset(['repository/online/prefix'])
+				univention.config_registry.handler_unset( [ 'repository/online/prefix' ] )
 			reset = True
+		ud.debug( ud.ADMIN, ud.INFO, 'Updater: release_settings: options: %s' % str( object.options ) )
+		if object.options.has_key( 'use_hotfixes' ):
+			ud.debug( ud.ADMIN, ud.INFO, 'Updater: release_settings: use_hotfixes was set to: %s' % object.options[ 'use_hotfixes' ] )
+			if object.options[ 'use_hotfixes' ] and not self.updater.hotfixes:
+				set_variables.append( 'repository/online/hotfixes=yes' )
+			elif not object.options[ 'use_hotfixes' ] and self.updater.hotfixes:
+				set_variables.append( 'repository/online/hotfixes=no' )
+			self.updater.hotfixes = object.options[ 'use_hotfixes' ]
+			reset = True
+
+		if object.options.has_key( 'use_maintained' ):
+			ud.debug( ud.ADMIN, ud.INFO, 'Updater: release_settings: use_maintained was set to: %s' % object.options[ 'use_maintained' ] )
+			if object.options[ 'use_maintained' ]:
+				if not 'maintained' in self.updater.parts:
+					self.updater.parts.append( 'maintained' )
+					set_variables.append( 'repository/online/maintained=yes' )
+			else:
+				if 'maintained' in self.updater.parts:
+					self.updater.parts.remove( 'maintained' )
+					set_variables.append( 'repository/online/maintained=no' )
+			reset = True
+
+		if object.options.has_key( 'use_unmaintained' ):
+			ud.debug( ud.ADMIN, ud.INFO, 'Updater: release_settings: use_unmaintained was set to: %s' % object.options[ 'use_unmaintained' ] )
+			if object.options[ 'use_unmaintained' ]:
+				if not 'unmaintained' in self.updater.parts:
+					self.updater.parts.append( 'unmaintained' )
+					set_variables.append( 'repository/online/unmaintained=yes' )
+			else:
+				if 'unmaintained' in self.updater.parts:
+					self.updater.parts.remove( 'unmaintained' )
+					set_variables.append( 'repository/online/unmaintained=no' )
+			reset = True
+
+		if set_variables:
+			univention.config_registry.handler_set( set_variables )
 
 		if reset:
 			self.next_release_update_checked = False
@@ -188,7 +228,7 @@ class handler(umch.simpleHandler):
 			import traceback
 			ud.debug(ud.ADMIN, ud.ERROR, 'updater: check_release_updates: %s' % traceback.format_exc())
 			self.finished(object.id(), None, 'Failed to check the update: %s' % traceback.format_exc(), success = False)
-			
+
 		ud.debug(ud.ADMIN, ud.PROCESS, 'The nextupdate is %s' % self.next_release_update)
 
 		self.finished(object.id(), None)
@@ -196,7 +236,7 @@ class handler(umch.simpleHandler):
 
 	def components_update(self, object):
 		_d = ud.function('update.handler.components_update')
-		
+
 		status = object.options.get('status', None)
 		if status == 'check':
 			p1 = subprocess.Popen(['univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list; LC_ALL=C apt-get update >/dev/null; LC_ALL=C apt-get -u dist-upgrade -s'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -237,7 +277,7 @@ class handler(umch.simpleHandler):
 					update_text += '&nbsp;&nbsp; %s %s' % (p[0],p[1])
 					update_text += '<br>'
 				update_text += '</body>'
-		
+
 			self.finished(object.id(), {'text': update_text})
 
 		elif status == 'warning':
@@ -291,7 +331,7 @@ class handler(umch.simpleHandler):
 			univention.config_registry.handler_set(res)
 			ud.debug(ud.ADMIN, ud.INFO, 'And reinit the updater modul')
 			self.updater.ucr_reinit()
-			
+
 		self.finished(object.id(), None)
 
 	def update_warning(self, object):
@@ -300,8 +340,8 @@ class handler(umch.simpleHandler):
 
 	def install_release_updates(self, object):
 		_d = ud.function('update.handler.install_release_updates')
-		
-		
+
+
 		(returncode, returnstring) = self.__create_at_job('univention-updater net --updateto %s' % self.next_release_update)
 		self.logfile = '/var/log/univention/updater.log'
 		ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-updater net --updateto %s' % self.next_release_update)
@@ -313,7 +353,7 @@ class handler(umch.simpleHandler):
 
 	def install_security_updates(self, object):
 		_d = ud.function('update.handler.install_security_updates')
-		
+
 		(returncode, returnstring) = self.__create_at_job('univention-security-update net' )
 		self.logfile = '/var/log/univention/security-updates.log'
 		ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-security-update net' )
@@ -343,7 +383,7 @@ class handler(umch.simpleHandler):
 
 		#### UCS Releases
 		list_release = umcd.List()
-		
+
 		if self.__is_updater_running():
 			self.logfile = '/var/log/univention/updater.log'
 			btn_install_release_update = umcd.Button(_('View logfile'), 'actions/install', actions = [umcd.Action(self.__get_logfile_request())])
@@ -435,15 +475,22 @@ class handler(umch.simpleHandler):
 		_d = ud.function('update.handler._web_release_settings')
 
 		list_release = umcd.List()
-		
+
 		frame_release = umcd.Frame([list_release], _('Release Settings'))
 		inpt_server = umcd.make(self['update/release_settings']['repository_server'], default = self.updater.repository_server)
 		inpt_prefix = umcd.make(self['update/release_settings']['repository_prefix'], default = self.updater.repository_prefix)
-		list_release.add_row([inpt_server, inpt_prefix])
+		inpt_hotfixes = umcd.make( self[ 'update/release_settings' ][ 'use_hotfixes' ], default = self.updater.hotfixes )
+		inpt_maintained = umcd.make( self[ 'update/release_settings' ][ 'use_maintained' ], default = 'maintained' in self.updater.parts )
+		inpt_unmaintained = umcd.make( self[ 'update/release_settings' ][ 'use_unmaintained' ], default = 'unmaintained' in self.updater.parts )
 
+		list_release.add_row( [ inpt_server, inpt_prefix ] )
+		list_release.add_row( [ '', '' ] )
+		list_release.add_row( [ inpt_maintained, inpt_unmaintained ] )
+		list_release.add_row( [ inpt_hotfixes, '' ] )
 		req = umcp.Command(args = ['update/release_settings'])
 		cancel = umcd.CancelButton()
-		list_release.add_row([umcd.SetButton(umcd.Action(req, [inpt_server.id(), inpt_prefix.id()])), cancel])
+		list_release.add_row( [ '', '' ] )
+		list_release.add_row( [ umcd.SetButton( umcd.Action( req, [ inpt_server.id(), inpt_prefix.id(), inpt_hotfixes.id(), inpt_maintained.id(), inpt_unmaintained.id() ] ) ), cancel ] )
 
 
 		res.dialog = [frame_release]
@@ -489,7 +536,7 @@ class handler(umch.simpleHandler):
 				activated = True
 			else:
 				activated = False
-			
+
 			name = res.options['component'].get('name', '')
 			description = res.options['component'].get('description', '')
 			server = res.options['component'].get('server', '')
@@ -501,10 +548,10 @@ class handler(umch.simpleHandler):
 			server=self.updater.repository_server
 		if not prefix:
 			prefix=self.updater.repository_prefix
-			
+
 
 		list_release = umcd.List()
-		
+
 		frame_release = umcd.Frame([list_release], _('Component settings'))
 
 		inpt_activated = umcd.make(self['update/components_settings']['component_activated'], default = activated)
@@ -603,7 +650,7 @@ class handler(umch.simpleHandler):
 		ud.debug(ud.ADMIN, ud.WARN, 'executing "%s"' % command)
 		ud.debug(ud.ADMIN, ud.WARN, 'install stderr=%s' % stderr)
 		ud.debug(ud.ADMIN, ud.INFO, 'install stdout=%s' % stdout)
-		# TODO: this should be solved in another way, 
+		# TODO: this should be solved in another way,
 		# we have to wait a few seconds otherwise the updater process haven't started yet
 		time.sleep(8)
 		if p1.returncode != 0:
@@ -647,7 +694,7 @@ class handler(umch.simpleHandler):
 
 
 	def __get_update_warning(self):
-		html = '<h2>' + _('Attention!') + '</h2>' + '<body>' 
+		html = '<h2>' + _('Attention!') + '</h2>' + '<body>'
 		html += _('Installing an system update is a significant change to your IT environment.<br>')
 		html += _('In the normal case, undisturbed use operation cannot be guaranteed during the update,<br>')
 		html += _('since system services may need to be restarted. Thus, updates shouldn\'t be installed<br>')
