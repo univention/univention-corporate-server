@@ -68,7 +68,7 @@ class simpleHandler( signals.Provider ):
 		self.__commands = commands
 		self.__requests = {}
 		self.__timer = {}
-		self.__message = _( 'The Operation is still in progress' )
+		self.__message = _( 'The operation is still in progress' )
 		self.__acls = None
 		self.__interface = None
 		self._username = None

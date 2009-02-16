@@ -52,26 +52,26 @@ COMMANDS = {
 STATUSINFORMATION = {
 	200 : _( 'OK, operation successful' ),
 	210 : _( 'OK, partial response' ),
-	300 : _( 'command currently not available/possible' ),
-	400 : _( 'invalid UMCP message' ),
-	401 : _( 'unknown command or not permitted to run' ),
-	402 : _( 'invalid command arguments' ),
-	403 : _( 'incomplete command' ),
-	404 : _( 'invalid body object' ),
-	405 : _( 'unparsable message header' ),
-	410 : _( 'unauthorized' ),
-	411 : _( 'authentication failed' ),
-	412 : _( 'account is expired' ),
-	413 : _( 'account is disabled' ),
-	414 : _( 'access to console daemon is prohibited' ),
-	415 : _( 'command execution prohibited' ),
-	500 : _( 'internal error' ),
-	501 : _( 'request could not be found' ),
-	502 : _( 'module process died unexpectedly' ),
-	503 : _( 'connection to module process failed' ),
+	300 : _( 'Command currently not available/possible' ),
+	400 : _( 'Invalid UMCP message' ),
+	401 : _( 'Unknown command or not permitted to run' ),
+	402 : _( 'Invalid command arguments' ),
+	403 : _( 'Incomplete command' ),
+	404 : _( 'Invalid body object' ),
+	405 : _( 'Unparsable message header' ),
+	410 : _( 'Unauthorized' ),
+	411 : _( 'Authentication failed' ),
+	412 : _( 'Account is expired' ),
+	413 : _( 'Account is disabled' ),
+	414 : _( 'Access to console daemon is prohibited' ),
+	415 : _( 'Command execution prohibited' ),
+	500 : _( 'Internal error' ),
+	501 : _( 'Request could not be found' ),
+	502 : _( 'Module process died unexpectedly' ),
+	503 : _( 'Connection to module process failed' ),
 	504 : _( 'SSL server certificate is not trustworthy' ),
-	600 : _( 'error occuried during command processing' ),
-	601 : _( 'specified locale is not available' ),
+	600 : _( 'Error occuried during command processing' ),
+	601 : _( 'Specified locale is not available' ),
 	}
 
 def command_names():
@@ -97,4 +97,4 @@ def command_is_valid_option( name, option ):
 def status_information( status ):
 	if STATUSINFORMATION.has_key( status ):
 		return STATUSINFORMATION[ status ]
-	return _( 'Unknown Status' )
+	return _( 'Unknown state' )

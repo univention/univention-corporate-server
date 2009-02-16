@@ -55,7 +55,7 @@ class Web( object ):
 						   actions = [ umcd.Action( req, [ sort.id(), count.id() ] ) ] )
 		opts.add_row( [ sort, count, btn ] )
 
-		lst.set_header( [ _( 'User' ), _( 'PID' ), _( 'CPU' ), _( 'Virtual Size' ), _( 'Resident Set Size' ),
+		lst.set_header( [ _( 'User' ), _( 'PID' ), _( 'CPU' ), _( 'Virtual size' ), _( 'Resident set size' ),
 						  _( 'Memory in %' ), _( 'Program' ), '' ] )
 		boxes = []
 
@@ -69,8 +69,8 @@ class Web( object ):
 								 opts = { 'sort' : object.options.get( 'sort', 'cpu' ),
 										  'count' : object.options.get( 'count', '50' ) } )
 		actions = ( umcd.Action( req, boxes, True ), umcd.Action( req_list ) )
-		choices = [ ( 'top/kill', _( 'Kill Processes' ) ), ]
-		select = umcd.SelectionButton( _( 'Select the Operation' ), choices, actions )
+		choices = [ ( 'top/kill', _( 'Kill processes' ) ), ]
+		select = umcd.SelectionButton( _( 'Select the operation' ), choices, actions )
 		lst.add_row( [ umcd.Fill( 7 ), select ] )
 
 		res.dialog = [ opts, lst ]

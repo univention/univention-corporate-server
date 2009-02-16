@@ -44,7 +44,7 @@ class Web( object ):
 		lst = umcd.List()
 		servs = res.dialog
 		boxes = []
-		lst.set_header( [ umcd.Fill( 2, _( 'Name' ) ), _( 'Status' ), _( 'Start Type' ), _( 'Description' ) ] )
+		lst.set_header( [ umcd.Fill( 2, _( 'Name' ) ), _( 'Status' ), _( 'Start type' ), _( 'Description' ) ] )
 		for name, srv in servs.items():
 			if srv.running:
 				icon = umcd.Image( 'actions/yes', umct.SIZE_SMALL )
@@ -65,12 +65,12 @@ class Web( object ):
 		req_list = umcp.Command( args = [ 'service/list' ],
 								 opts = {} )
 		actions = ( umcd.Action( req, boxes, True ), umcd.Action( req_list ) )
-		choices = [ ( 'service/start', _( 'Start Services' ) ),
-					( 'service/stop', _( 'Stop Services' ) ),
-					( 'service/start_auto', _( 'Start Automatically' ) ),
-					( 'service/start_manual', _( 'Start Manually' ) ), 
-					( 'service/start_never', _( 'Start Never' ) ), ]
-		select = umcd.SelectionButton( _( 'Select the Operation' ), choices, actions )
+		choices = [ ( 'service/start', _( 'Start services' ) ),
+					( 'service/stop', _( 'Stop services' ) ),
+					( 'service/start_auto', _( 'Start automatically' ) ),
+					( 'service/start_manual', _( 'Start manually' ) ), 
+					( 'service/start_never', _( 'Start never' ) ), ]
+		select = umcd.SelectionButton( _( 'Select the operation' ), choices, actions )
 		lst.add_row( [ umcd.Fill( 5 ), select ] )
 		res.dialog = [ lst ]
 		self.revamped( object.id(), res )

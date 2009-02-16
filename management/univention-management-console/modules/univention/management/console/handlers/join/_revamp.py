@@ -48,7 +48,7 @@ class Web( object ):
 
 		if joined:
 			lst.set_header( [ umcd.Text( _( 'Script' ), attributes = { 'colspan' : '2' } ),
-							  _( 'Status' ), _( 'Current Version' ), _( 'Last Version' ) ] )
+							  _( 'State' ), _( 'Current version' ), _( 'Last version' ) ] )
 			for script in scripts:
 				runnable = False
 				if not script.current_version:
@@ -85,7 +85,7 @@ class Web( object ):
 					req.set_flag( 'web:startup', True )
 					req.set_flag( 'web:startup_dialog', True )
 					req.set_flag( 'web:startup_format',
-								  _( "Join Script: %(name)s" ) % { 'name' : name } )
+								  _( "Join script: %(name)s" ) % { 'name' : name } )
 					btn = umcd.Button( name, 'join/script', umcd.Action( req ) )
 					btn[ 'colspan' ] = '2'
 					lst.add_row( [ btn, success, cur, last ] )
@@ -99,17 +99,17 @@ class Web( object ):
 				req = umcp.Command( args = [ 'join/rejoin' ], incomplete = True )
 				req.set_flag( 'web:startup', True )
 				req.set_flag( 'web:startup_dialog', True )
-				req.set_flag( 'web:startup_format', _( 'Re-join' ) )
-				lst.add_row( [ umcd.Button( _( 'Re-join the System' ), 'actions/ok',
+				req.set_flag( 'web:startup_format', _( 'Rejoin' ) )
+				lst.add_row( [ umcd.Button( _( 'Rejoin the system' ), 'actions/ok',
 											[ umcd.Action( req ) ] ) ] )
-			res.dialog = [ umcd.Frame( [ lst ], _( 'Current Status' ) ) ]
+			res.dialog = [ umcd.Frame( [ lst ], _( 'Current state' ) ) ]
 		else:
 			lst.add_row( [ umcd.InfoBox( _( 'The system has not been joined yet.' ) ) ] )
 			req = umcp.Command( args = [ 'join/rejoin' ] )
 			req.set_flag( 'web:startup', True )
 			req.set_flag( 'web:startup_dialog', True )
 			req.set_flag( 'web:startup_format', _( 'Join' ) )
-			lst.add_row( [ umcd.Button( _( 'Join the System' ), 'actions/ok',
+			lst.add_row( [ umcd.Button( _( 'Join the system' ), 'actions/ok',
 										[ umcd.Action( req ) ] ) ] )
 			res.dialog = [ lst ]
 
@@ -127,18 +127,18 @@ class Web( object ):
 										umcd.Action( req, [ user.id(), pwd.id() ] ),
 										close_dialog = False ),
 						   umcd.CancelButton() ] )
-			res.dialog = [ umcd.Frame( [ lst ], _( 'Credentials for Join' ) ) ]
+			res.dialog = [ umcd.Frame( [ lst ], _( 'Credentials for a domain join' ) ) ]
 		else:
 			success, log = res.dialog
 			if success:
-				lst.add_row( [ umcd.InfoBox( _( 'The Join Process was successful!' ) ) ] )
+				lst.add_row( [ umcd.InfoBox( _( 'The domain join was successful!' ) ) ] )
 			else:
-				lst.add_row( [ umcd.InfoBox( _( 'The Join Process has failed!' ) ) ] )
+				lst.add_row( [ umcd.InfoBox( _( 'The domain join failed!' ) ) ] )
 			html = '<pre>' + '\n'.join( log ) + '</pre>'
 			html = html.replace( '\x1b[60G', '\t\t\t' )
 			lst.add_row( [ umcd.HTML( html ) ] )
 			lst.add_row( [ umcd.CloseButton() ] )
-			res.dialog = [ umcd.Frame( [ lst ], _( 'Log File' ) ) ]
+			res.dialog = [ umcd.Frame( [ lst ], _( 'Log file' ) ) ]
 
 		self.revamped( object.id(), res )
 
@@ -159,25 +159,25 @@ class Web( object ):
 											umcd.Action( req, [ user.id(), pwd.id() ] ),
 											close_dialog = False ),
 							   umcd.CancelButton() ] )
-				res.dialog = [ umcd.Frame( [ lst ], _( 'Credentials for Join' ) ) ]
+				res.dialog = [ umcd.Frame( [ lst ], _( 'Credentials for a domain join' ) ) ]
 			else:
-				lst.add_row( [ umcd.InfoBox( _( 'No Credentials are required.' ) ) ] )
+				lst.add_row( [ umcd.InfoBox( _( 'No credentials required.' ) ) ] )
 				req = umcp.Command( args = [ 'join/script' ],
 									opts = { 'script' : object.options[ 'script' ] } )
-				lst.add_row( [ umcd.Button( _( 'Run Script' ), 'actions/ok',
+				lst.add_row( [ umcd.Button( _( 'Run script' ), 'actions/ok',
 											umcd.Action( req ), close_dialog = False ),
 							   umcd.CancelButton() ] )
-				res.dialog = [ umcd.Frame( [ lst ], _( 'Credentials for Join' ) ) ]
+				res.dialog = [ umcd.Frame( [ lst ], _( 'Credentials for a domain join' ) ) ]
 
 		else:
 			success, log = res.dialog
 			if success:
-				lst.add_row( [ umcd.InfoBox( _( 'The Join Script was successful!' ) ) ] )
+				lst.add_row( [ umcd.InfoBox( _( 'The join script was successful!' ) ) ] )
 			else:
-				lst.add_row( [ umcd.InfoBox( _( 'The Join Script has failed!' ) ) ] )
+				lst.add_row( [ umcd.InfoBox( _( 'The join script failed!' ) ) ] )
 			html = '<pre>' + '\n'.join( log ) + '</pre>'
 			lst.add_row( [ umcd.HTML( html ) ] )
 			lst.add_row( [ umcd.CloseButton() ] )
-			res.dialog = [ umcd.Frame( [ lst ], _( 'Log File' ) ) ]
+			res.dialog = [ umcd.Frame( [ lst ], _( 'Log file' ) ) ]
 
 		self.revamped( object.id(), res )

@@ -51,13 +51,13 @@ _ = umc.Translation( 'univention.management.console.handlers.join' ).translate
 
 name = 'join'
 icon = 'join/module'
-short_description = _( 'Domain Join' )
-long_description = _( 'Join to a UCS Domain' )
+short_description = _( 'Domain join' )
+long_description = _( 'Join a UCS domain' )
 categories = [ 'all', 'system' ]
 
 command_description = {
 	'join/status' : umch.command(
-		short_description = _( 'Join Status' ),
+		short_description = _( 'Join state' ),
 		method = 'join_status',
 		values = {},
 		startup = True,
@@ -69,9 +69,9 @@ command_description = {
 				   'password' : umc.Password( _( 'Password' ), required = False ) },
 	),
 	'join/script' : umch.command(
-		short_description = _( 'Run Join Script' ),
+		short_description = _( 'Run join script' ),
 		method = 'join_script',
-		values = { 'script' : umc.String( _( 'Join Script Name' ) ),
+		values = { 'script' : umc.String( _( 'Join script name' ) ),
 				   'account' : umc.String( _( 'Username' ) ),
 				   'password' : umc.Password( _( 'Password' ) ) },
 	),

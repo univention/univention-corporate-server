@@ -40,7 +40,7 @@ class Web( object ):
 	def _web_basis_show( self, object, res ):
 		options = res.dialog
 		items = []
-		wiz = umcd.Wizard( _( "Basis Configration" ) )
+		wiz = umcd.Wizard( _( "Base Configration" ) )
 		image = umcd.Image( 'wizards/basis/wizard', umct.SIZE_LARGE )
 		wiz.set_image( image )
 		hostname = umcd.make( self[ 'wizard/basis/set' ][ 'hostname' ],

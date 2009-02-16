@@ -94,8 +94,8 @@ class About( base.Page ):
 					version_string = baseConfig[key]
 
 		rows.append(uniparts.tablerow("",{},{"obs":[
-				uniparts.tablecol("",{'type':'about_layout'},{"obs":[uniparts.text('',{},{'text':[ _('local Installation')]})]}),
-				uniparts.tablecol("",{'type':'about_layout'},{"obs":[uniparts.text('',{},{'text':["%s %s" % (_('UCS Version'), version_string)]})]})
+				uniparts.tablecol("",{'type':'about_layout'},{"obs":[uniparts.text('',{},{'text':[ _('Local installation')]})]}),
+				uniparts.tablecol("",{'type':'about_layout'},{"obs":[uniparts.text('',{},{'text':["%s %s" % (_('UCS version'), version_string)]})]})
 				]}))
 
 		rows.append(uniparts.tablerow("",{},{"obs":[

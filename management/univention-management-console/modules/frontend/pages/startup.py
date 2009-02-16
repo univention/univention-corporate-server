@@ -96,7 +96,7 @@ Univention Management Console Version: %s - %s'
 			else:
 				lst.add_row( [ umcd.Image( 'actions/critical', umc_tools.SIZE_MEDIUM ), report ] )
 			lst.add_row( [ '', umcd.ErrorButton() ] )
-			frame = umcd.Frame( [ lst ], _( 'An Error has occured' ) )
+			frame = umcd.Frame( [ lst ], _( 'An error has occured' ) )
 			self.__error_dialog = umcd.Dialog( [ frame ] )
 
 		return self.__error_dialog

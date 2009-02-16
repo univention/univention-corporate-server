@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-01 11:43+0100\n"
+"POT-Creation-Date: 2009-02-16 10:43+0100\n"
 "PO-Revision-Date: 2008-12-01 11:44+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,13 +15,83 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: __init__.py:51 __init__.py:57 __init__.py:65
-msgid "Mail Server"
+#: _revamp.py:43 __init__.py:52
+msgid "Mail server configuration"
 msgstr "Mail-Server Konfiguration"
 
-#: __init__.py:52
-msgid "Mail Server Configuration"
-msgstr "Mail-Server Konfiguration"
+#: _revamp.py:47
+msgid ""
+"The mail server has the possibility to provide filtering of SPAM e-mails. It "
+"is recommended to activate this option."
+msgstr ""
+"Der Mailserver bietet die Möglichkeit, SPAM-Mails herauszufiltern. Es wird "
+"empfohlen, diese Option zu aktivieren."
+
+#: _revamp.py:51
+msgid ""
+"To avoid the delivery of virus infected e-mails the mail server can check "
+"incoming and outgoing e-mails for known virus signatures. This increases the "
+"security and it is highly recommanded to activate this option."
+msgstr ""
+"Um die Auslieferung von Viren-Mails zu verhindern, kann der Mailserver ein- "
+"und ausgehende Mails nach bekannten Virensignaturen durchsuchen. Dies erhöht "
+"die Sicherheit und es wird dringend empfohlen, diese Option zu aktivieren."
+
+#: _revamp.py:55
+msgid ""
+"IMAP is the most common protocol to access mail servers. It is recommended "
+"to activate this option."
+msgstr ""
+"IMAP ist ein weit verbreiteted Protokoll, um auf den Mailserver zuzugreifen. "
+"Es wird empfohlen, diese Option zu aktivieren."
+
+#: _revamp.py:60
+msgid ""
+"To restrict the amount of e-mails that a user can store on the mail server "
+"it is required to activate this option. Via Univention Directory Manager it "
+"is possible to define the amount of e-mails that can be stored by a user "
+"(policy \"mail quota\")."
+msgstr ""
+"Um die Anzahl der von einem Benutzer gespeicherten Mails zu beschränken, "
+"muss diese Option aktiviert werden. Über den Univention Directory Manager "
+"können dann Richtlinien mit entsprechenden Limits definiert werden "
+"(Richtlinie \"Mail-Quota\")."
+
+#: _revamp.py:64
+msgid ""
+"POP3 is another protocol that can be used to access mail servers. When "
+"Outlook is used as client for UGS, this option must be activated."
+msgstr ""
+"POP3 ist ein weiteres Protokoll, welches für den Mailserver-Zugriff "
+"verwendet wird. Für die Verwendung von Outlook als UGS-Client muss diese "
+"Option aktiviert sein."
+
+#: _revamp.py:70
+msgid ""
+"The following option provides the possibility to set a maximum size of "
+"incoming and outgoing e-mails. Very large e-mails may cause a high load on "
+"the mail server and thereby may increase respone times. The default value "
+"should work well in most scenarios."
+msgstr ""
+"Die folgende Option bietet die Möglichkeit, die maximale Größe für ein- und "
+"ausgehende Mails festzulegen. Zu große Mails können eine hohe Last auf dem "
+"Mailserver und somit hohe Antwortzeiten verursachen. Die Standardeinstellung "
+"sollte für die meisten Szenarien passen."
+
+#: _revamp.py:75
+msgid ""
+"Any kind of information regarding problems or warnings on a system are send "
+"to the local e-mail account of the root user. These e-mails can be "
+"redirected to another global account by setting this option to a valid e-"
+"mail address."
+msgstr ""
+"Problembenachrichtigungen oder System-Warnungen werden an ein lokales "
+"Mailkonto geschickt. Diese Mails können an ein globales Mailkonto "
+"weitergeleitet werden, das hier definiert wird."
+
+#: __init__.py:51 __init__.py:57 __init__.py:65
+msgid "Mail server"
+msgstr "Mail-Server"
 
 #: __init__.py:58
 msgid "View mail server configuration"
@@ -32,107 +102,34 @@ msgid "Set mail server configuration"
 msgstr "Setzen der Mail-Server Konfiguration"
 
 #: __init__.py:68
-msgid "SPAM Filtering"
+msgid "SPAM filtering"
 msgstr "SPAM Filterung"
 
 #: __init__.py:69
-msgid "Virus Filtering"
+msgid "Virus filtering"
 msgstr "Viren Filterung"
 
 #: __init__.py:70
-msgid "IMAP Access"
+msgid "IMAP access"
 msgstr "IMAP-Zugriff"
 
 #: __init__.py:71
-msgid "IMAP Quota Support"
+msgid "IMAP quota support"
 msgstr "IMAP Quota Unterstützung"
 
 #: __init__.py:72
-msgid "POP3 Access"
+msgid "POP3 access"
 msgstr "POP3-Zugriff"
 
 #: __init__.py:73
-msgid "Maximum Message Size"
+msgid "Maximum message size"
 msgstr "Maximale Nachrichtengröße"
 
 #: __init__.py:74
-msgid "Alias E-Mail Address for root"
+msgid "E-mail address alias for root"
 msgstr "Alternative E-Mail-Adresse für root"
 
 #: __init__.py:124
 #, python-format
 msgid "Restarting the following services failed: %(services)s"
 msgstr "Neustart der folgenden Dienste ist fehlgeschlagen: %(services)s"
-
-#: _revamp.py:43
-msgid "Mail Server Configration"
-msgstr "Mail-Server Konfiguration"
-
-#: _revamp.py:47
-msgid ""
-"The mail server has the possibility to provide filtering of SPAM mails. It "
-"is recommended to activate this option."
-msgstr ""
-"Der Mailserver bietet die Möglichkeit, SPAM-Mails herauszufiltern. Es wird "
-"empfohlen, diese Option zu aktivieren."
-
-#: _revamp.py:51
-msgid ""
-"To avoid the delivery of virus infected mails the mail server can check "
-"incoming and outgoing mails for known virus signatures. This increases the "
-"security and it is highly recommanded to activate this option."
-msgstr ""
-"Um die Auslieferung von Viren-Mails zu verhindern, kann der Mailserver ein- "
-"und ausgehende Mails nach bekannten Virensignaturen durchsuchen. Dies erhöht "
-"die Sicherheit und es wird dringend empfohlen, diese Option zu aktivieren."
-
-#: _revamp.py:55
-msgid ""
-"IMAP is the most common protocol to access a mail server. It is recommended "
-"to activate this option."
-msgstr ""
-"IMAP ist ein weit verbreiteted Protokoll, um auf den Mailserver zuzugreifen. "
-"Es wird empfohlen, diese Option zu aktivieren."
-
-#: _revamp.py:60
-msgid ""
-"To restrict the amount of mails that a user can store on the mail server it "
-"is required to activate this option. Via Univention Directory Manager it is "
-"possible to define the amount of mails that can be stored by a user (policy "
-"\"mail quota\")."
-msgstr ""
-"Um die Anzahl der von einem Benutzer gespeicherten Mails zu beschränken, "
-"muss diese Option aktiviert werden. Über den Univention Directory Manager "
-"können dann Richtlinien mit entsprechenden Limits definiert werden "
-"(Richtlinie \"Mail-Quota\")."
-
-#: _revamp.py:64
-msgid ""
-"POP3 is another protocol that can be used to access a mail server. When "
-"using Outlook as client for UGS, this option must be activated."
-msgstr ""
-"POP3 ist ein weiteres Protokoll, welches für den Mailserver-Zugriff "
-"verwendet wird. Für die Verwendung von Outlook als UGS-Client muss diese "
-"Option aktiviert sein."
-
-#: _revamp.py:70
-msgid ""
-"The following option provides the possibility to set a maximum size of "
-"incoming and outgoing mails. Very large mails may cause a high load on the "
-"mail server and thereby may increase respone times. The default value should "
-"work well in most scenarios."
-msgstr ""
-"Die folgende Option bietet die Möglichkeit, die maximale Größe für ein- und "
-"ausgehende Mails festzulegen. Zu große Mails können eine hohe Last auf dem "
-"Mailserver und somit hohe Antwortzeiten verursachen. Die Standardeinstellung "
-"sollte für die meisten Szenarien passen."
-
-#: _revamp.py:75
-msgid ""
-"Any information regarding problems or warnings on a system are send to an "
-"local email account. These mail can be redirected to another global account "
-"by setting this option to a valid e-mail address."
-msgstr ""
-"Problembenachrichtigungen oder System-Warnungen werden an ein lokales "
-"Mailkonto geschickt. Diese Mails können an ein globales Mailkonto "
-"weitergeleitet werden, das hier definiert wird."

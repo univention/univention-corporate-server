@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-26 11:59+0200\n"
+"POT-Creation-Date: 2009-02-16 10:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 
 #: categories.py:75
-msgid "All Modules"
+msgid "All modules"
 msgstr "Alle Module"
 
 #: categories.py:76
@@ -28,7 +28,7 @@ msgid "System"
 msgstr "System"
 
 #: categories.py:78
-msgid "System Overview"
+msgid "System overview"
 msgstr "Systemübersicht"
 
 #: categories.py:79
@@ -43,40 +43,63 @@ msgstr "Wizards zur einfachen Konfiguration"
 msgid "value contains invalid characters"
 msgstr "Der Wert enthält ungültige Zeichen"
 
-#: values.py:130
-msgid "E-Mail Address"
+#: values.py:135
+msgid "E-Mail address"
 msgstr "E-Mail-Adresse"
 
-#: values.py:135
-msgid "IP Address"
+#: values.py:140
+msgid "IP address"
 msgstr "IP-Adresse"
 
-#: values.py:146
+#: values.py:151
 #, python-format
 msgid "Invalid number (%s). Must be between 0 and 255"
 msgstr "Ungültige Zahl (%s). Der Wert muss zwischen 0 und 255 liegen."
 
-#: values.py:159
+#: values.py:164
 msgid "Value is not a valid integer number."
 msgstr "Der Wert ist keine gültige Zahl."
 
-#: values.py:174
+#: values.py:179
 msgid "invalid value."
 msgstr "Ungültiger Wert."
 
-#: values.py:179
+#: values.py:184
 msgid "At least one entry is required."
 msgstr "Mindestens ein Einträg wird benötigt."
 
-#: values.py:195
+#: values.py:200
 msgid "German"
 msgstr "Deutsch"
 
-#: values.py:195
+#: values.py:200
 msgid "English"
 msgstr "Englisch"
 
-#: values.py:218
+#: values.py:207
+msgid "Domain controller Master"
+msgstr ""
+
+#: values.py:208
+msgid "Domain controller Backup"
+msgstr ""
+
+#: values.py:209
+msgid "Domain controller Slave"
+msgstr ""
+
+#: values.py:210
+msgid "Member Server"
+msgstr ""
+
+#: values.py:211
+msgid "Managed Client"
+msgstr ""
+
+#: values.py:212
+msgid "Mobile Client"
+msgstr ""
+
+#: values.py:235
 msgid "A value is required."
 msgstr "Ein Wert wird benötigt."
-

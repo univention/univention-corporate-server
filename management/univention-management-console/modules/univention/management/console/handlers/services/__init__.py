@@ -47,13 +47,13 @@ _ = umc.Translation( 'univention.management.console.handlers.services' ).transla
 
 name = 'services'
 icon = 'services/module'
-short_description = _( 'System Services' )
-long_description = _( 'controls system services' )
+short_description = _( 'System services' )
+long_description = _( 'Control over system services' )
 categories = [ 'all' ]
 
 class StartType( umc.StaticSelection ):
 	def __init__( self ):
-		umc.StaticSelection.__init__( self, _( 'Start Type' ) )
+		umc.StaticSelection.__init__( self, _( 'Start type' ) )
 
 	def choices( self ):
 		return ( ( 'manual', _( 'Manual' ) ), ( 'auto', _( 'Automatically' ) ) )
@@ -100,7 +100,7 @@ command_description = {
 		values = { 'service': service_type },
 	),
 	'service/list': umch.command(
-		short_description = _( 'List all services' ),
+		short_description = _( 'List of services' ),
 		method = 'service_list',
 		startup = True,
 		priority = 100,

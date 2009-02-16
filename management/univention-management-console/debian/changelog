@@ -1,3 +1,9 @@
+univention-management-console (1.0.10-2) unstable; urgency=low
+
+  * the English translation for UMC has been updated. Bug #13407
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 16 Feb 2009 10:56:41 +0100
+
 univention-management-console (1.0.10-1) unstable; urgency=low
 
   * fixed traceback in handle_rawsock

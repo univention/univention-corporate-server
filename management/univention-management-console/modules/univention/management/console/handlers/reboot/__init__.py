@@ -50,12 +50,12 @@ _ = umc.Translation( 'univention.management.console.handlers.reboot' ).translate
 name = 'reboot'
 icon = 'reboot/exit'
 short_description = _( 'Reboot' )
-long_description = _( 'System Stop and Reboot' )
+long_description = _( 'System reboot or shutdown' )
 categories = [ 'system', 'all' ]
 
 class Choice( umc.StaticSelection ):
 	def __init__( self ):
-		umc.StaticSelection.__init__( self, _( 'Choice' ) )
+		umc.StaticSelection.__init__( self, _( 'Action' ) )
 	
 	def choices( self ):
 		return ( ('reboot', _( 'Reboot' ) ),('stop',  _( 'Stop' ) ) )
@@ -64,9 +64,9 @@ umcd.copy( umc.StaticSelection, Choice )
 
 command_description = {
 	'reboot/do': umch.command(
-		short_description = _( 'System Stop and Reboot' ),
+		short_description = _( 'System reboot or shutdown' ),
 		method = 'reboot_do',
-		values = { 'action': Choice(),'message': umc.String( _( 'System Message' ) ) },
+		values = { 'action': Choice(),'message': umc.String( _( 'Reason for this reboot/shutdown' ) ) },
 		startup = True,
 		),
 }

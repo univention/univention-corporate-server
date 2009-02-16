@@ -47,8 +47,8 @@ _ = umc.Translation( 'univention.management.console.handlers.modutils' ).transla
 
 name = 'modutils'
 icon = 'modutils/module'
-short_description = _( 'Kernel Modules' )
-long_description = _( 'Load and Remove Kernel Modules' )
+short_description = _( 'Kernel modules' )
+long_description = _( 'Load and remove kernel modules' )
 categories = [ 'all', 'system' ]
 
 tools.get_kernel_version()
@@ -56,7 +56,7 @@ tools.get_kernel_categories()
 
 class ModUtilsCategories( umc.StaticSelection ):
 	def __init__( self ):
-		umc.StaticSelection.__init__( self, _( 'Module Categories' ) )
+		umc.StaticSelection.__init__( self, _( 'Module categories' ) )
 
 	def choices( self ):
 		lst = [ ( 'all', _( 'All' ) ) ]
@@ -66,7 +66,7 @@ class ModUtilsCategories( umc.StaticSelection ):
 
 class ModUtilsSearchKey( umc.StaticSelection ):
 	def __init__( self ):
-		umc.StaticSelection.__init__( self, _( 'Search Key' ) )
+		umc.StaticSelection.__init__( self, _( 'Search key' ) )
 		self._choices = []
 
 	def choices( self ):
@@ -81,7 +81,7 @@ key_type = ModUtilsSearchKey()
 
 command_description = {
 	'modutils/search' : umch.command(
-		short_description = _( 'Kernel Modules' ),
+		short_description = _( 'Kernel modules' ),
 		method = 'modutils_search',
 		values = { 'category': cats_type,
 				   'key' : key_type,
@@ -90,21 +90,21 @@ command_description = {
 		startup = True,
 	),
 	'modutils/show' : umch.command(
-		short_description = _( 'Load Kernel Modul' ),
+		short_description = _( 'Load kernel modul' ),
 		method = 'modutils_show',
-		values = { 'module' : umc.String( _( 'Kernel Module' ) ),
+		values = { 'module' : umc.String( _( 'Kernel module' ) ),
 				   'load' : umc.Boolean( '' ) },
 	),
 	'modutils/load' : umch.command(
-		short_description = _( 'Load Kernel Modul' ),
+		short_description = _( 'Load kernel modul' ),
 		method = 'modutils_load',
-		values = { 'module' : umc.String( _( 'Kernel Module' ) ),
-				   'arguments' : umc.String( _( 'Modul Arguments' ), required = False ) },
+		values = { 'module' : umc.String( _( 'Kernel module' ) ),
+				   'arguments' : umc.String( _( 'Modul arguments' ), required = False ) },
 	),
 	'modutils/unload' : umch.command(
-		short_description = _( 'Unload Kernel Modul' ),
+		short_description = _( 'Unload kernel modul' ),
 		method = 'modutils_unload',
-		values = { 'module' : umc.String( _( 'Kernel Module' ) ) },
+		values = { 'module' : umc.String( _( 'Kernel module' ) ) },
 	),
 }
 

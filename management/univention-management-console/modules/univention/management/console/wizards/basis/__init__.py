@@ -48,27 +48,27 @@ import _revamp
 _ = umc.Translation( 'univention.management.console.wizards.basis' ).translate
 
 icon = 'wizards/basis/module'
-short_description = _( 'Basis' )
-long_description = _( 'Basis Configuration' )
+short_description = _( 'Base' )
+long_description = _( 'Base configuration' )
 categories = [ 'wizards' ]
 
 command_description = {
 	'wizard/basis/show': umch.command(
-		short_description = _( 'Basis Configuration' ),
-		long_description = _( 'View basis configuration' ),
+		short_description = _( 'Base configuration' ),
+		long_description = _( 'View base configuration' ),
 		method = 'basis_show',
 		values = {},
 		startup = True,
 		priority = 100
 	),
 	'wizard/basis/set': umch.command(
-		short_description = _( 'Basis Configuration' ),
-		long_description = _( 'Set basis configuration' ),
+		short_description = _( 'Base configuration' ),
+		long_description = _( 'Set base configuration' ),
 		method = 'basis_set',
 		values = { 'hostname' : umc.String( _( 'Hostname' ) ),
-				   'domainname' : umc.String( _( 'Domain Name' ) ),
-				   'windows_domain' : umc.String( _( 'Windows Domain' ) ),
-				   'ldap_base' : umc.String( _( 'LDAP Basis' ) ), },
+				   'domainname' : umc.String( _( 'Domain name' ) ),
+				   'windows_domain' : umc.String( _( 'Windows domain' ) ),
+				   'ldap_base' : umc.String( _( 'LDAP base' ) ), },
 	),
 }
 

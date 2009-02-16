@@ -54,7 +54,7 @@ sections = tools.get_sections()
 
 class PackageSections( umc.StaticSelection ):
 	def __init__( self ):
-		umc.StaticSelection.__init__( self, _( 'Package Categories' ) )
+		umc.StaticSelection.__init__( self, _( 'Package categories' ) )
 
 	def choices( self ):
 		list = [ ( 'all', _( 'All' ) ) ]
@@ -64,7 +64,7 @@ class PackageSections( umc.StaticSelection ):
 
 class PackageSearchKey( umc.StaticSelection ):
 	def __init__( self ):
-		umc.StaticSelection.__init__( self, _( 'Search Key' ) )
+		umc.StaticSelection.__init__( self, _( 'Search key' ) )
 		self._choices = []
 
 	def choices( self ):
@@ -89,32 +89,32 @@ command_description = {
 		caching = True,
 	),
 	'packages/show' : umch.command(
-		short_description = _( 'Show Package' ),
+		short_description = _( 'Show package' ),
 		method = 'packages_show',
 		values = {	'package' : umc.String( _( 'Package' ) ),
 					'section': umc.String( _( 'Section' ) ),
 					'installed' : umc.Boolean( _('Installed') ),
 					'description': umc.String(_('Description')),
-					'installedVersion': umc.String(_('Installed Version')),
+					'installedVersion': umc.String(_('Installed version')),
 					'isUpgradable': umc.Boolean(_('Upgradeable')),
-					'packageSize': umc.String(_('Package Size')),
+					'packageSize': umc.String(_('Package size')),
 					'priority': umc.String(_('Priority')) ,
-					'sourcePackageName': umc.String(_('Source Package Name')),
+					'sourcePackageName': umc.String(_('Source package name')),
 					'summary': umc.String(_('Summary'))
 					},
 	),
 	'packages/install' : umch.command(
-		short_description = _( 'Install Package' ),
+		short_description = _( 'Install package' ),
 		method = 'packages_install',
 		values = {	'package' : umc.String( _( 'Package' ) ) },
 	),
 	'packages/uninstall' : umch.command(
-		short_description = _( 'Uninstall Package' ),
+		short_description = _( 'Uninstall package' ),
 		method = 'packages_uninstall',
 		values = {	'package' : umc.String( _( 'Package' ) ) },
 	),
 	'packages/upgrade' : umch.command(
-		short_description = _( 'Upgrade Package' ),
+		short_description = _( 'Upgrade package' ),
 		method = 'packages_upgrade',
 		values = {	'package' : umc.String( _( 'Package' ) ) },
 	),

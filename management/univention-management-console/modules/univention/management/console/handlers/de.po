@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-12 14:04+0200\n"
+"POT-Creation-Date: 2009-02-16 10:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,15 +15,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: __init__.py:70
-msgid "The Operation is still in progress"
+#: __init__.py:71
+msgid "The operation is still in progress"
 msgstr "Die Operation ist noch in Bearbeitung"
 
-#: __init__.py:123
+#: __init__.py:124
 msgid "Information"
 msgstr "Information"
 
-#: __init__.py:146 __init__.py:190
+#: __init__.py:147 __init__.py:191
 #, python-format
 msgid ""
 "Execution of command '%(command)s' has failed:\n"

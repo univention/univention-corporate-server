@@ -44,13 +44,13 @@ _ = umc.Translation( 'univention.management.console.handlers.mrtg' ).translate
 
 name = 'mrtg'
 icon = 'mrtg/module'
-short_description = _( 'Load Statistic' )
-long_description = _( 'System Load Statistic' )
+short_description = _( 'Load statistics' )
+long_description = _( 'System load statistics' )
 categories = [ 'all', 'system' ]
 
 command_description = {
 	'mrtg/view' : umch.command(
-		short_description = _( 'Load Statistic' ),
+		short_description = _( 'Load statistics' ),
 		method = 'mrtg_view',
 		values = {},
 		startup = True,

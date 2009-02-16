@@ -52,7 +52,7 @@ class Web( object ):
 
 			result.add_row( [select] )
 			result.add_row( [text] )
-			result.add_row( [ umcd.Button( label = _( 'Proceed' ), tag = 'actions/ok', actions = [  umcd.Action( req,ids ) ], close_dialog = True ) ] )
+			result.add_row( [ umcd.Button( label = _( 'Execute' ), tag = 'actions/ok', actions = [  umcd.Action( req,ids ) ], close_dialog = True ) ] )
 
 		else:
 			result.add_row( [ umcd.InfoBox(  res.dialog  ) ] )

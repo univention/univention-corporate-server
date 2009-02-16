@@ -52,7 +52,7 @@ _ = umc.Translation( \
 
 icon = 'baseconfig/module'
 short_description = _( 'Univention Configuration Registry' )
-long_description = _( 'Add, modify and search Univention configuration registry variables' )
+long_description = _( 'Add, modify and search Univention Configuration Registry variables' )
 categories = [ 'all' ]
 
 command_description = {
@@ -70,7 +70,7 @@ command_description = {
 	),
 	'baseconfig/show': umch.command(
 		short_description = _( 'Show' ),
-		long_description = _( 'Display Information about a configuration registry variable' ),
+		long_description = _( 'Display information about a configuration registry variable' ),
 		method = 'baseconfig_show',
 		values = { 'key': _types.key },
 	),

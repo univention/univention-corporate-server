@@ -7,81 +7,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-29 17:12+0200\n"
+"POT-Creation-Date: 2009-02-16 10:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
-
-#: __init__.py:48 __init__.py:89
-msgid "Process Overview"
-msgstr "Prozessübersicht"
-
-#: __init__.py:49
-msgid "Process Overview and Control"
-msgstr "Übersicht und Kontrolle von Prozessen"
-
-#: __init__.py:54
-msgid "Sort Processes"
-msgstr "Sortierung"
-
-#: __init__.py:57
-msgid "CPU Usage"
-msgstr "CPU Nutzung"
-
-#: __init__.py:58
-msgid "Username"
-msgstr "Benutzername"
-
-#: __init__.py:59
-msgid "Memory Usage (%)"
-msgstr "Speichernutzung (%)"
-
-#: __init__.py:60 _revamp.py:58
-msgid "Resident Set Size"
-msgstr "Residente Größe"
-
-#: __init__.py:61 _revamp.py:58
-msgid "Virtual Size"
-msgstr "Virtuelle Größe"
-
-#: __init__.py:62
-msgid "Process ID"
-msgstr "Prozess ID"
-
-#: __init__.py:66
-msgid "Number of Processes"
-msgstr "Anzahl der Prozesse"
-
-#: __init__.py:69
-msgid "all"
-msgstr "Alle"
-
-#: __init__.py:73
-msgid "Kill Signal"
-msgstr "Beendigungssignal"
-
-#: __init__.py:76
-msgid "Force Kill"
-msgstr "Beendigung erzwingen"
-
-#: __init__.py:76
-msgid "Terminate"
-msgstr "Beenden"
-
-#: __init__.py:85
-msgid "Process IDs"
-msgstr "Prozess IDs"
-
-#: __init__.py:96 _revamp.py:72
-msgid "Kill Processes"
-msgstr "Prozesse beenden"
-
-#: __init__.py:111 __init__.py:126
-msgid "You are not permitted to run this command."
-msgstr "Sie dürfen dieses Kommando nicht ausführen."
 
 #: _revamp.py:54
 msgid "Reload"
@@ -99,6 +31,14 @@ msgstr "PID"
 msgid "CPU"
 msgstr "CPU"
 
+#: _revamp.py:58 __init__.py:60
+msgid "Virtual size"
+msgstr "Virtuelle Größe"
+
+#: _revamp.py:58 __init__.py:59
+msgid "Resident set size"
+msgstr "Residente Größe"
+
 #: _revamp.py:59
 msgid "Memory in %"
 msgstr "Speicher in %"
@@ -107,6 +47,65 @@ msgstr "Speicher in %"
 msgid "Program"
 msgstr "Programm"
 
+#: _revamp.py:72 __init__.py:95
+msgid "Kill processes"
+msgstr "Prozesse beenden"
+
 #: _revamp.py:73
-msgid "Select the Operation"
+msgid "Select the operation"
 msgstr "Auswahl der Operation"
+
+#: __init__.py:48 __init__.py:88
+msgid "Process overview"
+msgstr "Prozessübersicht"
+
+#: __init__.py:49
+msgid "Process overview and control"
+msgstr "Übersicht und Kontrolle von Prozessen"
+
+#: __init__.py:54
+msgid "Sort processes"
+msgstr "Sortierung"
+
+#: __init__.py:57
+msgid "CPU usage"
+msgstr "CPU Nutzung"
+
+#: __init__.py:58
+msgid "Username"
+msgstr "Benutzername"
+
+#: __init__.py:61
+msgid "Process ID"
+msgstr "Prozess ID"
+
+#: __init__.py:65
+msgid "Number of processes"
+msgstr "Anzahl der Prozesse"
+
+#: __init__.py:68
+msgid "All"
+msgstr "Alle"
+
+#: __init__.py:72
+msgid "Kill signal"
+msgstr "Beendigungssignal"
+
+#: __init__.py:75
+msgid "Force kill"
+msgstr "Beendigung erzwingen"
+
+#: __init__.py:75
+msgid "Terminate"
+msgstr "Beenden"
+
+#: __init__.py:84
+msgid "Process IDs"
+msgstr "Prozess IDs"
+
+#: __init__.py:110 __init__.py:125
+msgid "You are not permitted to run this command."
+msgstr "Sie dürfen dieses Kommando nicht ausführen."
+
+#~ msgid "Memory Usage (%)"
+#~ msgstr "Speichernutzung (%)"

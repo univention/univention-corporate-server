@@ -65,7 +65,7 @@ class Web( object ):
 			result = umcd.List()
 
 			if res.dialog:
-				result.set_header( [ _( 'Module' ), _( 'Loaded' ), _( 'Used By' ), '' ] )
+				result.set_header( [ _( 'Module' ), _( 'Loaded' ), _( 'Used by' ), '' ] )
 				for mod in res.dialog:
 					if mod.loaded:
 						icon = umcd.Image( 'actions/yes', umct.SIZE_SMALL )
@@ -80,7 +80,7 @@ class Web( object ):
 						req.set_flag( 'web:startup_cache', False )
 						req.set_flag( 'web:startup_dialog', True )
 						req.set_flag( 'web:startup_referrer', False )
-						req.set_flag( 'web:startup_format', _( 'Unload Module: %(module)s' ) )
+						req.set_flag( 'web:startup_format', _( 'Unload module: %(module)s' ) )
 						btn = umcd.Button( mod.name, 'modutils/kmodule', umcd.Action( req ) )
 					else:
 						icon = umcd.Image( 'actions/no', umct.SIZE_SMALL )
@@ -95,14 +95,14 @@ class Web( object ):
 						req.set_flag( 'web:startup_cache', False )
 						req.set_flag( 'web:startup_dialog', True )
 						req.set_flag( 'web:startup_referrer', False )
-						req.set_flag( 'web:startup_format', _( 'Load Module: %(module)s' ) )
+						req.set_flag( 'web:startup_format', _( 'Load module: %(module)s' ) )
 						btn = umcd.Button( mod.name, 'modutils/kmodule', umcd.Action( req ) )
 
 					result.add_row( [ btn, icon, ', '.join( mod.usedby ) ] )
 			else:
 				result.add_row( [ _( 'No kernel modules were found.' ) ] )
 
-			main.append( umcd.Frame( [ result ], _( 'Search Result' ) ) )
+			main.append( umcd.Frame( [ result ], _( 'Search result' ) ) )
 
 		res.dialog = main
 

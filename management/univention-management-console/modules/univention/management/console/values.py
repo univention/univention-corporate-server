@@ -132,12 +132,12 @@ class Text( Value ):
 						may_change = may_change )
 
 class EMailAddress( String ):
-	def __init__( self, label = _( 'E-Mail Address' ), required = True, may_change = True ):
+	def __init__( self, label = _( 'E-Mail address' ), required = True, may_change = True ):
 		String.__init__( self, label = label, regex = '[a-zA-Z.-]+@[a-zA-Z.]+',
 						 required = required, may_change = may_change )
 
 class IP_Address( String ):
-	def __init__( self, label = _( 'IP Address' ), required = True, may_change = True ):
+	def __init__( self, label = _( 'IP address' ), required = True, may_change = True ):
 		String.__init__( self, label = label,
 						 regex = '(?P<a>[0-9]{1,3})\.(?P<b>[0-9]{1,3})\.(?P<a>[0-9]{1,3})\.(?P<b>[0-9]{1,3})',
 						 required = required, may_change = may_change )
@@ -204,9 +204,9 @@ class SystemRoleSelection( StaticSelection ):
 		StaticSelection.__init__( self, label, required = required, may_change = may_change )
 
 	def choices( self ):
-		return ( ( 'domaincontroller_master', _( 'Domaincontroller Master' ) ),
-				 ( 'domaincontroller_backup', _( 'Domaincontroller Backup' ) ),
-				 ( 'domaincontroller_slave', _( 'Domaincontroller Slave' ) ),
+		return ( ( 'domaincontroller_master', _( 'Domain controller Master' ) ),
+				 ( 'domaincontroller_backup', _( 'Domain controller Backup' ) ),
+				 ( 'domaincontroller_slave', _( 'Domain controller Slave' ) ),
 				 ( 'memberserver', _( 'Member Server' ) ),
 				 ( 'managed_client', _( 'Managed Client' ) ),
 				 ( 'mobile_client', _( 'Mobile Client' ) ) )

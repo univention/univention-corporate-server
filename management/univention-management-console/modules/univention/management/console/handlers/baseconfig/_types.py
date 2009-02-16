@@ -68,7 +68,7 @@ umcd.copy( umc.StaticSelection, BaseconfigCategorySearch )
 class BaseconfigCategoryList( BaseconfigCategory ):
 	def __init__( self, required = True ):
 		BaseconfigCategory.__init__( self, required = required )
-		self.label = _( 'List of Categories' )
+		self.label = _( 'List of categories' )
 		self.multivalue = True
 
 umcd.copy( umc.StaticSelection, BaseconfigCategoryList )
@@ -84,7 +84,7 @@ umcd.copy( umc.StaticSelection, BaseconfigTypes )
 
 class BaseconfigSearchKeys( umc.StaticSelection ):
 	def __init__( self, required = True ):
-		umc.StaticSelection.__init__( self, _( 'Search Key' ), required = required )
+		umc.StaticSelection.__init__( self, _( 'Search key' ), required = required )
 
 	def choices( self ):
 		return ( ( 'variable', _( 'Variable' ) ), ( 'value', _( 'Value' ) ),
@@ -103,5 +103,5 @@ categories = BaseconfigCategoryList( required = False )
 searchkey = BaseconfigSearchKeys()
 descr_text = umc.String( _( 'Description' ), required = False )
 descr_lang = umc.LanguageSelection( _( 'Language' ) )
-descr = umc.MultiDictValue( _( 'Multilinugal Description' ),
+descr = umc.MultiDictValue( _( 'Multilinugal description' ),
 								 syntax = { 'text' : descr_text, 'lang' : descr_lang } )

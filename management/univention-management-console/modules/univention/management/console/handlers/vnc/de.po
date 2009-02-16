@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-31 08:31+0200\n"
+"POT-Creation-Date: 2009-02-16 10:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,48 +15,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: __init__.py:49
-msgid "VNC"
-msgstr "VNC"
-
-#: __init__.py:50
-msgid "Access to a System via VNC Session"
-msgstr "Zugriff auf ein System mittel NVC"
-
-#: __init__.py:55
-msgid "VNC Configuration"
-msgstr "VNC Konfiguration"
-
-#: __init__.py:61 __init__.py:66
-msgid "VNC Connection"
-msgstr "VNC Verbindung"
-
-#: __init__.py:71
-msgid "VNC Password"
-msgstr "VNC Password"
-
-#: __init__.py:73
-msgid "Password"
-msgstr "Passwort"
-
-#: __init__.py:117 __init__.py:144
-msgid "You are not permitted to run this command."
-msgstr "Es ist nicht erlaubt dieses Kommando auszuführen"
-
 #: _revamp.py:52
-msgid "Connect to the VNC Server"
+msgid "Connect to the VNC server"
 msgstr "Verbindung zum VNC-Server aufbauen"
 
 #: _revamp.py:59
-msgid "To setup a VNC Session a password is required and a running VNC server."
-msgstr "Zum Aufbauen einer VNC-Sitzung wird ein Passwort und ein laufender VNC-Server benötigt."
+msgid "To setup a VNC session a password is required and a running VNC server."
+msgstr ""
+"Zum Aufbauen einer VNC-Sitzung wird ein Passwort und ein laufender VNC-"
+"Server benötigt."
 
 #: _revamp.py:68
-msgid "Set VNC Password"
+msgid "Set VNC password"
 msgstr "Setzen des VNC-Passwortes"
 
 #: _revamp.py:70
-msgid "Currently there is no VNC Server running."
+msgid "Currently there is no VNC server running."
 msgstr "Momentan läuft noch kein VNC-Server."
 
 #: _revamp.py:73
@@ -64,17 +38,45 @@ msgid "Start"
 msgstr "Starten"
 
 #: _revamp.py:76
-msgid "Start VNC Server"
+msgid "Start VNC server"
 msgstr "Starten des VNC-Server"
 
 #: _revamp.py:78
-msgid "Password is set and the VNC Server is running."
+msgid "Password is set and the VNC server is running."
 msgstr "Ein Passwort existiert und der VNC-Server läuft bereits."
 
 #: _revamp.py:82
-msgid "Stop VNC Server"
+msgid "Stop VNC server"
 msgstr "Stoppen des VNC-Server"
 
 #: _revamp.py:85
-msgid "Connect to VNC Session"
+msgid "Connect to VNC session"
 msgstr "Verbindung zum VNC-Server aufbauen"
+
+#: __init__.py:50
+msgid "VNC"
+msgstr "VNC"
+
+#: __init__.py:51
+msgid "Access to a System via VNC Session"
+msgstr "Zugriff auf ein System mittel NVC"
+
+#: __init__.py:56
+msgid "VNC configuration"
+msgstr "VNC Konfiguration"
+
+#: __init__.py:62 __init__.py:67
+msgid "VNC connection"
+msgstr "VNC Verbindung"
+
+#: __init__.py:72
+msgid "VNC password"
+msgstr "VNC Password"
+
+#: __init__.py:74
+msgid "Password"
+msgstr "Passwort"
+
+#: __init__.py:135 __init__.py:164
+msgid "You are not permitted to run this command."
+msgstr "Es ist nicht erlaubt dieses Kommando auszuführen"

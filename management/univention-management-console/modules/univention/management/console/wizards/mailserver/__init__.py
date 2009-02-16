@@ -48,13 +48,13 @@ import _revamp
 _ = umc.Translation( 'univention.management.console.wizards.mailserver' ).translate
 
 icon = 'wizards/mailserver/module'
-short_description = _( 'Mail Server' )
-long_description = _( 'Mail Server Configuration' )
+short_description = _( 'Mail server' )
+long_description = _( 'Mail server configuration' )
 categories = [ 'wizards' ]
 
 command_description = {
 	'wizard/mailserver/show': umch.command(
-		short_description = _( 'Mail Server' ),
+		short_description = _( 'Mail server' ),
 		long_description = _( 'View mail server configuration' ),
 		method = 'mailserver_show',
 		values = {},
@@ -62,16 +62,16 @@ command_description = {
 		priority = 100
 	),
 	'wizard/mailserver/set': umch.command(
-		short_description = _( 'Mail Server' ),
+		short_description = _( 'Mail server' ),
 		long_description = _( 'Set mail server configuration' ),
 		method = 'mailserver_set',
-		values = { 'spam' : umc.Boolean( _( 'SPAM Filtering' ) ),
-				   'virus' : umc.Boolean( _( 'Virus Filtering' ) ),
-				   'imap' : umc.Boolean( _( 'IMAP Access' ) ),
-				   'imap_quota' : umc.Boolean( _( 'IMAP Quota Support' ) ),
-				   'pop' : umc.Boolean( _( 'POP3 Access' ) ),
-				   'messagesizelimit' : umc.Integer( _( 'Maximum Message Size' ) ),
-				   'root' : umc.EMailAddress( _( 'Alias E-Mail Address for root' ) )
+		values = { 'spam' : umc.Boolean( _( 'SPAM filtering' ) ),
+				   'virus' : umc.Boolean( _( 'Virus filtering' ) ),
+				   'imap' : umc.Boolean( _( 'IMAP access' ) ),
+				   'imap_quota' : umc.Boolean( _( 'IMAP quota support' ) ),
+				   'pop' : umc.Boolean( _( 'POP3 access' ) ),
+				   'messagesizelimit' : umc.Integer( _( 'Maximum message size' ) ),
+				   'root' : umc.EMailAddress( _( 'E-mail address alias for root' ) )
 				   },
 	),
 }

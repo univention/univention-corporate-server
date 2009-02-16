@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-05 21:17+0200\n"
+"POT-Creation-Date: 2009-02-16 10:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,59 +15,59 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: __init__.py:50 __init__.py:56 __init__.py:64
-msgid "Basis"
-msgstr "Basis"
-
-#: __init__.py:51
-msgid "Basis Configuration"
+#: _revamp.py:43
+msgid "Base Configration"
 msgstr "Basis-Konfiguration"
 
-#: __init__.py:57
-msgid "View basis configuration"
-msgstr "Anzeige der Basis-Konfiguration"
-
-#: __init__.py:65
-msgid "Set basis configuration"
-msgstr "Setzen der Basis-Konfiguration"
-
-#: __init__.py:67
-msgid "Hostname"
-msgstr "Rechnername"
-
-#: __init__.py:68
-msgid "Domain Name"
-msgstr "Domäne"
-
-#: __init__.py:69
-msgid "Windows Domain"
-msgstr "Windows Domäne"
-
-#: __init__.py:70
-msgid "LDAP Basis"
-msgstr "LDAP-Basis"
-
-#: __init__.py:113
-#, python-format
-msgid "The following scripts failed: %(scripts)s"
-msgstr "Die folgenden Skripte sind fehlgeschlagen: %(scripts)s"
-
-#: _revamp.py:42
-msgid "Basis Configration"
-msgstr "Basis-Konfiguration"
-
-#: _revamp.py:47
+#: _revamp.py:48
 msgid "The name of the computer"
 msgstr "Der Name des Rechners"
 
-#: _revamp.py:52
+#: _revamp.py:53
 msgid "The DNS domain name for the computer network"
 msgstr "Die DNS-Domäne des Netzes"
 
-#: _revamp.py:57
+#: _revamp.py:58
 msgid "The LDAP base for the management database"
 msgstr "Die LDAP-Basis der Management-Datenbank"
 
-#: _revamp.py:62
+#: _revamp.py:63
 msgid "The Windows domain provided by the Samba server"
 msgstr "Die Windows-Domäne des Samba-Dienstes"
+
+#: __init__.py:51
+msgid "Base"
+msgstr "Basis"
+
+#: __init__.py:52 __init__.py:57 __init__.py:65
+msgid "Base configuration"
+msgstr "Basis-Konfiguration"
+
+#: __init__.py:58
+msgid "View base configuration"
+msgstr "Anzeige der Basis-Konfiguration"
+
+#: __init__.py:66
+msgid "Set base configuration"
+msgstr "Setzen der Basis-Konfiguration"
+
+#: __init__.py:68
+msgid "Hostname"
+msgstr "Rechnername"
+
+#: __init__.py:69
+msgid "Domain name"
+msgstr "Domäne"
+
+#: __init__.py:70
+msgid "Windows domain"
+msgstr "Windows Domäne"
+
+#: __init__.py:71
+msgid "LDAP base"
+msgstr "LDAP-Basis"
+
+#: __init__.py:115
+#, python-format
+msgid "The following scripts failed: %(scripts)s"
+msgstr "Die folgenden Skripte sind fehlgeschlagen: %(scripts)s"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-23 15:29+0200\n"
+"POT-Creation-Date: 2009-02-16 10:52+0100\n"
 "PO-Revision-Date: 2007-05-23 15:30+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,99 +15,99 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: definitions.py:51
+#: definitions.py:53
 msgid "OK, operation successful"
 msgstr "OK, Operation erfolgreich"
 
-#: definitions.py:52
+#: definitions.py:54
 msgid "OK, partial response"
 msgstr "OK, Teilantwort"
 
-#: definitions.py:53
-msgid "command currently not available/possible"
+#: definitions.py:55
+msgid "Command currently not available/possible"
 msgstr "Das Kommando ist momentan nicht verfügbar "
 
-#: definitions.py:54
-msgid "invalid UMCP message"
+#: definitions.py:56
+msgid "Invalid UMCP message"
 msgstr "Ungültige UMCP Nachricht"
 
-#: definitions.py:55
-msgid "unknown command or not permitted to run"
+#: definitions.py:57
+msgid "Unknown command or not permitted to run"
 msgstr "Unbekanntes Kommando oder fehlende Berechtigungen"
 
-#: definitions.py:56
-msgid "invalid command arguments"
+#: definitions.py:58
+msgid "Invalid command arguments"
 msgstr "Ungültige Kommando-Parameter"
 
-#: definitions.py:57
-msgid "incomplete command"
+#: definitions.py:59
+msgid "Incomplete command"
 msgstr "Unvollständiges Kommando"
 
-#: definitions.py:58
-msgid "invalid body object"
+#: definitions.py:60
+msgid "Invalid body object"
 msgstr "Ungültiger Nachrichtenrumpf"
 
-#: definitions.py:59
-msgid "unparsable message header"
+#: definitions.py:61
+msgid "Unparsable message header"
 msgstr "Formatfehler im Nachrichtenkopf"
 
-#: definitions.py:60
-msgid "unauthorized"
+#: definitions.py:62
+msgid "Unauthorized"
 msgstr "Nicht autorisiert"
 
-#: definitions.py:61
-msgid "authentication failed"
+#: definitions.py:63
+msgid "Authentication failed"
 msgstr "Authentisierung fehlgeschlagen"
 
-#: definitions.py:62
-msgid "account is expired"
+#: definitions.py:64
+msgid "Account is expired"
 msgstr "Konto ist abgelaufen"
 
-#: definitions.py:63
-msgid "account is disabled"
+#: definitions.py:65
+msgid "Account is disabled"
 msgstr "Konto ist deaktiviert"
 
-#: definitions.py:64
-msgid "access to console daemon is prohibited"
+#: definitions.py:66
+msgid "Access to console daemon is prohibited"
 msgstr "Zugriff auf UMC ist nicht erlaubt"
 
-#: definitions.py:65
-msgid "command execution prohibited"
+#: definitions.py:67
+msgid "Command execution prohibited"
 msgstr "Ausführung des Kommandos ist nicht erlaubt"
 
-#: definitions.py:66
-msgid "internal error"
+#: definitions.py:68
+msgid "Internal error"
 msgstr "Interner Fehler"
 
-#: definitions.py:67
-msgid "request could not be found"
+#: definitions.py:69
+msgid "Request could not be found"
 msgstr "Die Anfrage konnte nicht gefunden werden"
 
-#: definitions.py:68
-msgid "module process died unexpectedly"
+#: definitions.py:70
+msgid "Module process died unexpectedly"
 msgstr "Module Prozess wurde unerwartet beendet"
 
-#: definitions.py:69
-msgid "connection to module process failed"
+#: definitions.py:71
+msgid "Connection to module process failed"
 msgstr "Verbindung zum Modul-Prozess ist fehlgeschlagen"
 
-#: definitions.py:70
+#: definitions.py:72
 msgid "SSL server certificate is not trustworthy"
 msgstr "SSL-Server-Zertifikat ist nicht vertrauenswürdig"
 
-#: definitions.py:71
-msgid "error occuried during command processing"
+#: definitions.py:73
+msgid "Error occuried during command processing"
 msgstr "Fehler wÃ€hrend der Kommandoverarbeitung"
 
-#: definitions.py:72
-msgid "specified locale is not available"
+#: definitions.py:74
+msgid "Specified locale is not available"
 msgstr "Die gesetzten Spracheinstellungen können nicht verwendet werden."
 
-#: definitions.py:98
-msgid "Unknown Status"
+#: definitions.py:100
+msgid "Unknown state"
 msgstr "Unbekannter Status"
 
-#: message.py:137
+#: message.py:140
 #, python-format
 msgid "The command '%s' do not have any arguments"
 msgstr "Das Kommando'%s' hat keine Argumente"

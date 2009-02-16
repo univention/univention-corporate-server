@@ -45,34 +45,34 @@ _ = umc.Translation( 'univention.management.console.handlers.top' ).translate
 
 name = 'top'
 icon = 'top/module'
-short_description = _( 'Process Overview' )
-long_description = _( 'Process Overview and Control' )
+short_description = _( 'Process overview' )
+long_description = _( 'Process overview and control' )
 categories = [ 'all', 'system' ]
 
 class TOP_Sort( umc.StaticSelection ):
 	def __init__( self ):
-		umc.StaticSelection.__init__( self, _( 'Sort Processes' ) )
+		umc.StaticSelection.__init__( self, _( 'Sort processes' ) )
 
 	def choices( self ):
-		return ( ( 'cpu', _( 'CPU Usage' ) ),
+		return ( ( 'cpu', _( 'CPU usage' ) ),
 				 ( 'user', _( 'Username' ) ),
-				 ( 'rssize', _( 'Resident Set Size' ) ),
-				 ( 'vsize', _( 'Virtual Size' ) ),
+				 ( 'rssize', _( 'Resident set size' ) ),
+				 ( 'vsize', _( 'Virtual size' ) ),
 				 ( 'pid', _( 'Process ID' ) ) )
 
 class TOP_Count( umc.StaticSelection ):
 	def __init__( self ):
-		umc.StaticSelection.__init__( self, _( 'Number of Processes' ) )
+		umc.StaticSelection.__init__( self, _( 'Number of processes' ) )
 
 	def choices( self ):
-		return ( ( 'all', _( 'all' ) ), ( '10', '10' ), ( '20', '20' ), ( '50', '50' ) )
+		return ( ( 'all', _( 'All' ) ), ( '10', '10' ), ( '20', '20' ), ( '50', '50' ) )
 
 class TOP_Kill( umc.StaticSelection ):
 	def __init__( self ):
-		umc.StaticSelection.__init__( self, _( 'Kill Signal' ) )
+		umc.StaticSelection.__init__( self, _( 'Kill signal' ) )
 
 	def choices( self ):
-		return ( ( 'kill', _( 'Force Kill' ) ), ( 'term', _( 'Terminate' ) ) )
+		return ( ( 'kill', _( 'Force kill' ) ), ( 'term', _( 'Terminate' ) ) )
 
 umcd.copy( umc.StaticSelection, TOP_Sort )
 umcd.copy( umc.StaticSelection, TOP_Kill )
@@ -85,14 +85,14 @@ pids_type = umc.IntegerList( _( 'Process IDs' ) )
 
 command_description = {
 	'top/view' : umch.command(
-		short_description = _( 'Process Overview' ),
+		short_description = _( 'Process overview' ),
 		method = 'top_view',
 		values = { 'sort': sort_type,
 				   'count' : count_type },
 		startup = True,
 	),
 	'top/kill' : umch.command(
-		short_description = _( 'Kill Processes' ),
+		short_description = _( 'Kill processes' ),
 		method = 'top_kill',
 		values = { 'pid' : pids_type,
 				   'signal' : kill_type },

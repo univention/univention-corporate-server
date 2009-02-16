@@ -144,16 +144,16 @@ class SelectionButtonMap( IButtonMap, mapper.IMapper ):
 		mapper.IMapper.__init__( self )
 
 	def layout( self, storage, umcp_part ):
-		commit_button = button( _( 'Do' ), {},
-								{ 'helptext' : _( 'Do action with selected objects.' ) } )
+		commit_button = button( _( 'Execute' ), {},
+								{ 'helptext' : _( 'Perform action on selected objects.' ) } )
 		choices = [ { 'name' : '::none', 'description' : '---' },
-					{ 'name' : '::invert', 'description' : _( 'Invert Selection' ) },
-					{ 'name' : '::select_all', 'description' : _( 'Select All' ) } ]
+					{ 'name' : '::invert', 'description' : _( 'Invert selection' ) },
+					{ 'name' : '::select_all', 'description' : _( 'Select all' ) } ]
 		for key, descr in umcp_part.choices:
 			choices.append( { 'name' : key, 'description' : descr } )
-		selection = question_select( _( 'Do with selected objects ...' ),
+		selection = question_select( _( 'Selected objects ...' ),
 									 { 'width' : '200' },
-									 { 'helptext' : _( 'Do with selected objects ...' ),
+									 { 'helptext' : _( 'Selected objects ...' ),
 									   'choicelist' : choices, 'button' : commit_button } )
 		storage[ umcp_part.id() ] = ( ( selection, commit_button ), umcp_part )
 

@@ -315,7 +315,7 @@ class ObjectSelectMap( mapper.IMapper ):
 			if search_property_name:
 				search_property = search_module.property_descriptions[search_property_name]
 				description = search_property.short_description
-			search_input = question_text(description,{},{'usertext': objectselect_search_value, 'helptext': _('enter search filter')})
+			search_input = question_text(description,{},{'usertext': objectselect_search_value, 'helptext': _('Enter search filter')})
 		else:
 			# do not create input widget if ALL or NONE is selected
 			search_input = text('',{},{'text':['']})
@@ -323,8 +323,8 @@ class ObjectSelectMap( mapper.IMapper ):
 			if search_property_name == '*':
 				search_value='*'
 
-		search_property_button = button('go',{},{'helptext':_('go ahead')})
-		search_property_select = question_select(_('property'),{},{'helptext':_('select attribute'),
+		search_property_button = button('go',{},{'helptext':_('Display')})
+		search_property_select = question_select(_('Property'),{},{'helptext':_('Select attribute'),
 																   'choicelist':search_properties,
 																   'button':search_property_button})
 		search_button = utils.button_search()
@@ -444,8 +444,8 @@ class ObjectSelectMap( mapper.IMapper ):
 
 
 		atts = { 'height' : '150' }
-		value_list_new = question_mselect(_('All'),atts,{'choicelist':new_group_choicelist,'helptext':_('choose objects to add')})
-		value_list_cur = question_mselect(_('Current'),atts,{'choicelist':cur_group_choicelist,'helptext':_('choose objects to remove')})
+		value_list_new = question_mselect(_('All'),atts,{'choicelist':new_group_choicelist,'helptext':_('Select objects to add')})
+		value_list_cur = question_mselect(_('Current'),atts,{'choicelist':cur_group_choicelist,'helptext':_('Select objects to remove')})
 		button_add = utils.button_right('Add items')
 		button_remove = utils.button_left('Remove items')
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-26 09:44+0100\n"
+"POT-Creation-Date: 2009-02-16 10:32+0100\n"
 "PO-Revision-Date: 2008-06-16 13:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,11 +37,11 @@ msgid "Hostname"
 msgstr "Rechnername"
 
 #: pages/about.py:97
-msgid "local Installation"
+msgid "Local installation"
 msgstr "Lokale Installation"
 
 #: pages/about.py:98
-msgid "UCS Version"
+msgid "UCS version"
 msgstr "UCS Version"
 
 #: pages/about.py:108
@@ -56,11 +56,11 @@ msgstr "ALL RIGHTS RESERVED"
 msgid "Logout from Univention Management Console"
 msgstr "Abmelden von Univention Management Console"
 
-#: pages/startup.py:43
-msgid "Bugreport: Univention Management Console"
-msgstr "Fehlerbericht: Univention Management Console"
+#: pages/startup.py:50
+msgid "Bugreport: Univention Management Console Traceback"
+msgstr "Fehlerbericht: Univention Management Console Traceback"
 
-#: pages/startup.py:44
+#: pages/startup.py:51
 msgid ""
 "\n"
 "Please take a second to provide the following information\n"
@@ -70,6 +70,8 @@ msgid ""
 "2) Expected result\n"
 "\n"
 "3) Actual result\n"
+"\n"
+"----------\n"
 "\n"
 msgstr ""
 "\n"
@@ -83,13 +85,13 @@ msgstr ""
 "3) Beobachtetes Ergebnis\n"
 "\n"
 
-#: pages/startup.py:79
-msgid "Report this error to Univention Feedback &lt;feedback@univention.de&gt;"
+#: pages/startup.py:94
+#, python-format
+msgid "Report this error to %s &lt;%s&gt;"
 msgstr ""
-"Diesen Fehler an Univention Feedback &lt;feedback@univention.de&gt; melden"
 
-#: pages/startup.py:84
-msgid "An Error has occured"
+#: pages/startup.py:99
+msgid "An error has occured"
 msgstr "Ein Fehler ist aufgetreten"
 
 #: pages/module.py:222
@@ -105,23 +107,23 @@ msgid "Overview"
 msgstr "Überblick"
 
 #: mapping/buttons.py:147
-msgid "Do"
+msgid "Execute"
 msgstr "Ausführen"
 
 #: mapping/buttons.py:148
-msgid "Do action with selected objects."
+msgid "Perform action on selected objects."
 msgstr "Aktion mit ausgewählten Objekten ausführen"
 
 #: mapping/buttons.py:150
-msgid "Invert Selection"
+msgid "Invert selection"
 msgstr "Auswahl umkehren"
 
 #: mapping/buttons.py:151
-msgid "Select All"
+msgid "Select all"
 msgstr "Alle auswählen"
 
 #: mapping/buttons.py:154 mapping/buttons.py:156
-msgid "Do with selected objects ..."
+msgid "Selected objects ..."
 msgstr "Ausgewählte Objekte ..."
 
 #: mapping/buttons.py:218
@@ -154,19 +156,19 @@ msgid "none"
 msgstr "Keine"
 
 #: mapping/dynamics.py:318
-msgid "enter search filter"
+msgid "Enter search filter"
 msgstr "Suchfilter"
 
 #: mapping/dynamics.py:326
-msgid "go ahead"
+msgid "Display"
 msgstr "Anzeigen"
 
 #: mapping/dynamics.py:327
-msgid "property"
+msgid "Property"
 msgstr "Eigenschaft"
 
 #: mapping/dynamics.py:327
-msgid "select attribute"
+msgid "Select attribute"
 msgstr "Wählen Sie ein Attribut aus"
 
 #: mapping/dynamics.py:447
@@ -174,7 +176,7 @@ msgid "All"
 msgstr "Alles"
 
 #: mapping/dynamics.py:447
-msgid "choose objects to add"
+msgid "Select objects to add"
 msgstr "Wählen Sie die Objekte zum Hinzufügen aus."
 
 #: mapping/dynamics.py:448
@@ -182,7 +184,7 @@ msgid "Current"
 msgstr "Aktuell"
 
 #: mapping/dynamics.py:448
-msgid "choose objects to remove"
+msgid "Select objects to remove"
 msgstr "Wählen Sie die zu entfernenden Objekte aus."
 
 #: mapping/dynamics.py:591
@@ -215,7 +217,7 @@ msgid "Language:"
 msgstr "Sprache:"
 
 #: modconsole.py:127
-msgid "Choose language for this session"
+msgid "Select language for this session"
 msgstr "Bitte wählen Sie eine Sprache für diese Sitzung"
 
 #: modconsole.py:129
@@ -231,7 +233,7 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 #: modconsole.py:130
-msgid "Abort Login"
+msgid "Abort login"
 msgstr "Anmeldung abbrechen"
 
 #: modconsole.py:132 modconsole.py:135
@@ -239,7 +241,7 @@ msgid "Password"
 msgstr "Passwort"
 
 #: modconsole.py:132 modconsole.py:136
-msgid "please enter your password."
+msgid "Please enter your password."
 msgstr "Bitte geben Sie Ihr Passwort ein."
 
 #: modconsole.py:133 modconsole.py:137
@@ -261,7 +263,7 @@ msgid "Logout"
 msgstr "Abmeldung"
 
 #: modconsole.py:173
-msgid "abort logout"
+msgid "Abort logout"
 msgstr "Anmeldung abbrechen"
 
 #: modconsole.py:177
@@ -288,6 +290,11 @@ msgstr "Authentisierungsfehler: %s"
 #: modconsole.py:350
 msgid "Logout successful."
 msgstr "Abmeldung erfolgreich"
+
+#~ msgid ""
+#~ "Report this error to Univention Feedback &lt;feedback@univention.de&gt;"
+#~ msgstr ""
+#~ "Diesen Fehler an Univention Feedback &lt;feedback@univention.de&gt; melden"
 
 #~ msgid "Favorites"
 #~ msgstr "Favoriten"

@@ -49,14 +49,14 @@ class Web( object ):
 
 		url = '/univention-management-console/vnc/connect.php?port=%s&username=%s' % \
 			  ( port, self._username )
-		return '<a href="%s" target="_blank">%s</a>' % ( url, _( 'Connect to the VNC Server' ) )
+		return '<a href="%s" target="_blank">%s</a>' % ( url, _( 'Connect to the VNC server' ) )
 
 	def _web_vnc_config( self, object, res ):
 		pwdexists, running = res.dialog
 		lst = umcd.List()
 
 		if not pwdexists:
-			msg = _( 'To setup a VNC Session a password is required and a running VNC server.' )
+			msg = _( 'To setup a VNC session a password is required and a running VNC server.' )
 			lst.add_row( [ umcd.InfoBox( msg ) ] )
 
 			pwd = umcd.make( self[ 'vnc/password' ][ 'password' ] )
@@ -65,22 +65,22 @@ class Web( object ):
 			btn = umcd.SetButton( actions = [ umcd.Action( req, [ pwd.id() ] ),
 											  umcd.Action( req_config ) ] )
 			lst.add_row( [ pwd, btn ] )
-			res.dialog = [ umcd.Frame( [ lst ], _( 'Set VNC Password' ) ) ]
+			res.dialog = [ umcd.Frame( [ lst ], _( 'Set VNC password' ) ) ]
 		elif not running:
-			lst.add_row( [ umcd.InfoBox( _( 'Currently there is no VNC Server running.' ) ) ] )
+			lst.add_row( [ umcd.InfoBox( _( 'Currently there is no VNC server running.' ) ) ] )
 			req = umcp.Command( args = [ 'vnc/start' ] )
 			req_config = umcp.Command( args = [ 'vnc/config' ] )
 			btn = umcd.Button( _( 'Start' ), 'actions/ok',
 							   actions = [ umcd.Action( req ), umcd.Action( req_config ) ] )
 			lst.add_row( [ btn ] )
-			res.dialog = [ umcd.Frame( [ lst ], _( 'Start VNC Server' ) ) ]
+			res.dialog = [ umcd.Frame( [ lst ], _( 'Start VNC server' ) ) ]
 		else:
-			lst.add_row( [ umcd.InfoBox( _( 'Password is set and the VNC Server is running.' ) ) ] )
+			lst.add_row( [ umcd.InfoBox( _( 'Password is set and the VNC server is running.' ) ) ] )
 			lst.add_row( [ umcd.HTML( self._create_vnc_url() ) ] )
 			req = umcp.Command( args = [ 'vnc/stop' ] )
 			req_config = umcp.Command( args = [ 'vnc/config' ] )
-			btn = umcd.Button( _( 'Stop VNC Server' ), 'actions/ok',
+			btn = umcd.Button( _( 'Stop VNC server' ), 'actions/ok',
 							   actions = [ umcd.Action( req ), umcd.Action( req_config ) ] )
 			lst.add_row( [ btn ] )
-			res.dialog = [ umcd.Frame( [ lst ], _( 'Connect to VNC Session' ) ) ]
+			res.dialog = [ umcd.Frame( [ lst ], _( 'Connect to VNC session' ) ) ]
 		self.revamped( object.id(), res )

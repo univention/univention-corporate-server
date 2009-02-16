@@ -53,23 +53,23 @@ categories = [ 'all', 'system' ]
 
 command_description = {
 	'vnc/config' : umch.command(
-		short_description = _( 'VNC Configuration' ),
+		short_description = _( 'VNC configuration' ),
 		method = 'vnc_config',
 		values = {},
 		startup = True,
 	),
 	'vnc/start' : umch.command(
-		short_description = _( 'VNC Connection' ),
+		short_description = _( 'VNC connection' ),
 		method = 'vnc_start',
 		values = {},
 	),
 	'vnc/stop' : umch.command(
-		short_description = _( 'VNC Connection' ),
+		short_description = _( 'VNC connection' ),
 		method = 'vnc_stop',
 		values = {},
 	),
 	'vnc/password' : umch.command(
-		short_description = _( 'VNC Password' ),
+		short_description = _( 'VNC password' ),
 		method = 'vnc_password',
 		values = { 'password': umc.Password( _( 'Password' ) ) },
 	),

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-27 15:19+0100\n"
+"POT-Creation-Date: 2009-02-16 10:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,17 +15,65 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
+#: _revamp.py:47
+msgid "Name"
+msgstr "Name"
+
+#: _revamp.py:47
+msgid "Status"
+msgstr "Status"
+
+#: _revamp.py:47 __init__.py:56
+msgid "Start type"
+msgstr "Startart"
+
+#: _revamp.py:47
+msgid "Description"
+msgstr "Beschreibung"
+
+#: _revamp.py:56 _revamp.py:58
+msgid "automatically"
+msgstr "automatisch"
+
+#: _revamp.py:60
+msgid "manual"
+msgstr "manuell"
+
+#: _revamp.py:62
+msgid "never"
+msgstr "nie"
+
+#: _revamp.py:68
+msgid "Start services"
+msgstr "Dienste starten"
+
+#: _revamp.py:69
+msgid "Stop services"
+msgstr "Dienste stoppen"
+
+#: _revamp.py:70
+msgid "Start automatically"
+msgstr "Automatischer Start"
+
+#: _revamp.py:71
+msgid "Start manually"
+msgstr "Manueller Start"
+
+#: _revamp.py:72
+msgid "Start never"
+msgstr "Nie starten"
+
+#: _revamp.py:73
+msgid "Select the operation"
+msgstr "Operation auswählen"
+
 #: __init__.py:50
-msgid "System Services"
+msgid "System services"
 msgstr "System-Dienste"
 
 #: __init__.py:51
-msgid "controls system services"
+msgid "Control over system services"
 msgstr "Kontrolle über System-Dienste"
-
-#: __init__.py:56 _revamp.py:47
-msgid "Start Type"
-msgstr "Startart"
 
 #: __init__.py:59
 msgid "Manual"
@@ -64,7 +112,7 @@ msgid "Add a service"
 msgstr "Dienst hinzufügen"
 
 #: __init__.py:103
-msgid "List all services"
+msgid "List of services"
 msgstr "Liste aller Dienste"
 
 #: __init__.py:109 __init__.py:114 __init__.py:119
@@ -84,54 +132,6 @@ msgstr "Sie haben keine Berechtigungen dieses Kommando auszuführen"
 #, python-format
 msgid "Stopping the following services failed: %(services)s"
 msgstr "Das Stoppen der folgenden Dienste ist fehlgeschlagen: %(services)s"
-
-#: _revamp.py:47
-msgid "Name"
-msgstr "Name"
-
-#: _revamp.py:47
-msgid "Status"
-msgstr "Status"
-
-#: _revamp.py:47
-msgid "Description"
-msgstr "Beschreibung"
-
-#: _revamp.py:56 _revamp.py:58
-msgid "automatically"
-msgstr "automatisch"
-
-#: _revamp.py:60
-msgid "manual"
-msgstr "manuell"
-
-#: _revamp.py:62
-msgid "never"
-msgstr "nie"
-
-#: _revamp.py:68
-msgid "Start Services"
-msgstr "Dienste starten"
-
-#: _revamp.py:69
-msgid "Stop Services"
-msgstr "Dienste stoppen"
-
-#: _revamp.py:70
-msgid "Start Automatically"
-msgstr "Automatischer Start"
-
-#: _revamp.py:71
-msgid "Start Manually"
-msgstr "Manueller Start"
-
-#: _revamp.py:72
-msgid "Start Never"
-msgstr "Nie starten"
-
-#: _revamp.py:73
-msgid "Select the Operation"
-msgstr "Operation auswählen"
 
 #~ msgid "unknown"
 #~ msgstr "unbekannt"

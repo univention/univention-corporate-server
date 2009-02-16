@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-11 13:18+0200\n"
+"POT-Creation-Date: 2009-02-16 10:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,12 +15,53 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
+#: _revamp.py:81 _types.py:90
+msgid "Variable"
+msgstr "Variable"
+
+#: _revamp.py:81 _types.py:90 _types.py:98
+msgid "Value"
+msgstr "Wert"
+
+#: _revamp.py:81 _revamp.py:188 _types.py:91 _types.py:104
+msgid "Description"
+msgstr "Beschreibung"
+
+#: _revamp.py:82
+msgid "Categories"
+msgstr "Kategorien"
+
+#: _revamp.py:124
+#, python-format
+msgid "Variable: %(key)s"
+msgstr "Variable: %(key)s"
+
+#: _revamp.py:128
+msgid "No configuration registry variables were found."
+msgstr "Es wurden keine Configuration Registry Variablen gefunden."
+
+#: _revamp.py:130
+msgid "Search result"
+msgstr "Suchergebnis"
+
+#: _revamp.py:188 _types.py:105
+msgid "Language"
+msgstr "Sprache"
+
+#: _revamp.py:203
+msgid "Modify Configuration Registry Variable"
+msgstr "Bearbeiten einer Configuration Registry Variable"
+
+#: _revamp.py:205
+msgid "Add Configuration Registry Variable"
+msgstr "Hinzufügen einer Configuration Registry Variable"
+
 #: __init__.py:54
 msgid "Univention Configuration Registry"
 msgstr ""
 
 #: __init__.py:55
-msgid "Add, modify and search Univention configuration registry variables"
+msgid "Add, modify and search Univention Configuration Registry variables"
 msgstr "Hinzufügen, Beareiten und Suchen von Configuration Registry Variablen"
 
 #: __init__.py:60
@@ -36,7 +77,7 @@ msgid "Show"
 msgstr "Anzeigen"
 
 #: __init__.py:73
-msgid "Display Information about a configuration registry variable"
+msgid "Display information about a configuration registry variable"
 msgstr "Anzeigen von Informationen zu einer Configuration Registry Variable"
 
 #: __init__.py:78
@@ -55,47 +96,6 @@ msgstr "Suchen"
 msgid "Search for a configuration registry value"
 msgstr "Suchen eines Configuration Registry Wertes"
 
-#: _revamp.py:72 _types.py:90
-msgid "Variable"
-msgstr "Variable"
-
-#: _revamp.py:72 _types.py:90 _types.py:98
-msgid "Value"
-msgstr "Wert"
-
-#: _revamp.py:72 _revamp.py:175 _types.py:91 _types.py:104
-msgid "Description"
-msgstr "Beschreibung"
-
-#: _revamp.py:73
-msgid "Categories"
-msgstr "Kategorien"
-
-#: _revamp.py:111
-#, python-format
-msgid "Variable: %(key)s"
-msgstr "Variable: %(key)s"
-
-#: _revamp.py:115
-msgid "No configuration registry variables were found."
-msgstr "Es wurden keine Configuration Registry Variablen gefunden."
-
-#: _revamp.py:117
-msgid "Search Result"
-msgstr "Suchergebnis"
-
-#: _revamp.py:175 _types.py:105
-msgid "Language"
-msgstr "Sprache"
-
-#: _revamp.py:190
-msgid "Modify Configuration Registry Variable"
-msgstr "Bearbeiten einer Configuration Registry Variable"
-
-#: _revamp.py:192
-msgid "Add Configuration Registry Variable"
-msgstr "Hinzufügen einer Configuration Registry Variable"
-
 #: _types.py:41
 msgid "Category"
 msgstr "Kategorie"
@@ -109,7 +109,7 @@ msgid "All"
 msgstr "Alle"
 
 #: _types.py:71
-msgid "List of Categories"
+msgid "List of categories"
 msgstr "Liste der Kategorien"
 
 #: _types.py:78
@@ -121,7 +121,7 @@ msgid "String"
 msgstr "Zeichenkette"
 
 #: _types.py:87
-msgid "Search Key"
+msgid "Search key"
 msgstr "Suchmaske"
 
 #: _types.py:96
@@ -129,5 +129,5 @@ msgid "Key"
 msgstr "Schlüssel"
 
 #: _types.py:106
-msgid "Multilinugal Description"
+msgid "Multilinugal description"
 msgstr "Mehrsprachige Beschreibung"

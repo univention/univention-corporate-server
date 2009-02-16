@@ -124,16 +124,16 @@ class modconsole(unimodule.unimodule):
 				{"level": '0', "name": 'de', "description": "Deutsch"},
 				{"level": '0', "name": 'en', "description": "English"}
 				]
-		self.chooselang=language_dojo_select(_("Language:"),{'width':'265'},{"helptext":_("Choose language for this session"),"choicelist":langs})
+		self.chooselang=language_dojo_select(_("Language:"),{'width':'265'},{"helptext":_("Select language for this session"),"choicelist":langs})
 
 		self.usernamein=question_text(_("Username"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your uid.")})
-		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Abort Login")})
+		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Abort login")})
 		if int(os.environ["HTTPS"]) == 1 or self.save.get("http") == 1:
-			self.passwdin=question_secure(_("Password"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
+			self.passwdin=question_secure(_("Password"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("Please enter your password.")})
 			self.okbut=button(_("OK"),{'icon':'/style/ok.gif'},{"helptext":_("Login")})
 		else:
 			self.passwdin=question_secure(_("Password"),{'width':'265','passive':'true','puretext': '1'},
-						{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
+						{"usertext":self.save.get("relogin_passwd"),"helptext":_("Please enter your password.")})
 			self.okbut=button(_("OK"),{'passive':'true','icon':'/style/ok.gif'},{"helptext":_("Login")})
 
 		rows = []
@@ -170,7 +170,7 @@ class modconsole(unimodule.unimodule):
 		self.__commonHeader( 'login_layout')
 
 		self.okbut=button(_("Logout"),{'icon':'/style/ok.gif'},{"helptext":_("Logout")})
-		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("abort logout")})
+		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Abort logout")})
 
 		rows = []
 
