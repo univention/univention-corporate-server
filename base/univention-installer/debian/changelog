@@ -1,6 +1,13 @@
+univention-installer (3.0.13-1) unstable; urgency=low
+
+  * a repository should just be created if selected in the installer (Bug
+    #12511)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 16 Feb 2009 13:36:14 +0100
+
 univention-installer (3.0.12-3) unstable; urgency=low
 
-  * included changes suggestest by the QA. Bug #13326
+  * included changes suggested by the QA. Bug #13326
 
  -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri, 13 Feb 2009 15:13:29 +0100
 

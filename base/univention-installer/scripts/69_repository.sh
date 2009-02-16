@@ -34,14 +34,9 @@ if [ -n "$system_role" ]; then
 	export server_role="$system_role"
 fi
 
-eval `UNIVENTION_BASECONF=/instmnt/etc/univention/base.conf /bin/python2.4 /sbin/univention-config-registry shell local/repository`
-
-if [ -n "$local_repository" ]; then
-	if [ "$local_repository" = "true" ] || [ "$local_repository" = "yes" ]; then
-
-		# call univention-repository-create in non-interactive mode with the /sourcedevice directory as installation medium (-N mount is not required)
-		chroot /instmnt /usr/sbin/univention-repository-create -n -N -m /sourcedevice
-	fi
+if [ -n "$local_repository" ] && [ "$local_repository" = "true" -o "$local_repository" = "yes" ]; then
+	# call univention-repository-create in non-interactive mode with the /sourcedevice directory as installation medium (-N mount is not required)
+	chroot /instmnt /usr/sbin/univention-repository-create -n -N -m /sourcedevice
 fi
 
 # create sources.list
