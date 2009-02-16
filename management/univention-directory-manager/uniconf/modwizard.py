@@ -1307,17 +1307,32 @@ class modwizard(unimodule.unimodule):
 			footerTable = table("", {'type':'table_fullwidth'}, {"obs" : [ tablerow("",{'type':'table_fullwidth'},{"obs": footerCols}) ]})
 			main_rows.append(tablerow("", {}, {"obs":[tablecol("",{'type':'table_fullwidth'}, {"obs":[footerTable]},)]}))
 
-
-		if nomatches and not size_limit_reached:
-			main_rows.append(
-				tablerow("",{},{"obs":[tablecol("",{'type':'wizard_layout'},{"obs":[header(_("None"),{"type":"2"},{})]})]})
-				)
-
 		# main table
 		self.subobjs.append(table("",
 					  {'type':'content_main'},
 					  {"obs":main_rows})
 				    )
+
+		main_rows = []
+
+		if nomatches and not size_limit_reached:
+			main_rows.append(
+				tablerow("",{'type':'wizard_layout'},{"obs":[ 
+					tablecol("",{'type':'wizard_layout_icon'},{"obs":
+						[icon( '', { 'url' : 'icon/dialog-warning.png' }, {} )]
+					}),
+					tablecol("",{'type':'wizard_layout'},{"obs":[
+						header(_('Your search did not match any objects.'),{"type":"3"},{})
+						]
+					})
+				]})
+			)
+
+			# main table
+			self.subobjs.append(table("",
+						  {'type':'content_main'},
+						  {"obs":main_rows})
+						)
 
 
 	def delmode(self, removelist):

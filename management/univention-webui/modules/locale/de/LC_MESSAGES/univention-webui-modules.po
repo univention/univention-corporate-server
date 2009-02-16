@@ -1,4 +1,4 @@
-# Copyright (C) 2002,2003,2004,2005,2006
+# Copyright (C) 2002,2003,2004,2005,2006,2007,2008,2009
 # This file is distributed under the same license as the univention-webui package.
 # AUTHOR: Univention GmbH <packages@univention.de>
 #
@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-16 11:39+0100\n"
+"POT-Creation-Date: 2009-02-16 11:16+0100\n"
 "PO-Revision-Date: 2006-05-17 11:24+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,76 +15,76 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.3\n"
 
-#: requests.py:89
+#: requests.py:93
 msgid "Univention Directory Manager"
 msgstr "Univention Directory Manager"
 
-#: requests.py:108
+#: requests.py:112
 msgid "Error"
 msgstr "Fehler"
 
-#: requests.py:134
-msgid "Report this error to Univention Feedback &lt;feedback@univention.de&gt;"
-msgstr ""
-"Diesen Fehler an Univention Feedback &lt;feedback@univention.de&gt; melden"
-
 #: requests.py:138
+#, python-format
+msgid "Report this error to %s &lt;%s&gt;"
+msgstr ""
+
+#: requests.py:142
 msgid "Login"
 msgstr "Anmelden"
 
-#: requests.py:148
+#: requests.py:154
 msgid "Bugreport: Univention Directory Manager Traceback"
 msgstr "Fehlerbericht: Univention Directory Manager Traceback"
 
-#: requests.py:156
+#: requests.py:162
 msgid "Please take a second to provide the following information"
 msgstr ""
 "Bitte nehmen Sie sich eine Sekunde Zeit um die folgenden Informationen "
 "einzutragen"
 
-#: requests.py:157
+#: requests.py:163
 msgid "steps to reproduce the failure"
 msgstr "Schritte, um den Fehler zu reproduzieren"
 
-#: requests.py:158
+#: requests.py:164
 msgid "expected result"
 msgstr "Erwartetes Ergebnis"
 
-#: requests.py:159
+#: requests.py:165
 msgid "actual result"
 msgstr "Beobachtetes Ergebnis"
 
-#: requests.py:344
+#: requests.py:355
 msgid "Can not process LDAP request:"
 msgstr "LDAP-Anfrage konnte nicht verarbeitet werden:"
 
-#: requests.py:344
+#: requests.py:355
 msgid "LDAP error"
 msgstr "LDAP-Fehler"
 
-#: requests.py:344 requests.py:426
+#: requests.py:355 requests.py:437
 msgid "You need to login again."
 msgstr "Bitte melden Sie sich erneut an."
 
-#: requests.py:347
+#: requests.py:358
 msgid "A Python exception has occured:"
 msgstr "Ein Python-Fehler ist aufgetreten:"
 
-#: requests.py:354
+#: requests.py:365
 msgid "No connection to the LDAP server"
 msgstr "Keine Verbindung zum LDAP-Server."
 
-#: requests.py:354
+#: requests.py:365
 msgid "The LDAP server could not be contacted. Please try again later."
 msgstr ""
 "Der LDAP Server konnte nicht erreicht werden. Bitte versuchen Sie es später "
 "noch einmal."
 
-#: requests.py:426
+#: requests.py:437
 msgid "An LDAP error has occured:"
 msgstr "Ein LDAP-Fehler ist aufgetreten:"
 
-#: requests.py:426
+#: requests.py:437
 msgid "ldapError"
 msgstr "ldapError"
 
@@ -98,62 +98,62 @@ msgid "select network"
 msgstr "Wählen Sie ein Netz aus."
 
 #: syntax.py:178 syntax.py:180
-msgid "read"
-msgstr "lesen"
+msgid "Read"
+msgstr "Lesen"
 
 #: syntax.py:178 syntax.py:180
-msgid "write"
-msgstr "schreiben"
+msgid "Write"
+msgstr "Schreiben"
 
 #: syntax.py:178
-msgid "execute"
+msgid "Execute"
 msgstr "Ausführen"
 
 #: syntax.py:180
-msgid "access"
+msgid "Access"
 msgstr "Zugriff"
 
-#: syntax.py:217
+#: syntax.py:224
 msgid "seconds"
 msgstr "Sekunden"
 
-#: syntax.py:218
+#: syntax.py:225
 msgid "minutes"
 msgstr "Minuten"
 
-#: syntax.py:219
+#: syntax.py:226
 msgid "hours"
 msgstr "Stunden"
 
-#: syntax.py:220
+#: syntax.py:227
 msgid "days"
 msgstr "Tage"
 
-#: syntax.py:274
+#: syntax.py:281
 msgid "Password"
 msgstr "Passwort"
 
-#: syntax.py:274
+#: syntax.py:281
 msgid "A password must have at least 8 characters"
 msgstr "Ein Passwort muss mindestens 8 Zeichen lang sein."
 
-#: syntax.py:275
+#: syntax.py:282
 msgid "Password (retype)"
 msgstr "Passwort (Wiederholung)"
 
-#: syntax.py:275
+#: syntax.py:282
 msgid "Please retype the password to rule out typos."
 msgstr "Geben Sie das Passwort erneut ein, um Tippfehler auszuschließen."
 
-#: syntax.py:360
+#: syntax.py:367
 msgid "any"
 msgstr "Alle"
 
-#: tabbing.py:38
+#: tabbing.py:39
 msgid "Options"
 msgstr "Optionen"
 
-#: tabbing.py:40
+#: tabbing.py:41
 msgid "Policies"
 msgstr "Richtlinien"
 
@@ -188,6 +188,11 @@ msgstr "Status aktualisieren"
 #: uniwait.py:85
 msgid "Cancel operation"
 msgstr "Aktion abbrechen"
+
+#~ msgid ""
+#~ "Report this error to Univention Feedback &lt;feedback@univention.de&gt;"
+#~ msgstr ""
+#~ "Diesen Fehler an Univention Feedback &lt;feedback@univention.de&gt; melden"
 
 #~ msgid "Welcome to Univention Admin"
 #~ msgstr "Willkommen zu Univention Admin"

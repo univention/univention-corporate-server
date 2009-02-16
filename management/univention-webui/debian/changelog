@@ -1,3 +1,9 @@
+univention-webui (2.0.11-1) unstable; urgency=low
+
+  * clean up the samba advanced permissions tab. Bug #5508
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Feb 2009 20:48:06 +0100
+
 univention-webui (2.0.10-1) unstable; urgency=low
 
   * added onmouseover and onmouseout attributes. Ticket #2008102010000213

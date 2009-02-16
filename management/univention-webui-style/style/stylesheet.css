@@ -257,6 +257,12 @@ margin-left: auto;
 margin-right: 10px;
 }
 
+td.filemode
+{
+padding: 3px;
+width: 38px;
+}
+
 /* ################# Rows  ################# */
 /* border */
 tr{
@@ -466,21 +472,30 @@ padding: 10px 0 5px 10px;
 }
 
 td.bold,
-td.normal,
-td.note_layout,
+td.normal{
+padding:3px 0px 3px 10px;
+}
+
 td.wait_layout,
+td.wizard_layout,
+td.wizard_layout_icon,
+td.wizard_layout_bottom
 td.about_layout,
 td.logout_layout,
 td.login_layout,
 td.login_layout_session_timeout,
-td.wizard_layout,
-td.wizard_layout_bottom{
-padding:3px 0px 3px 10px;
+td.note_layout {
+padding:5px 0px 3px 10px;
+}
+
+td.wizard_layout_icon {
+width: 32px;
 }
 
 td.welcome_icon_text {
 	padding-left: 8px;
 }
+
 
 td.welcome_layout {
 padding:5px 0px 15px 5px;
@@ -496,7 +511,7 @@ height:14px;
 
 td.browse_layout, 
 td.browse_layout_bottom {
-padding:3px 0px 0px 10px;
+padding:5px 0px 0px 10px;
 }
 
 td.browse_layout_inner {
@@ -584,6 +599,9 @@ td.browse_layout_inner,
 td.browse_layout_right {
 vertical-align:bottom;
 }
+td.wizard_layout{
+align:center;
+}
 
 td.bold,
 td.normal,
@@ -593,7 +611,6 @@ td.welcome_layout,
 td.welcome_layout_text,
 td.logout_layout,
 td.login_layout,
-td.wizard_layout,
 td.okcancel,
 td.content_main,
 td.content_main_menuless {

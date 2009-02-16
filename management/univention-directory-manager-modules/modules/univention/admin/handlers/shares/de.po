@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-12-11 09:03+0100\n"
-"PO-Revision-Date: 2005-10-18 13:52+0200\n"
+"PO-Revision-Date: 2009-02-16 10:53+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -248,7 +248,7 @@ msgstr "Besitzer des freigegebenen Verzeichnisses. Vorgabe ist root."
 
 #: share.py:132
 msgid "Directory owner group"
-msgstr "Verzeichnisgruppe"
+msgstr "Verzeichnis-Gruppe"
 
 #: share.py:133
 msgid "The primary group of the directory, if none give group 0 will be used."

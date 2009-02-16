@@ -1,3 +1,12 @@
+univention-webui-style (3.0.9-1) unstable; urgency=low
+
+  * give the user more feedback and a little icon if we did not find any
+    object. Bug #13289
+  * clean up the samba advanced permissions tab. Bug #5508
+  * arrange some messages. Bug #13284
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Feb 2009 20:49:55 +0100
+
 univention-webui-style (3.0.8-1) unstable; urgency=low
 
   * more merge univention-webui-style-base to univention-webui-styl. Bug

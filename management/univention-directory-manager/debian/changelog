@@ -1,3 +1,11 @@
+univention-directory-manager (6.0.10-1) unstable; urgency=low
+
+  * removed some fuzzy objects from the german translation. Bug #11674
+  * give the user more feedback and a little icon if we did not find any
+    object. Bug #13289
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Feb 2009 20:44:19 +0100
+
 univention-directory-manager (6.0.9-1) unstable; urgency=low
 
   * move the overview icons into the webui-style directory, otherwise it
