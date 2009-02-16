@@ -1,3 +1,9 @@
+univention-x-core (2.0.1-2) unstable; urgency=low
+
+  * new dependency to xserver-xorg-video-all (Bug: #12921)
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Feb 2009 14:47:33 +0100
+
 univention-x-core (2.0.1-1) unstable; urgency=low
 
   * bumped version (Bug: #12921)
