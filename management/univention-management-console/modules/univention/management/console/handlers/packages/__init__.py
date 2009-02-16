@@ -46,7 +46,7 @@ _ = umc.Translation( 'univention.management.console.handlers.packages' ).transla
 
 name = 'packages'
 icon = 'packages/module'
-short_description = _( 'Package Management' )
+short_description = _( 'Package management' )
 long_description = _( 'Install and uninstall software packages' )
 categories = [ 'all', 'system' ]
 

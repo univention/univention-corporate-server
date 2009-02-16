@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-16 10:50+0100\n"
+"POT-Creation-Date: 2009-02-16 13:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,22 +15,98 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: _revamp.py:69 __init__.py:94 __init__.py:109 __init__.py:114
-#: __init__.py:119
+#: __init__.py:49
+msgid "Package management"
+msgstr "Software Management"
+
+#: __init__.py:50
+msgid "Install and uninstall software packages"
+msgstr "Software Pakete installieren und deinstallieren"
+
+#: __init__.py:57
+msgid "Package categories"
+msgstr "Paketkategorien"
+
+#: __init__.py:60
+msgid "All"
+msgstr "Alle"
+
+#: __init__.py:67
+msgid "Search key"
+msgstr "Suchfilter"
+
+#: __init__.py:71
+msgid "Name"
+msgstr "Name"
+
+#: __init__.py:72 __init__.py:97
+msgid "Description"
+msgstr "Beschreibung"
+
+#: __init__.py:82
+msgid "Packages"
+msgstr "Pakete"
+
+#: __init__.py:85
+msgid "Installed packages only"
+msgstr "Nur installierte Pakete"
+
+#: __init__.py:87
+msgid "Pattern"
+msgstr "Filter"
+
+#: __init__.py:92
+msgid "Show package"
+msgstr "Zeige Pakete"
+
+#: __init__.py:94 __init__.py:109 __init__.py:114 __init__.py:119
+#: _revamp.py:69
 msgid "Package"
 msgstr "Paket"
 
-#: _revamp.py:69 __init__.py:95
+#: __init__.py:95 _revamp.py:69
 msgid "Section"
 msgstr "Bereich"
 
-#: _revamp.py:69 __init__.py:96
+#: __init__.py:96 _revamp.py:69
 msgid "Installed"
 msgstr "Installiert"
 
-#: _revamp.py:69 __init__.py:103
+#: __init__.py:98
+msgid "Installed version"
+msgstr "Installierte Version"
+
+#: __init__.py:99
+msgid "Upgradeable"
+msgstr "Aktualisierbar"
+
+#: __init__.py:100
+msgid "Package size"
+msgstr "Paketstatus"
+
+#: __init__.py:101
+msgid "Priority"
+msgstr "Priorität"
+
+#: __init__.py:102
+msgid "Source package name"
+msgstr "Name des Quellpaket"
+
+#: __init__.py:103 _revamp.py:69
 msgid "Summary"
 msgstr "Beschreibung"
+
+#: __init__.py:107
+msgid "Install package"
+msgstr "Paket installieren"
+
+#: __init__.py:112
+msgid "Uninstall package"
+msgstr "Paket deinstallieren"
+
+#: __init__.py:117
+msgid "Upgrade package"
+msgstr "Paket aktualisieren"
 
 #: _revamp.py:79 _revamp.py:89
 #, python-format
@@ -95,79 +171,3 @@ msgstr "%s wurde erfolgreich deinstalliert!"
 #, python-format
 msgid "Failed to uninstall %s!"
 msgstr "Deinstallation von %s ist fehlgeschlagen!"
-
-#: __init__.py:49
-msgid "Package Management"
-msgstr "Software Management"
-
-#: __init__.py:50
-msgid "Install and uninstall software packages"
-msgstr "Software Pakete installieren und deinstallieren"
-
-#: __init__.py:57
-msgid "Package categories"
-msgstr "Paketkategorien"
-
-#: __init__.py:60
-msgid "All"
-msgstr "Alle"
-
-#: __init__.py:67
-msgid "Search key"
-msgstr "Suchfilter"
-
-#: __init__.py:71
-msgid "Name"
-msgstr "Name"
-
-#: __init__.py:72 __init__.py:97
-msgid "Description"
-msgstr "Beschreibung"
-
-#: __init__.py:82
-msgid "Packages"
-msgstr "Pakete"
-
-#: __init__.py:85
-msgid "Installed packages only"
-msgstr "Nur installierte Pakete"
-
-#: __init__.py:87
-msgid "Pattern"
-msgstr "Filter"
-
-#: __init__.py:92
-msgid "Show package"
-msgstr "Zeige Pakete"
-
-#: __init__.py:98
-msgid "Installed version"
-msgstr "Installierte Version"
-
-#: __init__.py:99
-msgid "Upgradeable"
-msgstr "Aktualisierbar"
-
-#: __init__.py:100
-msgid "Package size"
-msgstr "Paketstatus"
-
-#: __init__.py:101
-msgid "Priority"
-msgstr "Priorität"
-
-#: __init__.py:102
-msgid "Source package name"
-msgstr "Name des Quellpaket"
-
-#: __init__.py:107
-msgid "Install package"
-msgstr "Paket installieren"
-
-#: __init__.py:112
-msgid "Uninstall package"
-msgstr "Paket deinstallieren"
-
-#: __init__.py:117
-msgid "Upgrade package"
-msgstr "Paket aktualisieren"
