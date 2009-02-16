@@ -106,30 +106,30 @@ class SoftMonStateCurrent( umc.StaticSelection ):
 
 class SoftMonSystemSearchKey( umc.StaticSelection ):
 	def __init__( self ):
-		umc.StaticSelection.__init__( self, _( 'Search Key' ) )
+		umc.StaticSelection.__init__( self, _( 'Search filter' ) )
 		self._choices = []
 
 	def choices( self ):
-		return ( ( 'name', _( 'System Name' ) ),
-				 ( 'role', _( 'System Role' ) ),
-				 ( 'ucs_version', _( 'UCS Version' ) ) )
+		return ( ( 'name', _( 'System name' ) ),
+				 ( 'role', _( 'System role' ) ),
+				 ( 'ucs_version', _( 'UCS version' ) ) )
 
 class SoftMonPackageSearchKey( umc.StaticSelection ):
 	def __init__( self ):
-		umc.StaticSelection.__init__( self, _( 'Search Key' ) )
+		umc.StaticSelection.__init__( self, _( 'Search filter' ) )
 		self._choices = []
 
 	def choices( self ):
-		return ( ( 'pkg_name', _( 'Package Name' ) ),
-				 ( 'pkg_version', _( 'Package Version' ) ),
-				 ( 'selected_state', _( 'Selected State' ) ),
-				 ( 'installed_state', _( 'Installation State' ) ),
-				 ( 'current_state', _( 'Current State' ) ),
-				 ( 'ucs_version', _( 'UCS Version' ) ) )
+		return ( ( 'pkg_name', _( 'Package name' ) ),
+				 ( 'pkg_version', _( 'Package version' ) ),
+				 ( 'selected_state', _( 'Package selection state' ) ),
+				 ( 'installed_state', _( 'Installation state' ) ),
+				 ( 'current_state', _( 'Current package state' ) ),
+				 ( 'ucs_version', _( 'UCS version' ) ) )
 
 
 system_filter_types = { 'name' : umc.String( _( 'Text' ) ),
-						'role' : umc.SystemRoleSelection( _( 'System Role' ) ),
+						'role' : umc.SystemRoleSelection( _( 'System role' ) ),
 						'ucs_version' : SoftMonSystemVersions() }
 
 umcd.copy( umc.StaticSelection, SoftMonSystemSearchKey )

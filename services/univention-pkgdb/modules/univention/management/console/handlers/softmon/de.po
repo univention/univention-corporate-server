@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-01 12:07+0100\n"
+"POT-Creation-Date: 2009-02-16 11:37+0100\n"
 "PO-Revision-Date: 2008-12-01 12:08+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,26 +15,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: __init__.py:58
-msgid "Software Monitor"
+msgid "Software monitor"
 msgstr "Software Monitor"
 
 #: __init__.py:59
-msgid "Monitor Software Status on all Your Systems"
+msgid "Monitor software status on all your systems"
 msgstr "Software Status Anzeige für alle UCS Systeme"
 
 #: __init__.py:62
-msgid "Search Filters"
+msgid "Search filters"
 msgstr "Suchfilter"
 
 #: __init__.py:68 _revamp.py:161
-msgid "Search Systems"
+msgid "Search systems"
 msgstr "Systeme suchen"
 
 #: __init__.py:74 _revamp.py:163
-msgid "Search Packages"
+msgid "Search packages"
 msgstr "Pakete suchen"
 
-#: __init__.py:80
+#: __init__.py:80 _revamp.py:258
 msgid "Problem identification"
 msgstr "Probleme identifizieren"
 
@@ -50,11 +50,11 @@ msgstr ""
 "\"univention-pkgdb-scan\" auf."
 
 #: _revamp.py:72 _revamp.py:205
-msgid "Results per Page"
+msgid "Results per page"
 msgstr "Ergebnisse pro Seite"
 
 #: _revamp.py:104
-msgid "Searchkey"
+msgid "Search key"
 msgstr "Filterobjekt"
 
 #: _revamp.py:104 _syntax.py:39
@@ -66,27 +66,27 @@ msgid "Pattern"
 msgstr "Filtermuster"
 
 #: _revamp.py:115
-msgid "Save Search Filter As"
+msgid "Save search filter as"
 msgstr "Suchfilter speichern als:"
 
 #: _revamp.py:119 _revamp.py:213
-msgid "--- Please Select ---"
+msgid "--- Please select ---"
 msgstr "--- Bitte auswählen ---"
 
 #: _revamp.py:127
-msgid "Select Saved Search Filters"
+msgid "Select saved search filters"
 msgstr "Gespeicherten Suchfilter auswählen:"
 
 #: _revamp.py:133
-msgid "Save Search Filter"
+msgid "Save search filter"
 msgstr "Suchfilter speichern"
 
 #: _revamp.py:137
-msgid "Delete Search Filter"
+msgid "Delete search filter"
 msgstr "Suchfilter löschen"
 
-#: _revamp.py:179
-msgid "system name"
+#: _revamp.py:179 _revamp.py:187 _syntax.py:113
+msgid "System name"
 msgstr "System-Name"
 
 #: _revamp.py:179
@@ -94,41 +94,37 @@ msgid "UCS role"
 msgstr "UCS-Rolle"
 
 #: _revamp.py:179
-msgid "current version"
+msgid "Current version"
 msgstr "vorhandene Version"
 
 #: _revamp.py:179 _revamp.py:187
-msgid "collect date"
+msgid "Inventory date"
 msgstr "Erfassungszeit"
 
 #: _revamp.py:182 _revamp.py:190
 #, python-format
-msgid "%d Search Result(s)"
+msgid "%d Search result(s)"
 msgstr "%s Suchergebnis(se)"
 
 #: _revamp.py:187
-msgid "system"
-msgstr "System-Name"
-
-#: _revamp.py:187
-msgid "package"
+msgid "Package"
 msgstr "Paket"
 
 #: _revamp.py:187
-msgid "version"
+msgid "Version"
 msgstr "Version"
 
-#: _revamp.py:187
-msgid "select state"
+#: _revamp.py:187 _syntax.py:125
+msgid "Package selection state"
 msgstr "Paketauswahlstatus"
 
-#: _revamp.py:187
-msgid "installation state"
+#: _revamp.py:187 _syntax.py:126
+msgid "Installation state"
 msgstr "Installationszustand"
 
-#: _revamp.py:187
-msgid "current state"
-msgstr "aktueller Paketstatus"
+#: _revamp.py:187 _syntax.py:127
+msgid "Current package state"
+msgstr "Aktueller Paketstatus"
 
 #: _revamp.py:216
 msgid "Not updated systems"
@@ -145,10 +141,6 @@ msgstr "Überprüfung auswählen:"
 #: _revamp.py:237
 msgid "To compare with version"
 msgstr "Vergleichen mit Version"
-
-#: _revamp.py:258
-msgid "Problem Identification"
-msgstr "Probleme identifizieren"
 
 #: _syntax.py:43
 msgid "equal"
@@ -235,41 +227,28 @@ msgid "Installed"
 msgstr ""
 
 #: _syntax.py:109 _syntax.py:119
-msgid "Search Key"
+msgid "Search filter"
 msgstr "Suchfilter"
 
-#: _syntax.py:113
-msgid "System Name"
-msgstr "System-Name"
-
 #: _syntax.py:114 _syntax.py:132
-msgid "System Role"
+msgid "System role"
 msgstr "System-Rolle"
 
 #: _syntax.py:115 _syntax.py:128
-msgid "UCS Version"
+msgid "UCS version"
 msgstr "UCS-Version"
 
 #: _syntax.py:123
-msgid "Package Name"
+msgid "Package name"
 msgstr "Paketname"
 
 #: _syntax.py:124
-msgid "Package Version"
+msgid "Package version"
 msgstr "Paketversion"
-
-#: _syntax.py:125
-msgid "Selected State"
-msgstr "Paketauswahlstatus"
-
-#: _syntax.py:126
-msgid "Installation State"
-msgstr "Installationszustand"
-
-#: _syntax.py:127
-msgid "Current State"
-msgstr "aktueller Paketstatus"
 
 #: _syntax.py:131
 msgid "Text"
 msgstr "Text"
+
+#~ msgid "System Name"
+#~ msgstr "System-Name"

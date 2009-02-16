@@ -55,23 +55,23 @@ SUFFIX='.pickle'
 
 name = 'softmon'
 icon = 'softmon/module'
-short_description = _( 'Software Monitor' )
-long_description = _( 'Monitor Software Status on all Your Systems' )
+short_description = _( 'Software monitor' )
+long_description = _( 'Monitor software status on all your systems' )
 categories = [ 'all', 'system' ]
 
-filter_type = umc.MultiDictValue( _( 'Search Filters' ),
+filter_type = umc.MultiDictValue( _( 'Search filters' ),
 								  syntax = { 'key' : _syntax.SoftMonSystemSearchKey(),
 											 'op' : _syntax.SoftMonSearchOperator(),
 											 'pattern' : umc.String( '' ) } )
 command_description = {
 	'softmon/system/search' : umch.command(
-		short_description = _( 'Search Systems' ),
+		short_description = _( 'Search systems' ),
 		method = 'softmon_system_search',
 		values = { 'filter' : filter_type },
 		startup = True,
 	),
 	'softmon/package/search' : umch.command(
-		short_description = _( 'Search Packages' ),
+		short_description = _( 'Search packages' ),
 		method = 'softmon_package_search',
 		values = { 'filter' : filter_type },
 		startup = True,

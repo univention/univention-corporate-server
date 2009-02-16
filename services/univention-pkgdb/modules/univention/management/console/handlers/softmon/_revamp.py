@@ -69,7 +69,7 @@ class Web( object ):
 		# max results per page
 		###################################################
 
-		max_results = umcd.make_readonly( ( 'max_results', umcv.Integer( _( 'Results per Page' ) ) ),
+		max_results = umcd.make_readonly( ( 'max_results', umcv.Integer( _( 'Results per page' ) ) ),
 										  default = max_results_default, attributes = { 'width' : '100' } )
 		idlist_search.append(max_results.id())
 		idlist_save.append(max_results.id())
@@ -101,7 +101,7 @@ class Web( object ):
 			select = umcd.Text('UNKNOWN UMC COMMAND')
 
 		descr = umcd.DynamicList( self[ umc_command ][ 'filter' ],
-								  [ _( 'Searchkey' ), _( 'Operator' ), _( 'Pattern' )  ], [ op, ],
+								  [ _( 'Search key' ), _( 'Operator' ), _( 'Pattern' )  ], [ op, ],
 								  modifier = select, modified = values, default = filter_items )
 		descr[ 'colspan' ] = '3'
 		idlist_search.append(descr.id())
@@ -112,11 +112,11 @@ class Web( object ):
 		###################################################
 
 		# text input search name
-		new_search_name = umcd.TextInput( ( 'newsearchname', umc.String( _('Save Search Filter As') ) ), default = '', attributes = { 'width': '250'} )
+		new_search_name = umcd.TextInput( ( 'newsearchname', umc.String( _('Save search filter as') ) ), default = '', attributes = { 'width': '250'} )
 		idlist_save.append(new_search_name.id())
 
 		# search select drop down
-		choices = [ { 'description': _('--- Please Select ---'), 'actions': [] } ]
+		choices = [ { 'description': _('--- Please select ---'), 'actions': [] } ]
 		choicedefault = 0
 		current_search_name = None
 		for searchitem in saved_searches:
@@ -124,17 +124,17 @@ class Web( object ):
 							  'actions': [ umcd.Action( umcp.Command( args = [ umc_command ], opts = { 'searchname': searchitem } ), [ max_results.id() ] ) ] } )
 			if searchitem == current_search:
 				choicedefault = len( choices ) - 1
-		saved_search_select = umcd.ChoiceButton( _( 'Select Saved Search Filters') , choices = choices, default = choicedefault, attributes = { 'width': '250'} )
+		saved_search_select = umcd.ChoiceButton( _( 'Select saved search filters') , choices = choices, default = choicedefault, attributes = { 'width': '250'} )
 		idlist_search.append(saved_search_select.id())
 		idlist_save.append(saved_search_select.id())
 
 		# save button
 		req = umcp.Command( args = [ umc_command ], opts= { 'filter': [], 'save': True } )
-		save_search_btn = umcd.Button( label = _('Save Search Filter'), tag = 'softmon/add', actions = umcd.Action( req, idlist_save ), attributes = { 'width': '250'} )
+		save_search_btn = umcd.Button( label = _('Save search filter'), tag = 'softmon/add', actions = umcd.Action( req, idlist_save ), attributes = { 'width': '250'} )
 
 		# save button
 		req = umcp.Command( args = [ umc_command ], opts= { 'searchname': current_search, 'delete': True } )
-		delete_search_btn = umcd.Button( label = _('Delete Search Filter'), tag = 'softmon/remove', actions = umcd.Action( req, [ saved_search_select.id() ] ), attributes = { 'width': '250'} )
+		delete_search_btn = umcd.Button( label = _('Delete search filter'), tag = 'softmon/remove', actions = umcd.Action( req, [ saved_search_select.id() ] ), attributes = { 'width': '250'} )
 
 		###################################################
 		# search button
@@ -158,9 +158,9 @@ class Web( object ):
 		lst3.add_row( [ max_results, search_btn ] )
 
 		if umc_command == 'softmon/system/search':
-			res.dialog = [ umcd.Frame( [ lst1, lst2, lst3 ], _('Search Systems') ) ]
+			res.dialog = [ umcd.Frame( [ lst1, lst2, lst3 ], _('Search systems') ) ]
 		elif umc_command == 'softmon/package/search':
-			res.dialog = [ umcd.Frame( [ lst1, lst2, lst3 ], _('Search Packages') ) ]
+			res.dialog = [ umcd.Frame( [ lst1, lst2, lst3 ], _('Search packages') ) ]
 		else:
 			res.dialog = [ umcd.Frame( [ lst1, lst2, lst3 ], 'UNKNOWN UMC COMMAND' ) ]
 
@@ -176,18 +176,18 @@ class Web( object ):
 
 	def _append_system_results( self, search_results, output ):
 		resultlst = umcd.List()
-		resultlst.set_header( [ _( 'system name' ), _( 'UCS role' ), _('current version'), _('collect date') ] )
+		resultlst.set_header( [ _( 'System name' ), _( 'UCS role' ), _('Current version'), _('Inventory date') ] )
 		for item in search_results:
 			resultlst.add_row( [ item['name'], item['role'], item['version'], item['date'] ] )
-		output.append( umcd.Frame( [ resultlst ], _( '%d Search Result(s)' ) % len(search_results) ) )
+		output.append( umcd.Frame( [ resultlst ], _( '%d Search result(s)' ) % len(search_results) ) )
 
 
 	def _append_package_results( self, search_results, output ):
 		resultlst = umcd.List()
-		resultlst.set_header( [ _( 'system' ), _( 'package' ), _('version'), _('collect date'), _('select state'), _('installation state'), _('current state') ] )
+		resultlst.set_header( [ _( 'System name' ), _( 'Package' ), _('Version'), _('Inventory date'), _('Package selection state'), _('Installation state'), _('Current package state') ] )
 		for item in search_results:
 			resultlst.add_row( [ item['sysname'], item['pkgname'], item['version'], item['date'], item['selected_state'], item['installation_state'], item['current_state'] ] )
-		output.append( umcd.Frame( [ resultlst ], _( '%d Search Result(s)' ) % len(search_results) ) )
+		output.append( umcd.Frame( [ resultlst ], _( '%d Search result(s)' ) % len(search_results) ) )
 
 
 	def _web_softmon_problem_identification( self, object, res ):
@@ -202,7 +202,7 @@ class Web( object ):
 		# max results per page
 		###################################################
 
-		max_results = umcd.make_readonly( ( 'max_results', umcv.Integer( _( 'Results per Page' ) ) ),
+		max_results = umcd.make_readonly( ( 'max_results', umcv.Integer( _( 'Results per page' ) ) ),
 										  default = max_results_default, attributes = { 'width' : '100' } )
 		idlist.append(max_results.id())
 
@@ -210,7 +210,7 @@ class Web( object ):
 		# check selection
 		###################################################
 
-		choices = [ { 'description': _('--- Please Select ---'),
+		choices = [ { 'description': _('--- Please select ---'),
 					  'key': '',
 					  'actions': [] },
 					{ 'description': _('Not updated systems'),
@@ -255,7 +255,7 @@ class Web( object ):
 		lst1.add_row( row )
 		lst1.add_row( [ max_results, search_btn ] )
 
-		res.dialog = [ umcd.Frame( [ lst1 ], _('Problem Identification') ) ]
+		res.dialog = [ umcd.Frame( [ lst1 ], _('Problem identification') ) ]
 
 		if current_check == 'outdated_systems':
 			if not check_results == None:
