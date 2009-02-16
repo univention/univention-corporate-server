@@ -40,11 +40,11 @@ class Web( object ):
 	def _web_nagios_show( self, object, res ):
 		options = res.dialog
 		items = []
-		wiz = umcd.Wizard( _( "Nagios Configuration" ) )
+		wiz = umcd.Wizard( _( "Nagios configuration" ) )
 		image = umcd.Image( 'wizards/nagios/wizard', umct.SIZE_LARGE )
 		wiz.set_image( image )
 		number = umcd.make( self[ 'wizard/nagios/set' ][ 'number' ], default = options[ 'number' ] )
-		wiz.add_option( _( 'If an event is triggered by nagios on this server the information are send to this phone number' ), number )
+		wiz.add_option( _( 'When an event is triggered by Nagios for this server the information will be sent to this phone number' ), number )
 		items.append( number.id() )
 
 		req = umcp.Command( args = [ 'wizard/nagios/set' ] )

@@ -49,7 +49,7 @@ _ = umc.Translation( 'univention.management.console.wizards.nagios' ).translate
 
 icon = 'wizards/nagios/module'
 short_description = _( 'Nagios' )
-long_description = _( 'Nagios Configuration' )
+long_description = _( 'Nagios configuration' )
 categories = [ 'wizards' ]
 
 command_description = {
@@ -65,7 +65,7 @@ command_description = {
 		short_description = _( 'Nagios' ),
 		long_description = _( 'Set Nagios configuration' ),
 		method = 'nagios_set',
-		values = { 'number' : umc.String( _( 'Phone Number' ) ), },
+		values = { 'number' : umc.String( _( 'Phone number' ) ), },
 	),
 }
 

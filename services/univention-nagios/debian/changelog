@@ -1,3 +1,9 @@
+univention-nagios (2.0.1-3) unstable; urgency=low
+
+  * updated English translation. Bug #13407
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 16 Feb 2009 11:47:32 +0100
+
 univention-nagios (2.0.1-2) unstable; urgency=low
 
   * set the nrpe connection time out via UCR. Bug #13002

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-05 21:17+0200\n"
+"POT-Creation-Date: 2009-02-16 11:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,28 +15,28 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: __init__.py:50 __init__.py:56 __init__.py:64
+#: __init__.py:51 __init__.py:57 __init__.py:65
 msgid "Nagios"
 msgstr "Nagios"
 
-#: __init__.py:51 _revamp.py:42
-msgid "Nagios Configuration"
+#: __init__.py:52 _revamp.py:43
+msgid "Nagios configuration"
 msgstr "Nagios-Konfiguration"
 
-#: __init__.py:57
+#: __init__.py:58
 msgid "View Nagios configuration"
 msgstr "Anzeigen der Nagios-Konfiguration"
 
-#: __init__.py:65
+#: __init__.py:66
 msgid "Set Nagios configuration"
 msgstr "Setzen der Nagios-Konfiguration"
 
-#: __init__.py:67
-msgid "Phone Number"
+#: __init__.py:68
+msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: _revamp.py:46
+#: _revamp.py:47
 msgid ""
-"If an event is triggered by nagios on this server the information are send "
-"to this phone number"
+"When an event is triggered by Nagios for this server the information will be "
+"sent to this phone number"
 msgstr ""
