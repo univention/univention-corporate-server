@@ -49,7 +49,7 @@ import subprocess, string, time
 _ = umc.Translation('univention.management.console.handlers.update').translate
 
 icon = 'update/module'
-short_description = _('Online Updates')
+short_description = _('Online updates')
 long_description = _('Manage system updates')
 categories = ['all', 'system']
 
@@ -66,15 +66,15 @@ command_description = {
 		caching = False
 	),
 	'update/release_settings': umch.command(
-		short_description = _('Release Update Settings'),
-		long_description = _('Release Update Settings'),
+		short_description = _('Release update settings'),
+		long_description = _('Release update settings'),
 		method = 'release_settings',
 		values = {
-			'repository_server': umc.String(_('Repository Server')),
-			'repository_prefix': umc.String(_('Repository Prefix'), required = False),
-			'use_hotfixes': umc.Boolean( _( 'Use Hotfix Repositories' ), required = False ),
-			'use_maintained': umc.Boolean( _( 'Use Maintained Repositories' ), required = False ),
-			'use_unmaintained': umc.Boolean( _( 'Use Unmaintained Repositories' ), required = False ),
+			'repository_server': umc.String(_('Repository server')),
+			'repository_prefix': umc.String(_('Repository prefix'), required = False),
+			'use_hotfixes': umc.Boolean( _( 'Use hotfix repositories' ), required = False ),
+			'use_maintained': umc.Boolean( _( 'Use maintained repositories' ), required = False ),
+			'use_unmaintained': umc.Boolean( _( 'Use unmaintained repositories' ), required = False ),
 			},
 		caching = False
 	),
@@ -89,7 +89,7 @@ command_description = {
 		values = { },
 	),
 	'update/components_settings': umch.command(
-		short_description = _('Component Settings'),
+		short_description = _('Component settings'),
 		method = 'components_settings',
 		values = {
 			'component_activated': umc.Boolean(_('Enabled'), required = False),
@@ -400,9 +400,9 @@ class handler(umch.simpleHandler):
 			req.set_flag('web:startup_cache', False)
 			req.set_flag('web:startup_dialog', True)
 			req.set_flag('web:startup_referrer', True)
-			req.set_flag('web:startup_format', _('Release Settings'))
-			release_button = umcd.Button(_('UCS Release'), 'update/gear', actions=[umcd.Action(req)])
-			security_button = umcd.Button(_('Security Patchlevel'), 'update/gear', actions=[umcd.Action(req)])
+			req.set_flag('web:startup_format', _('Release settings'))
+			release_button = umcd.Button(_('UCS release'), 'update/gear', actions=[umcd.Action(req)])
+			security_button = umcd.Button(_('Security patch level'), 'update/gear', actions=[umcd.Action(req)])
 			if self.next_release_update_checked:
 				if self.next_release_update:
 					btn_install_release_update = umcd.Button(_('Install this update'), 'actions/install', actions = [umcd.Action(self.__get_warning_request({'type': 'release'}))])
@@ -421,7 +421,7 @@ class handler(umch.simpleHandler):
 
 
 			req = umcp.Command(args=['update/check_release_updates'])
-			btn_update_check = umcd.Button(_('Check for Updates'), 'actions/refresh', actions = [umcd.Action(req), umcd.Action(umcp.Command(args=['update/overview']))])
+			btn_update_check = umcd.Button(_('Check for updates'), 'actions/refresh', actions = [umcd.Action(req), umcd.Action(umcp.Command(args=['update/overview']))])
 			list_release.add_row([btn_update_check])
 
 		#### UCS Components
@@ -436,7 +436,7 @@ class handler(umch.simpleHandler):
 			req.set_flag('web:startup_cache', False)
 			req.set_flag('web:startup_dialog', True)
 			req.set_flag('web:startup_referrer', True)
-			req.set_flag('web:startup_format', _('Modify Component %s' )  % description )
+			req.set_flag('web:startup_format', _('Modify component %s' )  % description )
 			if component.get('activated', '').lower() in ['true', 'yes', '1', 'enabled']:
 				list_component.add_row([umcd.Button(description, 'update/gear', actions=[umcd.Action(req)]), umcd.Text(_('This component is enabled'))])
 			else:
@@ -450,20 +450,20 @@ class handler(umch.simpleHandler):
 		req.set_flag('web:startup_cache', False)
 		req.set_flag('web:startup_dialog', True)
 		req.set_flag('web:startup_referrer', False)
-		req.set_flag('web:startup_format', _('Check for Updates'))
-		btn_update_check = umcd.Button(_('Check for Updates'), 'actions/refresh', actions = [umcd.Action(req)])
+		req.set_flag('web:startup_format', _('Check for updates'))
+		btn_update_check = umcd.Button(_('Check for updates'), 'actions/refresh', actions = [umcd.Action(req)])
 
 		req = umcp.Command(args=['update/components_settings'])
 		req.set_flag('web:startup', True)
 		req.set_flag('web:startup_cache', False)
 		req.set_flag('web:startup_dialog', True)
 		req.set_flag('web:startup_referrer', True)
-		req.set_flag('web:startup_format', _('Add a new Component'))
-		btn_add_component = umcd.Button(_('Add a new Component'), 'actions/plus', actions = [umcd.Action(req)])
+		req.set_flag('web:startup_format', _('Add a new component'))
+		btn_add_component = umcd.Button(_('Add a new component'), 'actions/plus', actions = [umcd.Action(req)])
 
 		list_component.add_row([btn_update_check, btn_add_component])
 
-		frame_release = umcd.Frame([list_release], _('Release Information'))
+		frame_release = umcd.Frame([list_release], _('Release information'))
 		frame_component = umcd.Frame([list_component], _('Components'))
 
 		res.dialog = [frame_release, frame_component]
@@ -476,7 +476,7 @@ class handler(umch.simpleHandler):
 
 		list_release = umcd.List()
 
-		frame_release = umcd.Frame([list_release], _('Release Settings'))
+		frame_release = umcd.Frame([list_release], _('Release settings'))
 		inpt_server = umcd.make(self['update/release_settings']['repository_server'], default = self.updater.repository_server)
 		inpt_prefix = umcd.make(self['update/release_settings']['repository_prefix'], default = self.updater.repository_prefix)
 		inpt_hotfixes = umcd.make( self[ 'update/release_settings' ][ 'use_hotfixes' ], default = self.updater.hotfixes )
@@ -503,12 +503,12 @@ class handler(umch.simpleHandler):
 
 		if self.__is_updater_running() or self.__is_security_update_running():
 			log = res.dialog
-			html = '<h2>' + _('The Updater is still in process.') + '</h2>' + '<pre>' + _('Please be patient the update may take a while. Press the refresh button to see the latest log.') + '</pre>' + '<body>' + self.__remove_status_messages(log) + '</body>'
+			html = '<h2>' + _('The updater is still in process.') + '</h2>' + '<pre>' + _('Please be patient the update may take a while. Press the refresh button to see the latest log.') + '</pre>' + '<body>' + self.__remove_status_messages(log) + '</body>'
 			result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
 			btn_refresh = umcd.Button(_('Refresh'), 'actions/refresh', actions = [umcd.Action(self.__get_logfile_request())])
 			result.add_row([ btn_refresh, umcd.CloseButton()])
 		else:
-			html = '<h2>' + _('The Updater finished.') + '</h2>'
+			html = '<h2>' + _('The updater finished.') + '</h2>'
 			log = res.dialog
 			html +=  '<body>' + self.__remove_status_messages(log) + '</body>'
 			result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
@@ -594,7 +594,7 @@ class handler(umch.simpleHandler):
 
 				result.add_row([ btn_continue, umcd.CancelButton()])
 			else:
-				result.add_row([ umcd.HTML('<h2>' + _('No Updates available') + '</h2>')])
+				result.add_row([ umcd.HTML('<h2>' + _('No updates available') + '</h2>')])
 				result.add_row([ umcd.CancelButton()])
 		elif object.options['status'] == 'warning':
 			html = self.__get_update_warning()
@@ -610,7 +610,7 @@ class handler(umch.simpleHandler):
 
 			result.add_row([ btn_continue, umcd.CancelButton()])
 		elif object.options['status'] == 'execute':
-			html = '<h2>' + _('The Updater finished.') + '</h2>'
+			html = '<h2>' + _('The updater finished.') + '</h2>'
 			if res.dialog:
 				html += '<body>' + self.__remove_status_messages(res.dialog) + '</body>'
 			result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])

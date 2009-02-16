@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 16:45+0100\n"
+"POT-Creation-Date: 2009-02-16 12:25+0100\n"
 "PO-Revision-Date: 2009-02-16 08:48+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 
 #: __init__.py:52
-msgid "Online Updates"
+msgid "Online updates"
 msgstr "Online-Updates"
 
 #: __init__.py:53
@@ -28,35 +28,36 @@ msgid "Overview"
 msgstr "Übersicht"
 
 #: __init__.py:69 __init__.py:70
-msgid "Release Update Settings"
+msgid "Release update settings"
 msgstr "Releae Update-Einstellungen"
 
 #: __init__.py:73
-msgid "Repository Server"
+msgid "Repository server"
 msgstr "Repository Server"
 
 #: __init__.py:74
-msgid "Repository Prefix"
+msgid "Repository prefix"
 msgstr "Repository Prefix"
 
 #: __init__.py:75
-msgid "Use Hotfix Repositories"
+msgid "Use hotfix repositories"
 msgstr "Verwende Hotfix Repositories"
 
 #: __init__.py:76
-msgid "Use Maintained Repositories"
+msgid "Use maintained repositories"
 msgstr "Verwende Maintained Repositories"
 
 #: __init__.py:77
-msgid "Use Unmaintained Repositories"
+msgid "Use unmaintained repositories"
 msgstr "Verwende Unmaintained Repositories"
 
-#: __init__.py:82 __init__.py:87
+#: __init__.py:82 __init__.py:87 __init__.py:424 __init__.py:453
+#: __init__.py:454
 msgid "Check for updates"
 msgstr "Nach Updates suchen"
 
-#: __init__.py:92
-msgid "Component Settings"
+#: __init__.py:92 __init__.py:555
+msgid "Component settings"
 msgstr "Komponenten Einstellungen"
 
 #: __init__.py:95
@@ -107,105 +108,101 @@ msgstr "Die Logdatei während des Updates anzeigen"
 msgid "View an update warning"
 msgstr "Anzeigen einer Update-Warnung"
 
-#: __init__.py:268
+#: __init__.py:266
 msgid "The following packages will be upgraded:"
 msgstr "Die folgenden Pakete werden aktualisiert:"
 
-#: __init__.py:276
+#: __init__.py:274
 msgid "The following NEW packages will be installed:"
 msgstr "Die folgenden Pakete werden neu installiert:"
 
-#: __init__.py:391 __init__.py:396
+#: __init__.py:389 __init__.py:394
 msgid "View logfile"
 msgstr "Logdatei anzeigen"
 
-#: __init__.py:392 __init__.py:397
+#: __init__.py:390 __init__.py:395
 msgid "The Update is still in process"
 msgstr "Das Update ist noch nicht abgeschlossen."
 
-#: __init__.py:405 __init__.py:481
-msgid "Release Settings"
+#: __init__.py:403 __init__.py:479
+msgid "Release settings"
 msgstr "Release-Einstellungen"
 
-#: __init__.py:406
-msgid "UCS Release"
-msgstr "UCS Version"
+#: __init__.py:404
+msgid "UCS release"
+msgstr "ucs Version"
 
-#: __init__.py:407
-msgid "Security Patchlevel"
+#: __init__.py:405
+msgid "Security patch level"
 msgstr "Security Patchlevel"
 
-#: __init__.py:410 __init__.py:416
+#: __init__.py:408 __init__.py:414
 msgid "Install this update"
 msgstr "Führe das Update durch"
 
-#: __init__.py:411
+#: __init__.py:409
 #, python-format
 msgid "The installed version is %(old)s and %(new)s is available."
 msgstr "Die installierte Version ist %(old)s und verfügbar ist %(new)s."
 
-#: __init__.py:413
+#: __init__.py:411
 #, python-format
 msgid "The installed version is %s and there is no update available."
 msgstr "Die installierte Version ist %s und es steht kein Update verfügbar."
 
-#: __init__.py:417
+#: __init__.py:415
 #, python-format
 msgid "The installed security release is %(old)s and %(new)s is available"
 msgstr ""
 "Die installierte Security-Version ist %(old)s und verfügbar ist %(new)s"
 
-#: __init__.py:419
+#: __init__.py:417
 #, python-format
 msgid "The installed security release is %s and there is no update available."
 msgstr ""
 "Die installierte Security-Version ist %s und es steht kein Update zur "
 "Verfügung."
 
-#: __init__.py:421
+#: __init__.py:419
 #, python-format
 msgid "The installed version is %s."
 msgstr "Die installierte Version ist %s."
 
-#: __init__.py:422
+#: __init__.py:420
 #, python-format
 msgid "The installed security release is %s"
 msgstr "Die installierte Security-Version ist %s"
 
-#: __init__.py:426 __init__.py:455 __init__.py:456
-msgid "Check for Updates"
-msgstr "Prüfen auf Updates"
-
-#: __init__.py:441
+#: __init__.py:439
 #, python-format
-msgid "Modify Component %s"
+msgid "Modify component %s"
 msgstr "Modifiziere Komponente %s"
 
-#: __init__.py:443
+#: __init__.py:441
 msgid "This component is enabled"
 msgstr "Diese Komponente ist aktiviert"
 
-#: __init__.py:445
+#: __init__.py:443
 msgid "This component is disabled"
 msgstr "Diese Komponente ist deaktiviert"
 
-#: __init__.py:463 __init__.py:464
-msgid "Add a new Component"
+#: __init__.py:461 __init__.py:462
+msgid "Add a new component"
 msgstr "Eine neue Komponente hinzufügen"
 
-#: __init__.py:468
-msgid "Release Information"
+#: __init__.py:466
+msgid "Release information"
 msgstr "Versionsinformationen"
 
-#: __init__.py:469
+#: __init__.py:467
 msgid "Components"
 msgstr "Komponenten"
 
-#: __init__.py:507
-msgid "The Updater is still in process."
+#: __init__.py:506
+msgid "The updater is still in process."
 msgstr "Das Update ist noch nicht abgeschlossen."
 
-#: __init__.py:507
+#: __init__.py:506
 msgid ""
 "Please be patient the update may take a while. Press the refresh button to "
 "see the latest log."
@@ -214,39 +211,35 @@ msgstr ""
 "einen Klick auf den Aktualisierungs-Buttons werden die aktuellsten "
 "Loginformationen angezeigt."
 
-#: __init__.py:509
+#: __init__.py:508
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: __init__.py:512 __init__.py:614
-msgid "The Updater finished."
+#: __init__.py:511 __init__.py:613
+msgid "The updater finished."
 msgstr "Der Update-Vorgang ist beendet."
 
-#: __init__.py:556
-msgid "Component settings"
-msgstr "Komponenten Einstellungen"
-
-#: __init__.py:593 __init__.py:736
+#: __init__.py:592 __init__.py:735
 msgid "Confirm the updater warning"
 msgstr "Bestägen der Updater-Warnung"
 
-#: __init__.py:594 __init__.py:610 __init__.py:637
+#: __init__.py:593 __init__.py:609 __init__.py:636
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: __init__.py:598
-msgid "No Updates available"
+#: __init__.py:597
+msgid "No updates available"
 msgstr "Es stehen keine Updates zur Verfügung."
 
-#: __init__.py:609
+#: __init__.py:608
 msgid "Execute the update"
 msgstr "Das Update durchführen"
 
-#: __init__.py:698
+#: __init__.py:697
 msgid "Attention!"
 msgstr "Warnung!"
 
-#: __init__.py:699
+#: __init__.py:698
 msgid ""
 "Installing an system update is a significant change to your IT environment."
 "<br>"
@@ -254,7 +247,7 @@ msgstr ""
 "Das Einspielen eines Updates ist ein signifikanter Eingriff in die "
 "vorhandene IT-Infrastruktur.<br>"
 
-#: __init__.py:700
+#: __init__.py:699
 msgid ""
 "In the normal case, undisturbed use operation cannot be guaranteed during "
 "the update,<br>"
@@ -262,25 +255,25 @@ msgstr ""
 "Im Normallfall ist das stögsfreie Arbeiten von Anwendern wwäend des Updates "
 "nicht gegeben,<br>"
 
-#: __init__.py:701
+#: __init__.py:700
 msgid ""
 "since system services may need to be restarted. Thus, updates shouldn't be "
 "installed<br>"
 msgstr ""
 "da bspw. Dienste neu gestartet werden.Deshalb sollten Sie das Update<br>"
 
-#: __init__.py:702
+#: __init__.py:701
 msgid ""
 "on a live system. It is also recommend to evaluate the update in a test "
 "environment<br>"
 msgstr "nicht im laufenden Betrieb einspielen. Tests in einer Testumgebung<br>"
 
-#: __init__.py:703
+#: __init__.py:702
 msgid "and to create a backup of the system."
 msgstr ""
 "und die Erstellung einer Sicherung des Systems werden ebenfalls empfohlen."
 
-#: __init__.py:705
+#: __init__.py:704
 msgid ""
 "During setup, the web server may be stopped, leading to a termination of the "
 "HTTP<br>"
@@ -288,7 +281,7 @@ msgstr ""
 "Wähend des Updates kann es vorkommen, dass der Webserver beendet wird und "
 "diese Verbindung<br>"
 
-#: __init__.py:706
+#: __init__.py:705
 msgid ""
 "connection. Nonetheless, the update proceeds and the update can be monitored "
 "from a<br>"
@@ -296,14 +289,14 @@ msgstr ""
 "unterbrochen wird. Das Update wird trotzdem weiter durchgeführt und in einer "
 "neuen UMC-Sitzung kann der Vorgang des Updates dann"
 
-#: __init__.py:707
+#: __init__.py:706
 msgid ""
 "new UMC session. Logfiles can be found in the directory /var/log/univention/"
 msgstr ""
 "weiter beobachtet werden. Logdatien könn im Verzeichnis /var/log/univention/ "
 "gefunden werden"
 
-#: __init__.py:709
+#: __init__.py:708
 msgid ""
 "Please also consider the release notes, changelogs and references posted in "
 "the<br>"
@@ -311,15 +304,15 @@ msgstr ""
 "Bitte beachten Sie auch die Release Notes, Changelogs und Hinweise zu dem "
 "jeweiligen Update in dem<br>"
 
-#: __init__.py:710
+#: __init__.py:709
 msgid "<a href=http://forum.univention.de>Univention Forum</a>."
 msgstr "<a href=http://forum.univention.de>Univention Forum</a>."
 
-#: __init__.py:712
+#: __init__.py:711
 msgid "Do you really wish to proceed?"
 msgstr "Wollen Sie wirklich fortfahren?"
 
-#: __init__.py:726
+#: __init__.py:725
 msgid "Show the update process"
 msgstr "Zeige den Update-Vorgang"
 
