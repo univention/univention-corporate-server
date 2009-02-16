@@ -275,14 +275,19 @@ Type=str
 Categories=Network
 
 [samba/winbind/nested/groups]
-Description[de]=Aktiviere/Deaktiviere die Unterstützung für verschachtelte Gruppen
-Description[en]=Enable/Disable support for nested groups
+Description[de]=Aktiviert/Deaktiviert die Unterstützung für verschachtelte Gruppen
+Description[en]=Enables/Disables support for nested groups
 Type=str
 Categories=Network
 
 [samba/netlogon/sync]
-Description[de]=Verhalten der Samba-Netlogon-Skript-Synchronisation
+Description[de]=Steuert das Verhalten der Samba-Netlogon-Skript-Synchronisation
 Description[en]=Adjust synchronisation of samba netlogon scripts
 Type=str
 Categories=Network
 
+[samba/domain/logons]
+Description[de]=Aktiviert/Deaktiviert die Unterstützung für Windows 9X Netlogons bzw. NT4-Domänen-Dienste (gültige Werte: no/auto/yes)
+Description[en]=Enables/Disables support for windows 9X network logons and NT4 style domain services (valid values: no/auto/yes)
+Type=str
+Categories=Network
