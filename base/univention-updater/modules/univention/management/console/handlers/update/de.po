@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-02-15 16:45+0100\n"
-"PO-Revision-Date: 2008-11-03 10:32+0100\n"
+"PO-Revision-Date: 2009-02-16 08:48+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -195,7 +195,7 @@ msgstr "Eine neue Komponente hinzufügen"
 
 #: __init__.py:468
 msgid "Release Information"
-msgstr "Versions-Informationen"
+msgstr "Versionsinformationen"
 
 #: __init__.py:469
 msgid "Components"

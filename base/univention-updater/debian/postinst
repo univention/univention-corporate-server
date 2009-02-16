@@ -42,88 +42,6 @@ createLogfile /var/log/univention/updater.log "root:adm" 640
 createLogfile /var/log/univention/actualise.log "root:adm" 640
 
 if [ "$1" = "configure" ]; then
-	eval `univention-baseconfig shell version/version`
-	eval `univention-baseconfig shell version/patchlevel`
-	if [ -z "$version_version" -o -z "$version_patchlevel" ]; then
-		echo "Error: baseconf-variables version/version and/or version/patchlevel are not set."
-		exit 1
-	fi
-
-	eval `univention-baseconfig shell server/role`
-	if [ "$server_role" = "domaincontroller_master" ]; then
-		univention-baseconfig set update/server?"http://download.univention.de"
-	else
-		univention-baseconfig set update/server?"http://univention-repository/univention-cdrom"
-	fi
-
-	univention-baseconfig set update/security/server?"http://download.univention.de"
-
-	eval `univention-baseconfig shell update/security/server`
-	eval `univention-baseconfig shell update/server`
-
-	if [ "$update_server" == "http://bitz150.bitz.briteline.de" ]; then
-		univention-baseconfig set update/server="http://download.univention.de"
-	fi
-
-	if [ "$update_security_server" == "http://bitz150.bitz.briteline.de" ]; then
-		univention-baseconfig set update/security/server="http://download.univention.de"
-	fi
-
-	eval `univention-baseconfig shell update/security/prefix`
-
-	if [ "$update_security_prefix" = "updates/security-desktop" ]; then
-		univention-baseconfig set update/security/prefix="updates/security"
-	fi
-
-	arch=$(dpkg-architecture  -qDEB_BUILD_ARCH >/dev/null)
-
-	if [ "$arch" = "amd64" ]; then
-		univention-baseconfig set update/security/prefix?"updates/security-amd64"
-	fi
-	univention-baseconfig set update/security/prefix?"updates/security"
-
-	univention-baseconfig set update/directory?"ucs-updates"
-
-	mkdir -p /var/cache/univention-update
-
-	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 1.12; then
-		# copy sources.list
-		if [ -e "/etc/apt/sources.list" ]; then
-			cp /etc/apt/sources.list /etc/apt/sources.list.ucs1_2_3
-		fi
-		eval `univention-baseconfig shell`
-		if [ -d "/var/lib/univention-server-cdrom" ]; then
-			univention-baseconfig set local/repository=true
-			touch /var/lib/univention-server-cdrom/sources.list
-			if [ -d "/var/lib/univention-server-cdrom/packages" ]; then
-				echo "deb http://$hostname.$domainname/univention-cdrom/packages/ ./">> /var/lib/univention-server-cdrom/sources.list
-			fi
-			mkdir -p /var/lib/univention-server-cdrom/ucs-updates
-			touch /var/lib/univention-server-cdrom/ucs-updates/index.list
-
-			if [ -e /var/lib/univention-server-cdrom/.univention_install ]; then
-				vv=`cat /var/lib/univention-server-cdrom/.univention_install | grep "VERSION=" | sed -e 's|VERSION=||g'`
-				vp=`cat /var/lib/univention-server-cdrom/.univention_install | grep "PATCHLEVEL=" | sed -e 's|PATCHLEVEL=||g'`
-				echo "$vv-$vp" >>/var/lib/univention-server-cdrom/ucs-updates/index.list
-			fi
-
-			for dir in /var/lib/univention-server-cdrom/ucs-updates/*; do
-				if [ -d "$dir" ]; then
-					echo "deb http://$hostname.$domainname/univention-cdrom/ucs-updates/`basename $dir`/ ./">> /var/lib/univention-server-cdrom/sources.list
-				fi
-			done
-
-			first=1
-
-			for file in /var/lib/univention-server-cdrom/ucs-updates/*.txt; do
-				if [ $first = 1 ]; then
-					echo "">/var/lib/univention-server-cdrom/ucs-updates/index.list
-					first=0
-				fi
-				echo `basename $file` | sed -e 's|.txt$||;s|^ucs_||' >>/var/lib/univention-server-cdrom/ucs-updates/index.list
-			done
-		fi
-	fi
 	# update cronjob-entries
 	if [ -x /usr/lib/univention-directory-policy/univention-policy-maintenance ]; then
 		/usr/lib/univention-directory-policy/univention-policy-maintenance
@@ -151,6 +69,8 @@ fi
 if [ -n "$2" ] && dpkg --compare-versions "$2" lt 1.36-42; then
 	update-rc.d -f univention-maintenance remove || true
 fi
+
+eval $(univention-config-registry shell server/role)
 
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/41univention-updater.inst || true
@@ -191,25 +111,27 @@ univention-config-registry set	repository/online?yes \
 
 # set the repository server
 eval $(univention-config-registry shell hostname domainname update/server)
-if [ -n "$update_server" ]; then
+if [ -n "$update_server" -a "$update_server" != "http://download.univention.de" ]; then
 	update_server=`echo "$update_server" | sed -e 's|http://||' | sed -e 's|/.*||'`
 	univention-config-registry set repository/online/server?"$update_server"
-	univention-config-registry unset update/server
 elif host univention-repository.$domainname &> /dev/null; then
 	univention-config-registry set repository/online/server?"univention-repository.$domainname"
 else
 	univention-config-registry set repository/online/server?"apt.univention.de"
 fi
 
+# unset old variables
+univention-config-registry unset update/server update/security/server update/security/prefix update/directory
+
 # define update commands
 univention-config-registry set \
-		update/commands/distupgrade="apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade" \
-		update/commands/update="apt-get update" \
-		update/commands/show="apt-get show" \
-		update/commands/install="apt-get -o DPkg::Options::=--force-confold -y --force-yes install" \
-		update/commands/remove="apt-get --yes remove" \
-		update/commands/configure="dpkg --configure -a" \
-		update/commands/distupgrade/simulate="apt-get -o DPkg::Options::=--force-confold -y --force-yes -us dist-upgrade" \
-		update/commands/upgrade/simulate="apt-get -o DPkg::Options::=--force-confold -y --force-yes -us upgrade"
+		update/commands/distupgrade?"apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade" \
+		update/commands/update?"apt-get update" \
+		update/commands/show?"apt-get show" \
+		update/commands/install?"apt-get -o DPkg::Options::=--force-confold -y --force-yes install" \
+		update/commands/remove?"apt-get --yes remove" \
+		update/commands/configure?"dpkg --configure -a" \
+		update/commands/distupgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -y --force-yes -us dist-upgrade" \
+		update/commands/upgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -y --force-yes -us upgrade"
 
 exit 0

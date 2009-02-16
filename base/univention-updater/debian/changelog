@@ -1,3 +1,12 @@
+univention-updater (4.0.18-1) unstable; urgency=low
+
+  * minor fixes in german translation of UMC module (#13395)
+  * Just set UCR variables update/commmands/* if not already set
+  * remove old UCR variables update/server, update/security/server,
+    update/security/prefix, update/directory
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 16 Feb 2009 09:13:29 +0100
+
 univention-updater (4.0.17-1) unstable; urgency=low
 
   * add support for hotfix repositories (Bug #13395)

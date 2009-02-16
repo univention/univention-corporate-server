@@ -436,7 +436,7 @@ class handler(umch.simpleHandler):
 			req.set_flag('web:startup_cache', False)
 			req.set_flag('web:startup_dialog', True)
 			req.set_flag('web:startup_referrer', True)
-			req.set_flag('web:startup_format', _('Modify Component %s' % description))
+			req.set_flag('web:startup_format', _('Modify Component %s' )  % description )
 			if component.get('activated', '').lower() in ['true', 'yes', '1', 'enabled']:
 				list_component.add_row([umcd.Button(description, 'update/gear', actions=[umcd.Action(req)]), umcd.Text(_('This component is enabled'))])
 			else:
