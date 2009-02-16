@@ -55,13 +55,13 @@ import univention.debug as ud
 _ = umc.Translation( 'univention.management.console.handlers.quota' ).translate
 
 icon = 'quota/module'
-short_description = _( 'Filesystem Quotas' )
+short_description = _( 'Filesystem quotas' )
 long_description = _( 'Set, unset and modify filesystem quota' )
 categories = [ 'all' ]
 
 command_description = {
 	'quota/list': umch.command(
-		short_description = _( 'List Partitions' ),
+		short_description = _( 'List partitions' ),
 		long_description = _( 'List available partitions' ),
 		method = 'quota_list',
 		values = {},
@@ -69,25 +69,25 @@ command_description = {
 		priority = 100
 	),
 	'quota/partition/show': umch.command(
-		short_description = _( 'Show Partition' ),
+		short_description = _( 'Show partition' ),
 		long_description = _( 'Show details to one selected partition'),
 		method = 'quota_partition_show',
 		values = { 'partition' : _types.partition },
 	),
 	'quota/partition/activate': umch.command(
-		short_description = _( 'Activate Quota-Support' ),
+		short_description = _( 'Activate quota support' ),
 		long_description = _( 'Activate quota support for a partition' ),
 		method = 'quota_partition_activate',
 		values = { 'partition' : _types.partition },
 	),
 	'quota/partition/deactivate': umch.command(
-		short_description = _( 'Deactivate Quota-Support' ),
+		short_description = _( 'Deactivate quota support' ),
 		long_description = _( 'Deactivate quota support for a partition' ),
 		method = 'quota_partition_deactivate',
 		values = { 'partition' : _types.partition },
 	),
 	'quota/user/set': umch.command(
-		short_description = _( 'Set/Modify User Settings' ),
+		short_description = _( 'Set/modify user settings' ),
 		long_description = _( 'Modify quota settings for a user' ),
 		method = 'quota_user_set',
 		values = { 'user' : _types.user,
@@ -98,14 +98,14 @@ command_description = {
 				   'file_hard' : _types.fhard },
 	),
 	'quota/user/remove': umch.command(
-		short_description = _( "Delete User's Quota Settings" ),
+		short_description = _( "Delete user's quota settings" ),
 		long_description = _( "Delete the user's quota settings for a specific partition" ),
 		method = 'quota_user_remove',
 		values = { 'user' : _types.user,
 				   'partition' : _types.partition },
 	),
 	'quota/user/show': umch.command(
-		short_description = _( 'User Settings' ),
+		short_description = _( 'User settings' ),
 		long_description = _( 'Show detailed quota information for a user' ),
 		method = 'quota_user_show',
 		values = { 'user' : _types.user,

@@ -47,7 +47,7 @@ class Web( object ):
 		part_cell = umcd.Text( _( 'Partition' ) )
 		part_cell[ 'colspan' ] = '2'
 
-		lst.set_header( [ part_cell, _( 'Mount-Point' ), _( 'Quota' ), _( 'Size' ),
+		lst.set_header( [ part_cell, _( 'Mount point' ), _( 'Quota' ), _( 'Size' ),
 						  _( 'Free' ), _( 'Select' ) ] )
 		boxes = []
 
@@ -103,7 +103,7 @@ class Web( object ):
 		select = umcd.SelectionButton( _( 'Select the Operation' ), choices, actions )
 		lst.add_row( [ umcd.Fill( 6 ), select ] )
 
-		res.dialog = umcd.Frame( [ lst ], _( 'Partition Overview' ) )
+		res.dialog = umcd.Frame( [ lst ], _( 'Partition overview' ) )
 		self.revamped( object.id(), res )
 
 	def _web_quota_partition_show( self, object, res ):
@@ -115,15 +115,15 @@ class Web( object ):
 			return
 
 		info = umcd.List()
-		info.add_row( [ _( 'Mount-Point:' ), partition.mount_point ] )
+		info.add_row( [ _( 'Mount point:' ), partition.mount_point ] )
 		info.add_row( [ _( 'Filesystem:' ), partition.type ] )
 		info.add_row( [ _( 'Options:' ), ', '.join( partition.options ) ] )
 
 		lst = umcd.List()
 		if quotas:
 			# parse repquota output
-			blocks = umcd.Text( _( 'Limit: Size' ), attributes = { 'colspan' : '4' } )
-			files = umcd.Text( _( 'Limit: Files' ), attributes = { 'colspan' : '4' } )
+			blocks = umcd.Text( _( 'Limit: size' ), attributes = { 'colspan' : '4' } )
+			files = umcd.Text( _( 'Limit: files' ), attributes = { 'colspan' : '4' } )
 			lst.set_header( [ _( 'User' ), blocks, files, _( 'Select' ) ] )
 			lst.set_second_header( [ '', _( 'Used' ), _( 'Soft' ), _( 'Hard' ), _( 'Grace' ),
 									 _( 'Used' ), _( 'Soft' ), _( 'Hard' ), _( 'Grace' ), '' ] )
@@ -139,7 +139,7 @@ class Web( object ):
 				req.set_flag( 'web:startup', True )
 				req.set_flag( 'web:startup_reload', True )
 				req.set_flag( 'web:startup_dialog', True )
-				req.set_flag( 'web:startup_format', _( 'Edit Quota for %(user)s' ) )
+				req.set_flag( 'web:startup_format', _( 'Edit quota for %(user)s' ) )
 				lst.add_row( [ umcd.Button( user.user, 'quota/user', umcd.Action( req ) ),
 								 umcd.Number( tools.block2byte( user.bused ) ),
 								 umcd.Number( tools.block2byte( user.bsoft ) ),
@@ -152,7 +152,7 @@ class Web( object ):
 			req_show = umcp.Command( args = [ 'quota/partition/show' ],
 									 opts =	{ 'partition' : partition.spec } )
 			actions = ( umcd.Action( req, boxes, True ), umcd.Action( req_show ) )
-			choices = [ ( 'quota/user/remove', _( 'Remove Quota Settings' ) ), ]
+			choices = [ ( 'quota/user/remove', _( 'Remove quota settings' ) ), ]
 			select = umcd.SelectionButton( _( 'Select the Operation' ), choices, actions )
 			lst.add_row( [ umcd.Fill( 9 ), select ] )
 		else:
@@ -162,14 +162,14 @@ class Web( object ):
 		req.set_flag( 'web:startup', True )
 		req.set_flag( 'web:startup_reload', True )
 		req.set_flag( 'web:startup_dialog', True )
-		req.set_flag( 'web:startup_format', _( 'Add Quota Settings on %(partition)s' ) )
-		lst.add_row( [ umcd.Button( _( 'Add User' ), 'actions/add', umcd.Action( req ),
+		req.set_flag( 'web:startup_format', _( 'Add quota settings on %(partition)s' ) )
+		lst.add_row( [ umcd.Button( _( 'Add user' ), 'actions/add', umcd.Action( req ),
 									attributes = { 'colspan' : '3' } ), umcd.Fill( 7 ) ] )
 		info_frame = umcd.Frame( [ info ], _( 'Configuration' ) )
 		if not lst:
 			res.dialog = [ info_frame ]
 		else:
-			res.dialog = [ info_frame, umcd.Frame( [ lst ], _( 'Quota Settings' ) ) ]
+			res.dialog = [ info_frame, umcd.Frame( [ lst ], _( 'Quota settings' ) ) ]
 		self.revamped( object.id(), res )
 
 	def _web_quota_user_show( self, object, res ):
@@ -177,13 +177,13 @@ class Web( object ):
 
 		quota = res.dialog
 		if quota.user and quota.partition:
-			headline = _( "Modify Quota Setting for User '%(user)s' on Partition %(partition)s" ) \
+			headline = _( "Modify quota setting for user '%(user)s' on partition %(partition)s" ) \
 					   % { 'user' : quota.user, 'partition' : quota.partition.spec }
 		elif quota.partition:
-			headline = _( "Add Quota Setting for a User on Partition %s" ) % \
+			headline = _( "Add quota setting for a user on partition %s" ) % \
 					   quota.partition.spec
 		else:
-			headline = _( "Add Quota Setting for a User" )
+			headline = _( "Add quota setting for a user" )
 
 		# user and partition
 		if not quota.user:
@@ -205,9 +205,9 @@ class Web( object ):
 		hard = umcd.make( self[ 'quota/user/set' ][ 'block_hard' ],
 						  default = tools.block2byte( quota.bhard ) )
 		items += [ soft.id(), hard.id() ]
-		lst.add_row( [ _( 'Amount of Data' ), ] )
+		lst.add_row( [ _( 'Amount of data' ), ] )
 		lst.add_row( [ soft, hard ] )
-		lst.add_row( [ _( 'Number of Files' ), ] )
+		lst.add_row( [ _( 'Number of files' ), ] )
 		soft = umcd.make( self[ 'quota/user/set' ][ 'file_soft' ], default = quota.fsoft )
 		hard = umcd.make( self[ 'quota/user/set' ][ 'file_hard' ], default = quota.fhard )
 		lst.add_row( [ soft, hard ] )

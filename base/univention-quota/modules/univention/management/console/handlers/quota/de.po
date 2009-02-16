@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-13 18:33+0200\n"
+"POT-Creation-Date: 2009-02-16 11:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,138 +15,138 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: __init__.py:57
-msgid "Filesystem Quotas"
+#: __init__.py:58
+msgid "Filesystem quotas"
 msgstr "Dateisystem Quota"
 
-#: __init__.py:58
+#: __init__.py:59
 msgid "Set, unset and modify filesystem quota"
 msgstr "Setzen, Entfernen und Bearbeiten von Quota-Einstellungen"
 
-#: __init__.py:63
-msgid "List Partitions"
+#: __init__.py:64
+msgid "List partitions"
 msgstr "Partitionen anzeigen"
 
-#: __init__.py:64
+#: __init__.py:65
 msgid "List available partitions"
 msgstr "Verfügbare Partitionen anzeigen"
 
-#: __init__.py:71
-msgid "Show Partition"
+#: __init__.py:72
+msgid "Show partition"
 msgstr "Partitionsansicht"
 
-#: __init__.py:72
+#: __init__.py:73
 msgid "Show details to one selected partition"
 msgstr "Details zu einer ausgewählten Partition anzeigen"
 
-#: __init__.py:77
-msgid "Activate Quota-Support"
+#: __init__.py:78
+msgid "Activate quota support"
 msgstr "Quota-Unterstützung aktivieren"
 
-#: __init__.py:78
+#: __init__.py:79
 msgid "Activate quota support for a partition"
 msgstr "Quota-Unterstützung für eine Partition aktivieren"
 
-#: __init__.py:83
-msgid "Deactivate Quota-Support"
+#: __init__.py:84
+msgid "Deactivate quota support"
 msgstr "Quota-Unterstützung deaktivieren"
 
-#: __init__.py:84
+#: __init__.py:85
 msgid "Deactivate quota support for a partition"
 msgstr "Quota-Unterstützung fr eine Partition deaktivieren"
 
-#: __init__.py:89
-msgid "Set/Modify User Settings"
+#: __init__.py:90
+msgid "Set/modify user settings"
 msgstr "Setzen/Bearbeiten von Benutzereinstellungen"
 
-#: __init__.py:90
+#: __init__.py:91
 msgid "Modify quota settings for a user"
 msgstr "Bearbeitung der Quota-Einstellungen für einen Benutzer"
 
-#: __init__.py:100
-msgid "Delete User's Quota Settings"
+#: __init__.py:101
+msgid "Delete user's quota settings"
 msgstr "Entfernen der Quota-Einstellungen für einen Drucker"
 
-#: __init__.py:101
+#: __init__.py:102
 msgid "Delete the user's quota settings for a specific partition"
 msgstr ""
 "Entfernen der Quota-Einstellungen einer ausgewählten Partition für eine "
 "Benutzer"
 
-#: __init__.py:107
-msgid "User Settings"
+#: __init__.py:108
+msgid "User settings"
 msgstr "Benutzer Einstellungen"
 
-#: __init__.py:108
+#: __init__.py:109
 msgid "Show detailed quota information for a user"
 msgstr "Zeigt Details zu den Quota-Einstellungen eines Benutzers an"
 
-#: partition.py:98
+#: partition.py:99
 #, python-format
-msgid "Activating Quota for device %(device)s failed: %(message)s"
+msgid "Activating quota for device %(device)s failed: %(message)s"
 msgstr ""
 "Die Aktivierung der Quota-Unterstützung ist für die Partition %(device)s ist "
 "fehlgeschlagen: %(message)s"
 
-#: partition.py:102
+#: partition.py:103
 #, python-format
-msgid "Quota-Support successfully activated for device %s"
+msgid "Quota support successfully activated for device %s"
 msgstr "Quota-Unterstützung wurde erfolgreich für die Partition %s aktiviert"
 
-#: partition.py:116
+#: partition.py:117
 #, python-format
-msgid "Deactivating Quota for device %(device)s failed: %(message)s"
+msgid "Deactivating quota for device %(device)s failed: %(message)s"
 msgstr ""
 "Die Deaktivierung der Quota-Unterstützung für die Partition %(device)s ist "
 "fehlgeschlagen: %(message)s"
 
-#: partition.py:120
+#: partition.py:121
 #, python-format
-msgid "Quota-Support successfully deactivated for device %s"
+msgid "Quota support successfully deactivated for device %s"
 msgstr "Quota-Unterstützung erfolgreich für die Partition %s deaktiviert"
 
-#: _revamp.py:46 _types.py:49
+#: _revamp.py:47 _types.py:50
 msgid "Partition"
 msgstr "Partition"
 
-#: _revamp.py:49
-msgid "Mount-Point"
+#: _revamp.py:50
+msgid "Mount point"
 msgstr "Mount-Point"
 
-#: _revamp.py:49
+#: _revamp.py:50
 msgid "Quota"
 msgstr "Quota"
 
-#: _revamp.py:49
+#: _revamp.py:50
 msgid "Size"
 msgstr "Größe"
 
-#: _revamp.py:50
+#: _revamp.py:51
 msgid "Free"
 msgstr "Frei"
 
-#: _revamp.py:50 _revamp.py:126
+#: _revamp.py:51 _revamp.py:127
 msgid "Select"
 msgstr "Auswählen"
 
-#: _revamp.py:64
+#: _revamp.py:65
 #, python-format
 msgid "Partition: %(partition)s"
 msgstr "Partition: %(partition)s"
 
-#: _revamp.py:67
+#: _revamp.py:68
 msgid "unknown"
 msgstr "Unbekannt"
 
-#: _revamp.py:72
+#: _revamp.py:73
 msgid "activated"
 msgstr "aktiviert"
 
-#: _revamp.py:75
+#: _revamp.py:76
 msgid "This partition is currently not mounted"
 msgstr "Diese Partition is momentan nicht eingebunden"
 
-#: _revamp.py:77
+#: _revamp.py:78
 msgid ""
 "The quota support is deactivated in the configuration, but the partition is "
 "still mounted with quota support activated."
@@ -154,7 +154,7 @@ msgstr ""
 "Die Quota-Unterstützung ist in der Konfiguration deaktiviert, aber die "
 "Partition ist noch mit der Unterstützung eingebunden."
 
-#: _revamp.py:79
+#: _revamp.py:80
 msgid ""
 "The quota support is activated in the configuration, but the partition is "
 "still mounted without quota support."
@@ -162,186 +162,186 @@ msgstr ""
 "Die Quota-Unterstützung ist in der Konfiguration aktiviert, aber die "
 "Partition ist ohne Unterstützung eingebunden."
 
-#: _revamp.py:81
+#: _revamp.py:82
 msgid "deactivated"
 msgstr "deaktiviert"
 
-#: _revamp.py:100
+#: _revamp.py:101
 msgid "activate"
 msgstr "Aktivieren"
 
-#: _revamp.py:101
+#: _revamp.py:102
 msgid "deactivate"
 msgstr "Deaktivieren"
 
-#: _revamp.py:102 _revamp.py:155
+#: _revamp.py:103 _revamp.py:156
 msgid "Select the Operation"
 msgstr "Auswahl der Operation"
 
-#: _revamp.py:105
-msgid "Partition Overview"
+#: _revamp.py:106
+msgid "Partition overview"
 msgstr "Partitionsübersicht"
 
-#: _revamp.py:117
-msgid "Mount-Point:"
+#: _revamp.py:118
+msgid "Mount point:"
 msgstr "Mount-Point:"
 
-#: _revamp.py:118
+#: _revamp.py:119
 msgid "Filesystem:"
 msgstr "Dateisystem:"
 
-#: _revamp.py:119
+#: _revamp.py:120
 msgid "Options:"
 msgstr "Optionen:"
 
-#: _revamp.py:124
-msgid "Limit: Size"
+#: _revamp.py:125
+msgid "Limit: size"
 msgstr "Limit: Größe"
 
-#: _revamp.py:125
-msgid "Limit: Files"
+#: _revamp.py:126
+msgid "Limit: files"
 msgstr "Limit: Dateien"
 
-#: _revamp.py:126 _types.py:48
+#: _revamp.py:127 _types.py:49
 msgid "User"
 msgstr "Benutzer"
 
-#: _revamp.py:127 _revamp.py:128
+#: _revamp.py:128 _revamp.py:129
 msgid "Used"
 msgstr "Belegt"
 
-#: _revamp.py:127 _revamp.py:128
+#: _revamp.py:128 _revamp.py:129
 msgid "Soft"
 msgstr "Soft"
 
-#: _revamp.py:127 _revamp.py:128
+#: _revamp.py:128 _revamp.py:129
 msgid "Hard"
 msgstr "Hard"
 
-#: _revamp.py:127 _revamp.py:128
+#: _revamp.py:128 _revamp.py:129
 msgid "Grace"
 msgstr "Frist"
 
-#: _revamp.py:141
+#: _revamp.py:142
 #, python-format
-msgid "Edit Quota for %(user)s"
+msgid "Edit quota for %(user)s"
 msgstr "Quota für %(user)s bearbeiten"
 
-#: _revamp.py:154
-msgid "Remove Quota Settings"
+#: _revamp.py:155
+msgid "Remove quota settings"
 msgstr "Entfernen der Quota-Einstellungen"
 
-#: _revamp.py:158
+#: _revamp.py:159
 msgid "Currently there are no quota settings for this partition"
 msgstr "Momentan gibt es keine Quota-Einstellungen für diese Partition"
 
-#: _revamp.py:164
+#: _revamp.py:165
 #, python-format
-msgid "Add Quota Settings on %(partition)s"
+msgid "Add quota settings on %(partition)s"
 msgstr "Hinzufügen von Quota-Einstellungen auf Partition %(partition)s"
 
-#: _revamp.py:165
-msgid "Add User"
+#: _revamp.py:166
+msgid "Add user"
 msgstr "Benutzer hinzufügen"
 
-#: _revamp.py:167
+#: _revamp.py:168
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: _revamp.py:171
-msgid "Quota Settings"
+#: _revamp.py:172
+msgid "Quota settings"
 msgstr "Quota-Einstellungen"
 
-#: _revamp.py:179
+#: _revamp.py:180
 #, python-format
-msgid "Modify Quota Setting for User '%(user)s' on Partition %(partition)s"
+msgid "Modify quota setting for user '%(user)s' on partition %(partition)s"
 msgstr ""
 "Bearbeiten der Quota-Einstellungen für Benutzer '%(user)s' auf der Partition "
 "%(partition)s"
 
-#: _revamp.py:182
+#: _revamp.py:183
 #, python-format
-msgid "Add Quota Setting for a User on Partition %s"
+msgid "Add quota setting for a user on partition %s"
 msgstr "Hinzufügen von Quota-Einstellungen für einen Benutzer auf Partition %s"
 
-#: _revamp.py:185
-msgid "Add Quota Setting for a User"
+#: _revamp.py:186
+msgid "Add quota setting for a user"
 msgstr "Hinzufügen von Quota-Einstellungen für einen Benutzer"
 
-#: _revamp.py:207
-msgid "Amount of Data"
+#: _revamp.py:208
+msgid "Amount of data"
 msgstr "Datenmenge"
 
-#: _revamp.py:209
-msgid "Number of Files"
+#: _revamp.py:210
+msgid "Number of files"
 msgstr "Anzahl der Dateien"
 
-#: tools.py:63
+#: tools.py:64
 msgid "Expired"
 msgstr "Abgelaufen"
 
-#: tools.py:65
+#: tools.py:66
 #, python-format
 msgid "%s Days"
 msgstr "%s Tage"
 
-#: tools.py:131
+#: tools.py:132
 msgid "Device could not be found"
 msgstr "Gerät konnte nicht gefunden werden"
 
-#: tools.py:161
+#: tools.py:162
 msgid "Unmounting the partition has failed"
 msgstr "Aushängen der Partition ist fehlgeschlagen"
 
-#: tools.py:163
+#: tools.py:164
 msgid "Mounting the partition has failed"
 msgstr "Einhängen der Partition ist fehlgeschlagen"
 
-#: tools.py:165 tools.py:177
+#: tools.py:166 tools.py:178
 msgid "Restarting the quota services has failed"
 msgstr "Neustart des Quota-Dienstes ist fehlgeschlagen"
 
-#: tools.py:167 tools.py:179
+#: tools.py:168 tools.py:180
 msgid "Operation was successful"
 msgstr "Operation war erfolgreich"
 
-#: tools.py:171
+#: tools.py:172
 msgid "Remounting the partition has failed"
 msgstr "Erneutes Einhängen der Partition ist fehlgeschlagen"
 
-#: tools.py:175
+#: tools.py:176
 msgid "Generating the quota information file failed"
 msgstr "Erstellung der Quota-Informationsdatei ist fehlgeschlagen"
 
-#: _types.py:43
+#: _types.py:44
 msgid "Value is not a valid size."
 msgstr "Der angegebene Wert ist keine gültige Größenangabe"
 
-#: _types.py:50
+#: _types.py:51
 msgid "Partitions"
 msgstr "Partitionen"
 
-#: _types.py:51
-msgid "Data Size Soft-Limit"
+#: _types.py:52
+msgid "Data size soft limit"
 msgstr "Soft-Limit (Größe)"
 
-#: _types.py:52
-msgid "Data Size Hard-Limit"
+#: _types.py:53
+msgid "Data size hard limit"
 msgstr "Hard-Limit (Größe)"
 
-#: _types.py:53
-msgid "Files Soft-Limit"
+#: _types.py:54
+msgid "Files soft limit"
 msgstr "Soft-Limit (Dateien)"
 
-#: _types.py:54
-msgid "Files Hard-Limit"
+#: _types.py:55
+msgid "Files hard limit"
 msgstr "Hard-Limit (Dateien)"
 
-#: user.py:90
+#: user.py:91
 msgid "Successfully set quota settings"
 msgstr "Quota-Einstellungen erfolgreich gesetzt"
 
-#: user.py:93
+#: user.py:94
 #, python-format
 msgid ""
 "Failed to modify quota settings for user %(user)s on partition %(partition)s"
@@ -349,11 +349,11 @@ msgstr ""
 "Fehler beim Setzen der Quota-Einstellungen für Benutzer %(user)s auf der "
 "Partition %(partition)s"
 
-#: user.py:112
+#: user.py:113
 msgid "Successfully removed quota settings"
 msgstr "Quota-Einstellungen erfolgreich entfernt"
 
-#: user.py:115
+#: user.py:116
 #, python-format
 msgid ""
 "Failed to remove quota settings for user %(user)s on partition %(partition)s"

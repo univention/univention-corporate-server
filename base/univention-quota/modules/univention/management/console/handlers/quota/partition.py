@@ -96,11 +96,11 @@ class Commands( object ):
 		for dev, info in result.items():
 			success, message = info
 			if not success:
-				messages.append( _( 'Activating Quota for device %(device)s failed: %(message)s' ) % \
+				messages.append( _( 'Activating quota for device %(device)s failed: %(message)s' ) % \
 								 { 'device' : dev, 'message' : message } )
 				failed = True
 			else:
-				messages.append( _( 'Quota-Support successfully activated for device %s' % dev ) )
+				messages.append( _( 'Quota support successfully activated for device %s' % dev ) )
 		report = '\n'.join( messages )
 		self.finished( object.id(), [], report, success = not failed )
 
@@ -114,10 +114,10 @@ class Commands( object ):
 		for dev, info in result.items():
 			success, message = info
 			if not success:
-				messages.append( _( 'Deactivating Quota for device %(device)s failed: %(message)s' ) % \
+				messages.append( _( 'Deactivating quota for device %(device)s failed: %(message)s' ) % \
 								 { 'device' : dev, 'message' : message } )
 				failed = True
 			else:
-				messages.append( _( 'Quota-Support successfully deactivated for device %s' % dev ) )
+				messages.append( _( 'Quota support successfully deactivated for device %s' % dev ) )
 		report = '\n'.join( messages )
 		self.finished( object.id(), [], report, success = not failed )
