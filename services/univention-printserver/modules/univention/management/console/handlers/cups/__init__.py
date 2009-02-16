@@ -49,13 +49,13 @@ import tools
 _ = umc.Translation( 'univention.management.console.handlers.cups' ).translate
 
 icon = 'cups/module'
-short_description = _( 'Printer Administration' )
+short_description = _( 'Printer administration' )
 long_description = _( 'Manages printers controlled by the CUPS server' )
 categories = [ 'all' ]
 
 command_description = {
 	'cups/list': umch.command(
-		short_description = _( 'List Printers' ),
+		short_description = _( 'List printers' ),
 		long_description = _( 'Lists all available printers' ),
 		method = 'cups_list',
 		values = { 'key' : _types.searchkey,
@@ -65,40 +65,40 @@ command_description = {
 		caching = True
 	),
 	'cups/printer/show': umch.command(
-		short_description = _( 'Show Printer' ),
+		short_description = _( 'Show printer' ),
 		method = 'cups_printer_show',
 		values = { 'printer' : _types.printername },
 	),
 	'cups/printer/quota/list': umch.command(
-		short_description = _( 'Printer Quotas' ),
-		long_description = _( 'Show Printer Quotas' ),
+		short_description = _( 'Printer quotas' ),
+		long_description = _( 'Show printer quotas' ),
 		method = 'cups_printer_quota_list',
 		values = { 'printer' : _types.printername },
 	),
 	'cups/printer/quota/show': umch.command(
-		short_description = _( 'Show Quota' ),
+		short_description = _( 'Show quota' ),
 		method = 'cups_printer_quota_show',
 		values = { 'printer' : _types.printername },
 	),
 	'cups/printer/disable': umch.command(
-		short_description = _( 'Deactivates Printers' ),
+		short_description = _( 'Deactivates printers' ),
 		method = 'cups_printer_disable',
 		values = { 'printers' : _types.printers },
 	),
 	'cups/printer/enable': umch.command(
-		short_description = _( 'Activates Printers' ),
+		short_description = _( 'Activates printers' ),
 		method = 'cups_printer_enable',
 		values = { 'printers' : _types.printers }
 	),
 	'cups/quota/user/show': umch.command(
-		short_description = _( 'User Print Quota Settings' ),
+		short_description = _( 'User print quota settings' ),
 		long_description = _( 'Show print quota settings for a user' ),
 		method = 'cups_quota_user_show',
 		values = { 'user' : _types.user,
 					'printer' : _types.printername },
 	),
 	'cups/quota/user/set': umch.command(
-		short_description = _( 'Set/Modify User Print Quota' ),
+		short_description = _( 'Set/modify user print quota' ),
 		long_description = _( 'Modify printer quota settings for a user' ),
 		method = 'cups_quota_user_set',
 		values = { 'user' : _types.user,
@@ -107,20 +107,20 @@ command_description = {
 					'hardlimit' : _types.pagehardlimit },
 	),
 	'cups/quota/user/reset': umch.command(
-		short_description = _( 'Reset User Print Quota' ),
-		long_description = _( 'reset printer quota for a user' ),
+		short_description = _( 'Reset user print quota' ),
+		long_description = _( 'Reset printer quota for a user' ),
 		method = 'cups_quota_user_reset',
 		values = { 'user' : _types.user,
 					'printer': _types.printername },
 	),
 	'cups/job/cancel': umch.command(
-		short_description = _( 'Cancel Print Jobs' ),
+		short_description = _( 'Cancel print jobs' ),
 		long_description = _( 'Cancels all given print jobs.' ),
 		method = 'cups_job_cancel',
 		values = { 'jobs' : _types.jobs }
 	),
 	'cups/job/move': umch.command(
-		short_description = _( 'Move Print Jobs' ),
+		short_description = _( 'Move print jobs' ),
 		long_description = _( 'Moves a list of print jobs from one printer to another.' ),
 		method = 'cups_job_move',
 		values = { 'source': _types.printername,

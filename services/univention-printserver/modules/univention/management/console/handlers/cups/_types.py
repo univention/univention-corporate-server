@@ -36,10 +36,10 @@ _ = umc.Translation( 'univention.management.console.handlers.cups' ).translate
 
 class CUPS_SearchKeys( umc.StaticSelection ):
 	def __init__( self, required = True ):
-		umc.StaticSelection.__init__( self, unicode( _( 'Search Key' ) ), required = required )
+		umc.StaticSelection.__init__( self, unicode( _( 'Search key' ) ), required = required )
 
 	def choices( self ):
-		return ( ( 'printer', _( 'Printer Name' ) ), ( 'description', _( 'Description' ) ),
+		return ( ( 'printer', _( 'Printer name' ) ), ( 'description', _( 'Description' ) ),
 				 ( 'location', _( 'Location' ) ) )
 
 umcd.copy( umc.StaticSelection, CUPS_SearchKeys )
@@ -47,8 +47,8 @@ umcd.copy( umc.StaticSelection, CUPS_SearchKeys )
 printername = umc.String( _( 'Printer' ) )
 searchkey = CUPS_SearchKeys()
 filter = umc.String( '&nbsp;' , required = False )
-printers = umc.StringList( _( 'Printer List' ) )
-jobs = umc.StringList( _( 'Job List' ) )
+printers = umc.StringList( _( 'Printer list' ) )
+jobs = umc.StringList( _( 'Job list' ) )
 user = umc.String( _( 'User' ) )
-pagesoftlimit = umc.Integer( _( 'Page Quota Soft-Limit' ) )
-pagehardlimit = umc.Integer( _( 'Page Quota Hard-Limit' ) )
+pagesoftlimit = umc.Integer( _( 'Page quota soft limit' ) )
+pagehardlimit = umc.Integer( _( 'Page quota hard limit' ) )

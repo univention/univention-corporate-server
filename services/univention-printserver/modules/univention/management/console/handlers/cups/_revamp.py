@@ -80,16 +80,16 @@ class Web( object ):
 			req_list = umcp.Command( args = [ 'cups/list' ],
 									 opts = { 'filter' : filter, 'key' : key } )
 			actions = ( umcd.Action( req, boxes, True ), umcd.Action( req_list ) )
-			choices = [ ( 'cups/printer/enable', _( 'Activate Printers' ) ),
-						( 'cups/printer/disable', _( 'Deactivate Printers' ) ) ]
-			select = umcd.SelectionButton( _( 'Select the Operation' ), choices, actions )
+			choices = [ ( 'cups/printer/enable', _( 'Activate printers' ) ),
+						( 'cups/printer/disable', _( 'Deactivate printers' ) ) ]
+			select = umcd.SelectionButton( _( 'Select the operation' ), choices, actions )
 
 			lst.add_row( [ umcd.Fill( 6 ), select ] )
 		else:
 			lst.add_row( [ _( 'No printers could be found.' ) ] )
 
 		res.dialog = [ self.__printer_search_form( filter, key ),
-					   umcd.Frame( [ lst ], _( 'Search Result' ) ) ]
+					   umcd.Frame( [ lst ], _( 'Search result' ) ) ]
 
 		self.revamped( object.id(), res )
 
@@ -126,14 +126,14 @@ class Web( object ):
 			req_show = umcp.Command( args = [ 'cups/printer/show' ],
 									 opts= { 'printer' : object.options[ 'printer' ] } )
 			actions = ( umcd.Action( req, boxes, True ), umcd.Action( req_show ) )
-			choices = [ ( 'cups/job/cancel', _( 'Cancel Print Job' ) ), ]
-			select = umcd.SelectionButton( _( 'Select the Operation' ), choices, actions )
+			choices = [ ( 'cups/job/cancel', _( 'Cancel print job' ) ), ]
+			select = umcd.SelectionButton( _( 'Select the operation' ), choices, actions )
 			lst.add_row( [ umcd.Fill( 4 ), select ] )
 		else:
 			lst.add_row( [ _( 'No jobs in the queue' ) ] )
 
 		res.dialog = [ umcd.Frame( [ info, ], _( 'Information' ) ),
-					   umcd.Frame( [ lst, ], _( 'Print Job List' ) ) ]
+					   umcd.Frame( [ lst, ], _( 'Print job list' ) ) ]
 
 		self.revamped( object.id(), res )
 
@@ -159,7 +159,7 @@ class Web( object ):
 		lstQ = umcd.List()
 		boxes = []
 		if prnQuota:
-			lstQ.set_header( [ _( 'User' ), _( 'Pages used' ), _( 'Softlimit' ), _( 'Hardlimit' ),
+			lstQ.set_header( [ _( 'User' ), _( 'Pages used' ), _( 'Soft limit' ), _( 'Hard limit' ),
 							   _( 'Lifetime page counter' ), '' ] )
 			for uquota in prnQuota.userlist:
 				static_options = { 'user' : uquota.user, 'printer' : object.options[ 'printer' ] }
@@ -183,7 +183,7 @@ class Web( object ):
 				req.set_flag( 'web:startup', True )
 				req.set_flag( 'web:startup_reload', True )
 				req.set_flag( 'web:startup_dialog', True )
-				req.set_flag( 'web:startup_format', _( 'Edit Print Quota for %(user)s' ) )
+				req.set_flag( 'web:startup_format', _( 'Edit print quota for %(user)s' ) )
 				lstQ.add_row(  [ umcd.Button( uquota.user, 'cups/user', umcd.Action( req ) ),
 								 umcd.Number(uquota.pagecounter), umcd.Number(softlimit),
 								 umcd.Number(hardlimit), umcd.Number(uquota.lifetimepagecounter),
@@ -194,8 +194,8 @@ class Web( object ):
 			req_show = umcp.Command( args = [ 'cups/printer/quota/list' ],
 									 opts= { 'printer' : object.options[ 'printer' ] } )
 			actions = ( umcd.Action( req, boxes, True ), umcd.Action( req_show ) )
-			choices = [ ( 'cups/quota/user/reset', _( 'Reset User Quota' ) ) ]
-			select = umcd.SelectionButton( _( 'Select the Operation' ), choices, actions )
+			choices = [ ( 'cups/quota/user/reset', _( 'Reset user quota' ) ) ]
+			select = umcd.SelectionButton( _( 'Select the operation' ), choices, actions )
 			lstQ.add_row( [ umcd.Fill( 5 ), select ] )
 		else:
 			lstQ.add_row( [ _( 'No quota settings available' ) ] )
@@ -205,11 +205,11 @@ class Web( object ):
 		req.set_flag( 'web:startup', True )
 		req.set_flag( 'web:startup_reload', True )
 		req.set_flag( 'web:startup_dialog', True )
-		req.set_flag( 'web:startup_format', _( 'User Quota on %(printer)s' ) )
-		lstQ.add_row( [ umcd.Button( _( 'Add Quota Entry' ), 'actions/add', umcd.Action( req ),
+		req.set_flag( 'web:startup_format', _( 'User quota on %(printer)s' ) )
+		lstQ.add_row( [ umcd.Button( _( 'Add quota entry' ), 'actions/add', umcd.Action( req ),
 									attributes = { 'colspan' : '3' } ), umcd.Fill( 3 ) ] )
 		res.dialog = [ umcd.Frame( [ info, ], _( 'Information' ) ),
-						umcd.Frame( [ lstQ ], _( 'Print Quota' ) ) ]
+						umcd.Frame( [ lstQ ], _( 'Print quota' ) ) ]
 
 		self.revamped( object.id(), res )
 
@@ -218,9 +218,9 @@ class Web( object ):
 
 		quota = res.dialog
 		if quota[ 'user' ]:
-			headline = _( "Modify Print Quota Setting for User '%(user)s' on Printer %(printer)s" ) % quota
+			headline = _( "Modify print quota setting for user '%(user)s' on printer %(printer)s" ) % quota
 		else:
-			headline = _( "Add Print Quota Entry on printer %(printer)s" ) % quota
+			headline = _( "Add print quota entry on printer %(printer)s" ) % quota
 
 		# user and partition
 		if not quota['user']:
