@@ -1,3 +1,9 @@
+univention-installer (3.0.14-1) unstable; urgency=low
+
+  * added bacula to the backup tools. Bug #11885
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Feb 2009 06:40:30 +0100
+
 univention-installer (3.0.13-1) unstable; urgency=low
 
   * a repository should just be created if selected in the installer (Bug

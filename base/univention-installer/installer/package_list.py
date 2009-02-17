@@ -354,6 +354,15 @@ PackageList=[
 	'Packages':
 			[
 				{
+					'Name': _('Bacula (Backup)'),
+					'Packages': ['bacula'],
+					'Edition': [ 'scalix', 'ugs' ],
+					'Architecture': [ 'x86' ],
+					'Active': [],
+					'Possible': ['all'],
+					'Description': _('Network based Backup Software'),
+				},
+				{
 					'Name': _('Unidump'),
 					'Packages': ['unidump'],
 					'Edition': [ 'scalix', 'ugs' ],
