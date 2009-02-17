@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (5.0.1-3) unstable; urgency=low
+
+  * removed dist-upgrade in postinst (Bug: #12921)
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Feb 2009 17:46:18 +0100
+
 univention-thin-client-basesystem (5.0.1-2) unstable; urgency=low
 
   * removed some more boot error messages. Bug #11634

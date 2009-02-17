@@ -86,7 +86,7 @@ fi
 
 univention-thin-client-apt install univention-thin-client-basesystem-config
 
-univention-thin-client-apt dist-upgrade || true
+#univention-thin-client-apt dist-upgrade || true
 
 # Bug #12288 - file is overwritten by locales package
 ln -sf /ramdisk/etc/locale.gen /var/lib/univention-client-root/etc/locale.gen
