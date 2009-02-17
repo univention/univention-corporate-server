@@ -74,14 +74,11 @@ def filesort(x,y):
 	return cmp(os.path.basename(x), os.path.basename(y))
 
 class ConfigRegistry( dict ):
-	NORMAL, LDAP, FORCED, CUSTOM = range( 4 )
+	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM = range( 5 )
 	PREFIX = '/etc/univention'
-	BASES = { NORMAL : 'base.conf',
-			  LDAP : 'base-ldap.conf',
-			  FORCED : 'base-forced.conf' }
+	BASES = { NORMAL : 'base.conf', LDAP : 'base-ldap.conf', SCHEDULE : 'base-schedule.conf', FORCED : 'base-forced.conf' }
 
 	def __init__( self, filename = None, write_registry = NORMAL ):
-		dict.__init__( self )
 		if os.getenv( 'UNIVENTION_BASECONF' ):
 			self.file = os.getenv( 'UNIVENTION_BASECONF' )
 		elif filename:
@@ -96,11 +93,13 @@ class ConfigRegistry( dict ):
 		if not self.file:
 			self._registry[ ConfigRegistry.NORMAL ] = self._create_registry( ConfigRegistry.NORMAL )
 			self._registry[ ConfigRegistry.LDAP ] = self._create_registry( ConfigRegistry.LDAP )
+			self._registry[ ConfigRegistry.SCHEDULE ] = self._create_registry( ConfigRegistry.SCHEDULE )
 			self._registry[ ConfigRegistry.FORCED ] = self._create_registry( ConfigRegistry.FORCED )
 			self._registry[ ConfigRegistry.CUSTOM ] = {}
 		else:
 			self._registry[ ConfigRegistry.NORMAL ] = {}
 			self._registry[ ConfigRegistry.LDAP ] = {}
+			self._registry[ ConfigRegistry.SCHEDULE ] = {}
 			self._registry[ ConfigRegistry.FORCED ] = {}
 			self._registry[ ConfigRegistry.CUSTOM ] = self._create_registry( ConfigRegistry.CUSTOM )
 
@@ -108,8 +107,7 @@ class ConfigRegistry( dict ):
 		if reg == ConfigRegistry.CUSTOM:
 			return _ConfigRegistry( file = self.file )
 		else:
-			return _ConfigRegistry( file = os.path.join( ConfigRegistry.PREFIX,
-														 ConfigRegistry.BASES[ reg ] ) )
+			return _ConfigRegistry( file = os.path.join( ConfigRegistry.PREFIX, ConfigRegistry.BASES[ reg ] ) )
 	def load( self ):
 		for reg in self._registry.values():
 			if isinstance( reg, _ConfigRegistry ):
@@ -135,10 +133,10 @@ class ConfigRegistry( dict ):
 		self._registry[ self._write_registry ][ key ] = value
 
 	def get( self, key, default = '' ):
-		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.LDAP, ConfigRegistry.NORMAL ):
+		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL ):
 			if self._registry[ reg ].has_key( key ):
 				return self._registry[ reg ][ key ]
-
+		
 		return self._registry[ ConfigRegistry.CUSTOM ].get( key, default )
 
 	def has_key( self, key, write_registry_only = False ):
@@ -149,7 +147,7 @@ class ConfigRegistry( dict ):
 
 	def _merge( self ):
 		merge = {}
-		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.LDAP, ConfigRegistry.NORMAL,
+		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL,
 					 ConfigRegistry.CUSTOM ):
 			if not isinstance( self._registry[ reg ], _ConfigRegistry ):
 				continue
@@ -791,6 +789,8 @@ def handler_set( args, opts = {} ):
 		reg = ConfigRegistry( write_registry = ConfigRegistry.LDAP )
 	elif opts.get( 'forced', False ):
 		reg = ConfigRegistry( write_registry = ConfigRegistry.FORCED )
+	elif opts.get( 'schedule', False ):
+		reg = ConfigRegistry( write_registry = ConfigRegistry.SCHEDULE )
 	else:
 		reg = ConfigRegistry()
 
@@ -836,6 +836,8 @@ def handler_unset( args, opts = {} ):
 		reg = ConfigRegistry( write_registry = ConfigRegistry.LDAP )
 	elif opts.get( 'forced', False ):
 		reg = ConfigRegistry( write_registry = ConfigRegistry.FORCED )
+	elif opts.get( 'schedule', False ):
+		reg = ConfigRegistry( write_registry = ConfigRegistry.SCHEDULE )
 	else:
 		reg = ConfigRegistry()
 	reg.lock()
@@ -1121,12 +1123,9 @@ def main(args):
 			99 : [ 'shell', filter_shell, False, ( 'dump', 'search', 'shell' ) ],
 			}
 		opt_commands = {
-			'set' : { 'forced' : False,
-					  'ldap-policy' : False },
-			'unset' : { 'forced' : False,
-						'ldap-policy' : False },
-			'search' : { 'key' : True,
-						 'value' : False },
+			'set' : { 'forced' : False, 'ldap-policy' : False, 'schedule' : False },
+			'unset' : { 'forced' : False, 'ldap-policy' : False, 'schedule' : False },
+			'search' : { 'key' : True, 'value' : False },
 			'filter' : { 'encode-utf8' : False }
 			}
 		# close your eyes ...

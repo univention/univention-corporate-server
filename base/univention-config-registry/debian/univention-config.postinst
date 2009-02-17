@@ -43,7 +43,9 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.1; the
 
 		members=`getent group $group | awk -F':' '{print $4}'`
 		delgroup $group
-		nscd -i group
+		if [ -x /usr/sbin/nscd ]; then
+			nscd -i group
+		fi
 		addgroup --system $group
 		if [ -n "$members" ]; then
 			for member in `echo $members | sed -e 's|,| |g'`; do
