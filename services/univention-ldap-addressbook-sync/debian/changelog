@@ -1,3 +1,9 @@
+univention-ldap-addressbook-sync (2.0.1-1) unstable; urgency=low
+
+  * rebuild for UCS 2.2. Bug #12377 and Bug #12966
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Feb 2009 10:58:52 +0100
+
 univention-ldap-addressbook-sync (1.0.5-1) unstable; urgency=low
 
   * fix synchronisation of email addresses for groups and mailing lists

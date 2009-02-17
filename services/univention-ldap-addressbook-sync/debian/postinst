@@ -3,7 +3,7 @@
 # Univention LDAP addressbook synchronisation
 #  postinst script
 #
-# Copyright (C) 2008 Univention GmbH
+# Copyright (C) 2008,2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -48,3 +48,4 @@ if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domain
 	/usr/lib/univention-install/95univention-ldap-addressbook-sync.inst || true
 fi
 
+exit 0
