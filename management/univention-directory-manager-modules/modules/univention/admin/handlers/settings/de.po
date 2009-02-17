@@ -530,19 +530,19 @@ msgid "Printer URI"
 msgstr "Drucker-URI"
 
 #: prohibited_username.py:48
-msgid "Settings: Prohibited Usernames"
+msgid "Settings: Prohibited user names"
 msgstr "Einstellungen: Verbotene Benutzernamen"
 
 #: prohibited_username.py:49
-msgid "Univention Prohibited Usernames"
+msgid "Univention Prohibited user names"
 msgstr "Univention Verbotene Benutzernamen"
 
 #: prohibited_username.py:64 prohibited_username.py:65
-msgid "Prohibited Username"
+msgid "Prohibited user name"
 msgstr "Verbotener Benutzername"
 
 #: prohibited_username.py:75
-msgid "Prohibited Usernames"
+msgid "Prohibited user names"
 msgstr "Verbotene Benutzernamen"
 
 #: sambaconfig.py:63
@@ -680,7 +680,7 @@ msgid "Preferences: Univention Directory Manager User Settings"
 msgstr "Einstellungen: Univention Directory Manager Benutzereinstellungen"
 
 #: user.py:53
-msgid "Username"
+msgid "User name"
 msgstr "Benutzername"
 
 #: user.py:73

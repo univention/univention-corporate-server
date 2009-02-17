@@ -50,7 +50,7 @@ options={
 }
 property_descriptions={
 	'username': univention.admin.property(
-			short_description=_('Username'),
+			short_description=_('User name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
