@@ -118,7 +118,7 @@ msgid "No packages were found."
 msgstr "Es wurden keine Pakete gefunden."
 
 #: _revamp.py:96
-msgid "Search result"
+msgid "Search results"
 msgstr "Suchergebnis"
 
 #: _revamp.py:127

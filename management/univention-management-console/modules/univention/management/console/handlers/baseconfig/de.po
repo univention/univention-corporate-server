@@ -49,11 +49,11 @@ msgid "Language"
 msgstr "Sprache"
 
 #: _revamp.py:203
-msgid "Modify Configuration Registry Variable"
+msgid "Modify Configuration Registry variable"
 msgstr "Bearbeiten einer Configuration Registry Variable"
 
 #: _revamp.py:205
-msgid "Add Configuration Registry Variable"
+msgid "Add Configuration Registry variable(s)"
 msgstr "Hinzufügen einer Configuration Registry Variable"
 
 #: __init__.py:54

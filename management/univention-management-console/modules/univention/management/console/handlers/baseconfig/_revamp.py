@@ -127,7 +127,7 @@ class Web( object ):
 			else:
 				result.add_row( [ _( 'No configuration registry variables were found.' ) ] )
 
-			main.append( umcd.Frame( [ result ], _( 'Search result' ) ) )
+			main.append( umcd.Frame( [ result ], _( 'Search results' ) ) )
 
 		res.dialog = main
 		self.revamped( object.id(), res )
@@ -200,9 +200,9 @@ class Web( object ):
 
 		# title
 		if variable != None:
-			main.append( umcd.Frame( [ form ], _( 'Modify Configuration Registry Variable' ) ) )
+			main.append( umcd.Frame( [ form ], _( 'Modify Configuration Registry variable' ) ) )
 		else:
-			main.append( umcd.Frame( [ form ], _( 'Add Configuration Registry Variable' ) ) )
+			main.append( umcd.Frame( [ form ], _( 'Add Configuration Registry variable(s)' ) ) )
 
 		res.dialog = main
 		self.revamped( object.id(), res )

@@ -126,7 +126,7 @@ class modconsole(unimodule.unimodule):
 				]
 		self.chooselang=language_dojo_select(_("Language:"),{'width':'265'},{"helptext":_("Select language for this session"),"choicelist":langs})
 
-		self.usernamein=question_text(_("Username"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your uid.")})
+		self.usernamein=question_text(_("User name"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your uid.")})
 		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Abort login")})
 		if int(os.environ["HTTPS"]) == 1 or self.save.get("http") == 1:
 			self.passwdin=question_secure(_("Password"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("Please enter your password.")})

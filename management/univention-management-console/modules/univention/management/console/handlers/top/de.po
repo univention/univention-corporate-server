@@ -72,7 +72,7 @@ msgid "CPU usage"
 msgstr "CPU Nutzung"
 
 #: __init__.py:58
-msgid "Username"
+msgid "User name"
 msgstr "Benutzername"
 
 #: __init__.py:61

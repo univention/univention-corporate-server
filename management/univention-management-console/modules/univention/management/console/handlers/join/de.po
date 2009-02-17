@@ -117,7 +117,7 @@ msgid "Join state"
 msgstr "Status des Domänenbeitritts"
 
 #: __init__.py:68 __init__.py:75
-msgid "Username"
+msgid "User name"
 msgstr "Benutzername"
 
 #: __init__.py:69 __init__.py:76

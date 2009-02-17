@@ -42,7 +42,7 @@ msgid "No kernel modules were found."
 msgstr "Es wurden keine Kernel-Module gefunden."
 
 #: _revamp.py:105
-msgid "Search result"
+msgid "Search results"
 msgstr "Suchergebnis"
 
 #: _revamp.py:125
@@ -52,7 +52,7 @@ msgstr "Laden"
 #: _revamp.py:136
 #, python-format
 msgid ""
-"Unloading a kernel module may result in an unstable system. Are you sure the "
+"Unloading a kernel module may result in an unstable system. Are you sure that the "
 "module '%s' should be unloaded?"
 msgstr ""
 "Das Entladen eines Kernel-Modul kann zu einem instabilen System führen. Soll "

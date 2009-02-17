@@ -65,14 +65,14 @@ command_description = {
 	'join/rejoin' : umch.command(
 		short_description = _( 'Rejoin' ),
 		method = 'join_rejoin',
-		values = { 'account' : umc.String( _( 'Username' ), required = False ),
+		values = { 'account' : umc.String( _( 'User name' ), required = False ),
 				   'password' : umc.Password( _( 'Password' ), required = False ) },
 	),
 	'join/script' : umch.command(
 		short_description = _( 'Run join script' ),
 		method = 'join_script',
 		values = { 'script' : umc.String( _( 'Join script name' ) ),
-				   'account' : umc.String( _( 'Username' ) ),
+				   'account' : umc.String( _( 'User name' ) ),
 				   'password' : umc.Password( _( 'Password' ) ) },
 	),
 }

@@ -55,7 +55,7 @@ class TOP_Sort( umc.StaticSelection ):
 
 	def choices( self ):
 		return ( ( 'cpu', _( 'CPU usage' ) ),
-				 ( 'user', _( 'Username' ) ),
+				 ( 'user', _( 'User name' ) ),
 				 ( 'rssize', _( 'Resident set size' ) ),
 				 ( 'vsize', _( 'Virtual size' ) ),
 				 ( 'pid', _( 'Process ID' ) ) )

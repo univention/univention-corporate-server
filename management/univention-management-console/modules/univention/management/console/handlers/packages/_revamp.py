@@ -93,7 +93,7 @@ class Web( object ):
 			else:
 				result.add_row( [ _( 'No packages were found.' ) ] )
 
-			main.append( umcd.Frame( [ result ], _( 'Search result' ) ) )
+			main.append( umcd.Frame( [ result ], _( 'Search results' ) ) )
 
 		res.dialog = main
 

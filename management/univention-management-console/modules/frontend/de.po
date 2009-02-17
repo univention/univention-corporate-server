@@ -221,7 +221,7 @@ msgid "Select language for this session"
 msgstr "Bitte wählen Sie eine Sprache für diese Sitzung"
 
 #: modconsole.py:129
-msgid "Username"
+msgid "User name"
 msgstr "Benutzername"
 
 #: modconsole.py:129
