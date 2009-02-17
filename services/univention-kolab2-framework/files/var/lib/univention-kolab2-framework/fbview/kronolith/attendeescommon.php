@@ -168,7 +168,14 @@ function imapConnect($user)
     $mailbox = "user/$prefix/" . $params['calendar_store'] . "$suffix";
     $fullmbox = $server . $mailbox;
 
-    $imap = @imap_open($fullmbox, $params['calendar_user'], $params['calendar_pass'], CL_EXPUNGE);
+    list($tmp_prefix, $real_domain) = split('@', $user);
+    if ( !empty($real_domain)) {
+        $calendar_user=$params['calendar_user_prefix']."@".$real_domain;
+    } else {
+        $calendar_user=$params['calendar_user'];
+    }
+
+    $imap = @imap_open($fullmbox, $calendar_user, $params['calendar_pass'], CL_EXPUNGE);
     return imapSuccess();
 }
 

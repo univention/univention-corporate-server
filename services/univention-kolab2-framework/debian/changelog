@@ -1,3 +1,9 @@
+univention-kolab2-framework (2.0.1-1) unstable; urgency=low
+
+  * allow ressources in a non dns domain, Bug #6201
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  5 Sep 2008 09:08:30 +0200
+
 univention-kolab2-framework (1.1.4-2) unstable; urgency=low
 
   * Added UCR Warning.

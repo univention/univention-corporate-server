@@ -421,8 +421,14 @@ function &internalGetFreeBusy($resource, $url)
 
     myLog("URL = $url", RM_LOG_DEBUG );
 
+    list($tmp_prefix, $real_domain) = split('@', $resource);
+	if ( !empty($real_domain)) {
+		$calendar_user=$params['calendar_user_prefix']."@".$real_domain;
+	} else {
+		$calendar_user=$params['calendar_user'];
+	}
     $parsed = parse_url($url);
-    $parsed['user'] = urlencode($params['calendar_user']);
+    $parsed['user'] = urlencode($calendar_user);
     $parsed['pass'] = urlencode($params['calendar_pass']);
     $url = assembleUri($parsed);
 
@@ -630,13 +636,20 @@ function imapConnect($resource, $inbox = false)
     //$mailbox = "INBOX/Calendar";
     $fullmbox = $server . $mymailbox;
 
+    list($tmp_prefix, $real_domain) = split('@', $resource);
+	if ( !empty($real_domain)) {
+		$calendar_user=$params['calendar_user_prefix']."@".$real_domain;
+	} else {
+		$calendar_user=$params['calendar_user'];
+	}
+
     $imap = &new Net_IMAP( $params['server'] );
     if( PEAR::isError($imap) ) {
       myLog('Unable to create Net_IMAP object: ' . $imap->getMessage(), RM_LOG_ERROR);
       return false;
     }
     //$imap->setDebug(true);
-    $rc = $imap->login($params['calendar_user'], $params['calendar_pass'], true, false);
+    $rc = $imap->login($calendar_user, $params['calendar_pass'], true, false);
     if( PEAR::isError($rc) ) {
       myLog('Unable to authenticate: ' . $rc->getMessage(), RM_LOG_ERROR);
       return false;      
@@ -679,14 +692,14 @@ function imapConnect($resource, $inbox = false)
       }
     }
 
-    myLog("Set ACL $calmbox for ".$params['calendar_user'], RM_LOG_DEBUG);
-    $rc = $imap->setACL( $calmbox, $params['calendar_user'], "lrswipcda" );
+    myLog("Set ACL $calmbox for ".$calendar_user, RM_LOG_DEBUG);
+    $rc = $imap->setACL( $calmbox, $calendar_user, "lrswipcda" );
     if( PEAR::isError($rc)) {
         myLog("Error setACL $calmbox: ".$rc->getMessage(), RM_LOG_ERROR);
         return false;
     }
 
-    myLog("Selecting $calmbox for ".$params['calendar_user'], RM_LOG_DEBUG);
+    myLog("Selecting $calmbox for ".$calendar_user, RM_LOG_DEBUG);
     // Open an IMAP connection to the requested users' calendar
     $rc = $imap->selectMailBox( $calmbox );
     if( PEAR::isError($rc)) {

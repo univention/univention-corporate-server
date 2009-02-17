@@ -46,7 +46,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	univention-admin container/cn create --ignore_exists $@ --position cn=univention,$ldap_base --set name=services
 	univention-admin settings/service create  --ignore_exists $@ --position cn=services,cn=univention,$ldap_base --set name=kolab2
 	# if there is no default kolab home server ...
-	kolab_home=`univention-admin settings/default list --filter='cn=default' | grep defaultKolabHomeServer | sed 's/ *defaultKolabHomeServer: //'`
+	kolab_home=`univention-admin settings/default list $@ --filter='cn=default' | grep defaultKolabHomeServer | sed 's/ *defaultKolabHomeServer: //'`
 	if [ "$kolab_home" = "None" ]; then
 		univention-admin settings/default modify $@ --dn cn=default,cn=univention,$ldap_base --set defaultKolabHomeServer=$hostname.$domainname
 	fi
