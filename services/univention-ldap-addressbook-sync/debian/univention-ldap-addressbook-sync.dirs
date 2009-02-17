@@ -1,0 +1,3 @@
+usr/lib/univention-ldap-addressbook-sync
+usr/lib/univention-directory-listener/system
+var/lib/univention-ldap-addressbook-sync

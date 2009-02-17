@@ -1,0 +1,50 @@
+univention-ldap-addressbook-sync (1.0.5-1) unstable; urgency=low
+
+  * fix synchronisation of email addresses for groups and mailing lists
+    (Bug #12966)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 19 Dec 2008 09:47:42 +0100
+
+univention-ldap -addressbook-sync (1.0.4-1) unstable; urgency=low
+
+  * add support for several user email addresses
+  * UCR variable ldap/addressbook/sync/mail/ignore: email addresses matching
+    this pattern are ignored
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 02 Dec 2008 10:29:04 +0200
+
+univention-ldap-addressbook-sync (1.0.3-2) unstable; urgency=low
+
+  * bump version 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 02 Dec 2008 10:29:04 +0200
+
+univention-ldap-addressbook-sync (1.0.3-1) unstable; urgency=low
+
+  * fixed typo in default shared IMAP folder 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 21 Oct 2008 10:03:04 +0200
+
+univention-ldap-addressbook-sync (1.0.2-1) unstable; urgency=low
+
+  * fixed path in cron job file 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 21 Oct 2008 08:15:51 +0200
+
+univention-ldap-addressbook-sync (1.0.1-1) unstable; urgency=low
+
+  * ensure correct processing order of task files created by listener module
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 20 Oct 2008 11:50:46 +0200
+
+univention-ldap-addressbook-sync (1.0.0-2) unstable; urgency=low
+
+  * run join script in postinst on domaincontroller master and backup 
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 18 Oct 2008 19:06:22 +0200
+
+univention-ldap-addressbook-sync (1.0.0-1) unstable; urgency=low
+
+  * initial release.
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 08 Oct 2008 15:15:00 +0200

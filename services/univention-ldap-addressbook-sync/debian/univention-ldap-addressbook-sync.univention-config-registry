@@ -1,0 +1,3 @@
+Type: file
+File: etc/cron.d/univention-ldap-addressbook-sync
+Variables: ldap/addressbook/sync/cron

@@ -1,0 +1,431 @@
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
+#
+# Univention LDAP addressbook synchronisation
+#
+# Copyright (C) 2008 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+from optparse import OptionParser
+import copy
+import datetime
+import fnmatch
+import xml.dom
+import imaplib
+import email.MIMEMultipart
+import email.MIMEText
+import email.Charset
+import cPickle, os, sys, fcntl, time
+
+import univention.debug as ud
+import univention.config_registry as ucr
+import univention.uldap
+
+cfgRegistry = ucr.ConfigRegistry()
+cfgRegistry.load()
+_options = None
+
+class KolabContact( email.MIMEMultipart.MIMEMultipart, object ):
+	def __init__( self, dn ):
+		email.MIMEMultipart.MIMEMultipart.__init__( self )
+		self._id = '%s@%s.%s' % ( time.time(), cfgRegistry.get( 'hostname', '' ), cfgRegistry.get( 'domainname', '' ) )
+		self[ 'subject' ] = self._id
+		self[ 'X-Univention-LDAP-DN' ] = dn
+		self.__setup_object()
+		self.__attached = False
+
+	def __setup_object( self ):
+		'''creates the Kolab XML part of the message'''
+
+		#create document
+		implement = xml.dom.getDOMImplementation()
+		self._doc = implement.createDocument( None, "contact", None )
+
+		# id
+		self.__create_element( 'uid', self._id, self._doc.documentElement )
+
+		# comment
+		self.__create_element( 'body', parent = self._doc.documentElement )
+
+		# categories
+		self.__create_element( 'categories', parent = self._doc.documentElement )
+
+		# dates
+		now = datetime.datetime.now()
+		self.__create_element( 'creation-date', text = now.isoformat(),
+							   parent = self._doc.documentElement )
+		self.__create_element( 'last-modification-date', text = now.isoformat(),
+							   parent = self._doc.documentElement )
+
+		# sensitivity
+		self.__create_element( 'sensitivity', text = 'public', parent = self._doc.documentElement )
+
+		# product
+		self.__create_element( 'product-id', text = 'Univention LDAP Addressbook Sync',
+							   parent = self._doc.documentElement )
+
+		# name
+		elem = self._doc.createElement( 'name' )
+		self.__create_element( 'given-name', parent = elem, prefix = 'name' )
+		self.__create_element( 'last-name', parent = elem, prefix = 'name' )
+		self.__create_element( 'full-name', parent = elem, prefix = 'name' )
+		self._doc.documentElement.appendChild( elem )
+
+		# organization
+		for item in ( 'organization', 'department', 'office-location', 'profession', 'job-title',
+					  'manager-name', 'assistant', 'birthday' ):
+			self.__create_element( item, parent = self._doc.documentElement )
+
+		# addresses
+		for addr in ( 'home', 'business' ):
+			elem = self._doc.createElement( 'address' )
+			self.__create_element( 'type', text = addr, parent = elem, prefix = addr )
+			self.__create_element( 'street', parent = elem, prefix = addr )
+			self.__create_element( 'locality', parent = elem, prefix = addr )
+			self.__create_element( 'region', parent = elem, prefix = addr )
+			self.__create_element( 'postal-code', parent = elem, prefix = addr )
+			self.__create_element( 'country', parent = elem, prefix = addr )
+			self._doc.documentElement.appendChild( elem )
+
+		# phone numbers
+		for phone in ( 'business1', 'businessfax', 'home1', 'mobile' ):
+			elem = self._doc.createElement( 'phone' )
+			self.__create_element( 'type', text = phone, parent = elem, prefix = phone )
+			self.__create_element( 'number', parent = elem, prefix = phone )
+			self._doc.documentElement.appendChild( elem )
+
+	def add_email_addresses(  self, display, addresses ):
+		i = 0
+		ignore = cfgRegistry.get( 'ldap/addressbook/sync/mail/ignore', '' )
+		for addr in addresses:
+			# email address
+			if fnmatch.fnmatch( addr, ignore ):
+				continue
+			elem = self._doc.createElement( 'email' )
+			self.__create_element( 'display-name', text = display, parent = elem, prefix = 'email%d' % i )
+			self.__create_element( 'smtp-address', text = addr, parent = elem, prefix = 'email%d' % i )
+			self._doc.documentElement.appendChild( elem )
+			i += 1
+
+	def add_infotext( self ):
+		'''creates the information part of the message, explaining the content'''
+
+		info = '''
+Die ist ein Kolab-Groupware-Objekt. Um dieses Objekt anzuzeigen, benötigen
+Sie ein E-Mail-Programm, das das Kolab-Groupware-Format unterstützt. Eine
+Liste solcher Programme finden Sie unter
+http://www.kolab.org/kolab2-clients.html
+'''
+		charset = email.Charset.Charset( 'utf-8' )
+		charset.body_encoding = email.Charset.QP
+		info_text = email.MIMEText.MIMEText( charset.body_encode( info ), 'plain', 'utf-8' )
+		info_text.set_charset( charset )
+		info_text.set_payload( charset.body_encode( info ) )
+		info_text.add_header( 'Content-Disposition', 'inline' )
+		del info_text[ 'Content-Transfer-Encoding' ]
+		info_text[ 'Content-Transfer-Encoding' ] = charset.get_body_encoding()
+		self.attach( info_text )
+
+	def __create_element( self, name, text = '', parent = None, prefix = None ):
+		if prefix:
+			attr_name = prefix + '_' + name
+		else:
+			attr_name = name
+		attr_name = attr_name.replace( '-', '_' )
+		setattr( self, attr_name, self._doc.createTextNode( text ) )
+		elem = self._doc.createElement( name )
+		elem.appendChild( getattr( self, attr_name ) )
+		if parent:
+			parent.appendChild( elem )
+
+	def __setattr__( self, attr, value ):
+		'''Support setting the kolab contact attributes directly via <object>.<attribute>'''
+
+		if hasattr( self, attr ) and isinstance( getattr( self, attr ), xml.dom.Node ):
+			getattr( self, attr ).data = value
+		else:
+			object.__setattr__( self, attr, value )
+
+	def add_contact( self ):
+		charset = email.Charset.Charset( 'utf-8' )
+ 		charset.body_encoding = email.Charset.BASE64
+		app = email.MIMEText.MIMEText( '', 'x-vnd.kolab.contact', 'utf-8' )
+		app.set_charset( charset )
+		xml = self._doc.toxml( encoding = 'utf-8' )
+		app.set_payload( charset.body_encode( xml ) )
+		app.set_type( 'application/x-vnd.kolab.contact' )
+		app.add_header( 'Content-Disposition', 'attachment', filename = 'contacts.xml' )
+		self.attach( app )
+
+	def create_message( self ):
+		if not self.__attached:
+			self.add_infotext()
+			self.add_contact()
+			self.__attached = True
+
+	def __str__( self ):
+		self.create_message()
+		return self.as_string()
+
+class IMAP_Client( object ):
+	def __init__( self ):
+		try:
+			fd = open( '/etc/cyrus.secret', 'r' )
+		except:
+			ud.debug( ud.ADMIN, ud.ERROR, 'Failed to read password for user cyrus. Is there a IMAP server installed?' )
+			sys.exit( 1 )
+		password = fd.readline()
+		fd.close()
+		if password[ -1 ] == '\n':
+			password = password[ : -1 ]
+
+		# check for IMAP folder
+		self.folder = cfgRegistry.get( 'ldap/addressbook/sync/folder', '' )
+		if not self.folder:
+			raise RuntimeError( 'Global IMAP folder for synchronisation is not set!' )
+
+		# try to connect
+		try:
+			self.imap4 = imaplib.IMAP4( 'localhost' )
+		except Exception, e:
+			raise RuntimeError( 'Connection to local IMAP server failed!' )
+			sys.exit( 1 )
+
+		# try to log in
+		try:
+			self.imap4.login( 'cyrus', password )
+		except:
+			raise RuntimeError( 'Login to IMAP server failed!' )
+			sys.exit( 1 )
+
+		# set ACLs (required!)
+		self.imap4.setacl( self.folder, 'cyrus', 'lrswipcda' )
+
+		# select mailbox (checks existance)
+		self.imap4.select( self.folder )
+
+	def find( self, dn ):
+		# find it
+		typ, data = self.imap4.search( 'UTF-8', '(HEADER "X-Univention-LDAP-DN" "%s")' % dn )
+
+		if data and data[ 0 ]:
+			ud.debug( ud.ADMIN, ud.INFO, 'IMAP: found message: %s' % data[ 0 ].split()[ 0 ] )
+			return data[ 0 ].split()[ 0 ]
+
+		return None
+
+	def remove_all( self ):
+		typ, data = self.imap4.search( None, 'ALL' )
+		if not data:
+			return
+
+		# mark as deleted
+		for i in data[ 0 ].split():
+			self.imap4.store( i, '+FLAGS', '\\Deleted' )
+
+		# expunge
+		self.imap4.expunge()
+
+	def remove( self, dn ):
+		id = self.find( dn )
+		if not id:
+			ud.debug( ud.ADMIN, ud.INFO, 'IMAP: remove message: not found' )
+			return
+
+		# mark as deleted
+		ud.debug( ud.ADMIN, ud.INFO, 'IMAP: remove message with id %s' % id )
+		if _options.simulate:
+			return
+
+		self.imap4.store( id, '+FLAGS', '\\Deleted' )
+
+		# expunge
+		self.imap4.expunge()
+
+	def add( self, message ):
+		# add new message
+		self.imap4.append( self.folder, None, None, message )
+
+class Synchronisation( object ):
+	def __init__( self ):
+		self.imap = IMAP_Client()
+		self.display_user = cfgRegistry.get( 'ldap/addressbook/sync/display/user',
+											 '%(sn)s, %(givenName)s' )
+		self.display_group = cfgRegistry.get( 'ldap/addressbook/sync/display/group',
+											  '%(cn)s (Gruppe)' )
+		self.display_list = cfgRegistry.get( 'ldap/addressbook/sync/display/list',
+											 '%(cn)s (Liste)' )
+
+	def process( self, dn , old, new ):
+		if old and new:
+			self.modify( dn, old, new )
+		elif not old and new:
+			self.add( dn, old, new )
+		elif old and not new:
+			self.remove( dn )
+
+	def modify( self, dn, old, new ):
+		self.remove( dn )
+		self.add( dn, old, new )
+
+
+	def __map_displayname( self, obj, display ):
+		for key in obj.keys():
+			if not obj[ key ]:
+				obj[ key ] = ''
+			else:
+				obj[ key ] = obj[ key ][ 0 ]
+
+		while True:
+			try:
+				text = display % obj
+			except KeyError, e:
+				obj[ str( e )[ 1 : -1 ] ] = ''
+			else:
+				break
+
+		return text
+
+	def add( self, dn, old, new ):
+		ud.debug( ud.ADMIN, ud.INFO, 'IMAP: add new message: %s' % dn )
+
+		contact = KolabContact( dn )
+		obj_classes = new.get( 'objectClass', [] )
+		# user contact
+		ud.debug( ud.ADMIN, ud.INFO, 'IMAP: add object: %s' % str( new ) )
+		if 'inetOrgPerson' in obj_classes:
+			addresses = copy.deepcopy( new.get( 'mail', [] ) )
+			displayName = self.__map_displayname( new, self.display_user )
+			contact.name_given_name = new.get( 'givenName', '' )
+			contact.name_last_name = new.get( 'sn', '' )
+			contact.name_full_name = displayName
+			ud.debug( ud.ADMIN, ud.INFO, 'IMAP: add mail addresses: %s' % addresses )
+			contact.add_email_addresses( displayName, addresses )
+			contact.business1_number = new.get( 'telephoneNumber', '' )
+			contact.home1_number = new.get( 'homePhone', '' )
+			contact.mobile_number = new.get( 'mobile', '' )
+			contact.organization = new.get( 'o', '' )
+			contact.business_postal_code = new.get( 'postalCode', '' )
+			contact.business_street = new.get( 'street', '' )
+			contact.business_locality = new.get( 'l', '' )
+			contact.job_title = new.get( 'title', '' )
+		elif 'univentionGroup' in obj_classes:
+			displayName = self.__map_displayname( new, self.display_group )
+			contact.name_given_name = new.get( 'cn', '' )
+			contact.name_full_name = displayName
+			contact.add_email_addresses( displayName, [ new.get( 'mailPrimaryAddress', '' ) ] )
+		elif 'univentionKolabGroup' in obj_classes:
+			displayName = self.__map_displayname( new, self.display_list )
+			contact.name_given_name = new.get( 'cn', '' )
+			contact.name_full_name = displayName
+			contact.add_email_addresses( displayName, [ new.get( 'mailPrimaryAddress', '' ) ] )
+
+		if _options.simulate:
+			ud.debug( ud.ADMIN, ud.INFO, 'IMAP: add message: %s' % str( contact ) )
+			return
+
+		self.imap.add( str( contact ) )
+
+	def remove( self, dn ):
+		ud.debug( ud.ADMIN, ud.INFO, 'IMAP: remove message: %s' % dn )
+		self.imap.remove( dn )
+
+def read_changes( dirname ):
+	sync = Synchronisation()
+
+	for fn in sorted( os.listdir( dirname ) ):
+		target_fn = os.path.join( dirname, fn )
+		ud.debug( ud.ADMIN, ud.INFO, 'Processing %s' % fn )
+		try:
+			fd = open( target_fn, 'r+' )
+			obj = cPickle.load( fd )
+			fd.close()
+			dn, new, old = obj
+		except:
+			raise RuntimeError( 'Loading %s failed!' % target_fn )
+
+		# process file
+		try:
+			sync.process( dn, old, new )
+			ud.debug(ud.ADMIN, ud.INFO, 'Processed %s successfully' % fn)
+			if not _options.simulate:
+				os.remove(target_fn)
+		except RuntimeError, e:
+			ud.debug(ud.ADMIN, ud.ERROR, 'Processing %s failed (exitcode %s)' % ( fn, str( e ) ) )
+
+def main():
+	global _options
+
+	debug_level = int( cfgRegistry.get( 'ldap/addressbook/sync/debug/level','0' ) )
+
+	parser = OptionParser()
+	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
+					   dest = 'debug', default = debug_level,
+					   help = 'if given than debugging is activated and set to the specified level' )
+	parser.add_option( '-s', '--simulate', action = 'store_true',
+					   dest = 'simulate', default = False,
+					   help = 'if given the synchronisation is just simulated, no modifications are done' )
+	parser.add_option( '', '--remove-all-contacts', action = 'store_true',
+					   dest = 'remove_all_contacts', default = False,
+					   help = 'if given all contacts in the global folder will be deleted' )
+
+	( _options, args ) = parser.parse_args()
+
+	# open logging
+	ud.init( '/var/log/univention/ldap-addressbook-sync.log', 1, 1 )
+	ud.set_level( ud.ADMIN, _options.debug )
+	ud.debug(ud.ADMIN, ud.ERROR, 'started LDAP addressbook sync script: %s' % str( sys.argv ) )
+
+	# Prevent univention-ldap-addressbook-sync from being started twice
+	fn = '/var/run/univention-ldap-addressbook-sync.pid'
+	fd = open( fn, 'w' )
+	try:
+		fcntl.lockf( fd, fcntl.LOCK_EX | fcntl.LOCK_NB )
+	except IOError, e:
+		ud.debug( ud.ADMIN, ud.ERROR, 'Failed to get lock for %s - another instance seems to be running: %s' % ( fn, str( e ) ) )
+		sys.exit( 1 )
+	fd.write( str( os.getpid() ) + '\n' )
+
+	# clean up mode?
+	if _options.remove_all_contacts:
+		ud.debug(ud.ADMIN, ud.ERROR, 'remove all existing contacts')
+		imap = IMAP_Client()
+		imap.remove_all()
+	else:
+		# process datadir
+		datadir = cfgRegistry.get( 'ldap/addressbook/sync/listener/dir',
+								   '/var/lib/univention-ldap-addressbook-sync')
+		ud.debug( ud.ADMIN, ud.WARN, 'datadir=%s' % datadir )
+		try:
+			read_changes( datadir )
+		except RuntimeError, e:
+			ud.debug( ud.ADMIN, ud.ERROR, str( e ) )
+
+	# free lock and exit
+	fcntl.lockf( fd, fcntl.LOCK_UN )
+	fd.close()
+
+if __name__ == "__main__":
+	main()
