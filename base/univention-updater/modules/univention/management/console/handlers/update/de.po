@@ -1,53 +1,50 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Free Software Foundation, Inc.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-16 12:25+0100\n"
-"PO-Revision-Date: 2009-02-16 08:48+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: unicode\n"
+"Content-Transfer-Encoding: 8bit\n"
 
-#: __init__.py:52
+#: __init__.py:51
 msgid "Online updates"
 msgstr "Online-Updates"
 
-#: __init__.py:53
+#: __init__.py:52
 msgid "Manage system updates"
 msgstr "Verwaltung von System-Updates"
 
-#: __init__.py:60 __init__.py:61
+#: __init__.py:59 __init__.py:60
 msgid "Overview"
 msgstr "Übersicht"
 
-#: __init__.py:69 __init__.py:70
+#: __init__.py:68 __init__.py:69
 msgid "Release update settings"
 msgstr "Releae Update-Einstellungen"
 
-#: __init__.py:73
+#: __init__.py:72
 msgid "Repository server"
 msgstr "Repository Server"
 
-#: __init__.py:74
+#: __init__.py:73
 msgid "Repository prefix"
 msgstr "Repository Prefix"
 
-#: __init__.py:75
+#: __init__.py:74
 msgid "Use hotfix repositories"
 msgstr "Verwende Hotfix Repositories"
 
-#: __init__.py:76
+#: __init__.py:75
 msgid "Use maintained repositories"
 msgstr "Verwende Maintained Repositories"
 
-#: __init__.py:77
+#: __init__.py:76
 msgid "Use unmaintained repositories"
 msgstr "Verwende Unmaintained Repositories"
 
@@ -60,49 +57,53 @@ msgstr "Nach Updates suchen"
 msgid "Component settings"
 msgstr "Komponenten Einstellungen"
 
-#: __init__.py:95
+#: __init__.py:94
 msgid "Enabled"
 msgstr "Aktiviert"
 
-#: __init__.py:96
+#: __init__.py:95
 msgid "Server"
 msgstr "Server"
 
-#: __init__.py:97
+#: __init__.py:96
 msgid "Prefix"
 msgstr "Prefix"
 
-#: __init__.py:98
+#: __init__.py:97
 msgid "Name"
 msgstr "Name"
 
-#: __init__.py:99
+#: __init__.py:98
 msgid "Description"
 msgstr "Beschreibung"
 
-#: __init__.py:100
+#: __init__.py:99
 msgid "Unmaintained"
 msgstr "Unmaintained"
 
-#: __init__.py:101
+#: __init__.py:100
 msgid "Username"
 msgstr "Benutzername"
 
-#: __init__.py:102
+#: __init__.py:101
 msgid "Password"
 msgstr "Passwort"
 
-#: __init__.py:106
+#: __init__.py:105
 msgid "Installs a release update"
 msgstr "Installiert Release Updates"
 
-#: __init__.py:111
+#: __init__.py:110
 msgid "Installs security updates"
 msgstr "Installiert Security Updates"
 
-#: __init__.py:116
+#: __init__.py:115
 msgid "View the logfile during the update"
 msgstr "Die Logdatei während des Updates anzeigen"
+
+#: __init__.py:118
+msgid "Name of the log file"
+msgstr "Name der Log-Datei"
 
 #: __init__.py:122
 msgid "View an update warning"
@@ -116,6 +117,24 @@ msgstr "Die folgenden Pakete werden aktualisiert:"
 msgid "The following NEW packages will be installed:"
 msgstr "Die folgenden Pakete werden neu installiert:"
 
+#: __init__.py:390
+msgid "Important Information"
+msgstr "Wichtige Informationen"
+
+#: __init__.py:391
+msgid ""
+"The system has been updated to a newer version of UCS. It is suggested that "
+"the system should be rebooted after the update. This has not been done yet."
+msgstr "Das System wurde auf eine neuere Version von UCS aktualisiert. Es ist empfohlen das System nach einem Update neuzustarten. Dies wurde bis jetzt noch nicht durchgeführt."
+
+#: __init__.py:392
+msgid "Rebooting the system after an update"
+msgstr "Neustart des Systems noch einem Update"
+
+#: __init__.py:393
+msgid "Reboot System"
+msgstr "System neustarten"
+
 #: __init__.py:389 __init__.py:394
 msgid "View logfile"
 msgstr "Logdatei anzeigen"
@@ -128,9 +147,9 @@ msgstr "Das Update ist noch nicht abgeschlossen."
 msgid "Release settings"
 msgstr "Release-Einstellungen"
 
-#: __init__.py:404
+#: __init__.py:418
 msgid "UCS release"
-msgstr "ucs Version"
+msgstr "UCS Version"
 
 #: __init__.py:405
 msgid "Security patch level"
@@ -172,6 +191,10 @@ msgstr "Die installierte Version ist %s."
 #, python-format
 msgid "The installed security release is %s"
 msgstr "Die installierte Security-Version ist %s"
+
+#: __init__.py:440 __init__.py:469 __init__.py:470
+msgid "Check for Updates"
+msgstr "Prüfen auf Updates"
 
 #: __init__.py:439
 #, python-format
@@ -221,7 +244,7 @@ msgstr "Der Update-Vorgang ist beendet."
 
 #: __init__.py:592 __init__.py:735
 msgid "Confirm the updater warning"
-msgstr "Bestägen der Updater-Warnung"
+msgstr "Bestätigen der Updater-Warnung"
 
 #: __init__.py:593 __init__.py:609 __init__.py:636
 msgid "Continue"
@@ -252,15 +275,15 @@ msgid ""
 "In the normal case, undisturbed use operation cannot be guaranteed during "
 "the update,<br>"
 msgstr ""
-"Im Normallfall ist das stögsfreie Arbeiten von Anwendern wwäend des Updates "
-"nicht gegeben,<br>"
+"Im Normallfall ist das störungsfreie Arbeiten von Anwendern während des "
+"Updates nicht gegeben,<br>"
 
 #: __init__.py:700
 msgid ""
 "since system services may need to be restarted. Thus, updates shouldn't be "
 "installed<br>"
 msgstr ""
-"da bspw. Dienste neu gestartet werden.Deshalb sollten Sie das Update<br>"
+"da bspw. Dienste neu gestartet werden. Deshalb sollten Sie das Update<br>"
 
 #: __init__.py:701
 msgid ""
@@ -278,7 +301,7 @@ msgid ""
 "During setup, the web server may be stopped, leading to a termination of the "
 "HTTP<br>"
 msgstr ""
-"Wähend des Updates kann es vorkommen, dass der Webserver beendet wird und "
+"Während des Updates kann es vorkommen, dass der Webserver beendet wird und "
 "diese Verbindung<br>"
 
 #: __init__.py:705
@@ -293,8 +316,8 @@ msgstr ""
 msgid ""
 "new UMC session. Logfiles can be found in the directory /var/log/univention/"
 msgstr ""
-"weiter beobachtet werden. Logdatien könn im Verzeichnis /var/log/univention/ "
-"gefunden werden"
+"weiter beobachtet werden. Logdateien können im Verzeichnis /var/log/"
+"univention/ gefunden werden"
 
 #: __init__.py:708
 msgid ""

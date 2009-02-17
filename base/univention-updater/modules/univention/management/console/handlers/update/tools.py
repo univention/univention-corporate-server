@@ -242,8 +242,11 @@ class UniventionUpdater:
 
 		return None
 
-	def release_update_available(self):
-		return self.get_next_version( UCS_Version( ( self.version_major, self.version_minor, self.patchlevel ) ) )
+	def release_update_available( self, ucs_version = None ):
+		if not ucs_version:
+			return self.get_next_version( UCS_Version( ( self.version_major, self.version_minor, self.patchlevel ) ) )
+
+		return self.get_next_version( UCS_Version( ucs_version ) )
 
 	def security_update_temporary_sources_list(self):
 		sources_list = []
@@ -354,7 +357,7 @@ class UniventionUpdater:
 					printed = False
 					for arch in ['all', 'extern'] + self.architectures:
 						# for example: http://apt.univention.de/2.0/maintained/2.0-1
-						path='/%s.%s/%s/%s.%s-%s/%s/' % ( patch_inc.major, patch_inc.minor, part, patch_inc.major, patch_inc.minor, patch_inc.patchlevel, arch )
+						path='/%s.%s/%s/%s.%s-%s/%s/Packages.gz' % ( patch_inc.major, patch_inc.minor, part, patch_inc.major, patch_inc.minor, patch_inc.patchlevel, arch )
 						if not self.net_path_exists(path):
 							continue
 						printed = True
@@ -418,7 +421,7 @@ class UniventionUpdater:
 					printed =  False
 					for arch in ['all', 'extern'] + self.architectures:
 						# for example: http://apt.univention.de/2.0/maintained/sec1
-						path='/%s/%s/sec%s/%s/' % (self.ucs_version, part, p, arch )
+						path='/%s/%s/sec%s/%s/Packages.gz' % (self.ucs_version, part, p, arch )
 						if not self.net_path_exists(path):
 							continue
 						printed = True
@@ -441,7 +444,7 @@ class UniventionUpdater:
 				path = '/%s/%s/hotfixes/' % ( self.ucs_version, part )
 				if self.net_path_exists( path ):
 					for arch in [ 'all', 'extern' ] + self.architectures:
-						path='/%s/%s/hotfixes/%s/' % ( self.ucs_version, part, arch )
+						path='/%s/%s/hotfixes/%s/Packages.gz' % ( self.ucs_version, part, arch )
 						if self.net_path_exists( path ):
 							if self.repository_prefix:
 								repos += 'deb http://%s/%s/%s/%s/ hotfixes/%s/\n' % ( self.repository_server, self.repository_prefix, self.ucs_version, part, arch )

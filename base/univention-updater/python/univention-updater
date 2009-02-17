@@ -42,7 +42,7 @@ import subprocess
 
 import univention_baseconfig
 
-import univention.management.console.handlers.update.tools
+from  univention.management.console.handlers.update.tools import UniventionUpdater, UCS_Version
 
 # TODO:
 #   * check the local repository path /var/lib/univention-reposiotry
@@ -168,7 +168,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 	dprint('--->DBG:update_available(mode=%s, cdrom_mount_point=%s, reboot=%s, internal=%s, iso=%s)' %(mode, cdrom_mount_point, str(reboot), str(internal), str(iso)))
 
 	update=0
-	nextversion="none"
+	nextversion = None
 
 	vv=baseConfig['version/version']
 	vp=baseConfig['version/patchlevel']
@@ -179,17 +179,16 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 
 		print 'Checking local repository'
 
-		nextupdate = None
-
-		repository_path = baseConfig.get( 'repository/local/path', '/var/lib/univention-repository')
+		repository_path = baseConfig.get( 'repository/mirror/basepath', '/var/lib/univention-repository')
 
 		if os.path.exists( repository_path ):
-			if os.path.exists(os.path.join(repository_path, '%s-%d' % (vv, int(vp)+1))): #check for x.y-(z+1)
-				nexupdate = '%s-%d' % (vv, int(vp)+1)
-			elif os.path.exists(os.path.join(repository_path, '%s.%d-0' % (version_major, int(version_minor)+1))): #check for x.(y+1)-0
-				nextupdate = '%s.%d-0' % (version_major, int(version_minor)+1)
-			elif os.path.exists(os.path.join(repository_path, '%d.0-0' % (int(version_major)+1))): #check for (x+1).0-0
-				nextupdate = '%d.0-0' % (int(version_major)+1)
+			repo_base = '%s/mirror/' % repository_path
+			if os.path.exists( os.path.join( repo_base, vv, 'maintained', '%s-%d' % ( vv, int( vp ) + 1 ) ) ): #check for x.y-(z+1)
+				nextversion = '%s-%d' % (vv, int(vp)+1)
+			elif os.path.exists(os.path.join( repo_base, vv, 'maintained', '%s.%d-0' % ( version_major, int( version_minor ) + 1 ) ) ): #check for x.(y+1)-0
+				nextversion = '%s.%d-0' % (version_major, int(version_minor)+1)
+			elif os.path.exists(os.path.join( repo_base, vv, 'maintained', '%d.0-0' % ( int( version_major ) + 1 ) ) ): #check for (x+1).0-0
+				nextversion = '%d.0-0' % (int(version_major)+1)
 
 			if not nextversion:
 				update=0
@@ -203,7 +202,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 
 		else:
 			dprint('Error: A local repository was not found.', [stdout,sys_stdout])
-			dprint('       Please check the UCR variable repository/local/path', [stdout,sys_stdout])
+			dprint('       Please check the UCR variable repository/mirror/basepath', [stdout,sys_stdout])
 			dprint('       or try to install via "univention-updater net"', [stdout,sys_stdout])
 			update=0
 			if internal:
@@ -240,8 +239,6 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 						sys_stdout.close()
 						raise UpdateError
 
-		nextupdate = None
-
 		# Let's check if this Update could be installed, as on the dvd is a textfile for which UCS release this update is
 		if os.path.exists('%s/ucs-updates/' % cdrom_mount_point):
 			if os.path.exists('%s/ucs-updates/ucs_%s-%s.txt' % (cdrom_mount_point,vv,vp)):
@@ -276,21 +273,18 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 
 
 	elif mode == 'net':
+		updater = UniventionUpdater()
 
-		import univention.management.console.handlers.update.tools
+		nextversion = updater.release_update_available()
 
-		updater = univention.management.console.handlers.update.tools.UniventionUpdater()
+		dprint('Nextupdate: [%s]' % nextversion)
 
-		nextupdate = updater.release_update_available()
-
-		dprint('Nextupdate: [%s]' % nextupdate)
-
-		if not nextupdate:
+		if not nextversion:
 			dprint('System is up to date (UCS %s-%s)' % (vv,vp), [stdout,sys_stdout])
 			sys_stdout.close()
 			raise UpToDateNoError(reboot)
 
-		return nextupdate
+	return nextversion
 
 
 
@@ -409,12 +403,13 @@ def main():
 
 		dprint('Update to = %s' % nextversion, [stdout, sys.stdout])
 
-		repository_path = baseConfig.get( 'repository/local/path', '/var/lib/univention-repository')
+		repository_path = baseConfig.get( 'repository/mirror/basepath', '/var/lib/univention-repository')
 
 		remove_temporary_sources_list()
+		new_version = UCS_Version( nextversion )
 		for arch in ['all', architecture, 'extern']:
-			if os.path.exists('%s/%s/%s' % (repository_path, nextversion, arch)):
-				add_temporary_sources_list ( 'deb file:%s/ %s/%s' % (repository_path, nextversion, arch ) )
+			if os.path.exists('%s/mirror/%d.%d/maintained/%s/%s' % ( repository_path, new_version.major, new_version.minor, nextversion, arch ) ):
+				add_temporary_sources_list ( 'deb file:%s/mirror/%d.%d/maintained/ %s/%s/' % ( repository_path, new_version.major, new_version.minor, nextversion, arch ) )
 		scriptPath = '%s/%s/%s' % (repository_path, nextversion, arch)
 
 	elif command == 'cdrom':
@@ -485,7 +480,7 @@ def main():
 			else:
 				os.execv(sys.argv[0], calllocal)
 
-		updater = univention.management.console.handlers.update.tools.UniventionUpdater()
+		updater = UniventionUpdater()
 
 		nextversion=update_available('net', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot, iso=iso, updater=updater)
 

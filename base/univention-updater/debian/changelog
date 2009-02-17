@@ -1,3 +1,14 @@
+univention-updater (4.0.19-1) unstable; urgency=low
+
+  * UMC module: add an information if a system is suggested  (Bug #11990)
+  * unset UCR variable update/reboot/required in univention-maintance init
+    script (Bug #11990)
+  * remove execute flag of apache2 und
+    univention-management-console-server during update process (Bug #11990)
+  * minor fixes in the univention-updater local mode (Bug #12511)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 17 Feb 2009 16:56:14 +0100
+
 univention-updater (4.0.18-2) unstable; urgency=low
 
   * updated English translation. Bug #13407

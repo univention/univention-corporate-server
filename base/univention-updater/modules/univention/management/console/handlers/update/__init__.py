@@ -40,11 +40,10 @@ import univention.debug as ud
 
 import univention.config_registry
 
-import notifier.popen
-
 import tools
-import subprocess, string, time
 
+import os
+import subprocess, string, time
 
 _ = umc.Translation('univention.management.console.handlers.update').translate
 
@@ -113,9 +112,10 @@ command_description = {
 		values = { },
 	),
 	'update/view_logfile': umch.command(
-		short_description = _('View the logfile during the update'),
+		short_description = _('View the logfile during the update' ),
 		method = 'view_logfile',
 		values = {
+			'filename': umc.String( _( 'Name of the log file' ), required = False ),
 		},
 	),
 	'update/update_warning': umch.command(
@@ -366,7 +366,7 @@ class handler(umch.simpleHandler):
 	def view_logfile(self, object):
 		_d = ud.function('update.handler.view_logfile')
 
-		p1 = subprocess.Popen(['tail -n 40 %s' % self.logfile], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+		p1 = subprocess.Popen(['tail -n 40 %s' % object.options[ 'filename' ] ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 		(stdout,stderr) = p1.communicate()
 
 		self.finished(object.id(), stdout)
@@ -381,18 +381,32 @@ class handler(umch.simpleHandler):
 	def _web_overview(self, object, res):
 		_d = ud.function('update.handler._web_overview')
 
+		#### Important Information
+
+		frame_info = None
+		# Is a reboot required?
+		if self.updater.configRegistry.get( 'update/reboot/required', 'no' ) == 'yes':
+			list_info = umcd.List()
+			frame_info = umcd.Frame( [ list_info ], _( 'Important Information' ) )
+			list_info.add_row( [ umcd.InfoBox( _( 'The system has been updated to a newer version of UCS. It is suggested that the system should be rebooted after the update. This has not been done yet.' ), columns = 2 ) ] )
+			cmd = umcp.Command( args = [ 'reboot/do' ], opts = { 'action' : 'reboot', 'message' : _( 'Rebooting the system after an update' ) } )
+			list_info.add_row( [ '', umcd.Button( _( 'Reboot System' ), 'actions/ok', actions = [ umcd.Action( cmd ) ] ) ] )
 		#### UCS Releases
 		list_release = umcd.List()
 
+		# updater log button
+		req = self.__get_logfile_request( '/var/log/univention/updater.log' )
+		btn_install_release_update = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
+
+		# security update log button
+		req = self.__get_logfile_request( '/var/log/univention/security-updates.log' )
+		btn_install_sec_update = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
+
 		if self.__is_updater_running():
-			self.logfile = '/var/log/univention/updater.log'
-			btn_install_release_update = umcd.Button(_('View logfile'), 'actions/install', actions = [umcd.Action(self.__get_logfile_request())])
 			list_release.add_row([umcd.Text(_('The Update is still in process')), btn_install_release_update])
 
 		elif self.__is_security_update_running():
-			self.logfile = '/var/log/univention/security-updates.log'
-			btn_install_release_update = umcd.Button(_('View logfile'), 'actions/install', actions = [umcd.Action(self.__get_logfile_request())])
-			list_release.add_row([umcd.Text(_('The Update is still in process')), btn_install_release_update])
+			list_release.add_row([umcd.Text(_('The Update is still in process')), btn_install_sec_update])
 
 		else:
 			req = umcp.Command(args=['update/release_settings'])
@@ -415,8 +429,10 @@ class handler(umch.simpleHandler):
 					list_release.add_row([security_button, umcd.Text(_('The installed security release is %(old)s and %(new)s is available') % {'old':self.updater.security_patchlevel, 'new': self.next_security_update}), btn_install_security_update])
 				else:
 					list_release.add_row([security_button, umcd.Text(_('The installed security release is %s and there is no update available.') % self.updater.security_patchlevel)])
+
 			else:
 				list_release.add_row([release_button,umcd.Text(_('The installed version is %s.') % self.updater.get_ucs_version())])
+
 				list_release.add_row([security_button, umcd.Text(_('The installed security release is %s') % self.updater.security_patchlevel)])
 
 
@@ -467,6 +483,8 @@ class handler(umch.simpleHandler):
 		frame_component = umcd.Frame([list_component], _('Components'))
 
 		res.dialog = [frame_release, frame_component]
+		if frame_info:
+			res.dialog.insert( 0, frame_info )
 
 		self.revamped(object.id(), res)
 
@@ -645,14 +663,28 @@ class handler(umch.simpleHandler):
 	#######################
 
 	def __create_at_job(self, command):
-		p1 = subprocess.Popen(['echo "%s" | at now' % command], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+		script = '''
+chmod -x /usr/sbin/apache2 /usr/sbin/univention-management-console-server
+%s
+if [ $? -eq 0 ]; then
+	univention-config-registry set update/reboot/required=yes
+fi
+chmod +x /usr/sbin/apache2 /usr/sbin/univention-management-console-server
+''' % command
+		p1 = subprocess.Popen(['echo "%s" | at now' % script], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 		(stdout,stderr) = p1.communicate()
 		ud.debug(ud.ADMIN, ud.WARN, 'executing "%s"' % command)
 		ud.debug(ud.ADMIN, ud.WARN, 'install stderr=%s' % stderr)
 		ud.debug(ud.ADMIN, ud.INFO, 'install stdout=%s' % stdout)
 		# TODO: this should be solved in another way,
 		# we have to wait a few seconds otherwise the updater process haven't started yet
-		time.sleep(8)
+		for i in range( 10 ):
+			if not self.__is_process_running( command ):
+				time.sleep( 1 )
+			else:
+				return ( 1, 'The univention-updater process could not be started' )
+
+		# time.sleep(8)
 		if p1.returncode != 0:
 			return (p1.returncode,stderr)
 		else:
@@ -715,8 +747,12 @@ class handler(umch.simpleHandler):
 		return html
 
 
-	def __get_logfile_request(self):
-		req = umcp.Command(args=['update/view_logfile'])
+	def __get_logfile_request( self, filename = None ):
+		req = umcp.Command( args = [ 'update/view_logfile' ] )
+		if filename:
+			req.options[ 'filename' ] = filename
+		else:
+			req.options[ 'filename' ] = '/var/log/univention/updater.log'
 
 		req.set_flag('web:startup', True)
 		req.set_flag('web:startup_cache', False)
@@ -734,3 +770,14 @@ class handler(umch.simpleHandler):
 		req.set_flag('web:startup_referrer', False)
 		req.set_flag('web:startup_format', _('Confirm the updater warning'))
 		return req
+
+	def __is_logfile_available( self, filename ):
+		if os.path.isfile( filename ):
+			try:
+				size = os.stat( filename )[ 6 ]
+				if size > 0:
+					return True
+			except:
+				pass
+
+		return False

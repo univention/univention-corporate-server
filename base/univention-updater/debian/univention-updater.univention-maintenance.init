@@ -190,6 +190,8 @@ case "$1" in
 		echo "."
 		dmesg -n 8
 
+		# clean up updater settings
+		univenntion-config-registry unset update/reboot/required
 		;;
 	*)
 		echo "Usage: /etc/init.d/univention-maintenance {start|stop|restart}"
