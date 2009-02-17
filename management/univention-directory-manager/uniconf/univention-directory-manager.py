@@ -96,7 +96,10 @@ def main(argv):
 
 	os.environ["HTTPS"] = https
 	os.environ["LC_MESSAGES"]=language
-	locale.setlocale( locale.LC_MESSAGES, language )
+	try:
+		locale.setlocale( locale.LC_MESSAGES, language )
+	except:
+		pass
 
 	from uniparts import *
 	import requests
