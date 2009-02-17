@@ -1,3 +1,12 @@
+univention-kolab2-webclient (4.0.1-2) unstable; urgency=low
+
+  * added a dependency to gnupg. Bug #9182
+  * added a dependency to php5-ldap. Bug #10089
+  * added a dependency to expect. Bug #12300
+  * added some files from the last commit
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Feb 2009 20:53:49 +0100
+
 univention-kolab2-webclient (4.0.1-1) unstable; urgency=low
 
   * rebuild for UCS 2.2

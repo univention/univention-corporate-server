@@ -1,0 +1,159 @@
+[horde/application/gollem]
+Description[de]=Aktiviert die Komponente gollem
+Description[en]=Activates the component gollem
+Type=bool
+
+[horde/application/imp]
+Description[de]=Aktiviert die Komponente imp
+Description[en]=Activates the component imp
+Type=bool
+
+[horde/application/ingo]
+Description[de]=Aktiviert die Komponente ingo
+Description[en]=Activates the component ingo
+Type=bool
+
+[horde/application/ingo-vacation]
+Description[de]=Aktiviert die Komponente ingo-vacation
+Description[en]=Activates the component ingo-vacation
+Type=bool
+
+[horde/application/kronolith]
+Description[de]=Aktiviert die Komponente kronolith
+Description[en]=Activates the component kronolith
+Type=bool
+
+[horde/application/mnemo]
+Description[de]=Aktiviert die Komponente mnemo
+Description[en]=Activates the component menmo
+Type=bool
+
+[horde/application/nag]
+Description[de]=Aktiviert die Komponente nag
+Description[en]=Activates the component nag
+Type=bool
+
+[horde/application/passwd]
+Description[de]=Aktiviert die Komponente passwd
+Description[en]=Activates the component passwd
+Type=bool
+
+[horde/application/turba]
+Description[de]=Aktiviert die Komponente turba
+Description[en]=Activates the component turba
+Type=bool
+
+[horde/auth]
+Description[de]=Authentifizierungsmethode - kolab ist der einzige gültige Wert
+Description[en]=Authentication method - kolab is the only valid value
+Type=str
+
+[horde/calendar/day/inline_time]
+Description[de]=Anzeige der Uhrzeit im Tooltip eines Kalendereintrags
+Description[en]=Display time in the tool tip of a calendar entry
+Type=bool
+
+[horde/calendar/edit/save_as_new]
+Description[de]=Speichert ein Kalendereinträge, die nicht bearbeitet werden dürfen als lokale Kopie
+Description[en]=Stores calendar entries where there is no permission to edit them as a local copy
+Type=str
+
+[horde/calendar/invitation/send]
+Description[de]=Erlaubt das Verschicken von Einladungen zu einem Event
+Description[en]=Allows to send invitiations for an event
+Type=str
+
+[horde/calendar/week/inline_time]
+Description[de]=Anzeige der Kalenderwoche im Tooltip eines Kalendereintrags
+Description[en]=Display calendar week in the tool tip of a calendar entry
+Type=bool
+
+[horde/calendar/workweek/display]
+Description[de]=Kalenderdarstellung als Arbeitswoche erlauben
+Description[en]=Allow to display the calendar in a work week view
+Type=str
+
+[horde/hosteddomain]
+Description[de]=Domainnamen der gehosteten Domänen
+Description[en]=Domainname of the hosted domains
+Type=str
+
+[horde/imapserver]
+Description[de]=FQDN des IMAP-Servers
+Description[en]=FQDN of the IMAP server
+Type=str
+
+[horde/kronolith/reminders/cron]
+Description[de]=Aktiviert einen Cronjob zum Verschicken von Erinnerungen
+Description[en]=Activates a Cronjob that sends reminders
+Type=str
+
+[horde/mailer/smtp/auth]
+Description[de]=Authentifizierungsmethode gegenüber dem SMTP-Server (flase schaltet die Authentifizierung ab; true, DIGEST-MD5, CRAM-MD5, LOGIN, PLAIN)
+Description[en]=Authentication method to use for the SMTP server (false deactivates authentication; true, DIGEST-MD5, CRAM-MD5, LOGIN, PLAIN)
+Type=str
+
+[horde/mailer/smtp/host]
+Description[de]=Hostname des SMTP-Servers
+Description[en]=Hostname of the SMTP server
+Type=str
+
+[horde/mailer/smtp/name]
+Description[de]=Name des SMTP-Servers
+Description[en]=Name of the SMTP server
+Type=str
+
+[horde/mailer/smtp/port]
+Description[de]=Portnummer des SMTP-Servers
+Description[en]=Port number of the SMTP server
+Type=str
+
+[horde/mailer/type]
+Description[de]=Type des SMTP-Servers (sendmail oder smtp)
+Description[en]=Type of the SMTP server (sendmail or smtp)
+Type=str
+
+[horde/menu/hide_groupware]
+Description[de]=Versteckt die Groupware-Funktionalität in Horde
+Description[en]=Hides the groupware functionality of Horde
+Type=str
+
+[horde/menu/options]
+Description[de]=Konfigurationsmenü anzeigen/verstecken
+Description[en]=Display/hide configuration menu
+Type=str
+
+[horde/menu/save_state]
+Description[de]=Status des Konfigurationsmenüs bei einer Neuanmeldung wiederherstellen
+Description[en]=Restore the status of the configuration menu on login
+Type=str
+
+[horde/servername]
+Description[de]=Name des Horde-Servers
+Description[en]=Name of the Horde server
+Type=str
+
+[horde/sync/debug]
+Description[de]=SyncML-Debugausgaben aktivieren
+Description[en]=Activate SyncML debug output
+Type=bool
+
+[horde/sync/debugdir]
+Description[de]=Verzeichnis, in das die SyncML-Debugausgaben geschrieben werden
+Description[en]=Directory where the SyncML debug output is stored
+Type=str
+
+[horde/webroot]
+Description[de]=URL unter der die Horde-Instanz erreichbar ist (Standard: /horde3)
+Description[en]=URL where the Horde installation is accessible (default: /horde3)
+Type=str
+
+[horde/sync/notemsg]
+Description[de]=Bemerkung, die einer Beschreibung/Notiz vorangestellt wird, wenn die maximale Größe überschritten wurde
+Description[en]=Remark that is prepended to a description/note when the maximum size is exceeded
+Type=int
+
+[horde/sync/notesize]
+Description[de]=Maximale Größe einer Beschreibung/Notiz, die per SyncML übertragen wird
+Description[en]=Maximum size of a description/note that is transferred via SyncML
+Type=int
