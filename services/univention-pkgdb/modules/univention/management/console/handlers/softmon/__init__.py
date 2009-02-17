@@ -77,7 +77,7 @@ command_description = {
 		startup = True,
 	),
 	'softmon/problem/identification' : umch.command(
-		short_description = _( 'Problem identification' ),
+		short_description = _( 'Identify problems' ),
 		method = 'softmon_problem_identification',
 		values = { 'filter' : filter_type },
 		startup = True,

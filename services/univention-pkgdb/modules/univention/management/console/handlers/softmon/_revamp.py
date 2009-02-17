@@ -255,7 +255,7 @@ class Web( object ):
 		lst1.add_row( row )
 		lst1.add_row( [ max_results, search_btn ] )
 
-		res.dialog = [ umcd.Frame( [ lst1 ], _('Problem identification') ) ]
+		res.dialog = [ umcd.Frame( [ lst1 ], _('Identify problems') ) ]
 
 		if current_check == 'outdated_systems':
 			if not check_results == None:

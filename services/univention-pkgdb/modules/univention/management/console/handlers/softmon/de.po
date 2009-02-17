@@ -35,7 +35,7 @@ msgid "Search packages"
 msgstr "Pakete suchen"
 
 #: __init__.py:80 _revamp.py:258
-msgid "Problem identification"
+msgid "Identify problems"
 msgstr "Probleme identifizieren"
 
 #: __init__.py:147 __init__.py:254
