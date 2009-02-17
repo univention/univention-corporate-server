@@ -1,0 +1,73 @@
+#!/usr/bin/make -f
+#
+
+D=$(CURDIR)/debian/univention-fetchmail
+DS=$(CURDIR)/debian/univention-fetchmail-schema
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	rm -rf ${D}
+	dh_clean 
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k 
+	dh_installdirs
+
+	install -m644 fetchmailExtension.py $(D)/usr/lib/univention-directory-listener/system/
+	install -m600 fetchmailrc $(D)/etc/
+
+	install -m644 univention-fetchmail.schema $(DS)/usr/share/univention-ldap/schema/
+	install -m755 92univention-fetchmail-schema.inst $(DS)/usr/lib/univention-install/92univention-fetchmail-schema.inst
+
+	univention-install-config-registry
+	univention-install-config-registry-info
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdirs
+#	dh_installdebconf	
+	dh_installdocs
+#	dh_installexamples
+#	dh_installmenu
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+#	dh_installinit
+#	dh_installcron
+#	dh_installman
+#	dh_installinfo
+#	dh_undocumented
+	dh_installchangelogs 
+	dh_link
+#	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_makeshlibs
+	dh_installdeb
+#	dh_perl
+#	dh_movefiles
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

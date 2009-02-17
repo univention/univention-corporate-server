@@ -1,0 +1,4 @@
+access to attrs=univentionFetchmailPasswd
+    by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,@%@ldap/base@%@" write
+    by dn.base="cn=admin,@%@ldap/base@%@" write
+    by * none

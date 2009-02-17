@@ -1,0 +1,50 @@
+attributetype ( 1.3.6.1.4.1.10176.1057.1.2 NAME 'univentionFetchmailAddress'
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	DESC 'external mailaddress and username'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.1057.1.3 NAME 'univentionFetchmailServer'
+	SUBSTR caseIgnoreSubstringsMatch
+	DESC 'external mailservername'
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+
+attributetype ( 1.3.6.1.4.1.10176.1057.1.4 NAME 'univentionFetchmailProtocol'
+	SUBSTR caseIgnoreSubstringsMatch
+	DESC 'protokoll of external mailserver'
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+
+attributetype ( 1.3.6.1.4.1.10176.1057.1.5 NAME 'univentionFetchmailPasswd'
+	SUBSTR caseIgnoreSubstringsMatch
+	DESC 'password'
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+
+attributetype ( 1.3.6.1.4.1.10176.1057.1.6 NAME 'univentionFetchmailKeepMailOnServer'
+	SUBSTR caseIgnoreSubstringsMatch
+	DESC 'keep mails on server'
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+
+attributetype ( 1.3.6.1.4.1.10176.1057.1.7 NAME 'univentionFetchmailProtocolType'
+	SUBSTR caseIgnoreSubstringsMatch
+	DESC 'protocol name'
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+
+
+
+objectclass ( 1.3.6.1.4.1.10176.1057.2.1
+	NAME 'univentionFetchmail'
+	DESC 'contains attributes for fetchmail configuration'
+	SUP top AUXILIARY
+	MAY (univentionFetchmailAddress $ univentionFetchmailServer $ univentionFetchmailProtocol $ 
+		 univentionFetchmailPasswd $ univentionFetchmailKeepMailOnServer ))
+
+objectclass ( 1.3.6.1.4.1.10176.1057.2.2
+	NAME 'univentionFetchmailConfig'
+	DESC 'contains attributes for fetchmail configuration'
+	SUP top AUXILIARY
+	MAY (univentionFetchmailProtocolType ) )

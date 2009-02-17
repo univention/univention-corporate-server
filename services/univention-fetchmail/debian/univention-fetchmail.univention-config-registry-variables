@@ -1,0 +1,6 @@
+[fetchmail/enabled]
+Description[de]=Fetchmail-Dienst mit 'yes' aktivieren (Standard: 'no')
+Description[en]=To enable fetchmail service set this option to 'yes' (Default: 'no')
+Type=str
+Categories=Mail
+

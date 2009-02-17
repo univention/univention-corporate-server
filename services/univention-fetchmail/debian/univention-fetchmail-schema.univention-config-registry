@@ -1,0 +1,14 @@
+Type: multifile
+Multifile: etc/ldap/slapd.conf
+Variables: server/role
+Variables: ldap/base
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/11univention-fetchmail
+Variables: server/role
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/66univention-fetchmail_acl-settings
+Variables: ldap/base
