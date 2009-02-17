@@ -509,7 +509,7 @@ td.height14 {
 height:14px;
 }
 
-td.browse_layout, 
+td.browse_layout,
 td.browse_layout_bottom {
 padding:5px 0px 0px 10px;
 }
@@ -1336,8 +1336,7 @@ td.umc_list_element_part_right {
 
 .umc_infobox_col {
         font-weight: normal;
-        padding-top: 0px;
-        padding-bottom: 6px;
+        padding: 5px;
         vertical-align: middle;
         white-space: normal;
 }
