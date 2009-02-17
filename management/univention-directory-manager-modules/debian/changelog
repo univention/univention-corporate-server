@@ -1,5 +1,13 @@
 univention-directory-manager-modules (4.0.3-1) unstable; urgency=low
 
+  * fixed encoding of Samba mungeddial attribute to support profile path
+    for terminal server (Bug #13203)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 16 Feb 2009 12:01:36 +0100
+
+
+univention-directory-manager-modules (4.0.3-1) unstable; urgency=low
+
   * modify the dhcp object if the ip address was changed. Bug #9908
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 14 Feb 2009 13:28:41 +0100

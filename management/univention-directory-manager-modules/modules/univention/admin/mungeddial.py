@@ -353,7 +353,7 @@ class Support( object ):
 		self.sambaMungedValues = [ 'CtxCfgPresent', 'CtxCfgFlags1', 'CtxCallback', 'CtxShadow', 'CtxMaxConnectionTime',
 								   'CtxMaxDisconnectionTime', 'CtxMaxIdleTime', 'CtxKeyboardLayout',
 								   'CtxMinEncryptionLevel', 'CtxWorkDirectory', 'CtxNWLogonServer', 'CtxWFHomeDir',
-								   'CtxWFHomeDirDrive', 'CtxWFProfilePath', 'CtxInitialProgram', 'CtxCallbackNumber' ]
+								   'CtxWFHomeDirDrive', 'CtxInitialProgram', 'CtxCallbackNumber', 'CtxWFProfilePath' ]
 
 	def sambaMungedDialMap( self ):
 		changed=0
@@ -385,8 +385,9 @@ class Support( object ):
 			if self.info.has_key('CtxRASDialin'):
 				dialin_val=self['CtxRASDialin']
 			else:
-				dialin_val='E'
-			sambaMungedDial=base64.decodestring('bQAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIABkAA%sAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAAAIAAgACAAIAAgACAAIAAgACAAUAAQ==' % dialin_val)
+				dialin_val='e'
+			#sambaMungedDial=base64.decodestring('bQAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIABkAA%sAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAAAIAAgACAAIAAgACAAIAAgACAAUAAQ==' % dialin_val)
+			sambaMungedDial=base64.decodestring( 'bQAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIABkAA%sAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAUAAFAA==' % dialin_val )
 			sambaMungedDial=sambaMungedDial.strip('\n')
 
 			# FIXME: value_len can be replaced by len( enc[ k ] )
@@ -428,51 +429,15 @@ class Support( object ):
 						enc[k]="%s1%s" % (enc[k][0:6],enc[k][7:])
 					value_len=8
 				elif enc[k]:
+					# find not required '0' values
+					zero = ''
+					for i in range( len( enc[ k ] ) ):
+						zero += '0'
+					if zero == enc[ k ]:
+						continue
 					value_len=len(enc[k])
-				elif k == 'CtxCallback':
-					value_len=8
-					enc[k]="00000000"
-				elif k == 'CtxShadow':
-					value_len=8
-					enc[ k ] = self[ 'CtxShadow' ][ 2 : ]
-				elif k == 'CtxMaxConnectionTime':
-					value_len=8
-					enc[k]="00000000"
-				elif k == 'CtxMaxDisconnectionTime':
-					value_len=8
-					enc[k]="00000000"
-				elif k == 'CtxMaxIdleTime':
-					value_len=8
-					enc[k]="00000000"
-				elif k == 'CtxKeyboardLayout':
-					value_len=8
-					enc[k]="00000000"
-				elif k == 'CtxMinEncryptionLevel':
-					value_len=2
-					enc[k]="00"
-				elif k == 'CtxWorkDirectory':
-					value_len=2
-					enc[k]="00"
-				elif k == 'CtxNWLogonServer':
-					value_len=2
-					enc[k]="00"
-				elif k == 'CtxWFHomeDir':
-					value_len=2
-					enc[k]="00"
-				elif k == 'CtxWFHomeDirDrive':
-					value_len=2
-					enc[k]="00"
-				elif k == 'CtxWFProfilePath':
-					value_len=2
-					enc[k]="00"
-				elif k == 'CtxInitialProgram':
-					value_len=2
-					enc[k]="00"
-				elif k == 'CtxCallbackNumber':
-					value_len=2
-					enc[k]="00"
 				else:
-					value_len=0
+					continue
 				final=chr(name_len)
 				final+=chr(0)
 				final+=chr(value_len)
