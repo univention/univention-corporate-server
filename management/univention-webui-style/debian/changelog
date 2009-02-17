@@ -1,3 +1,9 @@
+univention-webui-style (3.0.10-1) unstable; urgency=low
+
+  * add a small padding (5px) to the columns of a UMC InfoBox
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 17 Feb 2009 11:51:54 +0100
+
 univention-webui-style (3.0.9-1) unstable; urgency=low
 
   * give the user more feedback and a little icon if we did not find any
@@ -188,7 +194,7 @@ univention-webui-style (1.1.1-1) unstable; urgency=low
 
 univention-webui-style (1.0.6-3) unstable; urgency=low
 
-  * changed webmailer icon on ucs-overview 
+  * changed webmailer icon on ucs-overview
 
  -- Tobias Scherer <scherer@univention.de>  Fri, 24 Aug 2007 11:55:11 +0200
 
@@ -255,7 +261,7 @@ univention-webui-style (1.0.4-2) unstable; urgency=low
 
 univention-webui-style (1.0.4-1) unstable; urgency=low
 
-  * use DNS alias univention-directory-manager instead of univention-admin 
+  * use DNS alias univention-directory-manager instead of univention-admin
 
  -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 18:04:44 +0200
 
@@ -385,4 +391,3 @@ univention-webui-style (0.2-0-0) unstable; urgency=low
   * Initial Release.
 
  -- Ingo Steuwer <steuwer@univention.de>  Tue, 27 Jun 2006 07:23:27 +0200
-
