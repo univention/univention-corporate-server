@@ -1,3 +1,48 @@
+univention-samba (3.0.9-1) unstable; urgency=low
+
+  * othershares config via ucr (Bug: #12045)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu,  4 Sep 2008 12:40:30 +0200
+
+univention-samba (3.0.8-1) unstable; urgency=low
+
+  * printer share config via ucr (Bug: #12045)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Wed,  3 Sep 2008 17:31:22 +0200
+
+univention-samba (3.0.7-1) unstable; urgency=low
+
+  * fixed "spaces in group names" bug (Bug: #12024)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu, 28 Aug 2008 10:51:47 +0200
+
+univention-samba (3.0.6-1) unstable; urgency=low
+
+  * fixed "spaces in group names" bug (Bug: #12024)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu, 28 Aug 2008 09:45:53 +0200
+
+univention-samba (3.0.5-1) unstable; urgency=low
+
+  *  samba-local-conf now reacts on ucr settings "samba/global/options/"
+     and samba/share/<share>/options/ too (Bug: #12024)
+
+ -- Felix Botner <botner@univention.de>  Wed, 27 Aug 2008 10:31:12 +0200
+
+univention-samba (3.0.4-1) unstable; urgency=low
+
+  * fixed typo in samba.local.config.py (Bug: #12024)
+
+ -- Felix Botner <botner@univention.de>  Tue, 26 Aug 2008 13:24:01 +0200
+
+univention-samba (3.0.3-1) unstable; urgency=low
+
+  * new sub package with templates and scripts to allow some samba configuration via ucr (Bug: #12024)
+    ucr set samba/share/<share>/usergroup/<user/group>/invalid=true starts invokes 99univention-samba_local_shares
+    and samba.local.config.py to create a extra config file for <share> with invalid users
+
+ -- Felix Botner <botner@vunivention.de>  Tue, 26 Aug 2008 11:08:07 +0200
+
 univention-samba (3.0.2-3) unstable; urgency=low
 
   * fixed UCR variable description (Bug #12406)

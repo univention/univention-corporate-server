@@ -1,0 +1,24 @@
+Type: script
+Script: samba.local.config.py
+Variables: samba/share/.*/usergroup/.*/invalid
+Variables: samba/share/.*/options
+Variables: samba/global/options
+Variables: samba/printmode/usergroup
+Variables: samba/othershares/usergroup/.*/invalid
+
+Type: multifile
+Multifile: etc/samba/smb.conf
+Variables: samba/share/.*/usergroup/.*/invalid
+Variables: samba/share/.*/options
+Variables: samba/global/options
+Variables: samba/printmode/usergroup
+Variables: samba/othershares/usergroup/.*/invalid
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/95univention-samba_local_config
+Variables: samba/share/.*/usergroup/.*/invalid
+Variables: samba/share/.*/options
+Variables: samba/global/options
+Variables: samba/printmode/usergroup
+Variables: samba/othershares/usergroup/.*/invalid

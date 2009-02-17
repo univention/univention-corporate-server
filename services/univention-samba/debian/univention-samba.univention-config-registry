@@ -135,7 +135,7 @@ Variables: samba/user
 
 Type: subfile
 Multifile: etc/samba/smb.conf
-Subfile: etc/samba/smb.conf.d/93univention-samba_local_shares
+Subfile: etc/samba/smb.conf.d/99univention-samba_local_shares
 Variables: server/role
 Variables: samba/domainmaster
 Variables: samba/user
