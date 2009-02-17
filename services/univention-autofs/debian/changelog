@@ -1,3 +1,9 @@
+univention-autofs (1.0.1-1) unstable; urgency=low
+
+  * rebuild for UCS 2.2. Bug #10586
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Feb 2009 10:47:08 +0100
+
 univention-autofs (0.1.0-2) unstable; urgency=low
 
   * removed debhelper files (Bug 10586)
