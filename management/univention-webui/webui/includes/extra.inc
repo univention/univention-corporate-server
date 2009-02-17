@@ -843,17 +843,16 @@ class language_dojo_select extends extra_multi{
 		$str .= ">\n";
 		if($this->basket["choice"]) {
 			$allowed_languages = array ();
-			$default_language = 'de';
+			$default_language = 'en';
 			foreach($this->basket["choice"] as $key=>$val) {
-				// Useful to make everything a bit more dynamic
-				//if (empty ($default_language))
-					//$default_language = $key;
+				if(trim($this->basket["var"][$key]["content"])!="") {
+					$default_language = $key;
+				}
 				array_push ($allowed_languages, $key);
 			}
 			$lang = $this->lang_getfrombrowser ($allowed_languages, $default_language, null, false);
 			foreach($this->basket["choice"] as $key=>$val) {
 				if($key == $lang) {
-					//$is="selected='selected'";
 					$is='selected';
 				}
 				if(trim($this->basket["var"][$key]["content"])!="") {
