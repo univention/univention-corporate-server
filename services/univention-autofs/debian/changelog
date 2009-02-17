@@ -1,0 +1,11 @@
+univention-autofs (0.1.0-2) unstable; urgency=low
+
+  * removed debhelper files (Bug 10586)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 09 Jan 2009 11:18:35 +0100
+
+univention-autofs (0.1.0-1) unstable; urgency=low
+
+  * Initial Release (Bug 10586)
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 30 Aug 2008 20:58:47 +0200

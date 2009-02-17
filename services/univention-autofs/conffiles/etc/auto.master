@@ -1,0 +1,25 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-config-registry.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-config-registry überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+# 	/etc/univention/templates/files/etc/auto.master
+#
+
+# Sample auto.master file
+# This is an automounter map and it has the following format
+# key [ -mount-options-separated-by-comma ] location
+# For details of the format look at autofs(5).
+
+@!@
+maps = configRegistry.get( 'autofs/maps', '' )
+if maps:
+	for map in maps.split( ' ' ):
+		prefix = 'autofs/%s' % map
+		path = configRegistry.get( '%s/options/path' % prefix, None )
+		if path:
+			timeout = configRegistry.get( '%s/options/timeout' % prefix, '60' )
+			print '%s	/etc/auto.%s	--timeout=%s' % ( path, map, timeout )
+@!@

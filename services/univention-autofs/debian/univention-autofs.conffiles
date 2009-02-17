@@ -1,0 +1,2 @@
+/etc/univention/templates/files/etc/auto.master
+/etc/univention/registry.info/variables/univention-autofs.cfg

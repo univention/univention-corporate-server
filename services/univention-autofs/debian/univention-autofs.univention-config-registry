@@ -1,0 +1,11 @@
+Type: file
+File: etc/auto.master
+Variables: autofs/maps
+Variables: autofs/.*/options/.*
+
+Type: script
+Script: autofs-maps.py
+Variables: autofs/maps
+Variables: autofs/.*/directory
+Variables: autofs/.*/options
+Variables: autofs/.*/source
