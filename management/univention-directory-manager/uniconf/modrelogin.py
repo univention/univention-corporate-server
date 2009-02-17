@@ -41,15 +41,15 @@ import settings
 from local import _
 
 import univention.debug
-import univention_baseconfig
+import univention.config_registry
 
-baseConfig=univention_baseconfig.baseConfig()
-baseConfig.load()
+configRegistry=univention.config_registry.ConfigRegistry ()
+configRegistry.load ()
 LANG_DE = 'de_DE.utf8'
 #LANG_EN = 'en_EN.utf8'
 LANG_EN = 'C'
-#LANG_DEFAULT = baseConfig.get ('directory/manager/web/language', locale.getdefaultlocale ())
-LANG_DEFAULT = baseConfig.get ('directory/manager/web/language', LANG_EN)
+#LANG_DEFAULT = configRegistry.get ('directory/manager/web/language', locale.getdefaultlocale ())
+LANG_DEFAULT = configRegistry.get ('directory/manager/web/language', LANG_EN)
 
 def create(a,b,c):
 	return modrelogin(a,b,c)
@@ -167,6 +167,19 @@ class modrelogin(unimodule.unimodule):
 				{"level": '0', "name": 'de', "description": "Deutsch"},
 				{"level": '0', "name": 'en', "description": "English"}
 				]
+		default_lang = None
+		if LANG_DEFAULT:
+			if LANG_DEFAULT == 'C':
+				default_lang = 'en'
+			elif LANG_DEFAULT:
+				default_lang = LANG_DEFAULT.split ('_')[0]
+
+		if default_lang:
+			for l in langs:
+				if l['name'] == default_lang:
+					l['selected'] = default_lang
+					break
+
 		if langs:
 			self.chooselang=language_dojo_select(_("Language:"),{'width':'265'},{"helptext":_("Choose language for this session"),"choicelist":langs})
 			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.chooselang]})]}))
@@ -321,11 +334,8 @@ class modrelogin(unimodule.unimodule):
 				auth_ok = True
 
 			if auth_ok:
-				baseConfig=univention_baseconfig.baseConfig()
-				baseConfig.load()
-
-				warning = int( baseConfig.get( 'ssl/validity/warning', 30 ) )
-				days = int( baseConfig.get( 'ssl/validity/days', 0 ) )
+				warning = int( configRegistry.get( 'ssl/validity/warning', 30 ) )
+				days = int( configRegistry.get( 'ssl/validity/days', 0 ) )
 				now = int( time.time() / 60 / 60 / 24 )
 				if days and ( days - now ) < warning:
 					if gpl_version:

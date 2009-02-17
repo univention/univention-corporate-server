@@ -36,6 +36,13 @@ sys.path.append(ldir)
 os.chdir(ldir)
 
 import univention.debug
+import univention.config_registry
+
+configRegistry=univention.config_registry.ConfigRegistry ()
+configRegistry.load ()
+
+LANG_DE = 'de_DE.utf8'
+LANG_EN = 'C'
 
 def daemonize():
 	pid = os.fork()
@@ -53,7 +60,7 @@ def main(argv):
 	socket_filename=''
 	socket_timeout=60*5
 	debugging = 0
-	language='de_DE.utf8'
+	language = configRegistry.get ('directory/manager/web/language', LANG_EN)
 	https = 0 
 
 	# parse command line arguments

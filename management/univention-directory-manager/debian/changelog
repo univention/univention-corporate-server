@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.12-2) unstable; urgency=low
+
+  * added fallback to default language. Bug #13235
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 17 Feb 2009 16:26:28 +0100
+
 univention-directory-manager (6.0.12-1) unstable; urgency=low
 
   * make the warning font a little bit smaller. Bug #13289
