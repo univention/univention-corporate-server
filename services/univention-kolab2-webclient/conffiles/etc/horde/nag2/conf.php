@@ -11,3 +11,4 @@
 $conf['storage']['driver'] = 'kolab';
 $conf['menu']['print'] = true;
 $conf['menu']['import_export'] = true;
+$conf['menu']['apps'] = array();

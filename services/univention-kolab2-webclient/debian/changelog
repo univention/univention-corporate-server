@@ -1,3 +1,154 @@
+univention-kolab2-webclient (4.0.1-1) unstable; urgency=low
+
+  * rebuild for UCS 2.2
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Feb 2009 20:35:37 +0100
+
+univention-kolab2-webclient (3.1.6-9) unstable; urgency=low
+
+  * restored line-through decoraction but fixed the parser for whole day
+    events to recognize them as free. Bug #12619
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon,  1 Dec 2008 17:10:38 +0100
+
+univention-kolab2-webclient (3.1.6-8) unstable; urgency=low
+
+  * added UCR variables horde/sync/notesize and horde/sync/notemsg to limit
+    the size of descriptions/notes transferred to them mobile client. Bug #12706
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon,  1 Dec 2008 14:45:26 +0100
+
+univention-kolab2-webclient (3.1.6-7) unstable; urgency=low
+
+  * remove line-through-style from whole day events in univention theme. Bug #12619
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 26 Nov 2008 13:06:22 +0100
+
+univention-kolab2-webclient (3.1.6-6) unstable; urgency=low
+
+  * added descriptions to all UCR variables in this package. Bug #12495
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 27 Oct 2008 11:42:43 +0100
+
+univention-kolab2-webclient (3.1.6-5) unstable; urgency=low
+
+  * replaced "sync_books" with "default_dir". Bug #12084
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri, 17 Oct 2008 15:24:12 +0200
+
+univention-kolab2-webclient (3.1.6-4) unstable; urgency=low
+
+  * default calendar and addressbook will now be set at user creation time. Bug #12084
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu, 16 Oct 2008 11:54:18 +0200
+
+univention-kolab2-webclient (3.1.6-3) unstable; urgency=low
+
+  * fixed permissions for /var/log/horde/sync. Bug #12368
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 14 Oct 2008 15:36:46 +0200
+
+univention-kolab2-webclient (3.1.6-2) unstable; urgency=low
+
+  * remove an old unused sql script
+  * upgrade the columns size in horde_syncml_map and
+    horde_syncml_anchors during the update, Bug #12346
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Oct 2008 15:13:27 +0200
+
+univention-kolab2-webclient (3.1.5-5) unstable; urgency=low
+
+  * fixed a renaming issue in SyncML. Bug #12368
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 14 Oct 2008 14:52:13 +0200
+
+univention-kolab2-webclient (3.1.5-4) unstable; urgency=low
+
+  * added extended debug functionality to SyncML. Bug #12368
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 14 Oct 2008 14:39:03 +0200
+
+univention-kolab2-webclient (3.1.5-3) unstable; urgency=low
+
+  * renamed cord to ingo-vacation to make the connection visibile. Bug #12329
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 13 Oct 2008 11:53:56 +0200
+
+univention-kolab2-webclient (3.1.5-2) unstable; urgency=low
+
+  * added registry entry for the horde component cord. Bug #12329
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue,  7 Oct 2008 09:34:51 +0200
+
+univention-kolab2-webclient (3.1.5-1) unstable; urgency=low
+
+  * dependency to whois has been added (Bug 12277)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 24 Sep 2008 16:24:31 +0200
+
+univention-kolab2-webclient (3.1.4-4) unstable; urgency=low
+
+  * fixed typos from the last commit. Bug #12187
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Sep 2008 11:25:01 +0200
+
+univention-kolab2-webclient (3.1.4-2) unstable; urgency=low
+
+  * fixed typos from the last commit. Bug #12187
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Sep 2008 11:15:21 +0200
+
+univention-kolab2-webclient (3.1.4-1) unstable; urgency=low
+
+  * switch the cache directory from /tmp to /var/cache/horde, Bug #12186
+  * remove the cache from a user when resetting the syncml data, Bug
+    #12187
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Sep 2008 11:04:19 +0200
+
+univention-kolab2-webclient (3.1.3-3) unstable; urgency=low
+
+  * during the syncml reset also remove the entries from the table
+    horde_syncml_anchors
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  8 Sep 2008 10:38:42 +0200
+
+univention-kolab2-webclient (3.1.3-2) unstable; urgency=low
+
+  * merged missing configuration entries from horde-webmailer to univention-kolab2-webclient. Bug #11995
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 26 Aug 2008 14:58:25 +0200
+
+univention-kolab2-webclient (3.1.3-1) unstable; urgency=low
+
+  * the new horde version needs some sql updates
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Aug 2008 10:58:00 +0200
+
+univention-kolab2-webclient (3.1.2-1) unstable; urgency=low
+
+  * switch to horde-webmailer package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Aug 2008 17:08:04 +0200
+
+univention-kolab2-webclient (3.1.1-3) unstable; urgency=low
+
+  * removed .svn directories from /usr (Bug #11974)
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu, 14 Aug 2008 15:47:39 +0200
+
+univention-kolab2-webclient (3.1.1-2) unstable; urgency=low
+
+  * merged horde/webroot patch into the package (Ticket #2008080510000176)
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 13 Aug 2008 12:07:25 +0200
+
+univention-kolab2-webclient (3.1.1-1) unstable; urgency=low
+
+  * integrated horde/webroot patch (Ticket #2008080510000176)
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 13 Aug 2008 11:08:52 +0200
+
 univention-kolab2-webclient (3.0.3-2) unstable; urgency=low
 
   * Added UCR Warning.

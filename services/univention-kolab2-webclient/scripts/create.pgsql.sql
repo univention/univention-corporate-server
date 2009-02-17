@@ -16,6 +16,35 @@ CREATE TABLE horde_users (
 
 ALTER TABLE horde_users OWNER TO horde;
 
+CREATE TABLE horde_groups (
+    group_uid INTEGER NOT NULL,
+    group_name VARCHAR(255) NOT NULL UNIQUE,
+    group_parents VARCHAR(255) NOT NULL,
+    group_email VARCHAR(255),
+    PRIMARY KEY (group_uid)
+);
+
+ALTER TABLE horde_groups OWNER TO horde;
+
+CREATE TABLE horde_groups_members (
+    group_uid INTEGER NOT NULL,
+    user_uid VARCHAR(255) NOT NULL
+);
+
+ALTER TABLE horde_groups_members OWNER TO horde;
+
+CREATE INDEX group_uid_idx ON horde_groups_members (group_uid);
+CREATE INDEX user_uid_idx ON horde_groups_members (user_uid);
+
+CREATE TABLE horde_perms (
+    perm_id INTEGER NOT NULL,
+    perm_name VARCHAR(255) NOT NULL UNIQUE,
+    perm_parents VARCHAR(255) NOT NULL,
+    perm_data TEXT,
+    PRIMARY KEY (perm_id)
+);
+ALTER TABLE horde_perms OWNER TO horde;
+
 CREATE TABLE horde_prefs (
     pref_uid        VARCHAR(255) NOT NULL,
     pref_scope      VARCHAR(16) DEFAULT '' NOT NULL,
@@ -119,18 +148,35 @@ CREATE TABLE horde_sessionhandler (
 ALTER TABLE horde_sessionhandler OWNER TO horde;
 
 CREATE TABLE horde_syncml_map (
-    syncml_syncpartner VARCHAR(64) NOT NULL,
-    syncml_db          VARCHAR(64) NOT NULL,
-    syncml_uid         VARCHAR(64) NOT NULL,
-    syncml_cuid        VARCHAR(64),
-    syncml_suid        VARCHAR(64),
+    syncml_syncpartner VARCHAR(255) NOT NULL,
+    syncml_db          VARCHAR(255) NOT NULL,
+    syncml_uid         VARCHAR(255) NOT NULL,
+    syncml_cuid        VARCHAR(255),
+    syncml_suid        VARCHAR(255),
     syncml_timestamp   BIGINT
 );
 
 ALTER TABLE horde_syncml_map OWNER TO horde;
 
-CREATE INDEX syncml_cuid_idx ON horde_syncml_map (syncml_syncpartner, syncml_db, syncml_uid, syncml_cuid);
-CREATE INDEX syncml_suid_idx ON horde_syncml_map (syncml_syncpartner, syncml_db, syncml_uid, syncml_suid);
+CREATE INDEX syncml_syncpartner_idx ON horde_syncml_map (syncml_syncpartner);
+CREATE INDEX syncml_db_idx ON horde_syncml_map (syncml_db);
+CREATE INDEX syncml_uid_idx ON horde_syncml_map (syncml_uid);
+CREATE INDEX syncml_cuid_idx ON horde_syncml_map (syncml_cuid);
+CREATE INDEX syncml_suid_idx ON horde_syncml_map (syncml_suid);
+
+CREATE TABLE horde_syncml_anchors(
+    syncml_syncpartner  VARCHAR(255) NOT NULL,
+    syncml_db           VARCHAR(255) NOT NULL,
+    syncml_uid          VARCHAR(255) NOT NULL,
+    syncml_clientanchor VARCHAR(255),
+    syncml_serveranchor VARCHAR(255)
+);
+
+ALTER TABLE horde_syncml_anchors OWNER TO horde;
+
+CREATE INDEX syncml_anchors_syncpartner_idx ON horde_syncml_anchors (syncml_syncpartner);
+CREATE INDEX syncml_anchors_db_idx ON horde_syncml_anchors (syncml_db);
+CREATE INDEX syncml_anchors_uid_idx ON horde_syncml_anchors (syncml_uid);
 
 CREATE TABLE horde_alarms (
     alarm_id        VARCHAR(255) NOT NULL,
@@ -158,9 +204,24 @@ CREATE INDEX alarm_dismissed_idx ON horde_alarms (alarm_dismissed);
 CREATE TABLE horde_cache (
     cache_id          VARCHAR(32) NOT NULL,
     cache_timestamp   BIGINT NOT NULL,
+    cache_expiration  BIGINT NOT NULL,
     cache_data        TEXT,
 --
     PRIMARY KEY  (cache_id)
 );
 
 ALTER TABLE horde_cache OWNER TO horde;
+
+CREATE TABLE horde_locks (
+    lock_id                  VARCHAR(36) NOT NULL,
+    lock_owner               VARCHAR(32) NOT NULL,
+    lock_principal           VARCHAR(255) NOT NULL,
+    lock_origin_timestamp    BIGINT NOT NULL,
+    lock_update_timestamp    BIGINT NOT NULL,
+    lock_expiry_timestamp    BIGINT NOT NULL,
+    lock_type                SMALLINT NOT NULL,
+
+    PRIMARY KEY (lock_id)
+);
+
+ALTER TABLE horde_locks OWNER TO horde;

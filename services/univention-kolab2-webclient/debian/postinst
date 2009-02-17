@@ -36,12 +36,16 @@ su - postgres -c "psql -d template1 -f $share/create.database_and_user.sql &> /d
 su - postgres -c "psql -d horde -f $share/create.pgsql.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/horde_datatree.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/horde_prefs.sql &> /dev/null"
-su - postgres -c "psql -d horde -f $share/horde_syncml.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/horde_histories.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/kronolith.pgsql.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/turba_objects.pgsql.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/nag.pgsql.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/mnemo.pgsql.sql &> /dev/null"
+su - postgres -c "psql -d horde -f $share/3.1_to_3.2.pgsql.sql &> /dev/null"
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.1.6-1; then
+	su - postgres -c "psql -d horde -f $share/syncml_map_update.sql &> /dev/null"
+fi
 
 
 eval `univention-baseconfig --shell dump`
@@ -65,6 +69,12 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.2.0-47; 
 	univention-baseconfig set horde/application/gollem?false
 fi
 
+SYNC_DEBUG_DIR=/var/log/horde/sync
+
+mkdir -p "${SYNC_DEBUG_DIR}"
+chown www-data "${SYNC_DEBUG_DIR}"
+chmod 0700 "${SYNC_DEBUG_DIR}"
+
 univention-baseconfig set	horde/application/turba?true \
 							horde/application/kronolith?true \
 							horde/application/mnemo?true \
@@ -82,7 +92,9 @@ univention-baseconfig set	horde/application/turba?true \
 							horde/menu/width?250 \
 							horde/menu/save_state?true \
 							horde/mailer/type?smtp \
-							horde/debug/level?"PEAR_LOG_ERR"
+							horde/debug/level?"PEAR_LOG_ERR" \
+							horde/sync/debug?false \
+							horde/sync/debugdir?$SYNC_DEBUG_DIR
 
 univention-baseconfig set php/memory/limit?64
 
@@ -126,6 +138,15 @@ if [ -x /etc/init.d/cyrus22 ]; then
 fi
 
 /etc/init.d/apache2 reload
+
+dpkg-statoverride --force --update --add www-data www-data 700 /var/cache/horde
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.1.4; then
+	mv /tmp/kolab_cache???????????????????????????????? /var/cache/horde/
+	mv /tmp/cache_???????????????????????????????? /var/cache/horde/
+	mv /tmp/sess_???????????????????????????????? /var/cache/horde/
+	chown www-data.www-data /var/cache/horde/*
+fi
 
 
 if [ "$1" = configure -a -z "$2" ]; then

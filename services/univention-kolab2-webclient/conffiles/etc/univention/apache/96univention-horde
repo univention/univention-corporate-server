@@ -48,4 +48,9 @@ RewriteOptions inherit
 	AddType application/x-httpd-php-source .phps
 </Directory>
 
-Alias /horde3 /usr/share/horde3
+@!@
+if baseConfig.has_key('horde/webroot'):
+	print "Alias %s  /usr/share/horde3" % baseConfig['horde/webroot']
+else:
+	print "Alias /horde3  /usr/share/horde3"
+@!@

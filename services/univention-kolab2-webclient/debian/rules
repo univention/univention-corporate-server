@@ -74,7 +74,8 @@ install: build
 	install -m 644 scripts/kronolith.pgsql.sql $(SHARE)
 	install -m 644 scripts/turba_objects.pgsql.sql $(SHARE)
 	install -m 644 scripts/horde_histories.sql $(SHARE)
-	install -m 644 scripts/horde_syncml.sql $(SHARE)
+	install -m 644 scripts/3.1_to_3.2.pgsql.sql $(SHARE)
+	install -m 644 scripts/syncml_map_update.sql $(SHARE)
 	install -m 755 scripts/turba-permissions.py $(SHARE)
 	install -m 755 scripts/syncml_interrupt.sh $(SHARE)
 	install -m 755 scripts/syncml_reset_user.sh $(SHARE)
@@ -95,8 +96,8 @@ install: build
 	$(PEAR) pear/Auth_SASL-1.0.2.tgz
 	$(PEAR) pear/Net_SMTP-1.2.11.tgz
 
-	(cd usr/share/horde3/ && find . ! -path "*CVS*" -type d -exec install  -d $(HORDESHARE){} \;)
-	(cd usr/share/horde3/ && find . ! -path "*CVS*" -type f -exec install -m 0644 {} $(HORDESHARE){} \;)
+	(cd usr/share/horde3/ && find . ! -path "*CVS*" ! -path "*.svn*" -type d -exec install  -d $(HORDESHARE){} \;)
+	(cd usr/share/horde3/ && find . ! -path "*CVS*" ! -path "*.svn*" -type f -exec install -m 0644 {} $(HORDESHARE){} \;)
 
 	install -m 755 webaccess-share.py ${D}/usr/lib/univention-directory-listener/system/
 	install -m 755 horde-prefs.py ${D}/usr/lib/univention-directory-listener/system/

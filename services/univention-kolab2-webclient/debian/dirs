@@ -6,3 +6,4 @@ usr/share/horde3/lib/data
 usr/share/horde3/lib/bin
 usr/share/horde3/lib/tests
 var/log/horde
+var/cache/horde

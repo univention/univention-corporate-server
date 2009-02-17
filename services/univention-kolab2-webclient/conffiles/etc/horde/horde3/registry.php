@@ -69,6 +69,10 @@ if (isset($_SERVER['PHP_SELF'])) {
 } else {
     $webroot = '/horde3';
 }
+@!@
+if baseConfig.has_key('horde/webroot'):
+        print "$webroot = '%s';" % baseConfig['horde/webroot']
+@!@
 
 $this->applications['horde'] = array(
     'fileroot' => '/usr/share/horde3/lib' . '/..',
@@ -84,8 +88,16 @@ $this->applications['mimp'] = array(
     'fileroot' => '/usr/share/horde3/lib' . '/../mimp',
     'webroot' => $this->applications['horde']['webroot'] . '/mimp',
     'name' => _("Mobile Mail"),
-    'status' => 'notoolbar'
+    'status' => 'notoolbar',
 );
+
+$this->applications['dimp'] = array(
+    'fileroot' => '/usr/share/horde3/lib' . '/../dimp',
+    'webroot' => $this->applications['horde']['webroot'] . '/dimp',
+    'name' => _("Dynamic Mail"),
+    'status' => 'notoolbar',
+);
+
 
 @!@
 if not baseConfig.has_key('horde/application/imp') or not baseConfig['horde/application/imp'].lower() in [ 'no', 'false' ]:
@@ -107,6 +119,13 @@ if not baseConfig.has_key('horde/application/imp') or not baseConfig['horde/appl
 		print "    'menu_parent' => 'myaccount'"
 		print ");"
 		print ""
+		if not baseConfig.has_key('horde/application/ingo-vacation') or not baseConfig['horde/application/ingo-vacation'].lower() in [ 'no', 'false' ]:
+			print "$this->applications['ingo-vacation'] = array("
+			print "    'fileroot' => '/usr/share/horde3/lib' . '/../ingo-vacation',"
+			print "    'webroot' => $this->applications['horde']['webroot'] . '/ingo-vacation',"
+			print "    'name' => _('Vacation Editor'),"
+			print "    'status' => 'notoolbar',"
+			print ");"
 	print "$this->applications['sam'] = array("
 	print "    'fileroot' => '/usr/share/horde3/lib' . '/../sam',"
 	print "    'webroot' => $this->applications['horde']['webroot'] . '/sam',"

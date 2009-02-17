@@ -32,10 +32,13 @@ if baseConfig.has_key('horde/servername'):
 else:
 	print "$conf['cookie']['domain'] = $_SERVER['SERVER_NAME'];"
 @!@
-$conf['cookie']['path'] = '/horde3';
 $conf['sql']['persistent'] = true;
 $conf['sql']['username'] = 'horde';
 @!@
+if baseConfig.has_key('horde/webroot'):
+      print "$conf['cookie']['path'] = '%s';" % baseConfig['horde/webroot']
+else:
+      print "$conf['cookie']['path'] = '/horde3';"
 try:
 	f = open( '/etc/horde.secret', 'r' )
 	passwd = f.readlines()[ 0 ][ : -1 ]
@@ -152,8 +155,8 @@ if not mailer_is_sendmail:
 		print "$conf['mailer']['params']['auth'] = '0';"
 @!@
 $conf['mailformat']['brokenrfc2231'] = false;
-$conf['tmpdir'] = '/tmp/';
-$conf['vfs']['params']['vfsroot'] = '/tmp';
+$conf['tmpdir'] = '/var/cache/horde';
+$conf['vfs']['params']['vfsroot'] = '/var/cache/horde';
 $conf['vfs']['type'] = 'file';
 $conf['sessionhandler']['type'] = 'none';
 $conf['image']['convert'] = '/usr/bin/convert';
@@ -231,6 +234,11 @@ if horde_auth.lower() == 'kolab':
 
 if baseConfig.get('horde/menu/hide_groupware','false') in ['1','yes','true']:
 	print "$conf['menu']['hide_groupware'] = true;"
+
+print "$conf['sync']['notemsg'] = '%s';" % baseConfig.get('horde/sync/notemsg','<DONT CHANGE>')
+print "$conf['sync']['notesize'] = %s;" % baseConfig.get('horde/sync/notesize','4000')
+print "$conf['sync']['debug'] = %s;" % baseConfig.get('horde/sync/debug','false')
+print "$conf['sync']['debugdir'] = '%s';" % baseConfig.get('horde/sync/debugdir','/var/log/horde/sync')
 
 @!@
 /* CONFIG END. DO NOT CHANGE ANYTHING IN OR BEFORE THIS LINE. */

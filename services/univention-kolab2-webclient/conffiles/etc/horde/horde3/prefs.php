@@ -10,7 +10,7 @@
 //
 
 /**
- * $Horde: horde/config/prefs.php.dist,v 1.85.2.5 2005/12/27 17:00:10 chuck Exp $
+ * $Horde: horde/config/prefs.php.dist,v 1.85.2.11 2008/05/31 07:45:43 jan Exp $
  *
  * Preferences Information
  * =======================
@@ -37,34 +37,47 @@
  * The $_prefs array's are listed in the same order as listed in the
  * members element of $prefGroups.
  *
- *   value: This entry will either hold a number or a text value based on the
+ *   value: This entry will hold the default preference value depending on the
  *          preference type:
+ *            checkbox:  0 or false for unchecked, 1 or true for checked
+ *                enum:  Preselected item from associated enumeration
  *            implicit:  See Preference type
- *                text:  Text value
+ *                link:  Not used
  *              number:  Number value
- *            checkbox:  Value should be 0 for unchecked, 1 for checked
- *              select:  Value associated with that selection list
+ *            password:  Should be ''
+ *              select:  Preselected item from associated selection list
+ *             special:  Not used
+ *                text:  Text value
+ *            textarea:  Text value, lines separated with "\n"
  *
- *  locked: Allow preference to be changed from U
- *             true:  Do not show this preference in the U
- *            false:  Show this preference in the UI and allow changing
+ *  locked: Allow preference to be changed from UI
+ *             true:  Do not show this preference in the UI.
+ *                    This has no effect on 'link' type preferences.
+ *            false:  Show this preference in the UI and allow changing.
  *
  *  shared: Share with other horde apps
  *             true:  Share this pref with other Horde apps
  *            false:  Keep this pref local to the current app
  *
  *    type: Preference type
- *             special:  Provides a UI widget
- *              select:  Provides a selection list in the U
- *            checkbox:  Provides a checkbox
- *            implicit:  Provides storage for 'special' types
+ *            checkbox:  Provides a checkbox.
+ *                enum:  Provides a selection list in the UI, list is
+ *                       specified in the associated 'enum' setting.
+ *            implicit:  Provides storage for 'special' types.
+ *                link:  Provides a link to another data entry form.
+ *              number:  Provides a 3-character textbox to enter a natural
+ *                       number; syntaxcheck is performed after data entry.
  *            password:  Provides a textbox for password entry.
- *                enum:  Use static list of elements...similar to 'select'
+ *              select:  Provides a selection list in the UI that is built in
+ *                       lib/prefs.php.
+ *             special:  Provides an UI widget.
+ *                text:  Provides a single-line textbox.
+ *            textarea:  Provides a multi-line textbox.
  *
- *    enum: Static list of elements.
+ *    enum: Static list of elements for 'type' => 'enum'.
  *
- * escaped: For an enum or a select, are the keys and values already html-escaped?
- *          Defaults to false if not present.
+ * escaped: For an enum or a select, are the keys and values already
+ *          html-escaped? Defaults to false if not present.
  *
  *    hook: Call a hook function for the value of this preference
  *             true:  Will call the function _prefs_hook_<prefname>
@@ -81,6 +94,13 @@ $prefGroups['identities'] = array(
                        'id', 'fullname', 'from_addr')
 );
 
+$prefGroups['authentication'] = array(
+    'column' => _("Your Information"),
+    'label' => _("Authentication Credentials"),
+    'desc' => _("Set authentication credentials like user names and passwords for external servers."),
+    'members' => array('credentialsui'),
+);
+
 $auth = &Auth::singleton($GLOBALS['conf']['auth']['driver']);
 if (is_a($auth, 'Auth') && $auth->hasCapability('update')) {
     $prefGroups['forgotpass'] = array(
@@ -95,7 +115,7 @@ $prefGroups['language'] = array(
     'column' => _("Your Information"),
     'label' => _("Locale and Time"),
     'desc' => _("Set your preferred language, timezone and date options."),
-    'members' => array('language', 'timezone', 'twentyFour', 'date_format')
+    'members' => array('language', 'timezone', 'twentyFour', 'date_format', 'first_week_day')
 );
 
 $prefGroups['categories'] = array(
@@ -112,7 +132,7 @@ $prefGroups['display'] = array(
     'members' => array('initial_application', 'show_last_login', 'theme',
                        'summary_refresh_time', 'show_sidebar', 'sidebar_width',
                        'moz_sidebar', 'menu_view', 'menu_refresh_time',
-                       'widget_accesskey', 'alpha_filter')
+                       'widget_accesskey')
 );
 
 $prefGroups['logintasks'] = array(
@@ -144,11 +164,8 @@ $prefGroups['richtext'] = array(
     'column' => _("Other Information"),
     'label' => _("Rich Text Editor Options"),
     'desc' => _("Which plugins to enable for the Rich Text editor."),
-    'members' => array('contextmenu', 'tableoperations', 'listtype'),
+    'members' => array('editor_plugins'),
 );
-if ($registry->hasInterface('images')) {
-    $prefGroups['richtext']['members'][] = 'anselimage';
-}
 
 $prefGroups['syncml'] = array(
     'column' => _("Other Information"),
@@ -167,8 +184,8 @@ $_prefs['default_identity'] = array(
     'locked' => false,
     'shared' => true,
     'type' => 'enum',
-    'enum' => (isset($identity) && is_object($identity)) ? $identity->getAll('id') : array(),
-    'desc' => _("Your default identity:")
+    'enum' => (isset($GLOBALS['identity']) && is_object($GLOBALS['identity'])) ? $GLOBALS['identity']->getAll('id') : array(),
+    'desc' => _("Your default identity:"),
 );
 
 // identities array
@@ -177,19 +194,27 @@ $_prefs['identities'] = array(
     'value' => 'a:0:{}',
     'locked' => false,
     'shared' => true,
-    'type' => 'implicit'
+    'type' => 'implicit',
+);
+
+// identify email confirmation
+$_prefs['confirm_email'] = array(
+    'value' => 'a:0:{}',
+    'locked' => false,
+    'shared' => true,
+    'type' => 'implicit',
 );
 
 // identity selection widget
 $_prefs['identityselect'] = array(
     'shared' => true,
-    'type' => 'special'
+    'type' => 'special',
 );
 
 // delete button
 $_prefs['deleteidentity'] = array(
     'type' => 'special',
-    'shared' => true
+    'shared' => true,
 );
 
 // identity name
@@ -223,6 +248,22 @@ $_prefs['from_addr'] = array(
     'shared' => true,
     'type' => 'text',
     'desc' =>  _("Your From: address:")
+);
+
+// Authentication Options
+
+// credentials
+$_prefs['credentials'] = array(
+    'value' => 'a:0:{}',
+    'locked' => false,
+    'shared' => true,
+    'type' => 'implicit'
+);
+
+// credentials interface
+$_prefs['credentialsui'] = array(
+    'shared' => true,
+    'type' => 'special',
 );
 
 // user security question
@@ -289,6 +330,7 @@ $_prefs['date_format'] = array(
     'enum' => array(
         '%x' => strftime('%x'),
         '%Y-%m-%d' => strftime('%Y-%m-%d'),
+        '%d/%m/%Y' => strftime('%d/%m/%Y'),
         '%A %B %d, %Y' => strftime('%A %B %d, %Y'),
         '%A, %d. %B %Y' => strftime('%A, %d. %B %Y'),
         '%A, %d %B %Y' => strftime('%A, %d %B %Y'),
@@ -309,7 +351,19 @@ $_prefs['date_format'] = array(
         '%e. %B %y' => strftime('%e. %B %y'),
         '%B %e, %Y' => strftime('%B %e, %Y'),
     ),
-    'desc' => _("Choose how to display dates:"));
+    'desc' => _("Choose how to display dates:"),
+);
+
+// what day should be displayed as the first day of the week?
+$_prefs['first_week_day'] = array(
+    'value' => '0',
+    'locked' => false,
+    'shared' => true,
+    'type' => 'enum',
+    'desc' => _("Which day would you like to be displayed as the first day of the week?"),
+    'enum' => array('0' => _("Sunday"),
+                    '1' => _("Monday"))
+);
 
 // UI theme
 $_prefs['theme'] = array(
@@ -368,7 +422,7 @@ $_prefs['sidebar_width'] = array(
     'locked' => false,
     'shared' => false,
     'type' => 'number',
-    'desc' => sprintf(_("Width of the %s menu on the left (takes effect on next log-in):"), $GLOBALS['registry']->get('name', 'horde'))
+    'desc' => sprintf(_("Width of the %s menu on the left:"), $GLOBALS['registry']->get('name', 'horde'))
 );
 
 $_prefs['moz_sidebar'] = array(
@@ -460,15 +514,6 @@ $_prefs['widget_accesskey'] = array(
     'desc' => _("Should access keys be defined for most links?")
 );
 
-// should we not use the alpha image loader for IE?
-$_prefs['alpha_filter'] = array(
-    'value' => false,
-    'locked' => true,
-    'shared' => true,
-    'type' => 'checkbox',
-    'desc' => _("If you don't see any icons using Internet Explorer, you may need to check this box to turn off PNG transparency.")
-);
-
 // the layout of the portal page.
 $_prefs['portal_layout'] = array(
     'value' => 'a:0:{}',
@@ -523,39 +568,17 @@ if (!empty($GLOBALS['conf']['imsp']['enabled'])) {
 }
 
 // Rich Text Editor preferences.
-
-$_prefs['contextmenu'] = array(
-    'value' => true,
+$_prefs['editor_plugins'] = array(
+    'value' => 'a:2:{i:0;s:8:"ListType";i:1;s:12:"CharacterMap";}',
     'locked' => false,
     'shared' => true,
-    'type' => 'checkbox',
-    'desc' => _("Enable right click context menu?")
+    'type' => 'multienum',
+    'enum' => array(
+        'ContextMenu' => _("Right click context menu"),
+        'TableOperations' => _("Table operations menu bar"),
+        'ListType' => _("Allow setting of ordered list type"),
+        'CharacterMap' => _("Special characters"),
+        'AnselImage' => _("Insertion of images from Photo Galleries in text")),
+    'desc' => _("Select editor plugins")
 );
-
-$_prefs['tableoperations'] = array(
-    'value' => false,
-    'locked' => false,
-    'shared' => true,
-    'type' => 'checkbox',
-    'desc' => _("Show table operations menu bar?")
-);
-
-$_prefs['listtype'] = array(
-    'value' => true,
-    'locked' => false,
-    'shared' => true,
-    'type' => 'checkbox',
-    'desc' => _("Allow setting of ordered list type?")
-);
-
-if ($registry->hasInterface('images')) {
-    $_prefs['anselimage'] = array(
-        'value' => true,
-        'locked' => false,
-        'shared' => true,
-        'type' => 'checkbox',
-        'desc' => _("Enable insertion of images from Photo Galleries in text?")
-    );
-}
-
 // End Rich Text Editor preferences.

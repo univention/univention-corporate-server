@@ -12,3 +12,4 @@ $conf['storage']['driver'] = 'kolab';
 // $conf['utils']['gnupg'] = '/usr/bin/gpg';
 $conf['menu']['print'] = true;
 $conf['menu']['import_export'] = true;
+$conf['menu']['apps'] = array();

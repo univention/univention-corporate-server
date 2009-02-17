@@ -45,6 +45,9 @@ def __create_db_identity( mail, fullname ):
 			( len( name ), name, len( fullname ), fullname, len( mail ), mail )
 
 
+def __turba_settings ( db, mail ):
+	db.query( "insert into horde_prefs values('%s', 'turba', 'default_dir', '%s');" % (mail, mail))
+
 def __kronolith_settings ( db, mail ):
 	db.query( "insert into horde_prefs values('%s', 'kronolith', 'show_shared_side_by_side', '0');" % mail)
 	db.query( "insert into horde_prefs values('%s', 'kronolith', 'show_fb_legend', '1');" % mail)
@@ -59,6 +62,7 @@ def __kronolith_settings ( db, mail ):
 	db.query( "insert into horde_prefs values('%s', 'kronolith', 'time_between_days', '0');" % mail)
 	db.query( "insert into horde_prefs values('%s', 'kronolith', 'defaultview', 'week');" % mail)
 	db.query( "insert into horde_prefs values('%s', 'kronolith', 'confirm_delete', '1');" % mail)
+	db.query( "insert into horde_prefs values('%s', 'kronolith', 'default_share', '%s');" % (mail, mail))
 
 def __horde_settings ( db, mail, fullname ):
 	baseConfig = univention_baseconfig.baseConfig()
@@ -107,6 +111,7 @@ def handler(dn, new, old):
 
 			__horde_settings( db, mail = new[ 'mailPrimaryAddress' ][0], fullname = new[ 'displayName' ][0] )
 			__kronolith_settings( db, mail = new[ 'mailPrimaryAddress' ][0] )
+			__turba_settings( db, mail = new[ 'mailPrimaryAddress' ][0] )
 
 			db.close( )
 		finally:
