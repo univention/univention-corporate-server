@@ -488,6 +488,16 @@ int main(int argc, char* argv[])
 	cache_init();
 	handlers_init();
 
+	/* pass data to handlers */
+	if (lp->base != NULL)
+		handlers_set_data_all("basedn", lp->base);
+	if (lp->binddn != NULL)
+		handlers_set_data_all("binddn", lp->binddn);
+	if (lp->bindpw != NULL)
+		handlers_set_data_all("bindpw", lp->bindpw);
+	if (lp->host != NULL)
+		handlers_set_data_all("ldapserver", lp->host);
+
 	convert_cookie();
 
 	if (notifier_get_id_s(NULL, &id) != 0) {

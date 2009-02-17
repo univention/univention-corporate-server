@@ -70,6 +70,7 @@ struct _Handler {
 	PyObject	 *clean;
 	PyObject	 *postrun;
 	PyObject	 *prerun;
+	PyObject	 *setdata; 
 	struct _Handler	 *next;
 
 	int		  state;
@@ -98,6 +99,7 @@ int	handlers_clean_all		(void);
 int	handler_initialize		(Handler	*handler);
 int	handlers_initialize_all		(void);
 int	handlers_postrun_all		(void);
+int handlers_set_data_all		(char *key, char *value);
 char*	handlers_filter			(void);
 
 #endif /* _HANDLERS_H_ */

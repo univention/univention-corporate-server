@@ -232,6 +232,7 @@ static int handler_import(char* filename)
 	handler->clean = module_get_object(handler->module, "clean");
 	handler->prerun = module_get_object(handler->module, "prerun");
 	handler->postrun = module_get_object(handler->module, "postrun");
+	handler->setdata = module_get_object(handler->module, "setdata");
 
 	/* read handler state */
 	asprintf(&state_filename, "%s/handlers/%s", cache_dir, handler->name);
@@ -423,6 +424,7 @@ static void handler_dump(Handler *handler)
 	printf("initialize handler: %d\n", handler->initialize != NULL);
 	printf("prerun handler: %d\n", handler->prerun != NULL);
 	printf("postrun handler: %d\n", handler->postrun != NULL);
+	printf("setdata handler: %d\n", handler->setdata != NULL);
 }
 
 int handlers_dump(void)
@@ -841,3 +843,60 @@ char* handlers_filter(void)
 	return NULL;
 }
 
+int handler_set_data(Handler *handler, PyObject *argtuple)
+{
+	PyObject *result;
+	int rv;
+
+	if (handler == NULL)
+		return 0;
+
+	if (handler->setdata == NULL)
+		return 0;
+
+	if ((result = PyObject_CallObject(handler->setdata, argtuple)) == NULL) {
+		PyErr_Print();
+		return -1;
+	}
+	/* make sure that privileges are properly dropped in case the handler
+	   does setuid() */
+	drop_privileges();
+
+	if (result != Py_None)
+		rv=1;
+	else
+		rv=0;
+
+	Py_DECREF(result);
+	return rv;
+}
+
+int handlers_set_data_all(char *key, char *value)
+{
+	Handler *handler;
+	PyObject *argtuple;
+	int rv = 1;
+
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "setting data for all handlers: key=%s  value=%s", key, value);
+
+	/* make argument list */
+	if ((argtuple = PyTuple_New(2)) == NULL)
+		return -1;
+
+	PyTuple_SetItem(argtuple, 0, PyString_FromString(key));
+	PyTuple_SetItem(argtuple, 1, PyString_FromString(value));
+
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "DEBUG: handlers=%p", handlers);
+	if (handlers == NULL)
+		return 0;
+
+	for (handler=handlers; handler != NULL; handler=handler->next) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "DEBUG: handler=%p", handler);
+		if (handler_set_data(handler, argtuple) < 0)
+			rv = -1;
+	}
+
+	Py_DECREF(argtuple);
+
+	return 1;
+}

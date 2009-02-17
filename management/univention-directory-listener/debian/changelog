@@ -1,3 +1,9 @@
+univention-directory-listener (3.0.2-1) unstable; urgency=low
+
+  * pass ldap connection info to handler modules
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 25 Jun 2008 16:25:01 +0200
+
 univention-directory-listener (3.0.1-1) unstable; urgency=low
 
   * Now listener.run gives the return code of the command back to the
