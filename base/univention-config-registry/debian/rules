@@ -61,7 +61,7 @@ clean:
 	rm -f *~
 	test -f Makefile && make distclean || true
 	find -name Makefile.in -o -name Makefile | xargs rm -f
-	rm -f aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs
+	rm -f aclocal.m4 config.* install-sh missing mkinstalldirs
 	dh_clean
 
 D=$(CURDIR)/debian/univention-config-registry

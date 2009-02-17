@@ -13,6 +13,10 @@ Variables: sshd/xdisplayoffset
 Variables: sshd/xuselocalhost
 
 Type: file
+File: etc/ssh/ssh_config
+Variables: auth/user/methods
+
+Type: file
 File: etc/default/ssh
 Variables: sshd/autostart
 
