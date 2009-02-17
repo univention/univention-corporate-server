@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.12-1) unstable; urgency=low
+
+  * make the warning font a little bit smaller. Bug #13289
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Feb 2009 09:21:55 +0100
+
 univention-directory-manager (6.0.11-1) unstable; urgency=low
 
   * added missing icon from last commit. Bug #13289

@@ -1322,7 +1322,7 @@ class modwizard(unimodule.unimodule):
 						[icon( '', { 'url' : 'icon/dialog-warning.png' }, {} )]
 					}),
 					tablecol("",{'type':'wizard_layout'},{"obs":[
-						header(_('Your search did not match any objects.'),{"type":"3"},{})
+						header(_('Your search did not match any objects.'),{"type":"5"},{})
 						]
 					})
 				]})
