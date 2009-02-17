@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+#DEBHELPER#
+
+exit 0
+
+# vim:set ai et sts=2 sw=2 tw=0:
