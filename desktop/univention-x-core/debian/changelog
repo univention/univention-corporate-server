@@ -1,3 +1,9 @@
+univention-x-core (2.0.1-5) unstable; urgency=low
+
+  * debian control for xserver-xorg update (Bug: #12921)
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Feb 2009 15:48:47 +0100
+
 univention-x-core (2.0.1-4) unstable; urgency=low
 
   * prerm script for xserver-xorg update (Bug: #12921) 
