@@ -8,7 +8,7 @@ Standards-Version: 3.5.5
 Package: univention-x-core
 Architecture: all
 Pre-Depends: univention-config-registry
-Depends: univention-policy-tools, kudzu-2.6 | kudzu, ldap-utils, univention-gdm, xserver-xorg (>>1:7.3), xbase-clients, univention-fonts, xserver-xorg-video-all
+Depends: univention-policy-tools, kudzu-2.6 | kudzu, ldap-utils, univention-gdm, xserver-xorg (>>1:7.3), xbase-clients, univention-fonts, xserver-xorg-video-all, x11-common, xorg, xserver-xorg-video-via, xserver-xorg-video-i810
 Conflicts: xserver-xfree86 (<<6.8.2)
 Description: UCS - X System
  This package contain a meta-package, that sets up a graphical login.
