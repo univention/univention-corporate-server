@@ -40,6 +40,7 @@ import os, pwd, types, ldap, ldap.schema, re, time, copy, codecs, base64, string
 import univention_baseconfig, univention.debug
 import smtplib
 from email.MIMEText import MIMEText
+import univention.uldap
 
 
 name='replication'
@@ -53,6 +54,51 @@ if listener.baseConfig['ldap/server/type'] == 'slave':
 
 if listener.baseConfig['ldap/slave/filter']:
 	filter=listener.baseConfig['ldap/slave/filter']
+
+#
+# init flatmode if enabled
+#
+flatmode = False
+flatmode_ldap={ 'lo': None }
+flatmode_mapping = []
+flatmode_container = {}
+flatmode_module_prefix = 'ldap/replication/flatmode/module/'
+flatmode_container_prefix = 'ldap/replication/flatmode/container/'
+
+univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode enabled by UCR: %s' % listener.baseConfig.get('ldap/replication/flatmode','no'))
+if listener.baseConfig.get('ldap/replication/flatmode','no') in ['yes','1','true']:
+	# flatmode is enabled
+	try:
+		import univention.admin.uldap
+		import univention.admin.objects
+		import univention.admin.modules
+	except Exception, ex:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'cannot import univention directory manager modules: %s' % str(ex))
+	else:
+		# all modules imported
+		for	key_mod in listener.baseConfig.keys():
+			# iterate over all UCR variables
+			if key_mod.startswith( flatmode_module_prefix ):
+				# found module entry
+				id=key_mod[ len( flatmode_module_prefix ) : ]
+				val_mod = listener.baseConfig[ key_mod ]
+				# find container entry
+				key_cn = '%s%s' % (flatmode_container_prefix, id)
+				if listener.baseConfig.has_key( key_cn ):
+					val_cn = listener.baseConfig[ key_cn ]
+					# get module
+					mod = univention.admin.modules.get( val_mod )
+					if not mod:
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode: could not get module %s' % val_mod)
+					else:
+						entry = { 'module': mod, 'type': val_mod, 'container': val_cn }
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'replication flatmode: saving objects of type %s in %s' % (val_mod, val_cn))
+						flatmode_mapping.append( entry )
+						flatmode_container[ val_cn ] = False
+						flatmode = True
+				else:
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode: cannot find UCR variable %s' % key_cn)
+univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode activated: %s' % flatmode)
 
 LDIF_FILE = '/var/lib/univention-directory-replication/failed.ldif'
 
@@ -432,9 +478,161 @@ def update_schema(attr):
 
 	init_slapd('restart')
 
+# get "old" from local ldap server
+# "ldapconn": connection to local ldap server
+def getOldValues( ldapconn, dn ):
+	if not isinstance(ldapconn, LDIFObject):
+		try:
+			res=ldapconn.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['*', '+'])
+		except ldap.NO_SUCH_OBJECT:
+			old={}
+		except ldap.SERVER_DOWN:
+			old={}
+		else:
+			if res:
+				old=res[0][1]
+			else:
+				old={}
+	else:
+		old={}
+
+	return old
+
+# check if target container exists; this function creates required containers if they are missing
+def flatmodeCreateContainer( ldapconn, dn ):
+	if dn in flatmode_container:
+		if flatmode_container[dn]:
+			return
+
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'replication flatmode: testing required container: %s' % dn)
+	old = getOldValues( ldapconn, dn )
+
+	if not old:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'replication flatmode: required container does not exist: %s' % dn)
+		tmpdn=''
+		dnparts = univention.admin.uldap.explodeDn(dn, 0)
+		dnparts.reverse()
+		for dnpart in dnparts:
+			if tmpdn:
+				tmpdn = '%s,%s' % (dnpart, tmpdn)
+			else:
+				tmpdn = dnpart
+
+			tmpold = {}
+			tmpnew = {}
+			objtype, objname = dnpart.split('=',1)
+			if objtype == 'cn' or objtype == 'ou':
+				# check if object exists in local ldap tree
+				tmpold = getOldValues( ldapconn, tmpdn )
+
+			if objtype == 'cn' and not tmpold:
+				tmpnew = { 'cn': [ objname ], 'objectClass': [ 'top', 'organizationalRole' ] }
+			elif objtype == 'ou' and not tmpold:
+				tmpnew = { 'ou': [ objname ], 'objectClass': [ 'top', 'organizationalUnit' ] }
+
+			if tmpnew:
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'replication flatmode: creating required container: %s' % tmpdn)
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'replication flatmode: calling handle( %s, tmpnew, tmpold ):\ntmpnew=%s' % (tmpdn, tmpnew))
+				handler( tmpdn, tmpnew, tmpold )
+	flatmode_container[dn] = True
+
+
+# This function converts object dn and object attributes for flatmode.
+# Special convertions for aach module type have to be added here.
+# "new" is modified "by reference"
+# the new value for "dn" is returned ("call by value")
+def flatmodeConvertObject( entry, dn, new ):
+	global flatmode_mapping
+
+	# map DN
+	rdn = univention.admin.uldap.explodeDn(dn, 0)[0]
+	dn = '%s,%s' % (rdn, entry['container'])
+
+	# correct entryDN
+	if new:
+		new['entryDN'][0] = dn
+
+	if new.has_key('uniqueMember'):
+		if flatmode_ldap['lo'] == None:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode: second ldap connection is not established - local replica may be corrupt!')
+		else:
+			newMemberDNs = []
+			# convert all existing uniqueMember DNs
+			for memberdn in new['uniqueMember']:
+				try:
+					obj = flatmode_ldap['lo'].get(memberdn,[])
+				except Exception, ex:
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'replication flatmode: could not get member %s' % memberdn)
+					obj = None
+
+				newmember = memberdn
+				if obj:
+					for entry in flatmode_mapping:
+						# test if memberdn should also be remapped
+						if entry['module'].identify( memberdn, obj ) or entry['module'].identify( memberdn, obj ):
+
+							rdn = univention.admin.uldap.explodeDn(memberdn, 0)[0]
+							newmember = '%s,%s' % (rdn, entry['container'])
+							break
+
+				newMemberDNs.append( newmember )
+			# set new DNs
+			new['uniqueMember'] = newMemberDNs
+
+	return dn
+
+# if flatmode is enabled handlerFlatmode checks for every object if mapping is required
+# if examined object matches to mapping "dn" and "new" are converted by flatmodeConvertObject
+def handlerFlatmode( ldapconn, dn, new, old ):
+	global flatmode
+	global flatmode_mapping
+	global flatmode_container
+
+	if not flatmode:
+		return dn
+	newdn = dn
+
+	if dn in flatmode_container:
+		flatmode_container[dn] = True
+
+	for entry in flatmode_mapping:
+		if entry['module'].identify( dn, new ) or entry['module'].identify( dn, old ):
+
+			newdn = flatmodeConvertObject( entry, dn, new )
+
+			# test if required container is present
+			if not flatmode_container[ entry['container'] ]:
+				flatmodeCreateContainer( ldapconn, entry['container'] )
+
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'replication flatmode: mapped %s to %s' % (dn, newdn))
+			return newdn
+
+	return newdn
+
+
+def flatmode_reconnect():
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'replication flatmode: ldap reconnect triggered')
+	if ( flatmode_ldap.has_key('ldapserver') and \
+		 flatmode_ldap.has_key('basedn') and \
+		 flatmode_ldap.has_key('binddn') and \
+		 flatmode_ldap.has_key('bindpw')):
+		try:
+			flatmode_ldap['lo'] = univention.uldap.access( host = flatmode_ldap['ldapserver'],
+														   base = flatmode_ldap['basedn'],
+														   binddn = flatmode_ldap['binddn'],
+														   bindpw = flatmode_ldap['bindpw'],
+														   start_tls = 2 )
+		except Exception, ex:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode: ldap reconnect failed: %s' % str(ex))
+			flatmode_ldap['lo'] = None
+		else:
+			if flatmode_ldap['lo'] == None:
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode: ldap reconnect failed')
+
 def handler(dn, new, listener_old):
 	global reconnect
 	global slave
+	global flatmode
 	if not slave:
 		return 1
 
@@ -458,6 +656,10 @@ def handler(dn, new, listener_old):
 				time.sleep(10)
 		else:
 			connected=1
+
+	if flatmode:
+		dn = handlerFlatmode( l, dn, new, listener_old )
+
 	try:
 
 		if listener.baseConfig.get('ldap/replication/filesystem/check', 'false').lower() in ['true', 'yes']:
@@ -651,6 +853,22 @@ def get_password():
 def init_slapd(arg):
 	listener.run('/etc/init.d/slapd', ['slapd', arg], uid=0)
 	time.sleep(1)
+
+def setdata(key, value):
+	if key == 'bindpw':
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'replication: listener passed key="%s" value="<HIDDEN>"' % key)
+	else:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'replication: listener passed key="%s" value="%s"' % (key, value))
+
+	if key in [ 'ldapserver', 'basedn', 'binddn', 'bindpw' ]:
+		flatmode_ldap[ key ] = value
+	else:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'replication: listener passed unknown data (key="%s" value="%s")' % (key, value))
+
+	if key == 'ldapserver':
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'replication: ldap server changed to %s' % value)
+		if flatmode:
+			flatmode_reconnect()
 
 if __name__ == '__main__':
 	handler('foo', {'foo': 'bar'}, {'foo': 'baz'})
