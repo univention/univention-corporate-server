@@ -46,16 +46,16 @@ import client
 # main widget for UMC (based on notebook)
 import widget
 
-import univention_baseconfig
+import univention.config_registry
 
-baseConfig = univention_baseconfig.baseConfig()
-baseConfig.load()
+configRegistry = univention.config_registry.ConfigRegistry ()
+configRegistry.load()
 
 LANG_DE = 'de_DE.utf8'
 #LANG_EN = 'en_EN.utf8'
 LANG_EN = 'C'
-#LANG_DEFAULT = baseConfig.get ('directory/manager/web/language', locale.getdefaultlocale ())
-LANG_DEFAULT = baseConfig.get ('umc/web/language', LANG_EN)
+#LANG_DEFAULT = configRegistry.get ('directory/manager/web/language', locale.getdefaultlocale ())
+LANG_DEFAULT = configRegistry.get ('umc/web/language', LANG_EN)
 
 _ = umc.Translation( 'univention.management.console.frontend' ).translate
 
@@ -93,13 +93,13 @@ class modconsole(unimodule.unimodule):
 ##			obs.append(self.logoutbut)
 		self.save.put( 'header_table_type' , 'content_header_menuless' )
 		self.save.put( 'main_table_type' , 'content_main_menuless' )
-		if baseConfig.has_key('umc/title') and baseConfig['umc/title']:
-			self.save.put( 'site_title' , '%s' % baseConfig['umc/title'] )
+		if configRegistry.has_key('umc/title') and configRegistry['umc/title']:
+			self.save.put( 'site_title' , '%s' % configRegistry['umc/title'] )
 		else:
 			self.save.put( 'site_title' , 'Univention Management Console' )
-		if baseConfig.has_key('umc/title/image') and \
-			   baseConfig['umc/title/image']:
-			self.save.put( 'header_img' , baseConfig['umc/title/image'] )
+		if configRegistry.has_key('umc/title/image') and \
+			   configRegistry['umc/title/image']:
+			self.save.put( 'header_img' , configRegistry['umc/title/image'] )
 		else:
 			self.save.put( 'header_img' , 'themes/images/default/management-console.gif' )
 
@@ -124,6 +124,19 @@ class modconsole(unimodule.unimodule):
 				{"level": '0', "name": 'de', "description": "Deutsch"},
 				{"level": '0', "name": 'en', "description": "English"}
 				]
+		default_lang = None
+		if LANG_DEFAULT:
+			if LANG_DEFAULT == 'C':
+				default_lang = 'en'
+			elif LANG_DEFAULT:
+				default_lang = LANG_DEFAULT.split ('_')[0]
+
+		if default_lang:
+			for l in langs:
+				if l['name'] == default_lang:
+					l['selected'] = default_lang
+					break
+
 		self.chooselang=language_dojo_select(_("Language:"),{'width':'265'},{"helptext":_("Select language for this session"),"choicelist":langs})
 
 		self.usernamein=question_text(_("User name"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your uid.")})
