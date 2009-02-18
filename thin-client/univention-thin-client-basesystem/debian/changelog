@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (5.0.2-1) unstable; urgency=low
+
+  * some more "chroot" options for apt in univention-thin-client-apt (Bug: #12921)
+
+ -- Felix Botner <botner@univention.de>  Wed, 18 Feb 2009 17:09:45 +0100
+
 univention-thin-client-basesystem (5.0.1-3) unstable; urgency=low
 
   * removed dist-upgrade in postinst (Bug: #12921)
