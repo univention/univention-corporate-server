@@ -1,3 +1,9 @@
+univention-installer (3.0.15-1) unstable; urgency=low
+
+  * adapt repository path for debootstrap process (Bug #13159)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 Feb 2009 11:39:40 +0100
+
 univention-installer (3.0.14-2) unstable; urgency=low
 
   * bugfix in test script (Bug: #12190)

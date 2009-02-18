@@ -43,6 +43,7 @@ def get_first_version():
 	return version
 
 def get_package_list( pkglist ):
+	version = get_first_version()
 	# old repository structure
 	if os.path.isdir( '/mnt/packages' ):
 		if os.path.exists('/mnt/packages/Packages'):

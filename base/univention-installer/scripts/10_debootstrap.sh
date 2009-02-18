@@ -44,22 +44,32 @@ if [ -n "$cdrom_device" ]; then
 	fi
 fi
 
+## check for repository structure
+# old repository (DVD)
+if [ -d /mnt/packages ]; then
+	repo_dir="file:/mnt/packages"
+else
+	version=`cat /mnt/.univention_install | grep VERSION | sed -e 's|VERSION=||'`
+
+	repo_dir="file:/mnt/mirror/${version}/maintained/${version}-0/"
+fi
+
 # Installing univention base system
 if [ -z "$USE_NO_LOG" ]; then
 	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-		debootstrap --arch powerpc --exclude="pcmcia-cs" univention /instmnt/ file:/mnt/packages 2>&1 | tee -a /instmnt/.log
+		debootstrap --arch powerpc --exclude="pcmcia-cs" univention /instmnt/ $repo_dir 2>&1 | tee -a /instmnt/.log
 	elif [ "$architecture" = "x86_64" ]; then
-		debootstrap --arch amd64 --exclude="pcmcia-cs" univention /instmnt/ file:/mnt/packages 2>&1 | tee -a /instmnt/.log
+		debootstrap --arch amd64 --exclude="pcmcia-cs" univention /instmnt/ $repo_dir 2>&1 | tee -a /instmnt/.log
 	else
-		debootstrap --arch i386 --exclude="pcmcia-cs" univention /instmnt/ file:/mnt/packages 2>&1 | tee -a /instmnt/.log
+		debootstrap --arch i386 --exclude="pcmcia-cs" univention /instmnt/ $repo_dir 2>&1 | tee -a /instmnt/.log
 	fi
 else
 	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-		debootstrap --arch powerpc --exclude="pcmcia-cs" univention /instmnt/ file:/mnt/packages
+		debootstrap --arch powerpc --exclude="pcmcia-cs" univention /instmnt/ $repo_dir
 	elif [ "$architecture" = "x86_64" ]; then
-		debootstrap --arch amd64 --exclude="pcmcia-cs" univention /instmnt/ file:/mnt/packages
+		debootstrap --arch amd64 --exclude="pcmcia-cs" univention /instmnt/ $repo_dir
 	else
-		debootstrap --arch i386 --exclude="pcmcia-cs" univention /instmnt/ file:/mnt/packages
+		debootstrap --arch i386 --exclude="pcmcia-cs" univention /instmnt/ $repo_dir
 	fi
 fi
 
