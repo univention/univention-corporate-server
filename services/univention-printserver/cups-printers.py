@@ -35,6 +35,7 @@ import univention.debug
 hostname=listener.baseConfig['hostname']
 domainname=listener.baseConfig['domainname']
 ip=listener.baseConfig['interfaces/eth0/address']
+ldap_base=listener.baseConfig['ldap/base']
 
 name='cups-printers'
 description='Manage CUPS printer configuration'

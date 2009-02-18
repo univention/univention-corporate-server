@@ -44,6 +44,7 @@ build-ext-%:
 
 D=$(CURDIR)/debian/univention-printserver
 PACKAGE_NAME=univention-printserver
+D_PDF=$(CURDIR)/debian/univention-printserver-pdf
 
 clean:
 	dh_testdir
@@ -67,7 +68,9 @@ install-ext-%:
 	ln -s ../sbin/univention-cupsadmin ${D}/usr/bin/univention-cups-disable
 	ln -s ../sbin/univention-cupsadmin ${D}/usr/bin/univention-cups-enable
 	install -m 644 cups-printers.py ${D}/usr/lib/univention-directory-listener/system
+	install -m 644 cups-pdf.py ${D_PDF}/usr/lib/univention-directory-listener/system
 	install -m 0755 79univention-printserver.inst ${D}/usr/lib/univention-install/
+	install -m 0755 79univention-printserver-pdf.inst ${D_PDF}/usr/lib/univention-install/
 	install -D -m0755 ppds.py ${D}/usr/lib/univention-printserver/univention-ppds
     
     # install UMC module

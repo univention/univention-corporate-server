@@ -1,0 +1,5 @@
+usr/lib/univention-install/
+usr/sbin/
+usr/bin/
+usr/lib/univention-directory-listener/system
+var/cache/cups-pdf/

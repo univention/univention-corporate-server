@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# Univention Print Server
+#  postinst script for the debian package
+#
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+ldapbase=`ucr get ldap/base`
+hostname=`ucr get hostname`
+domain=`ucr get domainname`
+server_role=`ucr get server/role`
+dir='/var/cache/cups-pdf/%U'
+anon_dir='/var/cache/cups-pdf'
+
+# set up directory
+univention-baseconfig set "cups/cups-pdf/directory?$dir"
+univention-baseconfig set "cups/cups-pdf/anonymous?$anon_dir"
+
+# run join script
+if [ "$server_role" = "domaincontroller_master" ]; then
+        /usr/lib/univention-install/79univention-printserver-pdf.inst || true
+fi
+
+# cups backend 
+dpkg-statoverride --add --update root sys 4754 /usr/lib/cups/backend/cups-pdf
+
+# reload listener
+if [ "$1" = "configure" ]; then
+        if test -f /etc/init.d/univention-directory-listener
+                then
+                /etc/init.d/univention-directory-listener crestart
+        fi
+
+fi
+
+#DEBHELPER#
+
+exit 0

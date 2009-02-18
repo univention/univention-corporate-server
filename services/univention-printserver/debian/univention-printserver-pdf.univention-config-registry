@@ -1,0 +1,4 @@
+Type: file
+File: etc/cups/cups-pdf.conf
+Variables: cups/cups-pdf/directory
+Variables: cups/cups-pdf/anonymous

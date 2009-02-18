@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# Univention Print Server
+#  postinst script for the debian package
+#
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+ldapbase=`ucr get ldap/base`
+hostname=`ucr get hostname`
+domain=`ucr get domainname`
+server_role=`ucr get server/role`
+name=pdfPrinter
+dir='/var/cache/cups-pdf/%U'
+anon_dir='/var/cache/cups-pdf'
+
+# share und printer löschen
+# create pdf share
+#udm shares/share create --ignore_exist --position="cn=shares,$ldapbase" \
+#                        --option samba --set name=$name \
+#                        --set host=$hostname.$domain --set path=$dir \
+#                        --set webaccessName=$name
+
+# cups backend
+dpkg-statoverride  --remove /usr/lib/cups/backend/cups-pdf
+
+
+#DEBHELPER#
+
+exit 0
