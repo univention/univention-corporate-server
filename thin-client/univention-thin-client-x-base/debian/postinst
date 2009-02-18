@@ -30,7 +30,18 @@
 
 #DEBHELPER#
 
-univention-thin-client-apt install univention-gdm univention-gdm-sessions univention-xnumlock
+univention-thin-client-apt install univention-gdm \
+                                   univention-gdm-sessions \
+                                   univention-xnumlock \
+                                   univention-x-core \
+                                   xserver-xorg \
+                                   xbase-clients \
+                                   univention-fonts \
+                                   xserver-xorg-video-all \
+                                   x11-common \
+                                   xorg \
+                                   xserver-xorg-video-via \
+                                   xserver-xorg-video-i810
 univention-thin-client-apt install kdebase-data arts
 univention-thin-client-ramdisk -f /etc/X11/xorg.conf \
 	-f /etc/gdm/gdm.conf \
