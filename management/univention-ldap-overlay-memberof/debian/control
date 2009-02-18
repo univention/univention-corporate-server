@@ -1,0 +1,18 @@
+Source: univention-ldap-overlay-memberof
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, univention-config-dev
+
+Package: univention-ldap-overlay-memberof
+Architecture: all
+Depends: slapd
+Description: configuration for OpenLDAP memberOf overlay module
+ This package contains the general configuration for the
+ OpenLDAP memberOf overlay module.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

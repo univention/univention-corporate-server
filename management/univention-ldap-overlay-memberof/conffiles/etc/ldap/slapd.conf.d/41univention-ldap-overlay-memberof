@@ -1,0 +1,25 @@
+
+@!@
+if configRegistry.get('ldap/overlay/memberof', 'false').lower() in [ '1', 'true', 'yes' ]:
+	group_oc = configRegistry.get('ldap/overlay/memberof/objectclass', 'posixGroup')
+	member_ad = configRegistry.get('ldap/overlay/memberof/member', 'uniqueMember')
+	memberof_ad = configRegistry.get('ldap/overlay/memberof/memberof', 'memberOf')
+	dangling = configRegistry.get('ldap/overlay/memberof/dangling', 'ignore')
+	dangling_error = configRegistry.get('ldap/overlay/memberof/dangling/errorcode')
+	modifiersname = configRegistry.get('ldap/overlay/memberof/modifiersname')
+	refint = configRegistry.get('ldap/overlay/memberof/refint', 'false')
+	print 'moduleload			 memberof.so'
+	print 'overlay				 memberof'
+	print 'memberof-group-oc	 %s' % group_oc
+	print 'memberof-member-ad	 %s' % member_ad
+	print 'memberof-memberof-ad	 %s' % memberof_ad
+	print 'memberof-dangling	 %s' % dangling
+	if dangling_error:
+		print 'memberof-dangling-error	   %s' % dangling_error
+	if modifiersname:
+		print 'memberof-dn			 %s' % modifiersname
+	print 'memberof-refint		 %s' % refint
+else:
+	print '# memberof overlay module has been disabled by UCR'
+@!@
+

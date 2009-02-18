@@ -1,0 +1,36 @@
+[ldap/overlay/memberof]
+Description[de]=Aktiviert das "memberOf"-Overlay-Modul, wenn die Variable auf "true" gesetzt ist.
+Description[en]=Set to "true" to enable "memberof" overlay module
+Type=str
+Categories=LDAP
+
+[ldap/overlay/memberof/objectclass]
+Description[de]=Der Name der Objektklasse, der das Update der memberOf-Attribute auslöst.
+Description[en]=Name of objectclass that triggers reverse group membership update
+Type=str
+Categories=LDAP
+
+[ldap/overlay/memberof/member]
+Description[de]=Name des Attributs, das die DN der Gruppenmitglieder am Gruppenobjekt enthält.
+Description[en]=Name of the attribute that contains the names of the members in the group objects
+Type=str
+Categories=LDAP
+
+[ldap/overlay/memberof/memberof]
+Description[de]=Name des Attributs, das die DNs der Gruppen enthält, in denen dieses Objekt Mitglied ist.
+Description[en]=Name of the attribute that contains the names of the groups an entry is member of
+Type=str
+Categories=LDAP
+
+[ldap/overlay/memberof/dangling]
+Description[de]=Diese Option bestimmt das Verhalten des Overlay-Moduls, wenn während einer Änderung "dangling references" festgestellt werden. 
+Description[en]=This option determines the behavior of the overlay when, during a modification, it encounters dangling references (ignore, drop, error).
+Type=str
+Categories=LDAP
+
+[ldap/overlay/memberof/refint]
+Description[de]=Diese Option bestimmt, ob das Overlay-Modul automatisch die Integrität der Referenzen bewahrt.
+Description[en]=This option determines whether the overlay will try to preserve referential integrity or not.
+Type=str
+Categories=LDAP
+

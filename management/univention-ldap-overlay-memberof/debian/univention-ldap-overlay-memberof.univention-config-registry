@@ -1,0 +1,14 @@
+Type: multifile
+Multifile: etc/ldap/slapd.conf
+Variables: ldap/server/type
+Variables: ldap/overlay/.*
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/41univention-ldap-overlay-memberof
+Variables: ldap/overlay/.*
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/11univention-ldap-overlay-memberof
+Variables: ldap/server/type
