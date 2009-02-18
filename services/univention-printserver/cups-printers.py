@@ -134,6 +134,7 @@ def handler(dn, new, old):
 						pkprinters(['--groups', old['cn'][0], '--remove', member])
 				pkprinters(['--delete', old['cn'][0]])
 			need_to_reload_samba = 1
+
 		if old.has_key('univentionPrinterSambaName') and old['univentionPrinterSambaName']:
 			filename = '/etc/samba/printers.conf.d/%s' % old['univentionPrinterSambaName'][0]
 			listener.setuid(0)
@@ -142,6 +143,15 @@ def handler(dn, new, old):
 					os.unlink(filename)
 			finally:
 				listener.unsetuid()
+
+		filename = '/etc/samba/printers.conf.d/%s' % old['cn'][0]
+		listener.setuid(0)
+		try:
+			if os.path.exists(filename):
+				os.unlink(filename)
+		finally:
+			 listener.unsetuid()
+
 	if filter_match(new):
 		description=""
 		page_price=0
@@ -245,23 +255,52 @@ def handler(dn, new, old):
 			lpadmin(args)
 			need_to_reload_samba = 1
 
+			printername = new['cn'][0]
 			if new.has_key('univentionPrinterSambaName') and new['univentionPrinterSambaName']:
-				filename = '/etc/samba/printers.conf.d/%s' % new['univentionPrinterSambaName'][0]
-				listener.setuid(0)
+				printername = new['univentionPrinterSambaName'][0]
+
+			filename = '/etc/samba/printers.conf.d/%s' % printername
+			listener.setuid(0)
+
+			if (new.has_key('univentionPrinterSambaName') and new['univentionPrinterSambaName']) or \
+			(new.has_key('univentionPrinterACLtype') and new['univentionPrinterACLtype'][0] == "allow") or \
+			(new.has_key('univentionPrinterACLtype') and new['univentionPrinterACLtype'][0] == "deny"):
+
+				# samba permissions
+				perm = ""
+	
+				# users
+				if new.has_key('univentionPrinterACLUsers'):
+					for dn in new['univentionPrinterACLUsers']:
+						user = dn[dn.find('=')+1:dn.find(',')]
+						if " " in user: user = "\"" + user + "\""
+						perm = perm + " " + user
+				# groups
+				if new.has_key('univentionPrinterACLGroups'):
+					for dn in new['univentionPrinterACLGroups']:
+						group = "@" + dn[dn.find('=')+1:dn.find(',')]
+						if " " in group : group = "\"" + group + "\""
+						perm = perm + " " + group
+	
 				try:
 					fp = open(filename, 'w')
-
-					print >>fp, '[%s]' % new['univentionPrinterSambaName'][0]
+	
+					print >>fp, '[%s]' % printername
 					print >>fp, 'printer name = %s' % new['cn'][0]
 					print >>fp, 'path = /tmp'
 					print >>fp, 'guest ok = yes'
 					print >>fp, 'printable = yes'
-
-
+					if perm:
+						if new['univentionPrinterACLtype'][0] == 'allow':
+							print >>fp, 'valid users = %s' % perm
+						if new['univentionPrinterACLtype'][0] == 'deny':
+							print >>fp, 'invalid users = %s' %perm
+	
+	
 					uid = 0
 					gid = 0
 					mode = '0755'
-
+	
 					os.chmod(filename,int(mode,0))
 					os.chown(filename,uid,gid)
 				finally:
