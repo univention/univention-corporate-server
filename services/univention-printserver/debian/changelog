@@ -1,34 +1,34 @@
-univention-printserver (1.0.9-9) unstable; urgency=low
+univention-printserver (2.0.9-1) unstable; urgency=low
 
   * version jump 
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 25 Nov 2008 09:37:06 +0100
 
-univention-printserver (1.0.9-8) unstable; urgency=low
+univention-printserver (2.0.8-1) unstable; urgency=low
 
   * bugfix in join script and listener cups-pdf
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Wed, 19 Nov 2008 13:39:04 +0100
 
-univention-printserver (1.0.9-7) unstable; urgency=low
+univention-printserver (2.0.7-2) unstable; urgency=low
 
   * bugfix in join script
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon,  6 Oct 2008 10:23:11 +0200
 
-univention-printserver (1.0.9-6) unstable; urgency=low
+univention-printserver (2.0.7-1) unstable; urgency=low
 
   * cups pdf join script bugfix 
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Wed,  1 Oct 2008 14:56:43 +0200
 
-univention-printserver (1.1.1-2) unstable; urgency=low
+univention-printserver (2.0.6-1) unstable; urgency=low
 
   * cups pdf bugfix (Bug: #7625)
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 23 Sep 2008 09:44:26 +0200
 
-univention-printserver (1.0.9-4) unstable; urgency=low
+univention-printserver (2.0.5-1) unstable; urgency=low
 
   * add new cups-pdf package (Bug: #7625)
 
