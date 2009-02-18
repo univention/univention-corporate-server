@@ -102,7 +102,7 @@ class UniventionMirror( UniventionUpdater ):
 
 	def mirror_repositories( self ):
 		'''uses apt-mirror to copy a repository'''
-		# check if the repository directory structure existis, otherwise create it
+		# check if the repository directory structure exists, otherwise create it
 		if not os.path.exists( self.repository_path ):
 			os.makedirs( self.repository_path )
 

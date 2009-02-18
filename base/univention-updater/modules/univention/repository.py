@@ -70,7 +70,7 @@ def copy_package_files( source_dir, dest_dir ):
 			except shutil.Error, e:
 				print >> sys.stderr, "Copying package '%s' failed." % filename
 
-def update_indexes( base_dir, update_only = False ):
+def update_indexes( base_dir, update_only = False, dists = False ):
 	print 'Creating indexes ...',
 	sys.stdout.flush()
 	for arch in ARCHITECTURES:
@@ -99,18 +99,17 @@ def update_indexes( base_dir, update_only = False ):
 			sys.exit( 1 )
 
 	# create Packages file in dists directory if it exists
-	if os.path.isdir( os.path.join(  base_dir, 'dists' ) ):
+	if dists and os.path.isdir( os.path.join(  base_dir, 'dists' ) ):
 		version = configRegistry.get( 'version/version' )
-		src_base = os.path.join( '../../../', version , 'maintained', '%s-0' % version )
 		for arch in ( 'i386', 'amd64' ):
 			if not os.path.isdir( os.path.join( base_dir, 'dists/univention/main', 'binary-%s' % arch ) ):
 				continue
 			packages_file = os.path.join( base_dir, 'dists/univention/main', 'binary-%s' % arch, 'Packages' )
 			packages_fd = open( packages_file, 'w' )
-			ret = subprocess.call( [ 'apt-ftparchive', 'packages', '%s/all' % src_base ], stdout = packages_fd, cwd = base_dir )
+			ret = subprocess.call( [ 'apt-ftparchive', 'packages', 'all' ], stdout = packages_fd, cwd = base_dir )
 			packages_fd.close()
 			packages_fd = open( packages_file, 'a' )
-			ret = subprocess.call( [ 'apt-ftparchive', 'packages', '%s/%s' % ( src_base, arch ) ], stdout = packages_fd, cwd = base_dir )
+			ret = subprocess.call( [ 'apt-ftparchive', 'packages', '%s' % arch ], stdout = packages_fd, cwd = base_dir )
 			packages_fd.close()
 			gzip_file( packages_file )
 

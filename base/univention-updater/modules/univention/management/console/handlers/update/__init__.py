@@ -678,13 +678,7 @@ chmod +x /usr/sbin/apache2 /usr/sbin/univention-management-console-server
 		ud.debug(ud.ADMIN, ud.INFO, 'install stdout=%s' % stdout)
 		# TODO: this should be solved in another way,
 		# we have to wait a few seconds otherwise the updater process haven't started yet
-		for i in range( 10 ):
-			if not self.__is_process_running( command ):
-				time.sleep( 1 )
-			else:
-				return ( 1, 'The univention-updater process could not be started' )
-
-		# time.sleep(8)
+		time.sleep(8)
 		if p1.returncode != 0:
 			return (p1.returncode,stderr)
 		else:

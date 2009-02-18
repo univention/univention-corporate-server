@@ -176,7 +176,7 @@ def mount( options ):
 	return True
 
 def setup_repository( options ):
-	urepo.update_indexes( _repo_base )
+	urepo.update_indexes( _repo_base, dists = True )
 
 def setup_pxe( options ):
 	'''setup network installation (PXE)'''

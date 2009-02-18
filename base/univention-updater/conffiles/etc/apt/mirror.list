@@ -8,6 +8,9 @@ set base_path    @%@repository/mirror/basepath@%@
 set nthreads     @%@repository/mirror/threads@%@
 
 @!@
+import copy
+import sys
+
 from univention.management.console.handlers.update.mirror import UniventionMirror
 from univention.management.console.handlers.update.tools import UCS_Version
 
@@ -19,8 +22,8 @@ try:
 		start = UCS_Version( start )
 	if end:
 		end = UCS_Version( end )
-	print mirror.print_version_repositories( clean = True, dists = True, start = start, end = end )
-	print mirror.print_security_repositories( clean = True, start = start, end = end, all_security_updates = True )
+	print mirror.print_version_repositories( clean = True, dists = True, start = copy.copy( start ), end = copy.copy( end ) )
+	print mirror.print_security_repositories( clean = True, start = copy.copy( start ), end = copy.copy( end ), all_security_updates = True )
 	print mirror.print_component_repositories( clean = True )
 except:
 	print '# An error occurred during the repository check. The error message:'

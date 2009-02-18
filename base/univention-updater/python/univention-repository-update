@@ -29,10 +29,11 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from optparse import OptionParser
+import copy
 import os
 import re
-import string
 import shutil
+import string
 import subprocess
 import sys
 import time
@@ -40,6 +41,7 @@ import time
 import univention.config_registry as ucr
 import univention.repository as urepo
 from univention.management.console.handlers.update.mirror import UniventionMirror
+from univention.management.console.handlers.update.tools import UCS_Version
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -140,16 +142,44 @@ def update_net( options ):
 	elif options.security_only:
 		ucr.handler_commit( [ '/etc/apt/mirror.list' ] )
 		mirror.run()
+	elif options.update_to:
+		ucr.handler_set( [ 'repository/mirror/version/end=%s' % options.update_to ] )
+		mirror.run()
 	else:
-		if options.update_to:
-			ucr.handler_set( [ 'repository/mirror/version/end=%s' % options.update_to ] )
-			mirror.run()
-			return
 		nextupdate = mirror.release_update_available()
+		mirror_run = False
 		while nextupdate:
 			ucr.handler_set( [ 'repository/mirror/version/end=%s' % nextupdate ] )
 			mirror.run()
+			mirror_run = True
 			nextupdate = mirror.release_update_available( nextupdate )
+		if not mirror_run:
+			# sync only
+			mirror.run()
+
+	# create .univention_install file
+	if not os.path.isfile( os.path.join( _mirror_base, '.univention_install' ) ):
+		exp_version = re.compile( '(?P<major>[0-9]*)\.(?P<minor>[0-9]*)' )
+		repo_base = os.path.join( _mirror_base, 'mirror' )
+		min_version = None
+		new_version = UCS_Version( ( 0, 0, 0 ) )
+
+		for dirname in os.listdir( os.path.join( repo_base ) ):
+			if not os.path.isdir( os.path.join( repo_base, dirname ) ):
+				continue
+			match = exp_version.match( dirname )
+			if not match:
+				continue
+			regdict = match.groupdict()
+			new_version.major = int( regdict[ 'major' ] )
+			new_version.minor = int( regdict[ 'minor' ] )
+			if not min_version or new_version < min_version:
+				min_version = copy.copy( new_version )
+
+		inst_fd = open( os.path.join( _mirror_base, '.univention_install' ), 'w' )
+		inst_fd.write( 'VERSION=%d.%d\n' % ( min_version.major, min_version.minor ) )
+		inst_fd.write( 'PATCHLEVEL=0\n' )
+		inst_fd.close()
 
 if __name__ == '__main__':
 	# FIXME: no clue why we need this
