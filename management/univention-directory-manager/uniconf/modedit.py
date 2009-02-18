@@ -2347,7 +2347,10 @@ class modedit(unimodule.unimodule):
 						set_src=''
 						if self.object.info['uri']:
 							pos = self.object.info['uri'].find('/')
-							if self.object.info['uri'][pos+1]=='/':
+							if pos+1 == len(self.object.info['uri']):
+								set_uri = self.object.info['uri']
+								set_src = ''
+							elif self.object.info['uri'][pos+1]=='/':
 								# FIXME: The above check does not seem to work at all times,
 								# self.object.info['uri'] might be s.th. like parallel://dev/zero,
 								# causing minor trouble below (see next FIXME)
@@ -2404,8 +2407,10 @@ class modedit(unimodule.unimodule):
 								atts['width']='100' # FIXME Design
 
 							id_select=question_select(property.short_description,atts,{'choicelist':id_choicelist,'helptext':_('select attribute')})
+							atts['width'] = '110'
 							self.minput[name].append(id_select)
-							self.minput[name].append(question_text(_("Destination"),atts,{"helptext":_("Destination"), 'usertext': unicode(set_src)}))
+							b_atts['width'] = '185'
+							self.minput[name].append(question_text(_("Destination"),b_atts,{"helptext":_("Destination"), 'usertext': unicode(set_src)}))
 
 							#self.minput[name].append(id_select)
 							# [1]: add button
@@ -5011,7 +5016,12 @@ class modedit(unimodule.unimodule):
 			new=current_object[key]
 
 			if key == 'uri': # set printerURI
-				if mitem[0].get_input() and mitem[6].get_input():
+				if mitem[0].get_input().startswith('cups-pdf:/'):
+					if mitem[6].get_input():
+						new = mitem[0].get_input() + mitem[6].get_input()
+					else:
+						new = mitem[0].get_input()
+				elif mitem[0].get_input() and mitem[6].get_input():
 					new = mitem[0].get_input() + mitem[6].get_input()
 				elif not multiedit or key in overwrite_fields:
 					invalid[key]=new
