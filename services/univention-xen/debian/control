@@ -7,7 +7,7 @@ Standards-Version: 3.6.2
 
 Package: univention-xen
 Architecture: i386 amd64
-Depends: xen-tools, univention-debootstrap, wget, xen-docs-3.2, xen-hypervisor-3.2-1-i386 [i386], xen-hypervisor-3.2-1-i386-nonpae [i386], xen-hypervisor-3.2-1-amd64 [amd64], xen-utils-3.2-1, xen-utils-common, libc6-xen [i386], univention-kernel-image-2.6.26-xen | univention-kernel-image-2.6.18-xen, bridge-utils
+Depends: xen-tools, univention-debootstrap, wget, xen-docs-3.2, xen-hypervisor-3.2-1-i386 [i386], xen-hypervisor-3.2-1-amd64 [amd64], xen-utils-3.2-1, xen-utils-common, libc6-xen [i386], univention-kernel-image-2.6.26-xen | univention-kernel-image-2.6.18-xen, bridge-utils
 Description: UCS - Xen configuration and management subsystem
  This packages provides the basic configuration for the
  Xen virtualisation technology.

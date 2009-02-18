@@ -1,3 +1,10 @@
+univention-xen (1.0.2-1) unstable; urgency=low
+
+  * do not depend on the nonpae xen hypervisor. Bug #9125
+  * removed some FIXME strings from the config example. Bug #10135
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Feb 2009 08:37:22 +0100
+
 univention-xen (1.0.1-1) unstable; urgency=low
 
   * update to UCS 2.2. Bug #12866
