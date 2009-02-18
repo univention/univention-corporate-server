@@ -1,0 +1,27 @@
+univention-samba4wins (0.4) unstable; urgency=low
+
+  * stop samba3 nmbd from listening on all network sockets
+  * make use of windows/wins-server UCR-variable
+
+ -- Arvid Requate <requate@univention.de>  Fri, 15 Aug 2008 16:44:39 +0200
+
+univention-samba4wins (0.3) unstable; urgency=low
+
+  * set Samba3 windows/wins-support to 'no' when samba4wins is activated
+  * activate samba4wins iff samba4wins/address and samba4wins/netbios/name are set
+  * change LDAP-attributes to 'MAY' in schema
+  * rename UDM-Tab to 'WINS'
+
+ -- Arvid Requate <requate@univention.de>  Thu, 31 Jul 2008 14:38:49 +0200
+
+univention-samba4wins (0.2) unstable; urgency=low
+
+  * fix network parameter setup for secondary network interface
+
+ -- Arvid Requate <requate@univention.de>  Thu, 31 Jul 2008 10:32:34 +0200
+
+univention-samba4wins (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 30 Jul 2008 19:03:08 +0200

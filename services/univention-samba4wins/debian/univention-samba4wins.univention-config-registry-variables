@@ -1,0 +1,12 @@
+[samba4wins/netbios/name]
+Description[de]=Name des Samba4Wins Servers
+Description[en]=Name of the Samba4Wins server
+Type=str
+Categories=Network
+
+[samba4wins/interfaces]
+Description[de]=IP-Adressen des Samba4Wins Servers
+Description[en]=IP-addresses of the Samba4Wins server
+Type=str
+Categories=Network
+

@@ -1,0 +1,19 @@
+# Copyright (C) 2008 Univention GmbH
+
+# univention namespace: 10176
+
+
+attributetype ( 1.3.6.1.4.1.10176.1000.307.1.1 NAME 'univentionSamba4WinsNetbiosName'
+	DESC 'netbios name of the samba4wins server'
+ 	EQUALITY caseIgnoreIA5Match
+  	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
+
+attributetype ( 1.3.6.1.4.1.10176.1000.307.1.2 NAME 'univentionSamba4WinsSecondaryIp'
+	DESC 'ip for samba4wins secondary network device'
+ 	EQUALITY caseIgnoreIA5Match
+  	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
+
+objectclass ( 1.3.6.1.4.1.10176.1000.307.2.1 NAME 'univentionSamba4WinsHost'
+	SUP 'top' AUXILIARY
+	MAY ( univentionSamba4WinsNetbiosName $ univentionSamba4WinsSecondaryIp )
+	DESC 'samba4wins host settings' )

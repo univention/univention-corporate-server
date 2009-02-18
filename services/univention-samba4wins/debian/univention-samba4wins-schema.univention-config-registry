@@ -1,0 +1,8 @@
+Type: multifile
+Multifile: etc/ldap/slapd.conf
+Variables: ldap/server/type
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/13univention-samba4wins.schema
+Variables: ldap/server/type

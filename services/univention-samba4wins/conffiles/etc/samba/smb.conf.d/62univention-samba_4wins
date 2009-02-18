@@ -1,0 +1,18 @@
+@!@
+requiredUCRkeys = ['samba4wins/address', 'samba/interfaces']
+
+## if all requiredUCRkeys are in UCR
+if reduce( lambda x, y: x and y, [ configRegistry.get(key) for key in requiredUCRkeys ] ):
+
+	samba3interface = configRegistry.get('samba/interfaces')
+	samba3broadcast = configRegistry.get('interfaces/%s/broadcast' % samba3interface)
+	if samba3broadcast:
+		## write configuration from template
+		print '''
+	;; Samba 3 port compatibility for samba4wins
+	; only use the configured interfaces
+	bind interfaces only = yes
+	; do not bind to the virtual interfaces via 0.0.0.0:137
+	socket address = %s
+''' % samba3broadcast
+@!@
