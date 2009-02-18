@@ -101,7 +101,7 @@ def __horde_settings ( db, mail, fullname ):
 		
 
 def handler(dn, new, old):
-	if not old and new and new.has_key( 'mailPrimaryAddress' ):
+	if new and new.has_key( 'mailPrimaryAddress' ):
 		listener.setuid(0)
 		try:
 			secret = open( '/etc/horde.secret', 'r' )
