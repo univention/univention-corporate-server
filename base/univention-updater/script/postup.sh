@@ -15,21 +15,7 @@ rm -f /var/cache/univention-config/cache
 
 eval $(univention-baseconfig shell) >>/var/log/univention/updater.log 2>&1
 
-if [ -n "$repository_patchlevel" ]; then
-	univention-baseconfig unset repository/patchlevel >>/var/log/univention/updater.log 2>&1
-fi
-
-if [ -n "$repository_version" ]; then
-	univention-baseconfig unset repository/version >>/var/log/univention/updater.log 2>&1
-fi
-
-for p in	univention-server-master \
-			univention-server-backup \
-			univention-server-slave \
-			univention-server-member \
-			univention-managed-client \
-			univention-fat-client \
-			univention-mobile-client; do
+for p in	univention-kolab2-webclient; do
 	echo "$p install" | dpkg --set-selections
 done
 

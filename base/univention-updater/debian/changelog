@@ -1,3 +1,10 @@
+univention-updater (4.0.20-1) unstable; urgency=low
+
+  * upgrade univention-kolab2-webclient in the postup script. Bug #12865
+  * migrate the preup and postup script to UCS 2.2. Bug #13319
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Feb 2009 07:44:08 +0100
+
 univention-updater (4.0.19-1) unstable; urgency=low
 
   * UMC module: add an information if a system is suggested  (Bug #11990)

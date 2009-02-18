@@ -8,9 +8,9 @@ eval $(univention-config-registry shell) >>/var/log/univention/updater.log 2>&1
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
-	if [ "$update21_ignoressh" != "yes" ]; then
+	if [ "$update22_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or set the Univention Configuration Registry variable \"update21/ignoressh\" to \"yes\" to ignore it."
+		echo "Please log in under the console or set the Univention Configuration Registry variable \"update22/ignoressh\" to \"yes\" to ignore it."
 		killall univention-updater
 		exit 1
 	fi
@@ -18,9 +18,9 @@ if [ -n "$SSH_CLIENT" ]; then
 fi
 
 if [ "$TERM" = "xterm" ]; then
-	if [ "$update21_ignoreterm" != "yes" ]; then
+	if [ "$update22_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or set the Univention Configuration Registry variable \"update21/ignoreterm\" to \"yes\" to ignore it."
+		echo "Please log in under the console or set the Univention Configuration Registry variable \"update22/ignoreterm\" to \"yes\" to ignore it."
 		killall univention-updater
 		exit 1
 	fi
@@ -39,7 +39,7 @@ check_space(){
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
         echo "         This may interrupt the update and result in an inconsistent system!"
     	echo "         If neccessary you can skip this check by setting the value of the"
-		echo "         baseconfig variable update21/checkfilesystems to \"no\"."
+		echo "         baseconfig variable update22/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
 		echo ""
 		# kill the running univention-updater process
@@ -49,7 +49,7 @@ check_space(){
 }
 
 # check space on filesystems
-if [ "$update21_checkfilesystems" != "no" ]
+if [ "$update22_checkfilesystems" != "no" ]
 then
 
 	check_space "/var/cache/apt/archives" "600000" "600 MB"
