@@ -1,3 +1,9 @@
+univention-mozilla-firefox (3.0.1-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:13:52 +0100
+
 univention-mozilla-firefox (3.0.1-1) unstable; urgency=low
 
   * Use LANG environment variable to choose locale. Bug #11603
