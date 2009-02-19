@@ -57,20 +57,10 @@ def check_preconditions( options ):
 			print 'Aborted.'
 			sys.exit( 1 )
 
-	p = subprocess.Popen( [ 'dpkg-query', '-s', 'univention-debmirror' ], stdout = subprocess.PIPE )
-	output = p.communicate()[ 0 ]
-
-	# univention-debmirror is not installed
-	if p.returncode:
-		print >> sys.stderr, "Error: Please install the package univention-debmirror."
+	ret, msg = urepo.is_debmirror_installed()
+	if not ret:
+		print >> sys.stderr, msg
 		sys.exit( 1 )
-
-	# package status of univentionn-debmirror is not ok
-	for line in output:
-		if line.startswith( 'Status: ' ):
-			if line.find( 'install ok installed' ) == -1:
-				print >> sys.stderr, "Please check the installation of the package univention-debmirror (status: %s). Aborted." % line[ 8: ]
-				sys.exit( 1 )
 
 def  prepare( options ):
 	# set local/repository

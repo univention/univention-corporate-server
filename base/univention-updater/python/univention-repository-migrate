@@ -1,0 +1,197 @@
+#!/usr/bin/python2.4
+#
+# Univention Updater
+#  migrates an old repository
+#
+# Copyright (C) 2009 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+from optparse import OptionParser
+import copy
+import os
+import re
+import shutil
+import string
+import subprocess
+import sys
+import time
+
+import univention.config_registry as ucr
+import univention.repository as urepo
+from univention.management.console.handlers.update.mirror import UniventionMirror
+from univention.management.console.handlers.update.tools import UCS_Version
+
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
+
+REPO_BASE_OLD = '/var/lib/univention-server-cdrom/'
+REPO_BASE_NEW = '/var/lib/univention-repository/'
+
+def _copy_repository( options, source, dest, version ):
+	print >> options.teefile, 'Copying repository of UCS version %s ...' % version,
+	# create directory structure if required
+	if not os.path.isdir( dest ):
+		os.makedirs( dest )
+	for arch in urepo.ARCHITECTURES:
+		subdir = os.path.join( dest, arch )
+		if not os.path.isdir( subdir ):
+			os.makedirs( subdir )
+
+	urepo.copy_package_files( source, dest )
+
+	print >> options.teefile, "done."
+
+def _remove_repository( options, dirname, message = None, complete = False ):
+	if options.remove_immediately or ( complete and options.remove ):
+		if message:
+			print >> options.teefile, message,
+		else:
+			print >> options.teefile, 'Deleting old repository in %s' % dirname,
+		try:
+			shutil.rmtree( dirname )
+		except:
+			print >> options.teefile, 'failed.'
+			sys.exit( 1 )
+		print >> options.teefile, 'done.'
+
+def migrate_repository( options ):
+	index_file = os.path.join( REPO_BASE_OLD, 'ucs-updates', 'index.list' )
+	if not os.path.isfile( index_file ):
+		print >> options.teefile, 'Error: Could not find the index.list file.'
+		sys.exit( 1 )
+
+	index = open( os.path.join( index_file ) )
+	versions = []
+	for line in index.readlines():
+		versions.append( UCS_Version( line[ : -1 ] ) )
+
+	versions = sorted( versions, lambda a, b: a.__cmp__( b ) )
+
+	# copy .univention_install
+	print >> options.teefile, 'Copying version information ...',
+	try:
+		shutil.copy2( os.path.join( REPO_BASE_OLD, '.univention_install' ), REPO_BASE_NEW )
+	except:
+		print >> options.teefile, 'failed.'
+		sys.exit( 1 )
+	print >> options.teefile, 'done.'
+
+	# copy kernel and grub config
+	print >> options.teefile, 'Copying kernel and boot configuration ...',
+	boot_dest = os.path.join( REPO_BASE_NEW, 'boot' )
+	if os.path.isdir( boot_dest ):
+		shutil.rmtree( boot_dest )
+	try:
+		shutil.copytree( os.path.join( REPO_BASE_OLD, 'boot' ), boot_dest )
+	except shutil.Error, e:
+		print >> options.teefile, "failed (%s)." % str( e )
+		sys.exit( 1 )
+	else:
+		print >> options.teefile, 'done.'
+
+	# copy profiles
+	print >> options.teefile, 'Copying profiles ...',
+	profiles_dest = os.path.join( REPO_BASE_NEW, 'profiles' )
+	if os.path.isdir( profiles_dest ):
+		shutil.rmtree( profiles_dest )
+	try:
+		shutil.copytree( os.path.join( REPO_BASE_OLD, 'profiles' ), profiles_dest )
+	except shutil.Error, e:
+		print >> options.teefile, "failed (%s)." % str( e )
+		sys.exit( 1 )
+	else:
+		# everyone should be able to read the profiles
+		os.chmod( profiles_dest, 0555 )
+		print >> options.teefile, 'done.'
+
+	# copy repository in subdirectory 'packages'
+	source = os.path.join( REPO_BASE_OLD, 'packages' )
+	dest = os.path.join( REPO_BASE_NEW, 'mirror', '%d.%d' % ( versions[ 0 ].major, versions[ 0 ].minor ), 'maintained', str( versions[ 0 ] ) )
+	_copy_repository( options, source, dest, versions[ 0 ] )
+
+	# copy dists directory structure
+	print >> options.teefile, '  copying dists subdirectory ...',
+	dists_dest = os.path.join( dest, 'dists' )
+	if os.path.isdir( dists_dest ):
+		shutil.rmtree( dists_dest )
+	try:
+		shutil.copytree( os.path.join( REPO_BASE_OLD, 'packages', 'dists' ), dists_dest )
+	except shutil.Error, e:
+		print >> options.teefile, "failed (%s)." % str( e )
+		sys.exit( 1 )
+	else:
+		print >> options.teefile, 'done.'
+
+	# create Packages files
+	urepo.update_indexes( dest, dists = True )
+
+	# remove old repository
+	_remove_repository( options, source )
+
+	# copy repositories from subdirectory ucs-updates
+	for version in versions[ 1 : ]:
+		print version
+		source = os.path.join( REPO_BASE_OLD, 'ucs-updates', str( version ) )
+		dest = os.path.join( REPO_BASE_NEW, 'mirror', '%d.%d' % ( version.major, version.minor ), 'maintained', str( version ) )
+		_copy_repository( options, source, dest, version )
+		urepo.update_indexes( dest )
+		# remove old repository
+		_remove_repository( options, source )
+
+	_remove_repository( options, REPO_BASE_OLD, complete = True )
+
+if __name__ == '__main__':
+	parser = OptionParser( usage = "usage: %prog [options] " )
+	parser.add_option( '-r', '--remove', action = 'store_true', dest = 'remove', default = False,
+					   help = 'if given, the old repositories will be deleted after the migration is complete' )
+	parser.add_option( '-R', '--remove-immediately', action = 'store_true', dest = 'remove_immediately', default = False,
+					   help = 'if given each repository is deleted directly after been copied to the new location' )
+
+	( options, arguments ) = parser.parse_args()
+
+	# redirect output to logfile
+	options.logfile = open( '/var/log/univention/repository.log', 'a' )
+	options.teefile = urepo.TeeFile( ( sys.stdout, options.logfile ) )
+
+	print '***** Starting univention-repository-migrate at %s\n' % time.ctime()
+
+	if not configRegistry.get( 'local/repository', 'yes' ).lower() in ( 'yes','true' ):
+		print >> options.teefile, 'Error: The local repository is disabled. Migration process is stopped.'
+		sys.exit( 1 )
+
+	if not os.path.isdir( '/var/lib/univention-server-cdrom/packages' ):
+		print >> options.teefile, 'Error: The local repository does not exist.'
+		sys.exit( 1 )
+
+	if not os.path.isdir( '/var/lib/univention-server-cdrom/packages' ):
+		print >> options.teefile, 'Error: The local repository does not exist.'
+		sys.exit( 1 )
+
+	ret, msg = urepo.is_debmirror_installed()
+	if not ret:
+		print >> options.teefile, msg
+		sys.exit( 1 )
+
+	migrate_repository( options )

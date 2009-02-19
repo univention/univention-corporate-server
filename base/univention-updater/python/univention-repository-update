@@ -54,20 +54,6 @@ _mirror_base = configRegistry.get( 'repository/mirror/basepath', '/var/lib/unive
 _current_version = '%s-%s' % ( configRegistry.get( 'version/version' ), configRegistry.get( 'version/patchlevel' ) )
 _repo_base = os.path.join( _mirror_base, 'mirror', configRegistry.get( 'version/version' ), 'maintained', '%s-0' % configRegistry.get( 'version/version' ) )
 
-class TeeFile( object ):
-	'''Writes the given string to serveral files at once. Could by used
-	with the print statement'''
-	def __init__( self, fds = [] ):
-		if not fds:
-			self.fds = [ sys.stdout ]
-		else:
-			self._fds = fds
-
-	def write( self, str ):
-		for fd in self._fds:
-			print >> fd, str
-			fd.flush()
-
 def copy_repository( options, source, version ):
 	print 'Copying packages. Please be patient ...',
 	sys.stdout.flush()
@@ -220,8 +206,7 @@ if __name__ == '__main__':
 	# redirect output to logfile
 	options.logfile = open('/var/log/univention/repository.log', 'a+')
 	options.stdout = sys.stdout
-	sys.stdout = options.logfile
-	options.teefile = TeeFile( ( options.stdout, options.logfile ) )
+	options.teefile = urepo.TeeFile( ( options.stdout, options.logfile ) )
 
 	print '***** Starting univention-repository-update at %s\n' % time.ctime()
 

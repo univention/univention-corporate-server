@@ -1,3 +1,11 @@
+univention-updater (4.0.22-1) unstable; urgency=low
+
+  * add univention-repository-migrate: migrates old repositories to new
+    directory structure (Bug #13472)
+  * minor bug fixes
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 Feb 2009 15:58:29 +0100
+
 univention-updater (4.0.21-1) unstable; urgency=low
 
   * univention-repository-update: create .univention_install file if it

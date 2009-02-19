@@ -43,6 +43,20 @@ configRegistry.load()
 # constants
 ARCHITECTURES = ( 'i386', 'amd64', 'all', 'extern' )
 
+class TeeFile( object ):
+	'''Writes the given string to serveral files at once. Could by used
+	with the print statement'''
+	def __init__( self, fds = [] ):
+		if not fds:
+			self.fds = [ sys.stdout ]
+		else:
+			self._fds = fds
+
+	def write( self, str ):
+		for fd in self._fds:
+			fd.write( str )
+			fd.flush()
+
 def gzip_file( filename ):
 	f_in = open( filename, 'rb')
 	f_out = gzip.open( '%s.gz' % filename, 'wb' )
@@ -185,3 +199,20 @@ def get_repo_basedir( packages_dir ):
 		packages_path = packages_dir
 
 	return packages_path
+
+def is_debmirror_installed():
+	p = subprocess.Popen( [ 'dpkg-query', '-s', 'univention-debmirror' ], stdout = subprocess.PIPE )
+	output = p.communicate()[ 0 ]
+
+	# univention-debmirror is not installed
+	if p.returncode:
+		return ( False, 'Error: Please install the package univention-debmirror.' )
+
+
+	# package status of univentionn-debmirror is not ok
+	for line in output:
+		if line.startswith( 'Status: ' ):
+			if line.find( 'install ok installed' ) == -1:
+				return ( False, "Please check the installation of the package univention-debmirror (status: %s). Aborted." % line[ 8: ] )
+
+	return ( True, None )

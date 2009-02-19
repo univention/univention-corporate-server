@@ -87,6 +87,8 @@ install-ext-%:
 	install -m 755 python/univention-repository-delpackage_tmp debian/univention-updater/usr/sbin/univention-repository-delpackage
 	rm python/univention-repository-delpackage_tmp
 
+	install -m 755 python/univention-repository-migrate debian/univention-updater/usr/sbin/univention-repository-migrate
+
 	install -m 755 univention-directory-policy/univention-policy-set-repository-server debian/univention-updater/usr/lib/univention-directory-policy/
 	install -m 755 univention-directory-policy/univention-policy-repository-sync debian/univention-updater/usr/lib/univention-directory-policy/
 	install -m 755 univention-directory-policy/univention-policy-maintenance debian/univention-updater/usr/lib/univention-directory-policy/

@@ -73,7 +73,7 @@ def main():
 		# can't query policy without host-dn
 		exit(0)
 
-	new_server, update = query_policy( host_dn, update )
+	new_server, update = query_policy( hostdn, update )
 	# without a local repository
 	if not local_repo:
 		if not new_server or new_server == online_server:
