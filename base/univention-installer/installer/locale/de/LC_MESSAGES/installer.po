@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-02-19 17:43+0100\n"
-"PO-Revision-Date: 2009-02-19 17:53+0100\n"
+"PO-Revision-Date: 2009-02-19 20:16+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -655,7 +655,7 @@ msgstr "SSH-Client, ein Ersatz für rlogin/rsh/rcp"
 
 #: installer/package_list.py:553
 msgid "DHCP client"
-msgstr "OpenSSH-Client"
+msgstr "DHCP Client"
 
 #: installer/package_list.py:559
 msgid "Dynamic IP configuration"

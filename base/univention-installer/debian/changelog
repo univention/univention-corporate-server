@@ -1,3 +1,9 @@
+univention-installer (4.0.1-1) unstable; urgency=low
+
+  * fixed translation. Bug #13326
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 20:17:17 +0100
+
 univention-installer (4.0.0-1) unstable; urgency=low
 
   * bumped version for UCS 2.2
