@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  parse, modify and create ldap-style search filters
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 # 

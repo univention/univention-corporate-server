@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.3-3) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 08:54:32 +0100
+
 univention-directory-manager-modules (4.0.3-2) unstable; urgency=low
 
   * updated translation. Bug #13861
