@@ -1,3 +1,9 @@
+srvmagt-modules (4.52-20-10) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:04:54 +0100
+
 srvmagt-modules (4.52-20-9) unstable; urgency=low
 
   * more 2.6.26 updates, include linux/fs.h in ipmi.c. Bug #12908

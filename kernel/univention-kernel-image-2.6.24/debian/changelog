@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.24 (3.0.2-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:04:10 +0100
+
 univention-kernel-image-2.6.24 (3.0.2-1) unstable; urgency=low
 
   * don't build meta packages for the bigmem (64gb) kernel on 64 bit
