@@ -4,7 +4,7 @@
 #  wait for the univention-client process and run scripts in
 #  /usr/lib/univention-thin-client-session-scripts
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
