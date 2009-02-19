@@ -1,4 +1,4 @@
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 # Univention GmbH <packages@univention.de>
 # This file is distributed under the same license as this package.
 #

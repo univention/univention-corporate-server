@@ -1,3 +1,9 @@
+univention-installer (3.0.15-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:01:53 +0100
+
 univention-installer (3.0.15-1) unstable; urgency=low
 
   * adapt repository path for debootstrap process (Bug #13159)

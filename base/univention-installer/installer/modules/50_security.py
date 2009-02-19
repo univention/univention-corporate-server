@@ -4,7 +4,7 @@
 # Univention Installer
 #  installer module: security settings
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #

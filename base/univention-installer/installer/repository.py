@@ -4,7 +4,7 @@
 # Univention Installer
 #  helper function for retrieving and setting repository information
 #
-# Copyright (C) 2009 Univention GmbH
+# Copyright (C) 2009-2009 Univention GmbH
 #
 # http://www.univention.de/
 #

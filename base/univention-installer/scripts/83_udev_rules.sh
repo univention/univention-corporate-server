@@ -3,7 +3,7 @@
 # Univention Installer
 #  setup udev rules for network interface
 #
-# Copyright (C) 2008 Univention GmbH
+# Copyright (C) 2008-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
