@@ -1,3 +1,9 @@
+univention-webui (2.0.11-3) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:35:48 +0100
+
 univention-webui (2.0.11-2) unstable; urgency=low
 
   * get default language from selected language element. Bug #13235
