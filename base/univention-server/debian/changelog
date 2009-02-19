@@ -1,3 +1,9 @@
+univention-server (3.0.2-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:26:58 +0100
+
 univention-server (3.0.2-1) unstable; urgency=low
 
   * removed dependency to univention-debmirror (Bug #12511)

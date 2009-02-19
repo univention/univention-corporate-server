@@ -4,7 +4,7 @@
 #  ifplugd action script: (re)mounts all entries from /etc/fstab when
 #  the network link is active
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
