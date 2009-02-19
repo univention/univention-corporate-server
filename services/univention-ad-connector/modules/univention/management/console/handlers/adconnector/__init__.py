@@ -414,17 +414,6 @@ class handler(umch.simpleHandler):
 	#######################
 
 
-	def bool2yesno(self, val):
-		if val:
-			return _('yes')
-		return _('no')
-
-	def bool2icon(self, val):
-		if val:
-			return 'adconnector/yes'
-		return 'adconnector/no'
-
-
 	def __get_request(self, cmd, title, opts = {}):
 		req = umcp.Command(args=[ cmd ], opts = opts)
 
@@ -464,9 +453,20 @@ class handler(umch.simpleHandler):
 		#### AD Connector Status Frame
 		list_status = umcd.List()
 
-		list_status.add_row( [ umcd.Image( self.bool2icon( self.status_configured ),umct.SIZE_SMALL ), umcd.Text( _('The configuration process has been finished and all required settings\nfor Active Directory Connector are set.') ) ] )
-		list_status.add_row( [ umcd.Image( self.bool2icon( self.status_certificate ), umct.SIZE_SMALL ), umcd.Text( _('The Active Directory certificate has been sucessfully installed.') ) ] )
-		list_status.add_row( [ umcd.Image( self.bool2icon( self.status_running ), umct.SIZE_SMALL ), umcd.Text( _('Running status of Active Directory Connector.') ) ] )
+		if self.status_configured:
+			list_status.add_row( [ umcd.Image( 'adconnector/yes', umct.SIZE_SMALL ), umcd.Text( _('The configuration process has been finished and all required settings for Active Directory Connector are set.') ) ] )
+		else:
+			list_status.add_row( [ umcd.Image( 'adconnector/no', umct.SIZE_SMALL ), umcd.Text( _('The configuration process has not been started yet or is incomplete.') ) ] )
+
+		if self.status_certificate:
+			list_status.add_row( [ umcd.Image( 'adconnector/yes', umct.SIZE_SMALL ), umcd.Text( _('The Active Directory certificate has been sucessfully installed.') ) ] )
+		else:
+			list_status.add_row( [ umcd.Image( 'adconnector/no', umct.SIZE_SMALL ), umcd.Text( _('The Active Directory certificate has not been installed yet.') ) ] )
+
+		if self.status_running:
+			list_status.add_row( [ umcd.Image( 'adconnector/yes', umct.SIZE_SMALL ), umcd.Text( _('Active Directory Connector is currently running.') ) ] )
+		else:
+			list_status.add_row( [ umcd.Image( 'adconnector/no', umct.SIZE_SMALL ), umcd.Text( _('Active Directory Connector is not running.') ) ] )
 
 		frame_status = umcd.Frame( [list_status], _('Active Directory Connector status'))
 
