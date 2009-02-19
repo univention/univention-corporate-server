@@ -357,7 +357,7 @@ class mods:
 		return window
 
 	def header(self):
-		codename = "mountain beech"
+		codename = "copper beech"
 		if self.cmdline.has_key('product') and self.cmdline['product'].lower() == "ugs":
 			return objects.headline(_(' UCS - %(codename)s (%(version)s)') % { 'codename': codename,
 																			   'version': self.cmdline.get('version', '')}, max_y/2-12,max_x/2-35)

@@ -1,3 +1,9 @@
+univention-installer (3.0.19-1) unstable; urgency=low
+
+  * set the UCS 2.2 codename to copper beech. Bug #13319
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 16:10:25 +0100
+
 univention-installer (3.0.18-1) unstable; urgency=low
 
   * remove pci=noacpi and acpi=off options from the default grub menu.
