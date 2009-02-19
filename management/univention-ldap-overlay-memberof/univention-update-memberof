@@ -3,7 +3,7 @@
 # Univention LDAP Server
 #  postrm script for the debian package
 #
-# Copyright (C) 2008, 2009 Univention GmbH
+# Copyright (C) 2008-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
