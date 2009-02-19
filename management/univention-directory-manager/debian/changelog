@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.13-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 08:37:14 +0100
+
 univention-directory-manager (6.0.13-1) unstable; urgency=low
 
   * allow "cups-pdf:/" in printerURI syntax in modedit.py (Bug #12165)
