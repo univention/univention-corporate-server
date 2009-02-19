@@ -5,7 +5,7 @@
 #  helper script: prints out a list of univention admin commands to create
 #  settings/printermodel objects for all existing PPDs
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
