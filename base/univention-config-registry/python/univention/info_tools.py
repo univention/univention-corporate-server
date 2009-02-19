@@ -3,7 +3,7 @@
 # Univention Configuration Registry
 #  dictionary class for localized keys
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #

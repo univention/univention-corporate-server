@@ -4,7 +4,7 @@
 #  Service information: read information about registered Config Registry
 #  variables
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
