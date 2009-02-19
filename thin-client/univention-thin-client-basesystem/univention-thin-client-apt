@@ -42,7 +42,6 @@ class UC_APT( object ):
 		self.options = options
 		self.arguments = args
 		self.prefix = os.environ.get( 'UNIVENTION_THIN_CLIENT_PREFIX', self.options.prefix )
-		print self
 
 	def __create_sources_list( self ):
 		self.sources_list = os.path.join(self.prefix, 'var/cache/sources.list')
@@ -60,7 +59,6 @@ class UC_APT( object ):
 			fp.close()
 
 	def __create_command( self ):
-		print self
 		opts = (
 			'-o "DPkg::Options::=--instdir=%s"' % self.prefix,
 			'-o "DPkg::Options::=--admindir=%s"' % os.path.join( self.prefix, 'var/lib/dpkg' ),
