@@ -11,7 +11,7 @@ Type=str
 Categories=LDAP
 
 [ldap/acl/nestedgroups]
-Description[de]=Unterstützung von geschachtelten Gruppen in der ACL-Auswertung
+Description[de]=UnterstÃ¼tzung von geschachtelten Gruppen in der ACL-Auswertung
 Description[en]=Support of nested groups in the ACL interpretation
 Type=str
 Categories=LDAP

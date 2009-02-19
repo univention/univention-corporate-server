@@ -1,3 +1,9 @@
+univention-ldap (4.0.3-1) unstable; urgency=low
+
+  * fixed utf-8 encoding in the ucr description text. Part of Bug #13147
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 20:35:14 +0100
+
 univention-ldap (4.0.2-3) unstable; urgency=low
 
   * updated the copyright. Bug #6875
