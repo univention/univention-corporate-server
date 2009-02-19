@@ -95,7 +95,7 @@ print defoptions
 # xenhopt=
 
 ## Xen Linux kernel options to use with the default Xen boot option
-# xenkopt=console=tty0
+# xenkopt=console=tty0 fbcon=map:2
 
 ## altoption boot targets option
 ## multiple altoptions lines are allowed

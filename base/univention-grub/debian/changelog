@@ -1,3 +1,10 @@
+univention-grub (2.0.1-1) unstable; urgency=low
+
+  * disable framebuffer on Xen Dom0 systems. Bug #13432
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 15:39:41 +0100
+
 univention-grub (1.2.1-1) unstable; urgency=low
 
   * use the new UCS design
