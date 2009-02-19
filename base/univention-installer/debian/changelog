@@ -1,3 +1,10 @@
+univention-installer (3.0.18-1) unstable; urgency=low
+
+  * remove pci=noacpi and acpi=off options from the default grub menu.
+    Bug #13484
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 16:06:28 +0100
+
 univention-installer (3.0.17-1) unstable; urgency=low
 
   * add a comment to /etc/apt/sources.list that it can be just for
