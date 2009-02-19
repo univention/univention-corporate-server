@@ -3,7 +3,7 @@
 # Univention Thin Client Basesystem
 #  wrapper for APT to install packages for thin clients
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #

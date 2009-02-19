@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (5.0.2-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:31:44 +0100
+
 univention-thin-client-basesystem (5.0.2-1) unstable; urgency=low
 
   * some more "chroot" options for apt in univention-thin-client-apt (Bug: #12921)
