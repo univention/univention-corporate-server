@@ -1,3 +1,9 @@
+univention-directory-notifier (3.0.1-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 08:55:57 +0100
+
 univention-directory-notifier (3.0.1-1) unstable; urgency=low
 
   * don't stop the notifier in the preinst. Bug #13065
