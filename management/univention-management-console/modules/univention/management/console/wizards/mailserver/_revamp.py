@@ -4,7 +4,7 @@
 # Univention Management Console
 #  mail server wizard
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #

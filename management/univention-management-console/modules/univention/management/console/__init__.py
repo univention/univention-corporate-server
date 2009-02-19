@@ -3,7 +3,7 @@
 # Univention Management Console
 #  share code for UMC client and servers
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006-2009 Univention GmbH
 #
 # http://www.univention.de/
 #

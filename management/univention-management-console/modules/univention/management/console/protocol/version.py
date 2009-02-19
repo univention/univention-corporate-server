@@ -4,7 +4,7 @@
 # Univention Management Console
 #  version information for the UMC protocol
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #

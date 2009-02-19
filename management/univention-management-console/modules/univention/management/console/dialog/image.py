@@ -4,7 +4,7 @@
 # Univention Management Console
 #  class representing an image with a UMCP dialog
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006-2009 Univention GmbH
 #
 # http://www.univention.de/
 #

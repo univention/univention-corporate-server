@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: manages Univention Config Registry variables
 #
-# Copyright (C) 2006, 2007 Univention GmbH
+# Copyright (C) 2006-2009 Univention GmbH
 #
 # http://www.univention.de/
 #

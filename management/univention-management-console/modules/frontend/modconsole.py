@@ -3,7 +3,7 @@
 # Univention Management Console
 #  web interface: control part
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006-2009 Univention GmbH
 #
 # http://www.univention.de/
 #

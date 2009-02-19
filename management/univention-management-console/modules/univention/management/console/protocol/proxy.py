@@ -6,7 +6,7 @@
 #  hosts, collects the responses and returns a result create by merging
 #  the retrieved responses.
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #

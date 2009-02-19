@@ -4,7 +4,7 @@
 # Univention Management Console
 #  sub-module defining classes for the description auf UMCP answers
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
