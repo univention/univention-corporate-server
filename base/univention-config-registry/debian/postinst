@@ -113,7 +113,9 @@ univention-baseconfig set sshd/xforwarding?no
 univention-baseconfig set sshd/challengeresponse?no
 
 # http://en.wikipedia.org/wiki/Nothofagus_solandri
-univention-baseconfig set version/releasename="mountain beech" # UCS 2.1
+# univention-baseconfig set version/releasename="mountain beech" # UCS 2.1
+# http://en.wikipedia.org/wiki/European_Beech
+univention-baseconfig set version/releasename="copper beech" # UCS 2.2
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.33; then
 	chown root:root /tmp/
