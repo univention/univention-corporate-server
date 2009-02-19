@@ -4,7 +4,7 @@
 # Univention Management Console
 #  quota module: provides size information about a hard drive partition
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
