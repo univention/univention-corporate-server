@@ -1,3 +1,9 @@
+univention-flashplugin (2.0.2-3) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:00:09 +0100
+
 univention-flashplugin (2.0.2-2) unstable; urgency=low
 
   * fixed flashplugin url (Bug: #12919) 
