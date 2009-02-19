@@ -1,3 +1,10 @@
+univention-installer (3.0.16-1) unstable; urgency=low
+
+  * scripts/69_repository.sh: check for temporary sources.list file in
+    /instmnt and replace it with an empty file (Bug #12511)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 19 Feb 2009 09:34:21 +0100
+
 univention-installer (3.0.15-2) unstable; urgency=low
 
   * updated the copyright. Bug #6875

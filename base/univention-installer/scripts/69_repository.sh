@@ -47,7 +47,7 @@ chroot /instmnt univention-config-registry commit \
 					/etc/apt/mirror.list
 
 #create an empty sources.list
-if [ -e "/etc/apt/sources.list" ]; then
-	mv /etc/apt/sources.list /etc/apt/sources.list.unused
-	touch /etc/apt/sources.list
+if [ -e "/instmnt/etc/apt/sources.list" ]; then
+	mv /instmnt/etc/apt/sources.list /instmnt/etc/apt/sources.list.unused
+	touch /instmnt/etc/apt/sources.list
 fi
