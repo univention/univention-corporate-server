@@ -1,3 +1,9 @@
+univention-webui-style (3.0.10-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:36:38 +0100
+
 univention-webui-style (3.0.10-1) unstable; urgency=low
 
   * add a small padding (5px) to the columns of a UMC InfoBox
