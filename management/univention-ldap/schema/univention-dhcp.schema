@@ -1,4 +1,4 @@
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 
 attributetype ( 1.3.6.1.4.1.10176.1195
 	NAME 'univentionDhcpFixedAddress'

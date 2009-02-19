@@ -5,7 +5,7 @@
 #  set the new attribute sambaWriteable to the same value as writeable
 #  to get the same system-behavior
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
