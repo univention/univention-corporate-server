@@ -1,3 +1,9 @@
+univention-xnumlock (2.0.1-3) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:38:40 +0100
+
 univention-xnumlock (2.0.1-2) unstable; urgency=low
 
   * fixed debian control (Bug: #12921)
