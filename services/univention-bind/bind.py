@@ -4,7 +4,7 @@
 # Univention Bind
 #  listener script
 #
-# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2001-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
