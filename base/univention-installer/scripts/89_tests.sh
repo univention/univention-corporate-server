@@ -37,25 +37,26 @@ log="/tmp/installation_error.log"
 test_retval () {
 
 	retval=$1
-	msg=$2
+	level=$2
+	msg=$3
 
 	if [ "$retval" -eq 0 ]; then
 		return 0
 	fi
 
-	echo "Installation error: " >> $log
+	echo "Installation ${level}: " >> $log
 	echo -e "$msg" >> $log
 }
 
 # is instmnt mounted
 mount | grep $instmnt 2>/dev/null >/dev/null 
-test_retval $? "Something wrong with the installation root,\nit is not mounted."
+test_retval $? "error" "Something wrong with the installation root,\nit is not mounted."
 
 # chroot
 chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
 exit
 __EOF__
-test_retval $? "Could not chroot to $instmnt."
+test_retval $? "error" "Could not chroot to $instmnt."
 
 # packages
 chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
@@ -66,7 +67,7 @@ else
 	exit 0
 fi
 __EOF__
-test_retval $? "Not all software packages were correctly installed."
+test_retval $? "error" "Not all software packages were correctly installed."
 if [ -s "$instmnt/tmp/failed-packages.txt" ]; then
 	echo "missing packages:" >> $log
 	cat $instmnt/tmp/failed-packages.txt >> $log
@@ -76,10 +77,18 @@ fi
 chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
 id Administrator 1>/dev/null || exit 1
 __EOF__
-test_retval $? "User Administrator was not created."
+test_retval $? "error" "User Administrator was not created."
 
 # Administrator in admin group
 chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
 getent group | grep "Domain Admins" | grep Administrator >/dev/null || exit 1
 __EOF__
-test_retval $? "User Administrator is not member of \"Domain Admins\" group."
+test_retval $? "error" "User Administrator is not member of \"Domain Admins\" group."
+
+# test join status
+if [ ! "$auto_join" = "false" -a ! "${system_role}" = "basesystem" ] ; then
+chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
+/usr/share/univention-join/check_join_status | grep -c "Joined successful" || exit 1
+__EOF__
+test_retval $? "warning" "This system has not been joined yet! If no other problem occurred,\nreboot and run script /usr/share/univention-join/check_join_status\nfor further investigation."
+fi

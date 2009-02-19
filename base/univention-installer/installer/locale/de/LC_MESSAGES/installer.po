@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-13 15:12+0100\n"
-"PO-Revision-Date: 2008-05-06 13:44+0200\n"
+"POT-Creation-Date: 2009-02-19 17:43+0100\n"
+"PO-Revision-Date: 2009-02-19 17:53+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -15,25 +15,72 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: installer/end.py:85
-msgid "Installation failed!"
-msgstr "Die Installation ist fehlgeschlagen!"
+#: installer/end.py:147 installer/end.py:218
+msgid "The installation has been finished successfully!"
+msgstr "Die Installation wurde erfolgreich abgeschlossen!"
 
-#: installer/end.py:86
-msgid "Please restart the computer and try again."
-msgstr "Bitte starten Sie den Rechner neu."
+#: installer/end.py:151
+#, python-format
+msgid "This system has been configured to IP address %s and"
+msgstr "Dieses System wurde auf die IP-Adresse %s konfiguriert"
 
-#: installer/end.py:87
-msgid "Installation Log:"
-msgstr "Installations-Protokoll:"
+#: installer/end.py:153
+msgid "This system has been configured for DHCP usage and"
+msgstr "Dieses System bezieht seine IP-Adresse über DHCP"
 
-#: installer/end.py:94
-msgid "Installation succeded!"
-msgstr "Die Installation war erfolgreich."
+#: installer/end.py:156
+msgid "has not been joined to UCS domain yet."
+msgstr "und ist noch nicht der UCS-Domäne beigetreten."
 
-#: installer/end.py:95
-msgid "Please restart the computer."
-msgstr "Bitte starten Sie den Rechnern neu."
+#: installer/end.py:158
+msgid "has been joined to UCS domain."
+msgstr "und ist der UCS-Domäne beigetreten."
+
+#: installer/end.py:160
+msgid "Please remove installation media from drive and"
+msgstr "Bitte entnehmen Sie das Installationsmedium und"
+
+#: installer/end.py:161
+msgid "press ok to reboot this system."
+msgstr "drücken OK, um das System neu zu starten."
+
+#: installer/end.py:163
+msgid "Administrative frontends:"
+msgstr "Administrationsoberflächen:"
+
+#: installer/end.py:179
+msgid " Univention Directory Manager"
+msgstr " Univention Directory Manager"
+
+#: installer/end.py:180 installer/end.py:182 installer/end.py:186
+#: installer/end.py:188
+#, python-format
+msgid "  https://%s/%s/"
+msgstr "  https://%s/%s/"
+
+#: installer/end.py:183 installer/end.py:189
+msgid "  Administrative account name: Administrator"
+msgstr "  Administratives Konto: Administrator"
+
+#: installer/end.py:185
+msgid " Univention Management Console"
+msgstr " Univention Management Console"
+
+#: installer/end.py:191
+msgid "Additional information: http://www.univention.de/dokumentation.html"
+msgstr "Zusätzliche Informationen: http://www.univention.de/dokumentation.html"
+
+#: installer/end.py:205
+msgid "Some problems occurred during installation!"
+msgstr "Es sind Probleme während der Installation aufgetreten!"
+
+#: installer/end.py:206
+msgid "Please read the following error messages carefully."
+msgstr "Bitte lesen Sie die folgenden Fehlermeldungen sorgfältig."
+
+#: installer/end.py:207
+msgid "In case of doubt a reinstallation might be reasonable."
+msgstr "Im Zweifelsfall kann eine Neuinstallation notwendig sein."
 
 #: installer/main.py:206
 msgid ""
@@ -278,11 +325,11 @@ msgstr "Systemdienste"
 msgid "Additional Services"
 msgstr "Weitere Dienste"
 
-#: installer/package_list.py:157
+#: installer/package_list.py:157 installer/package_list.py:357
 msgid "Bacula (Backup)"
 msgstr "Bacula (Backup)"
 
-#: installer/package_list.py:163
+#: installer/package_list.py:163 installer/package_list.py:363
 msgid "Network based Backup Software"
 msgstr "Netzwerk basierte Backup Software"
 
@@ -442,107 +489,107 @@ msgstr "Backup"
 msgid "Backup Tools"
 msgstr "Backup-Werkzeuge"
 
-#: installer/package_list.py:357
+#: installer/package_list.py:366
 msgid "Unidump"
 msgstr "Unidump"
 
-#: installer/package_list.py:363
+#: installer/package_list.py:372
 msgid "Tape Backup Software"
 msgstr "Bandsicherungssoftware"
 
-#: installer/package_list.py:366
+#: installer/package_list.py:375
 msgid "Remote support for Unidump"
 msgstr "Remote-Unterstützung für Unidump"
 
-#: installer/package_list.py:372
+#: installer/package_list.py:381
 msgid "Backup Software based on rsync"
 msgstr "Backup-Software basierend auf rsync"
 
-#: installer/package_list.py:377
+#: installer/package_list.py:386
 msgid "Desktop Environment"
 msgstr "Desktop-Umgebung"
 
-#: installer/package_list.py:379
+#: installer/package_list.py:388
 msgid "Desktop Environment packages"
 msgstr "Pakete der Desktop-Umgebung"
 
-#: installer/package_list.py:383
+#: installer/package_list.py:392
 msgid "Graphical user interface"
 msgstr "Grafische Benutzeroberfläche"
 
-#: installer/package_list.py:389
+#: installer/package_list.py:398
 msgid "Core Packages for a Graphical Desktop Environment"
 msgstr "Basispakete für die grafische Desktop-Umgebung"
 
-#: installer/package_list.py:392
+#: installer/package_list.py:401
 msgid "KDE desktop"
 msgstr "KDE-Desktop"
 
-#: installer/package_list.py:398
+#: installer/package_list.py:407
 msgid "KDE - K Desktop Environment"
 msgstr "KDE - K-Desktop-Umgebung"
 
-#: installer/package_list.py:401
+#: installer/package_list.py:410
 msgid "OpenOffice.org"
 msgstr "OpenOffice.org"
 
-#: installer/package_list.py:407
+#: installer/package_list.py:416
 msgid "OpenOffice.org is a full-featured office productivity suite."
 msgstr "OpenOffice.org ist eine vollständige Büroprogrammsammlung."
 
-#: installer/package_list.py:410
+#: installer/package_list.py:419
 msgid "Mozilla Firefox"
 msgstr "Mozilla Firefox"
 
-#: installer/package_list.py:416
+#: installer/package_list.py:425
 msgid "Firefox Webbrowser"
 msgstr "Firefox Webbrowser"
 
-#: installer/package_list.py:419
+#: installer/package_list.py:428
 msgid "Java plugin/runtime"
 msgstr "Java-Plugin/Java-Umgebung"
 
-#: installer/package_list.py:425 installer/package_list.py:622
+#: installer/package_list.py:434 installer/package_list.py:631
 msgid "Java Virtual Machine"
 msgstr "Java Virtual Machine"
 
-#: installer/package_list.py:428
+#: installer/package_list.py:437
 msgid "Flash plugin"
 msgstr "Flash-Plugin"
 
-#: installer/package_list.py:434
+#: installer/package_list.py:443
 msgid "Flashplugin for webbrowsers"
 msgstr "Flashplugin für Webbrowser"
 
-#: installer/package_list.py:437
+#: installer/package_list.py:446
 msgid "Mplayer plugin"
 msgstr "Mplayer-Plugin"
 
-#: installer/package_list.py:444
+#: installer/package_list.py:453
 msgid "Mplayer for webbrowsers"
 msgstr "Mplayer für Webbrowser"
 
-#: installer/package_list.py:447
+#: installer/package_list.py:456
 msgid "Gimp"
 msgstr "Gimp"
 
-#: installer/package_list.py:453
+#: installer/package_list.py:462
 msgid "The GNU Image Manipulation Program"
 msgstr "Das GNU Bildbearbeitungsprogramm"
 
-#: installer/package_list.py:456
+#: installer/package_list.py:465
 msgid "Acrobat Reader"
 msgstr "Acrobat Reader"
 
-#: installer/package_list.py:462
+#: installer/package_list.py:471
 msgid "PDF Viewer"
 msgstr "PDF-Betrachter"
 
-#: installer/package_list.py:465
+#: installer/package_list.py:474
 msgid "Additional KDE applications"
 msgstr "Weitere KDE-Anwendungen"
 
-#: installer/package_list.py:471
+#: installer/package_list.py:480
 msgid ""
 "More KDE applications, like k3b, kdegraphics, kdeadmin, kdeartwork, kdetoys "
 "or kdeutils"
@@ -550,135 +597,135 @@ msgstr ""
 "Weitere KDE-Applikationen, wie k3b, kdegraphics, kdeadmin, kdeartwork, "
 "kdetoys oder kdeutils"
 
-#: installer/package_list.py:474
+#: installer/package_list.py:483
 msgid "Desktop search (kerry/beagle)"
 msgstr "Desktop-Suche (kerry/beagle)"
 
-#: installer/package_list.py:480
+#: installer/package_list.py:489
 msgid "Desktop search with kerry and beagle"
 msgstr "Desktop-Suche mit kerry und beagle"
 
-#: installer/package_list.py:483
+#: installer/package_list.py:492
 msgid "Multimedia applications"
 msgstr "Multimedia-Anwendungen"
 
-#: installer/package_list.py:489
+#: installer/package_list.py:498
 msgid "Multimedia applications, like amarok, kmplayer or mplayer"
 msgstr "Multimedia-Anwendungen, wie amarok, kmplayer oder mplayer"
 
-#: installer/package_list.py:492 installer/package_list.py:498
+#: installer/package_list.py:501 installer/package_list.py:507
 msgid "Fax client"
 msgstr "Fax-Client"
 
-#: installer/package_list.py:501
+#: installer/package_list.py:510
 msgid "Evolution"
 msgstr "Evolution"
 
-#: installer/package_list.py:507
+#: installer/package_list.py:516
 msgid "The GNOME Mailer"
 msgstr "Das GNOME-Mailprogramm"
 
-#: installer/package_list.py:510
+#: installer/package_list.py:519
 msgid "VNC viewer"
 msgstr "VNC-Betrachter"
 
-#: installer/package_list.py:516
+#: installer/package_list.py:525
 msgid "Client for remote desktop Access"
 msgstr "Client für den Zugriff auf entfernte Benutzeroberflächen"
 
-#: installer/package_list.py:519 installer/package_list.py:525
+#: installer/package_list.py:528 installer/package_list.py:534
 msgid "Microsoft fonts"
 msgstr "Microsoft-Schriften"
 
-#: installer/package_list.py:530
+#: installer/package_list.py:539
 msgid "Tools"
 msgstr "Werkzeuge"
 
-#: installer/package_list.py:532
+#: installer/package_list.py:541
 msgid "Extra Tools"
 msgstr "Zusatz-Werkzeuge"
 
-#: installer/package_list.py:536
+#: installer/package_list.py:545
 msgid "OpenSSH client"
 msgstr "OpenSSH-Client"
 
-#: installer/package_list.py:541
+#: installer/package_list.py:550
 msgid "Secure shell client, an rlogin/rsh/rcp replacement"
 msgstr "SSH-Client, ein Ersatz für rlogin/rsh/rcp"
 
-#: installer/package_list.py:544
+#: installer/package_list.py:553
 msgid "DHCP client"
 msgstr "OpenSSH-Client"
 
-#: installer/package_list.py:550
+#: installer/package_list.py:559
 msgid "Dynamic IP configuration"
 msgstr "Dynamische IP-Konfiguration"
 
-#: installer/package_list.py:553
+#: installer/package_list.py:562
 msgid "vim"
 msgstr "vim"
 
-#: installer/package_list.py:558
+#: installer/package_list.py:567
 msgid "Vim is an advanced text editor."
 msgstr "Vim ist ein erweiteter Texteditor."
 
-#: installer/package_list.py:561
+#: installer/package_list.py:570
 msgid "emacs"
 msgstr "emacs"
 
-#: installer/package_list.py:566
+#: installer/package_list.py:575
 msgid "GNU Emacs is an advanced text editor."
 msgstr "GNU Emacs ist ein erweiteter Texteditor."
 
-#: installer/package_list.py:569
+#: installer/package_list.py:578
 msgid "less"
 msgstr "less"
 
-#: installer/package_list.py:574
+#: installer/package_list.py:583
 msgid "Pager program similar to more"
 msgstr "Eine Alternative zu \"more\""
 
-#: installer/package_list.py:577
+#: installer/package_list.py:586
 msgid "elinks"
 msgstr "elinks"
 
-#: installer/package_list.py:582
+#: installer/package_list.py:591
 msgid "Advanced text-mode WWW browser"
 msgstr "Erweiterter Text-Mode-Web-Browser"
 
-#: installer/package_list.py:585
+#: installer/package_list.py:594
 msgid "wget"
 msgstr "wget"
 
-#: installer/package_list.py:590
+#: installer/package_list.py:599
 msgid "Retrieves files from the web"
 msgstr "Programm zum Herunterladen von Dateien aus dem WWW"
 
-#: installer/package_list.py:593
+#: installer/package_list.py:602
 msgid "nmap"
 msgstr "nmap"
 
-#: installer/package_list.py:598
+#: installer/package_list.py:607
 msgid "The Network Mapper"
 msgstr "Portscanning-Tool"
 
-#: installer/package_list.py:601
+#: installer/package_list.py:610
 msgid "zip/unzip"
 msgstr "zip/unzip"
 
-#: installer/package_list.py:606
+#: installer/package_list.py:615
 msgid "Archiver/De-Archiver for .zip files"
 msgstr "Kompression/Dekompression für zip-Dateien"
 
-#: installer/package_list.py:609
+#: installer/package_list.py:618
 msgid "eject"
 msgstr "eject"
 
-#: installer/package_list.py:614
+#: installer/package_list.py:623
 msgid "Ejects CDs and operates CD-Changers under Linux"
 msgstr "Programm zum Auswerfen von CDs und Bedienen von CD-Wechslern"
 
-#: installer/package_list.py:617
+#: installer/package_list.py:626
 msgid "Java"
 msgstr "Java"
 
@@ -1197,7 +1244,7 @@ msgstr "Durch das Drücken von"
 
 #: installer/modules/12_expert_partition.py:58
 msgid "    [ALT]+[F2]"
-msgstr ""
+msgstr "    [ALT]+[F2]"
 
 #: installer/modules/12_expert_partition.py:60
 msgid "an interactive shell will be started, which allows you"
@@ -1213,7 +1260,7 @@ msgstr "mkfs.ext3 usw. die Festplatte eingerichtet werden."
 
 #: installer/modules/12_expert_partition.py:66
 msgid "    [ALT]+[F1]"
-msgstr ""
+msgstr "    [ALT]+[F1]"
 
 #: installer/modules/12_expert_partition.py:68
 msgid "the installation will be continued."
@@ -1226,6 +1273,10 @@ msgid ""
 "CTRL+ALT+F2 interactive shell\n"
 "CTRL+ALT+F1 installation screen"
 msgstr ""
+"Partitionierung (Expertenmodus):\n"
+"\n"
+"CTRL+ALT+F2 interaktive Shell\n"
+"CTRL+ALT+F1 Installationsbildschirm"
 
 #: installer/modules/12_expert_partition.py:91
 msgid "Part. expert mode"
@@ -2443,6 +2494,21 @@ msgstr "Verarbeite postrun-Skripte"
 #, python-format
 msgid "Processing %s "
 msgstr "Verarbeite %s"
+
+#~ msgid "Installation failed!"
+#~ msgstr "Die Installation ist fehlgeschlagen!"
+
+#~ msgid "Please restart the computer and try again."
+#~ msgstr "Bitte starten Sie den Rechner neu."
+
+#~ msgid "Installation Log:"
+#~ msgstr "Installations-Protokoll:"
+
+#~ msgid "Installation succeded!"
+#~ msgstr "Die Installation war erfolgreich."
+
+#~ msgid "Please restart the computer."
+#~ msgstr "Bitte starten Sie den Rechnern neu."
 
 #~ msgid "Manage Software Raids"
 #~ msgstr "Software Raids verwalten"
