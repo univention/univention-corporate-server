@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-10 15:44+0100\n"
-"PO-Revision-Date: 2009-02-10 15:44+0100\n"
+"POT-Creation-Date: 2009-02-19 13:56+0100\n"
+"PO-Revision-Date: 2009-02-19 14:00+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -92,11 +92,11 @@ msgstr "4"
 msgid "Add debug output for functions"
 msgstr "Debug-Ausgaben für Funktionen ausgeben"
 
-#: __init__.py:96 __init__.py:420
+#: __init__.py:96
 msgid "no"
 msgstr "nein"
 
-#: __init__.py:96 __init__.py:419
+#: __init__.py:96
 msgid "yes"
 msgstr "ja"
 
@@ -208,21 +208,31 @@ msgstr "Der Active Directory Connector wurde gestartet."
 msgid "Active Directory Connector has been stopped."
 msgstr "Der Active Directory Connector wurde beendet."
 
-#: __init__.py:467
+#: __init__.py:457
 msgid ""
-"The configuration process has been finished and all required settings\n"
-"for Active Directory Connector are set."
-msgstr ""
-"Der Konfigurationsvorgang ist beendet und alle vom Active Directory "
-"Connector benötigten Einstellungen sind gesetzt."
+"The configuration process has been finished and all required settings for "
+"Active Directory Connector are set."
+msgstr "Der Konfigurationsvorgang ist abgeschlossen und alle vom Active Directory Connector benötigten Einstellungen wurden gesetzt."
 
-#: __init__.py:468
+#: __init__.py:459
+msgid "The configuration process has not been started yet or is incomplete."
+msgstr "Die Konfiguration des Active Directory Connectors wurde noch nicht durchgeführt oder ist unvollständig."
+
+#: __init__.py:462
 msgid "The Active Directory certificate has been sucessfully installed."
 msgstr "Das Active-Directory-Zertifikat wurde erfolgreich installiert."
 
+#: __init__.py:464
+msgid "The Active Directory certificate has not been installed yet."
+msgstr "Das Active-Directory-Zertifikat wurde noch nicht installiert."
+
+#: __init__.py:467
+msgid "Active Directory Connector is currently running."
+msgstr "Der Active Directory Connector wurde gestartet."
+
 #: __init__.py:469
-msgid "Running status of Active Directory Connector."
-msgstr "Starten/Stoppen des Active Directory Connectors ist fehlgeschlagen."
+msgid "Active Directory Connector is not running."
+msgstr "Der Active Directory Connector wurde noch nicht gestartet."
 
 #: __init__.py:471
 msgid "Active Directory Connector status"
@@ -314,3 +324,6 @@ msgstr "Speichern"
 #: __init__.py:657
 msgid "Please select the file containing the Active Directory certificate."
 msgstr "Bitte das Active Directory-Zertifikat auswählen und hochladen."
+
+#~ msgid "Running status of Active Directory Connector."
+#~ msgstr "Starten/Stoppen des Active Directory Connectors ist fehlgeschlagen."
