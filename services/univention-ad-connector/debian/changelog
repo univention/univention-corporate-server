@@ -1,3 +1,10 @@
+univention-ad-connector (3.0.1-1) unstable; urgency=low
+
+  * rebuild for UCS 2.2
+  * changed copyright year. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 08:14:06 +0100
+
 univention-ad-connector (2.0.5-2) unstable; urgency=low
 
   * fixed translation string (Bug #8736)
