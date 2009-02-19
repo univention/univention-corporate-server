@@ -3,7 +3,7 @@
 # Univention Kolab2 Framework
 #  listener module: mail domain configuration
 #
-# Copyright (C) 2005, 2006 Univention GmbH
+# Copyright (C) 2005-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
