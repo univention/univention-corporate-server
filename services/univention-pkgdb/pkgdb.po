@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
