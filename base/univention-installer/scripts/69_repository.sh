@@ -48,6 +48,7 @@ chroot /instmnt univention-config-registry commit \
 
 #create an empty sources.list
 if [ -e "/instmnt/etc/apt/sources.list" ]; then
-	mv /instmnt/etc/apt/sources.list /instmnt/etc/apt/sources.list.unused
-	touch /instmnt/etc/apt/sources.list
+	echo "# This file is not maintained via Univention Configuration Registry
+# and can be used to add further package repositories manually
+" > /instmnt/etc/apt/sources.list
 fi

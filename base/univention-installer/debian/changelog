@@ -1,3 +1,10 @@
+univention-installer (3.0.17-1) unstable; urgency=low
+
+  * add a comment to /etc/apt/sources.list that it can be just for
+    additional repositories (Bug #1251)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 19 Feb 2009 15:17:28 +0100
+
 univention-installer (3.0.16-1) unstable; urgency=low
 
   * scripts/69_repository.sh: check for temporary sources.list file in
