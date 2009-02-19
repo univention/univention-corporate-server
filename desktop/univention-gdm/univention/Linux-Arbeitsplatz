@@ -3,7 +3,7 @@
 # Univention GDM
 #  Linux Arbeitsplatz session script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -104,6 +104,17 @@ function thinclient() {
 		echo "SESSION_RSH: $SESSION_RSH"
 		echo ""
 	fi
+
+	# start sound server
+	if [ -e "/usr/bin/artswrapper" ]; then
+ 		if [ -e "/dev/dsp" ] || [ -e "/dev/sndstat" ]; then
+			#be sure the directory exists, otherwise the artsd on the thinclient isn't able to start
+			mkdir -p "/tmp/ksocket-${USERNAME}"
+			/usr/bin/artswrapper -n -F 5 -S 8192 -u -p 1601 &
+			artspid="$!"
+		fi
+	fi
+
 
 	if test -e /tmp/passwd; then
 		rm -rf /tmp/passwd
