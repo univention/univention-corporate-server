@@ -1,3 +1,9 @@
+univention-ldap-addressbook-sync (2.0.1-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:10:35 +0100
+
 univention-ldap-addressbook-sync (2.0.1-1) unstable; urgency=low
 
   * rebuild for UCS 2.2. Bug #12377 and Bug #12966
