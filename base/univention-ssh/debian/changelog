@@ -1,3 +1,9 @@
+univention-ssh (2.0.1-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:28:38 +0100
+
 univention-ssh (2.0.1-1) unstable; urgency=low
 
   * added a dependency to the openssh client package. Bug #12404
