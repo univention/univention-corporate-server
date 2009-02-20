@@ -4857,6 +4857,11 @@ rm /var/lib/univention-directory-listener/handlers/cups-printers >/dev/null 2>&1
 
 # umc module
 
+univention-admin container/cn create $@ --ignore_exists --position cn=univention,$ldap_base --set name=console
+univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=acls
+univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations
+univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
+
 # create CUPS operations
 univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
 																				 --set name=cups \

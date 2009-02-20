@@ -89,6 +89,11 @@ univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,
 
 /etc/init.d/nagios2 restart 2> /dev/null > /dev/null || true
 
+univention-admin container/cn create $@ --ignore_exists --position cn=univention,$ldap_base --set name=console
+univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=acls
+univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations
+univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
+
 # create nagios operations
 univention-admin settings/console_operation create $@ --ignore_exists \
 	--position cn=operations,cn=console,cn=univention,$ldap_base \
