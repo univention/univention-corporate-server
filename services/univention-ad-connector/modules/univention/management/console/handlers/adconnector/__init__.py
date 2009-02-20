@@ -222,7 +222,6 @@ class handler(umch.simpleHandler):
 				debugmsg( ud.ADMIN, ud.INFO, 'unsetting %s' % (ucrkey) )
 				univention.config_registry.handler_unset( [ u'%s' % ucrkey ] )
 
-			debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: PW=%s' % obj.options.get('ad_ldap_bindpw') )
 			if not obj.options.get('ad_ldap_bindpw') in [ None, '', DO_NOT_CHANGE_PWD ]:
 				fn = self.configRegistry.get('connector/ad/ldap/bindpw', FN_BINDPW)
 				try:

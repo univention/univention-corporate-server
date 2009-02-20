@@ -1,4 +1,4 @@
-univention-ad-connector (3.0.4-1) unstable; urgency=low
+univention-ad-connector (3.0.4-2) unstable; urgency=low
 
   * fixed bugs in UMC module (Bug #8736)
 
