@@ -39,9 +39,8 @@ import sys
 import time
 
 import univention.config_registry as ucr
-import univention.repository as urepo
-from univention.management.console.handlers.update.mirror import UniventionMirror
-from univention.management.console.handlers.update.tools import UCS_Version
+import univention.updater.repository as urepo
+from univention.updater import UniventionMirror, UCS_Version
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()

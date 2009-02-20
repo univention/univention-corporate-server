@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: manages updates
 #
-# Copyright (C) 2008-2009 Univention GmbH
+# Copyright (C) 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,10 +28,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-import univention.management.console.locales as locales
-
-_ = locales.Translation('univention.management.console.handlers.update').translate
 
 import univention.debug as ud
 

@@ -42,7 +42,7 @@ import subprocess
 
 import univention_baseconfig
 
-from  univention.management.console.handlers.update.tools import UniventionUpdater, UCS_Version
+from univention.updater import UniventionUpdater, UCS_Version
 
 # TODO:
 #   * check the local repository path /var/lib/univention-reposiotry

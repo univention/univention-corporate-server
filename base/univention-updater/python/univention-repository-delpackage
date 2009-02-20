@@ -33,7 +33,7 @@ import shutil, sys
 import getopt, time
 
 import univention_baseconfig
-import univention.repository as urepo
+import univention.updater.repository as urepo
 
 def usage(fd=sys.stdout):
 	print >>fd, 'univention-repository-delpackage: tool for removing packages from local repository'

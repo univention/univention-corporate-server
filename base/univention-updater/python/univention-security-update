@@ -36,9 +36,9 @@ import univention.config_registry as ucr
 import time
 import subprocess
 
-import univention.management.console.handlers.update.tools
+import univention.updater
 
-updater = univention.management.console.handlers.update.tools.UniventionUpdater()
+updater = univention.updater.UniventionUpdater()
 
 def dprint(str, fd=[], toStdout=False):
 	if len(fd) < 1:

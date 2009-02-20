@@ -36,7 +36,7 @@ import re
 import subprocess
 
 import univention_baseconfig
-import  univention.repository as urepo
+import  univention.updater.repository as urepo
 
 def usage(fd=sys.stdout):
 	print >>fd, 'univention-repository-addpackage: tool for adding packages to local repository'

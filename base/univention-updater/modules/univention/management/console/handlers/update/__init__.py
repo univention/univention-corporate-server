@@ -40,7 +40,7 @@ import univention.debug as ud
 
 import univention.config_registry
 
-import tools
+from univention.updater import UniventionUpdater
 
 import os
 import subprocess, string, time
@@ -137,7 +137,7 @@ class handler(umch.simpleHandler):
 
 		umch.simpleHandler.__init__(self, command_description)
 
-		self.updater = tools.UniventionUpdater()
+		self.updater = UniventionUpdater()
 
 		self.next_release_update_checked = False
 		self.next_release_update = None

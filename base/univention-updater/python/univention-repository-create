@@ -37,7 +37,7 @@ import subprocess
 import sys
 
 import univention.config_registry as ucr
-import univention.repository as urepo
+import univention.updater.repository as urepo
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()

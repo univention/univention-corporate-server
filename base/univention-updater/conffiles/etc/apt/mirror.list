@@ -11,8 +11,7 @@ set nthreads     @%@repository/mirror/threads@%@
 import copy
 import sys
 
-from univention.management.console.handlers.update.mirror import UniventionMirror
-from univention.management.console.handlers.update.tools import UCS_Version
+from univention.updater import UniventionMirror, UCS_Version
 
 try:
 	mirror = UniventionMirror()

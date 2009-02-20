@@ -201,9 +201,11 @@ def get_repo_basedir( packages_dir ):
 	return packages_path
 
 def is_debmirror_installed():
-	p = subprocess.Popen( [ 'dpkg-query', '-s', 'univention-debmirror' ], stdout = subprocess.PIPE )
+	devnull = open( os.path.devnull, 'w' )
+	p = subprocess.Popen( [ 'dpkg-query', '-s', 'univention-debmirror' ], stdout = subprocess.PIPE, stderr = devnull )
 	output = p.communicate()[ 0 ]
 
+	devnull.close()
 	# univention-debmirror is not installed
 	if p.returncode:
 		return ( False, 'Error: Please install the package univention-debmirror.' )

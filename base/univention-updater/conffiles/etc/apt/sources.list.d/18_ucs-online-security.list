@@ -1,12 +1,11 @@
 @%@BCWARNING=#@%@
 
 @!@
-
 import sys
-import univention.management.console.handlers.update.tools
+from univention.updater import UniventionUpdater
 
 try:
-	updater = univention.management.console.handlers.update.tools.UniventionUpdater()
+	updater = UniventionUpdater()
 
 	if updater.online_repository:
 	   print updater.print_security_repositories()
