@@ -549,7 +549,7 @@ class handler(umch.simpleHandler):
 		curval = ''
 		fn = self.configRegistry.get('connector/ad/ldap/bindpw')
 		if not fn or not os.path.exists( fn ):
-			self.msg['warning'].append( _('The password of specified replication user has not been set yet!') )
+			self.msg['warn'].append( _('The password of specified replication user has not been set yet!') )
 			debugmsg( ud.ADMIN, ud.WARN, 'password of replication user has not been set yet' )
 		else:
 			curval = DO_NOT_CHANGE_PWD
