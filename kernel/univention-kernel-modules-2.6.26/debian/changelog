@@ -1,3 +1,10 @@
+univention-kernel-modules-2.6.26 (3.0.6-1) unstable; urgency=low
+
+  * don't build meta packages for the bigmem (64gb) kernel on 64 bit
+    systems. Bug #11839
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Feb 2009 13:08:20 +0100
+
 univention-kernel-modules-2.6.26 (3.0.5-2) unstable; urgency=low
 
   * updated the copyright. Bug #6875
