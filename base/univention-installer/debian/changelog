@@ -1,3 +1,9 @@
+univention-installer (4.0.2-1) unstable; urgency=low
+
+  * ignore harddisks without partition table but valid filesystem (Bug #13496)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 20 Feb 2009 13:13:42 +0100
+
 univention-installer (4.0.1-1) unstable; urgency=low
 
   * fixed translation. Bug #13326

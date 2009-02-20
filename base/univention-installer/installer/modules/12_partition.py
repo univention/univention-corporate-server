@@ -1549,8 +1549,15 @@ class object(content):
 
 			p.close()
 
+		if devices_remove:
+			self.debug('devices=%s' % devices)
+			self.debug('diskList=%s' % diskList)
 		for d in devices_remove:
 			devices.remove(d)
+			if d in diskList:
+				del diskList[d]
+		self.debug('devices=%s' % devices)
+		self.debug('diskList=%s' % diskList)
 		return diskList
 
 
