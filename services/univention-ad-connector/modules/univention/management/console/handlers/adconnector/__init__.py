@@ -45,8 +45,10 @@ import os, stat, shutil
 
 import subprocess, time, grp
 
-FN_BINDPWD = '/etc/univention/connector/ad/bindpwd'
+FN_BINDPW = '/etc/univention/connector/ad/bindpw'
 DIR_WEB_AD = '/var/www/univention-ad-connector'
+
+DO_NOT_CHANGE_PWD = '********************'
 
 _ = umc.Translation('univention.management.console.handlers.adconnector').translate
 
@@ -86,7 +88,7 @@ command_description = {
 			'ad_ldap_bindpw': umc.Password( _('Password of replication user'), required = False ),
 			'ad_poll_sleep': umc.String( _('Poll Interval (seconds)'), regex = '^[0-9]+$' ),
 			'ad_windows_version': UMC_AD_StaticSelection( title=_('Version of Windows server'),
-													choices = ( ( 'win2000', _( 'Windows 2000' ) ), ( '', _( 'Windows 2003' ) ) ) ),
+													choices = ( ( 'win2000', _( 'Windows 2000' ) ), ( 'win2003', _( 'Windows 2003' ) ) ) ),
 			'ad_retry_rejected': umc.String( _('Retry interval for rejected objects'), regex = '^[0-9]+$' ),
 			# Workaround for Bug #13139: '_0_' up to '_4_' is a workaround
 			'debug_level': UMC_AD_StaticSelection( title=_('Debug level of Active Directory Connector'),
@@ -201,11 +203,11 @@ class handler(umch.simpleHandler):
 									( 'ad_mapping_group_language', 'connector/ad/mapping/language' ),
 									):
 				val = obj.options.get(umckey)
+				# Workaround for Bug #13139 START
+				if umckey in [ 'debug_level', 'debug_function' ]:
+					val = val.strip('_')
+				# Workaroung for Bug #13139 END
 				if val:
-					# Workaround for Bug #13139 START
-					if umckey in [ 'debug_level', 'debug_function' ]:
-						val = val.strip('_')
-					# Workaroung for Bug #13139 END
 					debugmsg( ud.ADMIN, ud.INFO, 'setting %s=%s' % (ucrkey, val) )
 					univention.config_registry.handler_set( [ u'%s=%s' % (ucrkey, val) ] )
 
@@ -213,15 +215,16 @@ class handler(umch.simpleHandler):
 			umckey = 'ad_windows_version'
 			ucrkey = 'connector/ad/windows_version'
 			val = obj.options.get( umckey )
-			if obj.options.get( val ):
+			if val == 'win2000':
 				debugmsg( ud.ADMIN, ud.INFO, 'setting %s=%s' % (ucrkey, val) )
 				univention.config_registry.handler_set( [ u'%s=%s' % (ucrkey, val) ] )
 			else:
 				debugmsg( ud.ADMIN, ud.INFO, 'unsetting %s' % (ucrkey) )
 				univention.config_registry.handler_unset( [ u'%s' % ucrkey ] )
 
-			if obj.options.get('ad_ldap_bindpw'):
-				fn = self.configRegistry.get('connector/ad/ldap/bindpwd', FN_BINDPWD)
+			debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: PW=%s' % obj.options.get('ad_ldap_bindpw') )
+			if not obj.options.get('ad_ldap_bindpw') in [ None, '', DO_NOT_CHANGE_PWD ]:
+				fn = self.configRegistry.get('connector/ad/ldap/bindpw', FN_BINDPW)
 				try:
 					fd = open( fn ,'w')
 					fd.write( obj.options.get('ad_ldap_bindpw') )
@@ -231,7 +234,7 @@ class handler(umch.simpleHandler):
 				except Exception, e:
 					self.msg['error'].append( _('saving bind password failed (filename=%(fn)s ; exception=%(exception)s)') % { 'fn': fn, 'exception': str(e.__class__)})
 					debugmsg( ud.ADMIN, ud.ERROR, 'saving bind password failed (filename=%(fn)s ; exception=%(exception)s)' % { 'fn': fn, 'exception': str(e.__class__)} )
-				univention.config_registry.handler_set( [ u'connector/ad/ldap/bindpw=%s' % FN_BINDPWD ] )
+				univention.config_registry.handler_set( [ u'connector/ad/ldap/bindpw=%s' % FN_BINDPW ] )
 
 			self.msg['hint'].append( _('Active Directory Connector settings have been saved.') )
 
@@ -510,7 +513,7 @@ class handler(umch.simpleHandler):
 		list_id = []
 
 		# ask for ldap_host
-		if obj.options.get('action','') == 'guess_basedn':
+		if obj.options.get('action') == 'guess_basedn':
 			ldaphost = obj.options.get('ad_ldap_host')
 		else:
 			ldaphost = self.configRegistry.get('connector/ad/ldap/host', '')
@@ -524,7 +527,7 @@ class handler(umch.simpleHandler):
 		btn_guess = umcd.Button( _('Determine BaseDN'), 'actions/ok', actions = actions, close_dialog = False )
 
 		# ask for ldap_base and/or display a first guess based on ldapsearch call
-		if obj.options.get('action','') == 'guess_basedn' and self.guessed_baseDN:
+		if obj.options.get('action') == 'guess_basedn' and self.guessed_baseDN:
 			basedn = self.guessed_baseDN
 			if basedn:
 				self.msg['hint'].append( _('BaseDN of %s has been determined successfully. Suggestion for replication user has been set.') % obj.options.get('ad_ldap_host') )
@@ -535,7 +538,7 @@ class handler(umch.simpleHandler):
 		list_id.append( inp_ldap_base.id() )
 
 		# ask for ldap_binddn and/or display a first guess based on ldapsearch call
-		if obj.options.get('action','') == 'guess_basedn' and self.guessed_baseDN:
+		if obj.options.get('action') == 'guess_basedn' and self.guessed_baseDN:
 			binddn = 'cn=Administrator,cn=users,%s' % basedn
 		else:
 			binddn = self.configRegistry.get('connector/ad/ldap/binddn', '')
@@ -543,17 +546,20 @@ class handler(umch.simpleHandler):
 		list_id.append( inp_ldap_binddn.id() )
 
 		# get bind password if UCR variable is already set and file exists
+		curval = ''
 		fn = self.configRegistry.get('connector/ad/ldap/bindpw')
 		if not fn or not os.path.exists( fn ):
-			self.msg['hint'].append( _('The password of specified replication user has not been set yet!') )
+			self.msg['warning'].append( _('The password of specified replication user has not been set yet!') )
 			debugmsg( ud.ADMIN, ud.WARN, 'password of replication user has not been set yet' )
+		else:
+			curval = DO_NOT_CHANGE_PWD
 
-		# ask for ldap_bindpwd
-		inp_ldap_bindpwd = umcd.make( self['adconnector/configure']['ad_ldap_bindpw'], default = '' )
-		list_id.append( inp_ldap_bindpwd.id() )
+		# ask for ldap_bindpw
+		inp_ldap_bindpw = umcd.make( self['adconnector/configure']['ad_ldap_bindpw'], default = curval )
+		list_id.append( inp_ldap_bindpw.id() )
 
 		# ask for windows version
-		inp_windows_version = umcd.make( self['adconnector/configure']['ad_windows_version'], default = self.configRegistry.get('connector/ad/windows_version', '') )
+		inp_windows_version = umcd.make( self['adconnector/configure']['ad_windows_version'], default = self.configRegistry.get('connector/ad/windows_version', 'win2003') )
 		list_id.append( inp_windows_version.id() )
 
 		# ask for mapping syncmode
@@ -573,11 +579,13 @@ class handler(umch.simpleHandler):
 		list_id.append( inp_poll_sleep.id() )
 
 		# ask for debug level
-		inp_debug_level = umcd.make( self['adconnector/configure']['debug_level'], default = self.configRegistry.get('connector/debug/level', '_1_') )
+		curval = '_%s_' % self.configRegistry.get('connector/debug/level', '1')
+		inp_debug_level = umcd.make( self['adconnector/configure']['debug_level'], default = curval )
 		list_id.append( inp_debug_level.id() )
 
 		# ask for debug level
-		inp_debug_function = umcd.make( self['adconnector/configure']['debug_function'], default = self.configRegistry.get('connector/debug/function', '_0_') )
+		curval = '_%s_' % self.configRegistry.get('connector/debug/function', '0')
+		inp_debug_function = umcd.make( self['adconnector/configure']['debug_function'], default = curval )
 		list_id.append( inp_debug_function.id() )
 
 
@@ -604,7 +612,7 @@ class handler(umch.simpleHandler):
 		list_items.add_row( [ inp_ldap_host ] )
 		list_items.add_row( [ btn_guess ] )
 		list_items.add_row( [ inp_ldap_base, inp_windows_version ] )
-		list_items.add_row( [ inp_ldap_binddn, inp_ldap_bindpwd ] )
+		list_items.add_row( [ inp_ldap_binddn, inp_ldap_bindpw ] )
 		list_items.add_row( [ inp_mapping_language, inp_sync_mode ] )
 		list_items.add_row( [ inp_poll_sleep, inp_retry_rejected ] )
 		list_items.add_row( [ inp_debug_level, inp_debug_function ] )
