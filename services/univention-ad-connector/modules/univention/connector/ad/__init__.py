@@ -1306,8 +1306,8 @@ class ad(univention.connector.ucs):
 		for member_dn in ad_members:
 			member_object = self.get_object(member_dn)
 			if member_object:
-				key = self.__identify({'dn':member_dn,'attributes':member_object})
-				if not key:
+				mo_key = self.__identify({'dn':member_dn,'attributes':member_object})
+				if not mo_key:
 					continue # member is an object which will not be synced
 				ucs_dn = self._object_mapping(key, {'dn':member_dn,'attributes':member_object})['dn']
 				try:
