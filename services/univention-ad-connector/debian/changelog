@@ -1,3 +1,14 @@
+univention-ad-connector (3.0.3-1) unstable; urgency=low
+
+  * corrected help-message of univention-adsearch
+  * added containers to global_ignore_subtree in mapping.py:
+     'cn=samba,@%@ldap/base@%@',
+     'cn=nagios,@%@ldap/base@%@',
+     'ou=Grp Policy Users,@%@connector/ad/ldap/base@%@'
+  * fix potential traceback in group_members_sync_to_ucs
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 20 Feb 2009 09:45:32 +0100
+
 univention-ad-connector (3.0.2-2) unstable; urgency=low
 
   * fixed translation bugs in UMC module (Bug #8736)
