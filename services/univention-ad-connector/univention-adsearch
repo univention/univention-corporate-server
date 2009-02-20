@@ -93,7 +93,7 @@ if not (baseConfig.has_key('connector/ad/ldap/host')
 	print ""
 	print "Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server."
 	print ""
-	print "The Settings are not complete, please check the following univention-baseconfig Values:"
+	print "The Settings are not complete, please check the following univention-config-registry Values:"
 	print "connector/ad/ldap/host, connector/ad/ldap/port,"
 	print "connector/ad/ldap/binddn, connector/ad/ldap/bindpw,"
 	print "connector/ad/ldap/base"
