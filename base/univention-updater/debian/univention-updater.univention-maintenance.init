@@ -191,7 +191,9 @@ case "$1" in
 		dmesg -n 8
 
 		# clean up updater settings
-		univention-config-registry unset update/reboot/required
+		if [ -n "$update_reboot_required" ]; then
+			univention-config-registry unset update/reboot/required
+		fi
 		;;
 	*)
 		echo "Usage: /etc/init.d/univention-maintenance {start|stop|restart}"
