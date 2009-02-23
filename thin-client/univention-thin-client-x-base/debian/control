@@ -7,7 +7,7 @@ Standards-Version: 3.5.2
 
 Package: univention-thin-client-x-base
 Architecture: all
-Pre-Depends: univention-thin-client-basesystem, python-univention-debug
+Pre-Depends: univention-thin-client-basesystem (>= 5.0.4), python-univention-debug
 Depends: univention-thin-client-tools
 Description: UCS - thin client xorg base
  This package contains the base packages for an xorg environment on thin clients.

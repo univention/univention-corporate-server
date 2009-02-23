@@ -1,3 +1,9 @@
+univention-thin-client-x-base (2.0.5-5) unstable; urgency=low
+
+  * stricter dependency to thin-client-basesystem (Bug: #12921)
+
+ -- Felix Botner <botner@univention.de>  Mon, 23 Feb 2009 13:51:01 +0100
+
 univention-thin-client-x-base (2.0.5-4) unstable; urgency=low
 
   * updated the copyright. Bug #6875
