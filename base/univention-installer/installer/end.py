@@ -162,12 +162,6 @@ def createSuccessMsg():
 	msg.append( '' )
 	msg.append( _('Administrative frontends:') )
 
-	eth0_ip='192.168.0.58'
-	eth0_type='dynamic'
-	hostname='dc-master'
-	domainname='ucs.uni-hohenheim.de'
-	auto_join='false'
-
 	fqdn = '%s.%s' % (profile.get('hostname'), profile.get('domainname'))
 	postfix_udm = 'univention-directory-manager'
 	postfix_umc = 'univention-management-console'

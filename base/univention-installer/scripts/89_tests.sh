@@ -73,17 +73,26 @@ if [ -s "$instmnt/tmp/failed-packages.txt" ]; then
 	cat $instmnt/tmp/failed-packages.txt >> $log
 fi
 
-# Administrator
-chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
+if [ -n "$system_role" ]; then
+	export server_role="$system_role"
+fi
+
+#only check on a DC Master
+if [ "$server_role" = "domaincontroller_master" ]; then
+
+	# Administrator
+	chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
 id Administrator 1>/dev/null || exit 1
 __EOF__
-test_retval $? "error" "User Administrator was not created."
+	test_retval $? "error" "User Administrator was not created."
 
-# Administrator in admin group
-chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
+	# Administrator in admin group
+	chroot $instmnt 2>/dev/null 1>/dev/null<< __EOF__
 getent group | grep "Domain Admins" | grep Administrator >/dev/null || exit 1
 __EOF__
-test_retval $? "error" "User Administrator is not member of \"Domain Admins\" group."
+	test_retval $? "error" "User Administrator is not member of \"Domain Admins\" group."
+
+fi
 
 # test join status
 if [ ! "$auto_join" = "false" -a ! "${system_role}" = "basesystem" ] ; then

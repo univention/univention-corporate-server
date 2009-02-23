@@ -1,3 +1,9 @@
+univention-installer (4.0.3-1) unstable; urgency=low
+
+  * Only test the Administrator account on a dc master. Bug #12190
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Feb 2009 07:25:48 +0100
+
 univention-installer (4.0.2-1) unstable; urgency=low
 
   * ignore harddisks without partition table but valid filesystem (Bug #13496)
