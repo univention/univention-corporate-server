@@ -1,3 +1,10 @@
+univention-java (3.0.1-1) stable; urgency=low
+
+  * depend on Java6. Bug #11140
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Feb 2009 11:20:48 +0100
+
 univention-java (2.0.2-4) stable; urgency=low
 
   * verwaiste Links aus /etc/alternatives nach /usr/lib/j2se/1.4/ im postinst entfernen

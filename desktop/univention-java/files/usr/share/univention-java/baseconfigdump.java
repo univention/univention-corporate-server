@@ -2,7 +2,7 @@
  * Univention Java
  *  source code for the java demonstration of univention-baseconfig
  *
- * Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+ * Copyright (C) 2004-2009 Univention GmbH
  *
  * http://www.univention.de/
  *
