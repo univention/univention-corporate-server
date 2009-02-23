@@ -190,7 +190,7 @@ def createSuccessMsg():
 def main():
 	# get and set language
 	if os.path.isfile(language_file):
-		language = linecache.getline(language_file, 1)
+		language = linecache.getline(language_file, 1).strip('\n')
 		os.environ['LANGUAGE'] = language
 
 	msg = []

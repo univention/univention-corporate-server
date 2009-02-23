@@ -300,6 +300,12 @@ class lang_win(subwin):
 
 	def set_language(self):
 		os.environ['LANGUAGE'] = "%s" % self.elements[1].result()[0].strip()
+
+		#this is needed for the installation end message
+		fp = open('/tmp/language', 'w')
+		fp.write("%s" % self.elements[1].result()[0].strip())
+		fp.close()
+
 		if self.elements[1].result()[0].strip() == 'de':
 			if os.path.exists('/usr/keymaps/de-latin1.bmap'):
 				os.system('/bin/loadkmap < /usr/keymaps/de-latin1.bmap > /dev/null 2>&1')

@@ -1,3 +1,10 @@
+univention-installer (4.0.4-1) unstable; urgency=low
+
+  * show the end message of the installer in the correct language. Bug
+    #12190
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Feb 2009 09:38:18 +0100
+
 univention-installer (4.0.3-1) unstable; urgency=low
 
   * Only test the Administrator account on a dc master. Bug #12190
