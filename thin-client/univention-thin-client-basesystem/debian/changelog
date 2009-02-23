@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (5.0.4-1) unstable; urgency=low
+
+  * stricter dependency to thin-client-tools (Bug: #12921)
+
+ -- Felix Botner <botner@univention.de>  Mon, 23 Feb 2009 13:40:08 +0100
+
 univention-thin-client-basesystem (5.0.3-1) unstable; urgency=low
 
   * removed some debug statements from univention-thin-client-apt. Part
