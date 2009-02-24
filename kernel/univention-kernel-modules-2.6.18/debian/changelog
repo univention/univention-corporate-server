@@ -1,3 +1,10 @@
+univention-kernel-modules-2.6.18 (2.0.1-1) unstable; urgency=low
+
+  * don't fail the fail if the last process failed. The vmware kernel
+    modules are not so important. Bug #12912
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Feb 2009 09:40:41 +0100
+
 univention-kernel-modules-2.6.18 (2.0.0-7) unstable; urgency=low
 
   * updated the copyright. Bug #6875
