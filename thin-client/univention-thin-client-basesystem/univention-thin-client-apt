@@ -67,14 +67,13 @@ class UC_APT( object ):
 			'--force-yes', '-y',
 			'-o "Dir::Etc::SourceList=%s"' % self.sources_list,
 			'-o DPkg::Options::=--root=%s' % self.prefix,
-			'-o DPkg::Options::=--debug=2',
 			'-o DPkg::Run-Directory=%s' % self.prefix,
 			'-o Dir::State::Status=%s' % os.path.join( self.prefix, 'var/lib/dpkg/status' ),
 			'-o APT::Architecture=%s' % self.options.arch,
 			'-o Debug::NoLocking=True', # required if called by another apt-get process
 			)
 
-		return 'apt-get update %s && apt-get %s %s' % ( ' '.join( opts ),' '.join( opts ), ' '.join( self.arguments ) )
+		return 'export DEBCONF_DEBUG=db && export DEBCONF_DB_REPLACE=File{%s/var/cache/debconf/config.dat} && apt-get update %s && apt-get %s %s' % ( self.prefix, ' '.join( opts ),' '.join( opts ), ' '.join( self.arguments ) )
 
 	def run( self ):
 		#backup the pkgdb/scan value
