@@ -67,6 +67,7 @@ class UC_APT( object ):
 			'--force-yes', '-y',
 			'-o "Dir::Etc::SourceList=%s"' % self.sources_list,
 			'-o DPkg::Options::=--root=%s' % self.prefix,
+			'-o DPkg::Options::=--debug=2',
 			'-o DPkg::Run-Directory=%s' % self.prefix,
 			'-o Dir::State::Status=%s' % os.path.join( self.prefix, 'var/lib/dpkg/status' ),
 			'-o APT::Architecture=%s' % self.options.arch,
