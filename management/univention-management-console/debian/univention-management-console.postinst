@@ -58,7 +58,7 @@ defaulttimeout=$((15*60))
 timeout_variables="umc_web_timeout"
 for i in $timeout_variables
 do
-	if [ "$i" = "300" -o -z "$(eval echo \$$i)" ]; then
+	if [ "$(eval echo \$$i)" = "300" -o -z "$(eval echo \$$i)" ]; then
 		univention-config-registry set $(echo $i|sed -e 's/_/\//g')=$defaulttimeout
 	fi
 done
