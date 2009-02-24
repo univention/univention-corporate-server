@@ -1,3 +1,9 @@
+univention-installer (4.0.5-1) unstable; urgency=low
+
+  * shortened message in 95_overview.py. Bug #13326
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 24 Feb 2009 13:44:14 +0100
+
 univention-installer (4.0.4-1) unstable; urgency=low
 
   * show the end message of the installer in the correct language. Bug

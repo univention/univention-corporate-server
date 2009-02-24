@@ -98,7 +98,7 @@ class object(content):
 			self.elements.append(textline(_('No package will download files from the internet.'), self.minY+11+count, self.minX+2))
 		else:
 			for p in internet_files:
-				self.elements.append(textline(_('%s will download files from the internet.') % p , self.minY+11+count, self.minX+2))
+				self.elements.append(textline(_('%s will download files.') % p , self.minY+11+count, self.minX+2))
 				count=count+1
 
 
