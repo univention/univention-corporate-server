@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (5.0.4-6) unstable; urgency=low
+
+  * debconf test (Bug: #12921)
+
+ -- Felix Botner <botner@univention.de>  Wed, 25 Feb 2009 10:04:08 +0100
+
 univention-thin-client-basesystem (5.0.4-4) unstable; urgency=low
 
   * debconf test (Bug: #12921)
