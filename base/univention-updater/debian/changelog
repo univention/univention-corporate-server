@@ -1,3 +1,9 @@
+univention-updater (4.0.25-1) unstable; urgency=low
+
+  * update package lists after recreating sources.list (Bug #12242)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 25 Feb 2009 10:45:54 +0100
+
 univention-updater (4.0.24-1) unstable; urgency=low
 
   * univention-maintaince init script: just unset update/reboot/reuqired
