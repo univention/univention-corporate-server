@@ -1,3 +1,9 @@
+univention-installer (4.0.6-1) unstable; urgency=low
+
+  * fixed translations (Bug: #8621)
+
+ -- Felix Botner <botner@univention.de>  Wed, 25 Feb 2009 16:01:58 +0100
+
 univention-installer (4.0.5-1) unstable; urgency=low
 
   * shortened message in 95_overview.py. Bug #13326
