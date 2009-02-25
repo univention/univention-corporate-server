@@ -1,3 +1,9 @@
+univention-debug (2.0.0-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Feb 2009 11:26:19 +0100
+
 univention-debug (2.0.0-1) unstable; urgency=low
 
   * add dependency libunivention-debug0 to python-univention-debug
