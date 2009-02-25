@@ -2,6 +2,7 @@ Type: file
 File: etc/cups/client.conf
 Variables: ldap/server/name
 Variables: cups/server
+Variables: cups/browse.*
 
 Type: file
 File: usr/bin/lp

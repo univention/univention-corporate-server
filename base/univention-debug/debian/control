@@ -48,7 +48,7 @@ Description: UCS - debugging and logging library (Python interface)
 
 Package: univention-debug-tools
 Architecture: all
-Depends: python
+Depends: python, libunivention-debug0
 Description: UCS - tools for debugging and logging data
  This package contains the univention-viewlog tool to
  filter and view log files from the Univention debugging
