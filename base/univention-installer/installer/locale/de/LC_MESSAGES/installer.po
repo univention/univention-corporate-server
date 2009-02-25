@@ -1230,12 +1230,12 @@ msgid "Univention Installer has been started with the"
 msgstr "Der Univention Installer wurde mit der Software RAID"
 
 #: installer/modules/12_expert_partition.py:53
-msgid "Software RAID boot option, which mandates expert mode."
-msgstr "Boot Option gestartet, die den Expertenmodus voraussetzt."
+msgid "Software RAID option. The hard disk has to be"
+msgstr "Option gestartet. Die Festplatte muss manuell"
 
 #: installer/modules/12_expert_partition.py:54
-msgid "The hard disk has to be partitioned and formatted manually."
-msgstr "Die Festplatte muss manuell partitioniert und formatiert werden."
+msgid "partitioned and formatted manually."
+msgstr "partitioniert und formatiert werden."
 
 #: installer/modules/12_expert_partition.py:56
 #: installer/modules/12_expert_partition.py:64
@@ -1279,8 +1279,8 @@ msgstr ""
 "CTRL+ALT+F1 Installationsbildschirm"
 
 #: installer/modules/12_expert_partition.py:91
-msgid "Part. expert mode"
-msgstr "Part. Expertenmodus"
+msgid "Partitioner"
+msgstr "Partitionierung"
 
 #: installer/modules/12_partition.py:208
 msgid "Reading LVM config"

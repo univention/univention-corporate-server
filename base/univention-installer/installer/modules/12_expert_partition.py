@@ -50,8 +50,8 @@ class object(content):
 
 		msg = [
 			_('Univention Installer has been started with the'),
-			_('Software RAID boot option, which mandates expert mode.'),
-			_('The hard disk has to be partitioned and formatted manually.'),
+			_('Software RAID option. The hard disk has to be'),
+			_('partitioned and formatted manually.'),
 			' ',
 			_('By pressing'),
 			' ',
@@ -88,7 +88,7 @@ class object(content):
 		return _('Partitioner (expert mode):\n\nCTRL+ALT+F2 interactive shell\nCTRL+ALT+F1 installation screen')
 
 	def modheader(self):
-		return _('Part. expert mode')
+		return _('Partitioner')
 
 	def result(self):
 		result={}
