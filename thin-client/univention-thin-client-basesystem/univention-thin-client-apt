@@ -73,7 +73,7 @@ class UC_APT( object ):
 			'-o Debug::NoLocking=True', # required if called by another apt-get process
 			)
 
-		return 'export DEBCONF_DEBUG=db && export DEBCONF_DB_REPLACE=File{%s/var/cache/debconf/config.dat} && apt-get update %s && apt-get %s %s' % ( self.prefix, ' '.join( opts ),' '.join( opts ), ' '.join( self.arguments ) )
+		return 'DEBCONF_DEBUG=db && DEBCONF_DB_REPLACE=File{%s/var/cache/debconf/config.dat} && apt-get update %s && apt-get %s %s' % ( self.prefix, ' '.join( opts ),' '.join( opts ), ' '.join( self.arguments ) )
 
 	def run( self ):
 		#backup the pkgdb/scan value
