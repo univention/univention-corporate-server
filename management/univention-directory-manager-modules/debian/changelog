@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.5-1) unstable; urgency=low
+
+  * don't set the memberUid attribute for nested groups. Bug #11868
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Feb 2009 20:34:48 +0100
+
 univention-directory-manager-modules (4.0.4-1) unstable; urgency=low
 
   * modify the hosts membership directly in the group module. Bug #12644
