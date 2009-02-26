@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (5.0.4-7) unstable; urgency=low
+
+  * config.dat is a config file (Bug: #12921)
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Feb 2009 09:38:29 +0100
+
 univention-thin-client-basesystem (5.0.4-6) unstable; urgency=low
 
   * debconf test (Bug: #12921)
