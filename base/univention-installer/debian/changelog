@@ -1,3 +1,10 @@
+univention-installer (4.0.8-1) unstable; urgency=low
+
+  * write the output of the test calls to the installer.log file,
+    otherwise it is very difficult to see why the error. Bug #13549
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Feb 2009 20:46:26 +0100
+
 univention-installer (4.0.7-1) unstable; urgency=low
 
   * check if the media file in /proc really exists. Bug #13548
