@@ -73,7 +73,7 @@ class UC_APT( object ):
 			'-o Debug::NoLocking=True', # required if called by another apt-get process
 			)
 
-		return 'apt-get update %s && DEBCONF_DEBUG="db" apt-get %s %s' % (' '.join( opts ), ' '.join( opts ), ' '.join( self.arguments ) )
+		return 'apt-get update %s && apt-get %s %s' % (' '.join( opts ), ' '.join( opts ), ' '.join( self.arguments ) )
 
 	def run( self ):
 		#backup the pkgdb/scan value
