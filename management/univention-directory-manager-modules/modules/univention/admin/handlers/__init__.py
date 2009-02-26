@@ -1636,13 +1636,12 @@ class simpleComputer( simpleLdap ):
 					univention.admin.allocators.release( self.lo, self.position, 'aRecord', ipAddress )
 
 		# remove computer from groups
-		for grpdn in self['groups']:
-			members=self.lo.getAttr(grpdn, 'uniqueMember')
-			if not self.dn in members:
-				continue
-			newmembers=copy.deepcopy(members)
-			newmembers.remove(self.dn)
-			self.lo.modify(grpdn, [('uniqueMember', members, newmembers)])
+		for group in self['groups']:
+			groupObject=univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
+			groupObject.open()
+			if self.dn in groupObject['hosts']:
+				groupObject['hosts'].remove(self.dn)
+				groupObject.modify(ignore_license=1)
 
 	def update_groups(self):
 		if not self.hasChanged('groups') and \
@@ -1674,19 +1673,19 @@ class simpleComputer( simpleLdap ):
 				remove_from_group.remove(self['machineAccountGroup'])
 
 		for group in add_to_group:
-			members=self.lo.getAttr(group, 'uniqueMember')
-			if self.dn in members:
-				continue
-			newmembers=copy.deepcopy(members)
-			newmembers.append(self.dn)
-			self.lo.modify(group, [('uniqueMember', members, newmembers)])
+			groupObject=univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
+			groupObject.open()
+			if not self.dn in groupObject['hosts']:
+				groupObject['hosts'].append(self.dn)
+				groupObject.modify(ignore_license=1)
+
 		for group in remove_from_group:
-			members=self.lo.getAttr(group, 'uniqueMember')
-			if not self.dn in members:
-				continue
-			newmembers=copy.deepcopy(members)
-			newmembers.remove(self.dn)
-			self.lo.modify(group, [('uniqueMember', members, newmembers)])
+			groupObject=univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
+			groupObject.open()
+			if self.dn in groupObject['hosts']:
+				groupObject['hosts'].remove(self.dn)
+				groupObject.modify(ignore_license=1)
+
 
 	def primary_group(self):
 		if not self.hasChanged('primaryGroup'):
