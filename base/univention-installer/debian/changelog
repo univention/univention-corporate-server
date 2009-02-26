@@ -1,3 +1,9 @@
+univention-installer (4.0.7-1) unstable; urgency=low
+
+  * check if the media file in /proc really exists. Bug #13548
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Feb 2009 13:48:45 +0100
+
 univention-installer (4.0.6-1) unstable; urgency=low
 
   * fixed translations (Bug: #8621)

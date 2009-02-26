@@ -95,9 +95,11 @@ done
 
 for i in /proc/ide/ide*; do
 	for j in $i/hd*; do
-		a=`cat $j/media| grep -i cdrom`
-		if ! test -z "$a"; then
-			CDROM_DEVICES="$CDROM_DEVICES `echo $j | cut -d/ -f5`"
+		if [ -e "$j/media" ]; then
+			a=`cat $j/media| grep -i cdrom`
+			if ! test -z "$a"; then
+				CDROM_DEVICES="$CDROM_DEVICES `echo $j | cut -d/ -f5`"
+			fi
 		fi
 	done
 done
