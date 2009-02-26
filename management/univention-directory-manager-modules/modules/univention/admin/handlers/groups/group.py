@@ -545,10 +545,11 @@ class object(univention.admin.handlers.simpleLdap):
 			self.__set_membership_attributes( group, members, newmembers )
 
 	def __set_membership_attributes( self, group, members, newmembers ):
-		uids = self.lo.getAttr( group, 'memberUid' )
 		newuids = map( lambda x: x[ x.find( '=' ) + 1 : x.find( ',' ) ], newmembers )
 		self.lo.modify( group, [ ( 'uniqueMember', members, newmembers ) ] )
-		self.lo.modify( group, [ ( 'memberUid', uids, newuids ) ] )
+		#don't set the memberUid attribute for nested groups, see Bug #11868
+		# uids = self.lo.getAttr( group, 'memberUid' )
+		# self.lo.modify( group, [ ( 'memberUid', uids, newuids ) ] )
 
 	def __case_insensitive_in_list(self, dn, list):
 		for element in list:
