@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-02-26 13:49+0100\n"
-"PO-Revision-Date: 2009-02-19 20:16+0100\n"
+"PO-Revision-Date: 2009-02-27 09:44+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -42,7 +42,7 @@ msgstr "Bitte entnehmen Sie das Installationsmedium und"
 
 #: installer/end.py:161
 msgid "press ok to reboot this system."
-msgstr "drücken OK, um das System neu zu starten."
+msgstr "drÃ¼cken OK, um das System neu zu starten."
 
 #: installer/end.py:163
 msgid "Administrative frontends:"
