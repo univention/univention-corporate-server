@@ -3,7 +3,7 @@
 # Univention SSL
 #  postinst script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -63,6 +63,11 @@ if [ ! -e "/var/log/univention/ssl-sync.log" ]; then
 fi
 if [ "$server_role" = "domaincontroller_master" ] || [ -z "$server_role" ] || [ "$server_role" = "basesystem" ]; then
 	if [ ! -s $CERTPATH/00.pem ] && [ ! -e "/etc/univention/ssl/$hostname.$domainname" ]; then
+
+		# try to set the clock before generating the root CA, otherwise it is possible that the certificate is not valid at the end of the installation
+		# Bug #13549
+		rdate pool.ntp.org || rdate 131.234.137.24 
+
 		. /usr/share/univention-ssl/make-certificates.sh;
 		init;
 		univention-certificate new -name $hostname.$domainname

@@ -1,3 +1,12 @@
+univention-ssl (3.0.1-1) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+  * try to set the clock before generating the root CA, otherwise it is
+    possible that the certificate is not valid at the end of the
+    installation. Bug #13549
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Feb 2009 09:55:21 +0100
+
 univention-ssl (2.0.2-2) unstable; urgency=low
 
   * Depend on openssl-blacklist
