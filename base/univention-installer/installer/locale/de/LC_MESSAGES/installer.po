@@ -219,7 +219,7 @@ msgstr "Nein"
 
 #: installer/package_list.py:36
 msgid "Services for Windows"
-msgstr "Dienste für Windows"
+msgstr "Services für Windows"
 
 #: installer/package_list.py:38
 msgid "Windows Components"
@@ -447,7 +447,7 @@ msgstr "Xen-Kernel-Images für Xen-Gastinstanzen."
 
 #: installer/package_list.py:307
 msgid "UCS Net Installer"
-msgstr "UCS Net Installer"
+msgstr "UCS-Net Installer"
 
 #: installer/package_list.py:313
 msgid "Install UCS over the network"
@@ -455,7 +455,7 @@ msgstr "PXE-Installation von UCS"
 
 #: installer/package_list.py:318 installer/package_list.py:320
 msgid "Administrative tools"
-msgstr "Administrations-Werkzeuge"
+msgstr "Administrative Werkzeuge"
 
 #: installer/package_list.py:324
 msgid "Univention Directory Manager"
@@ -498,8 +498,8 @@ msgid "Tape Backup Software"
 msgstr "Bandsicherungssoftware"
 
 #: installer/package_list.py:375
-msgid "Remote support for Unidump"
-msgstr "Remote-Unterstützung für Unidump"
+msgid "Remote backup"
+msgstr "Remote-Backup"
 
 #: installer/package_list.py:381
 msgid "Backup Software based on rsync"
@@ -2260,7 +2260,7 @@ msgstr "Filterung von Systemdiensten"
 
 #: installer/modules/50_security.py:71
 msgid "These options control how many system services are"
-msgstr "Diese Optionen konfigurieren, welche Systemdienste"
+msgstr "Diese Optionen konfigurieren welche Systemdienste"
 
 #: installer/modules/50_security.py:72
 msgid "initially blocked by a packet filter (iptables)"
@@ -2288,7 +2288,7 @@ msgid ""
 " \n"
 " Pre-defined packet filter configuration options for various system roles"
 msgstr ""
-"Sicherheits-Einstellungen  \n"
+"Sicherheitseinstellungen  \n"
 " \n"
 " Vordefinierte Paketfiltereinstellungen für verschiedene Systemrollen."
 
