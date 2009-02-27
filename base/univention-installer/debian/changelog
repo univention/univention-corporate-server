@@ -1,3 +1,9 @@
+univention-installer (4.0.12-1) unstable; urgency=low
+
+  * fixed wrong translation of Basesystem. Bug #4633
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri, 27 Feb 2009 12:55:52 +0100
+
 univention-installer (4.0.11-2) unstable; urgency=low
 
   * fixed translation in partitioning module (Bug: #8621)
