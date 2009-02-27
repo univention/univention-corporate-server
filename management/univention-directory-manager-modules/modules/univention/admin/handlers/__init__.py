@@ -1266,6 +1266,7 @@ class simpleComputer( simpleLdap ):
 
 	def __modify_dns_forward_object( self, name, zoneDn, new_ip, old_ip ):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should modify a dns forward object: zoneDn="%s", name="%s", new_ip="%s", old_ip="%s"' % ( zoneDn, name, new_ip, old_ip ) )
+		zone = None
 		if old_ip and new_ip:
 			if not zoneDn:
 				tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
@@ -1278,17 +1279,18 @@ class simpleComputer( simpleLdap ):
 				new_ip_list.remove( old_ip )
 				new_ip_list.append( new_ip )
 				self.lo.modify( dn, [ ( 'aRecord', attr[ 'aRecord' ],  new_ip_list ) ] )
+				if not zoneDn:
+					zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
 
-			if not zoneDn:
-				zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
-			else:
+			if zoneDn:
 				zone = zoneDn
 
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'update the zon sOARecord for the zone: %s' % zone)
+			if zone:
+				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'update the zon sOARecord for the zone: %s' % zone)
 
-			zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
-			zone.open( )
-			zone.modify( )
+				zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
+				zone.open( )
+				zone.modify( )
 					
 
 	def __add_dns_forward_object( self, name, zoneDn, ip ):
