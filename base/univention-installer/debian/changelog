@@ -1,3 +1,9 @@
+univention-installer (4.0.11-1) unstable; urgency=low
+
+  * fixed translation in installer net module (Bug: #12444)
+
+ -- Felix Botner <botner@univention.de>  Fri, 27 Feb 2009 11:48:16 +0100
+
 univention-installer (4.0.10-1) unstable; urgency=low
 
   * fix the encoding of the german text in the end message. Bug #12190

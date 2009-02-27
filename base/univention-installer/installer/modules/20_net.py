@@ -410,9 +410,11 @@ class object(content):
 				if os.system('/bin/ifconfig -a| grep eth0 >/dev/null') != 0:
 					self.debug("NETWORK:could not find eth0")
 					msglist=[_('Warning:'),
-						_('Could not find any network card. The Installation will'),
-						_('probably fail. It is better to check the network card.'),
-						_('If a network card is installed please try to load additional'),
+						_('Could not find any network card. Depending on the'),
+						_('selected services and system role an operative network'),
+						_('card is needed to successfully complete the installation.'),
+						_('Please check the network card of the computer.'),
+						_('If a network card is installed try to load additional'),
 						_('kernel modules at the beginning of the installation.'),
 						]
 					self.sub=msg_win(self, self.pos_y+4, self.pos_x-16, self.width+12, self.height-18, msglist)
