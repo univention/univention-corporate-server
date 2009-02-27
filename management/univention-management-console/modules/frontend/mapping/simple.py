@@ -55,7 +55,14 @@ def html_map( storage, umcp_part ):
 mapper.add( umcd.HTML, html_map )
 
 def icon_map( storage, umcp_part ):
-	attrs = utils.layout_attrs( storage, umcp_part )
+	# FIXME: the following try-except-block is rather hacky but currently the best solution.
+	# umcp_part.has_attributes() sometimes throws an exception if umcp_part.__attributes
+	# does not exist. Fixing has_attributes() by adding a safety check, changes the behaviour
+	# of the whole UMC.
+	try:
+		attrs = utils.layout_attrs( storage, umcp_part )
+	except:
+		attrs = {}
 	attrs.update ({ 'url' : umcp_part.get_image() })
 	return icon( '', attrs, {} )
 
