@@ -1963,20 +1963,28 @@ msgid "Warning:"
 msgstr "Achtung:"
 
 #: installer/modules/20_net.py:413
-msgid "Could not find any network card. The Installation will"
-msgstr "Es wurde keine Netzwerkkarte gefunden. Die Installation wird"
+msgid "Could not find any network card. Depending on the"
+msgstr "Es konnte keine Netzwerkkarte gefunden werden. Abhängig"
 
 #: installer/modules/20_net.py:414
-msgid "probably fail. It is better to check the network card."
-msgstr "wahrscheinlich nicht gelingen. Bitte die Netzwerkkarte prüfen."
+msgid "selected services and system role an operative network"
+msgstr "von den ausgewählten Diensten und der Systemrolle kann"
 
 #: installer/modules/20_net.py:415
-msgid "If a network card is installed please try to load additional"
-msgstr "Sollte eine Netzwerkkarte installiert sein, müssen möglicherweise"
+msgid "card is needed to successfully complete the installation."
+msgstr "es zu Fehlern bei der Installation kommen. Prüfen Sie"
 
 #: installer/modules/20_net.py:416
+msgid "Please check the network card of the computer."
+msgstr "die Netzkarte dieses Systems. Falls eine Netzwerkkarte"
+
+#: installer/modules/20_net.py:417
+msgid "If a network card is installed try to load additional"
+msgstr "installiert ist, sollte versucht werden, Kernel Treiber"
+
+#: installer/modules/20_net.py:418
 msgid "kernel modules at the beginning of the installation."
-msgstr "weitere Kernel Module zu Begin der Installation geladen werden."
+msgstr "zu Beginn der Installation nachzuladen."
 
 #: installer/modules/20_net.py:504
 msgid "You have to add one or more network interfaces."
