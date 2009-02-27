@@ -1,3 +1,9 @@
+univention-installer (4.0.9-1) unstable; urgency=low
+
+  * fix the encoding of the german text in the end message. Bug #12190
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Feb 2009 09:46:46 +0100
+
 univention-installer (4.0.8-1) unstable; urgency=low
 
   * write the output of the test calls to the installer.log file,
