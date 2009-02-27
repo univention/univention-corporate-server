@@ -1268,7 +1268,7 @@ msgstr "kann die Installation fortgesetzt werden."
 
 #: installer/modules/12_expert_partition.py:88
 msgid ""
-"Partitioner (expert mode):\n"
+"Partitioning (expert mode):\n"
 "\n"
 "CTRL+ALT+F2 interactive shell\n"
 "CTRL+ALT+F1 installation screen"
@@ -1335,7 +1335,7 @@ msgstr "auf einem LVM."
 
 #: installer/modules/12_partition.py:502
 msgid "Partitioning"
-msgstr "Partition"
+msgstr "Partitionierung"
 
 #: installer/modules/12_partition.py:976
 msgid "Deleting LVM volumes"

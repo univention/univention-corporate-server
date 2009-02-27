@@ -44,7 +44,7 @@ class object(content):
 		return True
 
 	def checkname(self):
-		return ['expert partitioner']
+		return ['expert partitioning']
 
 	def layout(self):
 
@@ -85,10 +85,10 @@ class object(content):
 		return 0
 
 	def helptext(self):
-		return _('Partitioner (expert mode):\n\nCTRL+ALT+F2 interactive shell\nCTRL+ALT+F1 installation screen')
+		return _('Partitioning (expert mode):\n\nCTRL+ALT+F2 interactive shell\nCTRL+ALT+F1 installation screen')
 
 	def modheader(self):
-		return _('Partitioner')
+		return _('Partitioning')
 
 	def result(self):
 		result={}
