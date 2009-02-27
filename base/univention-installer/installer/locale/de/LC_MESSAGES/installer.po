@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-02-26 13:49+0100\n"
-"PO-Revision-Date: 2009-02-27 09:44+0100\n"
+"PO-Revision-Date: 2009-02-27 11:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,11 +26,11 @@ msgstr "Dieses System wurde auf die IP-Adresse %s konfiguriert"
 
 #: installer/end.py:153
 msgid "This system has been configured for DHCP usage and"
-msgstr "Dieses System bezieht seine IP-Adresse ¸ber DHCP"
+msgstr "Dieses System bezieht seine IP-Adresse √ºber DHCP"
 
 #: installer/end.py:156
 msgid "has not been joined to UCS domain yet."
-msgstr "und ist noch nicht der UCS-Dom‰ne beigetreten."
+msgstr "und ist noch nicht der UCS-Dom√§ne beigetreten."
 
 #: installer/end.py:158
 msgid "has been joined to UCS domain."
@@ -46,7 +46,7 @@ msgstr "dr√ºcken OK, um das System neu zu starten."
 
 #: installer/end.py:163
 msgid "Administrative frontends:"
-msgstr "Administrationsoberfl‰chen:"
+msgstr "Administrationsoberfl√§chen:"
 
 #: installer/end.py:173
 msgid " Univention Directory Manager"
@@ -68,15 +68,15 @@ msgstr " Univention Management Console"
 
 #: installer/end.py:185
 msgid "Additional information: http://www.univention.de/dokumentation.html"
-msgstr "Zus‰tzliche Informationen: http://www.univention.de/dokumentation.html"
+msgstr "Zus√§tzliche Informationen: http://www.univention.de/dokumentation.html"
 
 #: installer/end.py:199
 msgid "Some problems occurred during installation!"
-msgstr "Es sind Probleme w‰hrend der Installation aufgetreten!"
+msgstr "Es sind Probleme w√§hrend der Installation aufgetreten!"
 
 #: installer/end.py:200
 msgid "Please read the following error messages carefully."
-msgstr "Bitte lesen Sie die folgenden Fehlermeldungen sorgf‰ltig."
+msgstr "Bitte lesen Sie die folgenden Fehlermeldungen sorgf√§ltig."
 
 #: installer/end.py:201
 msgid "In case of doubt a reinstallation might be reasonable."
