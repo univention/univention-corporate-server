@@ -42,8 +42,11 @@ if [ "$1" = configure -a -z "$2" ]; then
 	univention-config-registry set repository/online/prefix="univention-repository"
 # on update, only if not set already
 else
+	# only set prefix if there is no other local repository server set
+	if [ -z "$repository_online_server" ]; then
+		univention-config-registry set repository/online/prefix?"univention-repository"
+	fi
 	univention-config-registry set repository/online/server?"$hostname.$domainname"
-	univention-config-registry set repository/online/prefix?"univention-repository"
 fi
 
 # set the mirror server to univention-repository if it exists ...
