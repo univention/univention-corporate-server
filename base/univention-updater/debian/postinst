@@ -120,9 +120,6 @@ else
 	univention-config-registry set repository/online/server?"apt.univention.de"
 fi
 
-# update package lists
-apt-get update
-
 # unset old variables
 univention-config-registry unset update/server update/security/server update/security/prefix update/directory
 

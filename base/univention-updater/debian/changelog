@@ -1,3 +1,9 @@
+univention-updater (4.0.27-1) unstable; urgency=low
+
+  * do not call 'apt-get update' in postinst (Bug #12511)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  2 Mar 2009 18:07:04 +0100
+
 univention-updater (4.0.26-1) unstable; urgency=low
 
   * fixed error message (Bug #3576)
