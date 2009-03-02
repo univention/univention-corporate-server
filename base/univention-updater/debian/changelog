@@ -1,3 +1,9 @@
+univention-updater (4.0.26-1) unstable; urgency=low
+
+  * fixed error message (Bug #3576)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  2 Mar 2009 17:49:03 +0100
+
 univention-updater (4.0.25-1) unstable; urgency=low
 
   * update package lists after recreating sources.list (Bug #12242)

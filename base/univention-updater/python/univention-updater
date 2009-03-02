@@ -421,7 +421,7 @@ def main():
 
 		nextversion=update_available('cdrom', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot, iso=iso)
 
-		if not nextversion:
+		if not nextversion or nextversion == 'none':
 			dprint('System is up to date (UCS %s-%s)' % (vv,vp), [stdout,sys.stdout])
 			fp_debug.close()
 			raise UpToDateNoError(reboot)
@@ -452,12 +452,11 @@ def main():
 				os.execv(sys.argv[0], calllocal)
 		else:
 			dprint('Error: You are trying to install from a cdrom/dvd image', [stdout,sys.stdout])
-			dprint('       but a local repository was not found. If you want to' [stdout,sys.stdout])
-			dprint('       update via an image you need to create a local' [stdout,sys.stdout])
-			dprint('       repository (usr/sbin/univention-repository-create)' [stdout,sys.stdout])
-			dprint('       or try to install via "univention-updater net"' [stdout,sys.stdout])
-			pass
-
+			dprint('       but a local repository was not found. If you want to', [stdout,sys.stdout])
+			dprint('       update via an ISO image you need to create a local', [stdout,sys.stdout])
+			dprint('       repository (/usr/sbin/univention-repository-create)', [stdout,sys.stdout])
+			dprint('       or try to install via "univention-updater net"', [stdout,sys.stdout])
+			sys.exit( 1 )
 	elif command == 'net':
 		dprint('starting net mode')
 		list=[]
