@@ -1,3 +1,9 @@
+univention-installer (4.0.13-1) unstable; urgency=low
+
+  * do not always reset local_repository to false (Bug #13159)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  2 Mar 2009 11:08:28 +0100
+
 univention-installer (4.0.12-1) unstable; urgency=low
 
   * fixed wrong translation of Basesystem. Bug #4633
