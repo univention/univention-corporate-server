@@ -52,3 +52,6 @@ if [ -e "/instmnt/etc/apt/sources.list" ]; then
 # and can be used to add further package repositories manually
 " > /instmnt/etc/apt/sources.list
 fi
+
+# update package lists
+chroot /instmnt apt-get update
