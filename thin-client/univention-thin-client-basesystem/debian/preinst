@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention Thin Client Basesystem
 #  postinst script for the univention-client-basesystem debian package
@@ -34,6 +34,15 @@
 if [ "$1" = "upgrade" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.1.14-1; then
 	if [ -n "$(grep /var/lib/univention-client-root/var/lib/dpkg/status /var/lib/dpkg/status)" ] ; then
 		sed -ie 's|/var/lib/univention-client-root/var/lib/dpkg/status|/var/lib/univention-client-root/ramdisk/var/lib/dpkg/status|' /var/lib/dpkg/status
+	fi
+fi
+
+if [ "$1" = "upgrade" -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.5-1; then
+	if [ -n "$(grep /var/lib/univention-client-root/var/cache/debconf/config.dat /var/cache/debconf/config.dat)" ] ; then
+		sed -ie 's|/var/lib/univention-client-root/var/cache/debconf/config.dat|/var/lib/univention-client-root/ramdisk/var/cache/debconf/config.dat|' /var/lib/dpkg/status
+	fi
+	if [ -n "$(grep /var/lib/univention-client-root/var/cache/debconf/templates.dat /var/cache/debconf/templates.dat)" ] ; then
+		sed -ie 's|/var/lib/univention-client-root/var/cache/debconf/templates.dat|/var/lib/univention-client-root/ramdisk/var/cache/debconf/templates.dat|' /var/lib/dpkg/status
 	fi
 fi
 
