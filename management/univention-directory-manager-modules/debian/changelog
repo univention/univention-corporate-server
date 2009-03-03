@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.6-3) unstable; urgency=low
+
+  * Bump version for re-import. Bug #13861.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  3 Mar 2009 15:37:12 +0100
+
 univention-directory-manager-modules (4.0.6-2) unstable; urgency=low
 
   * Update translations. Bug #13861
