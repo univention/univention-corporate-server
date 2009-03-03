@@ -1,3 +1,10 @@
+univention-thin-client-basesystem (5.0.6-1) unstable; urgency=low
+
+  * set the apt-get option for Dir::Etc::sourceparts otherwise the
+    sources.list.d entries of the host system will be used. Bug #13578
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  3 Mar 2009 15:43:08 +0100
+
 univention-thin-client-basesystem (5.0.5-1) unstable; urgency=low
 
   * fix broken conffiles entry in /var/lib/dpkg/status for

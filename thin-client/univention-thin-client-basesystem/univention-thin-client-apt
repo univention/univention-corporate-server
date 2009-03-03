@@ -66,6 +66,7 @@ class UC_APT( object ):
 			'-o DPkg::Options::=--force-architecture',
 			'--force-yes', '-y',
 			'-o "Dir::Etc::SourceList=%s"' % self.sources_list,
+			'-o "Dir::Etc::sourceparts=%s"' % os.path.join(self.prefix, 'var/cache/sources.list.d'),
 			'-o DPkg::Options::=--root=%s' % self.prefix,
 			'-o DPkg::Run-Directory=%s' % self.prefix,
 			'-o Dir::State::Status=%s' % os.path.join( self.prefix, 'var/lib/dpkg/status' ),
