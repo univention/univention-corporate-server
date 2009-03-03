@@ -1,3 +1,11 @@
+univention-thin-client-basesystem (5.0.5-1) unstable; urgency=low
+
+  * fix broken conffiles entry in /var/lib/dpkg/status for
+    var/cache/debconf/templates.dat and var/cache/debconf/config.dat
+    during the preinst. Bug #13578
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  3 Mar 2009 07:52:15 +0100
+
 univention-thin-client-basesystem (5.0.4-7) unstable; urgency=low
 
   * config.dat is a config file (Bug: #12921)
