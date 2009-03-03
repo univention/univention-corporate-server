@@ -30,11 +30,11 @@ msgid "Name"
 msgstr "Name"
 
 #: admin.py:62 user.py:63
-msgid "Visible Wizards"
+msgid "Visible wizards"
 msgstr "Sichtbare Assistenten"
 
 #: admin.py:72 user.py:103
-msgid "Visible Modules"
+msgid "Visible modules"
 msgstr "Sichtbare Module"
 
 #: admin.py:84 cn.py:61 console_acl.py:121 console_operation.py:89
@@ -383,7 +383,7 @@ msgid "Univention License"
 msgstr "Univention Lizenz"
 
 #: license.py:64
-msgid "Expiration Date"
+msgid "Expiry date"
 msgstr "Ablaufdatum"
 
 #: license.py:65
@@ -416,7 +416,7 @@ msgstr ""
 "Diese Signatur wird verwendet, um die Authentizität der Lizenz zu überprüfen."
 
 #: license.py:114
-msgid "Max. User Accounts"
+msgid "Max. user accounts"
 msgstr "Max. Benutzerkonten"
 
 #: license.py:115
@@ -427,7 +427,7 @@ msgstr ""
 "verwaltet werden."
 
 #: license.py:124
-msgid "Max. Clients"
+msgid "Max. clients"
 msgstr "Max. Clients"
 
 #: license.py:125
@@ -438,7 +438,7 @@ msgstr ""
 "verwaltet werden."
 
 #: license.py:134
-msgid "Max. Groupware Accounts"
+msgid "Max. groupware accounts"
 msgstr "Max. Groupware-Konten"
 
 #: license.py:135
@@ -450,7 +450,7 @@ msgstr ""
 "verwaltet werden."
 
 #: license.py:144
-msgid "Max. Desktops"
+msgid "Max. desktops"
 msgstr "Max. Desktops"
 
 #: license.py:145
@@ -462,7 +462,7 @@ msgstr ""
 "verwaltet werden."
 
 #: license.py:154
-msgid "Valid Product Types"
+msgid "Valid product types"
 msgstr "Gültige Produkttypen"
 
 #: license.py:155
@@ -676,7 +676,7 @@ msgstr ""
 "Ein LDAP-Attribut wird benötigt in dem die Informationen gespeichert werden."
 
 #: user.py:47
-msgid "Preferences: Univention Directory Manager User Settings"
+msgid "Preferences: Univention Directory Manager user settings"
 msgstr "Einstellungen: Univention Directory Manager Benutzereinstellungen"
 
 #: user.py:53
@@ -684,7 +684,7 @@ msgid "User name"
 msgstr "Benutzername"
 
 #: user.py:73
-msgid "Accessible User Attributes"
+msgid "Accessible user attributes"
 msgstr "Sichtbare Benutzerattribute"
 
 #: user.py:83
@@ -696,7 +696,7 @@ msgid "Show these attributes in the navigation"
 msgstr "Zeige diese Attribute in der Navigation"
 
 #: user.py:113
-msgid "LDAP Base DN"
+msgid "LDAP base DN"
 msgstr "LDAP Basis-DN"
 
 #: user.py:224

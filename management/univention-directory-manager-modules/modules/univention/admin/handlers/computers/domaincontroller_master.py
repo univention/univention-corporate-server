@@ -282,7 +282,7 @@ layout=[
 			[univention.admin.field("password")],
 			[univention.admin.field("primaryGroup")]
 		], advanced = True),
-	univention.admin.tab(_('Unix Account'),_('Unix account settings'), [
+	univention.admin.tab(_('Unix account'),_('Unix account settings'), [
 			[univention.admin.field("unixhome"), univention.admin.field("shell")]
 		], advanced = True),
 	univention.admin.tab(_('DNS'),_('DNS Forward and Reverse Lookup Zone'),[

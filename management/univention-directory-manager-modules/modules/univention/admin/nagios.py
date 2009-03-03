@@ -73,11 +73,11 @@ nagios_properties = {
 }
 
 
-nagios_tab_A = univention.admin.tab( _( 'Nagios Services' ), _( 'Nagios Service Settings' ), [
+nagios_tab_A = univention.admin.tab( _( 'Nagios services' ), _( 'Nagios Service Settings' ), [
 		[ univention.admin.field( "nagiosServices" ) ],
 	] )
 
-nagios_tab_B = univention.admin.tab( _( 'Nagios Notification' ), _( 'Nagios Notification Settings' ), [
+nagios_tab_B = univention.admin.tab( _( 'Nagios notification' ), _( 'Nagios Notification Settings' ), [
 		[ univention.admin.field( "nagiosContactEmail" ) ],
 		[ univention.admin.field( "nagiosParents" ) ],
 	] )
