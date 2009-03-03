@@ -80,7 +80,7 @@ msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
 #: cn.py:168 ou.py:169
-msgid "Container Settings"
+msgid "Container settings"
 msgstr "Container-Einstellungen"
 
 #: cn.py:168 ou.py:169
