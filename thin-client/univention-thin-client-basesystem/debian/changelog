@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (5.0.7-1) unstable; urgency=low
+
+  * use 2.2, 2.1-x and 2.0-x during the chroot build. Bug #13578
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  3 Mar 2009 15:48:27 +0100
+
 univention-thin-client-basesystem (5.0.6-1) unstable; urgency=low
 
   * set the apt-get option for Dir::Etc::sourceparts otherwise the
