@@ -1,3 +1,9 @@
+univention-thin-client-x-base (2.0.5-6) unstable; urgency=low
+
+  * also install the x11-common package. Bug #13578
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  3 Mar 2009 14:21:41 +0100
+
 univention-thin-client-x-base (2.0.5-5) unstable; urgency=low
 
   * stricter dependency to thin-client-basesystem (Bug: #12921)

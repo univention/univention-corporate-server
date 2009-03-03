@@ -59,7 +59,7 @@ install: build
 
 	univention-install-config-registry
 
-	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-x-base/var/lib/univention-client-root/thin-client-archive/x-base -p openssh-server univention-gdm univention-gdm-sessions univention-xnumlock kdebase-data arts univention-x-core
+	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-x-base/var/lib/univention-client-root/thin-client-archive/x-base -p openssh-server univention-gdm univention-gdm-sessions univention-xnumlock kdebase-data arts univention-x-core x11-common
 
 binary-indep: build install
 
