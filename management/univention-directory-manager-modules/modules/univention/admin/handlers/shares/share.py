@@ -410,7 +410,7 @@ property_descriptions={
 
 		),
 	'sambaLevel2Oplocks': univention.admin.property(
-			short_description=_('Level 2 Oplocks'),
+			short_description=_('Level 2 oplocks'),
 			long_description=_('This parameter controls whether Samba supports level2 (read-only) oplocks on a share. Level2, or read-only oplocks allow Windows NT clients that have an oplock on a file to downgrade from a read-write oplock to a read-only oplock once a second client opens the file (instead of releasing all oplocks on a second open, as in traditional, exclusive oplocks). This allows all openers of the file that support level2 oplocks to cache the file for read-ahead only (ie. they may not cache writes or lock requests) and increases performance for many accesses of files that are not commonly written (such as application .EXE files). Once one of the clients which have a read-only oplock writes to the file all clients are notified (no  reply  is  needed or waited for) and told to break their oplocks to "none" and delete any read-ahead caches. It is recommended that this parameter be turned on to speed access to shared executables.'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -421,7 +421,7 @@ property_descriptions={
 			default='1'
 		),
 	'sambaFakeOplocks': univention.admin.property(
-			short_description=_('Fake Oplocks'),
+			short_description=_('Fake oplocks'),
 			long_description=_('Oplocks are the way that Samba clients get permission from a server to locally cache file operations.  If a server grants an oplock (opportunistic lock) then the client is free to assume that it is the only one accessing the file and it will aggressively cache file data. With some  oplock  types the client may even cache file open/close operations. This can give enormous performance benefits. When you activate this parameter, Samba will always grant oplock requests no matter how many clients are using the file. It is generally much better to use the real oplocks support rather than this parameter. If you enable this option on all read-only shares or shares that you know will only be accessed from one client at a time such as physically read-only media like CDROMs, you will see a big performance improvement on many operations. If you enable this option on shares where multiple clients may be accessing the files read-write at the same  time you can get data corruption. Use this option carefully!'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,

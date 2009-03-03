@@ -103,7 +103,7 @@ property_descriptions={
 			identifies=0
 		),
 	'checkPeriod': univention.admin.property(
-			short_description = _('Check Period'),
+			short_description = _('Check period'),
 			long_description = _('Check services within check period'),
 			syntax=ldap_search_period,
 			multivalue=0,

@@ -84,7 +84,7 @@ property_descriptions={
 }
 
 layout=[
-	univention.admin.tab(_('Change Password'),_('Change Password'),[
+	univention.admin.tab(_('Change password'),_('Change password'),[
 		[univention.admin.field("password"), univention.admin.field("filler")],
 	]),
 ]

@@ -29,7 +29,7 @@ msgid "Password"
 msgstr "Passwort"
 
 #: passwd.py:87
-msgid "Change Password"
+msgid "Change password"
 msgstr "Passwort ändern"
 
 #: self.py:54 self.py:115 user.py:1052 user.py:1056

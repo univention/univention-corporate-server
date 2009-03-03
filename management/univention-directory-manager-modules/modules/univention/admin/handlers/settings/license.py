@@ -61,7 +61,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'expires': univention.admin.property(
-			short_description=_('Expiration Date'),
+			short_description=_('Expiry date'),
 			long_description=_('License Expiration Date'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -111,7 +111,7 @@ property_descriptions={
 			dontsearch=1
 		),
 	'accounts': univention.admin.property(
-			short_description=_('Max. User Accounts'),
+			short_description=_('Max. user accounts'),
 			long_description=_('Maximum number of user accounts managed with the Univention infrastructure'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -121,7 +121,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'clients': univention.admin.property(
-			short_description=_('Max. Clients'),
+			short_description=_('Max. clients'),
 			long_description=_('Maximum number of client hosts managed with the Univention infrastructure'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -131,7 +131,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'groupwareaccounts': univention.admin.property(
-			short_description=_('Max. Groupware Accounts'),
+			short_description=_('Max. groupware accounts'),
 			long_description=_('Maximum number of groupware accounts managed with the Univention infrastructure'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -141,7 +141,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'desktops': univention.admin.property(
-			short_description=_('Max. Desktops'),
+			short_description=_('Max. desktops'),
 			long_description=_('Maximum number of Univention desktop accounts managed with the Univention infrastructure'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -151,7 +151,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'productTypes': univention.admin.property(
-			short_description=_('Valid Product Types'),
+			short_description=_('Valid product types'),
 			long_description=_('Product types this license allows.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=1,

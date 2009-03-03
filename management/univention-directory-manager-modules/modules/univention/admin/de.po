@@ -157,7 +157,7 @@ msgid "Assigned nagios services"
 msgstr "Zugeordnete Nagios-Dienste"
 
 #: nagios.py:76
-msgid "Nagios Services"
+msgid "Nagios services"
 msgstr "Nagios-Dienste"
 
 #: nagios.py:76
@@ -165,7 +165,7 @@ msgid "Nagios Service Settings"
 msgstr "Zuordnung von Nagios-Diensten"
 
 #: nagios.py:80
-msgid "Nagios Notification"
+msgid "Nagios notification"
 msgstr "Nagios-Benachrichtigung"
 
 #: nagios.py:80

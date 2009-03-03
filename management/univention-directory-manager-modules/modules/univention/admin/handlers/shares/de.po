@@ -587,7 +587,7 @@ msgstr ""
 "aktiviert)"
 
 #: share.py:413
-msgid "Level 2 Oplocks"
+msgid "Level 2 oplocks"
 msgstr "Level 2 Oplocks"
 
 #: share.py:414
@@ -623,7 +623,7 @@ msgstr ""
 "beschleunigen."
 
 #: share.py:424
-msgid "Fake Oplocks"
+msgid "Fake oplocks"
 msgstr "Fake Oplocks"
 
 #: share.py:425
