@@ -70,7 +70,7 @@ property_descriptions={
 			identifies=1
 		)
 }
-layout=[ univention.admin.tab(_('General'),_('Basic Values'),[ [univention.admin.field("name")] ]) ]
+layout=[ univention.admin.tab(_('General'),_('Basic settings'),[ [univention.admin.field("name")] ]) ]
 
 mapping=univention.admin.mapping.mapping()
 
