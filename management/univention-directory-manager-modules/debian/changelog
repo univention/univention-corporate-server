@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.6-5) unstable; urgency=low
+
+  * Rename "path settings" to "container settings" (Bug #12525).
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  3 Mar 2009 17:02:33 +0100
+
 univention-directory-manager-modules (4.0.6-4) unstable; urgency=low
 
   * Correct i18n tag for "Basic Values" in UMC access policy (Bug #9388).

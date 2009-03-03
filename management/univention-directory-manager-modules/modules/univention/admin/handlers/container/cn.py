@@ -191,7 +191,7 @@ layout=[
 	univention.admin.tab(_('General'),_('Basic settings'),[
 			[univention.admin.field("name"), univention.admin.field("description")],
 			]),
-	univention.admin.tab(_('Path Settings'),_('Default position when adding objects'),[
+	univention.admin.tab(_('Container settings'),_('Default position when adding objects'),[
 			[univention.admin.field("userPath"), univention.admin.field("groupPath")],
 			[univention.admin.field("computerPath"), univention.admin.field("policyPath")],
 			[univention.admin.field("dnsPath"), univention.admin.field("dhcpPath")],
