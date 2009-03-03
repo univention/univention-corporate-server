@@ -317,7 +317,7 @@ msgstr "Nicht erlaubte Zugriffe"
 
 #: console_access.py:146 ldapserver.py:135 nfsmounts.py:135 policy.py:73
 #: printserver.py:135
-msgid "Basic Values"
+msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
 #: desktop.py:45 desktop.py:75
