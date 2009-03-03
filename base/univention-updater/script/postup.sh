@@ -15,8 +15,8 @@ rm -f /var/cache/univention-config/cache
 
 eval $(univention-baseconfig shell) >>/var/log/univention/updater.log 2>&1
 
-for p in	univention-kolab2-webclient; do
-	echo "$p install" | dpkg --set-selections
+for p in univention-kolab2-webclient; do
+	check_and_install $p
 done
 
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
