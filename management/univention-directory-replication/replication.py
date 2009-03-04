@@ -286,6 +286,8 @@ BUILTIN_OIDS=[
 	'2.5.4.13',  #description
 	'1.3.6.1.1.1.1.1', # gidNumber
 	'1.3.6.1.1.1.1.0', #uidNumber
+	# memberOf overlay
+	'1.2.840.113556.1.2.102',  # memberOf
 ]
 
 class LDIFObject:
