@@ -312,6 +312,9 @@ class UniventionUpdater:
 
 	def print_version_repositories( self, clean = False, dists = False, start = None, end = None ):
 		repos = ''
+		if not self.online_repository:
+			return repos
+
 		if not start:
 			start = UCS_Version( ( self.version_major, 0, 0 ) )
 
@@ -388,6 +391,9 @@ class UniventionUpdater:
 
 	def print_security_repositories( self, clean = False, start = None, end = None, all_security_updates = False ):
 		repos = ''
+		if not self.online_repository:
+			return repos
+
 		if not start:
 			start = UCS_Version( ( self.version_major, self.version_minor, 0 ) )
 
@@ -463,6 +469,9 @@ class UniventionUpdater:
 
 	def print_component_repositories( self, clean = False ):
 		repos = ''
+		if not self.online_repository:
+			return repos
+
 		version_part_left = int( self.version_major )
 		version_part_right = int( self.version_minor )
 		if clean:

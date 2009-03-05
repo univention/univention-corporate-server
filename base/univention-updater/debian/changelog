@@ -1,3 +1,11 @@
+univention-updater (4.0.29-1) unstable; urgency=low
+
+  * do not activate online repository in postinst
+  * activate online repository in postup.sh and update apt index files
+    (Bug #13159)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  5 Mar 2009 08:38:07 +0100
+
 univention-updater (4.0.28-1) unstable; urgency=low
 
   * upgrade univention-kolab2-webclient in the postup script. Bug #12865
@@ -12,7 +20,7 @@ univention-updater (4.0.27-1) unstable; urgency=low
 
 univention-updater (4.0.26-1) unstable; urgency=low
 
-  * fixed error message (Bug #3576)
+  * fixed error message (Bug #13576)
 
  -- Andreas Büsching <buesching@univention.de>  Mon,  2 Mar 2009 17:49:03 +0100
 
