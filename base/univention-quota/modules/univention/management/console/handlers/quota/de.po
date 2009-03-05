@@ -135,12 +135,12 @@ msgid "Partition: %(partition)s"
 msgstr "Partition: %(partition)s"
 
 #: _revamp.py:68
-msgid "unknown"
+msgid "Unknown"
 msgstr "Unbekannt"
 
 #: _revamp.py:73
-msgid "activated"
-msgstr "aktiviert"
+msgid "Activated"
+msgstr "Aktiviert"
 
 #: _revamp.py:76
 msgid "This partition is currently not mounted"
@@ -163,15 +163,15 @@ msgstr ""
 "Partition ist ohne Unterstützung eingebunden."
 
 #: _revamp.py:82
-msgid "deactivated"
-msgstr "deaktiviert"
+msgid "Deactivated"
+msgstr "Deaktiviert"
 
 #: _revamp.py:101
-msgid "activate"
+msgid "Activate"
 msgstr "Aktivieren"
 
 #: _revamp.py:102
-msgid "deactivate"
+msgid "Deactivate"
 msgstr "Deaktivieren"
 
 #: _revamp.py:103 _revamp.py:156

@@ -65,12 +65,12 @@ class Web( object ):
 			req.set_flag( 'web:startup_format', _( 'Partition: %(partition)s' ) )
 			row_args = {}
 			info = ''
-			status = _( 'unknown' )
+			status = _( 'Unknown' )
 			if part.mounted and part.quota_written and part.quota_used:
 				btn = umcd.Button( part.params.spec, 'quota/partition', umcd.Action( req ) )
 				btn[ 'colspan' ] = '2'
 				part_cell = [ btn, ]
-				status = _( 'activated' )
+				status = _( 'Activated' )
 			else:
 				if not part.mounted:
 					info = _( 'This partition is currently not mounted' )
@@ -79,7 +79,7 @@ class Web( object ):
 				elif part.quota_written and not part.quota_used:
 					info = _( 'The quota support is activated in the configuration, but the partition is still mounted without quota support.' )
 				elif not part.quota_written and not part.quota_used:
-					status = _( 'deactivated' )
+					status = _( 'Deactivated' )
 
 				btn = umcd.Image( 'quota/partition_inactive',
 								  attributes = { 'type' : 'umc_list_element_part_left' } )
@@ -98,8 +98,8 @@ class Web( object ):
 		req = umcp.Command( args = [], opts= { 'partition' : [] } )
 		req_list = umcp.Command( args = [ 'quota/list' ] )
 		actions = ( umcd.Action( req, boxes, True ), umcd.Action( req_list ) )
-		choices = [ ( 'quota/partition/activate', _( 'activate' ) ),
-					( 'quota/partition/deactivate', _( 'deactivate' ) ) ]
+		choices = [ ( 'quota/partition/activate', _( 'Activate' ) ),
+					( 'quota/partition/deactivate', _( 'Deactivate' ) ) ]
 		select = umcd.SelectionButton( _( 'Select the Operation' ), choices, actions )
 		lst.add_row( [ umcd.Fill( 6 ), select ] )
 
