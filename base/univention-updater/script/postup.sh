@@ -52,6 +52,6 @@ echo "# This file is not maintained via Univention Configuration Registry
 " > /etc/apt/sources.list
 
 # update apt index files
-apt-get update
+apt-get update >>/var/log/univention/updater.log 2>&1
 
 exit 0

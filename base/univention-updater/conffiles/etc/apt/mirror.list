@@ -15,7 +15,7 @@ from univention.updater import UniventionMirror, UCS_Version
 
 try:
 	mirror = UniventionMirror()
-	start = configRegistry.get( 'repository/mirror/version/start', None )
+	start = configRegistry.get( 'repository/mirror/version/start', '%s.0-0' % mirror.version_major )
 	end = configRegistry.get( 'repository/mirror/version/end', None )
 	if start:
 		start = UCS_Version( start )
