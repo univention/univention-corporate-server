@@ -40,13 +40,9 @@ if [ -n "$local_repository" ] && [ "$local_repository" = "true" -o "$local_repos
 fi
 
 # create sources.list
-chroot /instmnt univention-config-registry commit \
-					/etc/apt/sources.list.d/15_ucs-online-version.list \
-					/etc/apt/sources.list.d/18_ucs-online-security.list \
-					/etc/apt/sources.list.d/20_ucs-online-component.list \
-					/etc/apt/mirror.list
+chroot /instmnt univention-config-registry repository/online=yes repository/mirror?yes
 
-#create an empty sources.list
+# create an empty sources.list
 if [ -e "/instmnt/etc/apt/sources.list" ]; then
 	echo "# This file is not maintained via Univention Configuration Registry
 # and can be used to add further package repositories manually
