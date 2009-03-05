@@ -1,3 +1,9 @@
+univention-pkgdb (2.0.1-2) unstable; urgency=low
+
+  * included QA remarks. Bug #13407
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu,  5 Mar 2009 11:49:04 +0100
+
 univention-pkgdb (2.0.1-1) unstable; urgency=low
 
   * updated the copyright. Bug #6875
