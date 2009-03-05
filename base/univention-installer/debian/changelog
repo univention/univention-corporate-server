@@ -1,3 +1,9 @@
+univention-installer (4.0.15-1) unstable; urgency=low
+
+  * activate online repository and mirroring if available (Bug #13159)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  5 Mar 2009 08:47:08 +0100
+
 univention-installer (4.0.14-1) unstable; urgency=low
 
   * recreate package list after modifying the sources list (Bug #13513)
