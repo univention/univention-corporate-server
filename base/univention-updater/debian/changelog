@@ -1,3 +1,10 @@
+univention-updater (4.0.35-1) unstable; urgency=low
+
+  * fixed a bug in the generation of the mirror list for the security
+    repositories (Bug #12298)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  5 Mar 2009 17:12:24 +0100
+
 univention-updater (4.0.34-1) unstable; urgency=low
 
   * do not use the specified repository server for components if the
