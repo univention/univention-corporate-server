@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (5.0.9-1) unstable; urgency=low
+
+  * added python-univention-debug as pre dependency. Bug #13593
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  5 Mar 2009 07:52:05 +0100
+
 univention-thin-client-basesystem (5.0.8-1) unstable; urgency=low
 
   * fixed sources.list entries. Bug #13578

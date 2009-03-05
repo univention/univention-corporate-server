@@ -7,6 +7,7 @@ Standards-Version: 3.5.2
 
 Package: univention-thin-client-basesystem
 Architecture: all
+Pre-Depends: python-univention-debug
 Depends: univention-thin-client-tools (>= 5.0.3), fontconfig
 Conflicts: univention-client-login, univention-client-pam, univention-client-pam-heimdal, univention-client-devices, univention-client-basesystem (<< 3.0.0)
 Description: UCS - thin client base system
@@ -20,6 +21,7 @@ Description: UCS - thin client base system
 
 Package: univention-thin-client-tools
 Architecture: all
+Pre-Depends: python-univention-debug
 Description: UCS - thin client base configuration
  This package contains the basic configuration for the root filesystem for Univention
  Thin Clients.
