@@ -428,7 +428,7 @@ class UniventionUpdater:
 					printed =  False
 					for arch in ['all', 'extern'] + self.architectures:
 						# for example: http://apt.univention.de/2.0/maintained/sec1
-						path='/%s/%s/sec%s/%s/Packages.gz' % (self.ucs_version, part, p, arch )
+						path='/%d.%d/%s/sec%s/%s/Packages.gz' % (start.major, start.minor, part, p, arch )
 						if not self.net_path_exists(path):
 							continue
 						printed = True
