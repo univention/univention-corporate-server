@@ -158,6 +158,7 @@ class UniventionUpdater:
 		self.repository_server = self.configRegistry.get('repository/online/server', 'apt.univention.de')
 		self.repository_port = self.configRegistry.get('repository/online/port', '80')
 		self.repository_prefix = self.configRegistry.get('repository/online/prefix', '')
+		self.is_repository_server = self.configRegistry.get( 'repository/mirror', 'no' ) in ( 'yes', 'true' )
 
 		if self.configRegistry.has_key('proxy/http') and self.configRegistry['proxy/http']:
 			self.proxy = self.configRegistry['proxy/http'].lower().replace('http://','')
@@ -489,7 +490,10 @@ class UniventionUpdater:
 					components.append(component_part)
 
 		for component in components:
-			repository_server = self.configRegistry.get('repository/online/component/%s/server' % component, self.repository_server)
+			if not self.is_repository_server:
+				repository_server = self.configRegistry.get('repository/online/component/%s/server' % component, self.repository_server)
+			else:
+				repository_server = self.repository_server
 			repository_port = self.configRegistry.get('repository/online/component/%s/port' % component, self.repository_port)
 			prefix_var = 'repository/online/component/%s/prefix' % component
 			if self.configRegistry.has_key( prefix_var ):
