@@ -127,12 +127,12 @@ msgid "Current package state"
 msgstr "Aktueller Paketstatus"
 
 #: _revamp.py:216
-msgid "Not updated systems"
+msgid "Systems not updated"
 msgstr "Nicht aktualisierte Systeme"
 
 #: _revamp.py:219
-msgid "Incomplete installed packages"
-msgstr "Unvollständig installierte Systeme"
+msgid "Find packages installed incompletely"
+msgstr "Unvollständig installierte Pakete"
 
 #: _revamp.py:227
 msgid "Select check:"
@@ -143,11 +143,11 @@ msgid "To compare with version"
 msgstr "Vergleichen mit Version"
 
 #: _syntax.py:43
-msgid "equal"
+msgid "equals"
 msgstr "gleich"
 
 #: _syntax.py:44
-msgid "not equal"
+msgid "not equals"
 msgstr "ungleich"
 
 #: _syntax.py:45
@@ -159,11 +159,11 @@ msgid "less than"
 msgstr "kleiner"
 
 #: _syntax.py:47
-msgid "greater equal"
+msgid "greater or equals"
 msgstr "größer oder gleich"
 
 #: _syntax.py:48
-msgid "less equal"
+msgid "less or equals"
 msgstr "kleiner oder gleich"
 
 #: _syntax.py:68

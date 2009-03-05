@@ -213,10 +213,10 @@ class Web( object ):
 		choices = [ { 'description': _('--- Please select ---'),
 					  'key': '',
 					  'actions': [] },
-					{ 'description': _('Not updated systems'),
+					{ 'description': _('Systems not updated'),
 					  'key': 'outdated_systems',
 					  'actions': [ umcd.Action( umcp.Command( args = [ 'softmon/problem/identification' ], opts = { 'check': 'outdated_systems' } ), [ max_results.id() ] ) ] },
-					{ 'description': _('Incomplete installed packages'),
+					{ 'description': _('Find packages installed incompletely'),
 					  'key': 'failed_packages',
 					  'actions': [ umcd.Action( umcp.Command( args = [ 'softmon/problem/identification' ], opts = { 'check': 'failed_packages' } ), [ max_results.id() ] ) ] }
 					]

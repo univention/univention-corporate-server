@@ -40,12 +40,12 @@ class SoftMonSearchOperator( umc.StaticSelection ):
 		self._choices = []
 
 	def choices( self ):
-		return ( ( 'eq', _( 'equal' ) ),
-				 ( 'ne', _( 'not equal' ) ),
+		return ( ( 'eq', _( 'equals' ) ),
+				 ( 'ne', _( 'not equals' ) ),
 				 ( 'gt', _( 'greater than' ) ),
 				 ( 'lt', _( 'less than' ) ),
-				 ( 'ge', _( 'greater equal' ) ),
-				 ( 'le', _( 'less equal' ) ) )
+				 ( 'ge', _( 'greater or equals' ) ),
+				 ( 'le', _( 'less or equals' ) ) )
 
 class SoftMonSystemVersions( umc.StaticSelection ):
 	def __init__( self, system_versions = None ):
