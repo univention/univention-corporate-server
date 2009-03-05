@@ -1,3 +1,11 @@
+univention-thin-client-basesystem (5.0.9-2) unstable; urgency=low
+
+  * added the xserver-xorg debconf setting to the config.dat of the thin
+    client chroot, because the xserver-xorg package will need this value
+    during the upgrade. Bug #13578 and Bug #12921
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  5 Mar 2009 09:54:31 +0100
+
 univention-thin-client-basesystem (5.0.9-1) unstable; urgency=low
 
   * added python-univention-debug as pre dependency. Bug #13593
