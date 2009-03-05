@@ -46,4 +46,16 @@ if [ "$1" = "upgrade" -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.5-1; t
 	fi
 fi
 
+if [ -e /var/lib/univention-client-root/ramdisk/var/cache/debconf/config.dat ]; then
+	cat <<__EOF__ >>/var/lib/univention-client-root/ramdisk/var/cache/debconf/config.dat
+Name: shared/default-x-server
+Template: shared/default-x-server
+Value: xserver-xorg
+Owners: xserver-xorg
+Variables:
+choices = xserver-xorg
+
+__EOF__
+fi
+
 exit 0
