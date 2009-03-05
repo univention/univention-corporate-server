@@ -1,3 +1,10 @@
+univention-updater (4.0.32-1) unstable; urgency=low
+
+  * backup old sources.list before overwriting it with an empty one (Bug
+    #13159)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  5 Mar 2009 09:20:26 +0100
+
 univention-updater (4.0.31-1) unstable; urgency=low
 
   * do not move the sources.list during package installation, but create
