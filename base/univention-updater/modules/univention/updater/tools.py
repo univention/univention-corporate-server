@@ -149,7 +149,11 @@ class UniventionUpdater:
 
 		self.architectures = [ os.popen('dpkg-architecture -qDEB_BUILD_ARCH 2>/dev/null').readline()[:-1] ]
 
-		self.online_repository=self.configRegistry.get('repository/online', 'true')
+		self.online_repository=self.configRegistry.get('repository/online', 'True')
+		if self.online_repository.lower() in ['true', 'yes', '1']:
+			self.online_repository = True
+		else:
+			self.online_repository = False
 
 		self.repository_server = self.configRegistry.get('repository/online/server', 'apt.univention.de')
 		self.repository_port = self.configRegistry.get('repository/online/port', '80')

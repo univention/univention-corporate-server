@@ -1,3 +1,9 @@
+univention-updater (4.0.30-1) unstable; urgency=low
+
+  * evaluate the UCR variable repository/online. Bug #11991
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  5 Mar 2009 08:52:15 +0100
+
 univention-updater (4.0.29-1) unstable; urgency=low
 
   * do not activate online repository in postinst
