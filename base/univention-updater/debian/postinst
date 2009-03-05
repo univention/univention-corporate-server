@@ -80,14 +80,6 @@ if [ ! -d /etc/apt/sources.list.d ]; then
 	mkdir -p /etc/apt/sources.list.d
 fi
 
-if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.1.1-5; then
-	#create an empty sources.list
-	if [ -e "/etc/apt/sources.list" ]; then
-		mv /etc/apt/sources.list /etc/apt/sources.list.unused
-		touch /etc/apt/sources.list
-	fi
-fi
-
 # the UCR debhelper section will be added before the pycentral section,
 # so we added the pycentral section manually
 if which pycentral >/dev/null 2>&1; then

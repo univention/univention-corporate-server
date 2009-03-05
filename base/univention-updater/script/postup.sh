@@ -42,6 +42,13 @@ update-initramfs -u -k all>>/var/log/univention/updater.log 2>&1
 # active the new repository configuration and mirroring if available
 univention-config-registry set repository/online=yes repository/mirror?yes
 
+# create an empty sources.list
+if [ -e "/instmnt/etc/apt/sources.list" ]; then
+	echo "# This file is not maintained via Univention Configuration Registry
+# and can be used to add further package repositories manually
+" > /instmnt/etc/apt/sources.list
+fi
+
 # update apt index files
 apt-get update
 
