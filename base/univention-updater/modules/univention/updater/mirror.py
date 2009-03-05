@@ -37,6 +37,7 @@ from tools import UniventionUpdater, UCS_Version
 class UniventionMirror( UniventionUpdater ):
 	def __init__( self ):
 		UniventionUpdater.__init__( self )
+		self.online_repository = self.configRegistry.get( 'repository/mirror', 'yes' )
 		self.repository_server = self.configRegistry.get( 'repository/mirror/server', 'apt.univention.de' )
 		self.repository_path =  self.configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
 		self.repository_prefix =  self.configRegistry.get( 'repository/mirror/prefix', '' )

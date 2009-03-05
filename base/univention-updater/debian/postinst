@@ -100,8 +100,8 @@ if [ -x /etc/init.d/univention-management-console-server ]; then
 	/etc/init.d/univention-management-console-server crestart
 fi
 
-# activate the online repository, initialize mirror configuration
-univention-config-registry set	repository/online?yes \
+# set the online repository configuration, initialize mirror configuration, but do not activate it
+univention-config-registry set	repository/online?no \
 								repository/online/port?80 \
 								repository/online/maintained?yes \
 								repository/online/unmaintained?no \
