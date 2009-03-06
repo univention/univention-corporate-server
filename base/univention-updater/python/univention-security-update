@@ -209,7 +209,8 @@ if __name__ == '__main__':
 					if ret:
 						dprint( 'Error: Failed to update APT indices', [ sys.stdout, stdout ] )
 					else:
-						ret = subprocess.call( cmd_dist_upgrade.split( ' ' ), stdout = logfile, stderr = logfile, env = { 'DEBIAN_FRONTEND' : 'noninteractive' } )
+						os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
+						ret = subprocess.call( cmd_dist_upgrade.split( ' ' ), stdout = logfile, stderr = logfile )
 						if ret:
 							dprint( 'Error: Failed to update APT indices', [ sys.stdout, stdout ] )
 
