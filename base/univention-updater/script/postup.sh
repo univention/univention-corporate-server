@@ -42,16 +42,12 @@ update-initramfs -u -k all>>/var/log/univention/updater.log 2>&1
 # active the new repository configuration and mirroring if available
 univention-config-registry set repository/online=yes repository/mirror?yes
 
-# create an empty sources.list
-if [ -f /etc/apt/sources.list -a ! -e /etc/apt/sources.list.unused ]; then
-	mv /etc/apt/sources.list /etc/apt/sources.list.unused
-fi
-
-echo "# This file is not maintained via Univention Configuration Registry
-# and can be used to add further package repositories manually
-" > /etc/apt/sources.list
-
 # update apt index files
 apt-get update >>/var/log/univention/updater.log 2>&1
 
+# check for successful update
+if [ "${version_version}-${version_patchlevel}" != "2.2-0" ]; then
+	echo "The update to UCS 2.2-0 has failed!
+For further information how to finalize the update to UCS 2.2-0 please consult the release notes"
+fi
 exit 0

@@ -96,8 +96,12 @@ case "$1" in
 			echo -e "$warning_message" > "$ttyname"
 		}
 
-		/usr/sbin/univention-updater local --check >/dev/null 2>&1
-		upd_local=$?
+		if [ -n "$local_repository" ] && [ "$local_repository" = "yes" -o "$local_repository" = "true" ]; then
+			/usr/sbin/univention-updater local --check >/dev/null 2>&1
+			upd_local=$?
+		else
+			upd_local=0
+		fi
 		/usr/sbin/univention-updater net --check >/dev/null 2>&1
 		upd_net=$?
 		/usr/sbin/univention-actualise --silent --check >/dev/null 2>&1
