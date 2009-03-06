@@ -1,3 +1,13 @@
+univention-updater (4.0.36-1) unstable; urgency=low
+
+  * do not remove old sources.list after update (Bug #12511)
+  * Do not call 'univention-updater local --check' if there is no local
+    repository (Bug #12242)
+  * check for successful update (Bug #12242)
+  * minor fix in univention-policy-set-repository-server
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  6 Mar 2009 10:44:35 +0100
+
 univention-updater (4.0.35-1) unstable; urgency=low
 
   * fixed a bug in the generation of the mirror list for the security

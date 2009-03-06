@@ -80,13 +80,13 @@ def main():
 			# no new server specified
 			exit(0)
 		else:
-			ucr_variables.append( [ 'repository/online/server=%s' % new_server ] )
+			ucr_variables.append( 'repository/online/server=%s' % new_server )
 	else:
 		# on a repository server
 		if not new_server:
-			ucr_variables.append( [ 'repository/online/server?%s' % fqdn ] )
+			ucr_variables.append( 'repository/online/server?%s' % fqdn )
 		elif new_server != mirror_server:
-			ucr_variables.append( [ 'repository/mirror/server=%s' % new_server ] )
+			ucr_variables.append( 'repository/mirror/server=%s' % new_server )
 
 	univention_baseconfig.handler_set( ucr_variables )
 
