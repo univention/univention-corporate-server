@@ -1,3 +1,10 @@
+vmware (3.0.6-1) unstable; urgency=low
+
+  * integrate patches from http://vmkernelnewbies.googlegroups.com/web/
+    into the VMware-server 1.0.8 package. Bug #12912
+
+ -- Stefan Gohmann <stefan@omar.knut.univention.de>  Sun,  8 Mar 2009 13:42:56 +0100
+
 vmware (3.0.5-1) unstable; urgency=low
 
   * integrate vmware-update-2.6.27-5.5.7-2.tar.gz into the VMware-server

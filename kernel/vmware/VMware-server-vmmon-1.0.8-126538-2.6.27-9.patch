@@ -1,0 +1,215 @@
+diff -r 2f176dc7647a -r fc5007d282fa include/compat_semaphore.h
+--- a/include/compat_semaphore.h	Sun Jan 04 21:36:02 2009 +0900
++++ b/include/compat_semaphore.h	Sun Jan 04 21:37:35 2009 +0900
+@@ -2,7 +2,7 @@
+ #   define __COMPAT_SEMAPHORE_H__
+ 
+ 
+-#include <asm/semaphore.h>
++#include <linux/semaphore.h>
+ 
+ 
+ /*
+diff -r 2f176dc7647a -r fc5007d282fa linux/driver.c
+--- a/linux/driver.c	Sun Jan 04 21:36:02 2009 +0900
++++ b/linux/driver.c	Sun Jan 04 21:37:35 2009 +0900
+@@ -98,6 +98,15 @@
+ #define VMWare_SetVTracer(VTrace_Set)
+ #endif
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 24)
++#define VMW_NOPAGE_2624
++
++#define VMMON_MAP_OFFSET_SHIFT	0
++#define VMMON_MAP_OFFSET_MASK	0x00000FFF
++#define VMMON_MAP_OFFSET(base)	\
++		(((base) >> VMMON_MAP_OFFSET_SHIFT) & VMMON_MAP_OFFSET_MASK)
++#endif
++
+ struct VMXLinuxState linuxState;
+ 
+ 
+@@ -122,7 +131,10 @@
+ 
+ static int LinuxDriver_Close(struct inode *inode, struct file *filp);
+ static unsigned int LinuxDriverPoll(struct file *file, poll_table *wait);
+-#if defined(VMW_NOPAGE_261)
++#if defined(VMW_NOPAGE_2624)
++static int LinuxDriverFault(struct vm_area_struct *vma, struct vm_fault *fault);
++static int LinuxDriverLockedFault(struct vm_area_struct *vma, struct vm_fault *fault);
++#elif defined(VMW_NOPAGE_261)
+ static struct page *LinuxDriverNoPage(struct vm_area_struct *vma,
+                            unsigned long address, int *type);
+ static struct page *LinuxDriverLockedNoPage(struct vm_area_struct *vma,
+@@ -143,11 +155,19 @@
+ static void LinuxDriverPollTimeout(unsigned long clientData);
+ 
+ static struct vm_operations_struct vmuser_mops = {
++#ifdef VMW_NOPAGE_2624
++	.fault  = LinuxDriverFault
++#else
+ 	.nopage = LinuxDriverNoPage
++#endif
+ };
+ 
+ struct vm_operations_struct vmuser_locked_mops = {
++#ifdef VMW_NOPAGE_2624
++	.fault = LinuxDriverLockedFault
++#else
+ 	.nopage = LinuxDriverLockedNoPage
++#endif
+ };
+ 
+ static struct file_operations vmuser_fops;
+@@ -987,7 +1007,10 @@
+  *-----------------------------------------------------------------------------
+  */
+ 
+-#ifdef VMW_NOPAGE_261
++#if defined(VMW_NOPAGE_2624)
++static int LinuxDriverFault(struct vm_area_struct *vma, //IN
++			    struct vm_fault *fault)     //IN/OUT
++#elif defined(VMW_NOPAGE_261)
+ static struct page *LinuxDriverNoPage(struct vm_area_struct *vma, //IN
+ 				      unsigned long address, 	  //IN
+ 				      int *type)		  //OUT: Fault type
+@@ -1004,12 +1027,24 @@
+ 	VMLinux *vmLinux = (VMLinux *) vma->vm_file->private_data;
+ 	unsigned long pg;
+ 	
++#ifdef VMW_NOPAGE_2624
++	pg = fault->pgoff;
++	pg = VMMON_MAP_OFFSET(pg);
++#else
+ 	pg = (address - vma->vm_start) >> PAGE_SHIFT;
++#endif
+ 	if (pg >= vmLinux->size4Gb) {
++#ifdef VMW_NOPAGE_2624
++		return VM_FAULT_SIGBUS;
++#else
+ 		return 0;
++#endif
+ 	}
+ 	get_page(virt_to_page(vmLinux->pages4Gb[pg]));
+-#ifdef KERNEL_2_4_0
++#ifdef VMW_NOPAGE_2624
++	fault->page = virt_to_page(vmLinux->pages4Gb[pg]);
++	return 0;
++#elif defined(KERNEL_2_4_0)
+ #ifdef VMW_NOPAGE_261
+         *type = VM_FAULT_MINOR;
+ #endif
+@@ -1037,7 +1072,10 @@
+  *-----------------------------------------------------------------------------
+  */
+ 
+-#ifdef VMW_NOPAGE_261
++#if defined(VMW_NOPAGE_2624)
++static int LinuxDriverLockedFault(struct vm_area_struct *vma, //IN
++				  struct vm_fault *fault)     //IN/OUT
++#elif defined(VMW_NOPAGE_261)
+ static struct page *LinuxDriverLockedNoPage(struct vm_area_struct *vma, //IN
+ 				            unsigned long address,      //IN
+ 				            int *type)		        //OUT: Fault type
+@@ -1057,33 +1095,60 @@
+    struct VMHostEntry* vmhe;
+    struct page* result;
+ 	
++#ifdef VMW_NOPAGE_2624
++    pg = fault->pgoff;
++#else 
+    pg = ((address - vma->vm_start) >> PAGE_SHIFT) + compat_vm_pgoff(vma);
++#endif
+    if (pg >= vmLinux->sizeLocked) {
+       printk(KERN_DEBUG "vmmon: Something went wrong: entry %08lX out of range (>=%08X) for mapping on filp %p\n", pg, vmLinux->sizeLocked, vmLinux);
+-      return NOPAGE_SIGBUS;
++#ifdef VMW_NOPAGE_2624
++      return VM_FAULT_SIGBUS;
++#else
++			return NOPAGE_SIGBUS;
++#endif
+    }
+    if (!vmLinux->vm || !vmLinux->vm->vmhost) {
+       printk(KERN_DEBUG "vmmon: Something went wrong: no vm or vmhost for mapping on filp %p\n", vmLinux);
++#ifdef VMW_NOPAGE_2624
++      return VM_FAULT_SIGBUS;
++#else
+       return NOPAGE_SIGBUS;
++#endif
+    }
+    pgt = vmLinux->pagesLocked->ent[pg / VMHOST_MAPPING_PT];
+    if (!pgt) {
+       printk(KERN_DEBUG "vmmon: Something went wrong: missing entry %08lX from mapping on filp %p\n", pg, vmLinux);
++#ifdef VMW_NOPAGE_2624
++      return VM_FAULT_SIGBUS;
++#else
+       return NOPAGE_SIGBUS;
++#endif
+    }
+    vmhe = kmap(pgt);
+    result = vmhe->ent[pg % VMHOST_MAPPING_PT];
+    kunmap(pgt);
+    if (!result) {
+       printk(KERN_DEBUG "vmmon: Something went wrong: attempt to access non-existing entry %08lX in mapping on filp %p\n", pg, vmLinux);
++#ifdef VMW_NOPAGE_2624
++      return VM_FAULT_SIGBUS;
++#else
+       return NOPAGE_SIGBUS;
++#endif
+    }
+    if (!PhysTrack_Test(vmLinux->vm->vmhost->AWEPages, page_to_pfn(result))) {
+       printk(KERN_DEBUG "vmmon: MPN %08lX not tracked! Someone released it before removing it from VA first!\n", pg);
++#ifdef VMW_NOPAGE_2624
++      return VM_FAULT_SIGBUS;
++#else  
+       return NOPAGE_SIGBUS;
++#endif
+    }
+    get_page(result);
+-#ifdef KERNEL_2_4_0
++#ifdef VMW_NOPAGE_2624
++    fault->page = result;
++    return 0;
++#elif defined(KERNEL_2_4_0)
+ #ifdef VMW_NOPAGE_261
+    *type = VM_FAULT_MINOR;
+ #endif
+@@ -1667,7 +1732,7 @@
+       break;
+ 
+    case IOCTLCMD_BROADCAST_IPI:
+-      retval = compat_smp_call_function(LinuxDriverIPIHandler, NULL, 1, 1);
++      retval = compat_smp_call_function(LinuxDriverIPIHandler, NULL, 1);
+       break;
+ 
+ #ifdef USE_PERFCTRS_HOSTED
+diff -r 2f176dc7647a -r fc5007d282fa linux/hostif.c
+--- a/linux/hostif.c	Sun Jan 04 21:36:02 2009 +0900
++++ b/linux/hostif.c	Sun Jan 04 21:37:35 2009 +0900
+@@ -2950,7 +2950,7 @@
+       if (targetHostCpu != INVALID_HOST_CPU) {
+ 	 ASSERT(targetHostCpu < MAX_PROCESSORS);
+          (void) compat_smp_call_function(LinuxDriverIPIHandler,
+-                                         NULL, 1, 1);
++                                         NULL, 1);
+          return TRUE;
+       }
+    }
+@@ -3133,7 +3133,7 @@
+ {
+    compat_preempt_disable();
+    HostIFFillCPUID((void*)info);
+-   (void)compat_smp_call_function(HostIFFillCPUID, (void*)info, 1, 1);
++   (void)compat_smp_call_function(HostIFFillCPUID, (void*)info, 1);
+    compat_preempt_enable();
+ }
+ 
+@@ -3480,7 +3480,7 @@
+       }
+    } else {
+       if (linuxState.fastClockThread) {
+-         kill_proc(linuxState.fastClockThread, SIGKILL, 1);
++         kill_pid(linuxState.fastClockThread, SIGKILL, 1);
+          linuxState.fastClockThread = 0;
+          compat_wait_for_completion(&fastClockExited);
+       }
