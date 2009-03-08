@@ -1,0 +1,66 @@
+diff -r 449b83d4be87 -r 42bc6c018a06 bridge.c
+--- a/bridge.c	Sun Jan 04 21:36:24 2009 +0900
++++ b/bridge.c	Sun Jan 04 21:37:49 2009 +0900
+@@ -274,7 +274,7 @@
+                         struct net_device *net)  // IN: Network device
+ {
+ #ifdef VMW_NETDEV_HAS_NET
+-   if (net->nd_net != bridge->internalDev->nd_net) {
++   if (dev_net(net) != dev_net(bridge->internalDev)) {
+       return 0;
+    }
+ #endif
+diff -r 449b83d4be87 -r 42bc6c018a06 compat_semaphore.h
+--- a/compat_semaphore.h	Sun Jan 04 21:36:24 2009 +0900
++++ b/compat_semaphore.h	Sun Jan 04 21:37:49 2009 +0900
+@@ -2,7 +2,7 @@
+ #   define __COMPAT_SEMAPHORE_H__
+ 
+ 
+-#include <asm/semaphore.h>
++#include <linux/semaphore.h>
+ 
+ 
+ /*
+diff -r 449b83d4be87 -r 42bc6c018a06 procfs.c
+--- a/procfs.c	Sun Jan 04 21:36:24 2009 +0900
++++ b/procfs.c	Sun Jan 04 21:37:49 2009 +0900
+@@ -63,7 +63,7 @@
+ {
+    int retval;
+ 
+-   retval = VNetProc_MakeEntry(&proc_root, "vmnet", S_IFDIR, &base);
++   retval = VNetProc_MakeEntry(NULL, "vmnet", S_IFDIR, &base);
+    if (retval) {
+       return retval;
+    }
+@@ -95,7 +95,7 @@
+ void
+ VNetProc_Cleanup(void)
+ {
+-   VNetProc_RemoveEntry(base, &proc_root);
++   VNetProc_RemoveEntry(base, NULL);
+    base = NULL;
+ }
+ 
+diff -r 449b83d4be87 -r 42bc6c018a06 vmnetInt.h
+--- a/vmnetInt.h	Sun Jan 04 21:36:24 2009 +0900
++++ b/vmnetInt.h	Sun Jan 04 21:37:49 2009 +0900
+@@ -63,7 +63,7 @@
+ #   define dev_lock_list()    read_lock(&dev_base_lock)
+ #   define dev_unlock_list()  read_unlock(&dev_base_lock)
+ #   ifdef VMW_NETDEV_HAS_NET
+-#      define DEV_GET(x)      __dev_get_by_name((x)->internalDev->nd_net, (x)->name)
++#      define DEV_GET(x)      __dev_get_by_name(dev_net((x)->internalDev), (x)->name)
+ #   else
+ #      define DEV_GET(x)      __dev_get_by_name((x)->name)
+ #   endif
+@@ -89,7 +89,7 @@
+ 
+ #ifdef VMW_NETDEV_HAS_NET
+ extern struct proto vmnet_proto;
+-#   define compat_sk_alloc(_bri, _pri) sk_alloc((_bri)->internalDev->nd_net, \
++#   define compat_sk_alloc(_bri, _pri) sk_alloc(dev_net((_bri)->internalDev), \
+                                                 PF_NETLINK, _pri, &vmnet_proto)
+ #elif defined(VMW_HAVE_SK_ALLOC_WITH_PROTO)
+ extern struct proto vmnet_proto;
