@@ -1,0 +1,422 @@
+--- vmware-server-distrib/lib/modules/source/vmmon-only/getversion.pl.orig	2009-03-09 07:00:43.000000000 +0100
++++ vmware-server-distrib/lib/modules/source/vmmon-only/getversion.pl	2009-03-09 07:02:00.000000000 +0100
+@@ -1,206 +1,2 @@
+-#! /usr/bin/perl -w
+-
+-use strict;
+-use warnings;
+-
+-sub GetVMwareVersion {
+-	my ($path) = @_;
+-	my $res = undef; # Pointer to array of TYPE, PROTOCOL, BUILD, PRODUCT
+-	
+-	if (open VMWARE, "$path -v < /dev/null 2>&1 |") {
+-		my $line;
+-		while (defined($line = <VMWARE>)) {
+-			chomp $line;
+-
+-			if ($line =~ /VMware (.*) protocol=(.*) build=(.*) product='(.*)'/) {
+-				$res = [ $1, $2, $3, $4 ];
+-			} elsif (not defined($res) and $line =~ /VMware (.*) (\d+(?:\.\d+)*|e\.x\.p) build-(\d+)/) {
+-				$res = [ $1, '6', $3, "$2 build $3" ];
+-			}
+-		}
+-		close VMWARE;
+-	}
+-	return $res;
+-}
+-
+-sub GetDBAnswer {
+-	my ($path, $answer) = @_;
+-	my $res = undef;
+-	
+-	if (open(CFG, '<', $path)) {
+-		my $line;
+-		while (defined($line = <CFG>)) {
+-			chomp $line;
+-			if ($line =~ /^answer $answer (.*)$/) {
+-				$res = $1;
+-			}
+-		}
+-		close CFG;
+-	}
+-	return $res;
+-}
+-
+-my $path;
+-my $res;
+-
+-$path = GetDBAnswer('/etc/vmware/locations', 'BINDIR');
+-if (defined($path)) {
+-	$res = GetVMwareVersion($path . '/vmware');
+-}
+-if (not defined($res)) {
+-	$path = GetDBAnswer('/etc/vmware/locations', 'LIBDIR');
+-	if (defined($path)) {
+-		$res = GetVMwareVersion($path . '/bin/vmware');
+-		$res = GetVMwareVersion($path . '/bin/vmware-vmx') unless defined($res);
+-	}
+-}
+-$res = GetVMwareVersion('vmware') unless defined($res);
+-
+-my $type;
+-my $protocol;
+-my $build;
+-my $product;
+-
+-if (not defined($res)) {
+-	print STDERR "VMware 2 or VMware Express detected, building for VMware 2, VMware Express and VMware Workstation 4.0.x.\n";
+-	print 'VME_V4';
+-	exit 0;
+-}
+-($type, $protocol, $build, $product) = @$res;
+-if ($type =~ /GSX/i) {
+-	if ($product =~ /^1\./) {
+-		print STDERR "Building for VMware GSX Server 1.x.x.\n";
+-		print 'VME_GSX1';
+-		exit 0;
+-	}
+-	if ($product =~ /^2\.0/) {
+-		print STDERR "Building for VMware GSX Server 2.0.x.\n";
+-		print 'VME_GSX2';
+-		exit 0;
+-	}
+-	if ($product =~ /^2\.5\.[1-9]/) {
+-		print STDERR "Building for VMware GSX Server 2.5.1.\n";
+-		print 'VME_GSX251';
+-		exit 0;
+-	}
+-	if ($product =~ /^2\.5/) {
+-		print STDERR "Building for VMware GSX Server 2.5.0.\n";
+-		print 'VME_GSX25';
+-		exit 0;
+-	}
+-	if ($product =~ /^3\.0/) {
+-		print STDERR "Building for VMware GSX Server 3.0.0 or VMware Workstation 4.5.1.\n";
+-		print 'VME_V45';
+-		exit 0;
+-	}
+-	if ($product =~ /^3\.1/) {
+-		print STDERR "Building for VMware GSX Server 3.1.0 or VMware Workstation 4.5.[23].\n";
+-		print 'VME_V452';
+-		exit 0;
+-	}
+-	if ($product =~ /^3\.2/) {
+-		print STDERR "Building for VMware GSX Server 3.2.x.\n";
+-		print 'VME_GSX32';
+-		exit 0;
+-	}
+-	print STDERR "Unknown VMware GSX Server $product detected. Building for GSX Server 3.2.x.\n";
+-	print 'VME_GSX32';
+-	exit 0;
+-} elsif ($type =~ /Workstation/i) {
+-	if ($product =~ /^3\.[01]\./) {
+-		print STDERR "Building for VMware Workstation 3.0.x.\n";
+-		print 'VME_V3';
+-		exit 0;
+-	}
+-	if ($product =~ /^3\.2\.0/) {
+-		print STDERR "Building for VMware Workstation 3.2.0.\n";
+-		print 'VME_V32';
+-		exit 0;
+-	}
+-	if ($product =~ /^3\.2\./) {
+-		print STDERR "Building for VMware Workstation 3.2.1.\n";
+-		print 'VME_V321';
+-		exit 0;
+-	}
+-	if ($product =~ /^4\.0\./) {
+-		print STDERR "Building for VMware Workstation 4.0.x.\n";
+-		print 'VME_V4';
+-		exit 0;
+-	}
+-	if ($product =~ /^4\.5\.[01]/) {
+-		print STDERR "Building for VMware Workstation 4.5.1 or VMware GSX Server 3.0.0.\n";
+-		print 'VME_V45';
+-		exit 0;
+-	}
+-	if ($product =~ /^4\.5\.[2-9]/) {
+-		print STDERR "Building for VMware Workstation 4.5.[23] or VMware GSX Server 3.1.0.\n";
+-		print 'VME_V452';
+-		exit 0;
+-	}
+-	if ($product =~ /^5\.0\.0/) {
+-		print STDERR "Building for VMware Workstation 5.0.0.\n";
+-		print 'VME_V5';
+-		exit 0;
+-	}
+-	if ($product =~ /^5\.5\.[01]/) {
+-		print STDERR "Building for VMware Workstation 5.5.0 or 5.5.1.\n";
+-		print 'VME_V55';
+-		exit 0;
+-	}
+-	if ($product =~ /^5\.5\.[2-9]/) {
+-		print STDERR "Building for VMware Workstation 5.5.2 or 5.5.3.\n";
+-		print 'VME_S1B1';
+-		exit 0;
+-	}
+-	if ($product =~ /^6\.0\.[01]/) {
+-		print STDERR "Building for VMware Workstation 6.0.0.\n";
+-		print 'VME_V6';
+-		exit 0;
+-	}
+-	if ($product =~ /^e\.x\.p/) {
+-		if ($build eq '.....') {
+-			;
+-		}
+-	}
+-	print STDERR "Unknown VMware Workstation $product detected. Building for Workstation 6.0.0.\n";
+-	print 'VME_V6';
+-	exit 0;
+-} elsif ($type =~ /Player/i) {
+-	if ($product =~ /^1\.0\.[01]/) {
+-		print STDERR "Building for VMware Player 1.0.0 or 1.0.1 or VMware Workstation 5.5.0 or 5.5.1.\n";
+-		print 'VME_V55';
+-		exit 0;
+-	}
+-	if ($product =~ /^1\.0\.[2-9]/) {
+-		print STDERR "Building for VMware Player 1.0.2 or 1.0.3 or VMware Workstation 5.5.2 or 5.5.3.\n";
+-		print 'VME_S1B1';
+-		exit 0;
+-	}
+-	if ($product =~ /^2\.0\.[01]/) {
+-		print STDERR "Building for VMware Player 2.0.0 or VMware Workstation 6.0.0.\n";
+-		print 'VME_V6';
+-		exit 0;
+-	}
+-	print STDERR "Unknown VMware Player $product detected. Building for VMware Player 2.0.0\n";
+-	print 'VME_V6';
+-	exit 0;
+-} elsif ($type =~ /Server/i) {
+-	if ($product =~ /^e\.x\.p/) {
+-		if ($build eq '20925' or $build eq '22088' or $build eq '22874') {
+-			print STDERR "Building for VMware Server 1 beta 1 or beta 2.\n";
+-			print 'VME_S1B1';
+-			exit 0;
+-		}
+-	}
+-	if ($product =~ /^1\.0\.[0-9]/) {
+-		print STDERR "Building for VMware Server 1.0.0.\n";
+-		print 'VME_S1B1';
+-		exit 0;
+-	}
+-	print STDERR "Unknown VMware Server $product detected. Building for Server 1.0.0.\n";
+-	print 'VME_S1B1';
+-	exit 0;
+-}
+-print STDERR "Unknown product ($type) detected. Building for TOT.\n";
+-print 'VME_TOT';
+-exit 0;
++#!/bin/sh
++echo VME_S1B1
+--- vmware-server-distrib/lib/modules/source/vmnet-only/getversion.pl.orig	2009-03-09 07:02:18.000000000 +0100
++++ vmware-server-distrib/lib/modules/source/vmnet-only/getversion.pl	2009-03-09 07:02:31.000000000 +0100
+@@ -1,206 +1,2 @@
+-#! /usr/bin/perl -w
+-
+-use strict;
+-use warnings;
+-
+-sub GetVMwareVersion {
+-	my ($path) = @_;
+-	my $res = undef; # Pointer to array of TYPE, PROTOCOL, BUILD, PRODUCT
+-	
+-	if (open VMWARE, "$path -v < /dev/null 2>&1 |") {
+-		my $line;
+-		while (defined($line = <VMWARE>)) {
+-			chomp $line;
+-
+-			if ($line =~ /VMware (.*) protocol=(.*) build=(.*) product='(.*)'/) {
+-				$res = [ $1, $2, $3, $4 ];
+-			} elsif (not defined($res) and $line =~ /VMware (.*) (\d+(?:\.\d+)*|e\.x\.p) build-(\d+)/) {
+-				$res = [ $1, '6', $3, "$2 build $3" ];
+-			}
+-		}
+-		close VMWARE;
+-	}
+-	return $res;
+-}
+-
+-sub GetDBAnswer {
+-	my ($path, $answer) = @_;
+-	my $res = undef;
+-	
+-	if (open(CFG, '<', $path)) {
+-		my $line;
+-		while (defined($line = <CFG>)) {
+-			chomp $line;
+-			if ($line =~ /^answer $answer (.*)$/) {
+-				$res = $1;
+-			}
+-		}
+-		close CFG;
+-	}
+-	return $res;
+-}
+-
+-my $path;
+-my $res;
+-
+-$path = GetDBAnswer('/etc/vmware/locations', 'BINDIR');
+-if (defined($path)) {
+-	$res = GetVMwareVersion($path . '/vmware');
+-}
+-if (not defined($res)) {
+-	$path = GetDBAnswer('/etc/vmware/locations', 'LIBDIR');
+-	if (defined($path)) {
+-		$res = GetVMwareVersion($path . '/bin/vmware');
+-		$res = GetVMwareVersion($path . '/bin/vmware-vmx') unless defined($res);
+-	}
+-}
+-$res = GetVMwareVersion('vmware') unless defined($res);
+-
+-my $type;
+-my $protocol;
+-my $build;
+-my $product;
+-
+-if (not defined($res)) {
+-	print STDERR "VMware 2 or VMware Express detected, building for VMware 2, VMware Express and VMware Workstation 4.0.x.\n";
+-	print 'VME_V4';
+-	exit 0;
+-}
+-($type, $protocol, $build, $product) = @$res;
+-if ($type =~ /GSX/i) {
+-	if ($product =~ /^1\./) {
+-		print STDERR "Building for VMware GSX Server 1.x.x.\n";
+-		print 'VME_GSX1';
+-		exit 0;
+-	}
+-	if ($product =~ /^2\.0/) {
+-		print STDERR "Building for VMware GSX Server 2.0.x.\n";
+-		print 'VME_GSX2';
+-		exit 0;
+-	}
+-	if ($product =~ /^2\.5\.[1-9]/) {
+-		print STDERR "Building for VMware GSX Server 2.5.1.\n";
+-		print 'VME_GSX251';
+-		exit 0;
+-	}
+-	if ($product =~ /^2\.5/) {
+-		print STDERR "Building for VMware GSX Server 2.5.0.\n";
+-		print 'VME_GSX25';
+-		exit 0;
+-	}
+-	if ($product =~ /^3\.0/) {
+-		print STDERR "Building for VMware GSX Server 3.0.0 or VMware Workstation 4.5.1.\n";
+-		print 'VME_V45';
+-		exit 0;
+-	}
+-	if ($product =~ /^3\.1/) {
+-		print STDERR "Building for VMware GSX Server 3.1.0 or VMware Workstation 4.5.[23].\n";
+-		print 'VME_V452';
+-		exit 0;
+-	}
+-	if ($product =~ /^3\.2/) {
+-		print STDERR "Building for VMware GSX Server 3.2.x.\n";
+-		print 'VME_GSX32';
+-		exit 0;
+-	}
+-	print STDERR "Unknown VMware GSX Server $product detected. Building for GSX Server 3.2.x.\n";
+-	print 'VME_GSX32';
+-	exit 0;
+-} elsif ($type =~ /Workstation/i) {
+-	if ($product =~ /^3\.[01]\./) {
+-		print STDERR "Building for VMware Workstation 3.0.x.\n";
+-		print 'VME_V3';
+-		exit 0;
+-	}
+-	if ($product =~ /^3\.2\.0/) {
+-		print STDERR "Building for VMware Workstation 3.2.0.\n";
+-		print 'VME_V32';
+-		exit 0;
+-	}
+-	if ($product =~ /^3\.2\./) {
+-		print STDERR "Building for VMware Workstation 3.2.1.\n";
+-		print 'VME_V321';
+-		exit 0;
+-	}
+-	if ($product =~ /^4\.0\./) {
+-		print STDERR "Building for VMware Workstation 4.0.x.\n";
+-		print 'VME_V4';
+-		exit 0;
+-	}
+-	if ($product =~ /^4\.5\.[01]/) {
+-		print STDERR "Building for VMware Workstation 4.5.1 or VMware GSX Server 3.0.0.\n";
+-		print 'VME_V45';
+-		exit 0;
+-	}
+-	if ($product =~ /^4\.5\.[2-9]/) {
+-		print STDERR "Building for VMware Workstation 4.5.[23] or VMware GSX Server 3.1.0.\n";
+-		print 'VME_V452';
+-		exit 0;
+-	}
+-	if ($product =~ /^5\.0\.0/) {
+-		print STDERR "Building for VMware Workstation 5.0.0.\n";
+-		print 'VME_V5';
+-		exit 0;
+-	}
+-	if ($product =~ /^5\.5\.[01]/) {
+-		print STDERR "Building for VMware Workstation 5.5.0 or 5.5.1.\n";
+-		print 'VME_V55';
+-		exit 0;
+-	}
+-	if ($product =~ /^5\.5\.[2-9]/) {
+-		print STDERR "Building for VMware Workstation 5.5.2 or 5.5.3.\n";
+-		print 'VME_S1B1';
+-		exit 0;
+-	}
+-	if ($product =~ /^6\.0\.[01]/) {
+-		print STDERR "Building for VMware Workstation 6.0.0.\n";
+-		print 'VME_V6';
+-		exit 0;
+-	}
+-	if ($product =~ /^e\.x\.p/) {
+-		if ($build eq '.....') {
+-			;
+-		}
+-	}
+-	print STDERR "Unknown VMware Workstation $product detected. Building for Workstation 6.0.0.\n";
+-	print 'VME_V6';
+-	exit 0;
+-} elsif ($type =~ /Player/i) {
+-	if ($product =~ /^1\.0\.[01]/) {
+-		print STDERR "Building for VMware Player 1.0.0 or 1.0.1 or VMware Workstation 5.5.0 or 5.5.1.\n";
+-		print 'VME_V55';
+-		exit 0;
+-	}
+-	if ($product =~ /^1\.0\.[2-9]/) {
+-		print STDERR "Building for VMware Player 1.0.2 or 1.0.3 or VMware Workstation 5.5.2 or 5.5.3.\n";
+-		print 'VME_S1B1';
+-		exit 0;
+-	}
+-	if ($product =~ /^2\.0\.[01]/) {
+-		print STDERR "Building for VMware Player 2.0.0 or VMware Workstation 6.0.0.\n";
+-		print 'VME_V6';
+-		exit 0;
+-	}
+-	print STDERR "Unknown VMware Player $product detected. Building for VMware Player 2.0.0\n";
+-	print 'VME_V6';
+-	exit 0;
+-} elsif ($type =~ /Server/i) {
+-	if ($product =~ /^e\.x\.p/) {
+-		if ($build eq '20925' or $build eq '22088' or $build eq '22874') {
+-			print STDERR "Building for VMware Server 1 beta 1 or beta 2.\n";
+-			print 'VME_S1B1';
+-			exit 0;
+-		}
+-	}
+-	if ($product =~ /^1\.0\.[0-9]/) {
+-		print STDERR "Building for VMware Server 1.0.0.\n";
+-		print 'VME_S1B1';
+-		exit 0;
+-	}
+-	print STDERR "Unknown VMware Server $product detected. Building for Server 1.0.0.\n";
+-	print 'VME_S1B1';
+-	exit 0;
+-}
+-print STDERR "Unknown product ($type) detected. Building for TOT.\n";
+-print 'VME_TOT';
+-exit 0;
++#!/bin/sh
++echo VME_S1B1
