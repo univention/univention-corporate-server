@@ -1,16 +1,22 @@
+vmware (3.0.8-1) unstable; urgency=low
+
+  * fixed a 2.6.18er kernel build issue. Bug #12912
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Mar 2009 08:39:59 +0100
+
 vmware (3.0.7-1) unstable; urgency=low
 
   * Now getversion.pl returns VME_S1B1 so we build always for VMware
     Server 1. Bug #12912
 
- -- Stefan Gohmann <stefan@visdalen.knut.univention.de>  Mon,  9 Mar 2009 07:35:05 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Mar 2009 07:35:05 +0100
 
 vmware (3.0.6-1) unstable; urgency=low
 
   * integrate patches from http://vmkernelnewbies.googlegroups.com/web/
     into the VMware-server 1.0.8 package. Bug #12912
 
- -- Stefan Gohmann <stefan@omar.knut.univention.de>  Sun,  8 Mar 2009 13:42:56 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Sun,  8 Mar 2009 13:42:56 +0100
 
 vmware (3.0.5-1) unstable; urgency=low
 
@@ -31,7 +37,7 @@ vmware (3.0.4-1) unstable; urgency=low
   * bump the version of the vmware archives, to make our buildsystem
     happy. Bug #12912
 
- -- Stefan Gohmann <stefan@omar.knut.univention.de>  Fri, 30 Jan 2009 15:03:12 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Jan 2009 15:03:12 +0100
 
 vmware (3.0.3-2) unstable; urgency=low
 

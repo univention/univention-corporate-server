@@ -1,0 +1,14 @@
+--- vmware-server-distrib/lib/modules/source/vmmon-only/include/compat_semaphore.h.orig	2009-03-09 08:36:39.000000000 +0100
++++ vmware-server-distrib/lib/modules/source/vmmon-only/include/compat_semaphore.h	2009-03-09 08:36:52.000000000 +0100
+@@ -2,7 +2,11 @@
+ #   define __COMPAT_SEMAPHORE_H__
+ 
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 24)
+ #include <linux/semaphore.h>
++#else
++#include <asm/semaphore.h>
++#endif
+ 
+ 
+ /*
