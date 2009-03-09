@@ -1,3 +1,10 @@
+univention-installer (4.0.16-1) unstable; urgency=low
+
+  * add dummy eth0 network interface if no physical network
+    card is present (Bug: #12444)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 09 Mar 2009 13:54:35 +0100
+
 univention-installer (4.0.15-1) unstable; urgency=low
 
   * activate online repository and mirroring if available (Bug #13159)
