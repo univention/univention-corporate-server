@@ -92,6 +92,11 @@ if [ -n "$components" ]; then
 
 fi
 
+# install all firmware packages if dummy network interface is used
+if [ -f "/tmp/dummy-network-interface.txt" ] ; then
+	export extra_packages="${extra_packages} firmware-all"
+fi
+
 kolab=`echo $packages | grep "univention-kolab2"`
 if [ -n "$kolab" ]; then
 	export packages=`echo $packages | sed -e 's|univention-mail-postfix ||g;s|univention-mail-cyrus-imap ||g;s|univention-mail-cyrus-pop ||g;s|univention-mail-cyrus ||g;s|univention-spamassassin ||g'`
