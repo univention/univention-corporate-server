@@ -32,9 +32,16 @@
 
 ifconfig lo 127.0.0.1 up
 
+echo
 ifconfig -a | grep eth0
-if [ "$?" -ne 0 ]; then 
-	echo "Warning Networking: no network cards found"
+if [ "$?" -ne 0 ]; then
+	echo "Warning Networking: eth0 not found"
+	modprobe dummy
+	ifconfig dummy0 down
+	/bin/ip link set dummy0 name eth0
+	ifconfig dummy0 192.168.0.2 netmask 255.255.255.0 up
+	echo "Notice Networking: added virtual dummy interface as eth0"
+	ifconfig eth0
 fi
 
 # setup physical interfaces during first run
