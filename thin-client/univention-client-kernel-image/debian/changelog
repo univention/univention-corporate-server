@@ -1,3 +1,9 @@
+univention-client-kernel-image (1:2.0.2-1) unstable; urgency=low
+
+  * depend on the current thin client kernel. Bug #13245
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Mar 2009 20:37:04 +0100
+
 univention-client-kernel-image (1:2.0.1-2) unstable; urgency=low
 
   * updated the copyright. Bug #6875
