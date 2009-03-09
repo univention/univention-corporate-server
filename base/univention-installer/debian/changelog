@@ -1,7 +1,13 @@
+univention-installer (4.0.16-3) unstable; urgency=low
+
+  * adjusted warning message (Bug: #12444)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 09 Mar 2009 17:11:32 +0100
+
 univention-installer (4.0.16-2) unstable; urgency=low
 
   * install metapackage firmware-all if dummy network interface
-    is used (Bug: 12444)
+    is used (Bug: #12444)
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 09 Mar 2009 14:51:42 +0100
 
