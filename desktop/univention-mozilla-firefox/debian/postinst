@@ -7,9 +7,9 @@ univention-baseconfig set firefox/prefs/checkdefaultbrowser?false
 
 eval $(univention-baseconfig shell firefox/prefs/homepage)
 
-if [ -z "$firefox_prefs_homepage" ]
-	|| [ "$firefox_prefs_homepage" = "http://www.univention.de/ucd-welcome-2_0-0.html" ]
-	|| [ "$firefox_prefs_homepage" = "http://www.univention.de/ucd-welcome-2_1-0.html" ]; then
+if	[ -z "$firefox_prefs_homepage" ] ||
+	[ "$firefox_prefs_homepage" = "http://www.univention.de/ucd-welcome-2_0-0.html" ] ||
+	[ "$firefox_prefs_homepage" = "http://www.univention.de/ucd-welcome-2_1-0.html" ]; then
 	univention-baseconfig set firefox/prefs/homepage="http://www.univention.de/ucd-welcome-2_2-0.html"
 fi
 

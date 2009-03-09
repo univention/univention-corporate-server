@@ -1,3 +1,9 @@
+univention-mozilla-firefox (3.0.2-2) unstable; urgency=low
+
+  * fixed typo in the postinst. Bug #13644
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Mar 2009 20:24:31 +0100
+
 univention-mozilla-firefox (3.0.2-1) unstable; urgency=low
 
   * switch the firefox startsite to http://www.univention.de/ucd-
