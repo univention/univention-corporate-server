@@ -36,6 +36,7 @@ echo
 ifconfig -a | grep eth0
 if [ "$?" -ne 0 ]; then
 	echo "Warning Networking: eth0 not found"
+	echo "YES" > /tmp/dummy-network-interface.txt
 	modprobe dummy
 	ifconfig dummy0 down
 	/bin/ip link set dummy0 name eth0

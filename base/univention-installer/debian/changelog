@@ -1,3 +1,10 @@
+univention-installer (4.0.16-2) unstable; urgency=low
+
+  * install metapackage firmware-all if dummy network interface
+    is used (Bug: 12444)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 09 Mar 2009 14:51:42 +0100
+
 univention-installer (4.0.16-1) unstable; urgency=low
 
   * add dummy eth0 network interface if no physical network
