@@ -29,5 +29,13 @@
 
 univention-config-registry set xen/repository?"file:///var/lib/univention-server-cdrom"
 
+if [ "$1" = "configure" -a -z "$2" ];
+	# We disable the GDM on a XEN based kernel, see 
+	#   UCS Bug #13432 
+	#   Debian Bug http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=509733
+
+	ucr set gdm/autostart=no
+fi
+
 exit 0
 
