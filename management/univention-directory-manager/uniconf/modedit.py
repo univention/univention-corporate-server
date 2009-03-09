@@ -367,7 +367,7 @@ class modedit(unimodule.unimodule):
 			advanced_value = False
 
 		if edit_policy:
-			tabbing = Tabbing(univention.admin.modules.get(edit_policy, advanced = advanced_value))
+			tabbing = Tabbing(univention.admin.modules.get(edit_policy), advanced = advanced_value)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "edit_policy: opened module of type: %s" % edit_policy)
 		else:
 			edit_options = hasattr(module, 'options') and module.options \

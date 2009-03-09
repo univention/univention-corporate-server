@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.14-1) unstable; urgency=low
+
+  * fixed syntax error in the advanced tab handling. Bug #13182
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Mar 2009 15:47:41 +0100
+
 univention-directory-manager (6.0.13-3) unstable; urgency=low
 
   * fixed problem with default the timeout UCR variable which is not set in
