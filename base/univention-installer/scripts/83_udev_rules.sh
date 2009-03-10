@@ -44,6 +44,10 @@ echo "#" >> $UDEVRULEFN
 /bin/ifconfig -a | grep " HWaddr " | awk '{print $1 " " $NF}' | grep -i ' [0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]$' | while read line ; do
   INTERFACE=$(echo $line | cut -d' ' -f1)
   MACADDR=$(echo $line | cut -d' ' -f2)
-  echo "" >> $UDEVRULEFN
-  echo "SUBSYSTEM==\"net\", DRIVERS==\"?*\", ATTRS{address}==\"${MACADDR}\", NAME=\"${INTERFACE}\"" >> $UDEVRULEFN
+  if [ -f "/tmp/dummy-network-interface.txt" -a "$INTERFACE" = "eth0" ] ; then
+    echo "Dummy network interface eth0 detected - ignoring eth0 in $UDEVRULEFN"
+  else
+    echo "" >> $UDEVRULEFN
+    echo "SUBSYSTEM==\"net\", DRIVERS==\"?*\", ATTRS{address}==\"${MACADDR}\", NAME=\"${INTERFACE}\"" >> $UDEVRULEFN
+  fi
 done
