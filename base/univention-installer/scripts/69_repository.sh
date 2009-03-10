@@ -40,7 +40,7 @@ if [ -n "$local_repository" ] && [ "$local_repository" = "true" -o "$local_repos
 fi
 
 # create sources.list
-chroot /instmnt univention-config-registry repository/online=yes repository/mirror?yes
+chroot /instmnt univention-config-registry set repository/online=yes repository/mirror?yes
 
 # create an empty sources.list
 if [ -e "/instmnt/etc/apt/sources.list" ]; then
