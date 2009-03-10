@@ -1648,7 +1648,7 @@ diff -Nur vmmon-only.orig/linux/driver.c vmmon-only/linux/driver.c
 +      break;
 +
 +   case IOCTL_VMX86_BROADCAST_IPI:
-+      retval = compat_smp_call_function(LinuxDriverIPIHandler, NULL, 1, 1);
++      retval = compat_smp_call_function(LinuxDriverIPIHandler, NULL, 1);
 +      break;
 +
 +#ifdef USE_PERFCTRS_HOSTED
