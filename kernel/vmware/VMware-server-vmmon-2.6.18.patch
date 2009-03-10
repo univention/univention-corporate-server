@@ -1,0 +1,2592 @@
+diff -Nur vmmon-only.orig/linux/driver.c vmmon-only/linux/driver.c
+--- vmmon-only.orig/linux/driver.c	2008-10-20 15:21:50.000000000 +0200
++++ vmmon-only/linux/driver.c	2009-03-10 07:44:08.000000000 +0100
+@@ -146,6 +146,8 @@
+                            u_int iocmd, unsigned long ioarg);
+ #endif
+ 
++#if LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 18)
++
+ static int LinuxDriver_Close(struct inode *inode, struct file *filp);
+ static unsigned int LinuxDriverPoll(struct file *file, poll_table *wait);
+ #if 0
+@@ -2573,3 +2575,2433 @@
+ 
+ MODULE_AUTHOR("VMware, Inc.");
+ MODULE_DESCRIPTION("VMware Virtual Machine Monitor.");
++#else
++static int LinuxDriver_Close(struct inode *inode, struct file *filp);
++static unsigned int LinuxDriverPoll(struct file *file, poll_table *wait);
++#if defined(VMW_NOPAGE_261)
++static struct page *LinuxDriverNoPage(struct vm_area_struct *vma,
++                           unsigned long address, int *type);
++static struct page *LinuxDriverLockedNoPage(struct vm_area_struct *vma,
++                           unsigned long address, int *type);
++#elif defined(KERNEL_2_4_0)
++static struct page *LinuxDriverNoPage(struct vm_area_struct *vma,
++			   unsigned long address, int unused);
++static struct page *LinuxDriverLockedNoPage(struct vm_area_struct *vma,
++			   unsigned long address, int unused);
++#else
++static unsigned long LinuxDriverNoPage(struct vm_area_struct *vma,
++			   unsigned long address, int write_access);
++static unsigned long LinuxDriverLockedNoPage(struct vm_area_struct *vma,
++			   unsigned long address, int unused);
++#endif
++static int LinuxDriverMmap(struct file *filp, struct vm_area_struct *vma);
++
++static void LinuxDriverPollTimeout(unsigned long clientData);
++
++static struct vm_operations_struct vmuser_mops = {
++	.nopage = LinuxDriverNoPage
++};
++
++struct vm_operations_struct vmuser_locked_mops = {
++	.nopage = LinuxDriverLockedNoPage
++};
++
++static struct file_operations vmuser_fops;
++static struct timer_list tscTimer;
++
++
++/*
++ *----------------------------------------------------------------------
++ *
++ * VMX86_RegisterMonitor --
++ *
++ *      (debugging support) Should be the first function of this file
++ *
++ * Results:
++ *
++ *      Registers the module.
++ *      /sbin/ksyms -a | grep VMX86_RegisterMonitor will return the base
++ *      address of that function as loaded in the kernel.
++ *
++ *      Since this is the first function of the kernel module,
++ *      every other symbol can be computing by adding the base
++ *      to the output of nm.
++ *
++ * Side effects:
++ *      None.
++ *
++ *----------------------------------------------------------------------
++ */
++int VMX86_RegisterMonitor(int);
++
++EXPORT_SYMBOL(VMX86_RegisterMonitor);
++
++int
++VMX86_RegisterMonitor(int value)
++{
++   printk("/dev/vmmon: RegisterMonitor(%d) \n",value);
++   return 1291;
++}
++
++#ifdef VM_X86_64
++#ifndef HAVE_COMPAT_IOCTL
++static int 
++LinuxDriver_Ioctl32_Handler(unsigned int fd, unsigned int iocmd, 
++                            unsigned long ioarg, struct file * filp)
++{
++   int ret;
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 4, 26) || \
++   (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 5, 0) && LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 3))
++   lock_kernel();
++#endif
++   ret = -ENOTTY;
++   if (filp && filp->f_op && filp->f_op->ioctl == LinuxDriver_Ioctl) {
++      ret = LinuxDriver_Ioctl(filp->f_dentry->d_inode, filp, iocmd, ioarg);
++   }
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 4, 26) || \
++   (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 5, 0) && LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 3))
++   unlock_kernel();
++#endif
++   return ret;
++}
++#endif /* !HAVE_COMPAT_IOCTL */
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 12)
++static int
++LinuxDriver_Ioctl3264Passthrough(unsigned int fd, unsigned int iocmd,
++				 unsigned long ioarg, struct file * filp)
++{
++   VMIoctl64 cmd;
++
++   if (copy_from_user(&cmd, (VMIoctl64*)ioarg, sizeof(cmd))) {
++      return -EFAULT;
++   }
++   if (sys_ioctl) {
++      return sys_ioctl(fd, cmd.iocmd, cmd.ioarg);
++   }
++   return -ENOTTY;
++}
++#endif /* KERNEL < 2.6.12 */
++
++static int
++register_ioctl32_handlers(void)
++{
++#ifndef HAVE_COMPAT_IOCTL
++   {
++      int i;
++      for (i = IOCTL_VMX86_FIRST; i < IOCTL_VMX86_LAST; i++) {
++         int retval = register_ioctl32_conversion(i, LinuxDriver_Ioctl32_Handler);
++         if (retval) {
++            Warning("Fail to register ioctl32 conversion for cmd %d\n", i);
++            return retval;
++         }
++      }
++   }
++#endif /* !HAVE_COMPAT_IOCTL */
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 12)
++   if (!sys_ioctl) {
++      Log("USB support will not work correctly in your virtual machines.\n");
++   }
++   {
++      int retval = register_ioctl32_conversion(IOCTL_VMX86_IOCTL64,
++                                               LinuxDriver_Ioctl3264Passthrough);
++      if (retval) {
++         Warning("Fail to register ioctl32 conversion for cmd 0x%08lX\n",
++                 IOCTL_VMX86_IOCTL64);
++         return retval;
++      }
++   }
++#endif /* KERNEL < 2.6.12 */
++   return 0;
++}
++
++static void
++unregister_ioctl32_handlers(void)
++{
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 12)
++   {
++      int retval = unregister_ioctl32_conversion(IOCTL_VMX86_IOCTL64);
++      if (retval) {
++         Warning("Fail to unregister ioctl32 conversion for cmd 0x%08lX\n",
++                 IOCTL_VMX86_IOCTL64);
++      }
++   }
++#endif /* KERNEL < 2.6.12 */
++#ifndef HAVE_COMPAT_IOCTL
++   {
++      int i;
++      for (i = IOCTL_VMX86_FIRST; i < IOCTL_VMX86_LAST; i++) {
++         int retval = unregister_ioctl32_conversion(i);
++         if (retval) {
++            Warning("Fail to unregister ioctl32 conversion for cmd %d\n", i);
++         }
++      }
++   }
++#endif /* !HAVE_COMPAT_IOCTL */
++}
++#else /* VM_X86_64 */
++#define register_ioctl32_handlers() (0)
++#define unregister_ioctl32_handlers() do { } while (0)
++#endif /* VM_X86_64 */
++
++#include "driver_compat.h"
++
++/*
++ *----------------------------------------------------------------------
++ *
++ * LinuxDriverComputeTSCFreq --
++ *
++ *      Compute TSC frequency based on time and TSC cycles which passed
++ *      since Vmx86_SetStartTime() was invoked.  Should be issued only
++ *      once by callback 4 seconds after vmmon loads.
++ *
++ * Results:
++ *
++ *      vmmon learns tsc frequency if some reasonable result is computed.
++ *
++ * Side effects:
++ *      None.
++ *
++ *----------------------------------------------------------------------
++ */
++
++static void
++LinuxDriverComputeTSCFreq(unsigned long data)
++{
++   Vmx86_GetkHzEstimate(&linuxState.startTime);
++}
++
++
++/*
++ *----------------------------------------------------------------------
++ *
++ * init_module --
++ *
++ *      linux module entry point. Called by /sbin/insmod command
++ *
++ * Results:
++ *      registers a device driver for a major # that depends
++ *      on the uid. Add yourself to that list.  List is now in
++ *      private/driver-private.c.
++ *
++ *----------------------------------------------------------------------
++ */
++int
++init_module(void)
++{
++   int retval;
++
++   /*
++    * Call this first, because Warning, Log, etc. try to
++    * grab the driver-wide lock.
++    */
++   HostIF_InitGlobalLock();
++
++   if (!Task_CheckPadding() || !LinuxDriverCheckPadding()) {
++      return -ENOEXEC;
++   }
++
++   CPUID_Init();
++   if (!Task_SystemCallMSRInitialize()) {
++      return -ENOEXEC;
++   }
++   if (!Task_Initialize()) {
++      return -ENOEXEC;
++   }
++
++   /* Initialize VMCI core and APIs. */
++   if (VMCI_Init() < VMCI_SUCCESS) {
++      Task_Terminate();
++      return -ENOMEM;
++   }
++
++   /*
++    * Initialize LinuxDriverPoll state
++    */
++
++   init_waitqueue_head(&linuxState.pollQueue);
++   init_timer(&linuxState.pollTimer);
++   linuxState.pollTimer.data = 0;
++   linuxState.pollTimer.function = LinuxDriverPollTimeout;
++   linuxState.oldList4Gb.next = &linuxState.oldList4Gb;
++   spin_lock_init(&linuxState.oldLock4Gb);
++
++   linuxState.fastClockThread = 0;
++   linuxState.fastClockRate = 0;
++
++#ifdef POLLSPINLOCK
++   spin_lock_init(&linuxState.pollListLock);
++#endif
++
++   /*
++    * Initialize the file_operations structure. Because this code is always
++    * compiled as a module, this is fine to do it here and not in a static
++    * initializer.
++    */
++
++   memset(&vmuser_fops, 0, sizeof vmuser_fops);
++   compat_fop_set_owner(&vmuser_fops);
++   vmuser_fops.poll = LinuxDriverPoll;
++   vmuser_fops.ioctl = LinuxDriver_Ioctl;
++#ifdef HAVE_COMPAT_IOCTL
++   vmuser_fops.compat_ioctl = LinuxDriver_CompatIoctl;
++#endif
++   vmuser_fops.open = LinuxDriver_Open;
++   vmuser_fops.release = LinuxDriver_Close;
++   vmuser_fops.mmap = LinuxDriverMmap;
++
++#ifdef VMX86_DEVEL
++   devel_init_module();
++   linuxState.minor = 0;
++   retval = register_chrdev(linuxState.major, linuxState.deviceName,
++			    &vmuser_fops);
++#else
++   sprintf(linuxState.deviceName, "vmmon");
++   linuxState.major = 10;
++   linuxState.minor = 165;
++   memset(&linuxState.misc, 0, sizeof(linuxState.misc));
++   linuxState.misc.minor = linuxState.minor;
++   linuxState.misc.name = linuxState.deviceName;
++   linuxState.misc.fops = &vmuser_fops;
++
++   retval = misc_register(&linuxState.misc);
++#endif
++
++   if (retval) {
++      Warning("Module %s: error registering with major=%d minor=%d\n",
++	      linuxState.deviceName, linuxState.major, linuxState.minor);
++      return -ENOENT;
++   }
++   Log("Module %s: registered with major=%d minor=%d\n",
++       linuxState.deviceName, linuxState.major, linuxState.minor);
++
++
++   retval = register_ioctl32_handlers();
++   if (retval) {
++#ifdef VMX86_DEVEL
++      unregister_chrdev(linuxState.major, linuxState.deviceName);
++#else
++      misc_deregister(&linuxState.misc);
++#endif
++      return retval;
++   }
++
++   /*
++    * Snap shot the time stamp counter and the real time so we
++    * can later compute an estimate of the cycle time.
++    */
++
++   Vmx86_SetStartTime(&linuxState.startTime);
++   init_timer(&tscTimer);
++   tscTimer.data = 0;
++   tscTimer.function = LinuxDriverComputeTSCFreq;
++   tscTimer.expires = jiffies + 4 * HZ;
++   add_timer(&tscTimer);
++
++   Vmx86_InitializeLockedPagesLimit(HostIF_EstimateLockedPageLimit(NULL, 0), 
++                                    MAX_LOCKED_PAGES, 
++                                    MAX_LOCKED_PAGES);
++   Vmx86_InitCOWList();
++
++   Log("Module %s: initialized\n", linuxState.deviceName);
++
++   return 0;
++}
++
++/*
++ *----------------------------------------------------------------------
++ *
++ * cleanup_module --
++ *
++ *      Called by /sbin/rmmod
++ *
++ *
++ *----------------------------------------------------------------------
++ */
++
++void
++cleanup_module(void)
++{
++   unregister_ioctl32_handlers();
++
++   VMCI_Cleanup();
++
++   /*
++    * XXX smp race?
++    */
++#ifdef VMX86_DEVEL
++   unregister_chrdev(linuxState.major, linuxState.deviceName);
++#else
++   if (misc_deregister(&linuxState.misc)) {
++      Warning("Module %s: error unregistering\n", linuxState.deviceName);
++   }
++#endif
++   Log("Module %s: unloaded\n", linuxState.deviceName);
++
++   LinuxDriverFreeOld4Gb();
++   compat_del_timer_sync(&linuxState.pollTimer);
++   compat_del_timer_sync(&tscTimer);
++
++   Task_Terminate();
++   Task_SystemCallMSRReset();
++   // Make sure fastClockThread is dead
++   HostIF_FastClockLock(1);
++   HostIF_SetFastClockRate(0);
++   HostIF_FastClockUnlock(1);
++
++   Vmx86_COWCleanup();
++
++   Vmx86_DestroyNUMAInfo();
++}
++
++
++
++/*
++ *----------------------------------------------------------------------
++ *
++ * LinuxDriver_Open  --
++ *
++ *      called on open of /dev/vmmon or /dev/vmx86.$USER. Use count used
++ *      to determine eventual deallocation of the module
++ *
++ * Side effects:
++ *     Increment use count used to determine eventual deallocation of
++ *     the module
++ *
++ *----------------------------------------------------------------------
++ */
++static int
++LinuxDriver_Open(struct inode *inode, // IN
++                 struct file *filp)   // IN
++{
++   VMLinux *vmLinux;
++
++   compat_mod_inc_refcount;
++
++   vmLinux = kmalloc(sizeof *vmLinux, GFP_KERNEL);
++   if (vmLinux == NULL) {
++      compat_mod_dec_refcount;
++      return -ENOMEM;
++   }
++   memset(vmLinux, 0, sizeof *vmLinux);
++   vmLinux->version = LinuxDriverEmulatedVersion();
++   /* If caller's euid was not 0, we are running devel build */
++   vmLinux->maySetUid = current->euid != 0;
++   vmLinux->ctType = VMCIOBJ_NOT_SET;
++
++   sema_init(&vmLinux->lock4Gb, 1);
++   init_waitqueue_head(&vmLinux->pollQueue);
++
++   filp->private_data = vmLinux;
++   LinuxDriverQueue(vmLinux);
++   if (vmLinux->version == VME_V2) {
++      LinuxDriver_InitV2(filp, vmLinux);
++   }
++
++#ifdef SUPPORT_LINUXVMWARE
++   VMWare_SDumpInit();
++   VMWare_SDumpSend("Real men use serial ports! \n");
++#endif
++
++#ifdef DO_APM
++   apm_register_callback(&LinuxDriverAPMCallback);
++#endif
++
++   return 0;
++}
++
++
++/*
++ *-----------------------------------------------------------------------------
++ *
++ * LinuxDriverAllocPages --
++ *
++ *    Allocate physically contiguous block of memory with specified order.  
++ *    Pages in the allocated block are configured so that caller can pass 
++ *    independent pages to the VM.
++ *
++ * Results:
++ *    Zero on success, non-zero (error code) on failure.
++ *
++ * Side effects:
++ *    None
++ *
++ *-----------------------------------------------------------------------------
++ */
++
++static int
++LinuxDriverAllocPages(unsigned int  gfpFlag, // IN
++		      unsigned int  order,   // IN
++                      struct page **pg,      // OUT
++                      unsigned int  size)    // IN
++{
++   struct page* page;
++
++   page = alloc_pages(gfpFlag, order);
++   if (page) {
++      unsigned int i;
++
++      /*
++       * Grab an extra reference on all pages except first one - first
++       * one was already refcounted by alloc_pages.
++       *
++       * Under normal situation all pages except first one in the block
++       * have refcount zero.  As we pass these pages to the VM, we must
++       * bump their count, otherwise VM will release these pages every
++       * time they would be unmapped from user's process, causing crash.
++       *
++       * Note that this depends on Linux VM internals.  It works on all
++       * kernels we care about.
++       */
++      order = 1 << order;
++      for (i = 0; i < order; i++) {
++         if (i) {
++            get_page(page);
++         }
++         if (i >= size) {
++            put_page(page);
++         } else {
++            void* addr = kmap(page);
++
++            memset(addr, 0, PAGE_SIZE);
++            kunmap(page);
++            *pg++ = page;
++         }
++         page++;
++      }
++      return 0;
++   }
++   return -ENOMEM;
++}
++
++
++/*
++ *-----------------------------------------------------------------------------
++ *
++ * LinuxDriverDestructor4Gb --
++ *
++ *    Deallocate all directly mappable memory.
++ *
++ * Results:
++ *    None
++ *
++ * Side effects:
++ *    None
++ *
++ *-----------------------------------------------------------------------------
++ */
++
++static void
++LinuxDriverDestructor4Gb(VMLinux *vmLinux) // IN
++{
++   unsigned int pg;
++
++   if (!vmLinux->size4Gb) {
++      return;
++   }
++   for (pg = 0; pg < vmLinux->size4Gb; pg++) {
++      put_page(vmLinux->pages4Gb[pg]);
++   }
++   vmLinux->size4Gb = 0;
++}
++
++
++/*
++ *----------------------------------------------------------------------
++ *
++ * LinuxDriver_Close  --
++ *
++ *      called on close of /dev/vmmon or /dev/vmx86.$USER, most often when the
++ *      process exits. Decrement use count, allowing for possible uninstalling
++ *      of the module.
++ *
++ *----------------------------------------------------------------------
++ */
++
++static int
++LinuxDriver_Close(struct inode *inode, // IN
++                  struct file *filp)   // IN
++{
++   VMLinux *vmLinux;
++
++   vmLinux = (VMLinux *)filp->private_data;
++   ASSERT(vmLinux);
++
++   VMWare_SetVTracer(0);
++   LinuxDriverDequeue(vmLinux);
++   if (vmLinux->vm != NULL) {
++      Vmx86_ReleaseVM(vmLinux->vm);
++      vmLinux->vm = NULL;
++   } 
++   
++   if (vmLinux->ctType == VMCIOBJ_CONTEXT) {
++      VMCIId cid;
++      
++      ASSERT(vmLinux->ct.context);
++      cid = VMCIContext_GetId(vmLinux->ct.context);
++
++      /*
++       * Remove the context from the datagram and DS API groups. Meaning it
++       * can no longer access the API functions.
++       */
++      VMCIDs_RemoveContext(cid);
++      VMCIDatagram_RemoveContext(cid);
++      VMCISharedMem_RemoveContext(cid);
++      
++#ifdef VMX86_DEBUG
++      /* Remove context from VM group. */
++      VMCIContext_RemoveGroupEntry(vmLinux->ct.context,
++                                   vmGroupHandle);
++      VMCIGroup_RemoveMember(vmGroupHandle,
++                             VMCI_MAKE_HANDLE(cid, VMCI_CONTEXT_RESOURCE_ID));
++#endif // VMX86_DEBUG
++
++      /* Remove context from the public group handle. */
++      VMCIPublicGroup_RemoveContext(cid);
++
++      VMCIContext_ReleaseContext(vmLinux->ct.context);
++      vmLinux->ct.context = NULL;
++   } else if (vmLinux->ctType == VMCIOBJ_PROCESS) {
++      VMCIProcess_Destroy(vmLinux->ct.process);
++      vmLinux->ct.process = NULL;
++   } else if (vmLinux->ctType == VMCIOBJ_DATAGRAM_PROCESS) {
++      VMCIDatagramProcess_Destroy(vmLinux->ct.dgmProc);
++      vmLinux->ct.dgmProc = NULL;
++   }
++   vmLinux->ctType = VMCIOBJ_NOT_SET;
++
++   /*
++    * Destroy all low memory allocations.
++    * We are closing the struct file here, so clearly no other process
++    * uses it anymore, and we do not need to hold the semaphore.
++    */
++
++   LinuxDriverDestructor4Gb(vmLinux);
++   LinuxDriverDestructorLocked(vmLinux);
++
++   /*
++    * Clean up poll state.
++    */
++
++#ifdef POLLSPINLOCK
++   {
++   unsigned long flags;
++   spin_lock_irqsave(&linuxState.pollListLock, flags);
++#else
++   HostIF_PollListLock(0);
++#endif
++   if (vmLinux->pollBack != NULL) {
++      if ((*vmLinux->pollBack = vmLinux->pollForw) != NULL) {
++	 vmLinux->pollForw->pollBack = vmLinux->pollBack;
++      }
++   }
++#ifdef POLLSPINLOCK
++   spin_unlock_irqrestore(&linuxState.pollListLock, flags);
++   }
++#else
++   HostIF_PollListUnlock(0);
++#endif
++   // XXX call wake_up()?
++   HostIF_UnmapUserMem(&vmLinux->pollTimeoutPage);
++
++   kfree(vmLinux);
++   filp->private_data = NULL;
++   compat_mod_dec_refcount;
++   return 0;
++}
++
++
++#define POLLQUEUE_MAX_TASK 1000
++static spinlock_t pollQueueLock __attribute__((unused)) = SPIN_LOCK_UNLOCKED;
++static void *pollQueue[POLLQUEUE_MAX_TASK];
++static unsigned int pollQueueCount = 0;
++
++
++/*
++ *-----------------------------------------------------------------------------
++ *
++ * LinuxDriverQueuePoll --
++ *
++ *      Remember that current process waits for next timer event.
++ *
++ * Results:
++ *      None.
++ *
++ * Side effects:
++ *      None.
++ *
++ *-----------------------------------------------------------------------------
++ */
++
++static INLINE_SINGLE_CALLER void
++LinuxDriverQueuePoll(void)
++{
++   unsigned long flags;
++   
++   spin_lock_irqsave(&pollQueueLock, flags);
++
++   /*
++    * Under normal circumstances every process should be listed
++    * only once in this array. If it becomes problem that process
++    * can be in the array twice, walk array! Maybe you can keep
++    * it sorted by 'current' value then, making IsPollQueued
++    * a bit faster...
++    */
++   if (pollQueueCount < POLLQUEUE_MAX_TASK) {
++      pollQueue[pollQueueCount++] = current;
++   }
++   spin_unlock_irqrestore(&pollQueueLock, flags);
++}
++
++
++/*
++ *-----------------------------------------------------------------------------
++ *
++ * LinuxDriverIsPollQueued --
++ *
++ *      Determine whether timer event occurred since we queued for it using
++ *      LinuxDriverQueuePoll.
++ *
++ * Results:
++ *      0    Event already occurred.
++ *      1    Event did not occur yet.
++ *
++ * Side effects:
++ *      None.
++ *
++ *-----------------------------------------------------------------------------
++ */
++
++static INLINE_SINGLE_CALLER int
++LinuxDriverIsPollQueued(void)
++{
++   unsigned long flags;
++   unsigned int i;
++   int retval = 0;
++
++   spin_lock_irqsave(&pollQueueLock, flags);
++   for (i = 0; i < pollQueueCount; i++) {
++      if (current == pollQueue[i]) {
++         retval = 1;
++         break;
++      }
++   }
++   spin_unlock_irqrestore(&pollQueueLock, flags);
++   return retval;
++}
++
++
++/*
++ *-----------------------------------------------------------------------------
++ *
++ * LinuxDriverFlushPollQueue --
++ *
++ *      Signal to queue that timer event occurred.
++ *
++ * Results:
++ *      None.
++ *
++ * Side effects:
++ *      None.
++ *
++ *-----------------------------------------------------------------------------
++ */
++
++static INLINE_SINGLE_CALLER void
++LinuxDriverFlushPollQueue(void)
++{
++   unsigned long flags;
++
++   spin_lock_irqsave(&pollQueueLock, flags);
++   pollQueueCount = 0;
++   spin_unlock_irqrestore(&pollQueueLock, flags);
++}
++
++
++/*
++ *-----------------------------------------------------------------------------
++ *
++ * LinuxDriverWakeUp --
++ *
++ *      Wake up processes waiting on timer event.
++ *
++ * Results:
++ *      None.
++ *
++ * Side effects:
++ *      None.
++ *
++ *-----------------------------------------------------------------------------
++ */
++
++void
++LinuxDriverWakeUp(Bool selective)
++{
++   if (selective && linuxState.pollList != NULL) {
++      struct timeval tv;
++      VmTimeType now;
++      VMLinux *p;
++      VMLinux *next;
++
++      //compat_preempt_disable();
++#ifdef POLLSPINLOCK
++      unsigned long flags;
++      spin_lock_irqsave(&linuxState.pollListLock, flags);
++#else
++      HostIF_PollListLock(1);
++#endif
++      do_gettimeofday(&tv);
++      now = tv.tv_sec * 1000000ULL + tv.tv_usec;
++      for (p = linuxState.pollList; p != NULL; p = next) {
++	 next = p->pollForw;
++	 if (p->pollTime <= now) {
++	    if ((*p->pollBack = next) != NULL) {
++	       next->pollBack = p->pollBack;
++	    }
++	    p->pollForw = NULL;
++	    p->pollBack = NULL;
++	    wake_up(&p->pollQueue);
++	 }
++      }
++#ifdef POLLSPINLOCK
++      spin_unlock_irqrestore(&linuxState.pollListLock, flags);
++#else
++      HostIF_PollListUnlock(1);
++#endif
++      //compat_preempt_enable();
++   }
++
++   LinuxDriverFlushPollQueue();
++   wake_up(&linuxState.pollQueue);
++}
++
++
++/*
++ *----------------------------------------------------------------------
++ *
++ * LinuxDriverPoll  --
++ *
++ *      This is used to wake up the VMX when a user call arrives, or
++ *      to wake up select() or poll() at the next clock tick.
++ *
++ *----------------------------------------------------------------------
++ */
++
++static unsigned int
++LinuxDriverPoll(struct file *filp,
++		poll_table *wait)
++{
++   VMCILockFlags flags;
++   VMLinux *vmLinux = (VMLinux *) filp->private_data;
++   unsigned int mask = 0;
++   VMDriver *vm = vmLinux->vm;
++
++   if (vm != NULL && (vmLinux->version == VME_V4 || vmLinux->version >= VME_V45)) {
++      /*
++       * Check for user call requests.
++       */
++
++      if (wait != NULL) {
++         poll_wait(filp, &vm->vmhost->callQueue, wait);
++      }
++      if (atomic_read(&vm->vmhost->pendingUserCalls) > 0) {
++         mask = POLLIN;
++      }
++
++   } else if (vmLinux->ctType == VMCIOBJ_CONTEXT) {
++      ASSERT(vmLinux->ct.context != NULL);
++      /* 
++       * Check for VMCI calls to this VM context. 
++       */
++
++      if (wait != NULL) {
++         poll_wait(filp, &vmLinux->ct.context->hostContext.waitQueue, wait);
++      }
++
++      VMCI_GrabLock(&vmLinux->ct.context->guestCallLock, &flags);
++      if (vmLinux->ct.context->pendingGuestCalls > 0) {
++         mask = POLLIN;
++      }
++      VMCI_ReleaseLock(&vmLinux->ct.context->guestCallLock, flags);
++
++   } else if (vmLinux->ctType == VMCIOBJ_PROCESS) {
++      /* nop */
++   } else if (vmLinux->ctType == VMCIOBJ_DATAGRAM_PROCESS) {
++      ASSERT(vmLinux->ct.dgmProc);
++
++      /* 
++       * Check for messages to this datagram fd. 
++       */
++
++      if (wait) {
++         poll_wait(filp, &vmLinux->ct.dgmProc->host.waitQueue, wait);
++      }
++
++      VMCI_GrabLock(&vmLinux->ct.dgmProc->callLock, &flags);
++      if (vmLinux->ct.dgmProc->pendingCalls > 0) {
++         mask = POLLIN;
++      }
++      VMCI_ReleaseLock(&vmLinux->ct.dgmProc->callLock, flags);
++
++   } else {
++      /*
++       * Set up or check the timeout for fast wakeup.
++       *
++       * Thanks to Petr for this simple and correct implementation:
++       *
++       * There are four cases of wait == NULL:
++       *    another file descriptor is ready in the same poll()
++       *    just slept and woke up
++       *    nonblocking poll()
++       *    did not sleep due to memory allocation on 2.4.21-9.EL
++       * In first three cases, it's okay to return POLLIN.
++       * Unfortunately, for 4th variant we have to do some
++       * bookkeeping to not return POLLIN when timer did not expire
++       * yet.
++       *
++       * We may schedule a timer unnecessarily if an existing
++       * timer fires between poll_wait() and timer_pending().
++       *
++       * -- edward
++       */
++
++      if (wait == NULL) {
++	 if (vmLinux->pollBack == NULL && !LinuxDriverIsPollQueued()) {
++	    mask = POLLIN;
++	 }
++      } else {
++         if (linuxState.fastClockThread && vmLinux->pollTimeoutPtr != NULL) {
++	    struct timeval tv;
++	    do_gettimeofday(&tv);
++	    poll_wait(filp, &vmLinux->pollQueue, wait);
++	    vmLinux->pollTime = *vmLinux->pollTimeoutPtr +
++	                        tv.tv_sec * 1000000ULL + tv.tv_usec;
++	    if (vmLinux->pollBack == NULL) {
++#ifdef POLLSPINLOCK
++	       unsigned long flags;
++	       spin_lock_irqsave(&linuxState.pollListLock, flags);
++#else
++	       HostIF_PollListLock(2);
++#endif
++	       if (vmLinux->pollBack == NULL) {
++		  if ((vmLinux->pollForw = linuxState.pollList) != NULL) {
++		     vmLinux->pollForw->pollBack = &vmLinux->pollForw;
++		  }
++		  linuxState.pollList = vmLinux;
++		  vmLinux->pollBack = &linuxState.pollList;
++	       }
++#ifdef POLLSPINLOCK
++	       spin_unlock_irqrestore(&linuxState.pollListLock, flags);
++#else
++	       HostIF_PollListUnlock(2);
++#endif
++	    }
++	 } else {
++	    LinuxDriverQueuePoll();
++	    poll_wait(filp, &linuxState.pollQueue, wait);
++	    if ((vmLinux->version >= VME_V55 || !linuxState.fastClockThread) &&
++		!timer_pending(&linuxState.pollTimer)) {
++	       /*
++		* RedHat 7.2's SMP kernel, 2.4.9-34, contains serious bug
++		* which prevents concurrent mod_timer() requests to work.
++		* See bug 34603 for details.
++		*
++		* This spinlock is not needed for non-RedHat kernels,
++		* but unfortunately there is no way how to detect that
++		* we are building for RedHat's kernel...
++		*/
++	       static spinlock_t timerLock = SPIN_LOCK_UNLOCKED;
++
++	       spin_lock(&timerLock);
++	       mod_timer(&linuxState.pollTimer, jiffies + 1);
++	       spin_unlock(&timerLock);
++	    }
++	 }
++      }
++   }
++   return mask;
++}
++
++
++/*
++ *----------------------------------------------------------------------
++ *
++ * LinuxDriverPollTimeout  --
++ *
++ *      Wake up a process waiting in poll/select.  This is called from
++ *      the timer, and hence processed in the bottom half
++ *
++ *----------------------------------------------------------------------
++ */
++
++static void
++LinuxDriverPollTimeout(unsigned long clientData)
++{
++   LinuxDriverWakeUp(FALSE);
++}
++
++
++/*
++ *----------------------------------------------------------------------
++ *
++ * LinuxDriverIPIHandler  --
++ *
++ *      Null IPI handler - for monitor to notice AIO completion
++ *
++ *----------------------------------------------------------------------
++ */
++void
++LinuxDriverIPIHandler(void *info)
++{
++   return;
++}
++
++
++/*
++ *-----------------------------------------------------------------------------
++ *
++ * LinuxDriverNoPage --
++ *
++ *      Callback for returning allocated page for memory mapping
++ *
++ * Results:
++ *
++ *      Page or page address on success, NULL or 0 on failure.
++ *
++ * Side effects:
++ *      None.
++ *
++ *-----------------------------------------------------------------------------
++ */
++
++#ifdef VMW_NOPAGE_261
++static struct page *LinuxDriverNoPage(struct vm_area_struct *vma, //IN
++				      unsigned long address, 	  //IN
++				      int *type)		  //OUT: Fault type
++#elif defined(KERNEL_2_4_0)
++static struct page *LinuxDriverNoPage(struct vm_area_struct *vma, //IN
++				      unsigned long address, 	  //IN
++				      int unused)		  //nothing
++#else
++static unsigned long LinuxDriverNoPage(struct vm_area_struct *vma,//IN
++				       unsigned long address,	  //IN
++				       int write_access)	  //IN
++#endif
++{
++	VMLinux *vmLinux = (VMLinux *) vma->vm_file->private_data;
++	unsigned long pg;
++	struct page* page;
++	
++	pg = ((address - vma->vm_start) >> PAGE_SHIFT) + compat_vm_pgoff(vma);
++	pg = VMMON_MAP_OFFSET(pg);
++	if (pg >= vmLinux->size4Gb) {
++		return 0;
++	}
++	page = vmLinux->pages4Gb[pg];
++	get_page(page);
++#ifdef KERNEL_2_4_0
++#ifdef VMW_NOPAGE_261
++        *type = VM_FAULT_MINOR;
++#endif
++	return page;
++#else
++	return page_address(page);
++#endif
++}
++
++
++/*
++ *-----------------------------------------------------------------------------
++ *
++ * LinuxDriverAllocContig --
++ *
++ *      Create mapping for contiguous memory areas.
++ *
++ * Results:
++ *
++ *      0       on success,
++ *      -EINVAL on invalid arguments or
++ *      -ENOMEM on out of memory
++ *
++ * Side effects:
++ *      Pages for mapping are allocated.
++ *
++ *-----------------------------------------------------------------------------
++ */
++
++static int LinuxDriverAllocContig(VMLinux *vmLinux,
++                                  struct vm_area_struct *vma,
++				  unsigned long off,
++				  unsigned long size) {
++   unsigned long vmaOrder      = VMMON_MAP_ORDER(off);
++   unsigned long vmaAllocSize;
++   unsigned int gfpFlag;
++   unsigned long i;
++
++   if (VMMON_MAP_RSVD(off)) {
++      /* Reserved bits set... */
++      return -EINVAL;
++   }
++   if (VMMON_MAP_OFFSET(off)) {
++      /* We do not need non-zero offsets... */
++      return -EINVAL;
++   }
++   switch (VMMON_MAP_MT(off)) {
++      case VMMON_MAP_MT_LOW4GB:
++#ifdef VM_X86_64
++         gfpFlag = GFP_USER | GFP_DMA;
++#else
++         gfpFlag = GFP_USER;
++#endif
++         break;
++      case VMMON_MAP_MT_LOW16MB:
++         gfpFlag = GFP_USER | GFP_DMA;
++	 break;
++      case VMMON_MAP_MT_ANY:
++         gfpFlag = GFP_HIGHUSER;
++	 break;
++      default:
++         /* Invalid memory type */
++         return -EINVAL;
++   }
++   if (size > VMMON_MAP_OFFSET_MASK + 1) {
++      /* Size is too big to fit to our window. */
++      return -ENOMEM;
++   }
++
++   /* 16 pages looks like a good limit... */
++   if (size > VMMON_MAX_LOWMEM_PAGES) {
++      return -ENOMEM;
++   } 
++   /* Sorry. Only one mmap per one open. */
++   down(&vmLinux->lock4Gb);
++   if (vmLinux->size4Gb) {
++      up(&vmLinux->lock4Gb);
++      return -EINVAL;
++   }
++   vmaAllocSize = 1 << vmaOrder;
++   for (i = 0; i < size; i += vmaAllocSize) {
++      int err;
++
++      err = LinuxDriverAllocPages(gfpFlag, vmaOrder,
++                                  vmLinux->pages4Gb + i, size - i);
++      if (err) {
++	 while (i > 0) {
++            put_page(vmLinux->pages4Gb[--i]);
++	 }
++	 up(&vmLinux->lock4Gb);
++	 return err;
++      }
++   }
++   vmLinux->size4Gb = size;
++   up(&vmLinux->lock4Gb);
++   vma->vm_ops = &vmuser_mops;
++   /* 
++    * It seems that SuSE's 2.6.4-52 needs this.  Hopefully 
++    * it will not break anything else.
++    *
++    * It breaks on post 2.6.14 kernels, so get rid of it on them.
++    */
++#ifdef VM_RESERVED
++#  if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 14)
++   vma->vm_flags |= VM_RESERVED;
++#  endif
++#endif
++   return 0;
++}
++
++
++/*
++ *-----------------------------------------------------------------------------
++ *
++ * LinuxDriverMmap --
++ *
++ *      Create mapping for lowmem or locked memory.
++ *
++ * Results:
++ *
++ *      0       on success,
++ *      -EINVAL on invalid arguments or
++ *      -ENOMEM on out of memory
++ *
++ * Side effects:
++ *      Pages for mapping are allocated.
++ *
++ *-----------------------------------------------------------------------------
++ */
++
++static int LinuxDriverMmap(struct file *filp, struct vm_area_struct *vma) {
++   VMLinux *vmLinux = (VMLinux *) filp->private_data;
++   unsigned long size;
++   int err;
++
++   /* Only shared mappings */
++   if (!(vma->vm_flags & VM_SHARED)) {
++      return -EINVAL;
++   }
++   if ((vma->vm_end | vma->vm_start) & (PAGE_SIZE - 1)) {
++      return -EINVAL;
++   }
++   size = (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
++   if (size < 1) {
++      return -EINVAL;
++   }
++   if (vmLinux->vm) {
++      err = LinuxDriverAllocLockedMem(filp, vmLinux, vmLinux->vm->vmhost, vma, size);
++   } else {
++      err = LinuxDriverAllocContig(vmLinux, vma, compat_vm_pgoff(vma), size);
++   }
++   if (err) {
++      return err;
++   }
++   /* Clear VM_IO, otherwise SuSE's kernels refuse to do get_user_pages */
++   vma->vm_flags &= ~VM_IO;
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 2, 3)
++   vma->vm_file = filp;
++   filp->f_count++;
++#endif
++   return 0;
++}
++
++
++/*
++ *-----------------------------------------------------------------------------
++ *
++ * LinuxDriver_Ioctl --
++ *
++ *      Main path for UserRPC
++ *
++ * Results:
++ *
++ * Side effects:
++ *      None.
++ *
++ *-----------------------------------------------------------------------------
++ */
++
++#include <linux/sched.h>
++static int
++__LinuxDriver_Ioctl(
++                  struct file *filp,
++                  u_int iocmd,
++                  unsigned long ioarg)
++{
++   VMLinux *vmLinux = (VMLinux *) filp->private_data;
++   int retval = 0;
++   Vcpuid vcpuid;
++
++   switch (iocmd) {
++   case IOCTL_VMX86_VERSION:
++      retval = -EINVAL;
++      break;
++
++   case IOCTL_VMX86_CREATE_VM: {
++      if (vmLinux->vm != NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      vmLinux->vm = Vmx86_CreateVM((void *)filp, current->pid, 
++				   vmLinux->version);
++      if (vmLinux->vm == NULL) {
++	 retval = -ENOMEM;
++	 break;
++      }
++      retval = vmLinux->vm->id;
++      break;
++   }
++
++   case IOCTL_VMX86_RELEASE_VM: {
++      VMDriver *vm;
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      vm = vmLinux->vm;
++      vmLinux->vm = NULL;
++      Vmx86_ReleaseVM(vm);
++      break;
++   }
++
++   case IOCTL_VMX86_INIT_VM: {
++      InitBlock initParams;
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      retval = HostIF_CopyFromUser(&initParams, (char*)ioarg,
++				   sizeof initParams);
++      if (retval != 0) {
++	 break;
++      }
++      if (Vmx86_InitVM(vmLinux->vm, &initParams)) {
++	 retval = -EINVAL;
++	 break;
++      }
++      break;
++   }
++   
++   case IOCTL_VMX86_INIT_NUMA_INFO: {
++      NUMAInfoArgs *initParams;
++      unsigned int numNodes;
++
++      retval = HostIF_CopyFromUser(&numNodes, (char*)ioarg, sizeof(uint32));
++      if (retval != 0) {
++	 break;
++      } 
++      if (numNodes > NUMA_MAX_NODES) {
++         retval = -EINVAL;
++         break;
++      }
++      initParams = HostIF_AllocKernelMem(NUMA_INFO_ARGS_SIZE(*initParams, 
++                                                             numNodes), FALSE); 
++      if (!initParams) {
++         retval = -EINVAL;
++         break;
++      }
++      retval = HostIF_CopyFromUser(initParams, (char*)ioarg,
++                                   (NUMA_INFO_ARGS_SIZE(*initParams, numNodes)));
++      if (retval != 0) {
++	 HostIF_FreeKernelMem(initParams);
++         break;
++      }
++      if (!Vmx86_InitNUMAInfo(initParams)) {
++         retval = -EINVAL;
++         HostIF_FreeKernelMem(initParams);
++      }
++      break;
++   }
++
++   case IOCTL_VMX86_GET_NUMA_MEM_STATS: {
++      VMNUMAMemStatsArgs args;
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      if (!Vmx86_GetNUMAMemStats(vmLinux->vm, &args)) {
++         retval = -EINVAL;
++         break;
++      }
++      retval = HostIF_CopyToUser((void *)ioarg, &args, sizeof args);
++      break;
++   }
++
++   case IOCTL_VMX86_LATE_INIT_VM:
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      if (Vmx86_LateInitVM(vmLinux->vm)) {
++	 retval = -EINVAL;
++	 break;
++      }
++      break;
++
++   case IOCTL_VMX86_RUN_VM:
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      vcpuid = ioarg;
++
++      if (vcpuid >= vmLinux->vm->numVCPUs) {
++         retval = -EINVAL;
++         break;
++      }
++      unlock_kernel();
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 0)
++#  if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT)
++      ASSERT(!kernel_locked());
++#  endif
++#endif
++      retval = Vmx86_RunVM(vmLinux->vm, vcpuid);
++//      ASSERT(retval >= 0 || retval == USERCALL_RESTART);
++      lock_kernel();
++      break;
++
++   case IOCTL_VMX86_SET_UID:
++#ifdef VMX86_DEVEL
++      devel_suid();
++#else
++      if (vmLinux->maySetUid) {
++	 current->suid = 0;
++	 cap_set_full(current->cap_permitted);
++	 retval = 0;
++      } else {
++	 retval = -EPERM;
++      }
++#endif
++      break;
++
++   case IOCTL_VMX86_LOCK_PAGE:
++   case IOCTL_VMX86_LOCK_PAGE_NEW:
++   case IOCTL_VMX86_UNLOCK_PAGE:
++   case IOCTL_VMX86_UNLOCK_PAGE_BY_MPN:
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++   case IOCTL_VMX86_LOOK_UP_MPN: {
++      void *addr = (void*)ioarg;
++      MPN   mpn  = 0;
++
++      switch (iocmd) { 
++      case IOCTL_VMX86_LOOK_UP_MPN:
++	 mpn = HostIF_LookupUserMPN(vmLinux->vm, addr);
++	 break;
++      case IOCTL_VMX86_LOCK_PAGE:
++	 mpn = Vmx86_LockPage(vmLinux->vm, addr, FALSE);
++	 LinuxDriverUserPageLocked(vmLinux->vm, mpn);
++	 break;
++      case IOCTL_VMX86_LOCK_PAGE_NEW: 
++	 mpn = Vmx86_LockPage(vmLinux->vm, addr, TRUE);
++	 LinuxDriverUserPageLocked(vmLinux->vm, mpn);
++	 break;
++      case IOCTL_VMX86_UNLOCK_PAGE:
++	 mpn = Vmx86_UnlockPage(vmLinux->vm, addr);
++	 LinuxDriverUserPageUnlocked(vmLinux->vm, mpn);
++	 break;
++      case IOCTL_VMX86_UNLOCK_PAGE_BY_MPN: {
++	 VMMUnlockPageByMPN args;
++
++	 retval = HostIF_CopyFromUser(&args, (void*)ioarg, sizeof args);
++	 if (retval != 0) {
++	    goto pageLockEnd;
++	 }
++	 mpn = Vmx86_UnlockPageByMPN(vmLinux->vm, args.mpn, (void*)(VA)args.va);
++	 LinuxDriverUserPageUnlocked(vmLinux->vm, mpn);
++      }
++      }
++      retval = (int)mpn;
++      // make sure mpn is within 32 bits
++      ASSERT(mpn == (MPN)retval); 
++      /*
++       * Since ioctl() can't return negative values,
++       * encode error code as a positive number.
++       */
++      if (!PAGE_LOCK_SUCCESS(retval)) {
++	 ASSERT(1 << (sizeof retval * 8 - PAGE_SHIFT) < PAGE_LOCK_ERROR_BIT);
++	 retval = PAGE_LOCK_ERROR_BIT | -retval;
++      }
++pageLockEnd:
++      break;
++   }
++
++   case IOCTL_VMX86_GET_NUM_VMS: {
++      retval = Vmx86_GetNumVMs();
++      break;
++   }
++
++   case IOCTL_VMX86_GET_TOTAL_MEM_USAGE: {
++      retval = Vmx86_GetTotalMemUsage();
++      break;
++   }
++
++   case IOCTL_VMX86_SET_HARD_LIMIT: {
++      int32 limit;
++      retval = HostIF_CopyFromUser(&limit, (void *)ioarg, sizeof limit);
++      if (retval != 0) {
++	 break;
++      }
++      if (!Vmx86_SetConfiguredLockedPagesLimit(limit)) {
++         retval = -EINVAL;
++      }
++      break;
++   }
++
++   case IOCTL_VMX86_ADMIT: {
++      VMMemInfoArgs args;
++
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      retval = HostIF_CopyFromUser(&args, (void *)ioarg, sizeof args);
++      if (retval != 0) {
++	 break;
++      }
++      Vmx86_Admit(vmLinux->vm, &args); 
++      retval = HostIF_CopyToUser((void *)ioarg, &args, sizeof args);
++      break;
++   }
++      
++   case IOCTL_VMX86_READMIT: {
++      int32 pageDelta;
++      if (vmLinux->vm == NULL) {
++         retval = -EINVAL;
++         break;
++      }
++      retval = HostIF_CopyFromUser(&pageDelta, (void *)ioarg, sizeof pageDelta);
++      if (retval != 0) {
++         break;
++      }
++      if (!Vmx86_Readmit(vmLinux->vm, pageDelta)) {
++         retval = -1;
++      }
++
++      break;
++   }
++
++   case IOCTL_VMX86_SET_MEM_USAGE: {
++      int32 usedPct;
++      if (vmLinux->vm == NULL) {
++         retval = -EINVAL;
++         break;
++      }
++      retval = HostIF_CopyFromUser(&usedPct, (void *)ioarg, sizeof usedPct);
++      if (retval != 0) {
++	 break;
++      }
++      Vmx86_SetMemUsage(vmLinux->vm, usedPct);
++      break;
++   } 
++   
++   case IOCTL_VMX86_GET_MEM_INFO: {
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      if (!Vmx86_GetMemInfoCopy(vmLinux->vm, (VMMemInfoArgs *) ioarg)) {
++         retval = -EINVAL;
++      }
++      break;
++   }
++
++   case IOCTL_VMX86_PAE_ENABLED:
++      retval = Vmx86_PAEEnabled();
++      break;
++      
++   case IOCTL_VMX86_SVM_ENABLED_CPU:
++      retval = Vmx86_SVMEnabledCPU();
++      break;
++     
++   case IOCTL_VMX86_VT_ENABLED_CPU:
++      retval = Vmx86_VTEnabledCPU();
++      break;
++     
++   case IOCTL_VMX86_VT_SUPPORTED_CPU:
++      retval = Vmx86_VTSupportedCPU(ioarg != 0);
++      break;
++     
++   case IOCTL_VMX86_BROKEN_CPU_HELPER:
++      retval = HostIF_BrokenCPUHelper();
++      break;
++
++   case IOCTL_VMX86_COUNT_PRESENT_PAGES: {
++      VMMCountPresentPages *args;
++
++      /*
++       * Allocate temp buffer in heap so we don't overflow kernel stack.
++       */
++      retval = -ENOMEM;
++      args = HostIF_AllocKernelMem(sizeof *args, FALSE);
++      if (args != NULL) {
++
++         /*
++          * Copy buffer from user space, maybe faulting it in and maybe 
++          * getting an error because it's not addressable.
++          */
++         retval = HostIF_CopyFromUser(args, (void *)ioarg, sizeof *args);
++         if (retval == 0) {
++            if (args->numPages > VMM_CPP_MAXPAGES) {
++               retval = -EINVAL;
++            } else {
++
++               /*
++                * Now it's ok to scan the list and not have to worry 
++                * about it being inaccessable.
++                */
++               retval = HostIF_CountPresentPages(args);
++            }
++         }
++
++         /*
++          * Done with temp buffer, free it off.
++          */
++         HostIF_FreeKernelMem(args);
++      }
++      break;
++   }
++
++   case IOCTL_VMX86_HOST_X86_64:
++#ifdef VM_X86_64
++      retval = TRUE;
++#else
++      retval = FALSE;
++#endif
++      break;
++
++   case IOCTL_VMX86_IS_MP_SAFE: {
++#ifdef CONFIG_SMP
++      retval = TRUE;
++#else
++      retval = FALSE;
++#endif
++      break;
++   }
++
++   case IOCTL_VMX86_APIC_BASE: {
++      VMAPICInfo info; 
++      Bool setVMPtr; 
++      Bool probe;
++#ifdef USE_PERFCTRS_HOSTED
++      Bool forceEnable;
++#endif
++
++      retval = HostIF_CopyFromUser(&info, (VMAPICInfo *)ioarg,
++                                   sizeof info);
++      if (retval != 0) {
++         break; 
++      }
++      setVMPtr = ((info.flags & APIC_FLAG_DISABLE_NMI) != 0);
++      probe = ((info.flags & APIC_FLAG_PROBE) != 0);
++#ifdef USE_PERFCTRS_HOSTED
++      forceEnable = ((info.flags & APIC_FLAG_FORCE_ENABLE) != 0);
++#endif
++      
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 3, 20)
++      // Kernel uses NMIs for deadlock detection -
++      //  set APIC VMptr so that NMIs get disabled in the monitor
++      setVMPtr = TRUE;
++#endif
++      info.apicBase = HostIF_APICBase(vmLinux->vm, setVMPtr, probe);
++
++#ifdef USE_PERFCTRS_HOSTED
++      if ((info.apicBase == 0) && forceEnable) {
++         info.apicBase = HostIF_APICEnable(vmLinux->vm);
++      }
++#endif
++
++      retval = HostIF_CopyToUser((VMAPICInfo *)ioarg, &info, sizeof info);
++      break;
++   }
++
++   case IOCTL_VMX86_SET_HOST_CLOCK_RATE: {
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      retval = -Vmx86_SetHostClockRate(vmLinux->vm, (int)ioarg);
++      break;
++   }
++
++   case IOCTL_VMX86_ALLOW_CORE_DUMP:
++      if (current->euid == current->uid &&
++	  current->fsuid == current->uid &&
++          current->egid == current->gid &&
++	  current->fsgid == current->gid) {
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 23) || defined(MMF_DUMPABLE)
++         /* Dump core, readable by user. */
++         set_bit(MMF_DUMPABLE, &current->mm->flags);
++         clear_bit(MMF_DUMP_SECURELY, &current->mm->flags);
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(2, 4, 7)
++	 current->mm->dumpable = 1;
++#else
++	 current->dumpable = 1;
++#endif
++         retval = 0;
++      } else {
++         retval = -EPERM;
++      }
++      break;
++
++   case IOCTL_VMX86_BROADCAST_IPI:
++      retval = compat_smp_call_function(LinuxDriverIPIHandler, NULL, 1, 1);
++      break;
++
++#ifdef USE_PERFCTRS_HOSTED
++   case IOCTL_VMX86_REGISTER_PERFCTR: {
++      PerfCtrRegisterArgs args;
++
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      retval = HostIF_CopyFromUser(&args, (void *)ioarg, sizeof args);
++      if (retval != 0) {
++	 break;
++      }
++      retval = PerfCtr_Register(vmLinux->vm, &args);
++      break;
++   }
++   case IOCTL_VMX86_START_PERFCTR:
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      retval = PerfCtr_StartCounters(vmLinux->vm);
++      break;
++
++   case IOCTL_VMX86_STOP_PERFCTR:
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      retval = PerfCtr_StopCounters(vmLinux->vm);
++      break;
++
++   case IOCTL_VMX86_RELEASE_PERFCTR:
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      retval = PerfCtr_Release(vmLinux->vm, TRUE);
++      break;
++#endif // ifdef USE_PERFCTRS_HOSTED
++
++   case IOCTL_VMX86_GET_KHZ_ESTIMATE:
++      retval = Vmx86_GetkHzEstimate(&linuxState.startTime);
++      break;
++
++   case IOCTL_VMX86_ACK_USER_CALL:
++      vcpuid = (Vcpuid) ioarg;
++      if (vcpuid >= vmLinux->vm->numVCPUs) {
++         retval = -EINVAL;
++         break;
++      }
++      HostIF_AckUserCall(vmLinux->vm, vcpuid);
++      break;
++
++   case IOCTL_VMX86_COMPLETE_USER_CALL:
++      if (vmLinux->vm == NULL) {
++	 retval = -EINVAL;
++	 break;
++      }
++      vcpuid = (Vcpuid) ioarg;
++      if (vcpuid >= vmLinux->vm->numVCPUs) {
++         retval = -EINVAL;
++         break;
++      }
++      Vmx86_CompleteUserCall(vmLinux->vm, vcpuid);
++      break;
++
++   case IOCTL_VMX86_GET_ALL_CPUID:
++      {
++         size_t bufsize;
++         CPUIDResult req;
++         CPUIDResult *cpuinfo;
++         retval = HostIF_CopyFromUser(&req, (char*)ioarg,
++                                      sizeof req);
++         if (retval != 0) {
++            break;
++         }
++
++	 /*
++	  * Some kernels panic on kmalloc request larger than
++	  * 128KB.
++	  */
++	 if (req.numLogicalCPUs > 
++		(131072 - offsetof(CPUIDResult, regs)) / sizeof (CPUIDRegs)) {
++	    retval = -EINVAL;
++	    break;
++	 }
++         bufsize = sizeof *cpuinfo + req.numLogicalCPUs * sizeof (CPUIDRegs);
++         cpuinfo = (CPUIDResult*) HostIF_AllocKernelMem(bufsize, TRUE);
++         if (cpuinfo == NULL) {
++            retval = -ENOMEM;
++            break;
++         }
++	 memset(cpuinfo->regs, 0, bufsize - offsetof(CPUIDResult, regs));
++	 *cpuinfo = req;
++         HostIF_GetAllCpuInfo(cpuinfo);
++         
++         retval = HostIF_CopyToUser((char *)ioarg + offsetof(CPUIDResult,regs),
++                                    cpuinfo->regs, 
++				    req.numLogicalCPUs * sizeof (CPUIDRegs));
++	 HostIF_FreeKernelMem(cpuinfo);
++      }
++      break;
++
++   case IOCTL_VMX86_ALLOC_LOCKED_PAGES:
++   case IOCTL_VMX86_FREE_LOCKED_PAGES:
++      {
++         VMMPNList req;
++	 
++	 retval = HostIF_CopyFromUser(&req, (void*)ioarg, sizeof req);
++	 if (retval) {
++	    break;
++	 }
++	 if (!vmLinux->vm) {
++	    retval = -EINVAL;
++	    break;
++	 }
++         if (iocmd == IOCTL_VMX86_ALLOC_LOCKED_PAGES) {
++            retval = Vmx86_AllocLockedPages(vmLinux->vm, 
++                                            (MPN32*)(VA)req.mpn32List, 
++                                            req.mpnCount, FALSE);
++         } else {
++            retval = Vmx86_FreeLockedPages(vmLinux->vm, 
++                                           (MPN32*)(VA)req.mpn32List, 
++                                           req.mpnCount, FALSE);
++         }
++      }
++      break;
++
++   case IOCTL_VMX86_GET_LOCKED_PAGES_LIST:
++      {
++         VMMPNList req;
++	 
++	 retval = HostIF_CopyFromUser(&req, (void*)ioarg, sizeof req);
++	 if (retval) {
++	    break;
++	 }
++	 if (!vmLinux->vm) {
++	    retval = -EINVAL;
++	    break;
++	 }
++	 retval = Vmx86_GetLockedPageList(vmLinux->vm, 
++                                          (MPN32*)(VA)req.mpn32List, 
++                                          req.mpnCount);
++      }
++      break;
++
++   case IOCTL_VMX86_MARK_LOCKEDVARANGE_CLEAN: {
++         struct VARange var;
++         if (HostIF_CopyFromUser(&var, (void *)ioarg, sizeof(struct VARange)) != 0) {
++            retval = -EINVAL;
++         } else {
++            retval = HostIF_MarkLockedVARangeClean(vmLinux->vm, var.addr, 
++                                                   var.len, var.bv);
++         }
++      }
++      break;
++
++   case IOCTL_VMX86_READ_PAGE: 
++      {
++         VMMReadWritePage req;
++	 
++	 retval = HostIF_CopyFromUser(&req, (void*)ioarg, sizeof req);
++	 if (retval) {
++	    break;
++	 }
++	 retval = HostIF_ReadPage(req.mpn, (void*)(VA)req.buf, FALSE);
++	 break;
++      }
++
++   case IOCTL_VMX86_WRITE_PAGE: 
++      {
++         VMMReadWritePage req;
++	 
++	 retval = HostIF_CopyFromUser(&req, (void*)ioarg, sizeof req);
++	 if (retval) {
++	    break;
++	 }
++	 retval = HostIF_WritePage(req.mpn, (void*)(VA)req.buf, FALSE);
++	 break;
++      }
++
++   /*
++    * Support for passthru was removed in 01/2002. The ioctl
++    * commands are kept for backwards compatibility of driver.
++    * --Ganesh 01/2001.
++    */
++   case IOCTL_VMX86_REGISTER_PASSTHROUGH_IRQ: 
++   case IOCTL_VMX86_REGISTER_PASSTHROUGH_IO:
++   case IOCTL_VMX86_FREE_PASSTHROUGH_IRQ:
++   case IOCTL_VMX86_FREE_PASSTHROUGH_IO:
++   case IOCTL_VMX86_START_PASSTHROUGH:
++   case IOCTL_VMX86_STOP_PASSTHROUGH:
++   case IOCTL_VMX86_QUERY_PASSTHROUGH:
++
++   case IOCTL_VMX86_NOT_IMPLEMENTED:
++      retval = -EINVAL;
++      break;
++
++   case IOCTL_VMX86_COW_SHARE:
++   {
++      COWShareInfo info;
++   
++      retval = HostIF_CopyFromUser(&info, (void*)ioarg, sizeof info);
++      if (retval) {
++         break;
++      }
++      Vmx86_COWSharePages(vmLinux->vm, &info);
++      retval = HostIF_CopyToUser((void*)ioarg, &info, sizeof info);
++      break;
++   }
++
++   case IOCTL_VMX86_COW_GET_ZERO_MPN:
++   {
++      MPN mpn;
++      mpn = Vmx86_COWGetZeroMPN();
++      retval = HostIF_CopyToUser((void*)ioarg, &mpn, sizeof(mpn));
++      break;
++   }
++   case IOCTL_VMX86_COW_CHECK:
++   {
++      COWCheckInfo info;
++   
++      retval = HostIF_CopyFromUser(&info, (void*)ioarg, sizeof info);
++      if (retval) {
++         break;
++      }
++      Vmx86_COWCheckPages(vmLinux->vm, &info);
++      retval = HostIF_CopyToUser((void*)ioarg, &info, sizeof info);
++      break;
++   }
++
++  case IOCTL_VMX86_COW_UPDATE_HINT:
++   {
++      COWHintInfo info;
++
++      retval = HostIF_CopyFromUser(&info, (void*)ioarg, sizeof info);
++      if (retval) {
++         break;
++      }
++      Vmx86_COWGetHintUpdates(vmLinux->vm, &info);
++      retval = HostIF_CopyToUser((void *)ioarg, &info, sizeof info);
++      break;
++   }
++
++   case IOCTL_VMX86_COW_COPY_PAGE: 
++   {
++      MPN32 mpn;
++      if (vmLinux->vm == NULL) {
++         retval = -EINVAL;
++         break;
++      }
++      retval = HostIF_CopyFromUser(&mpn, (void *)ioarg, sizeof mpn);
++      if (retval != 0) {
++	 break;
++      }
++      Vmx86_COWCopyPage(vmLinux->vm, mpn);
++      break;
++   } 
++   
++   case IOCTL_VMX86_COW_REMOVE_HINT: 
++   {
++      MPN32 mpn;
++      if (vmLinux->vm == NULL) {
++         retval = -EINVAL;
++         break;
++      }
++      retval = HostIF_CopyFromUser(&mpn, (void *)ioarg, sizeof mpn);
++      if (retval != 0) {
++	 break;
++      }
++      Vmx86_COWRemoveHint(vmLinux->vm, mpn);
++      break;
++   }
++
++   case IOCTL_VMX86_SET_THREAD_AFFINITY:
++   case IOCTL_VMX86_GET_THREAD_AFFINITY:
++   {
++      struct VMMonAffinity vma;
++      if (HostIF_CopyFromUser(&vma, (void *)ioarg, sizeof vma)) {
++         retval = -EFAULT;
++         break;
++      }
++      /* Support only current thread, it seems sufficient */
++      if (vma.pid != 0 && vma.pid != current->pid) {
++         retval = -ESRCH;
++         break;
++      }
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 4, 21) && \
++    LINUX_VERSION_CODE < KERNEL_VERSION(2, 5, 0)
++      if (iocmd == IOCTL_VMX86_SET_THREAD_AFFINITY) {
++         vma.affinity &= cpu_online_map;
++         if (vma.affinity == 0) {
++            retval = -EINVAL;
++         } else {
++            set_cpus_allowed(current, vma.affinity);
++            retval = 0;
++         }
++      } else {
++         vma.affinity = current->cpus_allowed;
++         if (HostIF_CopyToUser((void *)ioarg, &vma, sizeof vma)) {
++            retval = -EFAULT;
++         } else {
++            retval = 0;
++         }
++      }
++#else
++      /* No way before 2.4.21, use affinity syscalls after 2.5.0 */
++      retval = -ENOSYS;
++#endif
++      break;
++   }
++
++   case IOCTL_VMX86_APIC_ID: {
++      uint8 apicId; 
++
++      apicId = HostIF_APIC_ID();
++      retval = HostIF_CopyToUser((void *)ioarg, &apicId, sizeof apicId);
++      break;
++   }
++
++   case IOCTL_VMX86_SET_POLL_TIMEOUT_PTR: {
++      vmLinux->pollTimeoutPtr = NULL;
++      HostIF_UnmapUserMem(&vmLinux->pollTimeoutPage);
++      if (ioarg != 0) {
++	 vmLinux->pollTimeoutPtr =
++	    HostIF_MapUserMem((VA32) ioarg, sizeof *vmLinux->pollTimeoutPtr,
++			      &vmLinux->pollTimeoutPage);
++	 if (vmLinux->pollTimeoutPtr == NULL) {
++	    retval = -EINVAL;
++	    break;
++	 }
++      }
++      break;
++   }
++
++   case IOCTL_VMX86_GET_KERNEL_CLOCK_RATE:
++      retval = HZ;
++      break;
++
++   case IOCTLCMD_VMCI_INIT_CONTEXT: {
++      VMCIId cid;
++
++      if (vmLinux->vm != NULL || vmLinux->ctType != VMCIOBJ_NOT_SET) {
++         Log("VMCI: Received init on initialized handle\n");
++         retval = -EINVAL;
++         break;
++      }
++
++      retval = HostIF_CopyFromUser(&cid, (void *)ioarg, sizeof cid);
++      if (retval != 0) {
++         Log("VMCI: Error reading CID.\n");
++         retval = -EFAULT;
++         break;
++      }
++
++      if (VMCIContext_InitContext(cid, -1, &vmLinux->ct.context) < VMCI_SUCCESS) {
++	 Log("VMCI: Error initializing context.\n");
++	 retval = -EINVAL;
++	 break;
++      }
++
++      if (cid == VMCI_INVALID_ID) {
++	/* Copy newly generated cid to userlevel. */
++        cid = VMCIContext_GetId(vmLinux->ct.context); 
++	retval = HostIF_CopyToUser((void *)ioarg, &cid, sizeof cid); 
++	if (retval != 0) {
++	   VMCIContext_ReleaseContext(vmLinux->ct.context);
++	   vmLinux->ct.context = NULL;
++	   Log("VMCI: Error writing CID.\n");
++	   retval = -EFAULT;
++	   break;
++	}
++      }
++      ASSERT(cid != VMCI_INVALID_ID &&
++             cid == VMCIContext_GetId(vmLinux->ct.context)); 
++
++#ifdef VMX86_DEBUG
++      /* Add context to VM group. */
++      VMCIGroup_AddMember(vmGroupHandle,
++                          VMCI_MAKE_HANDLE(cid,
++                                         VMCI_CONTEXT_RESOURCE_ID),
++                          TRUE);
++      VMCIContext_AddGroupEntry(vmLinux->ct.context,
++                                vmGroupHandle);
++#endif // VMX86_DEBUG
++
++      /* Give VM context access to the sharedmem, datagram and DS API. */
++      VMCISharedMem_AddContext(cid);
++      VMCIDatagram_AddContext(cid);
++      VMCIDs_AddContext(cid);
++
++      /* Add VM to the public group handle. */
++      VMCIPublicGroup_AddContext(cid);
++
++      vmLinux->ctType = VMCIOBJ_CONTEXT;
++      break;
++   }
++
++   case IOCTLCMD_VMCI_CREATE_PROCESS: {
++      if (vmLinux->vm != NULL || vmLinux->ctType != VMCIOBJ_NOT_SET) {
++         Log("VMCI: Received init on initialized handle\n");
++         retval = -EINVAL;
++         break;
++      }
++
++      if (VMCIProcess_Create(&vmLinux->ct.process, -1) < VMCI_SUCCESS) {
++         Log("VMCI: Error initializing process.\n");
++         retval = -EINVAL;
++         break;
++      }
++      vmLinux->ctType = VMCIOBJ_PROCESS;
++      break;
++   }
++
++   case IOCTLCMD_VMCI_CREATE_DATAGRAM_PROCESS: {
++      if (vmLinux->vm != NULL || vmLinux->ctType != VMCIOBJ_NOT_SET) {
++         Log("VMCI: Received IOCTLCMD_VMCI_CREATE_DATAGRAM_PROCESS on initialized handle\n");
++         retval = -EINVAL;
++         break;
++      }
++
++      if (VMCIDatagramProcess_Create(&vmLinux->ct.dgmProc, -1) <
++            VMCI_SUCCESS) {
++         Log("VMCI: IOCTLCMD_VMCI_CREATE_DATAGRAM_PROCESS failed in create.\n");
++         retval = -EINVAL;
++         break;
++      }
++      vmLinux->ctType = VMCIOBJ_DATAGRAM_PROCESS;
++      break;
++   }
++
++   case IOCTLCMD_VMCI_HYPERCALL: {
++      VMCIHypercallInfo callInfo;
++      VMCICall *hyperCall;
++
++      if (vmLinux->ctType != VMCIOBJ_CONTEXT && vmLinux->ctType != VMCIOBJ_PROCESS &&
++          vmLinux->ctType != VMCIOBJ_DATAGRAM_PROCESS) {
++         Warning("VMCI: Ioctl %d only valid for process, context and "
++                 "datagram handles.\n", iocmd);
++         retval = -EINVAL;
++         break;
++      }
++
++      /* Get size of the hypercall data. */
++      retval = HostIF_CopyFromUser(&callInfo, (char *)ioarg, sizeof callInfo);
++      if (retval != 0) {
++         Log("VMCI: Error getting hypercall data %d\n", retval);
++         retval = -EFAULT;
++         break;
++      }
++
++      hyperCall = HostIF_AllocKernelMem(callInfo.len, FALSE);
++      if (hyperCall == NULL) {
++         Log("VMCI: Cannot allocate memory to dispatch hypercall\n");
++         retval = -ENOMEM;
++         break;
++      }
++
++      /* Now get the hypercall command and arguments. */
++      retval = HostIF_CopyFromUser(hyperCall, (char *)(VA)callInfo.addr, 
++                                   callInfo.len);
++      if (retval != 0) {
++         Log("VMCI: Error getting hypercall arguments: %d\n", retval);
++         HostIF_FreeKernelMem(hyperCall);
++         retval = -EFAULT;
++         break;
++      }
++
++      Log("VMCI: Hypercall vector %d, size %d.\n", 
++            hyperCall->h.vector, hyperCall->h.size);
++
++      if (vmLinux->ctType == VMCIOBJ_CONTEXT) {
++         callInfo.result.val32 =
++            VMCI_Dispatch(VMCIContext_GetId(vmLinux->ct.context), hyperCall);
++      } else if (vmLinux->ctType == VMCIOBJ_PROCESS) {
++         callInfo.result.val64 =
++            VMCI_DispatchDriverCall(vmLinux->ct.process,
++                                    VMCIOBJ_PROCESS, hyperCall);
++      } else if (vmLinux->ctType == VMCIOBJ_DATAGRAM_PROCESS) {
++         callInfo.result.val64 =
++            VMCI_DispatchDriverCall(vmLinux->ct.dgmProc,
++                                    VMCIOBJ_DATAGRAM_PROCESS, hyperCall);
++      }
++
++      HostIF_FreeKernelMem(hyperCall);
++      retval = HostIF_CopyToUser((void *)ioarg, &callInfo, sizeof callInfo);
++      if (retval) {
++         retval = -EFAULT;
++      }
++      break;
++   }
++   
++   case IOCTLCMD_VMCI_READ_CALL: {
++      VMCIReadCallInfo readCallInfo;
++      void *bufferUVA;
++      size_t size;
++      
++      if (vmLinux->ctType != VMCIOBJ_CONTEXT &&
++          vmLinux->ctType != VMCIOBJ_DATAGRAM_PROCESS) {
++         Warning("VMCI: Ioctl %d only valid for context "
++                 "or process datagram handle.\n", iocmd);
++         retval = -EINVAL;
++         break;
++      }
++
++      retval = HostIF_CopyFromUser(&readCallInfo, (void *) ioarg,
++                                   sizeof readCallInfo);
++      if (retval) {
++         Warning("VMCI: HostIF_CopyFromUser failed.\n");
++         retval = -EFAULT;
++         break;
++      }
++
++      bufferUVA = (void *) ((uintptr_t) readCallInfo.bufferUVA);
++      size = readCallInfo.size;
++
++      if (vmLinux->ctType == VMCIOBJ_CONTEXT) {
++         ASSERT(vmLinux->ct.context);
++         if (VMCIContext_ReadCall(vmLinux->ct.context, bufferUVA, size) <
++                                  VMCI_SUCCESS) {
++            retval = -EINVAL;
++         }
++      } else {
++         ASSERT(vmLinux->ct.dgmProc);
++         if (VMCIDatagramProcess_ReadCall(vmLinux->ct.dgmProc, bufferUVA,
++                                          size) < VMCI_SUCCESS) {
++            retval = -EINVAL;
++         }
++      }
++      break;
++   }
++
++   case IOCTLCMD_VMCI_SHAREDMEM_CREATE: 
++   case IOCTLCMD_VMCI_SHAREDMEM_ATTACH: 
++   case IOCTLCMD_VMCI_SHAREDMEM_QUERY: 
++   case IOCTLCMD_VMCI_SHAREDMEM_DETACH: {
++      VMCIProcess *process;
++      VMCISharedMemInfo *memInfo;
++      VMCIId cid;
++
++      if (vmLinux->ctType != VMCIOBJ_CONTEXT &&
++            vmLinux->ctType != VMCIOBJ_PROCESS) {
++         Warning("VMCI: Ioctl %d only valid for handle\n", iocmd);
++         retval = -EINVAL;
++         break;
++      }
++      
++      memInfo = HostIF_AllocKernelMem(sizeof *memInfo, FALSE);
++      if (memInfo == NULL) {
++	 Log("CTSHaredMem: Failed to allocate memory to get ioctl parameters\n");
++	 retval = -ENOMEM;
++	 break;
++      }
++      
++      retval = HostIF_CopyFromUser(memInfo, (char*)ioarg, sizeof *memInfo);
++      if (retval != 0) {
++	 Log("CTSHaredMem: Failed to get ioctl parameters for shared memory\n");
++	 HostIF_FreeKernelMem(memInfo);
++	 retval = -EFAULT;
++	 break;
++      }
++
++      if (vmLinux->ctType == VMCIOBJ_PROCESS) {
++	 process = vmLinux->ct.process;
++	 cid = VMCI_HOST_CONTEXT_ID;
++      } else {
++	 process = NULL;
++	 cid = VMCIContext_GetId(vmLinux->ct.context);               
++      }
++
++      VMCISharedMem_IOCTLHandler(cid, process, iocmd, memInfo);
++      retval = HostIF_CopyToUser((char *)ioarg, memInfo, sizeof *memInfo);
++      if (retval) {
++         retval = -EFAULT;
++      }
++      HostIF_FreeKernelMem(memInfo);
++      break;
++   }
++
++   case IOCTL_VMX86_FAST_MON_SWITCH_START: {
++      if (vmLinux->vm == NULL) {
++         retval = -EINVAL;
++         break;
++      }
++      vmLinux->vm->fastMonSwitch.performingSwitch = TRUE;
++      break;
++   }
++
++   case IOCTL_VMX86_FAST_MON_SWITCH_IS_DONE: {
++      if (vmLinux->vm == NULL) {
++         retval = -EINVAL;
++         break;
++      }
++      retval = vmLinux->vm->fastMonSwitch.performingSwitch == FALSE;
++      break;
++   }
++
++   case IOCTL_VMX86_FAST_MON_SWITCH_TRANSFER: {
++      if (vmLinux->vm == NULL) {
++         retval = -EINVAL;
++         break;
++      }
++      retval = Vmx86_FastMonSwitchTransfer(vmLinux->vm, ioarg);
++      break;
++   }
++
++   case IOCTL_VMX86_FAST_MON_SWITCH_END: {
++      if (vmLinux->vm == NULL) {
++         retval = -EINVAL;
++         break;
++      }
++      retval = Vmx86_FastMonSwitchEnd(vmLinux->vm);
++      break;
++   }
++
++   default:
++      Warning("Unknown ioctl %d\n", iocmd);
++      retval = -EINVAL;
++   }
++
++   return retval;
++}
++
++
++#include "driver_compat2.h"
++
++
++#ifdef HAVE_COMPAT_IOCTL
++/*
++ *-----------------------------------------------------------------------------
++ *
++ * LinuxDriver_CompatIoctl --
++ *
++ *      Main path for UserRPC.  Used as compat_ioctl method for 32bit apps
++ *      running on 64bit kernel.
++ *
++ *      Unfortunately our LinuxDriver_Ioctl needs some surgery before it can
++ *      run without big kernel lock, so for now we do not use this
++ *      as unlocked_ioctl handler.  Though we could, it does not matter
++ *      who'll obtain big kernel lock, whether we or our caller...
++ *
++ * Results:
++ *
++ * Side effects:
++ *      None.
++ *
++ *-----------------------------------------------------------------------------
++ */
++
++static long
++LinuxDriver_CompatIoctl(struct file *filp,
++                        u_int iocmd,
++                        unsigned long ioarg)
++{
++   long err;
++
++   lock_kernel();
++   err = LinuxDriver_Ioctl(NULL, filp, iocmd, ioarg);
++   unlock_kernel();
++   return err;
++}
++#endif
++
++
++/*
++ *----------------------------------------------------------------------
++ *
++ * LinuxDriverQueue --
++ *
++ *      add the vmLinux to the global queue
++ *
++ * Results:
++ *
++ *      void
++ * Side effects:
++ *      None.
++ *
++ *----------------------------------------------------------------------
++ */
++static void
++LinuxDriverQueue(VMLinux *vmLinux)
++{
++   /*
++    * insert in global vm queue
++    */
++
++   HostIF_GlobalLock(12);
++
++   vmLinux->next = linuxState.head;
++   linuxState.head = vmLinux;
++
++   HostIF_GlobalUnlock(12);
++}
++
++
++/*
++ *----------------------------------------------------------------------
++ *
++ * LinuxDriveDequeue --
++ *
++ *      remove from active list
++ *
++ * Results:
++ *
++ *      void
++ * Side effects:
++ *      printk if it is not in the list (error condition)
++ *
++ *----------------------------------------------------------------------
++ */
++static void
++LinuxDriverDequeue(VMLinux *vmLinux)
++{
++   VMLinux **p;
++
++   HostIF_GlobalLock(13);
++   for (p = &linuxState.head; *p != vmLinux; p = &(*p)->next) {
++      ASSERT(*p != NULL);
++   }
++   *p = vmLinux->next;
++   vmLinux->next = NULL;
++   HostIF_GlobalUnlock(13);
++}
++
++
++/*
++ *----------------------------------------------------------------------
++ *
++ * CheckPadding --
++ *
++ *      check for expected padding --
++ *      this check currently fails on the egcs compiler
++ *
++ * Results:
++ *
++ *      TRUE if the check succeeds -- module will be loaded
++ *
++ *
++ *
++ * Side effects:
++ *      output to kernel log on error
++ *
++ *----------------------------------------------------------------------
++ */
++static Bool
++LinuxDriverCheckPadding(void)
++{
++   DTRWords32 dtr;
++   uint16 *x;
++
++   memset(&dtr, 0, sizeof dtr);
++   dtr.dtr.limit = 0x1111;
++   dtr.dtr.offset = 0x22223333;
++
++   x = (uint16*)&dtr;
++
++   if (x[0] == 0x1111 && x[1] == 0x3333 && x[2] == 0x2222) {
++   } else {
++      Warning("DTR padding\n");
++      goto error;
++   }
++
++   return TRUE;
++
++error:
++   printk("/dev/vmmon: Cannot load module. Use standard gcc compiler\n");
++   return FALSE;
++}
++
++
++#ifdef DO_APM
++static int LinuxDriverAPMCallback(apm_event_t event)
++{
++   switch (event) {
++   case APM_SYS_SUSPEND:
++   case APM_USER_SUSPEND:
++      if (LinuxDriverAPMstate == APM_STATE_READY) {
++	 // call up to user to suspend VMs
++      }
++      break;
++   case APM_NORMAL_RESUME:
++   case APM_CRITICAL_RESUME:
++      if (LinuxDriverAPMstate == APM_STATE_SUSPEND) {
++	 // call up to user to resume VMs
++      }
++   }
++   return 0;
++}
++#endif
++
++MODULE_AUTHOR("VMware, Inc.");
++MODULE_DESCRIPTION("VMware Virtual Machine Monitor.");
++#endif
+diff -Nur vmmon-only.orig/linux/driver_compat.h vmmon-only/linux/driver_compat.h
+--- vmmon-only.orig/linux/driver_compat.h	2008-07-24 17:55:05.000000000 +0200
++++ vmmon-only/linux/driver_compat.h	2009-03-10 07:45:31.000000000 +0100
+@@ -268,6 +268,7 @@
+  *-----------------------------------------------------------------------------
+  */
+ 
++#if LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 18)
+ static int LinuxDriverLockedNoPage(struct vm_area_struct *vma, //IN
+ 					struct vm_fault *fdata)
+ {
+@@ -307,6 +308,64 @@
+    return VM_FAULT_MINOR;
+ }
+ 
++#else
++#ifdef VMW_NOPAGE_261
++static struct page *LinuxDriverLockedNoPage(struct vm_area_struct *vma, //IN
++				            unsigned long address,      //IN
++				            int *type)		        //OUT: Fault type
++#elif defined(KERNEL_2_4_0)
++static struct page *LinuxDriverLockedNoPage(struct vm_area_struct *vma, //IN
++				            unsigned long address,      //IN
++				            int unused)		        //nothing
++#else
++static unsigned long LinuxDriverLockedNoPage(struct vm_area_struct *vma, //IN
++				             unsigned long address,      //IN
++				             int unused)	        //nothing
++#endif
++{
++   VMLinux *vmLinux = (VMLinux *) vma->vm_file->private_data;
++   unsigned long pg;
++   struct page* pgt;
++   struct VMHostEntry* vmhe;
++   struct page* result;
++	
++   pg = ((address - vma->vm_start) >> PAGE_SHIFT) + compat_vm_pgoff(vma);
++   if (pg >= vmLinux->sizeLocked) {
++      printk(KERN_DEBUG "vmmon: Something went wrong: entry %08lX out of range (>=%08X) for mapping on filp %p\n", pg, vmLinux->sizeLocked, vmLinux);
++      return NOPAGE_SIGBUS;
++   }
++   if (!vmLinux->vm || !vmLinux->vm->vmhost) {
++      printk(KERN_DEBUG "vmmon: Something went wrong: no vm or vmhost for mapping on filp %p\n", vmLinux);
++      return NOPAGE_SIGBUS;
++   }
++   pgt = vmLinux->pagesLocked->ent[pg / VMHOST_MAPPING_PT];
++   if (!pgt) {
++      printk(KERN_DEBUG "vmmon: Something went wrong: missing entry %08lX from mapping on filp %p\n", pg, vmLinux);
++      return NOPAGE_SIGBUS;
++   }
++   vmhe = kmap(pgt);
++   result = vmhe->ent[pg % VMHOST_MAPPING_PT];
++   kunmap(pgt);
++   if (!result) {
++      printk(KERN_DEBUG "vmmon: Something went wrong: attempt to access non-existing entry %08lX in mapping on filp %p\n", pg, vmLinux);
++      return NOPAGE_SIGBUS;
++   }
++   if (!PhysTrack_Test(vmLinux->vm->vmhost->AWEPages, page_to_pfn(result))) {
++      printk(KERN_DEBUG "vmmon: MPN %08lX not tracked! Someone released it before removing it from VA first!\n", pg);
++      return NOPAGE_SIGBUS;
++   }
++   get_page(result);
++#ifdef KERNEL_2_4_0
++#ifdef VMW_NOPAGE_261
++   *type = VM_FAULT_MINOR;
++#endif
++   return result;
++#else
++   return page_address(result);
++#endif
++}
++#endif
++
+ 
+ /*
+  *-----------------------------------------------------------------------------
+diff -Nur vmmon-only.orig/linux/hostif.c vmmon-only/linux/hostif.c
+--- vmmon-only.orig/linux/hostif.c	2008-10-27 15:17:30.000000000 +0100
++++ vmmon-only/linux/hostif.c	2009-03-10 07:46:57.000000000 +0100
+@@ -3388,6 +3388,7 @@
+     * CPUs.
+     */
+ 
++#if LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 18)
+    if (rate > HZ + HZ/16) {
+       if (!linuxState.fastClockThread) {
+          struct file *filp;
+@@ -3445,6 +3446,58 @@
+    }
+    return 0;
+ }
++#else
++   if (rate > HZ + HZ/16) {
++      if (!linuxState.fastClockThread) {
++         struct file *filp;
++         int fsuid, res;
++         Bool cap;
++         long pid;
++
++         fsuid = current->fsuid;
++         current->fsuid = 0;
++         filp = filp_open("/dev/rtc", O_RDONLY, 0);
++         current->fsuid = fsuid;
++         if (IS_ERR(filp)) {
++            Warning("/dev/rtc open failed: %d\n", (int)(VA)filp);
++            return -(int)(VA)filp;
++         }
++         cap = cap_raised(current->cap_effective, CAP_SYS_RESOURCE);
++         cap_raise(current->cap_effective, CAP_SYS_RESOURCE);
++         res = filp->f_op->ioctl(filp->f_dentry->d_inode, filp, RTC_PIE_ON, 0);
++         if (!cap) {
++            cap_lower(current->cap_effective, CAP_SYS_RESOURCE);            
++         }
++         if (res < 0) {
++            Warning("/dev/rtc enable interrupt failed: %d\n", res);
++            compat_filp_close(filp, current->files);
++            return -res;
++         }
++         pid = kernel_thread(HostIFFastClockThread, filp, 0);
++         if (pid < 0) {
++            /*
++             * Ignore ERESTARTNOINTR silently, it occurs when signal is
++             * pending, and syscall layer automatically reissues operation
++             * after signal is handled.
++             */
++            if (pid != -ERESTARTNOINTR) {
++               Warning("/dev/rtc cannot start watch thread: %ld\n", pid);
++            }
++            compat_filp_close(filp, current->files);
++            return -pid;
++         }
++         linuxState.fastClockThread = pid;
++      }
++   } else {
++      if (linuxState.fastClockThread) {
++         kill_proc(linuxState.fastClockThread, SIGKILL, 1);
++         linuxState.fastClockThread = 0;
++         compat_wait_for_completion(&fastClockExited);
++      }
++   }
++   return 0;
++}
++#endif
+ 
+ 
+ /*

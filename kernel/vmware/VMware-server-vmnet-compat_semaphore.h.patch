@@ -1,0 +1,15 @@
+diff -Nur vmnet-only.orig/compat_semaphore.h vmnet-only/compat_semaphore.h
+--- vmnet-only.orig/compat_semaphore.h	2008-10-20 15:35:18.000000000 +0200
++++ vmnet-only/compat_semaphore.h	2009-03-10 07:39:09.000000000 +0100
+@@ -6,7 +6,11 @@
+ #   define __COMPAT_SEMAPHORE_H__
+ 
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 24)
+ #include <linux/semaphore.h>
++#else
++#include <asm/semaphore.h>
++#endif
+ 
+ 
+ /*
