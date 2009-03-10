@@ -80,6 +80,9 @@ def get_shares():
 
 	reg_smb = re.compile('\s*\[([^\]]+)\]')
 
+	if not os.path.isdir(shares_udm_dir):
+		return
+
 	for file in os.listdir(shares_udm_dir):
 
 		filename = os.path.join(shares_udm_dir, file)
