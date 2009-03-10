@@ -511,6 +511,10 @@ pref("browser.backspace_action", 2);
 // 2 = check multi/single line controls
 pref("layout.spellcheckDefault", 1);
 
+@!@
+print 'pref("spellchecker.dictionary, "%s");' % baseConfig.get('firefox/prefs/spellchecker/dictionary', 'en-GB')
+@!@
+
 pref("view_source.editor.path", "");
 pref("view_source.editor.external", false);
 
