@@ -1,3 +1,9 @@
+univention-printserver (2.0.11-1) unstable; urgency=low
+
+  * fixed pycentral traceback (Bug: #12235)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 Mar 2009 17:20:19 +0100
+
 univention-printserver (2.0.10-1) unstable; urgency=low
 
   * the join script needs the default UMC containers. Bug #13494

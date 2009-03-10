@@ -23,6 +23,7 @@ Description: UCS - print server
 Package: univention-printserver-pdf
 Architecture: all
 Depends: univention-printserver, univention-samba, cups-pdf
+XB-Python-Version: ${python:Versions}
 Description: UCS - print server addons for pdf pseudo printer
  This packages provides configs and settings for a PDF printer.
  .
