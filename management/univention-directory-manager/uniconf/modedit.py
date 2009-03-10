@@ -5016,7 +5016,7 @@ class modedit(unimodule.unimodule):
 			new=current_object[key]
 
 			if key == 'uri': # set printerURI
-				if mitem[0].get_input().startswith('cups-pdf:/'):
+				if mitem[0].get_input() and mitem[0].get_input().startswith('cups-pdf:/'):
 					if mitem[6].get_input():
 						new = mitem[0].get_input() + mitem[6].get_input()
 					else:

@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.15-1) unstable; urgency=low
+
+  * fixed traceback that occured while searching printers (Bug: #12165)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 Mar 2009 16:12:20 +0100
+
 univention-directory-manager (6.0.14-1) unstable; urgency=low
 
   * fixed syntax error in the advanced tab handling. Bug #13182
