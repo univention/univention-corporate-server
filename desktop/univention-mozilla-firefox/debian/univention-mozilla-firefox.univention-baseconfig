@@ -4,6 +4,7 @@ Variables: firefox/prefs/conffile
 Variables: firefox/prefs/mailto
 Variables: firefox/prefs/checkdefaultbrowser
 Variables: firefox/prefs/printing
+Variables: firefox/prefs/spellchecker/dictionary
 
 Type: file
 File: opt/firefox/browserconfig.properties

@@ -2,21 +2,34 @@
 
 #DEBHELPER#
 
-univention-baseconfig set firefox/prefs/mailto?kmail
-univention-baseconfig set firefox/prefs/checkdefaultbrowser?false
+univention-config-registry set firefox/prefs/mailto?kmail
+univention-config-registry set firefox/prefs/checkdefaultbrowser?false
 
-eval $(univention-baseconfig shell firefox/prefs/homepage)
+eval $(univention-config-registry shell)
 
 if	[ -z "$firefox_prefs_homepage" ] ||
 	[ "$firefox_prefs_homepage" = "http://www.univention.de/ucd-welcome-2_0-0.html" ] ||
 	[ "$firefox_prefs_homepage" = "http://www.univention.de/ucd-welcome-2_1-0.html" ]; then
-	univention-baseconfig set firefox/prefs/homepage="http://www.univention.de/ucd-welcome-2_2-0.html"
+	univention-config-registry set firefox/prefs/homepage="http://www.univention.de/ucd-welcome-2_2-0.html"
 fi
 
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox 101
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
-	univention-baseconfig set firefox/prefs/printing?kprinter
+	univention-config-registry set firefox/prefs/printing?kprinter
+
+	univention-config-registry set firefox/prefs/spellchecker/dictionary="en-GB"
+	if [ -n "$locale_default" ]; then
+		lang=$(echo $locale_default | sed -e 's|_.*||')
+		if [ "$lang" = "de" ]; then
+			univention-config-registry set firefox/prefs/spellchecker/dictionary="de-DE"
+		fi
+	fi
+fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.3-1; then
+	# before UCS 2.2 the default language was de-DE
+	univention-config-registry set firefox/prefs/spellchecker/dictionary?"de-DE"
 fi
 
 exit 0
