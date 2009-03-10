@@ -1,3 +1,9 @@
+univention-samba (3.0.11-2) unstable; urgency=low
+
+  * added predependency samba to univention-samba-local-config (Bug: #12052)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 Mar 2009 13:28:22 +0100
+
 univention-samba (3.0.11-1) unstable; urgency=low
 
   * fixed traceback in samba.local.config.py (Bug: #12052)

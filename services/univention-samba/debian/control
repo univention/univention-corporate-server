@@ -60,9 +60,10 @@ Description: UCS - Samba domain controller (as bdc)
 
 Package: univention-samba-local-config
 Architecture: all
+Pre-Depends: samba (>= 3.0.20) | samba-bdc
 Description: UCS - UCR Extensions for configuration of local shares
  This package contains some scripts and templates to configure
- samba shares via ucr
+ samba shares via UCR.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
