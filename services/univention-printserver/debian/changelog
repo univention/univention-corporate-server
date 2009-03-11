@@ -1,3 +1,12 @@
+univention-printserver (2.0.12-1) unstable; urgency=low
+
+  * force dpkg-statoverride in postinst of univention-printserver-pdf to
+    override settings of cups-pdf (Bug: #12235)
+  * fixed "ucr" calls in postinst/postrm
+  * fixed missing UCR headers
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 11 Mar 2009 11:51:31 +0100
+
 univention-printserver (2.0.11-1) unstable; urgency=low
 
   * fixed pycentral traceback (Bug: #12235)
