@@ -119,7 +119,7 @@ univention-config-registry unset update/server update/security/server update/sec
 univention-config-registry set \
 		update/commands/distupgrade?"apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade" \
 		update/commands/update?"apt-get update" \
-		update/commands/show?"apt-get show" \
+		update/commands/show?"apt-cache show" \
 		update/commands/install?"apt-get -o DPkg::Options::=--force-confold -y --force-yes install" \
 		update/commands/remove?"apt-get --yes remove" \
 		update/commands/configure?"dpkg --configure -a" \

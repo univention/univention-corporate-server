@@ -1,3 +1,9 @@
+univention-updater (4.0.38-1) unstable; urgency=low
+
+  * fixed typo in the UCR variable update/commands/show (Bug #12242)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 11 Mar 2009 08:13:29 +0100
+
 univention-updater (4.0.37-1) unstable; urgency=low
 
   * add DEBIAN_FRONTEND to environment for subprocesses instead of
