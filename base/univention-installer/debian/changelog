@@ -1,3 +1,10 @@
+univention-installer (4.0.19-1) unstable; urgency=low
+
+  * move 69_repository.sh to 78_repository.sh; directly after the join. At
+    that time the apache server should be up and running (Bug #13159)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 11 Mar 2009 21:47:26 +0100
+
 univention-installer (4.0.18-1) unstable; urgency=low
 
   * add missing 'set' argument in 69_repository.sh (Bug #13159)
