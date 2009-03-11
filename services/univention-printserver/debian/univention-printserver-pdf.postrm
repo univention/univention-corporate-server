@@ -28,10 +28,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-ldapbase=`ucr get ldap/base`
-hostname=`ucr get hostname`
-domain=`ucr get domainname`
-server_role=`ucr get server/role`
+ldapbase=`univention-config-registry get ldap/base`
+hostname=`univention-config-registry get hostname`
+domain=`univention-config-registry get domainname`
+server_role=`univention-config-registry get server/role`
 name=pdfPrinter
 dir='/var/cache/cups-pdf/%U'
 anon_dir='/var/cache/cups-pdf'
@@ -43,9 +43,8 @@ anon_dir='/var/cache/cups-pdf'
 #                        --set host=$hostname.$domain --set path=$dir \
 #                        --set webaccessName=$name
 
-# cups backend
-dpkg-statoverride  --remove /usr/lib/cups/backend/cups-pdf
-
+# set old permissions of cups-pdf backend
+dpkg-statoverride --add --force --update root lp 4754 /usr/lib/cups/backend/cups-pdf
 
 #DEBHELPER#
 
