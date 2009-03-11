@@ -43,7 +43,7 @@ cmd_upgrade_sim = configRegistry.get( 'update/commands/upgrade/simulate', 'apt-g
 cmd_dist_upgrade = configRegistry.get( 'update/commands/distupgrade', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade' )
 cmd_upgrade = configRegistry.get( 'update/commands/upgrade', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes -u upgrade' )
 cmd_update = configRegistry.get( 'update/commands/update', 'apt-get update' )
-cmd_show = configRegistry.get( 'update/commands/show', 'apt-get show' )
+cmd_show = configRegistry.get( 'update/commands/show', 'apt-cache show' )
 cmd_config = configRegistry.get( 'update/commands/configure', 'dpkg --configure -a' )
 cmd_remove = configRegistry.get( 'update/commands/remove', 'apt-get --yes remove' )
 cmd_install = configRegistry.get( 'update/commands/install', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes install' )
