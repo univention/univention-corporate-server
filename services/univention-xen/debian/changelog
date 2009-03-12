@@ -1,3 +1,9 @@
+univention-xen (1.0.3-2) unstable; urgency=low
+
+  * fixed a typo of the last commit. Bug #13432
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Mar 2009 10:12:28 +0100
+
 univention-xen (1.0.3-1) unstable; urgency=low
 
   * We disable the GDM on a XEN based kernel, see Bug #13432
