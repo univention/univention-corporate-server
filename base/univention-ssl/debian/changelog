@@ -1,3 +1,10 @@
+univention-ssl (3.0.3-1) unstable; urgency=low
+
+  * create a link from /etc/univention/ssl/<hostname>.<domainname> to
+    /etc/univention/ssl/<hostname> like the listener module does. Bug #13598
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Mar 2009 16:00:18 +0100
+
 univention-ssl (3.0.2-1) unstable; urgency=low
 
   * use time.fu-berlin.de instead of pool.ntp.org beacause we are using
