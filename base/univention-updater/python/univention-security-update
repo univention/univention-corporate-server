@@ -62,7 +62,7 @@ def remove_temporary_sources_list ():
 
 def usage(fd=sys.stdout):
 	print >> fd, 'univention-security-update: tool for include security updates into local repository'
-	print >> fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
+	print >> fd, 'copyright (c) 2004-2009 Univention GmbH, Germany'
 	print >> fd, ''
 	print >> fd, 'Syntax:'
 	print >> fd, '  univention-security-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate]'
@@ -217,7 +217,9 @@ if __name__ == '__main__':
 					remove_temporary_sources_list()
 					if os.path.exists('/var/run/apt-get.lock'):
 						os.unlink('/var/run/apt-get.lock')
-					sys.exit( ret )
+					if ret:
+						sys.exit( ret )
+			updater.ucr_reinit()
 		else:
 			if not upgraded:
 				dprint('No Security Update available!', [sys.stdout,stdout])

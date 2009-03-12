@@ -62,7 +62,7 @@ def copy_repository( options, source, version ):
 
 	# check if repository already exists
 	if os.path.isdir( os.path.join( dest_repo ) ):
-		print >> options.teefile, 'Warning: repository for UCS version %s already exists' % version
+		print >> options.teefile, 'Warning: repository for UCS version %(major)s.%(minor)s-%(patch)s already exists' % version
 	else:
 		# create directory structure
 		for arch in urepo.ARCHITECTURES:
