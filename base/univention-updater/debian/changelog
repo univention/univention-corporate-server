@@ -1,3 +1,10 @@
+univention-updater (4.0.39-1) unstable; urgency=low
+
+  * fixed a bug in univention-updater that occured on systems with local
+    repository when running 'univenton-updater cdrom' (Bug #12511)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 12 Mar 2009 10:43:04 +0100
+
 univention-updater (4.0.38-1) unstable; urgency=low
 
   * fixed typo in the UCR variable update/commands/show (Bug #12242)
