@@ -108,7 +108,7 @@ j=""
 if [ ! -z "$CDROM_DEVICES" ]; then
 	for i in $CDROM_DEVICES; do
 		cat >>/instmnt/etc/fstab <<__EOT__
-/dev/$i  /cdrom$j     auto    user,noauto,exec             0       0
+/dev/cdrom$j    /cdrom$j     auto    user,noauto,exec             0       0
 __EOT__
 		mkdir /instmnt/cdrom$j
 		if [ -z $j ]; then j=1; else j=$(($j+1)); fi
