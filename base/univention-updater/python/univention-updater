@@ -69,7 +69,7 @@ def dprint(str, fd=[]):
 
 def usage(fd=sys.stdout):
 	print >>fd, 'univention-updater: tool for updating local system'
-	print >>fd, 'copyright (c) 2005-@%@copyright_lastyear@%@ Univention GmbH, Germany'
+	print >>fd, 'copyright (c) 2005-2009 Univention GmbH, Germany'
 	print >>fd, ''
 	print >>fd, 'Syntax:'
 	print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--iso <iso-image>] [--updateto <UCS-Release>] [--reboot <timespec>] [--no-clean] [--check] '
@@ -185,9 +185,9 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 			repo_base = '%s/mirror/' % repository_path
 			if os.path.exists( os.path.join( repo_base, vv, 'maintained', '%s-%d' % ( vv, int( vp ) + 1 ) ) ): #check for x.y-(z+1)
 				nextversion = '%s-%d' % (vv, int(vp)+1)
-			elif os.path.exists(os.path.join( repo_base, vv, 'maintained', '%s.%d-0' % ( version_major, int( version_minor ) + 1 ) ) ): #check for x.(y+1)-0
+			elif os.path.exists( os.path.join( repo_base, '%s.%d' % ( version_major, int( version_minor ) + 1 ), 'maintained', '%s.%d-0' % ( version_major, int( version_minor ) + 1 ) ) ): #check for x.(y+1)-0
 				nextversion = '%s.%d-0' % (version_major, int(version_minor)+1)
-			elif os.path.exists(os.path.join( repo_base, vv, 'maintained', '%d.0-0' % ( int( version_major ) + 1 ) ) ): #check for (x+1).0-0
+			elif os.path.exists(os.path.join( repo_base, '%d.0' % ( int( version_major ) + 1 ), 'maintained', '%d.0-0' % ( int( version_major ) + 1 ) ) ): #check for (x+1).0-0
 				nextversion = '%d.0-0' % (int(version_major)+1)
 
 			if not nextversion:
