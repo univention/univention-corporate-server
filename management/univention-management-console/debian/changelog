@@ -1,3 +1,10 @@
+univention-management-console (1.0.13-1) unstable; urgency=low
+
+  * use /etc/univention/ssl/<hostname>.<domainname> for the host
+    certificate path. Bug #13598
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Mar 2009 15:38:16 +0100
+
 univention-management-console (1.0.12-1) unstable; urgency=low
 
   * fixed traceback while using umcd.Image or umcd.ImageURL (Bug #13259)
