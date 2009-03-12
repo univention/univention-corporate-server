@@ -136,6 +136,11 @@ if __name__ == '__main__':
 	# update local repository
 	if configRegistry.get( 'local/repository', 'no' ) in ( 'true', 'yes'):
 		local_repository = True
+		# if there is no _new_ repository server -> exit
+		if configRegistry.has_key( 'repository/local/old' ):
+			dprint( 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old strucuture and can not be used for any updates anymore. Please migrate the repository to the new directory structure or disable the local reposito by setting the UCR variables local/repository to yes. Information on how to migrate the repository that can be found in the release notes for UCS 2.2-0' )
+			sys.exit( 1 )
+
 		# ... via mirror synchronsiation
 		if command == 'net':
 			dprint( 'Update local repository server ...', [ sys.stdout, stdout ] )
@@ -145,23 +150,10 @@ if __name__ == '__main__':
 				sys.exit( 1 )
 		# ... via tar archive
 		elif command == 'local':
-			regexp_archive_name = re.compile( '.*ucs-security-(?P<version>[0-9]*.[0-9]*)-(?P<patch>[0-9]*)[-.](?P<security>[0-9]*)-(?P<arch>[a-z0-9]*).tgz' )
-			archive = regexp_archive_name.match( file )
-			if not archive:
-				dprint( 'Error: The file %s does not look like a security update archive' % file, [ sys.stdout, stdout ] )
-				sys.exit( 1 )
-			infos = archive.groupdict()
-			repo_path = '%s/mirror/%s/maintained/' % ( configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' ), infos[ 'version' ] )
-			if not os.path.exists( repo_path ):
-				dprint( 'Error: There is no repository for the UCS version %s. Therefore no security update can be added.' % infos[ 'version' ], [ sys.stdout, stdout ] )
-				sys.exit( 1 )
-			sec_path = '%s/sec%s/' % ( repo_path, infos[ 'security' ] )
-			if os.path.exists( sec_path ):
-				dprint( 'Error: The repository for the security update %s of UCS version %s already exists.' % ( infos[ 'security' ], infos[ 'version' ] ), [ sys.stdout, stdout ] )
-				sys.exit( 1 )
-			ret = subprocess.call( [ 'tar','xzf', file ], cwd = repo_path )
+			repo_path = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
+			ret = subprocess.call( [ 'tar','xzf', file ], cwd = os.path.join( repo_path, 'mirror' ) )
 			if ret:
-				dprint( 'Error: Failed to extract security update repository.' )
+				dprint( 'Error: Failed to extract security update archive.' )
 				sys.exit( 1 )
 
 	# without a local repository the local mode is not supported

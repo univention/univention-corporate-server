@@ -189,9 +189,13 @@ class UniventionUpdater:
 		# should hotfixes be used
 		self.hotfixes = self.configRegistry.get( 'repository/online/hotfixes', 'no' ).lower() in ( 'true', 'yes' )
 
-		# check for prefix on repository server
-		if not self.repository_prefix and self.net_path_exists( '/univention-repository/' ):
-			self.repository_prefix = 'univention-repository'
+		# check for prefix on repository server (if the repository server is reachable)
+		try:
+			if not self.repository_prefix and self.net_path_exists( '/univention-repository/' ):
+				self.repository_prefix = 'univention-repository'
+		except:
+			self.repository_prefix = ''
+			pass
 
 	def net_path_exists (self, path, server='', port='', prefix='', username='', password=''):
 		# path MUST NOT contain the schema and hostname

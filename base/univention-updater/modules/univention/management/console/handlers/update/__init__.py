@@ -44,6 +44,7 @@ from univention.updater import UniventionUpdater
 
 import os
 import subprocess, string, time
+import socket
 
 _ = umc.Translation('univention.management.console.handlers.update').translate
 
@@ -223,6 +224,13 @@ class handler(umch.simpleHandler):
 			self.updater.ucr_reinit()
 			self.next_release_update = self.updater.release_update_available()
 			self.next_security_update = self.updater.security_update_available()
+		except socket.gaierror, e:
+			# connection to the repository server failed
+			self.next_release_update_checked = False
+			import traceback
+			ud.debug(ud.ADMIN, ud.ERROR, 'updater: socket.gaierror: %s' % traceback.format_exc())
+			error_message = _( 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' ) % str( e[ 1 ] )
+			self.finished(object.id(), None, error_message , success = False )
 		except Exception, e:
 			self.next_release_update_checked = False
 			import traceback
@@ -729,7 +737,7 @@ chmod +x /usr/sbin/apache2 /usr/sbin/univention-management-console-server
 		html += '<br><br>'
 		html += _('During setup, the web server may be stopped, leading to a termination of the HTTP<br>')
 		html += _('connection. Nonetheless, the update proceeds and the update can be monitored from a<br>')
-		html += _('new UMC session. Logfiles can be found in the directory /var/log/univention/')
+		html += _('new UMC session. Logfiles can be found in the directory /var/log/univention/.')
 		html += '<br><br>'
 		html += _('Please also consider the release notes, changelogs and references posted in the<br>')
 		html += _('<a href=http://forum.univention.de>Univention Forum</a>.')
