@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-19 08:42+0200\n"
+"POT-Creation-Date: 2009-03-12 09:28+0100\n"
 "PO-Revision-Date: 2004-04-02 16:24+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,155 +15,159 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.3\n"
 
-#: cn.py:18
+#: cn.py:44
 msgid "Container: Container"
 msgstr "Container: Container"
 
-#: cn.py:24 dc.py:40 ou.py:25
+#: cn.py:50 dc.py:67 ou.py:51
 msgid "Name"
 msgstr "Name"
 
-#: cn.py:34 ou.py:35
+#: cn.py:60 ou.py:61
 msgid "Add to standard policy containers"
 msgstr "Zu Standard-Richtlinien-Container hinzufügen"
 
-#: cn.py:44 ou.py:45
+#: cn.py:70 ou.py:71
 msgid "Add to standard DHCP containers"
 msgstr "Zu Standard-DHCP-Container hinzufügen"
 
-#: cn.py:54 ou.py:55
+#: cn.py:80 ou.py:81
 msgid "Add to standard DNS containers"
 msgstr "Zu Standard-DNS-Container hinzufügen"
 
-#: cn.py:64 ou.py:65
+#: cn.py:90 ou.py:91
 msgid "Add to standard user containers"
 msgstr "Zu Standard-Benutzer-Container hinzufügen"
 
-#: cn.py:74 ou.py:75
+#: cn.py:100 ou.py:101
 msgid "Add to standard group containers"
 msgstr "Zu Standard-Gruppen-Container hinzufügen"
 
-#: cn.py:84 ou.py:85
+#: cn.py:110 ou.py:111
 msgid "Add to standard computer containers"
 msgstr "Zu Standard-Rechner-Containern hinzufügen"
 
-#: cn.py:94 ou.py:95
+#: cn.py:120 ou.py:121
 msgid "Add to standard network containers"
 msgstr "Zu Standard-Netzwerk-Containern hinzufügen"
 
-#: cn.py:104 ou.py:105
+#: cn.py:130 ou.py:131
 msgid "Add to standard share containers"
 msgstr "Zu Standard-Freigaben-Container hinzufügen"
 
-#: cn.py:114 ou.py:115
+#: cn.py:140 ou.py:141
 msgid "Add to standard printer containers"
 msgstr "Zu Standard-Drucker-Container hinzufügen"
 
-#: cn.py:124 ou.py:125
+#: cn.py:150 ou.py:151
 msgid "Add to standard mail containers"
 msgstr "Zu Standard-Mail-Container hinzufügen"
 
-#: cn.py:134 ou.py:135
+#: cn.py:160 ou.py:161
 msgid "Add to standard license containers"
 msgstr "Zu Standard-Lizenz-Containern hinzufügen"
 
-#: cn.py:144 ou.py:145
+#: cn.py:170 ou.py:171
 msgid "Description"
 msgstr "Beschreibung"
 
-#: cn.py:165 dc.py:146 ou.py:166
+#: cn.py:191 dc.py:172 ou.py:192
 msgid "General"
 msgstr "Allgemein"
 
-#: cn.py:165 dc.py:146 ou.py:166
+#: cn.py:191 dc.py:172 ou.py:192
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: cn.py:168 ou.py:169
+#: cn.py:194 ou.py:195
 msgid "Container settings"
 msgstr "Container-Einstellungen"
 
-#: cn.py:168 ou.py:169
+#: cn.py:194 ou.py:195
 msgid "Default position when adding objects"
 msgstr "Vorgegebene Position beim Hinzufügen von Objekten"
 
-#: dc.py:30
+#: dc.py:57
 msgid "Container: Domain"
 msgstr "Container: Domäne"
 
-#: dc.py:34 dc.py:125
+#: dc.py:61 dc.py:151
 msgid "Kerberos realm"
 msgstr "Kerberos Realm"
 
-#: dc.py:50 dc.py:147
+#: dc.py:77
 msgid "Domain password"
 msgstr "Domänen-Passwort"
 
-#: dc.py:60
+#: dc.py:87
 msgid "DNS forward lookup zone"
 msgstr "Forward Lookup Zone"
 
-#: dc.py:71
+#: dc.py:98
 msgid "DNS reverse lookup zone"
 msgstr "Reverse Lookup Zone"
 
-#: dc.py:81
+#: dc.py:108
 msgid "Samba domain name"
 msgstr "Samba-Domänenname"
 
-#: dc.py:92
+#: dc.py:119
 msgid "Samba SID"
 msgstr "Samba-SID"
 
-#: dc.py:103
+#: dc.py:129
 msgid "Samba Next User RID"
 msgstr "Nächste Samba-User-RID"
 
-#: dc.py:114
+#: dc.py:140
 msgid "Samba Next Group RID"
 msgstr "Nächste Samba-Gruppen-RID"
 
-#: dc.py:136
+#: dc.py:162
 msgid "Mail relay server"
 msgstr "Mail Relay-Server"
 
-#: dc.py:147
-msgid "Administrator password for this Domain"
+#: dc.py:173
+msgid "Domain Password"
+msgstr "Domänen-Passwort"
+
+#: dc.py:173
+msgid "Administrator password for this domain"
 msgstr "Administrator Passwort für die Domäne"
 
-#: dc.py:148
+#: dc.py:174
 msgid "DNS"
 msgstr "DNS"
 
-#: dc.py:148
+#: dc.py:174
 msgid "DNS Zones"
 msgstr "DNS-Zonen"
 
-#: dc.py:151
+#: dc.py:177
 msgid "Samba"
 msgstr "Samba"
 
-#: dc.py:151
-msgid "Samba settings"
+#: dc.py:177
+msgid "Samba Settings"
 msgstr "Samba-Einstellungen"
 
-#: dc.py:155
+#: dc.py:181
 msgid "Kerberos"
 msgstr "Kerberos"
 
-#: dc.py:155
-msgid "Kerberos settings"
+#: dc.py:181
+msgid "Kerberos Settings"
 msgstr "Kerberos-Einstellungen"
 
-#: dc.py:158
+#: dc.py:184
 msgid "Mail"
 msgstr "Mail"
 
-#: dc.py:158
-msgid "Mail settings"
+#: dc.py:184
+msgid "Mail Settings"
 msgstr "Mail-Einstellungen"
 
-#: ou.py:19
+#: ou.py:45
 msgid "Container: Organisational Unit"
 msgstr "Container: Organisationseinheit"
 

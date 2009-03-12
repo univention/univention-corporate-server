@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.6-6) unstable; urgency=low
+
+  * Resync gettext offsets (Bug #13535).
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 12 Mar 2009 09:54:36 +0100
+
 univention-directory-manager-modules (4.0.6-5) unstable; urgency=low
 
   * Rename "path settings" to "container settings" (Bug #12525).

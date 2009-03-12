@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-16 10:53+0100\n"
+"POT-Creation-Date: 2009-03-12 09:40+0100\n"
 "PO-Revision-Date: 2007-11-28 14:14+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,12 +29,12 @@ msgstr "Einstellungen: Univention Directory Manager Globale Einstellungen"
 msgid "Name"
 msgstr "Name"
 
-#: admin.py:62 user.py:63
-msgid "Visible wizards"
+#: admin.py:62
+msgid "Visible Wizards"
 msgstr "Sichtbare Assistenten"
 
-#: admin.py:72 user.py:103
-msgid "Visible modules"
+#: admin.py:72
+msgid "Visible Modules"
 msgstr "Sichtbare Module"
 
 #: admin.py:84 cn.py:61 console_acl.py:121 console_operation.py:89
@@ -683,6 +683,10 @@ msgstr "Einstellungen: Univention Directory Manager Benutzereinstellungen"
 msgid "User name"
 msgstr "Benutzername"
 
+#: user.py:63
+msgid "Visible wizards"
+msgstr "Sichtbare Assistenten"
+
 #: user.py:73
 msgid "Accessible user attributes"
 msgstr "Sichtbare Benutzerattribute"
@@ -694,6 +698,10 @@ msgstr "In Suchergebnissen werden diese Attribute angezeigt"
 #: user.py:93
 msgid "Show these attributes in the navigation"
 msgstr "Zeige diese Attribute in der Navigation"
+
+#: user.py:103
+msgid "Visible modules"
+msgstr "Sichtbare Module"
 
 #: user.py:113
 msgid "LDAP base DN"

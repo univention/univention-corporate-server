@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-11 09:03+0100\n"
+"POT-Creation-Date: 2009-03-12 09:34+0100\n"
 "PO-Revision-Date: 2005-10-18 13:52+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -210,7 +210,7 @@ msgstr "Montag"
 
 #: timeperiod.py:95 timeperiod.py:105 timeperiod.py:115 timeperiod.py:125
 #: timeperiod.py:135 timeperiod.py:145 timeperiod.py:155
-msgid "Enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)"
+msgid "enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)"
 msgstr "Angabe von Zeiträumen (z.B. 00:00-07.15,23:12-24:00)"
 
 #: timeperiod.py:104
@@ -238,5 +238,5 @@ msgid "Sunday"
 msgstr "Sonntag"
 
 #: timeperiod.py:167
-msgid "Time period settings"
+msgid "Time Period Settings"
 msgstr "Zeitraum-Einstellungen"
