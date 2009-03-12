@@ -3,7 +3,7 @@
 # Univention AD Connector
 #  this file defines the mapping beetween AD and UCS
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 # 

@@ -1,3 +1,9 @@
+univention-xen (1.0.3-3) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Mar 2009 13:47:39 +0100
+
 univention-xen (1.0.3-2) unstable; urgency=low
 
   * fixed a typo of the last commit. Bug #13432

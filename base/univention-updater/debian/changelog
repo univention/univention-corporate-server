@@ -1,3 +1,9 @@
+univention-updater (4.0.40-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Mar 2009 13:47:35 +0100
+
 univention-updater (4.0.40-1) unstable; urgency=low
 
   * fixed local update mode: updates to new minor or major versions did
