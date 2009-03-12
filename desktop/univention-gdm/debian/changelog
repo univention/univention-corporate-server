@@ -1,3 +1,9 @@
+univention-gdm (4.0.3-2) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Mar 2009 13:47:36 +0100
+
 univention-gdm (4.0.3-1) unstable; urgency=low
 
   * fixed a typo in the gdm.conf. Bug #13082

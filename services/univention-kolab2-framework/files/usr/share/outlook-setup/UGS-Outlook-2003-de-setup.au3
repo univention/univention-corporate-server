@@ -1,7 +1,7 @@
 ; Univention UGS Outlook 2003 Setup
 ;  AutoIT(tm) script for configuration Outlook 2003 as UGS client
 ;
-; Copyright (C) 2006 Univention GmbH
+; Copyright (C) 2006-2009 Univention GmbH
 ;
 ; http://www.univention.de/
 ;

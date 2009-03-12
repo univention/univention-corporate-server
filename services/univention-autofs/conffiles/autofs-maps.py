@@ -3,7 +3,7 @@
 # Univention AutoFS
 #  creates autofs maps
 #
-# Copyright (C) 2008,2009 Univention GmbH
+# Copyright (C) 2008-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
