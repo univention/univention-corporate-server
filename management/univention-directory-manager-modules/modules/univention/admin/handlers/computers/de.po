@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 08:57+0200\n"
+"POT-Creation-Date: 2009-03-12 09:25+0100\n"
 "PO-Revision-Date: 2007-09-26 16:28+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -36,7 +36,6 @@ msgid "Search"
 msgstr "Suchen"
 
 #: computer.py:55
-#, fuzzy
 msgid "Search computer(s)"
 msgstr "Rechner suchen"
 
@@ -44,21 +43,28 @@ msgstr "Rechner suchen"
 msgid "Name"
 msgstr "Name"
 
-#: computer.py:78 domaincontroller_backup.py:94 domaincontroller_master.py:94
+#: computer.py:78 domaincontroller_backup.py:76 domaincontroller_master.py:76
+#: domaincontroller_slave.py:76 ipmanagedclient.py:67 macos.py:76
+#: managedclient.py:76 memberserver.py:76 mobileclient.py:76 thinclient.py:66
+#: trustaccount.py:65 windows.py:74
+msgid "Description"
+msgstr "Beschreibung"
+
+#: computer.py:87 domaincontroller_backup.py:94 domaincontroller_master.py:94
 #: domaincontroller_slave.py:94 ipmanagedclient.py:76 macos.py:85
 #: managedclient.py:94 memberserver.py:94 mobileclient.py:94 thinclient.py:75
 #: windows.py:83
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: computer.py:88 domaincontroller_backup.py:114
+#: computer.py:97 domaincontroller_backup.py:114
 #: domaincontroller_master.py:114 domaincontroller_slave.py:114
-#: ipmanagedclient.py:96 macos.py:105 managedclient.py:114 memberserver.py:114
+#: ipmanagedclient.py:96 managedclient.py:114 memberserver.py:114
 #: mobileclient.py:114 thinclient.py:95 windows.py:103
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: computer.py:98 domaincontroller_backup.py:251
+#: computer.py:107 domaincontroller_backup.py:251
 #: domaincontroller_master.py:251 domaincontroller_slave.py:251
 #: ipmanagedclient.py:139 macos.py:192 managedclient.py:231
 #: memberserver.py:251 mobileclient.py:231 thinclient.py:138 windows.py:179
@@ -72,26 +78,19 @@ msgstr "Rechner: Domänencontroller Backup"
 #: domaincontroller_backup.py:56 domaincontroller_master.py:56
 #: domaincontroller_slave.py:56 macos.py:56 managedclient.py:56
 #: memberserver.py:56 mobileclient.py:56
-msgid "Posix Account"
+msgid "Posix account"
 msgstr "Posix Konto"
 
 #: domaincontroller_backup.py:60 domaincontroller_master.py:60
 #: domaincontroller_slave.py:60 macos.py:60 managedclient.py:60
 #: memberserver.py:60 mobileclient.py:60
-msgid "Kerberos Principal"
+msgid "Kerberos principal"
 msgstr "Kerberos Prinzipal"
 
 #: domaincontroller_backup.py:66 domaincontroller_master.py:66
 #: domaincontroller_slave.py:66
 msgid "Domain controller name"
 msgstr "Domänencontroller Name"
-
-#: domaincontroller_backup.py:76 domaincontroller_master.py:76
-#: domaincontroller_slave.py:76 ipmanagedclient.py:67 macos.py:76
-#: managedclient.py:76 memberserver.py:76 mobileclient.py:76 thinclient.py:66
-#: trustaccount.py:65 windows.py:74
-msgid "Description"
-msgstr "Beschreibung"
 
 #: domaincontroller_backup.py:85 domaincontroller_master.py:85
 #: domaincontroller_slave.py:85 ipmanagedclient.py:160 macos.py:213
@@ -132,9 +131,8 @@ msgid "Reverse zone for DNS entry"
 msgstr "Reverse Zone für DNS-Eintrag"
 
 #: domaincontroller_backup.py:166 domaincontroller_master.py:166
-#: domaincontroller_slave.py:166 ipmanagedclient.py:128 macos.py:137
-#: managedclient.py:146 memberserver.py:166 mobileclient.py:146
-#: thinclient.py:127 windows.py:135
+#: domaincontroller_slave.py:166 macos.py:137 managedclient.py:146
+#: memberserver.py:166 mobileclient.py:146 thinclient.py:127 windows.py:135
 msgid "DHCP service"
 msgstr "Service für DHCP-Eintrag"
 
@@ -200,9 +198,9 @@ msgstr "Allgemein"
 #: domaincontroller_backup.py:273 domaincontroller_master.py:273
 #: domaincontroller_slave.py:273 ipmanagedclient.py:170 macos.py:223
 #: managedclient.py:253 memberserver.py:273 mobileclient.py:253
-#: thinclient.py:169 trustaccount.py:86
-msgid "Basic Values"
-msgstr "Grundeinstellungen"
+#: thinclient.py:169
+msgid "Basic settings"
+msgstr "Rechnerkonto-Einstellungen"
 
 #: domaincontroller_backup.py:278 domaincontroller_master.py:278
 #: domaincontroller_slave.py:278 ipmanagedclient.py:175 macos.py:228
@@ -262,9 +260,8 @@ msgid "Deployment"
 msgstr "(Re)installation"
 
 #: domaincontroller_backup.py:302 domaincontroller_master.py:302
-#: domaincontroller_slave.py:302 ipmanagedclient.py:185 macos.py:245
-#: managedclient.py:279 memberserver.py:302 mobileclient.py:279
-#: thinclient.py:184 windows.py:232
+#: ipmanagedclient.py:185 macos.py:245 managedclient.py:279
+#: memberserver.py:302 mobileclient.py:279 thinclient.py:184 windows.py:232
 msgid "Group memberships"
 msgstr "Gruppenmitgliedschaften"
 
@@ -276,6 +273,10 @@ msgstr "Rechner: Domänencontroller Master"
 msgid "Computer: Domain Controller Slave"
 msgstr "Rechner: Domänencontroller Slave"
 
+#: domaincontroller_slave.py:302
+msgid "Group Memberships"
+msgstr "Gruppenmitgliedschaften"
+
 #: ipmanagedclient.py:51
 msgid "Computer: IP managed client"
 msgstr "Rechner: IP-Managed-Client"
@@ -284,33 +285,42 @@ msgstr "Rechner: IP-Managed-Client"
 msgid "IP managed client name"
 msgstr "Name des IP-Managed-Client"
 
+#: ipmanagedclient.py:128
+msgid "Service for DHCP entry"
+msgstr "Reverse Zone für DNS-Eintrag"
+
 #: macos.py:52
 msgid "Computer: Mac OS X Client"
 msgstr "Rechner: Mac OS X Client"
 
-#: macos.py:66 managedclient.py:66
-msgid "Client Name"
+#: macos.py:66
+msgid "Client name"
 msgstr "Rechnername"
+
+#: macos.py:105
+msgid "IP Address"
+msgstr "IP-Adresse"
 
 #: managedclient.py:52
 msgid "Computer: Managed Client"
 msgstr "Rechner: Managed Client"
+
+#: managedclient.py:66 mobileclient.py:66 windows.py:64 windows.py:332
+#: windows.py:343
+msgid "Hostname"
+msgstr "Rechnername"
 
 #: memberserver.py:52
 msgid "Computer: Member Server"
 msgstr "Rechner: Member-Server"
 
 #: memberserver.py:66
-msgid "Member Server Name"
-msgstr "Name des Member Servers"
+msgid "Member server name"
+msgstr "Name des Member-Servers"
 
 #: mobileclient.py:52
 msgid "Computer: Mobile Client"
 msgstr "Rechner: Mobile Client"
-
-#: mobileclient.py:66
-msgid "Mobile Client Name"
-msgstr "Mobile Client Name"
 
 #: thinclient.py:50
 msgid "Computer: Thin Client"
@@ -321,15 +331,19 @@ msgid "Computer: Domain Trust Account"
 msgstr "Rechner: Domain Trust Account"
 
 #: trustaccount.py:74
-msgid "Machine password"
+msgid "Machine Password"
 msgstr "Rechner Passwort"
 
+#: trustaccount.py:86
+msgid "Basic Values"
+msgstr "Grundeinstellungen"
+
 #: trustaccount.py:89
-msgid "Domain trust account"
+msgid "Domain Trust Account"
 msgstr "Domain Trust Account"
 
 #: trustaccount.py:89
-msgid "Trust account settings"
+msgid "Trust Account Settings"
 msgstr "Domain Trust Account-Einstellungen"
 
 #: windows.py:54
@@ -339,10 +353,6 @@ msgstr "Rechner: Windows"
 #: windows.py:58
 msgid "Samba account"
 msgstr "Samba-Konto"
-
-#: windows.py:64 windows.py:332 windows.py:343
-msgid "Hostname"
-msgstr "Rechnername"
 
 #: windows.py:146
 msgid "Machine account group"
@@ -363,6 +373,9 @@ msgstr "Rechnerkonto"
 #: windows.py:218
 msgid "Machine account settings"
 msgstr "Rechnerkonto-Einstellungen"
+
+#~ msgid "Mobile Client Name"
+#~ msgstr "Mobile Client Name"
 
 #~ msgid "Computer Manager"
 #~ msgstr "Rechnerverwaltung"

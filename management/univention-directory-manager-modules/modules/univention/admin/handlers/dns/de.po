@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-27 14:57+0200\n"
+"POT-Creation-Date: 2009-03-12 09:30+0100\n"
 "PO-Revision-Date: 2008-06-27 14:59+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,8 +41,8 @@ msgstr "Der FQDN muss mit einem '.' enden"
 msgid "General"
 msgstr "Allgemein"
 
-#: alias.py:82 dns.py:78 forward_zone.py:179 host_record.py:99
-#: ptr_record.py:69 reverse_zone.py:161 srv_record.py:82
+#: alias.py:82 dns.py:78 forward_zone.py:179 ptr_record.py:69
+#: reverse_zone.py:161 srv_record.py:82
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
@@ -71,7 +71,7 @@ msgid "Search"
 msgstr "Suchen"
 
 #: dns.py:57
-msgid "Searchx DNS object(s)"
+msgid "Search DNS object(s)"
 msgstr "DNS-Objekt(e) suchen"
 
 #: dns.py:68 srv_record.py:51
@@ -115,7 +115,7 @@ msgid "Name server"
 msgstr "Nameserver"
 
 #: forward_zone.py:160
-msgid "Mail Exchanger host"
+msgid "Mail exchanger host"
 msgstr "Mail Exchanger Rechner"
 
 #: forward_zone.py:169
@@ -123,7 +123,7 @@ msgid "TXT record"
 msgstr "TXT Record"
 
 #: forward_zone.py:183 reverse_zone.py:165
-msgid "Start of Authority entry"
+msgid "Start of Authority"
 msgstr "Start of Authority Eintrag"
 
 #: forward_zone.py:183 reverse_zone.py:165
@@ -131,7 +131,7 @@ msgid "Primary name server information"
 msgstr "Primäre Nameserver Informationen"
 
 #: forward_zone.py:185 reverse_zone.py:167
-msgid "Primary name server"
+msgid "Primary Name Server"
 msgstr "Primärer Nameserver"
 
 #: forward_zone.py:189 reverse_zone.py:140 reverse_zone.py:171
@@ -168,27 +168,31 @@ msgid "Hostname"
 msgstr "Rechnername"
 
 #: host_record.py:71
-msgid "IP address"
+msgid "IP Address"
 msgstr "IP-Adresse"
 
 #: host_record.py:80
-msgid "Mail exchanger"
+msgid "Mail Exchanger"
 msgstr "Mail Exchanger"
 
 #: host_record.py:89
-msgid "Text record"
+msgid "Text Record"
 msgstr "Text Record"
 
+#: host_record.py:99
+msgid "Basic Values"
+msgstr "Grundeinstellungen"
+
 #: host_record.py:101
-msgid "Primary IP address"
+msgid "Primary IP-Address"
 msgstr "Primäre IP-Adresse"
 
 #: host_record.py:104
-msgid "IP addresses"
+msgid "IP-Addresses"
 msgstr "IP-Adressen"
 
 #: host_record.py:104
-msgid "IP addresses of host"
+msgid "IP Addresses of the Host"
 msgstr "IP-Adressen des Rechners"
 
 #: host_record.py:107
@@ -196,7 +200,7 @@ msgid "Mail"
 msgstr "Mail"
 
 #: host_record.py:107
-msgid "Mail exchangers for this host"
+msgid "Mail Exchangers for this Host"
 msgstr "Mail Exchanger für diesen Rechner"
 
 #: host_record.py:110
@@ -204,11 +208,11 @@ msgid "Text"
 msgstr "Text"
 
 #: host_record.py:110
-msgid "Optional text"
+msgid "Optional Text"
 msgstr "Optionaler Text"
 
 #: host_record.py:155 ptr_record.py:96 srv_record.py:133
-msgid "Superordinate object not present"
+msgid "superordinate object not present"
 msgstr "Ein übergeordnetes Objekt ist nicht vorhanden"
 
 #: ptr_record.py:44

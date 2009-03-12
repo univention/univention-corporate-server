@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-28 13:42+0100\n"
+"POT-Creation-Date: 2009-03-12 09:15+0100\n"
 "PO-Revision-Date: 2006-09-06 13:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,8 +19,7 @@ msgstr ""
 msgid "User: Password"
 msgstr "Benutzer: Passwort"
 
-#: passwd.py:55 user.py:144 user.py:1817 user.py:1827 user.py:1857
-#: user.py:1867
+#: passwd.py:55 user.py:144 user.py:1859 user.py:1869
 msgid "User name"
 msgstr "Benutzername"
 
@@ -32,7 +31,7 @@ msgstr "Passwort"
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: self.py:54 self.py:115 user.py:1052 user.py:1056
+#: self.py:54 self.py:115 user.py:1056
 msgid "General"
 msgstr "Allgemein"
 
@@ -101,8 +100,8 @@ msgid "Groupware account"
 msgstr "Groupware-Konto"
 
 #: user.py:125
-msgid "Public Key Infrastructure Account"
-msgstr "Public Key Infrastruktur Konto"
+msgid "Public key infrastructure account"
+msgstr "Public Key Infrastruktur-Konto"
 
 #: user.py:131
 msgid "Personal information"
@@ -140,7 +139,7 @@ msgstr "Titel"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: user.py:223 user.py:1074 user.py:1078
+#: user.py:223 user.py:1078
 msgid "Organisation"
 msgstr "Organisation"
 
@@ -156,7 +155,7 @@ msgstr "Datum als Tag.Monat.Jahr eingeben."
 msgid "Password expiry date"
 msgstr "Passwort-Ablaufdatum"
 
-#: user.py:256
+#: user.py:256 user.py:257
 msgid "Change password on next login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
@@ -252,7 +251,7 @@ msgstr "Laufwerk für das Windows-Heimatverzeichnis"
 msgid "Relative ID"
 msgstr "Relative ID"
 
-#: user.py:515 user.py:1097 user.py:1101
+#: user.py:515 user.py:1101
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -287,20 +286,21 @@ msgid "Override password length"
 msgstr "Passwort-Länge ignorieren"
 
 #: user.py:592
-msgid "Home Share"
-msgstr "Heimatverzeichnisfreigabe"
+msgid "Alternative home share"
+msgstr "Alternativer Pfad zur Heimatverzeichnisfreigabe"
 
 #: user.py:593
-msgid "Share, the user's home directory resides on"
-msgstr "Freigabe, auf der das Heimatverzeichnis des Benutzers liegt."
+msgid "Alternative Share, the user's home directory resides on"
+msgstr ""
+"Alternative Freigabe, auf der das Heimatverzeichnis des Benutzers liegt."
 
 #: user.py:603
-msgid "Home Share Path"
-msgstr "Pfad der Heimatverzeichnisfreigabe"
+msgid "Alternative home share path"
+msgstr "Alternativer Pfad zum Heimatverzeichnis unterhalb der Freigabe."
 
 #: user.py:604
-msgid "Path on the Home Share"
-msgstr "Pfad zum Heimatverzeichnis unterhalb der Freigabe."
+msgid "Alternative Path on the Home Share"
+msgstr "Alternativer Pfad zum Heimatverzeichnis unterhalb der Freigabe."
 
 #: user.py:615
 msgid "Allowed hosts"
@@ -533,126 +533,126 @@ msgstr "Seriennummer"
 msgid "Certificate Serial"
 msgstr "Zertifikatsseriennummer"
 
-#: user.py:1052 user.py:1056
+#: user.py:1056
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: user.py:1059 user.py:1063
+#: user.py:1063
 msgid "User account"
 msgstr "Benutzer-Konto"
 
-#: user.py:1059 user.py:1063
+#: user.py:1063
 msgid "Account settings"
 msgstr "Konto-Einstellungen"
 
-#: user.py:1064 user.py:1068
+#: user.py:1068
 msgid "Mail"
 msgstr "Mail"
 
-#: user.py:1064 user.py:1068
+#: user.py:1068
 msgid "Mail preferences"
 msgstr "Maileinstellungen"
 
-#: user.py:1069 user.py:1073
+#: user.py:1073
 msgid "Contact"
 msgstr "Kontakt"
 
-#: user.py:1069 user.py:1073
+#: user.py:1073
 msgid "Contact information"
 msgstr "Kontaktinformationen"
 
-#: user.py:1074 user.py:1078
+#: user.py:1078
 msgid "Organisational information"
 msgstr "Organisations-/Mitarbeiterinformationen"
 
-#: user.py:1081 user.py:1085
+#: user.py:1085
 msgid "Contact (private)"
 msgstr "Kontakt privat"
 
-#: user.py:1081 user.py:1085
+#: user.py:1085
 msgid "Private contact information"
 msgstr "Private Kontaktinformationen"
 
-#: user.py:1085 user.py:1089
+#: user.py:1089
 msgid "Linux/UNIX"
 msgstr "Linux/UNIX"
 
-#: user.py:1085 user.py:1089
+#: user.py:1089
 msgid "Unix account settings"
 msgstr "UNIX-Kontoeinstellungen"
 
-#: user.py:1091 user.py:1095
+#: user.py:1095
 msgid "Windows"
 msgstr "Windows"
 
-#: user.py:1091 user.py:1095
+#: user.py:1095
 msgid "Windows account settings"
 msgstr "Windows-Kontoeinstellungen"
 
-#: user.py:1097 user.py:1101
+#: user.py:1101
 msgid "Group memberships"
 msgstr "Gruppenmitgliedschaften"
 
-#: user.py:1101 user.py:1105
+#: user.py:1105
 msgid "Out of office notice"
 msgstr "Abwesenheitsnotiz"
 
-#: user.py:1109 user.py:1113
+#: user.py:1113
 msgid "Groupware"
 msgstr "Groupware"
 
-#: user.py:1109 user.py:1113
+#: user.py:1113
 msgid "Groupware settings"
 msgstr "Groupware-Einstellungen"
 
-#: user.py:1120 user.py:1124
+#: user.py:1124
+msgid "Invitation"
+msgstr "Terminannahme"
+
+#: user.py:1124
 msgid "Invitation acceptance"
 msgstr "Terminannahme"
 
-#: user.py:1123 user.py:1127
+#: user.py:1127
 msgid "User Certificate"
 msgstr "Benutzerzertifikat"
 
-#: user.py:1859 user.py:1899
+#: user.py:1901
 #, python-format
 msgid "Need one of %s, %s, %s or %s in options to create user."
 msgstr ""
 "Mindestens eine Option aus %s, %s, %s oder %s muss aktiv sein, um einen "
 "neuen Benutzer zu erstellen."
 
-#: user.py:2136 user.py:2189
+#: user.py:2195
 #, python-format
 msgid "The password is too short, at least %d characters!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 
-#: user.py:2142 user.py:2195
+#: user.py:2201
 #, python-format
 msgid "The password is too short, at least %d character!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 
-#: user.py:2412 user.py:2465
+#: user.py:2471
 msgid "DN given as share is not valid."
 msgstr "Der DN der Freigabe ist nicht zulässig."
 
-#: user.py:2428 user.py:2481
+#: user.py:2487
 msgid "Given DN is no share."
 msgstr "Der angegebene DN ist keine Freigabe."
 
-#: user.py:592
-msgid "Alternative home share"
-msgstr "Alternativer Pfad zur Heimatverzeichnisfreigabe"
+#~ msgid "Home Share"
+#~ msgstr "Heimatverzeichnisfreigabe"
 
-#: user.py:603
-msgid "Alternative home share path"
-msgstr "Alternativer Pfad zum Heimatverzeichnis unterhalb der Freigabe."
+#~ msgid "Share, the user's home directory resides on"
+#~ msgstr "Freigabe, auf der das Heimatverzeichnis des Benutzers liegt."
 
-#: user.py:593
-msgid "Alternative Share, the user's home directory resides on"
-msgstr "Alternative Freigabe, auf der das Heimatverzeichnis des Benutzers liegt."
+#~ msgid "Home Share Path"
+#~ msgstr "Pfad der Heimatverzeichnisfreigabe"
 
-#: user.py:604
-msgid "Alternative Path on the Home Share"
-msgstr "Alternativer Pfad zum Heimatverzeichnis unterhalb der Freigabe."
+#~ msgid "Path on the Home Share"
+#~ msgstr "Pfad zum Heimatverzeichnis unterhalb der Freigabe."
 
 #~ msgid "Employee"
 #~ msgstr "Mitarbeiter"
