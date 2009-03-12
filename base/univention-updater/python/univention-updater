@@ -431,9 +431,9 @@ def main():
 		if baseConfig.has_key('local/repository') and ( baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes'):
 			dprint('local/reposity active, copy %s and start local mode' % device_name)
 			if iso:
-				resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update cdrom', '--cdrom', cdrom_mount_point, '--iso', iso ] + updateto_args )
+				resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'cdrom', '--cdrom', cdrom_mount_point, '--iso', iso ] + updateto_args )
 			else:
-				resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update cdrom', '--cdrom', cdrom_mount_point ] + updateto_args )
+				resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'cdrom', '--cdrom', cdrom_mount_point ] + updateto_args )
 
 			if resultCode != 0:
 				dprint('Failed to execute univention-repository-update cdrom', [sys.stdout,stdout])
