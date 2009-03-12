@@ -198,7 +198,7 @@ class Server( signals.Provider ):
 			self.crypto_context.set_cipher_list('DEFAULT')
 			self.crypto_context.set_options( SSL.OP_NO_SSLv2 )
 			self.crypto_context.set_verify( SSL.VERIFY_PEER, self.__verify_cert_cb )
-			dir = '/etc/univention/ssl/%s' % umc.baseconfig[ 'hostname' ]
+			dir = '/etc/univention/ssl/%s.%s' % (umc.baseconfig[ 'hostname' ], umc.baseconfig[ 'domainname' ])
 # used for debugging purposes ==> cert that is not trustworthy
 #			self.crypto_context.use_privatekey_file( '/root/server.pkey' )
 #			self.crypto_context.use_certificate_file( '/root/server.cert' )
