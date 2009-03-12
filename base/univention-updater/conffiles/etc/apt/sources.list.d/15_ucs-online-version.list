@@ -10,7 +10,7 @@ try:
 	if updater.online_repository:
 		print updater.print_version_repositories()
 	else:
-		print '# The online repository was disabled and could be enabled with:'
+		print '# The online repository is disabled and can be enabled with:'
 		print '#   univention-config-registry set repository/online=true'
 		print ''
 except:

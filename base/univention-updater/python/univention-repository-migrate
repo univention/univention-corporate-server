@@ -194,3 +194,7 @@ if __name__ == '__main__':
 		sys.exit( 1 )
 
 	migrate_repository( options )
+
+	# unset UCR variable makring old repository
+	if configRegistry.has_key( 'repository/local/old' ):
+		ucr.handler_unset( 'repository/local/old' )

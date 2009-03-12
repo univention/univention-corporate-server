@@ -1,3 +1,16 @@
+univention-updater (4.0.41-1) unstable; urgency=low
+
+  * univention-updater, univention-security-update and
+    univention-repository-update check on repository servers if there is
+    already a new repositor structure. If not an eorr message is shown
+    that explains the next steps (Bug #12511)
+  * updated german translation of UMC module (Bug #11990)
+  * security update tar archives will now contain the correct directory
+    structure and will be extracted directly at the base repository
+    directory (Bug #12298)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 12 Mar 2009 16:14:53 +0100
+
 univention-updater (4.0.40-2) unstable; urgency=low
 
   * updated the copyright. Bug #6875

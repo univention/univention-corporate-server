@@ -42,6 +42,9 @@ update-initramfs -u -k all>>/var/log/univention/updater.log 2>&1
 # active the new repository configuration and mirroring if available
 univention-config-registry set repository/online=yes repository/mirror?yes
 
+# mark old repository servers as not migrated (old directory structure)
+univention-config-registry set repository/local/old=
+
 # update apt index files
 apt-get update >>/var/log/univention/updater.log 2>&1
 
