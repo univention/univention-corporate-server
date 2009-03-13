@@ -402,6 +402,8 @@ class handler(umch.simpleHandler):
 		#### UCS Releases
 		list_release = umcd.List()
 
+		local_repo = self.updater.configRegistry.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' )
+
 		# updater log button
 		req = self.__get_logfile_request( '/var/log/univention/updater.log' )
 		btn_install_release_update = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
@@ -450,42 +452,45 @@ class handler(umch.simpleHandler):
 
 		#### UCS Components
 		list_component = umcd.List()
+		if not local_repo:
 
-		# TODO: check the components
-		for component_name in self.updater.get_all_components():
-			component = self.updater.get_component(component_name)
-			description = component.get('description', component_name)
-			req = umcp.Command(args=['update/components_settings'], opts = {'component': component})
+			# TODO: check the components
+			for component_name in self.updater.get_all_components():
+				component = self.updater.get_component(component_name)
+				description = component.get('description', component_name)
+				req = umcp.Command(args=['update/components_settings'], opts = {'component': component})
+				req.set_flag('web:startup', True)
+				req.set_flag('web:startup_cache', False)
+				req.set_flag('web:startup_dialog', True)
+				req.set_flag('web:startup_referrer', True)
+				req.set_flag('web:startup_format', _('Modify component %s' )  % description )
+				if component.get('activated', '').lower() in ['true', 'yes', '1', 'enabled']:
+					list_component.add_row([umcd.Button(description, 'update/gear', actions=[umcd.Action(req)]), umcd.Text(_('This component is enabled'))])
+				else:
+					list_component.add_row([umcd.Button(description, 'update/gear', actions=[umcd.Action(req)]), umcd.Text(_('This component is disabled'))])
+
+
+			#TODO: show new components from the server
+
+			req = umcp.Command(args=['update/components_update'], opts={'status': 'check'})
+			req.set_flag('web:startup', True)
+			req.set_flag('web:startup_cache', False)
+			req.set_flag('web:startup_dialog', True)
+			req.set_flag('web:startup_referrer', False)
+			req.set_flag('web:startup_format', _('Check for updates'))
+			btn_update_check = umcd.Button(_('Check for updates'), 'actions/refresh', actions = [umcd.Action(req)])
+
+			req = umcp.Command(args=['update/components_settings'])
 			req.set_flag('web:startup', True)
 			req.set_flag('web:startup_cache', False)
 			req.set_flag('web:startup_dialog', True)
 			req.set_flag('web:startup_referrer', True)
-			req.set_flag('web:startup_format', _('Modify component %s' )  % description )
-			if component.get('activated', '').lower() in ['true', 'yes', '1', 'enabled']:
-				list_component.add_row([umcd.Button(description, 'update/gear', actions=[umcd.Action(req)]), umcd.Text(_('This component is enabled'))])
-			else:
-				list_component.add_row([umcd.Button(description, 'update/gear', actions=[umcd.Action(req)]), umcd.Text(_('This component is disabled'))])
+			req.set_flag('web:startup_format', _('Add a new component'))
+			btn_add_component = umcd.Button(_('Add a new component'), 'actions/plus', actions = [umcd.Action(req)])
 
-
-		#TODO: show new components from the server
-
-		req = umcp.Command(args=['update/components_update'], opts={'status': 'check'})
-		req.set_flag('web:startup', True)
-		req.set_flag('web:startup_cache', False)
-		req.set_flag('web:startup_dialog', True)
-		req.set_flag('web:startup_referrer', False)
-		req.set_flag('web:startup_format', _('Check for updates'))
-		btn_update_check = umcd.Button(_('Check for updates'), 'actions/refresh', actions = [umcd.Action(req)])
-
-		req = umcp.Command(args=['update/components_settings'])
-		req.set_flag('web:startup', True)
-		req.set_flag('web:startup_cache', False)
-		req.set_flag('web:startup_dialog', True)
-		req.set_flag('web:startup_referrer', True)
-		req.set_flag('web:startup_format', _('Add a new component'))
-		btn_add_component = umcd.Button(_('Add a new component'), 'actions/plus', actions = [umcd.Action(req)])
-
-		list_component.add_row([btn_update_check, btn_add_component])
+			list_component.add_row([btn_update_check, btn_add_component])
+		else:
+			list_component.add_row( [ umcd.InfoBox( _( 'The component management has been deactivated as this server has a local repository.' ), columns = 2 ) ] )
 
 		frame_release = umcd.Frame([list_release], _('Release information'))
 		frame_component = umcd.Frame([list_component], _('Components'))
@@ -531,7 +536,7 @@ class handler(umch.simpleHandler):
 			log = res.dialog
 			html = '<h2>' + _('The updater is still in process.') + '</h2>' + '<pre>' + _('Please be patient the update may take a while. Press the refresh button to see the latest log.') + '</pre>' + '<body>' + self.__remove_status_messages(log) + '</body>'
 			result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
-			btn_refresh = umcd.Button(_('Refresh'), 'actions/refresh', actions = [umcd.Action(self.__get_logfile_request())])
+			btn_refresh = umcd.Button(_('Refresh'), 'actions/refresh', actions = [umcd.Action(self.__get_logfile_request( self.logfile ))])
 			result.add_row([ btn_refresh, umcd.CloseButton()])
 		else:
 			html = '<h2>' + _('The updater finished.') + '</h2>'
@@ -652,14 +657,16 @@ class handler(umch.simpleHandler):
 
 		if res.options['type'] == 'security':
 			command = 'update/install_security_updates'
+			self.logfile = '/var/log/univention/security-update.log'
 		else:
 			command = 'update/install_release_updates'
+			self.logfile = '/var/log/univention/updater.log'
 
 		html = self.__get_update_warning()
 
 		result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
 		req = umcp.Command(args=[command])
-		btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), umcd.Action(self.__get_logfile_request())])
+		btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), umcd.Action(self.__get_logfile_request( self.logfile ))])
 
 		result.add_row([ btn_continue, umcd.CancelButton()])
 		res.dialog = [ result]
@@ -692,8 +699,8 @@ chmod +x /usr/sbin/apache2 /usr/sbin/univention-management-console-server
 		else:
 			return (p1.returncode,stdout)
 
-	def __is_process_running(self, command):
-		p1 = subprocess.Popen(['ps -ef | egrep "%s" | grep -v grep' % command], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+	def __is_process_running(self, pattern, command ):
+		p1 = subprocess.Popen(['ps -ef | grep -v grep | egrep "%s"' % pattern ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 		(stdout,stderr) = p1.communicate()
 		if p1.returncode == 0:
 			if len(stdout) < 1:
@@ -710,12 +717,12 @@ chmod +x /usr/sbin/apache2 /usr/sbin/univention-management-console-server
 
 	def __is_updater_running(self):
 		# TODO: also check the at jobs
-		return self.__is_process_running('python.* /usr/sbin/univention-updater net')
+		return self.__is_process_running( 'python.* /usr/sbin/univention-updater net', 'univention-updater net' )
 
 
 	def __is_security_update_running(self):
 		# TODO: also check the at jobs
-		return self.__is_process_running('python.* /usr/sbin/univention-security-update net')
+		return self.__is_process_running('python.* /usr/sbin/univention-security-update net', 'univention-security-update net' )
 
 
 	def __remove_status_messages(self, text):
