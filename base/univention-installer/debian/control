@@ -6,7 +6,7 @@ Standards-Version: 3.5.2
 Build-Depends: debhelper, libparted1.7-dev, gettext
 
 Package: univention-installer
-Architecture: all
+Architecture: any
 Depends: univention-installer-modules
 Conflicts: univention-server-master, univention-server-backup, univention-server-slave, univention-server-member
 Description: univention installer envoirnment
