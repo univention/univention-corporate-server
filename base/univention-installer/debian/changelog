@@ -1,3 +1,10 @@
+univention-installer (4.0.20-3) unstable; urgency=low
+
+  * switched architecture from "all" to "any": installer contains
+    architecture specific binaries (Bug: #11093)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 13 Mar 2009 11:11:38 +0100
+
 univention-installer (4.0.20-2) unstable; urgency=low
 
   * updated the copyright. Bug #6875
