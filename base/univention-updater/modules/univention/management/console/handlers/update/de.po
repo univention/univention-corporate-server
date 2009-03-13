@@ -284,7 +284,7 @@ msgid ""
 "In the normal case, undisturbed use operation cannot be guaranteed during "
 "the update,<br>"
 msgstr ""
-"Im Normallfal ist das störungsfreie Arbeiten von Anwendern während des "
+"Im Normalfall ist das störungsfreie Arbeiten von Anwendern während des "
 "Updates nicht gegeben,<br>"
 
 #: __init__.py:733
@@ -311,21 +311,21 @@ msgid ""
 "HTTP<br>"
 msgstr ""
 "Während des Updates kann es vorkommen, dass der Webserver beendet wird und "
-"diese Verbindung<br>"
+"diese Verbindung unterbrochen<br>"
 
 #: __init__.py:738
 msgid ""
 "connection. Nonetheless, the update proceeds and the update can be monitored "
 "from a<br>"
 msgstr ""
-"unterbrochen wird. Das Update wird trotzdem weiter durchgeführt und in einer "
-"neuen UMC-Sitzung kann der Vorgang des Updates dann<br>"
+"wird. Das Update wird trotzdem weiter durchgeführt und in einer "
+"neuen UMC-Sitzung kann der Vorgang des Updates<br>"
 
 #: __init__.py:739
 msgid ""
 "new UMC session. Logfiles can be found in the directory /var/log/univention/."
 msgstr ""
-"weiter beobachtet werden. Logdateien können im Verzeichnis /var/log/"
+"dann weiter beobachtet werden. Logdateien können im Verzeichnis /var/log/"
 "univention/ gefunden werden."
 
 #: __init__.py:741
