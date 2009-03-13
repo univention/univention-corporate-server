@@ -1,3 +1,10 @@
+univention-thin-client-basesystem (5.0.10-1) unstable; urgency=low
+
+  * added the /etc/apt/sources.list.d files to the thin client
+    sources.list. Bug #13578
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Mar 2009 15:07:47 +0100
+
 univention-thin-client-basesystem (5.0.9-2) unstable; urgency=low
 
   * added the xserver-xorg debconf setting to the config.dat of the thin

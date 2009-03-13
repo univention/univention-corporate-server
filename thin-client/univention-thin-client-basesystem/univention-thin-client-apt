@@ -30,6 +30,7 @@
 
 import os
 import sys
+import string
 from optparse import OptionParser
 
 import univention.debug as ud
@@ -49,6 +50,14 @@ class UC_APT( object ):
 			os.remove(self.sources_list)
 		if os.path.exists('/etc/apt/sources.list'):
 			os.system('cp /etc/apt/sources.list %s' % self.sources_list)
+		if os.path.exists('/etc/apt/sources.list.d'):
+			fp = open(self.sources_list, 'a+')
+			for filename in os.listdir('/etc/apt/sources.list.d'):
+				lines = open(os.path.join('/etc/apt/sources.list.d', filename)).readlines()
+				for line in lines:
+					if not line.startswith('#'):
+						fp.write(line)
+			fp.close()
 		if os.path.exists(os.path.join(self.prefix, 'thin-client-archive')):
 			fp = open(self.sources_list, 'a+')
 			fp.write('deb file:%s/thin-client-archive/ ./\n' % self.prefix)
