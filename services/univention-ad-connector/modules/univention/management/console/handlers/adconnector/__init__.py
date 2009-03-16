@@ -441,7 +441,7 @@ class handler(umch.simpleHandler):
 
 
 	def __is_process_running(self, command):
-		p1 = subprocess.Popen(['ps -ef | egrep "%s" | grep -v grep' % command], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+		p1 = subprocess.Popen(['ps -ef | grep -v grep | egrep "%s"' % command], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 		p1.communicate()
 		return (p1.returncode == 0)   # p1.returncode is 0 if process is running
 
