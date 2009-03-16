@@ -1,3 +1,11 @@
+univention-installer (4.0.21-1) unstable; urgency=low
+
+  * added 83_filter_udev_rules.sh (Bug: #12444)
+    filter eth0 out of udev rules.d network interface file
+  * removed unused 83_udev_rules.sh
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 16 Mar 2009 09:59:46 +0100
+
 univention-installer (4.0.20-3) unstable; urgency=low
 
   * switched architecture from "all" to "any": installer contains
