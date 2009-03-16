@@ -1,3 +1,9 @@
+univention-server (4.0.0-1) unstable; urgency=low
+
+  * bumped version for UCS 2.2 (Bug #13730)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 16 Mar 2009 17:08:51 +0100
+
 univention-server (3.0.2-3) unstable; urgency=low
 
   * updated the copyright. Bug #6875
