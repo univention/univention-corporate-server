@@ -4,6 +4,7 @@ Preinst: 15_ucs-online-version.py
 Postinst: 15_ucs-online-version.py
 Variables: version/version
 Variables: version/patchlevel
+Variables: local/repository
 Variables: repository/online
 Variables: repository/online/server
 Variables: repository/online/port
@@ -17,6 +18,7 @@ Postinst: 18_ucs-online-security.py
 Variables: version/version
 Variables: version/patchlevel
 Variables: version/security-patchlevel
+Variables: local/repository
 Variables: repository/online
 Variables: repository/online/server
 Variables: repository/online/port
@@ -27,6 +29,7 @@ Type: file
 File: etc/apt/sources.list.d/20_ucs-online-component.list
 Preinst: 20_ucs-online-component.py
 Postinst: 20_ucs-online-component.py
+Variables: local/repository
 Variables: version/version
 Variables: version/patchlevel
 Variables: repository/online
@@ -39,6 +42,7 @@ Postinst: apt-mirror.py
 Variables: version/version
 Variables: version/patchlevel
 Variables: version/security-patchlevel
+Variables: local/repository
 Variables: repository/online
 Variables: repository/online/server
 Variables: repository/online/port
