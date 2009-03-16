@@ -1,3 +1,9 @@
+univention-quota (3.0.0-1) unstable; urgency=low
+
+  * bumped version for UCS 2.2 (Bug: #13730)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 16 Mar 2009 17:53:43 +0100
+
 univention-quota (2.0.4-3) unstable; urgency=low
 
   * updated the copyright. Bug #6875
