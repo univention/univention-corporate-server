@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.6-7) unstable; urgency=low
+
+  * only change the unixhome if posix is set. Bug #13721
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Mar 2009 07:53:26 +0100
+
 univention-directory-manager-modules (4.0.6-6) unstable; urgency=low
 
   * Resync gettext offsets (Bug #13535).

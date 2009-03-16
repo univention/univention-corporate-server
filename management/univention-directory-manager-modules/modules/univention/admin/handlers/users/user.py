@@ -1921,8 +1921,9 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						return []
 			try:
 				uid=univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])
-				if self['unixhome'] == '/home/%s' % self.old_username:
-					self['unixhome'] = '/home/%s' % self['username']
+				if 'posix' in self.options:
+					if self['unixhome'] == '/home/%s' % self.old_username:
+						self['unixhome'] = '/home/%s' % self['username']
 			except univention.admin.uexceptions.noLock, e:
 				username=self['username']
 				del(self.info['username'])
