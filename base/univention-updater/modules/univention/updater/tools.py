@@ -500,16 +500,24 @@ class UniventionUpdater:
 				repository_server = self.repository_server
 			repository_port = self.configRegistry.get('repository/online/component/%s/port' % component, self.repository_port)
 			prefix_var = 'repository/online/component/%s/prefix' % component
-			if self.configRegistry.has_key( prefix_var ):
-				repository_prefix = self.configRegistry.get( 'repository/online/component/%s/prefix' % component )
-			else:
-				repository_prefix = self.configRegistry.get( 'repository/online/component/%s/prefix' % component, self.repository_prefix )
+			repository_prefix = self.configRegistry.get( 'repository/online/component/%s/prefix' % component, '' )
+
 			versions = self.configRegistry.get('repository/online/component/%s/version' % component, self.ucs_version).split(',')
 			parts = self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained').split(',')
 			username = self.configRegistry.get('repository/online/component/%s/username' % component, None)
 			password = self.configRegistry.get('repository/online/component/%s/password' % component, None)
 			if clean:
 				clean = self.configRegistry.get( 'repository/online/component/%s/clean' % component, False )
+
+			# check for prefix on component repository server (if the repository server is reachable)
+			if not repository_prefix:
+				try:
+					if self.net_path_exists( '/univention-repository/', server = repository_server, port = repository_port, username = username, password = password ):
+						repository_prefix = 'univention-repository'
+					elif self.net_path_exists( '/%s/' % self.repository_prefix, server = repository_server, port = repository_port, username = username, password = password ):
+						repository_prefix = self.repository_prefix
+				except:
+					repository_prefix = ''
 
 			for version in versions:
 				if version == 'current':
