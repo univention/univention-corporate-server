@@ -1,3 +1,9 @@
+univention-winprinters (2.0.0-1) unstable; urgency=low
+
+  * bumped version for UCS 2.2 (Bug: #13730)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 17 Mar 2009 09:42:07 +0100
+
 univention-winprinters (1.0.0-3) unstable; urgency=low
 
   * minor fix: changelog and debian/rules copyright information (Bug #12895)
