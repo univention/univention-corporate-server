@@ -1,3 +1,9 @@
+univention-xnumlock (3.0.0-1) unstable; urgency=low
+
+  * bumped version for UCS 2.2 (Bug: #13730)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 17 Mar 2009 10:10:41 +0100
+
 univention-xnumlock (2.0.1-4) unstable; urgency=low
 
   * updated the copyright. Bug #6875
