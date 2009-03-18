@@ -293,6 +293,7 @@ BUILTIN_OIDS=[
 class LDIFObject:
 	def __init__(self, file):
 		self.fp = open(file, 'a')
+		os.chmod(file, 0600)
 
 	def __print_attribute(self, attribute, value):
 		pos = len(attribute)+2 # +colon+space

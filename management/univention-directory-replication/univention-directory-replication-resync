@@ -108,7 +108,7 @@ then
 	if [ ! -d /var/lib/univention-directory-replication ]; then
 		mkdir -p /var/lib/univention-directory-replication; chmod -R 700 /var/lib/univention-directory-replication
 	fi
-	mv $1 /var/lib/univention-directory-replication/replayed.ldif_$d; chmod 600 /var/lib/univention-directory-replication/replayed.ldif_$d
+	mv $1 "/var/lib/univention-directory-replication/replayed.ldif_$d"; chmod 600 "/var/lib/univention-directory-replication/replayed.ldif_$d"
 	/etc/init.d/univention-directory-listener start
 	exit 0
 else
