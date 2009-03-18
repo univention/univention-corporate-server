@@ -1,3 +1,11 @@
+univention-directory-replication (2.0.5-1) unstable; urgency=low
+
+  * set the permission for the failed.ldif to 0600. Bug #13775
+  * escape the target of the move command in univention-directory-
+    replication-resync. Bug #13777
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Mar 2009 20:40:39 +0100
+
 univention-directory-replication (2.0.4-2) unstable; urgency=low
 
   * updated the copyright. Bug #6875
