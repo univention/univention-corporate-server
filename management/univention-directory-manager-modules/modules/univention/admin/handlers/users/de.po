@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-18 09:29+0100\n"
+"POT-Creation-Date: 2009-03-18 14:36+0100\n"
 "PO-Revision-Date: 2006-09-06 13:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -286,13 +286,12 @@ msgid "Override password length"
 msgstr "Passwort-Länge ignorieren"
 
 #: user.py:592
-msgid "Alternative home share"
-msgstr "Alternative Heimatverzeichnisfreigabe"
+msgid "Home share"
+msgstr "heimatverzeichnisfreigabe"
 
 #: user.py:593
-msgid "Alternative share, the user's home directory resides on"
-msgstr ""
-"Alternative Freigabe, auf der das Heimatverzeichnis des Benutzers liegt."
+msgid "Share, the user's home directory resides on"
+msgstr "Freigabe, auf der das Heimatverzeichnis des Benutzers liegt."
 
 #: user.py:603
 msgid "Home share path"
@@ -641,12 +640,6 @@ msgstr "Der DN der Freigabe ist nicht zulässig."
 #: user.py:2488
 msgid "Given DN is no share."
 msgstr "Der angegebene DN ist keine Freigabe."
-
-#~ msgid "Home Share"
-#~ msgstr "Heimatverzeichnisfreigabe"
-
-#~ msgid "Share, the user's home directory resides on"
-#~ msgstr "Freigabe, auf der das Heimatverzeichnis des Benutzers liegt."
 
 #~ msgid "Home Share Path"
 #~ msgstr "Pfad der Heimatverzeichnisfreigabe"
