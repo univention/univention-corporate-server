@@ -1,15 +1,15 @@
 Type: file
-File: usr/lib/openoffice/share/registry/schema/org/openoffice/Office/Common.xcs
+File: usr/lib/openoffice/basis3.0/share/registry/schema/org/openoffice/Office/Common.xcs
 
 Type: file
-File: usr/lib/openoffice/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu
+File: usr/lib/openoffice/basis3.0/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu
 
 Type: file
-File: usr/lib/openoffice/share/registry/modules/org/openoffice/Office/Common/Common-base.xcu
+File: usr/lib/openoffice/basis3.0/share/registry/modules/org/openoffice/Office/Common/Common-base.xcu
 Variables: openoffice/menu/database
 
 Type: file
-File: usr/lib/openoffice/share/registry/data/org/openoffice/Office/DataAccess.xcu
+File: usr/lib/openoffice/basis3.0/share/registry/data/org/openoffice/Office/DataAccess.xcu
 Variables: openoffice/database/default
 
 Type: file
