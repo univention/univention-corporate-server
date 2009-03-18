@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-12 09:15+0100\n"
+"POT-Creation-Date: 2009-03-18 09:29+0100\n"
 "PO-Revision-Date: 2006-09-06 13:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -287,20 +287,20 @@ msgstr "Passwort-Länge ignorieren"
 
 #: user.py:592
 msgid "Alternative home share"
-msgstr "Alternativer Pfad zur Heimatverzeichnisfreigabe"
+msgstr "Alternative Heimatverzeichnisfreigabe"
 
 #: user.py:593
-msgid "Alternative Share, the user's home directory resides on"
+msgid "Alternative share, the user's home directory resides on"
 msgstr ""
 "Alternative Freigabe, auf der das Heimatverzeichnis des Benutzers liegt."
 
 #: user.py:603
-msgid "Alternative home share path"
-msgstr "Alternativer Pfad zum Heimatverzeichnis unterhalb der Freigabe."
+msgid "Home share path"
+msgstr "Pfad zum Heimatverzeichnis"
 
 #: user.py:604
-msgid "Alternative Path on the Home Share"
-msgstr "Alternativer Pfad zum Heimatverzeichnis unterhalb der Freigabe."
+msgid "Path to the home directory on the home share"
+msgstr "Pfad zum Heimatverzeichnis unterhalb der Freigabe."
 
 #: user.py:615
 msgid "Allowed hosts"
@@ -624,21 +624,21 @@ msgstr ""
 "Mindestens eine Option aus %s, %s, %s oder %s muss aktiv sein, um einen "
 "neuen Benutzer zu erstellen."
 
-#: user.py:2195
+#: user.py:2196
 #, python-format
 msgid "The password is too short, at least %d characters!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 
-#: user.py:2201
+#: user.py:2202
 #, python-format
 msgid "The password is too short, at least %d character!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 
-#: user.py:2471
+#: user.py:2472
 msgid "DN given as share is not valid."
 msgstr "Der DN der Freigabe ist nicht zulässig."
 
-#: user.py:2487
+#: user.py:2488
 msgid "Given DN is no share."
 msgstr "Der angegebene DN ist keine Freigabe."
 

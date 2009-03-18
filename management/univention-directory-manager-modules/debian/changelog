@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.6-8) unstable; urgency=low
+
+  * changed translation of the home share path. Bug #12813
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 18 Mar 2009 12:23:05 +0100
+
 univention-directory-manager-modules (4.0.6-7) unstable; urgency=low
 
   * only change the unixhome if posix is set. Bug #13721
