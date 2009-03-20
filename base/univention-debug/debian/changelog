@@ -1,3 +1,10 @@
+univention-debug (2.0.1-1) unstable; urgency=low
+
+  * moved dependency libunivention-debug0 to python-univention-debug
+    (Bug #13834)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 20 Mar 2009 09:18:17 +0100
+
 univention-debug (2.0.0-2) unstable; urgency=low
 
   * updated the copyright. Bug #6875
@@ -149,7 +156,3 @@ univention-debug (0.1.0) unstable; urgency=low
   * initial release
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 May 2003 13:49:40 +0200
-
-Local variables:
-mode: debian-changelog
-End:
