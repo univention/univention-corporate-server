@@ -1,3 +1,10 @@
+univention-installer (4.0.23-1) unstable; urgency=low
+
+  * do not umount the source device in 10_debootstrap.sh as it is required
+    in 14_sources_list-sh again (Bug #13865)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 23 Mar 2009 18:34:54 +0100
+
 univention-installer (4.0.22-1) unstable; urgency=low
 
   * create different sources.list for network installation; new repository structure (Bug #13865)

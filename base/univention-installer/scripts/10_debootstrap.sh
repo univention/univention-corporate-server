@@ -73,4 +73,4 @@ else
 	fi
 fi
 
-/bin/umount /mnt
+# do not umount the source device as it is required in 14_sources_list.sh again
