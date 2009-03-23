@@ -780,8 +780,12 @@ class modbrowse(unimodule.unimodule):
 				cols.append(tablecol("",{'type':'browse_layout'},{"obs":[]}))
 			dirrows.append(tablerow("",{},{"obs":cols}))
 
+		if not position.isBase():
+			len_result=len(result)+1
+		else:
+			len_result=len(result)
 		dynlongtable = dynamic_longtable("",
-						 {'header' : str(1), 'total': str(len(result)), 'start': str(start), 'visible': str(visible)},
+						 {'header' : str(1), 'total': str(len_result), 'start': str(start), 'visible': str(visible)},
 						 {"obs":dirrows})
 		main_rows.append(tablerow("",
 					  {},
