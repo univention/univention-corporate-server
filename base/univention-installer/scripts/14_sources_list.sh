@@ -57,3 +57,7 @@ fi
 
 chmod 644 /instmnt/etc/apt/sources.list
 rm -Rf /instmnt/etc/apt/sources.list.d
+
+# umount the source device (mounted in 10_debootstrap.sh)
+umount /mnt
+
