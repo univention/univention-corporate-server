@@ -1,3 +1,9 @@
+univention-installer (4.0.22-1) unstable; urgency=low
+
+  * create different sources.list for network installation; new repository structure (Bug #13865)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 23 Mar 2009 13:42:18 +0100
+
 univention-installer (4.0.21-1) unstable; urgency=low
 
   * added 83_filter_udev_rules.sh (Bug: #12444)

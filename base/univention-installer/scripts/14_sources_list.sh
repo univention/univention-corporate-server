@@ -30,12 +30,30 @@
 
 mkdir -p /instmnt/etc/apt/
 mkdir -p /instmnt/sourcedevice
-cat >/instmnt/etc/apt/sources.list <<__EOT__
+## check for repository structure
+# old repository (DVD)
+if [ -d /mnt/packages ]; then
+	cat >/instmnt/etc/apt/sources.list <<__EOT__
 #UCS Installation
 
 deb file:/sourcedevice/packages ./
 
 __EOT__
+else
+    version=`cat /mnt/.univention_install | grep VERSION | sed -e 's|VERSION=||'`
+
+    repo_dir="file:/sourcedevice/mirror/${version}/maintained/ ${version}-0"
+	cat >/instmnt/etc/apt/sources.list <<__EOT__
+#UCS Installation
+
+deb $repo_dir/all
+__EOT__
+	for arch in i386 amd64 extern; do
+		if [ -d "/mnt/mirror/${version}/maintained/${version}-0/$arch" ]; then
+			echo "deb $repo_dir/$arch" >> /instmnt/etc/apt/sources.list
+		fi
+	done
+fi
 
 chmod 644 /instmnt/etc/apt/sources.list
 rm -Rf /instmnt/etc/apt/sources.list.d
