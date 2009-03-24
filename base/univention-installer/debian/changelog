@@ -1,3 +1,10 @@
+univention-installer (4.0.25-1) unstable; urgency=low
+
+  * 14_sources_list.sh: add missing '/' to the end of each repository line
+    (Bug #13865)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 24 Mar 2009 17:48:07 +0100
+
 univention-installer (4.0.24-1) unstable; urgency=low
 
   * do not redirect output in script 89_tests.sh to /tmp/installer.log (Bug #13853)
@@ -7,7 +14,7 @@ univention-installer (4.0.24-1) unstable; urgency=low
 univention-installer (4.0.23-1) unstable; urgency=low
 
   * do not umount the source device in 10_debootstrap.sh as it is required
-    in 14_sources_list-sh again (Bug #13865)
+    in 14_sources_list.sh again (Bug #13865)
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 23 Mar 2009 18:34:54 +0100
 
