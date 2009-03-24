@@ -49,17 +49,17 @@ test_retval () {
 }
 
 # is instmnt mounted
-mount | grep $instmnt 2>/tmp/installer.log >/tmp/installer.log 
+mount | grep $instmnt
 test_retval $? "error" "Something wrong with the installation root,\nit is not mounted."
 
 # chroot
-chroot $instmnt 2>/tmp/installer.log 1>/tmp/installer.log<< __EOF__
+chroot $instmnt << __EOF__
 exit
 __EOF__
 test_retval $? "error" "Could not chroot to $instmnt."
 
 # packages
-chroot $instmnt 2>/tmp/installer.log 1>/tmp/installer.log<< __EOF__
+chroot $instmnt << __EOF__
 dpkg -l | egrep "^i[^i]" > /tmp/failed-packages.txt
 if [ 0 -eq \$? ]; then
 	exit 1
@@ -81,13 +81,13 @@ fi
 if [ "$server_role" = "domaincontroller_master" ]; then
 
 	# Administrator
-	chroot $instmnt 2>/tmp/installer.log 1>/tmp/installer.log<< __EOF__
+	chroot $instmnt << __EOF__
 id Administrator 1>/tmp/installer.log || exit 1
 __EOF__
 	test_retval $? "error" "User Administrator was not created."
 
 	# Administrator in admin group
-	chroot $instmnt 2>/tmp/installer.log 1>/tmp/installer.log<< __EOF__
+	chroot $instmnt << __EOF__
 getent group | grep "Domain Admins" | grep Administrator >/tmp/installer.log || exit 1
 __EOF__
 	test_retval $? "error" "User Administrator is not member of \"Domain Admins\" group."
@@ -96,7 +96,7 @@ fi
 
 # test join status
 if [ ! "$auto_join" = "false" -a ! "${system_role}" = "basesystem" ] ; then
-chroot $instmnt 2>/tmp/installer.log 1>/tmp/installer.log<< __EOF__
+chroot $instmnt << __EOF__
 /usr/share/univention-join/check_join_status | grep -c "Joined successful" || exit 1
 __EOF__
 test_retval $? "warning" "This system has not been joined yet! If no other problem occurred,\nreboot and run script /usr/share/univention-join/check_join_status\nfor further investigation."
