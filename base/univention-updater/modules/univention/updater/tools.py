@@ -346,7 +346,7 @@ class UniventionUpdater:
 						path = '%s/dists/univention/main/binary-%s/' % ( path_base, arch )
 						if self.net_path_exists( path ):
 							if self.repository_prefix:
-								repos += 'deb http://%s%s/%s dists/univention/main/binary-%s/\n' % ( self.repository_server, self.repository_prefix, path_base, arch )
+								repos += 'deb http://%s/%s%s dists/univention/main/binary-%s/\n' % ( self.repository_server, self.repository_prefix, path_base, arch )
 							else:
 								repos += 'deb http://%s%s dists/univention/main/binary-%s/\n' % ( self.repository_server, path_base, arch )
 			for part in self.parts:
