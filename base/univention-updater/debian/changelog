@@ -1,3 +1,11 @@
+univention-updater (4.0.46-1) unstable; urgency=low
+
+  * fix mirror URL auf dist repositories
+  * add symbolic link univention-repository to '.'; required for
+    synchronsiation from another local repository (Bug #13892)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 24 Mar 2009 20:35:38 +0100
+
 univention-updater (4.0.45-1) unstable; urgency=low
 
   * also evaluate patchlevel of repository/mirror/version/start (Bug #13895)
