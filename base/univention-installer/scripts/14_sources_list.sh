@@ -46,11 +46,11 @@ else
 	cat >/instmnt/etc/apt/sources.list <<__EOT__
 #UCS Installation
 
-deb $repo_dir/all
+deb $repo_dir/all/
 __EOT__
 	for arch in i386 amd64 extern; do
 		if [ -d "/mnt/mirror/${version}/maintained/${version}-0/$arch" ]; then
-			echo "deb $repo_dir/$arch" >> /instmnt/etc/apt/sources.list
+			echo "deb $repo_dir/$arch/" >> /instmnt/etc/apt/sources.list
 		fi
 	done
 fi
@@ -60,4 +60,3 @@ rm -Rf /instmnt/etc/apt/sources.list.d
 
 # umount the source device (mounted in 10_debootstrap.sh)
 umount /mnt
-
