@@ -210,7 +210,6 @@ def is_debmirror_installed():
 	if p.returncode:
 		return ( False, 'Error: Please install the package univention-debmirror.' )
 
-
 	# package status of univentionn-debmirror is not ok
 	for line in output:
 		if line.startswith( 'Status: ' ):
@@ -218,3 +217,17 @@ def is_debmirror_installed():
 				return ( False, "Please check the installation of the package univention-debmirror (status: %s). Aborted." % line[ 8: ] )
 
 	return ( True, None )
+
+def get_installation_version():
+	version = None
+	try:
+		fd = open( os.path.join( configRegistry.get( 'repository/mirror/basepath' ), '.univention_install' ) )
+	except:
+		return None
+
+	for line in fd.readlines():
+		if not line.startswith( 'VERSION=' ):
+			continue
+		return line[ 8 : -1 ]
+
+	return None
