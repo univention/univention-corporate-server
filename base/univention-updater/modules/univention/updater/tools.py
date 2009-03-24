@@ -340,7 +340,7 @@ class UniventionUpdater:
 				start.minor += 1
 				continue
 			if dists:
-				path_base = '/%s.%s/maintained/%s.%s-0' % ( start.major, start.minor, start.major, start.minor )
+				path_base = '/%s.%s/maintained/%s.%s-%s' % ( start.major, start.minor, start.major, start.minor, start.patchlevel )
 				if self.net_path_exists( '%s/dists/' %  path_base ):
 					for arch in self.architectures:
 						path = '%s/dists/univention/main/binary-%s/' % ( path_base, arch )
@@ -354,7 +354,7 @@ class UniventionUpdater:
 				path='/%s.%s/%s/' % (start.major, start.minor, part)
 				if not self.net_path_exists(path):
 					continue
-				patch_inc = UCS_Version( ( start.major, start.minor, 0 ) )
+				patch_inc = UCS_Version( ( start.major, start.minor, start.patchlevel ) )
 				# as long as we do just increase the patch level ...
 				while patch_inc.major == start.major and patch_inc.minor == start.minor:
 					path='/%s.%s/%s/%s.%s-%s/' % ( patch_inc.major, patch_inc.minor, part, patch_inc.major, patch_inc.minor, patch_inc.patchlevel )
@@ -395,6 +395,7 @@ class UniventionUpdater:
 
 			# check next minor release
 			start.minor += 1
+			start.patchlevel = 0
 
 		return repos
 

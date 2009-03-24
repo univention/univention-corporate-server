@@ -40,7 +40,7 @@ class UniventionMirror( UniventionUpdater ):
 		self.online_repository = self.configRegistry.get( 'repository/mirror', 'yes' )
 		self.repository_server = self.configRegistry.get( 'repository/mirror/server', 'apt.univention.de' )
 		self.repository_path =  self.configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
-		self.repository_prefix =  self.configRegistry.get( 'repository/mirror/prefix', '' )
+		self.repository_prefix =  self.configRegistry.get( 'repository/mirror/prefix', self.repository_prefix )
 		if self.configRegistry.has_key( 'repository/mirror/version/end' ):
 			self.version_end = UCS_Version( self.configRegistry.get( 'repository/mirror/version/end' ) )
 		else:

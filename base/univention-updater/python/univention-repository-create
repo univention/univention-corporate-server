@@ -221,4 +221,9 @@ if __name__ == '__main__':
 	if configRegistry.has_key( 'repository/local/old' ):
 		ucr.handler_unset( 'repository/local/old' )
 
+	# set start version for synchronsation of repository
+	repo_version = urepo.get_installation_version()
+	if repo_version:
+		ucr.handler_set( [ 'repository/mirror/version/start?%s-1' % repo_version ] )
+
 	print  "The local repository has been created."
