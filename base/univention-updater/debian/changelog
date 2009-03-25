@@ -1,3 +1,9 @@
+univention-updater (4.0.51-1) unstable; urgency=low
+
+  * fix the stdout redirection from the last commit. Bug #13953
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Mar 2009 21:17:40 +0100
+
 univention-updater (4.0.50-1) unstable; urgency=low
 
   * redirect error message to stdout (Bug #13953)
