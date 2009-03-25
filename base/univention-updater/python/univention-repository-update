@@ -215,7 +215,7 @@ if __name__ == '__main__':
 
 	# if there is no _new_ repository server -> exit
 	if configRegistry.has_key( 'repository/local/old' ):
-		print >> options.teefile, 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old strucuture and can not be used for any updates anymore. Please migrate the repository to the new directory structure or disable the local reposito by setting the UCR variables local/repository to yes. Information on how to migrate the repository that can be found in the release notes for UCS 2.2-0'
+		print >> options.teefile, 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old strucuture and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local reposito by setting the UCR variables local/repository to no. Information on how to migrate the repository can be found in the release notes for UCS 2.2-0'
 		sys.exit( 1 )
 
 	print 'Mirror Source: %s' % configRegistry['repository/mirror/server']
