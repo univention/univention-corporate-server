@@ -53,7 +53,7 @@ if [ "$update22_checkfilesystems" != "no" ]
 then
 
 	check_space "/var/cache/apt/archives" "800000" "800 MB"
-	check_space "/boot" "6000" "6 MB"
+	check_space "/boot" "20000" "20 MB"
 	check_space "/" "1200000" "1200 MB"
 
 else
