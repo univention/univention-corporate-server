@@ -1,3 +1,10 @@
+univention-installer (4.0.26-1) unstable; urgency=low
+
+  * added the xen 2.6.18 and 2.6.26 packages to the package list. Bug
+    #13966
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Mar 2009 09:55:27 +0100
+
 univention-installer (4.0.25-1) unstable; urgency=low
 
   * 14_sources_list.sh: add missing '/' to the end of each repository line
