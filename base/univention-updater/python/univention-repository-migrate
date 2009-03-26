@@ -134,7 +134,7 @@ def migrate_repository( options ):
 	_copy_repository( options, source, dest, versions[ 0 ] )
 
 	# create symbolic link univention-repository
-	os.symlink( os.path.join(REPO_BASE_NEW, 'mirror/.', os.path.join(REPO_BASE_NEW, 'mirror/univention-repository' )
+	os.symlink( os.path.join(REPO_BASE_NEW, 'mirror/.'), os.path.join(REPO_BASE_NEW, 'mirror/univention-repository' ))
 
 	# copy dists directory structure
 	print >> options.teefile, '  copying dists subdirectory ...',
