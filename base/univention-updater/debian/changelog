@@ -1,3 +1,9 @@
+univention-updater (4.0.56-1) unstable; urgency=low
+
+  * fixed a python typo in the repository migration tool. Bug #13892
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Mar 2009 12:15:29 +0100
+
 univention-updater (4.0.55-1) unstable; urgency=low
 
   * fixed more typos in the message for the old structure. Bug #13953
