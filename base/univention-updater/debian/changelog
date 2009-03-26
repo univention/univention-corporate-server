@@ -1,3 +1,9 @@
+univention-updater (4.0.55-1) unstable; urgency=low
+
+  * fixed more typos in the message for the old structure. Bug #13953
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Mar 2009 09:43:32 +0100
+
 univention-updater (4.0.54-1) unstable; urgency=low
 
   * fixed a typo in the message for the old structure. Bug #13953
