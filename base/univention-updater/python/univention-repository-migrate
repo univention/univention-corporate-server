@@ -69,7 +69,10 @@ def _remove_repository( options, dirname, message = None, complete = False ):
 		else:
 			print >> options.teefile, 'Deleting old repository in %s' % dirname,
 		try:
-			shutil.rmtree( dirname )
+			if os.path.isdir(dirname):
+				shutil.rmtree( dirname )
+			else:
+				os.remove( dirname )
 		except:
 			print >> options.teefile, 'failed.'
 			sys.exit( 1 )
@@ -129,6 +132,9 @@ def migrate_repository( options ):
 	source = os.path.join( REPO_BASE_OLD, 'packages' )
 	dest = os.path.join( REPO_BASE_NEW, 'mirror', '%d.%d' % ( versions[ 0 ].major, versions[ 0 ].minor ), 'maintained', str( versions[ 0 ] ) )
 	_copy_repository( options, source, dest, versions[ 0 ] )
+
+	# create symbolic link univention-repository
+	os.symlink( os.path.join(REPO_BASE_NEW, 'mirror/.', os.path.join(REPO_BASE_NEW, 'mirror/univention-repository' )
 
 	# copy dists directory structure
 	print >> options.teefile, '  copying dists subdirectory ...',
@@ -197,4 +203,4 @@ if __name__ == '__main__':
 
 	# unset UCR variable makring old repository
 	if configRegistry.has_key( 'repository/local/old' ):
-		ucr.handler_unset( 'repository/local/old' )
+		os.system('/usr/sbin/univention-config-registry unset repository/local/old')
