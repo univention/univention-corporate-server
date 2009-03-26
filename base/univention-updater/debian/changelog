@@ -1,3 +1,12 @@
+univention-updater (4.0.53-1) unstable; urgency=low
+
+  * create a symbolic link to univention-repository. Bug #13892
+  * be sure the empty ucr variable will be unset. Bug #13473
+  * remove /var/lib/univention-server-cdrom also if it is a link. Bug
+    #13473
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Mar 2009 08:51:35 +0100
+
 univention-updater (4.0.52-1) unstable; urgency=low
 
   * changed the message for the old structure. Bug #13953
