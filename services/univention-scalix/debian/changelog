@@ -1,3 +1,9 @@
+univention-scalix (2.1.0-3) unstable; urgency=low
+
+  * work around Debian Bug #375787 by not including dialup.m4 (Bug #10371)
+
+ -- Arvid Requate <requate@univention.de>  Wed,  1 Apr 2009 16:12:50 +0200
+
 univention-scalix (2.1.0-2) unstable; urgency=low
 
   * append domainname to CW_FILE in case it is not listed yet (Bug #11538)

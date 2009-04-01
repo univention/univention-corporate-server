@@ -100,5 +100,9 @@ if [ $? -ne 0 ]; then
 	echo "$domainname" >> /etc/mail/local-host-names
 fi
 
+# next work around http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=375787
+# this will become obsolete with sendmail-base_8.14.1-11
+sed -i "s|^include(\`/etc/mail/m4/dialup.m4')dnl|dnl # include(\`/etc/mail/m4/dialup.m4')dnl|" /etc/mail/sendmail.mc
+
 exit 0
 
