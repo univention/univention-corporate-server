@@ -1,3 +1,9 @@
+univention-scalix (2.1.0-4) unstable; urgency=low
+
+  * mail/sendmail/domain is not set any more, use_cw_file is better (Bug #10371)
+
+ -- Arvid Requate <requate@univention.de>  Wed,  1 Apr 2009 16:32:47 +0200
+
 univention-scalix (2.1.0-3) unstable; urgency=low
 
   * work around Debian Bug #375787 by not including dialup.m4 (Bug #10371)

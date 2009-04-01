@@ -77,7 +77,8 @@ if [ -z "$MAILNODE" ]; then
 fi
 
 univention-baseconfig set scalix/mailnode=$MAILNODE
-univention-baseconfig set mail/sendmail/domain='$m'
+# mail/sendmail/domain is deprecated (Bug #10371), use_cw_file is used instead
+# univention-baseconfig set mail/sendmail/domain='$m'
 
 echo
 
