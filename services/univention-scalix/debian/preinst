@@ -81,7 +81,9 @@ fi
 
 # fix sendmail.mc syntax bug
 sed -i 's/dnlMAILER_DEFINITIONS/dnl\nMAILER_DEFINITIONS/' /etc/mail/sendmail.mc
-# hack for sendmailconfig bug http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=293017
+# next add FEATURE(use_cw_file) as recomended by Scalix
+echo "FEATURE(\`use_cw_file')dnl" >>/etc/mail/sendmail.mc
+# next fix sendmailconfig bug http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=293017
 tmpfile=`mktemp`
 grep ^MAILER /etc/mail/sendmail.mc >$tmpfile
 sed -i 's|^MAILER.*||' /etc/mail/sendmail.mc
