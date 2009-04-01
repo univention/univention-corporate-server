@@ -19,6 +19,7 @@ univention-scalix (2.1.0-2) unstable; urgency=low
 univention-scalix (2.1.0-1) unstable; urgency=low
 
   * add FEATURE(`use_cw_file') to sendmail.mc (Bug #11539)
+  * Update to Scalix Version 11.4.3 (Bug #13081)
 
  -- Arvid Requate <requate@univention.de>  Wed,  1 Apr 2009 14:52:31 +0200
 
