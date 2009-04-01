@@ -92,5 +92,13 @@ cat $tmpfile >>/etc/mail/sendmail.mc
 echo "" >>/etc/mail/sendmail.mc
 rm $tmpfile
 
+# append domainname to CW_FILE in case it is not listed yet
+# (/usr/share/sendmail/update_db only puts localhost and host FQDN)
+eval $(univention-config-registry shell domainname)
+grep -q "^$domainname" /etc/mail/local-host-names
+if [ $? -ne 0 ]; then
+	echo "$domainname" >> /etc/mail/local-host-names
+fi
+
 exit 0
 
