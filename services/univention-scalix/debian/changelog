@@ -1,3 +1,9 @@
+univention-scalix (2.1.0-1) unstable; urgency=low
+
+  * add FEATURE(`use_cw_file') to sendmail.mc (Bug #11539)
+
+ -- Arvid Requate <requate@univention.de>  Wed,  1 Apr 2009 14:52:31 +0200
+
 univention-scalix (2.0.1-4) unstable; urgency=low
 
   * fix sendmail.mc syntax bug in preinst if present (Bug #12567)
