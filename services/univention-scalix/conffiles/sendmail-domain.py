@@ -41,6 +41,8 @@ def handler(baseConfig, changes):
 	fh.close()
 
 	sendmail_domain = False
+	# mail/sendmail/domain is deprecated (Bug #10371),
+	# FEATURE(`use_cw_file') should be used instead (i.e. Cw instead of Dj)
 	if baseConfig.has_key('mail/sendmail/domain'):
 		strDomain = "define(`confDOMAIN_NAME', `%s')dnl" % baseConfig['mail/sendmail/domain']
 		sendmail_domain = True
