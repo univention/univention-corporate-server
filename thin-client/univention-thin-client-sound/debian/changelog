@@ -1,6 +1,6 @@
 univention-thin-client-sound (2.0.7-6) unstable; urgency=low
 
-  * don't use inline python in udev template to avoid slow ucr 
+  * don't use inline python in udev template to avoid slow UCR (Bug 13981)
 
  -- Tobias Scherer <scherer@univention.de>  Fri,  3 Apr 2009 14:23:07 +0200
 

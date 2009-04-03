@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention Thin Client Sound Support
 #  postinst script for the debian package
@@ -32,5 +32,5 @@
 
 update-rc.d thin-client-sound start 12 2 .
 
-ucr set udev/sound/owner?"root" udev/sound/group?"Domain Users"
+univention-config-registry set udev/sound/owner?"root" udev/sound/group?"Domain Users"
 
