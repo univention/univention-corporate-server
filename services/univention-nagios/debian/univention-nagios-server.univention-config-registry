@@ -1,6 +1,7 @@
 Type: file
 File: etc/nagios2/apache2.conf
 Variables: nagios/server/theme
+Variables: nagios/server/authenticate
 
 Type: file
 File: etc/nagios2/cgi.cfg

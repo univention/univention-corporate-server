@@ -5,7 +5,7 @@
 #          univention-baseconfig überschrieben werden. 
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 # 
-# 	/etc/univention/templates/files/etc/pam.d/nagios
+# 	/etc/univention/templates/files/etc/pam.d/httpd-nagios
 # 
 
 @!@
