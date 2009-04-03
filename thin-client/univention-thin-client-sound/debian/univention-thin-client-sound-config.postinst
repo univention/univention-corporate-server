@@ -31,3 +31,6 @@
 #DEBHELPER#
 
 update-rc.d thin-client-sound start 12 2 .
+
+ucr set udev/sound/owner?"root" udev/sound/group?"Domain Users"
+

@@ -8,9 +8,5 @@
 #   /etc/univention/templates/files/etc/udev/rules.d/040_univention-thin-client-sound.rules
 #
 
-@!@
-user = baseConfig.get( 'udev/sound/owner', 'root' )
-group = baseConfig.get( 'udev/sound/group', 'Domain Users' )
-print 'SUBSYSTEM=="sound",                             GROUP="%s", OWNER="%s"' % ( group, user )
-@!@
+SUBSYSTEM=="sound", GROUP="@%@udev/sound/group@%@", OWNER="@%@udev/sound/user@%@"
 
