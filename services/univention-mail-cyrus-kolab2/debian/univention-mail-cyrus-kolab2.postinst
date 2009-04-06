@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+dpkg-statoverride --add cyrus sasl 640 /etc/univention/templates/files/etc/imapd/imapd.conf || true
+
 #DEBHELPER#
 
 add_kolab2cal_user ()
@@ -121,6 +123,7 @@ if [ ! -e /etc/cyrus.secret ]; then
 	echo "$PASSWD" >/etc/cyrus.secret
 	chmod 600  /etc/cyrus.secret
 fi
+chown cyrus /etc/cyrus.secret
 
 if [ ! -d /var/spool/cyrus/jobs/mailbox/create/user ]; then
 	mkdir -p /var/spool/cyrus/jobs/mailbox/create/user

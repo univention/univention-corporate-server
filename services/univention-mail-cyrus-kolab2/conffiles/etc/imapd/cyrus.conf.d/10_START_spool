@@ -1,0 +1,39 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the files in the following directory instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die Dateien in
+#          folgendem Verzeichnis:
+#
+#       /etc/univention/templates/files/etc/imapd/cyrus.conf.d/
+#
+
+
+START {
+@!@
+if baseConfig.has_key('mail/cyrus/murder/backend/id') and baseConfig['mail/cyrus/murder/backend/id'] != '':
+	emailId = baseConfig['mail/cyrus/murder/backend/id']
+else:
+	emailId = "%s@%s" % ('.'.join([ baseConfig['hostname'], baseConfig.get('domainname','undefined') ]) , baseConfig.get('domainname','undefined'))
+
+# If we run without a Cyrus Murder Master MUPDATE server
+# or if we have registered as a 'kolab2' service provider (aka 'backend' or 'spool')
+if not (baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyrus/murder/master'] != '') \
+   or (baseConfig.has_key('mail/cyrus/murder/backends') \
+       and emailId in baseConfig['mail/cyrus/murder/backends'].split(' ')):
+	print'''
+	# --- Normal cyrus spool, or Murder backends ---
+
+	# do not delete this entry!
+	recover		cmd="/usr/sbin/ctl_cyrusdb -r -C /etc/imapd/imapd.conf"
+  
+	# this is only necessary if using idled for IMAP IDLE
+	# this is NOT to be enabled right now in Debian builds
+	#idled		cmd="idled"
+
+	# this is recommended if using duplicate delivery suppression
+	delprune	cmd="/usr/sbin/ctl_deliver -E 3 -C /etc/imapd/imapd.conf"
+	# this is recommended if caching TLS sessions
+	tlsprune	cmd="/usr/sbin/tls_prune -C /etc/imapd/imapd.conf"'''
+@!@
