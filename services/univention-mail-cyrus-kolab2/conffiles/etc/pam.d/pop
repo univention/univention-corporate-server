@@ -5,7 +5,7 @@
 #          univention-baseconfig überschrieben werden. 
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 # 
-# 	/etc/univention/templates/files/etc/pam.d/imap
+# 	/etc/univention/templates/files/etc/pam.d/pop
 # 
 
 auth    sufficient    pam_unix.so

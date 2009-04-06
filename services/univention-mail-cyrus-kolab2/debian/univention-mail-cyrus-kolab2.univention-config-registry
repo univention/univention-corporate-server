@@ -29,21 +29,24 @@ Variables: ldap/server/name
 
 Type: file
 File: etc/pam.d/imap
+Variables: ldap/base
+Variables: ldap/server/name
 Variables: mail/cyrus/imap/quotawarnpercent
 Variables: mail/cyrus/imap/quotawarnkb
 Variables: mail/cyrus/imap/quota
 
 Type: file
 File: etc/pam.d/pop
+Variables: ldap/base
+Variables: ldap/server/name
+Variables: mail/cyrus/imap/quotawarnpercent
+Variables: mail/cyrus/imap/quotawarnkb
+Variables: mail/cyrus/imap/quota
 
 Type: file
 File: etc/pam.d/sieve
-
-Type: file
-File: etc/pam.d/pop
-Variables: mail/cyrus/imap/quotawarnpercent
-Variables: mail/cyrus/imap/quotawarnkb
-Variables: mail/cyrus/imap/quota
+Variables: ldap/base
+Variables: ldap/server/name
 
 Type: file
 File: etc/default/saslauthd
