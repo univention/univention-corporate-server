@@ -16,6 +16,19 @@ univention-kolab2-framework (2.0.1-1) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  5 Sep 2008 09:08:30 +0200
 
+univention-kolab2-framework (1.2.1-uknrw-2) unstable; urgency=low
+
+  * remove reference to 10lmtp_secret, which is not used any more (Bug #10783)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Mon, 17 Nov 2008 11:32:56 +0100
+
+univention-kolab2-framework (1.2.1-uknrw-1) unstable; urgency=low
+
+  * merged lmtp changes from branches/ucs-2.0. Bug #12629
+  * bump version adjustments for UCS 2.1 updates. Ticket #2008093010000181
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu, 13 Nov 2008 16:44:24 +0100
+
 univention-kolab2-framework (1.1.4-2) unstable; urgency=low
 
   * Added UCR Warning.
@@ -36,6 +49,12 @@ univention-kolab2-framework (1.1.3-1) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue,  3 Jun 2008 16:50:11 +0200
 
+univention-kolab2-framework (1.1.20-uknrw-1) unstable; urgency=low
+
+  * bumped version
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 16 Jul 2008 12:57:53 +0200
+
 univention-kolab2-framework (1.1.2-2) unstable; urgency=low
 
   * added the line 'auth    sufficient    pam_unix.so' to the httpd-
@@ -43,11 +62,48 @@ univention-kolab2-framework (1.1.2-2) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 May 2008 07:09:01 +0200
 
+univention-kolab2-framework (1.1.1-uknrw-8) unstable; urgency=low
+
+  * simplify lmtp pam stack (copy of imap without quota check)
+  * remove lmtp.secret, not needed any longer
+
+ -- Arvid Requate <requate@univention.de>  Sun,  9 Mar 2008 00:45:07 +0100
+
+univention-kolab2-framework (1.1.1-uknrw-7) unstable; urgency=low
+
+  * use cyrus-account to deliver mail
+
+ -- Ingo Steuwer <steuwer@univention.de>  Sat,  8 Mar 2008 12:56:55 +0100
+
+univention-kolab2-framework (1.1.1-uknrw-6) unstable; urgency=low
+
+  * add lmtp pam module as template to allow email ids for login (cyrus murder)
+
+ -- Arvid Requate <requate@univention.de>  Fri,  7 Mar 2008 19:24:57 +0100
+
+univention-kolab2-framework (1.1.1-uknrw-5) unstable; urgency=low
+
+  * fix fqdn concatenation
+
+ -- Arvid Requate <requate@univention.de>  Fri,  7 Mar 2008 18:54:15 +0100
+
+univention-kolab2-framework (1.1.1-uknrw-2) unstable; urgency=low
+
+  * straighten lmtp-secret handling
+
+ -- Arvid Requate <requate@univention.de>  Tue,  4 Mar 2008 18:54:32 +0100
+
 univention-kolab2-framework (1.1.1-1) unstable; urgency=low
 
   * Bug fix for Free/Busy problems when legacy mode is on. (HTTP/HTTPS)
 
  -- Andre Fenske <fenske@univention.de>  Tue,  4 Mar 2008 14:46:22 +0100
+
+univention-kolab2-framework (1.0.6-5) unstable; urgency=low
+
+  * use authentication with Net_LMTP for delivery to cyrus murder
+
+ -- Arvid Requate <requate@univention.de>  Tue,  4 Mar 2008 11:40:09 +0100
 
 univention-kolab2-framework (1.0.6-4) unstable; urgency=low
 

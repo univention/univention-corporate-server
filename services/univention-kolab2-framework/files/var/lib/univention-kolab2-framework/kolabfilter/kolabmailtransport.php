@@ -19,9 +19,12 @@
  */
 
 class KolabMailTransport {
-  function KolabMailTransport( $host = '127.0.0.1', $port = 2003 ) {
+  function KolabMailTransport( $host = '127.0.0.1', $port = 2003, $uid='', $pass='', $mech='PLAIN' ) {
     $this->host = $host;
     $this->port = $port;
+    $this->uid = $uid;
+    $this->pass = $pass;
+    $this->mech = $mech;
     $this->transport = false;
   }
 
@@ -39,6 +42,11 @@ class KolabMailTransport {
     }
     if (PEAR::isError($error = $this->transport->connect())) {
       return new PEAR_Error('Failed to connect to $myclass: ' . $error->getMessage(), 421);
+    }
+    if ($this->uid != '' ) {
+    if (PEAR::isError($error = $this->transport->auth($this->uid, $this->pass, $this->mech))) {
+      return new PEAR_Error("Failed to connect to $myclass: " . $error->getMessage(), 421);
+    }
     }
 
     if (PEAR::isError($error = $this->transport->mailFrom($sender))) {
@@ -140,8 +148,8 @@ class KolabMailTransport {
 };
 
 class KolabLMTP extends KolabMailTransport {
-  function KolabLMTP( $host = '127.0.0.1', $port = 2003 ) {
-    $this->KolabMailTransport($host,$port);
+  function KolabLMTP( $host = '127.0.0.1', $port = 2003, $uid='', $pass='', $mech='PLAIN' ) {
+    $this->KolabMailTransport($host,$port, $uid, $pass, $mech);
   }
 
   function createTransport() {
@@ -151,8 +159,8 @@ class KolabLMTP extends KolabMailTransport {
 };
 
 class KolabSMTP extends KolabMailTransport {
-  function KolabSMTP( $host = '127.0.0.1', $port = 25 ) {
-    $this->KolabMailTransport($host,$port);
+  function KolabSMTP( $host = '127.0.0.1', $port = 25, $uid='', $pass='', $mech='PLAIN' ) {
+    $this->KolabMailTransport($host,$port, $uid, $pass, $mech);
   }
 
   function createTransport() {
