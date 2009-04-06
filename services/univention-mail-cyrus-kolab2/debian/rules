@@ -74,8 +74,9 @@ install: build
 
 	install -m 0755 81univention-mail-cyrus-kolab2.inst ${D}/usr/lib/univention-install/
 
-	univention-install-baseconfig
+	univention-install-config-registry
 	univention-install-service-info
+	univention-install-config-registry-info
 
 binary-arch: build install
 
