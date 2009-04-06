@@ -1,3 +1,21 @@
+univention-mail-cyrus-kolab2 (2.0.0-1) unstable; urgency=low
+
+  * Version bump for UCS 2.2-1 Cyrus Murder integration (Bug #10439)
+
+ -- Arvid Requate <requate@univention.de>  Mon,  6 Apr 2009 19:37:06 +0200
+
+univention-mail-cyrus-kolab2 (1.1.2-3) unstable; urgency=low
+
+  * removed second postuser entry in imapd config template (Ticket: #2009022310000123)
+
+ -- Felix Botner <botner@univention.de>  Wed, 25 Feb 2009 15:09:40 +0100
+
+univention-mail-cyrus-kolab2 (1.1.2-2) unstable; urgency=low
+
+  * cyrus murder diff's form main branch2.1 and uknrw branch2.1 (Ticket: #2009022310000123)
+
+ -- Felix Botner <botner@univention.de>  Tue, 24 Feb 2009 16:51:08 +0100
+
 univention-mail-cyrus-kolab2 (1.0.12-7) unstable; urgency=low
 
   * don't remove the sieve script from the user automatically. Closes
