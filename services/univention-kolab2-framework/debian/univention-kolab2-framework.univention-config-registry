@@ -12,3 +12,10 @@ Variables: freebusy/http/legacy
 
 Type: file
 File: etc/pam.d/httpd-freebusy
+Variables: ldap/base
+Variables: ldap/server/name
+
+Type: file
+File: etc/pam.d/lmtp
+Variables: ldap/base
+Variables: ldap/server/name

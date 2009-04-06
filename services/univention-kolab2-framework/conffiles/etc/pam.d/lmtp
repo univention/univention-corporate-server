@@ -1,0 +1,18 @@
+# Warning: This file is auto-generated and might be overwritten by 
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch 
+#          univention-baseconfig überschrieben werden. 
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+# 
+# 	/etc/univention/templates/files/etc/pam.d/lmtp
+# 
+
+auth    sufficient    pam_unix.so
+auth	requisite     pam_univentionmailcyrus.so ldap_host=@%@ldap/server/name@%@ ldap_base=@%@ldap/base@%@ from_attr=mailPrimaryAddress to_attr=uid
+auth    sufficient pam_ldap.so use_first_pass config=/etc/imapd/pam_ldap_imap.conf
+auth    required pam_krb5.so use_first_pass
+
+account  sufficient   pam_unix.so
+account  required     pam_ldap.so config=/etc/imapd/pam_ldap_imap.conf
+

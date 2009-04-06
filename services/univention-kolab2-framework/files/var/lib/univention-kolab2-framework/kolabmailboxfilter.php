@@ -119,7 +119,21 @@ if( $ical ) {
 if( empty($recipients) ) exit(0);
 
 $tmpf = fopen($tmpfname,"r");
-$lmtp = new KolabLMTP();
+
+// Cyrus Murder extension
+$frontend_interface = chop(shell_exec('/usr/sbin/univention-config-registry get mail/cyrus/murder/frontend/interface'));
+if ($frontend_interface != '') {
+$bind_host = chop(shell_exec("/usr/sbin/univention-config-registry get interfaces/$frontend_interface/address"));
+$pass = chop(shell_exec('cat /etc/cyrus.secret'));
+} else {
+  $bind_host = 'localhost';
+}
+
+if ($bind_host != 'localhost') {
+	$lmtp = new KolabLMTP($bind_host, 2003, 'cyrus', $pass);
+} else {
+	$lmtp = new KolabLMTP();
+}
 if( PEAR::isError( $lmtp ) ) {
   fwrite(STDOUT, $lmtp->getMessage()."\n");
   if( $error->getCode() < 500 ) exit(EX_TEMPFAIL);
