@@ -1,3 +1,9 @@
+univention-scalix (3.0.0-4) unstable; urgency=low
+
+  * Version bump (for Bug #14133)
+
+ -- Arvid Requate <requate@univention.de>  Tue,  7 Apr 2009 13:12:31 +0200
+
 univention-scalix (3.0.0-3) unstable; urgency=low
 
   * Version bump (for Bug #14130)
