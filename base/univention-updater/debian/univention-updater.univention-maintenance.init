@@ -34,6 +34,12 @@ case "$1" in
 
 		dmesg -n 1
 		eval `univention-baseconfig shell`
+
+		# clean up updater settings
+		if [ -n "$update_reboot_required" ]; then
+			univention-config-registry unset update/reboot/required >/dev/null 2>&1
+		fi
+
 		colourstart=""
 		colourend=""
 		if echo $update_warning_coloured | egrep -i 'yes|true' >/dev/null 2>&1; then
@@ -194,10 +200,6 @@ case "$1" in
 		echo "."
 		dmesg -n 8
 
-		# clean up updater settings
-		if [ -n "$update_reboot_required" ]; then
-			univention-config-registry unset update/reboot/required
-		fi
 		;;
 	*)
 		echo "Usage: /etc/init.d/univention-maintenance {start|stop|restart}"
