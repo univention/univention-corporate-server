@@ -1000,7 +1000,7 @@ if (!empty($GLOBALS['conf']['kolab']['enabled'])) {
                 // The user already authenticated with his email address.
                 return $userID;
             }
-            $email = ldap_get_values($ds, $entry, 'mail');
+            $email = ldap_get_values($ds, $entry, 'mailprimaryaddress');
             return $email[0];
         }
 	}
@@ -1109,7 +1109,7 @@ if (!function_exists('_hook_default_username')) {
 		$result = ldap_search(
 				$ds,
 				$GLOBALS['conf']['kolab']['ldap']['basedn'],
-				'mail=' . $userID
+				'mailprimaryaddress=' . $userID
 				);
 		$entry = ldap_first_entry($ds, $result);
 		if ($entry === false) {

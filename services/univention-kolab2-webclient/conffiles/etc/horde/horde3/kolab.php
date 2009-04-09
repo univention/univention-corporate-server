@@ -21,4 +21,5 @@
 	print "$conf['kolab']['ldap']['basedn'] = '%s';" % baseconfig['ldap/base']
 	print "$conf['kolab']['imap']['server'] = '%s';" % baseconfig['horde/imapserver']
 	print "$conf['kolab']['imap']['maildomain'] = '%s';" % d
+@!@
 ?>
