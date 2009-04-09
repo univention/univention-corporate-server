@@ -1,3 +1,9 @@
+univention-kolab2-webclient (4.0.4-1) unstable; urgency=low
+
+  * fixed another UCR typo in kolab.php. Bug #14152
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  9 Apr 2009 15:33:48 +0200
+
 univention-kolab2-webclient (4.0.3-1) unstable; urgency=low
 
   * use the ldap attribute mailPrimaryAddress instead of the attribute
