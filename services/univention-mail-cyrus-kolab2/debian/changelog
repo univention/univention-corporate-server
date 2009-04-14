@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (1.0.13-2) unstable; urgency=low
+
+  * use univention-cyrus-murder-movemailbox only if murder is configured
+    (Bug #14148)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 14 Apr 2009 14:32:33 +0200
+
 univention-mail-cyrus-kolab2 (1.0.13-1) unstable; urgency=low
 
   * Version bump for UCS 2.2-1 Cyrus Murder integration (Bug #10439)
