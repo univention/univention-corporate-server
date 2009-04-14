@@ -46,9 +46,6 @@ def is_groupware_user(new):
 def is_cyrus_murder_backend():
 	return ('mail/cyrus/murder/master' in listener.baseConfig and 'mail/cyrus/murder/backend/hostname' in listener.baseConfig)
 
-def mailbox_should_be_created_on_this_host(new):
-	return (is_groupware_user(new) and new.has_key('kolabHomeServer') and new['kolabHomeServer'][0] == fqdn) or (not is_groupware_user(new))
-
 def create_cyrus_userlogfile(mailaddress):
 	userlogfiles = listener.baseConfig.get('mail/cyrus/userlogfiles')
 	if userlogfiles and userlogfiles.lower() in ['true', 'yes']:
@@ -80,8 +77,8 @@ def move_cyrus_murder_mailbox(new, old):
 			listener.setuid(0)
 
 			oldemail=string.lower(old['mailPrimaryAddress'][0])
-			localCyrusMurderBackend = listener.baseConfig.get('mail/cyrus/murder/backend/hostname')
-			p = os.popen("/usr/sbin/univention-cyrus-murder-movemailbox %s %s" % (oldemail, localCyrusMurderBackend))
+			localCyrusMurderBackendFQDN = '%s.%s' % (listener.baseConfig.get('mail/cyrus/murder/backend/hostname'), listener.baseConfig.get('domainname'))
+			p = os.popen("/usr/sbin/univention-cyrus-murder-movemailbox %s %s" % (oldemail, localCyrusMurderBackendFQDN))
 
 			if ( p.close() is not None ):
 				 univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: Cyrus Murder mailbox rename failed for %s' % (name, oldemail))
@@ -92,7 +89,7 @@ def move_cyrus_murder_mailbox(new, old):
 
 def handler(dn, new, old):
 	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
-	if new and mailbox_should_be_created_on_this_host(new):
+	if new and (is_groupware_user(new) and new.has_key('kolabHomeServer') and new['kolabHomeServer'][0] == fqdn) or (not is_groupware_user(new)):
 		if not old:
 				create_cyrus_mailbox(new)
 		else:
