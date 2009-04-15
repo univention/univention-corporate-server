@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.13-4) unstable; urgency=low
+
+  * use subprocess.call instead of os.popen for movemailbox (Bug #14181)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 15 Apr 2009 13:07:14 +0200
+
 univention-mail-cyrus-kolab2 (1.0.13-3) unstable; urgency=low
 
   * supply FQDN to unviention-cyrus-murder-movemailbox, important for setups

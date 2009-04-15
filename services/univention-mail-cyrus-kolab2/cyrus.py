@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import listener
-import os, string, pwd, grp, univention.debug
+import os, string, pwd, grp, univention.debug, subprocess
 
 name='cyrus'
 description='Create default imap folders'
@@ -78,9 +78,9 @@ def move_cyrus_murder_mailbox(new, old):
 
 			oldemail=string.lower(old['mailPrimaryAddress'][0])
 			localCyrusMurderBackendFQDN = '%s.%s' % (listener.baseConfig.get('mail/cyrus/murder/backend/hostname'), listener.baseConfig.get('domainname'))
-			p = os.popen("/usr/sbin/univention-cyrus-murder-movemailbox %s %s" % (oldemail, localCyrusMurderBackendFQDN))
+			returncode = subprocess.call("/usr/sbin/univention-cyrus-murder-movemailbox %s %s" % (oldemail, localCyrusMurderBackendFQDN), shell=True)
 
-			if ( p.close() is not None ):
+			if ( returncode != 0 ):
 				 univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: Cyrus Murder mailbox rename failed for %s' % (name, oldemail))
 
 			create_cyrus_userlogfile(string.lower(new['mailPrimaryAddress'][0]))
