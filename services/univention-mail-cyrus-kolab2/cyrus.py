@@ -77,11 +77,14 @@ def move_cyrus_murder_mailbox(new, old):
 			listener.setuid(0)
 
 			oldemail=string.lower(old['mailPrimaryAddress'][0])
-			localCyrusMurderBackendFQDN = '%s.%s' % (listener.baseConfig.get('mail/cyrus/murder/backend/hostname'), listener.baseConfig.get('domainname'))
+			localCyrusMurderBackendFQDN = listener.baseConfig.get('mail/cyrus/murder/backend/hostname')
+			if ( localCyrusMurderBackendFQDN.find('.') == -1 ):
+				localCyrusMurderBackendFQDN = '%s.%s' % (listener.baseConfig.get('mail/cyrus/murder/backend/hostname'), listener.baseConfig.get('domainname'))
+
 			returncode = subprocess.call("/usr/sbin/univention-cyrus-murder-movemailbox %s %s" % (oldemail, localCyrusMurderBackendFQDN), shell=True)
 
 			if ( returncode != 0 ):
-				 univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: Cyrus Murder mailbox rename failed for %s' % (name, oldemail))
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: Cyrus Murder mailbox rename failed for %s' % (name, oldemail))
 
 			create_cyrus_userlogfile(string.lower(new['mailPrimaryAddress'][0]))
 		finally:
