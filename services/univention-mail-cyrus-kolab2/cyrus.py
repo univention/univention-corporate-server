@@ -44,7 +44,11 @@ def is_groupware_user(new):
 	return False
 
 def is_cyrus_murder_backend():
-	return ('mail/cyrus/murder/master' in listener.baseConfig and 'mail/cyrus/murder/backend/hostname' in listener.baseConfig)
+	if (listener.baseConfig.get('mail/cyrus/murder/master') and listener.baseConfig.get('mail/cyrus/murder/backend/hostname'):
+	# ucr currently gives '' if not set, might change to None
+		return True
+	else:
+		return False
 
 def create_cyrus_userlogfile(mailaddress):
 	userlogfiles = listener.baseConfig.get('mail/cyrus/userlogfiles')
