@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 #
 # Univention Thin Client Sound Support
 #  postinst script for the debian package

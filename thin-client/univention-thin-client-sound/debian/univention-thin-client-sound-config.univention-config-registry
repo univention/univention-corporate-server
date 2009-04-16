@@ -2,7 +2,6 @@ Type: file
 File: etc/udev/rules.d/040_univention-thin-client-sound.rules
 Variables: udev/sound/owner
 Variables: udev/sound/group
-Postinst: update-udev-permissions-sound.sh
 
 Type: file
 File: etc/gdm/PostLogin/scripts/015_univention-sound-permissions.sh
