@@ -1,9 +1,9 @@
-univention-thin-client-sound (2.0.9-1) unstable; urgency=low
+univention-thin-client-sound (2.0.9-2) unstable; urgency=low
 
   * removed "set -e" in postinst
-  * update sound device permissions after changing UCR variables (Bug: #13981)
+  * fixed UCR variable name (Bug: #13981)
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu, 16 Apr 2009 15:03:37 +0200
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 16 Apr 2009 16:27:28 +0200
 
 univention-thin-client-sound (2.0.8-1) unstable; urgency=low
 
