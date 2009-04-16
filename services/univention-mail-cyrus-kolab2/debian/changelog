@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (1.0.13-6) unstable; urgency=low
+
+  * fix is_cyrus_murder_backend return value (Bug #14148)
+  * fix missing arguments in move_cyrus_murder_mailbox call
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Apr 2009 14:07:42 +0200
+
 univention-mail-cyrus-kolab2 (1.0.13-5) unstable; urgency=low
 
   * fix FQDN canonicalization rule for backend/hostname (Bug #14178)

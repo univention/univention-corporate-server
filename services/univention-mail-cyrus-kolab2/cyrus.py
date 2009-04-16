@@ -44,7 +44,11 @@ def is_groupware_user(new):
 	return False
 
 def is_cyrus_murder_backend():
-	return ('mail/cyrus/murder/master' in listener.baseConfig and 'mail/cyrus/murder/backend/hostname' in listener.baseConfig)
+	if (listener.baseConfig.get('mail/cyrus/murder/master') and listener.baseConfig.get('mail/cyrus/murder/backend/hostname'):
+	# ucr currently gives '' if not set, might change to None
+		return True
+	else:
+		return False
 
 def create_cyrus_userlogfile(mailaddress):
 	userlogfiles = listener.baseConfig.get('mail/cyrus/userlogfiles')
@@ -106,6 +110,6 @@ def handler(dn, new, old):
 					# FIXME: case for mailbox rename
 				elif (old.has_key('kolabHomeServer') and old['kolabHomeServer'][0] != fqdn):
 				# if the groupware option was not toggled but the kolabHomeServer changed:
-					move_cyrus_murder_mailbox()
+					move_cyrus_murder_mailbox(new, old)
 					# FIXME: case for mailbox rename
 
