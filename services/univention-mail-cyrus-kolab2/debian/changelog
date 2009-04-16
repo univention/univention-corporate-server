@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.13-7) unstable; urgency=low
+
+  * fix missing parenthesis in is_cyrus_murder_backend (Bug #14148)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Apr 2009 16:03:15 +0200
+
 univention-mail-cyrus-kolab2 (1.0.13-6) unstable; urgency=low
 
   * fix is_cyrus_murder_backend return value (Bug #14148)
