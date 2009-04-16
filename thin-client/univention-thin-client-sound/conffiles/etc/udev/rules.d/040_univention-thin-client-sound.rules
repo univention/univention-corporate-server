@@ -8,5 +8,5 @@
 #   /etc/univention/templates/files/etc/udev/rules.d/040_univention-thin-client-sound.rules
 #
 
-SUBSYSTEM=="sound", GROUP="@%@udev/sound/group@%@", OWNER="@%@udev/sound/user@%@"
+SUBSYSTEM=="sound", GROUP="@%@udev/sound/group@%@", OWNER="@%@udev/sound/owner@%@"
 
