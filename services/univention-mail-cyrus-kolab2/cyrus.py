@@ -110,6 +110,6 @@ def handler(dn, new, old):
 					# FIXME: case for mailbox rename
 				elif (old.has_key('kolabHomeServer') and old['kolabHomeServer'][0] != fqdn):
 				# if the groupware option was not toggled but the kolabHomeServer changed:
-					move_cyrus_murder_mailbox()
+					move_cyrus_murder_mailbox(new, old)
 					# FIXME: case for mailbox rename
 
