@@ -70,6 +70,7 @@ static PyObject* module_import(char *filename)
 	   This is due to the fact that Python remembers which modules have already
 	   been imported even in these low-level functions */
 	char *name = strdup(filename);
+	char *namep;
 	FILE *fp;
 	PyCodeObject *co;
 	PyObject *m;
@@ -78,7 +79,8 @@ static PyObject* module_import(char *filename)
 		return NULL;
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Load file %s", filename);
 	
-	if (strstr(filename, ".pyo") != NULL) {
+	namep = strrchr(filename, '.');
+	if ((namep != NULL) && (strcmp(namep, ".pyo") == 0)) {
 		long magic;
 		
 		magic = PyMarshal_ReadLongFromFile(fp);
@@ -455,7 +457,7 @@ int handlers_load_path(char *path)
 		   there */
 		dir = opendir(path);
 		while ((de = readdir(dir))) {
-			if (strstr(de->d_name, "replication.py") != NULL) {
+			if (strcmp(de->d_name, "replication.py") == 0) {
 				char *filename;
 				asprintf(&filename, "%s/%s", path, de->d_name);
 				rv = handler_import(filename);
@@ -467,11 +469,15 @@ int handlers_load_path(char *path)
 		dir = opendir(path);
 		while ((de = readdir(dir))) {
 			/* Don't load replication.py twice, of course */
-			if (strstr(de->d_name, ".py") != NULL && strstr(de->d_name, "replication.py") == NULL) {
-				char *filename;
-				asprintf(&filename, "%s/%s", path, de->d_name);
-				rv = handler_import(filename);
-				free(filename);
+			if (strcmp(de->d_name, "replication.py") != 0) {
+				char *s = strrchr(de->d_name, '.');
+				/* Only load *.py files */
+				if ((s != NULL) && (strcmp(s, ".py") == 0)) {
+				 	char *filename;
+				 	asprintf(&filename, "%s/%s", path, de->d_name);
+				 	rv = handler_import(filename);
+				 	free(filename);
+				}
 			}
 		}
 		closedir(dir);

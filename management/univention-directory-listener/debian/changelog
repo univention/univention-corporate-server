@@ -1,3 +1,10 @@
+univention-directory-listener (3.0.3-1) unstable; urgency=low
+
+  * Now listener loads only files ending with ".py" instead of files
+    containing ".py" (Bug: #13003)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 17 Apr 2009 14:06:26 +0200
+
 univention-directory-listener (3.0.2-2) unstable; urgency=low
 
   * updated the copyright. Bug #6875
