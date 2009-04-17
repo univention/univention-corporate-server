@@ -1,3 +1,9 @@
+univention-management-console (1.0.14-1) unstable; urgency=low
+
+  * fixed width of drop down widgets in module "top" (Bug: #13412)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 17 Apr 2009 16:37:01 +0200
+
 univention-management-console (1.0.13-1) unstable; urgency=low
 
   * use /etc/univention/ssl/<hostname>.<domainname> for the host
