@@ -1,0 +1,4 @@
+-- to speed-up select
+create index packages_pkgname_index on packages (pkgname);
+create index packages_vername_index on packages (vername);
+create index packages_on_systems_vername_index on packages_on_systems (vername);
