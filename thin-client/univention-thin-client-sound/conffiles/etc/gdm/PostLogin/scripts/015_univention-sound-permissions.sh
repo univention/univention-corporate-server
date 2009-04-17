@@ -34,16 +34,21 @@ if [ -z "$univentionSoundEnabled" -o "$univentionSoundEnabled" = "0" ]; then
 	exit 0
 fi
 
-# current user should be owner of sound device
-univention-baseconfig set udev/sound/owner=$USER
+DEFAULTGROUP="Domain Users"
+
+# get gid of default group and use name of default group as fallback
+udev_sound_group="$(getent group "$DEFAULTGROUP" | cut -d: -f3)"
+[ -z "$udev_sound_group" ] && udev_sound_group="$DEFAULTGROUP"
+
+# get uid of user that recently logged in and use username as fallback
+udev_sound_owner="$(getent passwd "$USER" | cut -d: -f3)"
+[ -z "$udev_sound_owner" ] && udev_sound_owner="$USER"
+
+# current user and group should be owner of sound device
+univention-baseconfig set udev/sound/owner="${udev_sound_owner}" udev/sound/group?"${udev_sound_group}"
 
 # tell udev to update devices of sound subsystems
 udevcontrol reload_rules
 udevtrigger --subsystem-match=sound
-
-eval $(univention-baseconfig shell udev/sound/group)
-[ -z "$udev_sound_group" ] && udev_sound_group="Domain Users"
-chown "$USER" /dev/mixer /dev/audio /dev/dsp /dev/sequencer /dev/sequencer2
-chgrp "$udev_sound_group" /dev/mixer /dev/audio /dev/dsp /dev/sequencer /dev/sequencer2
 
 exit 0
