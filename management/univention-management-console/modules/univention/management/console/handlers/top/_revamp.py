@@ -45,9 +45,9 @@ class Web( object ):
 		lst = umcd.List()
 		opts = umcd.List()
 
-		sort = umcd.make( self[ 'top/view' ][ 'sort' ], attributes = { 'width' : '150' },
+		sort = umcd.make( self[ 'top/view' ][ 'sort' ], attributes = { 'width' : '165' },
 						  default = object.options.get( 'sort', 'cpu' ) )
-		count = umcd.make( self[ 'top/view' ][ 'count' ], attributes = { 'width' : '50' },
+		count = umcd.make( self[ 'top/view' ][ 'count' ], attributes = { 'width' : '80' },
 						   default = object.options.get( 'count', '50' ) )
 
 		req = umcp.Command( args = [ 'top/view' ] )
