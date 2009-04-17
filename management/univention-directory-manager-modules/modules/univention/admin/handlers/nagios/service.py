@@ -358,13 +358,13 @@ class object(univention.admin.handlers.simpleLdap):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
 		options = []
-		if self[ 'notificationOptionWarning' ]:
+		if self[ 'notificationOptionWarning' ] in [ '1' ]:
 			options.append('w')
-		if self[ 'notificationOptionCritical' ]:
+		if self[ 'notificationOptionCritical' ] in [ '1' ]:
 			options.append('c')
-		if self[ 'notificationOptionUnreachable' ]:
+		if self[ 'notificationOptionUnreachable' ] in [ '1' ]:
 			options.append('u')
-		if self[ 'notificationOptionRecovered' ]:
+		if self[ 'notificationOptionRecovered' ] in [ '1' ]:
 			options.append('r')
 
 		newoptions = ','.join(options)
