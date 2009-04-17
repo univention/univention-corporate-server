@@ -41,14 +41,18 @@ then
   fi
 
   if [ -n "$2" ] && dpkg --compare-versions "$2" lt 0.13; then
-  	su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes"
+  	su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-0.13"
+  fi
+  if [ -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.2; then
+  	su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-2.0.2"
   fi
 
   /etc/init.d/postgresql-7.4 reload
 fi
 
 if [ -z "$2" ]; then
-  su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes"
+  su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-0.13"
+  su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-2.0.2"
 fi
 
 # fix permissions (after postgresql sledgehammer-postinst )
