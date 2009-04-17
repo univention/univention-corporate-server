@@ -1,4 +1,4 @@
-univention-thin-client-sound (2.0.9-3) unstable; urgency=low
+univention-thin-client-sound (2.0.10-1) unstable; urgency=low
 
   * use gid and uid instead of groupname and username for sound
     permissions in udev rules file  (Bug: 13981)
