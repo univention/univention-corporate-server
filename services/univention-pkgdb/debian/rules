@@ -75,7 +75,8 @@ install-ext-%:
 	# install -m 0644 pkgdb.mo ${D}/usr/share/locale/de/LC_MESSAGES
 	install -m 0444 pkgdb.sql ${D}/var/lib/postgres
 	install -m 0500 pkgdb.bash ${D}/var/lib/postgres
-	install -m 0700 pkgdb.indexes ${D}/var/lib/postgres
+	install -m 0700 pkgdb.indexes-0.13 ${D}/var/lib/postgres
+	install -m 0700 pkgdb.indexes-2.0.2 ${D}/var/lib/postgres
 	install -m 0400 conffiles/etc/cron.d/univention-pkgdb-check ${D}/etc/cron.d
 	install -m 0755 conffiles/etc/cron.weekly/univention-pkgdb-clean ${D}/etc/cron.weekly
 	install -m 0755 50univention-pkgdb.inst ${D}/usr/lib/univention-install

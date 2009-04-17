@@ -1,3 +1,9 @@
+univention-pkgdb (2.0.2-1) unstable; urgency=low
+
+  * added new sql indices for pkgdb to improve performance (Bug: #13626)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 17 Apr 2009 13:10:58 +0200
+
 univention-pkgdb (2.0.1-3) unstable; urgency=low
 
   * updated the copyright. Bug #6875
