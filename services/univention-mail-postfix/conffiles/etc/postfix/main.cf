@@ -130,7 +130,23 @@ ldapvirtual_server_host = @%@ldap/server/name@%@
 ldapvirtual_search_base = @%@ldap/base@%@
 ldapvirtual_query_filter = (mailAlternativeAddress=%s)
 ldapvirtual_result_attribute = mailPrimaryAddress
-virtual_maps = ldap:ldapvirtual, hash:/etc/postfix/virtual
+
+@!@
+if baseConfig.has_key('postfix/zarafa') and baseConfig['postfix/zarafa'].lower() in ['true', 'yes']:
+	zarafa_ldapgroups_definition='''
+ldapgroups_server_host = %(ldap/server/name)s
+ldapgroups_search_base = %(ldap/base)s
+ldapgroups_query_filter = (&(mailPrimaryAddress=%%s)(objectclass=posixGroup))
+ldapgroups_result_attribute = mailPrimaryAddress
+ldapgroups_special_result_attribute = uniqueMember
+ldapgroups_scope = sub
+ldapgroups_version = 3
+'''
+	print zarafa_ldapgroups_definition % baseConfig
+	print 'virtual_maps = ldap:ldapvirtual, ldap:ldapgroups, hash:/etc/postfix/virtual'
+else
+	print 'virtual_maps = ldap:ldapvirtual, hash:/etc/postfix/virtual'
+@!@
 
 # if virus scanning is desired, all mails can be redirected through amavis.
 @!@

@@ -9,11 +9,12 @@
 #
 
 @!@
-if not baseConfig.has_key('mail/hosteddomains') or baseConfig['mail/hosteddomains'] == '':
-	print '%s      lmtp:unix:/var/run/cyrus/socket/lmtp' % (baseConfig['domainname'])
-else:
-	all_hosted_domains = baseConfig['mail/hosteddomains'].split(' ')
-	for hosted_domain in all_hosted_domains:
-		print '%-30s  lmtp:unix:/var/run/cyrus/socket/lmtp' % (hosted_domain)
+if not ( baseConfig.has_key('postfix/zarafa') and baseConfig['postfix/zarafa'].lower() in ['true', 'yes'] ):
+	if not baseConfig.has_key('mail/hosteddomains') or baseConfig['mail/hosteddomains'] == '':
+		print '%s      lmtp:unix:/var/run/cyrus/socket/lmtp' % (baseConfig['domainname'])
+	else:
+		all_hosted_domains = baseConfig['mail/hosteddomains'].split(' ')
+		for hosted_domain in all_hosted_domains:
+			print '%-30s  lmtp:unix:/var/run/cyrus/socket/lmtp' % (hosted_domain)
 @!@
 
