@@ -174,13 +174,13 @@ def hostDeleted(new, old):
 	if not new:
 		# host object has been deleted
 		return True
-	if old and old.has_key('univentionNagiosEnabled') and old['univentionNagiosEnabled'] and old['univentionNagiosEnabled'] == '1':
+	if old and old.get('univentionNagiosEnabled', ['0'])[0] == '1':
 		# old host object had enabled nagios support
 
-		if not new.has_key('univentionNagiosEnabled') or not new['univentionNagiosEnabled'] or not new['univentionNagiosEnabled'] == '1':
+		if not new.get('univentionNagiosEnabled', ['0'])[0] == '1':
 			# new host object is not enabled ==> delete nagios host config
 			return True
-		if not new.has_key('aRecord') or not new['aRecord']:
+		if not new.get('aRecord'):
 			# new host object contains no aRecord ==> delete nagios host config
 			return True
 
@@ -526,6 +526,15 @@ def removeHostExtInfo(fqdn):
 			listener.unsetuid()
 
 
+def removeHost(fqdn):
+	global __hostextinfodir
+	fn = os.path.join( __hostsdir, '%s.cfg' % fqdn )
+	if os.path.exists( fn ):
+		listener.setuid(0)
+		try:
+			os.unlink(fn)
+		finally:
+			listener.unsetuid()
 
 
 def handleHost(dn, new, old):
@@ -611,7 +620,9 @@ def handleHost(dn, new, old):
 
 		removeHostExtInfo(oldfqdn)
 
-	if new:
+		removeHost(oldfqdn)
+
+	elif new:
 		if not (new.has_key('aRecord') and new['aRecord']):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: missing aRecord (%s)' % dn)
 			return

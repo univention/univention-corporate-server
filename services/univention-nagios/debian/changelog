@@ -1,3 +1,9 @@
+univention-nagios (2.0.4-1) unstable; urgency=low
+
+  * fixed removal of nagios support of host objects (Bug: 10888)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 20 Apr 2009 11:26:40 +0200
+
 univention-nagios (2.0.3-1) unstable; urgency=low
 
   * adjusted default arguments of UNIVENTION_SSL in join script of
