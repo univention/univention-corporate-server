@@ -32,6 +32,7 @@
 
 if [ -e "/tmp/installation_error.log" ] && [ -d "/instmnt/var/log/univention" ]; then
 	cp /tmp/installation_error.log /instmnt/var/log/univention
+	gzip /instmnt/var/log/univention/installation_error.log
 fi
 
 if [ -n "$auto_reboot" ] && [ "$auto_reboot" = "Yes" -o "$auto_reboot" = "yes" -o "$auto_reboot" = "True" -o "$auto_reboot" = "true" ]; then
