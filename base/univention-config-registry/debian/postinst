@@ -78,6 +78,13 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.5; then
 	fi
 fi
 
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.5-3; then
+	# "rename" installation.log and installer.log to escape logrotate pattern
+	find /var/log/univention/ -name "installation.log*" -a ! -name "*.gz"  | xargs gzip
+	find /var/log/univention/ -name "installer.log*" -a ! -name "*.gz" | xargs gzip
+	find /var/log/univention/ -name "installation_error.log*" -a ! -name "*.gz"  | xargs gzip
+fi
+
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.9; then
 	find /var/log/univention/ -name *.log.[0-9].* | xargs rm -f
 	find /var/log/univention/ -name *.log.[0-9][0-9].* | xargs rm -f
