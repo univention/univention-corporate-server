@@ -209,7 +209,7 @@ endif
 	dh_builddeb -punivention-kernel-headers-2.6.26-xen
 
 ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
-	dh_gencontrol -punivention-kernel-source-2.6.26-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
+	dh_gencontrol -punivention-kernel-source-2.6.26-64gb -u-VF:KernelVersion64="${SOURCEVERSION}"
 	dh_md5sums -punivention-kernel-source-2.6.26-64gb
 	dh_builddeb -punivention-kernel-source-2.6.26-64gb
 
@@ -280,7 +280,7 @@ ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_md5sums -punivention-kernel-headers-mobileclient-2.6.26-64gb
 	dh_builddeb -punivention-kernel-headers-mobileclient-2.6.26-64gb
 
-	dh_gencontrol -punivention-kernel-source-mobileclient-2.6.26-64gb -u-VF:KernelVersion64="${SOURCEVERSION_MOBILECLIENT64}"
+	dh_gencontrol -punivention-kernel-source-mobileclient-2.6.26-64gb -u-VF:KernelVersion64="${SOURCEVERSION_MOBILECLIENT}"
 	dh_md5sums -punivention-kernel-source-mobileclient-2.6.26-64gb
 	dh_builddeb -punivention-kernel-source-mobileclient-2.6.26-64gb
 
@@ -351,7 +351,7 @@ ifeq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	dh_md5sums -punivention-kernel-headers-managedclient-2.6.26-64gb
 	dh_builddeb -punivention-kernel-headers-managedclient-2.6.26-64gb
 
-	dh_gencontrol -punivention-kernel-source-managedclient-2.6.26-64gb -u-VF:KernelVersion64="${SOURCEVERSION_MANAGEDCLIENT64}"
+	dh_gencontrol -punivention-kernel-source-managedclient-2.6.26-64gb -u-VF:KernelVersion64="${SOURCEVERSION_MANAGEDCLIENT}"
 	dh_md5sums -punivention-kernel-source-managedclient-2.6.26-64gb
 	dh_builddeb -punivention-kernel-source-managedclient-2.6.26-64gb
 
