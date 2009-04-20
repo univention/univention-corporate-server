@@ -367,6 +367,10 @@ class object(univention.admin.handlers.simpleLdap):
 		if self[ 'notificationOptionRecovered' ] in [ '1' ]:
 			options.append('r')
 
+		# univentionNagiosNotificationOptions is required in LDAP schema
+		if len(options) == 0:
+			options.append('n')
+
 		newoptions = ','.join(options)
 		ml.append( ('univentionNagiosNotificationOptions', self.oldattr.get('univentionNagiosNotificationOptions', []), newoptions) )
 
