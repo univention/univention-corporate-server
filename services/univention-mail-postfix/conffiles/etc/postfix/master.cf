@@ -95,6 +95,6 @@ if baseConfig.has_key('mail/antispam') and baseConfig['mail/antispam'] == 'yes' 
 #	print '    user=spamd argv=/usr/bin/spamc -f -e /usr/bin/procmail -t -m /var/spool/procmail/procmail.global ${sender} ${recipient}'
 #
 if baseConfig.has_key('postfix/zarafa') and baseConfig['postfix/zarafa'].lower() in ['true', 'yes']:
-	print 'zarafa    unix  -       n       n       -       10      pipe flags=DRhu user=systemmail argv=/usr/bin/zarafa-dagent ${mailbox}'
+	print 'zarafa    unix  -       n       n       -       10      pipe flags=DRhu user=systemmail argv=/usr/bin/zarafa-dagent -R ${recipient}'
 @!@
 
