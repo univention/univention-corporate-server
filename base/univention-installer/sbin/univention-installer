@@ -73,6 +73,7 @@ else
 					cat /tmp/installer.log >> /instmnt/var/log/univention/installer.log
 					chown root:adm /instmnt/var/log/univention/installer.log
 					chmod 640 /instmnt/var/log/univention/installer.log
+					gzip /instmnt/var/log/univention/installer.log
 				fi
 			fi
 			if [ -e /tmp/logging ]; then
@@ -81,6 +82,9 @@ else
 				/bin/sh $i </dev/tty1 | tee -a /tmp/installer.log
 			fi
 		done
+		if [ -e /tmp/logging ]; then
+			gzip /instmnt/var/log/univention/installation.log
+		fi
 		lib/univention-installer-scripts.d/95_completemsg.sh
 		lib/univention-installer-scripts.d/99_reboot.sh
 

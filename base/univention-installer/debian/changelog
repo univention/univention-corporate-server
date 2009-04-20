@@ -1,3 +1,10 @@
+univention-installer (4.0.26-2) unstable; urgency=low
+
+  * rename (installation|installer|installation_error).log on /instmnt by
+    using gzip to escape logrotate pattern (Bug #9261)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Apr 2009 11:27:13 +0200
+
 univention-installer (4.0.26-1) unstable; urgency=low
 
   * added the xen 2.6.18 and 2.6.26 packages to the package list. Bug
