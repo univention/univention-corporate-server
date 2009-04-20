@@ -1,3 +1,9 @@
+univention-config-registry (4.0.5-2) unstable; urgency=low
+
+  * logrotate: exclude installation.log and installer.log per extglob (Bug #9261)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 20 Apr 2009 09:47:04 +0200
+
 univention-config-registry (4.0.5-1) unstable; urgency=low
 
   * set the UCS 2.2 codename to copper beech. Bug #13319
