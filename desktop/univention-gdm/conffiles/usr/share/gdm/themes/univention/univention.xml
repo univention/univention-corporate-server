@@ -118,6 +118,23 @@ print ''
 print '\tt</box>'
 print '\t</item>'
 print '		'
+print ''
+
+if baseConfig.get( 'univentionAutoStartScript', False ):
+	print '\t<item type="rect">'
+	print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % (left_space, ((int(yresolution)-space_white_bar+100)))
+	print '\t\t<box orientation="vertical" xpadding="5" ypadding="5" spacing="0">'
+	print ''
+	print '\t\t<item type="label" id="timed-label">'
+	print '\t\t\t<normal color="#FFFFFF" font="%s"/>' % font
+	print '\t\t\t<pos anchor="nw"/>'
+	print '\t\t\t<!-- Stock label for: User %s will login in %d seconds -->'
+	print '\t\t\t<stock type="timed-label"/>'
+	print '\t\t</item>'
+	print '\t\t</box>'
+	print '\t</item>'
+
+
 if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true':
  	print '\t<item type="rect" id="language_button" button="true">'
 	if not baseConfig.has_key('gdm/menu/system') or  baseConfig['gdm/menu/system'] != 'true':
