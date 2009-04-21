@@ -1,3 +1,14 @@
+univention-apache (2.0.19-1) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+  * added more UCR variables for the apache php ini file:
+     php/memory/executiontime for max_execution_time
+     php/limit/inputtime for max_input_time
+     php/limit/sockettimeout for default_socket_timeout
+    Part of Bug #12454
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Apr 2009 15:52:16 +0200
+
 univention-apache (2.0.18-2) unstable; urgency=low
 
   * Added UCR Warning.
