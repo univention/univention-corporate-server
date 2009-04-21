@@ -96,7 +96,10 @@ univention-baseconfig set	horde/application/turba?true \
 							horde/sync/debug?false \
 							horde/sync/debugdir?$SYNC_DEBUG_DIR
 
-univention-baseconfig set php/memory/limit?64
+univention-baseconfig set	php/memory/limit?64 \
+							php/memory/executiontime?150 \
+							php/limit/inputtime?300 \
+							php/limit/sockettimeout?300
 
 # set php values
 
