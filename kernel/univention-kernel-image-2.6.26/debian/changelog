@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.26 (3.0.5-5) unstable; urgency=low
+
+  * depend on the new kernel images. Bug #13223
+
+ -- Arvid Requate <requate@univention.de>  Wed, 22 Apr 2009 10:03:27 +0200
+
 univention-kernel-image-2.6.26 (3.0.5-4) unstable; urgency=low
 
   * fix source package dependency for univention-kernel-source-*-64gb (Bug #13922)
