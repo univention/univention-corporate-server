@@ -1,0 +1,38 @@
+Source: univention-kolab2-tools
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, python, python-all-dev, python-central
+XS-Python-Version: all
+
+Package: python-univention-kolab2
+Architecture: all
+Depends: ${python:Depends}, python-univention
+Suggests: univention-kolab2-tools
+Provides: ${python:Provides}
+XB-Python-Version: ${python:Versions}
+Description: UCS - Python Module for Kolab2 
+ This packte contains a python module for reading, writing and
+ modifing kolab2 object
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kolab2-tools
+Architecture: all
+Depends: ${python:Depends}, python-univention-kolab2
+Provides: ${python:Provides}
+XB-Python-Version: ${python:Versions}
+Description: UCS - Tools fpr Kolab2
+ This packte contains  tools for reading, writing and
+ modifing kolab2 objects
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+
