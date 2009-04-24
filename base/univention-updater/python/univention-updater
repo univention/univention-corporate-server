@@ -277,7 +277,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 
 		nextversion = updater.release_update_available()
 
-		dprint('Nextupdate: [%s]' % nextversion)
+		dprint('Nextupdate: [%s]' % nextversion, [stdout,sys_stdout])
 
 		if not nextversion:
 			dprint('System is up to date (UCS %s-%s)' % (vv,vp), [stdout,sys_stdout])
