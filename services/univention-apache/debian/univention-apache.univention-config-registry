@@ -17,6 +17,9 @@ Module: extension.py
 Variables: php/memory/limit
 Variables: php/limit/filesize
 Variables: php/limit/postsize
+Variables: php/memory/executiontime
+Variables: php/limit/inputtime
+Variables: php/limit/sockettimeout
 
 Type: file
 File: etc/default/apache2

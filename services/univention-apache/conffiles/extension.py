@@ -54,7 +54,7 @@ def handler(bc,changes):
 		if inputtime and inputtime[-1:].lower() == 's':
 			inputtime = inputtime[:-1]
 
-		sockettimeout = bc.get('php/limit/sockettimeout'):
+		sockettimeout = bc.get('php/limit/sockettimeout')
 		if sockettimeout and sockettimeout[-1:].lower() == 's':
 			sockettimeout = sockettimeout[:-1]
 
