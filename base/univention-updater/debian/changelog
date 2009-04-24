@@ -1,6 +1,6 @@
 univention-updater (4.0.57-2) unstable; urgency=low
 
-  * print 'Nextupdate: [%s]' message also to sys.stdout updater net (Bug #13998)
+  * return exitstatus 1 if update_available (Bug #13998)
 
  -- Arvid Requate <requate@univention.de>  Fri, 24 Apr 2009 16:58:35 +0200
 

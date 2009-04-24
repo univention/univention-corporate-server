@@ -277,7 +277,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 
 		nextversion = updater.release_update_available()
 
-		dprint('Nextupdate: [%s]' % nextversion, [stdout,sys_stdout])
+		dprint('Nextupdate: [%s]' % nextversion)
 
 		if not nextversion:
 			dprint('System is up to date (UCS %s-%s)' % (vv,vp), [stdout,sys_stdout])
@@ -359,8 +359,10 @@ def main():
 			clean = False
 			dprint("Running updater without apt-get clean", [stdout,sys.stdout])
 		elif opt == '--check':
-			update_available(command, baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot, 0, iso=iso)
-			sys.exit(0)
+			if update_available(command, baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot, 0, iso=iso):
+				sys.exit(1)
+			else:
+				sys.exit(0)
 		else:
 			dprint('Unknown Parameter: "%s"'%opt, [stdout,sys.stdout])
 			fp_debug.close()
