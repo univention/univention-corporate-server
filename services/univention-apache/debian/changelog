@@ -1,3 +1,9 @@
+univention-apache (2.0.20-1) unstable; urgency=low
+
+  * fixed some php UCR settings. Bug #12454
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Apr 2009 08:40:42 +0200
+
 univention-apache (2.0.19-1) unstable; urgency=low
 
   * updated the copyright. Bug #6875
