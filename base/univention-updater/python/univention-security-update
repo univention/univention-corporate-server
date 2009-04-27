@@ -149,7 +149,7 @@ if __name__ == '__main__':
 				dprint( 'Error: Update of local repository server failed', [ sys.stdout, stdout ] )
 				sys.exit( 1 )
 		# ... via tar archive
-		elif command == 'local':
+		elif command == 'local' and file:
 			repo_path = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
 			ret = subprocess.call( [ 'tar','xzf', file ], cwd = os.path.join( repo_path, 'mirror' ) )
 			if ret:
