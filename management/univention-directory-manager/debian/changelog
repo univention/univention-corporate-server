@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.17-1) unstable; urgency=low
+
+  * Introduce UCR directory/manager/web/modules/policies/repositoryserver/additional
+    to allow selection of additional repository servers in UDM (Bug #14027).
+
+ -- Arvid Requate <requate@univention.de>  Mon, 27 Apr 2009 17:32:42 +0200
+
 univention-directory-manager (6.0.16-1) unstable; urgency=low
 
   * think about the up folder in the modbrowse longtable calculation.
