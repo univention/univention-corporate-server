@@ -32,6 +32,10 @@ import os, string
 import shutil, sys
 import getopt, time
 
+import univention.config_registry as ucr
+import univention.updater.repository as urepo
+from univention.updater import UniventionMirror, UCS_Version
+
 l_package={}
 p_remove=[]
 destination_dir=''
@@ -85,6 +89,20 @@ def walking(arg, dirname, names):
 				l_package[key]=[file, version, arg]
 	
 
+def cleanup_repository( directory ):
+	def _walk( fp_debug, dirname, names ):
+		for name in names:
+			filename = os.path.join( dirname, name )
+			if os.path.isfile( filename ) and filename.endswith( '.deb' ):
+				try:
+					os.unlink( filename )
+				except:
+					fp_debug.write('Warning: failed to remove %s\n' % i)
+
+	fp_debug = open( '/var/log/univention/repository.log', 'a+' )
+	os.path.walk( directory, _walk, fp_debug )
+	fp_debug.close()
+
 # parse options
 if __name__ == '__main__':
 
@@ -109,11 +127,14 @@ if __name__ == '__main__':
 		if opt == '--dest':
 			destination_dir=val
 		elif opt == '--src':
-			source_dirs.append(val)
+			src = urepo.get_repo_basedir( val )
+			source_dirs.append( src )
 
 	if not destination_dir:
 		usage()
 		sys.exit(1)
+	
+	destination_dir = urepo.get_repo_basedir( destination_dir )
 
 	if len(source_dirs) < 1:
 		usage()
@@ -122,7 +143,8 @@ if __name__ == '__main__':
 	os.path.walk(destination_dir, walking, 1)
 
 	for dir in source_dirs:
-		os.path.walk(dir, walking, 0)
+		src = urepo.get_repo_basedir( dir )
+		os.path.walk( src, walking, 0 )
 
 	packages_dir=os.path.join(destination_dir)
 	if not os.path.exists(packages_dir):
@@ -130,59 +152,26 @@ if __name__ == '__main__':
 
 	for k in l_package.keys():
 		if l_package[k][2] == 0: #if not dest dir
-			shutil.copy(l_package[k][0], packages_dir)
+			shutil.copy(l_package[k][0], os.path.join( packages_dir, k[ 1 ] ) )
 
+	fp_debug=open('/var/log/univention/repository.log', 'a+')
 	for f in p_remove:
 		try:
 			os.remove(f)
 		except:
-			fp_debug=open('/var/log/univention/repository.log', 'a+')
 			fp_debug.write('Warning: failed to remove %s\n' % f)
-			fp_debug.close()
 
 	save_dir=os.path.realpath(os.path.curdir)
 
 	for dir in source_dirs:
 		if dir == packages_dir:
 			continue
-		os.chdir(save_dir)
-		os.chdir(dir)
-		for i in os.listdir('./'):
-			if i.endswith('.deb'):
-				try:
-					os.unlink(i)
-				except:
-					fp_debug=open('/var/log/univention/repository.log', 'a+')
-					fp_debug.write('Warning: failed to remove %s\n' % i)
-					fp_debug.close()
+		cleanup_repository( dir )
 
-		count=0
-		while os.path.exists('Packages.lock') and count < 300:
-			time.sleep(1)
-			count=count+1
-
-		out=os.popen('touch Packages.lock >>/var/log/univention/repository.log 2>&1 && apt-ftparchive packages .>Packages 2>>/var/log/univention/repository.log')
-		result=out.readlines()
-		if result:
-			print result
-		out=os.popen('gzip -c Packages >Packages.gz  2>>/var/log/univention/repository.log ; rm Packages.lock  >>/var/log/univention/repository.log 2>&1')
-		result=out.readlines()
-		if result:
-			print result
+		urepo.update_indexes( dir, stdout = fp_debug, stderr = fp_debug )
 
 	os.chdir(save_dir)
 	os.chdir(packages_dir)
-	count=0
-	while os.path.exists('Packages.lock') and count < 300:
-		time.sleep(1)
-		count=count+1
-
-	out=os.popen('touch Packages.lock  >>/var/log/univention/repository.log 2>&1&& apt-ftparchive packages .>Packages  2>>/var/log/univention/repository.log')
-	result=out.readlines()
-	if result:
-		print result
-	out=os.popen('gzip -c Packages >Packages.gz  2>>/var/log/univention/repository.log ; rm Packages.lock  >>/var/log/univention/repository.log 2>&1')
-	result=out.readlines()
-	if result:
-		print result
+	urepo.update_indexes( packages_dir, stdout = fp_debug, stderr = fp_debug )
+	fp_debug.close()
 
