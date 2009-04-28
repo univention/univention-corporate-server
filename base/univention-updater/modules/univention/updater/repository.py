@@ -84,32 +84,38 @@ def copy_package_files( source_dir, dest_dir ):
 			except shutil.Error, e:
 				print >> sys.stderr, "Copying package '%s' failed." % filename
 
-def update_indexes( base_dir, update_only = False, dists = False ):
-	print 'Creating indexes ...',
-	sys.stdout.flush()
+def update_indexes( base_dir, update_only = False, dists = False, stdout = None, stderr = None ):
+	# redirekt output
+	if not stdout:
+		stdout = sys.stdout
+	if not stderr:
+		stderr = sys.stderr
+
+	print >> stdout, 'Creating indexes ...',
+	stdout.flush()
 	for arch in ARCHITECTURES:
 		if not os.path.isdir( os.path.join( base_dir, arch ) ):
 			continue
 		if update_only and not os.path.isfile( os.path.join( base_dir, arch, 'Packages' ) ):
 			continue
-		print arch,
-		sys.stdout.flush()
+		print >> stdout, arch,
+		stdout.flush()
 		# create Packages file
 		packages_fd = open( os.path.join( base_dir, arch, 'Packages' ), 'w' )
 		pwd, child = os.path.split( base_dir )
-		ret = subprocess.call( [ 'apt-ftparchive', 'packages', os.path.join( child, arch ) ], stdout = packages_fd, cwd = pwd )
+		ret = subprocess.call( [ 'apt-ftparchive', 'packages', os.path.join( child, arch ) ], stdout = packages_fd, stderr = stderr, cwd = pwd )
 		packages_fd.close()
 
 		if ret:
-			print >> sys.stderr, "Error: Failed to create Packages file for '%s'" % os.path.join( base_dir, arch )
+			print >> stderr, "Error: Failed to create Packages file for '%s'" % os.path.join( base_dir, arch )
 			sys.exit( 1 )
 
 		# create Packages.gz file
 		gzip_file( os.path.join( base_dir, arch, 'Packages' ) )
 
 		if ret:
-			print 'failed.'
-			print >> sys.stderr, "Error: Failed to create Packages.gz file for '%s'" % os.path.join( _repo_path, arch )
+			print >> stdout,'failed.'
+			print >> stderr, "Error: Failed to create Packages.gz file for '%s'" % os.path.join( _repo_path, arch )
 			sys.exit( 1 )
 
 	# create Packages file in dists directory if it exists
@@ -120,14 +126,14 @@ def update_indexes( base_dir, update_only = False, dists = False ):
 				continue
 			packages_file = os.path.join( base_dir, 'dists/univention/main', 'binary-%s' % arch, 'Packages' )
 			packages_fd = open( packages_file, 'w' )
-			ret = subprocess.call( [ 'apt-ftparchive', 'packages', 'all' ], stdout = packages_fd, cwd = base_dir )
+			ret = subprocess.call( [ 'apt-ftparchive', 'packages', 'all' ], stdout = packages_fd, stderr = stderr, cwd = base_dir )
 			packages_fd.close()
 			packages_fd = open( packages_file, 'a' )
-			ret = subprocess.call( [ 'apt-ftparchive', 'packages', '%s' % arch ], stdout = packages_fd, cwd = base_dir )
+			ret = subprocess.call( [ 'apt-ftparchive', 'packages', '%s' % arch ], stdout = packages_fd, stderr = stderr, cwd = base_dir )
 			packages_fd.close()
 			gzip_file( packages_file )
 
-	print 'done.'
+	print >> stdout, 'done.'
 
 def create_packages( base_dir, source_dir ):
 	# recreate Packages file
