@@ -66,3 +66,176 @@ objectClass ( 1.3.6.1.4.1.10176.200.20 NAME 'univentionAdminProperty'
         DESC ' defines a custom attribute for use in univention_ admin '
         MUST ( cn $ univentionAdminPropertyModule $ univentionAdminPropertyShortDescription $ univentionAdminPropertyLdapMapping )
         MAY ( univentionAdminPropertyLongDescription $ univentionAdminPropertySyntax $ univentionAdminPropertyMultivalue $ univentionAdminPropertyDefault $ univentionAdminPropertyObjectClass $ univentionAdminPropertyDeleteValues $ univentionAdminPropertyDeleteObjectClass $ univentionAdminPropertyLayoutTabName $ univentionAdminPropertyLayoutPosition ))
+
+
+
+# #################################################################
+
+
+attributetype ( 1.3.6.1.4.1.10176.200.100 NAME 'univentionUDMPropertyVersion'
+        DESC ' determines which object format is used for this custom attribute '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+		SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.200.101 NAME 'univentionUDMPropertyModule'
+        DESC ' determines which ldap module(s) is(are) related to this custom attribute '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.102 NAME 'univentionUDMPropertyShortDescription'
+        DESC ' short description for the attribute'
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.103 NAME 'univentionUDMPropertyLongDescription'
+        DESC ' some text describing the attribute eg.: "this is the numerical id of the user"'
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.104 NAME 'univentionUDMPropertySyntax'
+        DESC ' datatype of the attribute eg.: string'
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.105 NAME 'univentionUDMPropertyMultivalue'
+        DESC ' is this attribute a multivalue'
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.106 NAME 'univentionUDMPropertyDefault'
+        DESC ' the default value for this attribute'
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.107 NAME 'univentionUDMPropertyLdapMapping'
+        DESC ' determines which ldap attribute(s) is(are) related to this custom attribute '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.108 NAME 'univentionUDMPropertyObjectClass'
+        DESC ' objectClass an Object must have '
+        EQUALITY caseExactMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.109 NAME 'univentionUDMPropertyDeleteObjectClass'
+        DESC ' delete the objectclass'
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.110 NAME 'univentionUDMPropertyValueMayChange'
+        DESC ' defines if value is readonly or writable '
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.10176.200.111 NAME 'univentionUDMPropertyLayoutTabName'
+        DESC ' name of tab the custom attribute shall be displayed on '
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.112 NAME 'univentionUDMPropertyLayoutOverwriteTab'
+        DESC ' existing tab will be overwritten '
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.113 NAME 'univentionUDMPropertyLayoutOverwritePosition'
+        DESC ' existing widget at given position will be overwritten '
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.114 NAME 'univentionUDMPropertyLayoutPosition'
+        DESC ' position of custom attribute on given tab '
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.115 NAME 'univentionUDMPropertyCLIName'
+        DESC ' short description for the attribute'
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.116 NAME 'univentionUDMPropertyTranslationShortDescription'
+        DESC ' some translated text describing the attribute eg.: "this is the numerical id of the user"'
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.10176.200.117 NAME 'univentionUDMPropertyTranslationLongDescription'
+        DESC ' some translated text describing the attribute eg.: "this is the numerical id of the user"'
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.10176.200.118 NAME 'univentionUDMPropertyTranslationTabName'
+        DESC ' some translated text describing the tab name eg.: "general"'
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.10176.200.119 NAME 'univentionUDMPropertyOptions'
+        DESC ' list of options '
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.10176.200.120 NAME 'univentionUDMPropertyLayoutTabAdvanced'
+        DESC ' list of options '
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.121 NAME 'univentionUDMPropertyValueRequired'
+        DESC ' list of options '
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.122 NAME 'univentionUDMPropertyHook'
+        DESC ' list of options '
+        EQUALITY caseIgnoreMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+objectclass ( 1.3.6.1.4.1.10176.200.199
+    NAME 'univentionUDMProperty'
+        DESC ' defines a custom attribute for use in univention directory manager '
+        MUST ( cn $
+			   univentionUDMPropertyVersion $
+			   univentionUDMPropertyModule $
+			   univentionUDMPropertyShortDescription $
+			   univentionUDMPropertyLdapMapping $
+			   univentionUDMPropertyCLIName )
+        MAY ( univentionUDMPropertyLongDescription $
+			  univentionUDMPropertyTranslationShortDescription $
+			  univentionUDMPropertyTranslationLongDescription $
+			  univentionUDMPropertyTranslationTabName $
+			  univentionUDMPropertySyntax $
+			  univentionUDMPropertyMultivalue $
+			  univentionUDMPropertyDefault $
+			  univentionUDMPropertyObjectClass $
+			  univentionUDMPropertyDeleteObjectClass $
+			  univentionUDMPropertyValueMayChange $
+			  univentionUDMPropertyValueRequired $
+			  univentionUDMPropertyLayoutTabName $
+			  univentionUDMPropertyLayoutOverwriteTab $
+			  univentionUDMPropertyLayoutOverwritePosition $
+			  univentionUDMPropertyLayoutPosition $
+			  univentionUDMPropertyOptions $
+			  univentionUDMPropertyLayoutTabAdvanced $
+			  univentionUDMPropertyHook
+			  )
+	)
