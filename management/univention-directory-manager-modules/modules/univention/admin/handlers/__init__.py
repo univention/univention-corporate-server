@@ -658,10 +658,15 @@ class simpleLdap(base):
 
 				else:
 					if syntax == 'boolean' and self.info.has_key(pname) and self.info[pname] == '0':
+						dellist = []
+						addlist = []
 						for i in ml:
 							if i[0] == ldapMapping:
-								ml.remove(i)
-								ml.append((i[0],i[1],''))
+								dellist.append(i)
+								addlist.append((i[0],i[1],''))
+						for i in dellist:
+							ml.remove(i)
+						ml.extend( addlist )
 
 
 					else:
