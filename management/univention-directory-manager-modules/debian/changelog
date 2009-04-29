@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.9-1) unstable; urgency=low
+
+  * added new module settings/udm_property (Bug: #5570)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 29 Apr 2009 17:58:51 +0200
+
 univention-directory-manager-modules (4.0.8-1) unstable; urgency=low
 
   * fixed LDAP object class violation (Bug: #10888)
