@@ -298,7 +298,13 @@ def object_input(module, object, input, append=None, remove=None):
 					object[key]=[]
 
 			else:
-				for val in value:
+				if type(object[key]) is str:
+					object[key] = [ object[key] ]
+				vallist = value
+				if type(value) is str:
+					vallist = [ value ]
+
+				for val in vallist:
 					if val in object[key]:
 						object[key].remove(val)
 					else:
