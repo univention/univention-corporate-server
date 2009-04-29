@@ -250,6 +250,12 @@ class tab:
 		self.fields=fields
 		self.advanced = advanced
 
+	def set_fields(self, fields):
+		self.fields = fields
+
+	def get_fields(self):
+		return self.fields
+
 	def __repr__(self):
 		string = " univention.admin.tab: { short_description: '%s', long_description: '%s', advanced: '%s', fields: [" % (self.short_description, self.long_description, self.advanced)
 		for field in self.fields:
