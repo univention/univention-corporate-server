@@ -571,6 +571,36 @@ class simpleLdap(base):
 					#objectClasses.append(oc)
 					al.append(('objectClass', [oc]))
 
+		# UDM PROPERTIES
+		if hasattr(m, 'custom_udm_properties'):
+			seen={}
+			for prop in m.custom_udm_properties:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: prop.objClass = %s, prop.name = %s'% (prop.objClass, prop.name))
+				if self.info.get(prop.name):
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: prop.name: info[%s] = %s'% (prop.name, self.info.get(prop.name)))
+
+					# do not add object class and value if syntax is boolean and checkbox is disabled
+					if prop.syntax == 'boolean' and self.info.get(prop.name) == '0':
+						dellist = []
+						for i in range(0,len(al)):
+							if al[i][0] == prop.ldapMapping:
+								dellist.append( al[i] )
+						for item in dellist:
+							al.remove(item)
+						continue
+
+					# in all other cases add object class
+					if seen.get(prop.objClass):
+						continue
+					objectClasses=[]
+					for i in al:
+						if i[0] == 'objectClass' and i[1]:
+							objectClasses.extend( i[1] )
+					if prop.objClass in objectClasses:
+						continue
+					seen[prop.objClass]=1
+					al.append(('objectClass', [prop.objClass]))
+
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "trying to add object at: %s" % self.dn)
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "dn: %s" % (self.dn))
 		self.lo.add(self.dn, al)
@@ -652,6 +682,67 @@ class simpleLdap(base):
 										found_entry=1
 								if not found_entry:
 									ml.append((ldapMapping,['not_important'],0))
+
+		# UDM PROPERTIES
+		if hasattr(m, 'custom_udm_properties'):
+			seen={}
+
+			for prop in m.custom_udm_properties:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._modify: c_u_p: pname = "%s"  oc = "%s"'% (prop.name, prop.objClass))
+
+				# if value is set then add object class if neccessary
+				# exception is syntax==boolean ==> remove attribute and object class if value==0
+				if self.info.get(prop.name) and not (prop.syntax == 'boolean' and self.info.get(prop.name) == '0'):
+
+					if prop.objClass in self.oldattr.get('objectClass', []):
+						continue
+					if seen.get(prop.objClass):
+						continue
+					seen[prop.objClass] = 1
+					current_ocs = self.oldattr.get('objectClass')
+					for i in ml:
+						if i[0] == 'objectClass' and i[2]:
+							if type(i[2]) == type(''):
+								current_ocs = [ i[2] ]
+							elif type(i[2]) == type([]):
+								current_ocs = i[2]
+							else:
+								univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in simpleLDAP._modify: i=%s'%i)
+					ml.append( ('objectClass', self.oldattr.get('objectClass'), current_ocs+[prop.objClass]) )
+
+				else:
+
+					if prop.syntax == 'boolean' and self.info.has_key(prop.name) and self.info[prop.name] == '0':
+						# syntax is boolean and value == 0 ==> remove
+						dellist = []
+						addlist = []
+						for i in ml:
+							if i[0] == prop.ldapMapping:
+								dellist.append(i)
+								addlist.append((i[0],i[1],''))
+						for i in dellist:
+							ml.remove(i)
+						ml.extend( addlist )
+
+					else:
+						# no value is set
+						if prop.deleteObjClass == '1' and not self.info.has_key(prop.name):
+							# value is empty, should delete objectClass and Values
+							if prop.objClass in self.oldattr.get('objectClass', []):
+								current_ocs = self.oldattr.get('objectClass')[0:]
+								for i in ml:
+									if i[0] == 'objectClass' and i[2]:
+										current_ocs = i[2]
+								current_ocs.remove( prop.objClass )
+								ml.append( ('objectClass', self.oldattr.get('objectClass'), current_ocs) )
+								# delete value entry, may be part of ml if it changed
+								found_entry = 0
+								for i in ml:
+									if i[0] == prop.ldapMapping:
+										i = (prop.ldapMapping, i[1], 0)
+										found_entry = 1
+								if not found_entry:
+									ml.append( (prop.ldapMapping, ['not_important'], 0) )
 
 		#FIXME: timeout without exception if objectClass of Object is not exsistant !!
 		self.lo.modify(self.dn, ml, ignore_license=ignore_license)
