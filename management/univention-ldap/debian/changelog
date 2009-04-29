@@ -1,3 +1,10 @@
+univention-ldap (4.0.5-1) unstable; urgency=low
+
+  * added new objectclass univentionFreeAttributes with 20 unassigned
+    customer LDAP attributes (Bug: #5569)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 29 Apr 2009 17:57:34 +0200
+
 univention-ldap (4.0.4-1) unstable; urgency=low
 
   * added schema for univentionUDMProperty (Bug #5570)
