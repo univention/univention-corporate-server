@@ -34,6 +34,7 @@ import univention.debug
 import univention.admin
 import univention.admin.uldap
 import univention.admin.syntax
+import univention.admin.hook
 import univention.admin.localization
 
 translation=univention.admin.localization.translation('univention/admin')
@@ -778,4 +779,5 @@ def childModules(module_name):
 	return copy.deepcopy( getattr(module, 'childmodules', []) )
 
 univention.admin.syntax.import_syntax_files()
+univention.admin.hook.import_hook_files()
 update()
