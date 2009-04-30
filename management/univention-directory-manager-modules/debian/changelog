@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.10-1) unstable; urgency=low
+
+  * fixed traceback when removing single-values (Bug: #14290)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 29 Apr 2009 18:00:25 +0200
+
 univention-directory-manager-modules (4.0.9-1) unstable; urgency=low
 
   * added new module settings/udm_property (Bug: #5570)
