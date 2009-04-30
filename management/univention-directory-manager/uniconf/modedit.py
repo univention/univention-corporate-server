@@ -1839,11 +1839,6 @@ class modedit(unimodule.unimodule):
 						host_choicelist=[]
 						host_choicelist_has_current=0
 
-						additional_repository_server = ucr.get('directory/manager/web/modules/policies/repositoryserver/additional')
-						if additional_repository_server:
-							for servername in additional_repository_server.split(' '):
-								host_choicelist.append({'name': servername, 'description': servername})
-
 						for dn, attr in self.lo.search('(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))', attr=['objectClass', 'aRecord', 'cn']):
 							# TODO: ckeck for multiple aRecord?
 							if attr.has_key('aRecord') and attr['aRecord'][0]:
@@ -1856,6 +1851,16 @@ class modedit(unimodule.unimodule):
 									host_choicelist[-1]['selected']='1'
 									host_choicelist_has_current=1
 
+
+						additional_repository_server = ucr.get('directory/manager/web/modules/policies/repositoryserver/additional')
+						if additional_repository_server:
+							for servername in additional_repository_server.split(' '):
+								if servername not in [host['name'] for host in host_choicelist]:
+
+									host_choicelist.append({'name': servername, 'description': servername})
+									if servername == value:
+										host_choicelist[-1]['selected']='1'
+										host_choicelist_has_current=1
 
 						if not host_choicelist_has_current and value:
 							host_choicelist.append({'name': value, 'description': value, 'selected': '1'})
