@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.17-2) unstable; urgency=low
+
+  * avoid duplicate host entries in repository server dropdown
+  * set selected flag also for additional servers (Bug #14027).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Apr 2009 18:38:22 +0200
+
 univention-directory-manager (6.0.17-1) unstable; urgency=low
 
   * Introduce UCR directory/manager/web/modules/policies/repositoryserver/additional
