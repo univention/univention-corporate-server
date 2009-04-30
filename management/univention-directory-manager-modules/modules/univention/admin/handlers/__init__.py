@@ -437,8 +437,21 @@ class simpleLdap(base):
 
 		self.save()
 
+	def call_udm_property_hook(self, hookname, module, changes = None):
+		m = univention.admin.modules.get( module.module )
+		if hasattr(m, 'custom_udm_properties'):
+			for prop in m.custom_udm_properties:
+				if prop.hook != None:
+					func = getattr(prop.hook, hookname, None)
+					if changes == None:
+						func(module)
+					else:
+						changes = func(module, changes)
+		return changes
+
 	def open(self):
 		self.exceptions=[]
+		self.call_udm_property_hook('hook_open', self)
 		self.save()
 
 	def _remove_option( self, name ):
@@ -518,6 +531,8 @@ class simpleLdap(base):
 
 		if hasattr(self,"_update_policies"):
 			self._update_policies()
+
+		self.call_udm_property_hook('hook_ldap_pre_create', self)
 
 		# Make sure all default values are set...
 		for name, p in self.descriptions.items():
@@ -601,12 +616,16 @@ class simpleLdap(base):
 					seen[prop.objClass]=1
 					al.append(('objectClass', [prop.objClass]))
 
+		al = self.call_udm_property_hook('hook_ldap_addlist', self, al)
+
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "trying to add object at: %s" % self.dn)
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "dn: %s" % (self.dn))
 		self.lo.add(self.dn, al)
 
 		if hasattr(self,'_ldap_post_create'):
 			self._ldap_post_create()
+
+		self.call_udm_property_hook('hook_ldap_post_create', self)
 
 		self.save()
 		return self.dn
@@ -619,6 +638,8 @@ class simpleLdap(base):
 			self._ldap_pre_modify()
 		if hasattr(self,'_update_policies'):
 			self._update_policies()
+
+		self.call_udm_property_hook('hook_ldap_pre_modify', self)
 
 		# Make sure all default values are set...
 		for name, p in self.descriptions.items():
@@ -749,11 +770,15 @@ class simpleLdap(base):
 								if not found_entry:
 									ml.append( (prop.ldapMapping, ['not_important'], 0) )
 
+		ml = self.call_udm_property_hook('hook_ldap_modlist', self, ml)
+
 		#FIXME: timeout without exception if objectClass of Object is not exsistant !!
 		self.lo.modify(self.dn, ml, ignore_license=ignore_license)
 
 		if hasattr(self,'_ldap_post_modify'):
 			self._ldap_post_modify()
+
+		self.call_udm_property_hook('hook_ldap_post_modify', self)
 
 		self.save()
 		return self.dn
@@ -803,6 +828,8 @@ class simpleLdap(base):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL,'_ldap_pre_remove() called')
 			self._ldap_pre_remove()
 
+		self.call_udm_property_hook('hook_ldap_pre_remove', self)
+
 		if remove_childs:
 			if not self.dn:
 				raise univention.admin.uexceptions.noObject
@@ -823,6 +850,8 @@ class simpleLdap(base):
 
 		if hasattr(self,"_ldap_post_remove"):
 			self._ldap_post_remove()
+
+		self.call_udm_property_hook('hook_ldap_post_remove', self)
 
 	def loadPolicyObject(self, policy_type, reset=0):
 		pathlist=[]
