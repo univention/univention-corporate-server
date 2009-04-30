@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-12 09:40+0100\n"
-"PO-Revision-Date: 2007-11-28 14:14+0100\n"
+"POT-Creation-Date: 2009-04-29 14:30+0200\n"
+"PO-Revision-Date: 2009-04-29 14:32+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,8 +24,8 @@ msgstr "Einstellungen: Univention Directory Manager Globale Einstellungen"
 #: default.py:52 directory.py:53 license.py:54 license.py:55 lock.py:54
 #: lock.py:55 packages.py:54 packages.py:55 printermodel.py:54
 #: printermodel.py:55 printeruri.py:54 printeruri.py:55
-#: prohibited_username.py:54 prohibited_username.py:55 usertemplate.py:50
-#: xconfig_choices.py:54
+#: prohibited_username.py:54 prohibited_username.py:55 udm_property.py:50
+#: usertemplate.py:50 xconfig_choices.py:54
 msgid "Name"
 msgstr "Name"
 
@@ -41,13 +41,14 @@ msgstr "Sichtbare Module"
 #: customattribute.py:171 default.py:164 directory.py:175 lock.py:75
 #: packages.py:76 printermodel.py:76 printeruri.py:76
 #: prohibited_username.py:75 sambaconfig.py:179 sambadomain.py:233
-#: service.py:61 syntax.py:142 usertemplate.py:534 xconfig_choices.py:175
+#: service.py:61 syntax.py:142 udm_property.py:295 usertemplate.py:534
+#: xconfig_choices.py:175
 msgid "General"
 msgstr "Allgemein"
 
 #: admin.py:84 cn.py:61 customattribute.py:171 default.py:164 directory.py:175
 #: sambaconfig.py:179 sambadomain.py:233 service.py:61 syntax.py:142
-#: usertemplate.py:534
+#: udm_property.py:295 usertemplate.py:534
 msgid "Basic Values"
 msgstr "Grundeinstellungen"
 
@@ -129,19 +130,19 @@ msgstr "Kurzbeschreibung"
 msgid "Long Description"
 msgstr "Ausführliche Beschreibung"
 
-#: customattribute.py:79
+#: customattribute.py:79 udm_property.py:110
 msgid "Syntax"
 msgstr "Syntax"
 
-#: customattribute.py:89
+#: customattribute.py:89 udm_property.py:130
 msgid "Multivalue"
 msgstr "Mehrfachwert"
 
-#: customattribute.py:100
+#: customattribute.py:100 udm_property.py:141
 msgid "Default Value"
 msgstr "Vorgabewert"
 
-#: customattribute.py:110
+#: customattribute.py:110 udm_property.py:151
 msgid "Tab Name"
 msgstr "Name der Karteikarte"
 
@@ -153,20 +154,20 @@ msgstr "Nummer auf der Karteikarte"
 msgid "LDAP Mapping"
 msgstr "LDAP-Abbildung"
 
-#: customattribute.py:140
+#: customattribute.py:140 udm_property.py:231
 msgid "Object Class"
 msgstr "Objektklasse"
 
 # customattribute.py:06
-#: customattribute.py:150
+#: customattribute.py:150 udm_property.py:241
 msgid "Delete Object Class"
 msgstr "Objektklasse löschen"
 
-#: customattribute.py:160
+#: customattribute.py:160 udm_property.py:251
 msgid "Needed Module"
 msgstr "Benötigtes Modul"
 
-#: customattribute.py:161
+#: customattribute.py:161 udm_property.py:252
 msgid "\"users/user\" or \"computer/thinclient\""
 msgstr "\"users/user\" oder \"computer/thinclient\""
 
@@ -675,6 +676,102 @@ msgid ""
 msgstr ""
 "Ein LDAP-Attribut wird benötigt in dem die Informationen gespeichert werden."
 
+#: udm_property.py:44
+msgid "Settings: UDM property"
+msgstr "Einstellungen: UDM Property"
+
+#: udm_property.py:60
+msgid "Default short description"
+msgstr "Standard-Kurzbeschreibung"
+
+#: udm_property.py:70
+msgid "Default Long Description"
+msgstr "Ausführliche Standardbeschreibung"
+
+#: udm_property.py:80
+msgid "Translation of short description "
+msgstr "Übersetzung der Kurzbeschreibung"
+
+#: udm_property.py:90
+msgid "Translation of long description "
+msgstr "Übersetzung der ausführlichen Beschreibung"
+
+#: udm_property.py:100
+msgid "Translation of tab name"
+msgstr "Übersetzung des Reiternamens"
+
+#: udm_property.py:120
+msgid "Hook"
+msgstr "Hook"
+
+#: udm_property.py:161
+msgid "Position number on tab"
+msgstr "Positionsnummer auf der Karteikarte"
+
+#: udm_property.py:171
+msgid "Advanced tab"
+msgstr "Reiter mit erweiterten Einstellungen"
+
+#: udm_property.py:181
+msgid "Overwrite existing tab"
+msgstr "Existierenden Reiter überschreiben"
+
+#: udm_property.py:191
+msgid "Overwrite existing widget"
+msgstr "Existierendes Eingabefeld überschreiben"
+
+#: udm_property.py:201 udm_property.py:315
+msgid "LDAP mapping"
+msgstr "LDAP-Abbildung"
+
+#: udm_property.py:211
+msgid "May change"
+msgstr "Nachträglich modifizierbar"
+
+#: udm_property.py:221
+msgid "Value required"
+msgstr "Wert wird benötigt"
+
+#: udm_property.py:261
+msgid "Version of UDM Property"
+msgstr "Einstellungen: UDM Property"
+
+#: udm_property.py:272
+msgid "UDM CLI name of UDM property"
+msgstr "UDM-CLI Attributname"
+
+#: udm_property.py:283 usertemplate.py:508
+msgid "Options"
+msgstr "Optionen"
+
+#: udm_property.py:300
+msgid "UDM Web"
+msgstr "UDM Web"
+
+#: udm_property.py:300
+msgid "Settings for UDM web interface"
+msgstr "UDM-Web-spezifische Einstellungen"
+
+#: udm_property.py:306
+msgid "UDM General"
+msgstr "UDM Allgemein"
+
+#: udm_property.py:306
+msgid "UDM related settings"
+msgstr "UDM-spezifische Einstellungen"
+
+#: udm_property.py:310
+msgid "Data type"
+msgstr "Datentyp"
+
+#: udm_property.py:310
+msgid "Data type definition"
+msgstr "Datentyp-Definition"
+
+#: udm_property.py:315
+msgid "LDAP"
+msgstr "LDAP"
+
 #: user.py:47
 msgid "Preferences: Univention Directory Manager user settings"
 msgstr "Einstellungen: Univention Directory Manager Benutzereinstellungen"
@@ -895,10 +992,6 @@ msgstr "Abwesenheitsnotiz an folgende nicht senden Domänen"
 msgid "Invitation Policy"
 msgstr "Richtlinien automatische Terminannahme"
 
-#: usertemplate.py:508
-msgid "Options"
-msgstr "Optionen"
-
 #: usertemplate.py:540
 msgid "User Account"
 msgstr "Benutzer-Konto"
@@ -1006,6 +1099,9 @@ msgstr "Bildschirm Grösse (mm)"
 #: xconfig_choices.py:175
 msgid "X Configuration Choices"
 msgstr "X Konfiguration Auswahl"
+
+#~ msgid "Version of custom attribute"
+#~ msgstr "Version desSichtbare Benutzerattribute\n"
 
 #~ msgid "Visible Univention Admin Wizards"
 #~ msgstr "Sichtbare Univention Admin Assistenten"

@@ -29,7 +29,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os, sys, ldap, types, copy
+import os, sys, ldap, types, copy, locale
 import univention.debug
 import univention.admin
 import univention.admin.uldap
@@ -232,9 +232,221 @@ def init(lo, position, module, template_object=None):
 			for text, subsyn in prop.syntax.subsyntaxes:
 				if subsyn.name == 'LDAP_Search':
 					subsyn._load( lo )
-				
 
+	# add new properties
+	update_udm_properties( lo, module, position )
 	module.initialized=1
+
+
+def update_udm_properties(lo, module, position):
+
+	# add list of tabnames created by UDM properties
+	if not hasattr(module, 'custom_udm_property_tabnames'):
+		module.custom_udm_property_tabnames = []
+
+	# append udp custom properties
+	properties4tabs = {}
+	overwriteTabList = []
+	module.custom_udm_properties = []
+	for dn, attrs in lo.search( base = position.getDomainConfigBase(),
+								filter='(&(objectClass=univentionUDMProperty)(univentionUDMPropertyModule=%s)(univentionUDMPropertyVersion=2))' % name(module) ):
+		# get CLI name
+		pname=attrs['univentionUDMPropertyCLIName'][0]
+
+		# get syntax
+		propertySyntaxString=attrs.get('univentionUDMPropertySyntax', [''])[0]
+		if propertySyntaxString and hasattr(univention.admin.syntax, propertySyntaxString):
+			propertySyntax = getattr(univention.admin.syntax, propertySyntaxString)
+		else:
+			if lo.search( filter = univention.admin.syntax.LDAP_Search.FILTER_PATTERN % propertySyntaxString ):
+				propertySyntax = univention.admin.syntax.LDAP_Search( propertySyntaxString )
+			else:
+				propertySyntax = univention.admin.syntax.string()
+
+		# get hooks
+		propertyHookString=attrs.get('univentionUDMPropertyHook', [''])[0]
+		propertyHook = None
+		if propertyHookString and hasattr(univention.admin.hook, propertyHookString):
+			propertyHook = getattr(univention.admin.hook, propertyHookString)()
+
+		# get default value
+		propertyDefault = attrs.get('univentionUDMPropertyDefault', [''])
+
+		# value may change
+		mayChange = int( attrs.get('univentionUDMPropertyValueMayChange', ['0'])[0] )
+
+		# value is required
+		valueRequired = ( attrs.get('univentionUDMPropertyValueRequired',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
+
+		# check if CA is multivalue property
+		if attrs.get('univentionUDMPropertyMultivalue', [''])[0] == '1':
+			multivalue = 1
+			map_method = None
+		else:
+			multivalue = 0
+			map_method = univention.admin.mapping.ListToString
+			# single value ==> use only first value
+			propertyDefault = propertyDefault[0]
+
+		# get current language
+		lang = locale.getlocale( locale.LC_MESSAGES )[0]
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: LANG = %s' % str(lang))
+		if lang:
+			lang = lang.replace('_','-').lower()
+		else:
+			lang = 'xxxxx'
+
+		# get descriptions
+		shortdesc = attrs.get('univentionUDMPropertyShortTranslationDescription;entry-%s' % lang, attrs['univentionUDMPropertyShortDescription'] )[0]
+		longdesc = attrs.get('univentionUDMPropertyLongTranslationDescription;entry-%s' % lang, attrs.get('univentionUDMPropertyLongDescription', ['']))[0]
+
+		# create property
+		module.property_descriptions[pname] = univention.admin.property(
+			short_description = shortdesc,
+			long_description = longdesc,
+			syntax = propertySyntax,
+			multivalue = multivalue,
+			options = attrs.get('univentionUDMPropertyOptions',[]),
+			required = valueRequired,
+			may_change = mayChange,
+			dontsearch = 0,
+			identifies = 0,
+			default = propertyDefault
+		)
+
+		# add LDAP mapping
+		if attrs['univentionUDMPropertyLdapMapping'][0].lower() != 'objectClass'.lower():
+			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0], None, map_method)
+		else:
+			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0], univention.admin.mapping.nothing, univention.admin.mapping.nothing)
+
+		tabname = attrs.get('univentionUDMPropertyTranslationTabName;entry-%s' % lang, attrs.get('univentionUDMPropertyLayoutTabName',[ _('Custom') ]) )[0]
+		overwriteTab = ( attrs.get('univentionUDMPropertyLayoutOverwriteTab',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
+		deleteObjectClass = ( attrs.get('univentionUDMPropertyDeleteObjectClass', ['0'])[0].upper() in [ '1', 'TRUE' ] )
+		tabAdvanced = ( attrs.get('univentionUDMPropertyLayoutTabAdvanced',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
+
+		# add tab name to list if missing
+		if not properties4tabs.has_key(tabname):
+			properties4tabs[tabname] = []
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: custom fields init for tab %s' % tabname)
+
+		# remember tab for purging if required
+		if overwriteTab and not tabname in overwriteTabList:
+			overwriteTabList.append(tabname)
+
+		# get position on tab
+		# -1 == append on top
+		tabPosition = attrs.get('univentionUDMPropertyLayoutPosition',['-1'])[0]
+		try:
+			tabPosition = int(tabPosition)
+		except:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules update_custom_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
+			tabPosition = -1
+
+		if tabPosition == -1 and len(custom_fields[tabname]) > 0:
+			for pos, el in custom_fields[tabname]:
+				try:
+					if int(pos) <= tabPosition:
+						tabPosition = int(pos)-1
+				except:
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules update_custom_attributes: custom field for tab %s: failed to set tabPosition' % tabname)
+
+		properties4tabs[ tabname ].append( (tabPosition, univention.admin.field(pname), tabAdvanced) )
+
+		module.custom_udm_properties.extend( [ univention.admin.udm_property( pname, attrs.get('univentionUDMPropertyObjectClass', [])[0],
+																			  attrs['univentionUDMPropertyLdapMapping'][0], deleteObjectClass,
+																			  propertySyntaxString,
+																			  propertyHook ) ] )
+
+	# overwrite tabs that have been added by UDM properties
+	for tab in module.custom_udm_property_tabnames:
+		if not tab in overwriteTabList:
+			overwriteTabList.append(tab)
+
+	if properties4tabs:
+		lastprio = -1000
+
+		# remove fields on tabs marked for replacement
+		removetab = []
+		for tab in module.layout:
+			if tab.short_description in overwriteTabList:
+				tab.set_fields( [] )
+
+		for tabname in properties4tabs.keys():
+			priofields = properties4tabs[tabname]
+			priofields.sort()
+			fields = []
+			lastfield = ''
+			currentTab = None
+			# get existing fields if tab has not been overwritten
+			for tab in module.layout:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: tabname=%s   tab.short=%s' % (tabname, tab.short_description) )
+
+				if tab.short_description == tabname:
+					currentTab = tab
+					# found tab in layout
+					fields = currentTab.get_fields()
+					# get last line
+					if len(fields) > 0:
+						if len(fields[-1]) == 1:
+							# last line contains only one item
+							# ==> remember item and remove last line
+							lastfield = fields[-1][0]
+							fields = fields[:-1]
+							# get prio of first new field and use it as prio of last old field
+							if priofields:
+								lastprio = priofields[0][0]
+					# tab found ==> leave loop
+					break
+			else:
+				# tab not found in current layout, so add it
+				currentTab = univention.admin.tab(tabname, tabname, fields, advanced = True)
+				module.layout.append( currentTab )
+				# remember tabs that have been added by UDM properties
+				if not tabname in module.custom_udm_property_tabnames:
+					module.custom_udm_property_tabnames.append( tabname )
+				fields = []
+
+			for (prio, field, tabAdvanced) in priofields:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: custom fields found prio %s'% prio)
+				if currentTab.advanced and not tabAdvanced:
+					currentTab.advanced = False
+
+				if not lastfield:
+					# first item in line ==> remember item and do nothing
+					lastfield = field
+					lastprio = prio
+				else:
+					# process second item in line
+					if prio > lastprio+1:
+						# a) abs(prio - lastprio) > 1 ==> only one item in this line
+						fields.append([lastfield])
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: single custom field added %s'% fields)
+						lastfield = field
+						lastprio = prio
+					else:
+						# b) abs(prio - lastprio) <= 1 ==> place two items in this line
+						fields.append([lastfield,field])
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: two custom fields added %s'% fields)
+						lastfield = ''
+						lastprio = ''
+
+			if lastfield:
+				fields.append([lastfield])
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: one custom field added %s'% fields)
+			currentTab.set_fields(fields)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: layout for tab %s finished: %s'% (tabname, fields) )
+
+	# check for properties with the syntax class LDAP_Search
+	for pname, prop in module.property_descriptions.items():
+		if prop.syntax.name == 'LDAP_Search':
+			prop.syntax._load( lo )
+			if prop.syntax.viewonly:
+				module.mapping.unregister( pname )
+		elif prop.syntax.type == 'complex' and hasattr( prop.syntax, 'subsyntaxes' ):
+			for text, subsyn in prop.syntax.subsyntaxes:
+				if subsyn.name == 'LDAP_Search':
+					subsyn._load( lo )
 
 def identify(dn, attr, type='', canonical=0):
 

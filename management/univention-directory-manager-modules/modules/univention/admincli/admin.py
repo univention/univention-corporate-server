@@ -376,30 +376,6 @@ def doit(arglist):
 	if module_name == 'modules':
 		return list_available_modules()
 
-	try:
-		module=univention.admin.modules.get(module_name)
-	except:
-		out.append("failed to get module %s."%module_name)
-		out.append("")
-		return list_available_modules(out) + ["OPERATION FAILED"]
-
-	if not module:
-		out.append("unknown module %s."%module_name)
-		out.append("")
-		return list_available_modules(out) + ["OPERATION FAILED"]
-
-	information=module_information(module)
-
-	if len(arglist) == 2:
-		out = usage() + module_usage(information)
-		return out + ["OPERATION FAILED"]
-
-	action=arglist[2]
-
-	if len(arglist) == 3 and action != 'list':
-		out = usage() + module_usage(information, action)
-		return out + ["OPERATION FAILED"]
-
 	remove_referring=0
 	recursive=0
 	# parse options
@@ -484,7 +460,115 @@ def doit(arglist):
 			policy_reference.append(val)
 		elif opt == '--policy-dereference':
 			policy_dereference.append(val)
-		elif opt == '--set':
+
+	if logfile:
+		univention.debug.init(logfile, 1, 0)
+	else:
+		out.append("WARNING: no logfile specified")
+
+	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig.load()
+
+	if baseConfig.has_key('ldap/master') and baseConfig['ldap/master']:
+		co=univention.admin.config.config(baseConfig['ldap/master'])
+	else:
+		co=univention.admin.config.config()
+
+	baseDN=baseConfig['ldap/base']
+
+	if baseConfig.has_key('directory/manager/cmd/debug/level'):
+		debug_level=baseConfig['directory/manager/cmd/debug/level']
+	else:
+		debug_level=0
+
+	univention.debug.set_level(univention.debug.LDAP, int(debug_level))
+	univention.debug.set_level(univention.debug.ADMIN, int(debug_level))
+
+	if binddn and bindpwd:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % binddn)
+		try:
+			lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
+		except Exception, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
+			out.append('authentication error: %s' % str(e))
+			return out + ["OPERATION FAILED"]
+
+	else:
+		if os.path.exists('/etc/ldap.secret'):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using cn=admin,%s account" % baseDN)
+			secretFileName='/etc/ldap.secret'
+			binddn='cn=admin,'+baseDN
+		elif os.path.exists('/etc/machine.secret'):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % baseConfig['ldap/hostdn'])
+			secretFileName='/etc/machine.secret'
+			binddn=baseConfig['ldap/hostdn']
+
+		try:
+			secretFile=open(secretFileName,'r')
+		except IOError:
+			out.append('E: Permission denied, try --binddn and --bindpw')
+			return out + ["OPERATION FAILED"]
+		pwdLine=secretFile.readline()
+		pwd=re.sub('\n','',pwdLine)
+
+		try:
+			lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseDN, binddn=binddn, bindpw=pwd, start_tls=tls)
+		except Exception, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
+			out.append('authentication error: %s' % str(e))
+			return out + ["OPERATION FAILED"]
+
+	if superordinate_dn and univention.admin.modules.superordinate(module):
+		try:
+			superordinate=univention.admin.objects.get(univention.admin.modules.superordinate(module), co, lo, '', dn=superordinate_dn)
+		except univention.admin.uexceptions.insufficientInformation, e:
+			out.append('Insufficient Information: %s' % str(e))
+			return out + ["OPERATION FAILED"]
+	else:
+		superordinate=None
+
+	if not position_dn and superordinate_dn:
+		position_dn=superordinate_dn
+	elif not position_dn:
+		position_dn=baseDN
+
+	try:
+		position=univention.admin.uldap.position(baseDN)
+		position.setDn(position_dn)
+	except univention.admin.uexceptions.noObject:
+		out.append('E: Invalid position')
+		return out + ["OPERATION FAILED"]
+
+	try:
+		module=univention.admin.modules.get(module_name)
+	except:
+		out.append("failed to get module %s."%module_name)
+		out.append("")
+		return list_available_modules(out) + ["OPERATION FAILED"]
+
+	if not module:
+		out.append("unknown module %s." % module_name)
+		out.append("")
+		return list_available_modules(out) + ["OPERATION FAILED"]
+
+	# initialise modules
+	univention.admin.modules.init(lo,position,module)
+
+	information=module_information(module)
+
+	if len(arglist) == 2:
+		out = usage() + module_usage(information)
+		return out + ["OPERATION FAILED"]
+
+	action=arglist[2]
+
+	if len(arglist) == 3 and action != 'list':
+		out = usage() + module_usage(information, action)
+		return out + ["OPERATION FAILED"]
+
+
+	for opt, val in opts:
+		if opt == '--set':
 			pos=val.find('=')
 			name=val[:pos]
 			value = _2utf8( val[ pos + 1 : ] )
@@ -550,89 +634,9 @@ def doit(arglist):
 		elif opt == '--recursive':
 			recursive=1
 
-	if logfile:
-		univention.debug.init(logfile, 1, 0)
-	else:
-		out.append("WARNING: no logfile specified")
-
-	baseConfig=univention_baseconfig.baseConfig()
-	baseConfig.load()
-
-	if baseConfig.has_key('ldap/master') and baseConfig['ldap/master']:
-		co=univention.admin.config.config(baseConfig['ldap/master'])
-	else:
-		co=univention.admin.config.config()
-
-	baseDN=baseConfig['ldap/base']
-
-	if baseConfig.has_key('directory/manager/cmd/debug/level'):
-		debug_level=baseConfig['directory/manager/cmd/debug/level']
-	else:
-		debug_level=0
-
-	univention.debug.set_level(univention.debug.LDAP, int(debug_level))
-	univention.debug.set_level(univention.debug.ADMIN, int(debug_level))
-
-	if binddn and bindpwd:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % binddn)
-		try:
-			lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
-		except Exception, e:
-	   		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
-	   		out.append('authentication error: %s' % str(e))
-			return out + ["OPERATION FAILED"]
-	   		pass
-
-	else:
-		if os.path.exists('/etc/ldap.secret'):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using cn=admin,%s account" % baseDN)
-			secretFileName='/etc/ldap.secret'
-			binddn='cn=admin,'+baseDN
-		elif os.path.exists('/etc/machine.secret'):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % baseConfig['ldap/hostdn'])
-			secretFileName='/etc/machine.secret'
-			binddn=baseConfig['ldap/hostdn']
-
-		try:
-			secretFile=open(secretFileName,'r')
-		except IOError:
-			out.append('E: Permission denied, try --binddn and --bindpw')
-			return out + ["OPERATION FAILED"]
-		pwdLine=secretFile.readline()
-		pwd=re.sub('\n','',pwdLine)
-
-		try:
-			lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseDN, binddn=binddn, bindpw=pwd, start_tls=tls)
-		except Exception, e:
-	   		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
-	   		out.append('authentication error: %s' % str(e))
-			return out + ["OPERATION FAILED"]
-	   		pass
-
-	if superordinate_dn and univention.admin.modules.superordinate(module):
-		try:
-			superordinate=univention.admin.objects.get(univention.admin.modules.superordinate(module), co, lo, '', dn=superordinate_dn)
-		except univention.admin.uexceptions.insufficientInformation, e:
-			out.append('Insufficient Information: %s' % str(e))
-			return out + ["OPERATION FAILED"]	
-	else:
-		superordinate=None
-
-	if not position_dn and superordinate_dn:
-		position_dn=superordinate_dn
-	elif not position_dn:
-		position_dn=baseDN
-
-	try:
-		position=univention.admin.uldap.position(baseDN)
-		position.setDn(position_dn)
-	except univention.admin.uexceptions.noObject:
-		out.append('E: Invalid position')
-		return out + ["OPERATION FAILED"]
 
 	extraOC=[]
 	extraAttributes=[]
-	univention.admin.modules.init(lo,position,module)
 	customattributes_set =[]
 	if hasattr(module, 'ldap_extra_objectclasses') and action in ['modify','edit','create','new']:
 		for oc, pname, syntax, ldapMapping, deleteValues, deleteObjectClass in module.ldap_extra_objectclasses:
@@ -1025,7 +1029,7 @@ def doit(arglist):
 				return out + ["OPERATION FAILED"]
 
 		out.append( _2utf8( filter ) )
-		
+
 		try:
 			for object in univention.admin.modules.lookup(module, co, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter):
 				out.append( 'DN: %s' % _2utf8( univention.admin.objects.dn (object ) ) )

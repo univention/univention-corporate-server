@@ -2035,3 +2035,31 @@ class nfsMounts(complex):
 	subsyntaxes=[(_('NFS-Share'), LDAP_Search( filter = 'objectClass=univentionShareNFS', attribute = [ 'shares/share: printablename' ], value = 'shares/share: dn' )), ('Mount point', string)]
 	all_required=1
 
+class languageCode(string):
+	name='langCode'
+	min_length=5
+	max_length=5
+	_re = re.compile('^[a-z][a-z]_[A-Z][A-Z]$')
+
+	def parse(self, text):
+		if self._re.match(text) != None:
+			return text
+		else:
+			raise univention.admin.uexceptions.valueError, _('Language code must be in format "xx_XX"!')
+
+
+class translationTuple(complex):
+	name = 'translationTuple'
+	delimiter = ': '
+	subsyntaxes = [(_('Language'), languageCode), (_('Text'), string)]
+	all_required = 1
+
+class translationTupleShortDescription(translationTuple):
+	subsyntaxes = [(_('Language'), languageCode), (_('Translated short description'), string)]
+
+class translationTupleLongDescription(translationTuple):
+	subsyntaxes = [(_('Language'), languageCode), (_('Translated long description'), string)]
+
+class translationTupleTabName(translationTuple):
+	subsyntaxes = [(_('Language'), languageCode), (_('Translated tab name'), string)]
+
