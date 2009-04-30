@@ -213,24 +213,24 @@ attributetype ( 1.3.6.1.4.1.10176.200.122 NAME 'univentionUDMPropertyHook'
 objectclass ( 1.3.6.1.4.1.10176.200.199
     NAME 'univentionUDMProperty'
         DESC ' defines a custom attribute for use in univention directory manager '
-        MUST ( cn $
-			   univentionUDMPropertyVersion $
-			   univentionUDMPropertyModule $
-			   univentionUDMPropertyShortDescription $
+        MUST ( cn $ 
+			   univentionUDMPropertyVersion $ 
+			   univentionUDMPropertyModule $ 
+			   univentionUDMPropertyShortDescription $ 
 			   univentionUDMPropertyLdapMapping $
 			   univentionUDMPropertyCLIName )
-        MAY ( univentionUDMPropertyLongDescription $
-			  univentionUDMPropertyTranslationShortDescription $
-			  univentionUDMPropertyTranslationLongDescription $
-			  univentionUDMPropertyTranslationTabName $
-			  univentionUDMPropertySyntax $
-			  univentionUDMPropertyMultivalue $
-			  univentionUDMPropertyDefault $
-			  univentionUDMPropertyObjectClass $
-			  univentionUDMPropertyDeleteObjectClass $
-			  univentionUDMPropertyValueMayChange $
+        MAY ( univentionUDMPropertyLongDescription $ 
+			  univentionUDMPropertyTranslationShortDescription $ 
+			  univentionUDMPropertyTranslationLongDescription $ 
+			  univentionUDMPropertyTranslationTabName $ 
+			  univentionUDMPropertySyntax $ 
+			  univentionUDMPropertyMultivalue $ 
+			  univentionUDMPropertyDefault $ 
+			  univentionUDMPropertyObjectClass $ 
+			  univentionUDMPropertyDeleteObjectClass $ 
+			  univentionUDMPropertyValueMayChange $ 
 			  univentionUDMPropertyValueRequired $
-			  univentionUDMPropertyLayoutTabName $
+			  univentionUDMPropertyLayoutTabName $ 
 			  univentionUDMPropertyLayoutOverwriteTab $
 			  univentionUDMPropertyLayoutOverwritePosition $
 			  univentionUDMPropertyLayoutPosition $
@@ -238,4 +238,155 @@ objectclass ( 1.3.6.1.4.1.10176.200.199
 			  univentionUDMPropertyLayoutTabAdvanced $
 			  univentionUDMPropertyHook
 			  )
+	)
+
+
+# ####################
+
+
+attributetype ( 1.3.6.1.4.1.10176.200.1001 NAME 'univentionFreeAttribute1'
+        DESC ' unused custom attribute 1 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1002 NAME 'univentionFreeAttribute2'
+        DESC ' unused custom attribute 2 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1003 NAME 'univentionFreeAttribute3'
+        DESC ' unused custom attribute 3 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1004 NAME 'univentionFreeAttribute4'
+        DESC ' unused custom attribute 4 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1005 NAME 'univentionFreeAttribute5'
+        DESC ' unused custom attribute 5 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1006 NAME 'univentionFreeAttribute6'
+        DESC ' unused custom attribute 6 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1007 NAME 'univentionFreeAttribute7'
+        DESC ' unused custom attribute 7 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1008 NAME 'univentionFreeAttribute8'
+        DESC ' unused custom attribute 8 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1009 NAME 'univentionFreeAttribute9'
+        DESC ' unused custom attribute 9 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1010 NAME 'univentionFreeAttribute10'
+        DESC ' unused custom attribute 10 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1011 NAME 'univentionFreeAttribute11'
+        DESC ' unused custom attribute 11 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1012 NAME 'univentionFreeAttribute12'
+        DESC ' unused custom attribute 12 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1013 NAME 'univentionFreeAttribute13'
+        DESC ' unused custom attribute 13 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1014 NAME 'univentionFreeAttribute14'
+        DESC ' unused custom attribute 14 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1015 NAME 'univentionFreeAttribute15'
+        DESC ' unused custom attribute 15 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1016 NAME 'univentionFreeAttribute16'
+        DESC ' unused custom attribute 16 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1017 NAME 'univentionFreeAttribute17'
+        DESC ' unused custom attribute 17 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1018 NAME 'univentionFreeAttribute18'
+        DESC ' unused custom attribute 18 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1019 NAME 'univentionFreeAttribute19'
+        DESC ' unused custom attribute 19 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.1020 NAME 'univentionFreeAttribute20'
+        DESC ' unused custom attribute 20 '
+        EQUALITY caseExactMatch
+		SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( 1.3.6.1.4.1.10176.200.1000
+    NAME 'univentionFreeAttributes'
+        DESC ' defines a custom attribute for use in univention directory manager '
+		SUP top AUXILIARY
+        MAY ( univentionFreeAttribute1 $
+			  univentionFreeAttribute2 $
+			  univentionFreeAttribute3 $
+			  univentionFreeAttribute4 $
+			  univentionFreeAttribute5 $
+			  univentionFreeAttribute6 $
+			  univentionFreeAttribute7 $
+			  univentionFreeAttribute8 $
+			  univentionFreeAttribute9 $
+			  univentionFreeAttribute10 $
+			  univentionFreeAttribute11 $
+			  univentionFreeAttribute12 $
+			  univentionFreeAttribute13 $
+			  univentionFreeAttribute14 $
+			  univentionFreeAttribute15 $
+			  univentionFreeAttribute16 $
+			  univentionFreeAttribute17 $
+			  univentionFreeAttribute18 $
+			  univentionFreeAttribute19 $
+			  univentionFreeAttribute20
+			)
 	)
