@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.14-1) unstable; urgency=low
+
+  * new default (400) for imap/pop/sieve maxchild value (Bug: #13665) 
+
+ -- Felix Botner <botner@univention.de>  Mon,  4 May 2009 11:26:29 +0200
+
 univention-mail-cyrus-kolab2 (1.0.13-7) unstable; urgency=low
 
   * fix missing parenthesis in is_cyrus_murder_backend (Bug #14148)
