@@ -1,3 +1,9 @@
+univention-mail-cyrus (1.0.3-1) unstable; urgency=low
+
+  * new default (400) for imap/pop/sieve maxchild value (Bug: #13665)
+
+ -- Felix Botner <botner@univention.de>  Mon,  4 May 2009 11:16:23 +0200
+
 univention-mail-cyrus (1.0.2-4) unstable; urgency=low
 
   * new autostart test in init script 
