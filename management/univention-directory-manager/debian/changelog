@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.18-1) unstable; urgency=low
+
+  * search_module must be initialized to provide UDM properties 
+    in search dialog (Bug: #1381)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 05 May 2009 17:16:45 +0200
+
 univention-directory-manager (6.0.17-2) unstable; urgency=low
 
   * avoid duplicate host entries in repository server dropdown
