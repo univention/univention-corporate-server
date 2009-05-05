@@ -1,3 +1,9 @@
+univention-config-registry (4.0.5-4) unstable; urgency=low
+
+  * silence error message from gzip for nonexisent files (Bug #9261)
+
+ -- Arvid Requate <requate@univention.de>  Tue,  5 May 2009 14:57:43 +0200
+
 univention-config-registry (4.0.5-3) unstable; urgency=low
 
   * logrotate does not use extglob, so revert change for 4.0.5-2
