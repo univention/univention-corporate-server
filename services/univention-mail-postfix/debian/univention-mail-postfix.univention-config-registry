@@ -19,6 +19,7 @@ Variables: mail/smtpauth
 Variables: postfix/mailbox_transport
 Variables: postfix/masquerade/domains
 Variables: postfix/masquerade/exceptions
+Variables: postfix/zarafa
 
 Type: file
 File: etc/postfix/master.cf
@@ -45,6 +46,7 @@ File: etc/postfix/transport
 Variables: hostname
 Variables: domainname
 Variables: mail/hosteddomains
+Variables: postfix/zarafa
 
 Type: file
 File: etc/init.d/postfix

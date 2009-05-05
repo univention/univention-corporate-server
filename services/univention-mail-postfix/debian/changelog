@@ -1,3 +1,9 @@
+univention-mail-postfix (1.0.1-15) unstable; urgency=low
+
+  * register postfix/zarafa for main.cf and transports as well (Bug #13678)
+
+ -- Arvid Requate <requate@univention.de>  Tue,  5 May 2009 14:47:40 +0200
+
 univention-mail-postfix (1.0.1-14) unstable; urgency=low
 
   * fix template syntax (Bug #13678)
