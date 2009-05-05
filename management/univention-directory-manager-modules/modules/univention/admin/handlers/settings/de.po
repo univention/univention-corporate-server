@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-29 14:30+0200\n"
-"PO-Revision-Date: 2009-04-29 14:32+0200\n"
+"POT-Creation-Date: 2009-05-05 17:35+0200\n"
+"PO-Revision-Date: 2009-05-05 17:35+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -41,14 +41,14 @@ msgstr "Sichtbare Module"
 #: customattribute.py:171 default.py:164 directory.py:175 lock.py:75
 #: packages.py:76 printermodel.py:76 printeruri.py:76
 #: prohibited_username.py:75 sambaconfig.py:179 sambadomain.py:233
-#: service.py:61 syntax.py:142 udm_property.py:295 usertemplate.py:534
+#: service.py:61 syntax.py:142 udm_property.py:305 usertemplate.py:534
 #: xconfig_choices.py:175
 msgid "General"
 msgstr "Allgemein"
 
 #: admin.py:84 cn.py:61 customattribute.py:171 default.py:164 directory.py:175
 #: sambaconfig.py:179 sambadomain.py:233 service.py:61 syntax.py:142
-#: udm_property.py:295 usertemplate.py:534
+#: udm_property.py:305 usertemplate.py:534
 msgid "Basic Values"
 msgstr "Grundeinstellungen"
 
@@ -720,7 +720,7 @@ msgstr "Existierenden Reiter überschreiben"
 msgid "Overwrite existing widget"
 msgstr "Existierendes Eingabefeld überschreiben"
 
-#: udm_property.py:201 udm_property.py:315
+#: udm_property.py:201 udm_property.py:325
 msgid "LDAP mapping"
 msgstr "LDAP-Abbildung"
 
@@ -744,31 +744,35 @@ msgstr "UDM-CLI Attributname"
 msgid "Options"
 msgstr "Optionen"
 
-#: udm_property.py:300
+#: udm_property.py:293
+msgid "Unsearchable"
+msgstr "Nicht durchsuchbar"
+
+#: udm_property.py:310
 msgid "UDM Web"
 msgstr "UDM Web"
 
-#: udm_property.py:300
+#: udm_property.py:310
 msgid "Settings for UDM web interface"
 msgstr "UDM-Web-spezifische Einstellungen"
 
-#: udm_property.py:306
+#: udm_property.py:316
 msgid "UDM General"
 msgstr "UDM Allgemein"
 
-#: udm_property.py:306
+#: udm_property.py:316
 msgid "UDM related settings"
 msgstr "UDM-spezifische Einstellungen"
 
-#: udm_property.py:310
+#: udm_property.py:320
 msgid "Data type"
 msgstr "Datentyp"
 
-#: udm_property.py:310
+#: udm_property.py:320
 msgid "Data type definition"
 msgstr "Datentyp-Definition"
 
-#: udm_property.py:315
+#: udm_property.py:325
 msgid "LDAP"
 msgstr "LDAP"
 
