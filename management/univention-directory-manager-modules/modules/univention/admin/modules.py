@@ -323,8 +323,13 @@ def update_udm_properties(lo, module, position):
 
 		tabname = attrs.get('univentionUDMPropertyTranslationTabName;entry-%s' % lang, attrs.get('univentionUDMPropertyLayoutTabName',[ _('Custom') ]) )[0]
 		overwriteTab = ( attrs.get('univentionUDMPropertyLayoutOverwriteTab',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
+		overwritePosition = ( attrs.get('univentionUDMPropertyLayoutOverwritePosition',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
 		deleteObjectClass = ( attrs.get('univentionUDMPropertyDeleteObjectClass', ['0'])[0].upper() in [ '1', 'TRUE' ] )
 		tabAdvanced = ( attrs.get('univentionUDMPropertyLayoutTabAdvanced',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
+
+		# only one is possible ==> overwriteTab wins
+		if overwriteTab and overwritePosition:
+			overwritePosition = False
 
 		# add tab name to list if missing
 		if not properties4tabs.has_key(tabname):
@@ -344,6 +349,10 @@ def update_udm_properties(lo, module, position):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules update_custom_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
 			tabPosition = -1
 
+		# (top left position is defined as 1) ==> if tabPosition is smaller then disable overwritePosition
+		if overwritePosition and tabPosition < 1:
+			overwritePosition = False
+
 		if tabPosition == -1 and len(custom_fields[tabname]) > 0:
 			for pos, el in custom_fields[tabname]:
 				try:
@@ -352,7 +361,7 @@ def update_udm_properties(lo, module, position):
 				except:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules update_custom_attributes: custom field for tab %s: failed to set tabPosition' % tabname)
 
-		properties4tabs[ tabname ].append( (tabPosition, univention.admin.field(pname), tabAdvanced) )
+		properties4tabs[ tabname ].append( (tabPosition, univention.admin.field(pname), tabAdvanced, overwritePosition) )
 
 		module.custom_udm_properties.extend( [ univention.admin.udm_property( pname, attrs.get('univentionUDMPropertyObjectClass', [])[0],
 																			  attrs['univentionUDMPropertyLdapMapping'][0], deleteObjectClass,
@@ -408,29 +417,50 @@ def update_udm_properties(lo, module, position):
 					module.custom_udm_property_tabnames.append( tabname )
 				fields = []
 
-			for (prio, field, tabAdvanced) in priofields:
+			# check if tab is empty ==> overwritePosition is impossible
+			freshTab = (len(fields) == 0)
+
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: lastprio=%s   lastfield=%s'% (lastprio,lastfield))
+			for (prio, field, tabAdvanced, overwritePosition) in priofields:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: custom fields found prio %s'% prio)
 				if currentTab.advanced and not tabAdvanced:
 					currentTab.advanced = False
 
-				if not lastfield:
-					# first item in line ==> remember item and do nothing
-					lastfield = field
-					lastprio = prio
+				# - existing property shall be overwritten AND
+				# - tab is not new and has not been cleaned before AND
+				# - prio AKA position >= 1 (top left position is defined as 1) AND
+				# - old property with given position exists
+				fline = (prio - 1) // 2
+				fpos = (prio - 1) % 2
+				if overwritePosition and not freshTab and prio >= 1 and len(fields) >= fline+1:
+					if len(fields[fline]) >= (fpos+1):
+						oldfield = fields[ fline ][ fpos ]
+						fields[ fline ][ fpos ] = field
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
+											   'modules update_custom_attributes: replacing field "%s" with "%s" on position "%s" (%s,%s)' % (oldfield.property, field.property, prio, fline, fpos))
+					else:
+						fields[ fline ].append( field )
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
+											   'modules update_custom_attributes: added new field "%s" on position "%s" (%s,%s)' % (field.property, prio, fline, fpos))
 				else:
-					# process second item in line
-					if prio > lastprio+1:
-						# a) abs(prio - lastprio) > 1 ==> only one item in this line
-						fields.append([lastfield])
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: single custom field added %s'% fields)
+					if not lastfield:
+						# first item in line ==> remember item and do nothing
 						lastfield = field
 						lastprio = prio
 					else:
-						# b) abs(prio - lastprio) <= 1 ==> place two items in this line
-						fields.append([lastfield,field])
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: two custom fields added %s'% fields)
-						lastfield = ''
-						lastprio = ''
+						# process second item in line
+						if prio > lastprio+1:
+							# a) abs(prio - lastprio) > 1 ==> only one item in this line
+							fields.append([lastfield])
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: single custom field added %s'% fields)
+							lastfield = field
+							lastprio = prio
+						else:
+							# b) abs(prio - lastprio) <= 1 ==> place two items in this line
+							fields.append([lastfield,field])
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: two custom fields added %s'% fields)
+							lastfield = ''
+							lastprio = ''
 
 			if lastfield:
 				fields.append([lastfield])
