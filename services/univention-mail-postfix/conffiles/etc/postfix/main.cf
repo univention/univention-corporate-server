@@ -144,7 +144,7 @@ ldapgroups_version = 3
 '''
 	print zarafa_ldapgroups_definition % baseConfig
 	print 'virtual_maps = ldap:ldapvirtual, ldap:ldapgroups, hash:/etc/postfix/virtual'
-else
+else:
 	print 'virtual_maps = ldap:ldapvirtual, hash:/etc/postfix/virtual'
 @!@
 

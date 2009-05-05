@@ -1,3 +1,9 @@
+univention-mail-postfix (1.0.1-14) unstable; urgency=low
+
+  * fix template syntax (Bug #13678)
+
+ -- Arvid Requate <requate@univention.de>  Tue,  5 May 2009 11:59:16 +0200
+
 univention-mail-postfix (1.0.1-13) unstable; urgency=low
 
   * Zarafa extensions (Bug #13678):
