@@ -1,3 +1,9 @@
+univention-updater (4.0.60-2) unstable; urgency=low
+
+  * use host query instead of netcat to allow UDP only nameservers (Bug #14087)
+
+ -- Arvid Requate <requate@univention.de>  Tue,  5 May 2009 14:39:22 +0200
+
 univention-updater (4.0.60-1) unstable; urgency=low
 
   * remove repository/sockettimeout
