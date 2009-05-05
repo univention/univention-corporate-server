@@ -239,6 +239,17 @@ def init(lo, position, module, template_object=None):
 	module.initialized=1
 
 
+def is_property_in_layout(itemlist, field):
+	''' checks recursive if layout (itemlist) contains specified field '''
+	if type(itemlist) == type([]):
+		for item in itemlist:
+			if is_property_in_layout(item, field):
+				return True
+	elif itemlist.property == field.property:
+		return True
+	return False
+
+
 def update_udm_properties(lo, module, position):
 
 	# add list of tabnames created by UDM properties
@@ -425,6 +436,12 @@ def update_udm_properties(lo, module, position):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_custom_attributes: custom fields found prio %s'% prio)
 				if currentTab.advanced and not tabAdvanced:
 					currentTab.advanced = False
+
+				# do not readd property if already present in layout
+				if lastfield and lastfield.property == field.property:
+					continue
+				if is_property_in_layout(fields, field):
+					continue
 
 				# - existing property shall be overwritten AND
 				# - tab is not new and has not been cleaned before AND
