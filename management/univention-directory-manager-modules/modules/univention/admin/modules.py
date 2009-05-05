@@ -298,8 +298,8 @@ def update_udm_properties(lo, module, position):
 			lang = 'xxxxx'
 
 		# get descriptions
-		shortdesc = attrs.get('univentionUDMPropertyShortTranslationDescription;entry-%s' % lang, attrs['univentionUDMPropertyShortDescription'] )[0]
-		longdesc = attrs.get('univentionUDMPropertyLongTranslationDescription;entry-%s' % lang, attrs.get('univentionUDMPropertyLongDescription', ['']))[0]
+		shortdesc = attrs.get('univentionUDMPropertyTranslationShortDescription;entry-%s' % lang, attrs['univentionUDMPropertyShortDescription'] )[0]
+		longdesc = attrs.get('univentionUDMPropertyTranslationShortDescription;entry-%s' % lang, attrs.get('univentionUDMPropertyLongDescription', ['']))[0]
 
 		# create property
 		module.property_descriptions[pname] = univention.admin.property(
