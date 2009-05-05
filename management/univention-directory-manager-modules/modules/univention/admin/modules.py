@@ -285,10 +285,21 @@ def update_udm_properties(lo, module, position):
 		propertyDefault = attrs.get('univentionUDMPropertyDefault', [''])
 
 		# value may change
-		mayChange = int( attrs.get('univentionUDMPropertyValueMayChange', ['0'])[0] )
+		try:
+			mayChange = int( attrs.get('univentionUDMPropertyValueMayChange', ['0'])[0] )
+		except:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modules update_custom_attributes: ERROR: processing univentionUDMPropertyValueMayChange throwed exception - assuming mayChange=0')
+			mayChange = 0
 
 		# value is required
 		valueRequired = ( attrs.get('univentionUDMPropertyValueRequired',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
+
+		# value is required
+		try:
+			doNotSearch = int( attrs.get('univentionUDMPropertyDoNotSearch',[ '0' ])[0] )
+		except:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modules update_custom_attributes: ERROR: processing univentionUDMPropertyDoNotSearch throwed exception - assuming doNotSearch=0')
+			doNotSearch = 0
 
 		# check if CA is multivalue property
 		if attrs.get('univentionUDMPropertyMultivalue', [''])[0] == '1':
@@ -321,7 +332,7 @@ def update_udm_properties(lo, module, position):
 			options = attrs.get('univentionUDMPropertyOptions',[]),
 			required = valueRequired,
 			may_change = mayChange,
-			dontsearch = 0,
+			dontsearch = doNotSearch,
 			identifies = 0,
 			default = propertyDefault
 		)

@@ -289,6 +289,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'doNotSearch': univention.admin.property(
+			short_description=_('Unsearchable'),
+			long_description='',
+			syntax=univention.admin.syntax.boolean,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 }
 
 layout=[
@@ -310,7 +320,7 @@ layout=[
 	univention.admin.tab(_('Data type'),_('Data type definition'),[
 			[univention.admin.field("syntax"), univention.admin.field("default") ],
 			[univention.admin.field("multivalue"), univention.admin.field("valueRequired") ],
-			[univention.admin.field("mayChange") ]
+			[univention.admin.field("mayChange"),  univention.admin.field("doNotSearch") ]
 			]),
 	univention.admin.tab(_('LDAP'),_('LDAP mapping'),[
 			[ univention.admin.field("objectClass"), univention.admin.field("ldapMapping") ],
@@ -337,6 +347,7 @@ mapping.register('overwriteTab', 'univentionUDMPropertyLayoutOverwriteTab', None
 mapping.register('overwritePosition', 'univentionUDMPropertyLayoutOverwritePosition', None, univention.admin.mapping.ListToString)
 mapping.register('mayChange', 'univentionUDMPropertyValueMayChange', None, univention.admin.mapping.ListToString)
 mapping.register('valueRequired', 'univentionUDMPropertyValueRequired', None, univention.admin.mapping.ListToString)
+mapping.register('doNotSearch', 'univentionUDMPropertyDoNotSearch', None, univention.admin.mapping.ListToString)
 mapping.register('version', 'univentionUDMPropertyVersion', None, univention.admin.mapping.ListToString)
 mapping.register('CLIName', 'univentionUDMPropertyCLIName', None, univention.admin.mapping.ListToString)
 mapping.register('options', 'univentionUDMPropertyOptions')
