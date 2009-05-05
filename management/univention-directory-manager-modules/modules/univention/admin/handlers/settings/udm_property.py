@@ -321,10 +321,8 @@ layout=[
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('module', 'univentionUDMPropertyModule')
-mapping.register('shortDescription', 'univentionUDMPropertyShoDrtDescription', None, univention.admin.mapping.ListToString)
+mapping.register('shortDescription', 'univentionUDMPropertyShortDescription', None, univention.admin.mapping.ListToString)
 mapping.register('longDescription', 'univentionUDMPropertyLongDescription', None, univention.admin.mapping.ListToString)
-mapping.register('translationShortDescription', 'univentionUDMPropertyTranslationShortDescription', None, univention.admin.mapping.ListToString)
-mapping.register('translationLongDescription', 'univentionUDMPropertyTranslationLongDescription', None, univention.admin.mapping.ListToString)
 mapping.register('objectClass', 'univentionUDMPropertyObjectClass', None, univention.admin.mapping.ListToString)
 mapping.register('deleteObjectClass', 'univentionUDMPropertyDeleteObjectClass', None, univention.admin.mapping.ListToString)
 mapping.register('default', 'univentionUDMPropertyDefault', None, univention.admin.mapping.ListToString)
@@ -341,7 +339,7 @@ mapping.register('mayChange', 'univentionUDMPropertyValueMayChange', None, unive
 mapping.register('valueRequired', 'univentionUDMPropertyValueRequired', None, univention.admin.mapping.ListToString)
 mapping.register('version', 'univentionUDMPropertyVersion', None, univention.admin.mapping.ListToString)
 mapping.register('CLIName', 'univentionUDMPropertyCLIName', None, univention.admin.mapping.ListToString)
-mapping.register('options', 'univentionUDMPropertyOptions', None, univention.admin.mapping.ListToString)
+mapping.register('options', 'univentionUDMPropertyOptions')
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
