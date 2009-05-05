@@ -1,3 +1,9 @@
+univention-updater (4.0.58-2) unstable; urgency=low
+
+  * HTTPConnection timeout adjustable via repository/sockettimeout (Bug #14087)
+
+ -- Arvid Requate <requate@univention.de>  Tue,  5 May 2009 09:30:34 +0200
+
 univention-updater (4.0.58-1) unstable; urgency=low
 
   * adapt univention-repository-merge to new repositories (Bug #13178)
