@@ -679,12 +679,18 @@ class handler(umch.simpleHandler):
 
 	def __create_at_job(self, command):
 		script = '''
-chmod -x /usr/sbin/apache2 /usr/sbin/univention-management-console-server
+dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-serverole-server
+dpkg-statoverride --add root root 0644 /usr/sbin/apache2
+chmod -x /usr/sbin/univention-management-console-serverole-server /usr/sbin/apache2
+
 %s
+
 if [ $? -eq 0 ]; then
 	univention-config-registry set update/reboot/required=yes
 fi
-chmod +x /usr/sbin/apache2 /usr/sbin/univention-management-console-server
+dpkg-statoverride --remove /usr/sbin/univention-management-console-serverole-server
+dpkg-statoverride --remove /usr/sbin/apache2
+chmod +x /usr/sbin/univention-management-console-serverole-server /usr/sbin/apache2
 ''' % command
 		p1 = subprocess.Popen(['echo "%s" | at now' % script], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 		(stdout,stderr) = p1.communicate()

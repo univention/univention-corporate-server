@@ -1,3 +1,9 @@
+univention-updater (4.0.59-1) unstable; urgency=low
+
+  * ensure that UMC and apache are not restarted during an update (Bug #13996)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  5 May 2009 11:37:35 +0200
+
 univention-updater (4.0.58-2) unstable; urgency=low
 
   * HTTPConnection timeout adjustable via repository/sockettimeout (Bug #14087)
