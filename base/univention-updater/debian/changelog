@@ -1,3 +1,10 @@
+univention-updater (4.0.60-1) unstable; urgency=low
+
+  * remove repository/sockettimeout
+  * check for availability of at least one nameserver via netcat (Bug #14087)
+
+ -- Arvid Requate <requate@univention.de>  Tue,  5 May 2009 13:55:02 +0200
+
 univention-updater (4.0.59-1) unstable; urgency=low
 
   * ensure that UMC and apache are not restarted during an update (Bug #13996)

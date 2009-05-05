@@ -34,42 +34,10 @@ import univention.debug as ud
 import re
 import os
 import httplib, base64, string
-import socket
+import subprocess
 import univention.config_registry
 
 HTTP_PROXY_DEFAULT_PORT = 3128
-
-# wrapper for python 2.4 httplib, which does not allow to set a socket timeout
-class HTTPConnection(httplib.HTTPConnection):
-	"""A customised HTTPConnection allowing a per-connection
-	timeout, specified at construction."""
-
-	def __init__(self, host, port=None, strict=None, timeout=None):
-		httplib.HTTPConnection.__init__(self, host, port, strict)
-		self.timeout = timeout
-
-	def connect(self):
-		"""Connect to the host and port specified in __init__."""
-		msg = "getaddrinfo returns an empty list"
-		for res in socket.getaddrinfo(self.host, self.port, 0, socket.SOCK_STREAM):
-			af, socktype, proto, canonname, sa = res
-			try:
-				self.sock = socket.socket(af, socktype, proto)
-				if self.debuglevel > 0:
-					print "connect: (%s, %s)" % (self.host, self.port)
-				if self.timeout:   # this is the new bit
-					self.sock.settimeout(self.timeout)
-				self.sock.connect(sa)
-			except socket.error, msg:
-				if self.debuglevel > 0:
-					print 'connect fail:', (self.host, self.port)
-				if self.sock:
-					self.sock.close()
-				self.sock = None
-				continue
-			break
-		if not self.sock:
-			raise socket.error, msg
 
 class UCS_Version( object ):
 	# regular expression matching a UCS version X.Y-Z
@@ -137,12 +105,17 @@ class UniventionUpdater:
 	# TODO set default value of the variable port to "self.repository_port"
 	def open_connection(self, server=None, port=None):
 
-		ucr_timeout=self.configRegistry.get('repository/sockettimeout')
-		if ucr_timeout:
-			try:
-				ucr_timeout=float(ucr_timeout)
-			except ValueError,TypeError:
-				ucr_timeout=None
+		nameserver_available=False
+		check_nameserver_cmd='/bin/netcat -q0 -w1 %s 53 </dev/null >/dev/null 2>&1'
+		for i in range(1,4):
+			ns=self.configRegistry.get('nameserver%s' % i)
+			if ns:
+				returncode = subprocess.call(check_nameserver_cmd % ns, shell=True)
+				if returncode == 0:
+					nameserver_available=True
+					break
+		if not nameserver_available:
+			raise 'UniventionUpdater', 'No nameserver could be reached'
 
 		if self.proxy and self.proxy != '':
 			if server:
@@ -167,7 +140,7 @@ class UniventionUpdater:
 				self.proxy_port = HTTP_PROXY_DEFAULT_PORT
 			self.proxy_server   = location
 
-			self.connection = HTTPConnection('%s:%s' % (self.proxy_server, self.proxy_port), timeout=ucr_timeout)
+			self.connection = httplib.HTTPConnection('%s:%s' % (self.proxy_server, self.proxy_port))
 			proxy_headers = {'Host': self.proxy_server}
 
 			if self.proxy_username and self.proxy_password:
@@ -177,9 +150,9 @@ class UniventionUpdater:
 			return proxy_headers
 		else:
 			if server:
-				self.connection = HTTPConnection(server, timeout=ucr_timeout)
+				self.connection = httplib.HTTPConnection(server)
 			else:
-				self.connection = HTTPConnection(self.repository_server, timeout=ucr_timeout)
+				self.connection = httplib.HTTPConnection(self.repository_server)
 
 	def close_connection(self):
 		self.connection.close()
