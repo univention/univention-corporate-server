@@ -898,6 +898,8 @@ class modwizard(unimodule.unimodule):
 			self.child_module_select=question_select(_("Select Type:"),{'width':'200'},{"helptext":_("Select Type"), "choicelist":childlist, "button":self.child_module_button})
 			searchcols.append(tablecol("",{'type':'wizard_layout'},{"obs":[self.child_module_select]}))
 
+		univention.admin.modules.init(self.lo, self.position, search_module )
+
 		search_property_name=self.save.get('wizard_search_property')
 		tmp_search_property_name = search_property_name
 		if not search_module.property_descriptions.has_key(search_property_name):
