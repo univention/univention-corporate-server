@@ -1,0 +1,803 @@
+Source: univention-kernel-image-2.6.24
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.5.2
+
+Package: univention-kernel-image-2.6.24
+Architecture: any
+Pre-Depends: univention-initrd, module-init-tools
+Depends: univention-kernel-image-2.6.26
+Conflicts: univention-kernel-image-2.6 (<<1.0.1), univention-kernel-image (<<1.0.1)
+Description: UCS - Linux kernel
+ This meta-package installs the current kernel image.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-image-2.6.24-64gb
+Architecture: any
+Pre-Depends: univention-initrd
+Depends: univention-kernel-image-2.6.26-64gb
+Conflicts: univention-kernel-image-2.6-64gb (<<1.0.1), univention-kernel-image-64gb (<<1.0.1)
+Description: UCS - Linux kernel
+ This meta-package installs the current kernel image.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-headers-2.6.24
+Architecture: any
+Depends: univention-kernel-headers-2.6.26
+Description: UCS - Linux kernel headers
+ This meta-package installs the current kernel headers.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-headers-2.6.24-64gb
+Architecture: any
+Depends: univention-kernel-headers-2.6.26-64gb
+Description: UCS - Linux kernel headers
+ This meta-package installs the current kernel headers.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-source-2.6.24
+Architecture: any
+Depends: univention-kernel-source-2.6.26
+Description: UCS - Linux kernel source
+ This meta-package installs the current kernel source.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-source-2.6.24-64gb
+Architecture: any
+Depends: univention-kernel-source-2.6.26-64gb
+Description: UCS - Linux kernel source
+ This meta-package installs the current kernel source.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-avm-capi-fcpci-modules-2.6.24
+Architecture: any
+Depends: univention-avm-capi-fcpci-modules-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current AVM CAPI fcpci modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-cpqhealth-modules-2.6.24
+Architecture: any
+Depends: univention-cpqhealth-modules-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current cpqhealth modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-cpqhealth-modules-2.6.24-64gb
+Architecture: any
+Depends: univention-cpqhealth-modules-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current cpqhealth modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-serverview-modules-2.6.24
+Architecture: any
+Depends: univention-serverview-modules-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current serverview modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-serverview-modules-2.6.24-64gb
+Architecture: any
+Depends: univention-serverview-modules-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current serverview modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-fsc-srv-modules-2.6.24
+Architecture: any
+Depends: univention-fsc-srv-modules-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current fsc-srv modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-fsc-srv-modules-2.6.24-64gb
+Architecture: any
+Depends: univention-fsc-srv-modules-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current fsc-srv modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware4-modules-2.6.24
+Architecture: any
+Depends: univention-vmware4-modules-2.6.26
+Conflicts: univention-vmware5-modules-2.6.24
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware4 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware4-modules-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware4-modules-2.6.26-64gb
+Conflicts: univention-vmware5-modules-2.6.24-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware4 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware5-modules-2.6.24
+Architecture: any
+Depends: univention-vmware5-modules-2.6.26
+Conflicts: univention-vmware4-modules-2.6.24
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware5 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware5-modules-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware5-modules-2.6.26-64gb
+Conflicts: univention-vmware4-modules-2.6.24-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware5 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-gsx3-modules-2.6.24
+Architecture: any
+Depends: univention-vmware-gsx3-modules-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-gsx3 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-gsx3-modules-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware-gsx3-modules-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-gsx3 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-server-modules-2.6.24
+Architecture: any
+Depends: univention-vmware-server-modules-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-server modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-server-modules-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware-server-modules-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-server modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-player-modules-2.6.24
+Architecture: any
+Depends: univention-vmware-player-modules-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-player modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-player-modules-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware-player-modules-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-player modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-image-mobileclient-2.6.24
+Architecture: any
+Depends: univention-kernel-image-mobileclient-2.6.26
+Depends: linux-image-${F:KernelVersion}, xfsprogs
+Description: UCS - Linux kernel
+ This meta-package installs the current kernel image.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-image-mobileclient-2.6.24-64gb
+Architecture: any
+Depends: univention-kernel-image-mobileclient-2.6.26-64gb
+Depends: linux-image-${F:KernelVersion64}, xfsprogs
+Description: UCS - Linux kernel
+ This meta-package installs the current kernel image.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-headers-mobileclient-2.6.24
+Architecture: any
+Depends: univention-kernel-headers-mobileclient-2.6.26
+Description: UCS - Linux kernel headers
+ This meta-package installs the current kernel headers.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-headers-mobileclient-2.6.24-64gb
+Architecture: any
+Depends: univention-kernel-headers-mobileclient-2.6.26-64gb
+Description: UCS - Linux kernel headers
+ This meta-package installs the current kernel headers.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-source-mobileclient-2.6.24
+Architecture: any
+Depends: univention-kernel-source-mobileclient-2.6.26
+Description: UCS - Linux kernel source
+ This meta-package installs the current kernel source.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-source-mobileclient-2.6.24-64gb
+Architecture: any
+Depends: univention-kernel-source-mobileclient-2.6.26-64gb
+Description: UCS - Linux kernel source
+ This meta-package installs the current kernel source.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-avm-capi-fcpci-modules-mobileclient-2.6.24
+Architecture: any
+Depends: univention-avm-capi-fcpci-modules-mobileclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current AVM CAPI fcpci modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-cpqhealth-modules-mobileclient-2.6.24
+Architecture: any
+Depends: univention-cpqhealth-modules-mobileclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current cpqhealth modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-cpqhealth-modules-mobileclient-2.6.24-64gb
+Architecture: any
+Depends: univention-cpqhealth-modules-mobileclient-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current cpqhealth modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-serverview-modules-mobileclient-2.6.24
+Architecture: any
+Depends: univention-serverview-modules-mobileclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current serverview modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-serverview-modules-mobileclient-2.6.24-64gb
+Architecture: any
+Depends: univention-serverview-modules-mobileclient-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current serverview modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-fsc-srv-modules-mobileclient-2.6.24
+Architecture: any
+Depends: univention-fsc-srv-modules-mobileclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current fsc-srv modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-fsc-srv-modules-mobileclient-2.6.24-64gb
+Architecture: any
+Depends: univention-fsc-srv-modules-mobileclient-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current fsc-srv modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware4-modules-mobileclient-2.6.24
+Architecture: any
+Depends: univention-vmware4-modules-mobileclient-2.6.26
+Conflicts: univention-vmware5-modules-mobileclient-2.6.24
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware4 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware4-modules-mobileclient-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware4-modules-mobileclient-2.6.26-64gb
+Conflicts: univention-vmware5-modules-mobileclient-2.6.24-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware4 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware5-modules-mobileclient-2.6.24
+Architecture: any
+Depends: univention-vmware5-modules-mobileclient-2.6.26
+Conflicts: univention-vmware4-modules-mobileclient-2.6.24
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware5 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware5-modules-mobileclient-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware5-modules-mobileclient-2.6.26-64gb
+Conflicts: univention-vmware4-modules-mobileclient-2.6.24-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware5 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-gsx3-modules-mobileclient-2.6.24
+Architecture: any
+Depends: univention-vmware-gsx3-modules-mobileclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-gsx3 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-gsx3-modules-mobileclient-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware-gsx3-modules-mobileclient-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-gsx3 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-server-modules-mobileclient-2.6.24
+Architecture: any
+Depends: univention-vmware-server-modules-mobileclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-server modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-server-modules-mobileclient-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware-server-modules-mobileclient-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-server modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-player-modules-mobileclient-2.6.24
+Architecture: any
+Depends: univention-vmware-player-modules-mobileclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-player modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-player-modules-mobileclient-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware-player-modules-mobileclient-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-player modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-image-managedclient-2.6.24
+Architecture: any
+Pre-Depends: univention-initrd, module-init-tools
+Depends: univention-kernel-image-managedclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current kernel image.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-image-managedclient-2.6.24-64gb
+Architecture: any
+Pre-Depends: univention-initrd
+Depends: univention-kernel-image-managedclient-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current kernel image.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-headers-managedclient-2.6.24
+Architecture: any
+Depends: univention-kernel-headers-managedclient-2.6.26
+Description: UCS - Linux kernel headers
+ This meta-package installs the current kernel headers.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-headers-managedclient-2.6.24-64gb
+Architecture: any
+Depends: univention-kernel-headers-managedclient-2.6.26-64gb
+Description: UCS - Linux kernel headers
+ This meta-package installs the current kernel headers.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-source-managedclient-2.6.24
+Architecture: any
+Depends: univention-kernel-source-managedclient-2.6.26
+Description: UCS - Linux kernel source
+ This meta-package installs the current kernel source.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-kernel-source-managedclient-2.6.24-64gb
+Architecture: any
+Depends: univention-kernel-source-managedclient-2.6.26-64gb
+Description: UCS - Linux kernel source
+ This meta-package installs the current kernel source.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-avm-capi-fcpci-modules-managedclient-2.6.24
+Architecture: any
+Depends: univention-avm-capi-fcpci-modules-managedclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current AVM CAPI fcpci modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-cpqhealth-modules-managedclient-2.6.24
+Architecture: any
+Depends: univention-cpqhealth-modules-managedclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current cpqhealth modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-cpqhealth-modules-managedclient-2.6.24-64gb
+Architecture: any
+Depends: univention-cpqhealth-modules-managedclient-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current cpqhealth modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-serverview-modules-managedclient-2.6.24
+Architecture: any
+Depends: univention-serverview-modules-managedclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current serverview modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-serverview-modules-managedclient-2.6.24-64gb
+Architecture: any
+Depends: univention-serverview-modules-managedclient-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current serverview modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-fsc-srv-modules-managedclient-2.6.24
+Architecture: any
+Depends: univention-fsc-srv-modules-managedclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current fsc-srv modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-fsc-srv-modules-managedclient-2.6.24-64gb
+Architecture: any
+Depends: univention-fsc-srv-modules-managedclient-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current fsc-srv modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware4-modules-managedclient-2.6.24
+Architecture: any
+Depends: univention-vmware4-modules-managedclient-2.6.26
+Conflicts: univention-vmware5-modules-managedclient-2.6.24
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware4 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware4-modules-managedclient-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware4-modules-managedclient-2.6.26-64gb
+Conflicts: univention-vmware5-modules-managedclient-2.6.24-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware4 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware5-modules-managedclient-2.6.24
+Architecture: any
+Depends: univention-vmware5-modules-managedclient-2.6.26
+Conflicts: univention-vmware4-modules-managedclient-2.6.24
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware5 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware5-modules-managedclient-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware5-modules-managedclient-2.6.26-64gb
+Conflicts: univention-vmware4-modules-managedclient-2.6.24-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware5 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-gsx3-modules-managedclient-2.6.24
+Architecture: any
+Depends: univention-vmware-gsx3-modules-managedclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-gsx3 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-gsx3-modules-managedclient-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware-gsx3-modules-managedclient-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-gsx3 modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-server-modules-managedclient-2.6.24
+Architecture: any
+Package: univention-vmware-server-modules-managedclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-server modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-server-modules-managedclient-2.6.24-64gb
+Architecture: any
+Package: univention-vmware-server-modules-managedclient-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-server modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-player-modules-managedclient-2.6.24
+Architecture: any
+Depends: univention-vmware-player-modules-managedclient-2.6.26
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-player modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-vmware-player-modules-managedclient-2.6.24-64gb
+Architecture: any
+Depends: univention-vmware-player-modules-managedclient-2.6.26-64gb
+Description: UCS - Linux kernel
+ This meta-package installs the current vmware-player modules.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-drbd-modules-2.6.24
+Architecture: any
+Section: admin
+Priority: optional
+Depends: univention-drbd-modules-2.6.26
+Description: Meta package for additional kernel module drbd
+ This package provides a meta package to install the kernel
+ module drbd for a specific version of the Linux kernel.
+
+Package: univention-drbd-modules-2.6.24-64gb
+Architecture: any
+Section: admin
+Priority: optional
+Depends: univention-drbd-modules-2.6.26-64gb
+Description: Meta package for additional kernel module drbd
+ This package provides a meta package to install the kernel
+ module drbd for a specific version of the Linux kernel.
