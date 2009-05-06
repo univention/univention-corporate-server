@@ -106,11 +106,12 @@ class UniventionUpdater:
 	def open_connection(self, server=None, port=None):
 
 		nameserver_available=False
-		check_nameserver_cmd='/usr/bin/host -W1 127.0.0.1 %s | grep -q "no servers could be reached"'
+		check_nameserver_cmd='/usr/bin/host -W%s 127.0.0.1 %s | grep -q "no servers could be reached"'
+		nstimeout=self.configRegistry.get('nameserver/option/timeout', 3)
 		for i in range(1,4):
 			ns=self.configRegistry.get('nameserver%s' % i)
 			if ns:
-				returncode = subprocess.call(check_nameserver_cmd % ns, shell=True)
+				returncode = subprocess.call(check_nameserver_cmd % (nstimeout, ns), shell=True)
 				if returncode == 1:
 					nameserver_available=True
 					break
