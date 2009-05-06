@@ -1,3 +1,9 @@
+univention-updater (4.0.61-3) unstable; urgency=low
+
+  * perform nameserver test only once in UniventionUpdater.__init__ (Bug #14087)
+
+ -- Arvid Requate <requate@univention.de>  Wed,  6 May 2009 16:21:51 +0200
+
 univention-updater (4.0.61-2) unstable; urgency=low
 
   * use nameserver/option/timeout or 3 seconds in nameserver test (Bug #14087)
