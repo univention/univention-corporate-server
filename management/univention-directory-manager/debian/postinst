@@ -70,10 +70,8 @@ fi
 univention-config-registry set ssl/validity/check?yes
 univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *"
 univention-config-registry set directory/reports/cleanup/age?43200
-if [ -n "${repository_online_server}" ]; then
-	univention-config-registry set \
-	directory/manager/web/modules/policies/repositoryserver/additional?${repository_online_server}
-fi
+univention-config-registry set \
+	directory/manager/web/modules/policies/repositoryserver/additional?"apt.univention.de"
 
 eval $(univention-config-registry shell)
 

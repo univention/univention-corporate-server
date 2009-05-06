@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.19-1) unstable; urgency=low
+
+  * set directory/manager/web/modules/policies/repositoryserver/additional
+    statically to apt.univention.de, if nonexistent in postinst (Bug #14027).
+
+ -- Arvid Requate <requate@univention.de>  Wed,  6 May 2009 09:13:32 +0200
+
 univention-directory-manager (6.0.18-1) unstable; urgency=low
 
   * search_module must be initialized to provide UDM properties 
