@@ -1,0 +1,66 @@
+univention-kernel-modules-2.6.24 (2.0-2-3) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2009 09:03:36 +0100
+
+univention-kernel-modules-2.6.24 (2.0-2-2) unstable; urgency=low
+
+  * fixed Makefile syntax error
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Jul 2008 06:45:31 +0200
+
+univention-kernel-modules-2.6.24 (2.0-2-1) unstable; urgency=low
+
+  * readded srvmagt-modules for kernel 2.6.24
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Jul 2008 06:38:17 +0200
+
+univention-kernel-modules-2.6.24 (2.0-1-1) unstable; urgency=low
+
+  * don't build the srvmagt-modules for Kernel 2.6.24
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  9 Jul 2008 07:26:49 +0200
+
+univention-kernel-modules-2.6.24 (2.0-0-1) unstable; urgency=low
+
+  * rebuild for UCS 2.1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  4 Jul 2008 08:46:15 +0200
+
+univention-kernel-modules-2.6.24 (1.2.0-3) unstable; urgency=low
+
+  * disable xen for 2.6.24
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Apr 2008 11:20:00 +0200
+
+univention-kernel-modules-2.6.24 (1.2.0-2) unstable; urgency=low
+
+  * depend on 2.6.24 header packages
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Apr 2008 09:18:08 +0200
+
+univention-kernel-modules-2.6.24 (1.2.0-1) unstable; urgency=low
+
+  * update to kernel 2.6.24
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Apr 2008 06:23:56 +0200
+
+univention-kernel-modules-2.6.22 (1.1.0-1) unstable; urgency=low
+
+  * update to kernel 2.6.22
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Jan 2008 20:46:32 +0100
+
+univention-kernel-modules-2.6.18 (1.0.0-2) unstable; urgency=low
+
+  * run m-a -t prepare
+  * add bzip2 to the build dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Jan 2008 13:00:43 +0100
+
+univention-kernel-modules-2.6.18 (1.0.0-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Jan 2008 11:34:14 +0100
