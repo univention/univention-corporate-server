@@ -45,17 +45,19 @@ _=translation.translate
 #
 def import_hook_files():
 	for dir in sys.path:
-		if os.path.exists( os.path.join( dir, 'univention/admin/hooks.py' ) ):
+		if os.path.exists( os.path.join( dir, 'univention/admin/hook.py' ) ):
 			if os.path.isdir( os.path.join( dir, 'univention/admin/hooks.d/' ) ):
 				for f in os.listdir( os.path.join( dir, 'univention/admin/hooks.d/' ) ):
 					if f.endswith('.py'):
 						fn = os.path.join( dir, 'univention/admin/hooks.d/', f )
 						try:
 							fd = open( fn, 'r' )
-							exec fd in univention.admin.syntax.__dict__
+							exec fd in univention.admin.hook.__dict__
 							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_hook_files: importing "%s"' % fn)
 						except:
 							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_hook_files: loading %s failed' % fn )
+							import traceback
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_hook_files: TRACEBACK:\n%s' % traceback.format_exc() )
 
 
 

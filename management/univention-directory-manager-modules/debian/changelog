@@ -1,3 +1,10 @@
+univention-directory-manager-modules (4.0.14-1) unstable; urgency=low
+
+  * fixed typos in hook loading function and added traceback in case of an
+    error (Bug: #14276)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 06 May 2009 16:17:08 +0200
+
 univention-directory-manager-modules (4.0.13-1) unstable; urgency=low
 
   * fixed naming in debug output (Bug: #5570)
