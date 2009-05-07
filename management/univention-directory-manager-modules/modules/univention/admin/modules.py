@@ -375,11 +375,11 @@ def update_udm_properties(lo, module, position):
 		if overwritePosition and tabPosition < 1:
 			overwritePosition = False
 
-		if tabPosition == -1 and len(custom_fields[tabname]) > 0:
-			for pos, el in custom_fields[tabname]:
+		if tabPosition == -1:
+			for (pos, field, tabAdvanced, overwritePosition) in properties4tabs[tabname]:
 				try:
-					if int(pos) <= tabPosition:
-						tabPosition = int(pos)-1
+					if pos <= tabPosition:
+						tabPosition = pos-1
 				except:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules update_udm_properties: custom field for tab %s: failed to set tabPosition' % tabname)
 
