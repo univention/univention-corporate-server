@@ -443,10 +443,16 @@ class simpleLdap(base):
 			for prop in m.custom_udm_properties:
 				if prop.hook != None:
 					func = getattr(prop.hook, hookname, None)
-					if changes == None:
-						func(module)
-					else:
-						changes = func(module, changes)
+					try:
+						if changes == None:
+							func(module)
+						else:
+							changes = func(module, changes)
+					except:
+						import traceback
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR,
+											   'modules/__init__.py call_udm_property_hook: hook "%s" of UDM property "%s" raised exception:\n%s' % ( hookname, prop.name, traceback.format_exc() ) )
+						raise
 		return changes
 
 	def open(self):

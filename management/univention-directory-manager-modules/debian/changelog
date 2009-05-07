@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.16-1) unstable; urgency=low
+
+  * copy traceback of hook exception to logfile (Bug: #14276)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 07 May 2009 16:14:46 +0200
+
 univention-directory-manager-modules (4.0.15-1) unstable; urgency=low
 
   * fixed traceback in UDM properties if no position had been set (Bug: #5570)
