@@ -79,7 +79,7 @@ class _default_gecos:
 		for umlaut, code in _umlauts.items():
 			gecos = gecos.replace( umlaut, code )
 
-		return gecos
+		return gecos.encode('ascii', 'replace')
 
 module='users/user'
 operations=['add','edit','remove','search','move']
@@ -192,7 +192,7 @@ property_descriptions={
 	'gecos': univention.admin.property(
 			short_description=_('GECOS'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.IA5string,
 			options=['posix'],
 			multivalue=0,
 			required=0,

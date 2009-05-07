@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.15-2) unstable; urgency=low
+
+  * restrict GECOS field to ASCII Syntax (Bug #14359)
+
+ -- Arvid Requate <requate@univention.de>  Thu,  7 May 2009 18:31:02 +0200
+
 univention-directory-manager-modules (4.0.15-1) unstable; urgency=low
 
   * fixed traceback in UDM properties if no position had been set (Bug: #5570)
