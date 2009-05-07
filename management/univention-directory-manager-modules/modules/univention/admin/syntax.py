@@ -316,6 +316,16 @@ class phone(simple):
 		else:
 			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots!")
 
+class IA5string(string):
+	name='IA5string'
+
+	def parse(self, text):
+		try:
+			text.decode("utf-8").encode('ascii')
+		except UnicodeEncodeError:
+			raise univention.admin.uexceptions.valueError, _("Field must only contain ASCII characters!")
+		return text
+
 class uid(simple):
 	name='uid'
 	min_length=1
