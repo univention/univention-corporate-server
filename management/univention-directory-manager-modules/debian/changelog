@@ -1,3 +1,10 @@
+univention-directory-manager-modules (4.0.18-2) unstable; urgency=low
+
+  * changed layout of extended attribute tab "UDM web" (Bug: #5570)
+  * fixed translations of extended attributes
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 08 May 2009 13:30:26 +0200
+
 univention-directory-manager-modules (4.0.18-1) unstable; urgency=low
 
   * fixed traceback (Bug: #5570)
