@@ -319,7 +319,7 @@ def main(argv):
 		while 1:
 			rfds, wfds, xfds = select.select( [ sock, rawsock ], [], [], 60 )
 			log_errors()
-			if not rfds:
+			if not rfds and not wfds and not xfds:
 				# select timeout occurred - check if watchdog is overdue
 				if not watchdog_timed_out():
 					# watchdog is NOT overdue ==> continue

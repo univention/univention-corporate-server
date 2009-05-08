@@ -1,3 +1,10 @@
+univention-management-console (1.0.15-1) unstable; urgency=low
+
+  * merge a select fix from the UDM frontend to UMC, we use the same
+    code base. Bug #13639
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  8 May 2009 09:33:06 +0200
+
 univention-management-console (1.0.14-1) unstable; urgency=low
 
   * fixed width of drop down widgets in module "top" (Bug: #13412)
