@@ -124,8 +124,14 @@ def main(argv):
 
 		while 1:
 			rfds, wfds, xfds = select.select([sock], [], [], socket_timeout)
-			if not rfds:
+			if not rfds and not wfds and not xfds:
 				break # timeout
+			elif not rfds:
+				if xfds:
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'New ignored event from select: exceptional conditions')
+				if wfds:
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'New ignored event from select: write data')
+				continue
 			conn, addr = sock.accept()
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'accepted new connection')
 
