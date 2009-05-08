@@ -2061,15 +2061,15 @@ class languageCode(string):
 class translationTuple(complex):
 	name = 'translationTuple'
 	delimiter = ': '
-	subsyntaxes = [(_('Language'), languageCode), (_('Text'), string)]
+	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Text'), string)]
 	all_required = 1
 
 class translationTupleShortDescription(translationTuple):
-	subsyntaxes = [(_('Language'), languageCode), (_('Translated short description'), string)]
+	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated short description'), string)]
 
 class translationTupleLongDescription(translationTuple):
-	subsyntaxes = [(_('Language'), languageCode), (_('Translated long description'), string)]
+	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated long description'), string)]
 
 class translationTupleTabName(translationTuple):
-	subsyntaxes = [(_('Language'), languageCode), (_('Translated tab name'), string)]
+	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated tab name'), string)]
 

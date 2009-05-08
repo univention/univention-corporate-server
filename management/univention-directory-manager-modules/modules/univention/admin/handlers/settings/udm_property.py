@@ -37,11 +37,11 @@ import univention.debug
 translation=univention.admin.localization.translation('univention.admin.handlers.settings')
 _=translation.translate
 
-module='settings/udm_property'
+module='settings/extended_attribute'
 operations=['add','edit','remove','search','move']
 superordinate='settings/cn'
 childs=0
-short_description=_('Settings: UDM property')
+short_description=_('Settings: extended attribute')
 long_description=''
 options={
 }
@@ -258,7 +258,7 @@ property_descriptions={
 			identifies=0
 		),
 	'version': univention.admin.property(
-			short_description = _('Version of UDM Property'),
+			short_description = _('Version of extended attribute'),
 			long_description = '',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -269,7 +269,7 @@ property_descriptions={
 			default='2',
 		),
 	'CLIName': univention.admin.property(
-			short_description = _('UDM CLI name of UDM property'),
+			short_description = _('UDM CLI name of extended attribute'),
 			long_description = '',
 			syntax=univention.admin.syntax.string_numbers_letters_dots,
 			multivalue=0,
@@ -394,7 +394,7 @@ class object(univention.admin.handlers.simpleLdap):
 					txt = self.oldattr.get(key)[0]
 					translations.append( (lang, txt) )
 
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'udm_property: added translations for %s: %s' % (transKey, str(translations)))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'extended_attribute: added translations for %s: %s' % (transKey, str(translations)))
 			self['translation%s' % transKey] = translations
 
 		self.save()

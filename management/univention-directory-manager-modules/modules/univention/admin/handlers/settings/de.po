@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-05 17:35+0200\n"
-"PO-Revision-Date: 2009-05-05 17:35+0200\n"
+"POT-Creation-Date: 2009-05-07 17:24+0200\n"
+"PO-Revision-Date: 2009-05-07 17:27+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -677,8 +677,8 @@ msgstr ""
 "Ein LDAP-Attribut wird benötigt in dem die Informationen gespeichert werden."
 
 #: udm_property.py:44
-msgid "Settings: UDM property"
-msgstr "Einstellungen: UDM Property"
+msgid "Settings: extended attribute"
+msgstr "Einstellungen: erweitertes Attribut"
 
 #: udm_property.py:60
 msgid "Default short description"
@@ -733,11 +733,11 @@ msgid "Value required"
 msgstr "Wert wird benötigt"
 
 #: udm_property.py:261
-msgid "Version of UDM Property"
-msgstr "Einstellungen: UDM Property"
+msgid "Version of extended attribute"
+msgstr "Version des erweiterten Attributs"
 
 #: udm_property.py:272
-msgid "UDM CLI name of UDM property"
+msgid "UDM CLI name of extended attribute"
 msgstr "UDM-CLI Attributname"
 
 #: udm_property.py:283 usertemplate.py:508
@@ -1104,8 +1104,11 @@ msgstr "Bildschirm Grösse (mm)"
 msgid "X Configuration Choices"
 msgstr "X Konfiguration Auswahl"
 
-#~ msgid "Version of custom attribute"
-#~ msgstr "Version desSichtbare Benutzerattribute\n"
+#~ msgid "Settings: UDM property"
+#~ msgstr "Einstellungen: UDM Property"
+
+#~ msgid "Version of UDM Property"
+#~ msgstr "Einstellungen: UDM Property"
 
 #~ msgid "Visible Univention Admin Wizards"
 #~ msgstr "Sichtbare Univention Admin Assistenten"

@@ -235,7 +235,7 @@ def init(lo, position, module, template_object=None):
 					subsyn._load( lo )
 
 	# add new properties
-	update_udm_properties( lo, module, position )
+	update_extended_attributes( lo, module, position )
 	module.initialized=1
 
 
@@ -250,16 +250,16 @@ def is_property_in_layout(itemlist, field):
 	return False
 
 
-def update_udm_properties(lo, module, position):
+def update_extended_attributes(lo, module, position):
 
-	# add list of tabnames created by UDM properties
-	if not hasattr(module, 'custom_udm_property_tabnames'):
-		module.custom_udm_property_tabnames = []
+	# add list of tabnames created by extended attributes
+	if not hasattr(module, 'extended_attribute_tabnames'):
+		module.extended_attribute_tabnames = []
 
-	# append udp custom properties
+	# append UDM extended attributes
 	properties4tabs = {}
 	overwriteTabList = []
-	module.custom_udm_properties = []
+	module.extended_udm_attributes = []
 	for dn, attrs in lo.search( base = position.getDomainConfigBase(),
 								filter='(&(objectClass=univentionUDMProperty)(univentionUDMPropertyModule=%s)(univentionUDMPropertyVersion=2))' % name(module) ):
 		# get CLI name
@@ -288,7 +288,7 @@ def update_udm_properties(lo, module, position):
 		try:
 			mayChange = int( attrs.get('univentionUDMPropertyValueMayChange', ['0'])[0] )
 		except:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modules update_udm_properties: ERROR: processing univentionUDMPropertyValueMayChange throwed exception - assuming mayChange=0')
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange throwed exception - assuming mayChange=0')
 			mayChange = 0
 
 		# value is required
@@ -298,7 +298,7 @@ def update_udm_properties(lo, module, position):
 		try:
 			doNotSearch = int( attrs.get('univentionUDMPropertyDoNotSearch',[ '0' ])[0] )
 		except:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modules update_udm_properties: ERROR: processing univentionUDMPropertyDoNotSearch throwed exception - assuming doNotSearch=0')
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch throwed exception - assuming doNotSearch=0')
 			doNotSearch = 0
 
 		# check if CA is multivalue property
@@ -313,7 +313,7 @@ def update_udm_properties(lo, module, position):
 
 		# get current language
 		lang = locale.getlocale( locale.LC_MESSAGES )[0]
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_udm_properties: LANG = %s' % str(lang))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: LANG = %s' % str(lang))
 		if lang:
 			lang = lang.replace('_','-').lower()
 		else:
@@ -356,7 +356,7 @@ def update_udm_properties(lo, module, position):
 		# add tab name to list if missing
 		if not properties4tabs.has_key(tabname):
 			properties4tabs[tabname] = []
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_udm_properties: custom fields init for tab %s' % tabname)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: custom fields init for tab %s' % tabname)
 
 		# remember tab for purging if required
 		if overwriteTab and not tabname in overwriteTabList:
@@ -368,7 +368,7 @@ def update_udm_properties(lo, module, position):
 		try:
 			tabPosition = int(tabPosition)
 		except:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules update_udm_properties: custom field for tab %s: failed to convert tabNumber to int' % tabname)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
 			tabPosition = -1
 
 		# (top left position is defined as 1) ==> if tabPosition is smaller then disable overwritePosition
@@ -381,17 +381,17 @@ def update_udm_properties(lo, module, position):
 					if pos <= tabPosition:
 						tabPosition = pos-1
 				except:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules update_udm_properties: custom field for tab %s: failed to set tabPosition' % tabname)
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to set tabPosition' % tabname)
 
 		properties4tabs[ tabname ].append( (tabPosition, univention.admin.field(pname), tabAdvanced, overwritePosition) )
 
-		module.custom_udm_properties.extend( [ univention.admin.udm_property( pname, attrs.get('univentionUDMPropertyObjectClass', [])[0],
+		module.extended_udm_attributes.extend( [ univention.admin.udm_property( pname, attrs.get('univentionUDMPropertyObjectClass', [])[0],
 																			  attrs['univentionUDMPropertyLdapMapping'][0], deleteObjectClass,
 																			  propertySyntaxString,
 																			  propertyHook ) ] )
 
-	# overwrite tabs that have been added by UDM properties
-	for tab in module.custom_udm_property_tabnames:
+	# overwrite tabs that have been added by UDM extended attributes
+	for tab in module.extended_attribute_tabnames:
 		if not tab in overwriteTabList:
 			overwriteTabList.append(tab)
 
@@ -412,7 +412,7 @@ def update_udm_properties(lo, module, position):
 			currentTab = None
 			# get existing fields if tab has not been overwritten
 			for tab in module.layout:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_udm_properties: tabname=%s   tab.short=%s' % (tabname, tab.short_description) )
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: tabname=%s   tab.short=%s' % (tabname, tab.short_description) )
 
 				if tab.short_description == tabname:
 					currentTab = tab
@@ -434,17 +434,17 @@ def update_udm_properties(lo, module, position):
 				# tab not found in current layout, so add it
 				currentTab = univention.admin.tab(tabname, tabname, fields, advanced = True)
 				module.layout.append( currentTab )
-				# remember tabs that have been added by UDM properties
-				if not tabname in module.custom_udm_property_tabnames:
-					module.custom_udm_property_tabnames.append( tabname )
+				# remember tabs that have been added by UDM extended attributes
+				if not tabname in module.extended_attribute_tabnames:
+					module.extended_attribute_tabnames.append( tabname )
 				fields = []
 
 			# check if tab is empty ==> overwritePosition is impossible
 			freshTab = (len(fields) == 0)
 
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_udm_properties: lastprio=%s   lastfield=%s'% (lastprio,lastfield))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: lastprio=%s   lastfield=%s'% (lastprio,lastfield))
 			for (prio, field, tabAdvanced, overwritePosition) in priofields:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_udm_properties: custom fields found prio %s'% prio)
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: custom fields found prio %s'% prio)
 				if currentTab.advanced and not tabAdvanced:
 					currentTab.advanced = False
 
@@ -465,11 +465,11 @@ def update_udm_properties(lo, module, position):
 						oldfield = fields[ fline ][ fpos ]
 						fields[ fline ][ fpos ] = field
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-											   'modules update_udm_properties: replacing field "%s" with "%s" on position "%s" (%s,%s)' % (oldfield.property, field.property, prio, fline, fpos))
+											   'modules update_extended_attributes: replacing field "%s" with "%s" on position "%s" (%s,%s)' % (oldfield.property, field.property, prio, fline, fpos))
 					else:
 						fields[ fline ].append( field )
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-											   'modules update_udm_properties: added new field "%s" on position "%s" (%s,%s)' % (field.property, prio, fline, fpos))
+											   'modules update_extended_attributes: added new field "%s" on position "%s" (%s,%s)' % (field.property, prio, fline, fpos))
 				else:
 					if not lastfield:
 						# first item in line ==> remember item and do nothing
@@ -480,21 +480,21 @@ def update_udm_properties(lo, module, position):
 						if prio > lastprio+1:
 							# a) abs(prio - lastprio) > 1 ==> only one item in this line
 							fields.append([lastfield])
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_udm_properties: single custom field added %s'% fields)
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: single custom field added %s'% fields)
 							lastfield = field
 							lastprio = prio
 						else:
 							# b) abs(prio - lastprio) <= 1 ==> place two items in this line
 							fields.append([lastfield,field])
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_udm_properties: two custom fields added %s'% fields)
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: two custom fields added %s'% fields)
 							lastfield = ''
 							lastprio = ''
 
 			if lastfield:
 				fields.append([lastfield])
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_udm_properties: one custom field added %s'% fields)
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: one custom field added %s'% fields)
 			currentTab.set_fields(fields)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_udm_properties: layout for tab %s finished: %s'% (tabname, fields) )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: layout for tab %s finished: %s'% (tabname, fields) )
 
 	# check for properties with the syntax class LDAP_Search
 	for pname, prop in module.property_descriptions.items():
