@@ -1,4 +1,10 @@
-univention-directory-manager-modules (4.0.15-2) unstable; urgency=low
+univention-directory-manager-modules (4.0.17-1) unstable; urgency=low
+
+  * renamed UDM property to extended attribute (Bug: #5570)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 07 May 2009 17:05:45 +0200
+
+univention-directory-manager-modules (4.0.16-1) unstable; urgency=low
 
   * restrict GECOS field to ASCII Syntax (Bug #14359)
 
@@ -6,7 +12,7 @@ univention-directory-manager-modules (4.0.15-2) unstable; urgency=low
 
 univention-directory-manager-modules (4.0.15-1) unstable; urgency=low
 
-  * fixed traceback in UDM properties if no position had been set (Bug: #5570)
+  * fixed traceback in extended attributes if no position had been set (Bug: #5570)
 
  -- Sönke Schwardt <schwardt@univention.de>  Thu, 07 May 2009 15:41:26 +0200
 
@@ -25,15 +31,15 @@ univention-directory-manager-modules (4.0.13-1) unstable; urgency=low
 
 univention-directory-manager-modules (4.0.12-1) unstable; urgency=low
 
-  * added flag to hide UDM property in search dialog (Bug: #1381)
+  * added flag to hide extended attribute in search dialog (Bug: #1381)
 
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 05 May 2009 17:37:05 +0200
 
 univention-directory-manager-modules (4.0.11-1) unstable; urgency=low
 
-  * added overwritePosition feature to UDM properties (Bug: #5570)
-  * fixed traceback related to UDM properties
-  * fixed LDAP based translation string for UDM properties
+  * added overwritePosition feature to extended attributes (Bug: #5570)
+  * fixed traceback related to extended attributes
+  * fixed LDAP based translation string for extended attributes
   * added missing icons
 
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 05 May 2009 14:16:27 +0200

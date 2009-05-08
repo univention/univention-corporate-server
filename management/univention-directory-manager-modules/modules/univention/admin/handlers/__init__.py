@@ -439,8 +439,8 @@ class simpleLdap(base):
 
 	def call_udm_property_hook(self, hookname, module, changes = None):
 		m = univention.admin.modules.get( module.module )
-		if hasattr(m, 'custom_udm_properties'):
-			for prop in m.custom_udm_properties:
+		if hasattr(m, 'extended_udm_attributes'):
+			for prop in m.extended_udm_attributes:
 				if prop.hook != None:
 					func = getattr(prop.hook, hookname, None)
 					if changes == None:
@@ -587,9 +587,9 @@ class simpleLdap(base):
 					al.append(('objectClass', [oc]))
 
 		# UDM PROPERTIES
-		if hasattr(m, 'custom_udm_properties'):
+		if hasattr(m, 'extended_udm_attributes'):
 			seen={}
-			for prop in m.custom_udm_properties:
+			for prop in m.extended_udm_attributes:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: prop.objClass = %s, prop.name = %s'% (prop.objClass, prop.name))
 				if self.info.get(prop.name):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: prop.name: info[%s] = %s'% (prop.name, self.info.get(prop.name)))
@@ -710,10 +710,10 @@ class simpleLdap(base):
 									ml.append((ldapMapping,['not_important'],0))
 
 		# UDM PROPERTIES
-		if hasattr(m, 'custom_udm_properties'):
+		if hasattr(m, 'extended_udm_attributes'):
 			seen={}
 
-			for prop in m.custom_udm_properties:
+			for prop in m.extended_udm_attributes:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._modify: c_u_p: pname = "%s"  oc = "%s"'% (prop.name, prop.objClass))
 
 				# if value is set then add object class if neccessary

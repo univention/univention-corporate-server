@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-07 18:46+0200\n"
-"PO-Revision-Date: 2009-04-29 14:37+0200\n"
+"POT-Creation-Date: 2009-05-07 17:22+0200\n"
+"PO-Revision-Date: 2009-05-08 09:59+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -86,7 +86,6 @@ msgid "CTX maximum connection time"
 msgstr "CTX maximale Verbindungsdauer"
 
 #: mungeddial.py:175
-#, fuzzy
 msgid "CTX maximum disconnection time"
 msgstr "CTX maximale Verbindungsdauer"
 
@@ -754,9 +753,9 @@ msgstr "NFS-Freigabe"
 msgid "Language code must be in format \"xx_XX\"!"
 msgstr "Sprach-Code muss im Format \"xx_XX\" angegeben werden!"
 
-#: syntax.py:2064 syntax.py:2068 syntax.py:2071 syntax.py:2074
-msgid "Language"
-msgstr "Sprache"
+#: syntax.py:2054 syntax.py:2058 syntax.py:2061 syntax.py:2064
+msgid "Language code (e.g. en_US)"
+msgstr "Sprachcode (z.B. de_DE)"
 
 #: syntax.py:2064
 msgid "Text"
@@ -1054,6 +1053,9 @@ msgstr "Authentisierung fehlgeschlagen"
 #: uldap.py:357
 msgid "Moving childs is not supported."
 msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
+
+#~ msgid "Language"
+#~ msgstr "Sprache"
 
 #~ msgid "CTX maximum disconnect time"
 #~ msgstr "CTX maximale Verbindungstrennungsdauer"

@@ -227,7 +227,7 @@ def ucr_overwrite_layout (module, ucr_property, tab):
 		return True
 
 
-class udm_property(object):
+class extended_attribute(object):
 	def __init__(self, name, objClass, ldapMapping, deleteObjClass = False, syntax = 'string', hook = None):
 		self.name = name
 		self.objClass = objClass
@@ -240,7 +240,7 @@ class udm_property(object):
 		hook = None
 		if self.hook:
 			hook = self.hook.type
-		return " univention.admin.udm_property: { name: '%s', oc: '%s', attr: '%s', delOC: '%s', syntax: '%s', hook: '%s' }" % (self.name, self.objClass, self.ldapMapping, self.deleteObjClass, self.syntax, hook)
+		return " univention.admin.extended_attribute: { name: '%s', oc: '%s', attr: '%s', delOC: '%s', syntax: '%s', hook: '%s' }" % (self.name, self.objClass, self.ldapMapping, self.deleteObjClass, self.syntax, hook)
 
 
 class tab:
