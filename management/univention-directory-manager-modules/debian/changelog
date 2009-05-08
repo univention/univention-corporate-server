@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.18-1) unstable; urgency=low
+
+  * fixed traceback (Bug: #5570)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 08 May 2009 10:26:57 +0200
+
 univention-directory-manager-modules (4.0.17-1) unstable; urgency=low
 
   * renamed UDM property to extended attribute (Bug: #5570)

@@ -385,7 +385,7 @@ def update_extended_attributes(lo, module, position):
 
 		properties4tabs[ tabname ].append( (tabPosition, univention.admin.field(pname), tabAdvanced, overwritePosition) )
 
-		module.extended_udm_attributes.extend( [ univention.admin.udm_property( pname, attrs.get('univentionUDMPropertyObjectClass', [])[0],
+		module.extended_udm_attributes.extend( [ univention.admin.extended_attribute( pname, attrs.get('univentionUDMPropertyObjectClass', [])[0],
 																			  attrs['univentionUDMPropertyLdapMapping'][0], deleteObjectClass,
 																			  propertySyntaxString,
 																			  propertyHook ) ] )

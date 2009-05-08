@@ -678,7 +678,7 @@ msgstr ""
 
 #: udm_property.py:44
 msgid "Settings: extended attribute"
-msgstr "Einstellungen: erweitertes Attribut"
+msgstr "Einstellungen: Erweitertes Attribut"
 
 #: udm_property.py:60
 msgid "Default short description"
