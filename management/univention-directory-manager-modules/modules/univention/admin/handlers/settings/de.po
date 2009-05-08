@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-07 17:24+0200\n"
-"PO-Revision-Date: 2009-05-07 17:27+0200\n"
+"PO-Revision-Date: 2009-05-08 12:32+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -698,7 +698,7 @@ msgstr "Übersetzung der ausführlichen Beschreibung"
 
 #: udm_property.py:100
 msgid "Translation of tab name"
-msgstr "Übersetzung des Reiternamens"
+msgstr "Übersetzung des Karteikartennamens"
 
 #: udm_property.py:120
 msgid "Hook"
@@ -710,11 +710,11 @@ msgstr "Positionsnummer auf der Karteikarte"
 
 #: udm_property.py:171
 msgid "Advanced tab"
-msgstr "Reiter mit erweiterten Einstellungen"
+msgstr "Karteikarte mit erweiterten Einstellungen"
 
 #: udm_property.py:181
 msgid "Overwrite existing tab"
-msgstr "Existierenden Reiter überschreiben"
+msgstr "Existierende Karteikarte überschreiben"
 
 #: udm_property.py:191
 msgid "Overwrite existing widget"

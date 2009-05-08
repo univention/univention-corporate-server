@@ -309,9 +309,9 @@ layout=[
 			]),
 	univention.admin.tab(_('UDM Web'),_('Settings for UDM web interface'),[
 			[ univention.admin.field("tabName"), univention.admin.field("tabPosition") ],
-			[ univention.admin.field("translationTabName"), univention.admin.field("overwritePosition") ],
-			[ univention.admin.field("tabAdvanced") ],
-			[ univention.admin.field("overwriteTab") ]
+			[ univention.admin.field("translationTabName"), [ univention.admin.field("overwritePosition"),
+															  univention.admin.field("overwriteTab"),
+															  univention.admin.field("tabAdvanced") ]  ]
 			]),
 	univention.admin.tab(_('UDM General'),_('UDM related settings'),[
 			[ univention.admin.field("CLIName"), univention.admin.field("hook") ],
