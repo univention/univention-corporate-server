@@ -1,3 +1,10 @@
+univention-directory-manager-modules (4.0.18-3) unstable; urgency=low
+
+  * avoid 'None' strings in univentionDnsForwardZone, univentionDnsReverseZone
+    and univentionDhcpEntry (Bug #14004)
+
+ -- Arvid Requate <requate@univention.de>  Fri,  8 May 2009 13:39:46 +0200
+
 univention-directory-manager-modules (4.0.18-2) unstable; urgency=low
 
   * changed layout of extended attribute tab "UDM web" (Bug: #5570)

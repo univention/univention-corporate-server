@@ -177,9 +177,9 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('network', 'univentionNetwork', None, univention.admin.mapping.ListToString)
 mapping.register('netmask','univentionNetmask', None, univention.admin.mapping.ListToString)
 mapping.register('nextIp','univentionNextIp', None, univention.admin.mapping.ListToString)
-mapping.register('dnsEntryZoneForward','univentionDnsForwardZone', None, univention.admin.mapping.ListToString)
-mapping.register('dnsEntryZoneReverse','univentionDnsReverseZone', None, univention.admin.mapping.ListToString)
-mapping.register('dhcpEntryZone','univentionDhcpEntry', None, univention.admin.mapping.ListToString)
+mapping.register('dnsEntryZoneForward','univentionDnsForwardZone', univention.admin.mapping.IgnoreNone, univention.admin.mapping.ListToString)
+mapping.register('dnsEntryZoneReverse','univentionDnsReverseZone', univention.admin.mapping.IgnoreNone, univention.admin.mapping.ListToString)
+mapping.register('dhcpEntryZone','univentionDhcpEntry', univention.admin.mapping.IgnoreNone, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
