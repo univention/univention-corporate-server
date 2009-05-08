@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.19-1) unstable; urgency=low
+
+  * fixed copy'n'paste bug for long descriptions (Bug: #6331)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 08 May 2009 16:52:23 +0200
+
 univention-directory-manager-modules (4.0.18-3) unstable; urgency=low
 
   * avoid 'None' strings in univentionDnsForwardZone, univentionDnsReverseZone

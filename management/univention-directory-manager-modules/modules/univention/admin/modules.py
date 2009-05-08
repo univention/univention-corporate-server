@@ -321,7 +321,7 @@ def update_extended_attributes(lo, module, position):
 
 		# get descriptions
 		shortdesc = attrs.get('univentionUDMPropertyTranslationShortDescription;entry-%s' % lang, attrs['univentionUDMPropertyShortDescription'] )[0]
-		longdesc = attrs.get('univentionUDMPropertyTranslationShortDescription;entry-%s' % lang, attrs.get('univentionUDMPropertyLongDescription', ['']))[0]
+		longdesc = attrs.get('univentionUDMPropertyTranslationLongDescription;entry-%s' % lang, attrs.get('univentionUDMPropertyLongDescription', ['']))[0]
 
 		# create property
 		module.property_descriptions[pname] = univention.admin.property(
