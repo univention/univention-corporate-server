@@ -1,0 +1,42 @@
+univention-kolab2-tools (2.0.1-1) unstable; urgency=low
+
+  * moved the univention-kolab2-tools packages from a customer scope to
+    main.
+  * added a script for converting home2 to home1 and business2 to
+    business1. Bug #12361
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 May 2009 10:55:24 +0200
+
+univention-kolab2-tools (1.0.4-1) unstable; urgency=low
+
+  * convert very email address to lowercase before comparsion
+  * work around a bug in the email.Utils.parseaddr function
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 10 Feb 2009 16:06:41 +0100
+
+univention-kolab2-tools (1.0.3-1) stable; urgency=low
+
+  * just replace message on server if modified
+  * expunge mail object after adding new ones
+  * just read ignored address list and mapping once; also if -r is given
+  * convert email addresses to lowercase before comparing
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 22 Dec 2008 15:20:43 +0100
+
+univention-kolab2-tools (1.0.2-1) stable; urgency=low
+
+  * ingore invalid email addresses
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 18 Dec 2008 15:05:05 +0100
+
+univention-kolab2-tools (1.0.1-1) stable; urgency=low
+
+  * add support for adjusting kolab event mails
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 18 Dec 2008 09:34:42 +0100
+
+univention-kolab2-tools (1.0.0-1) stable; urgency=low
+
+  * Initial release.
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 12 Dec 2008 16:02:51 +0100
