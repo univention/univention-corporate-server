@@ -39,18 +39,15 @@ DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --f
 
 update-initramfs -u -k all>>/var/log/univention/updater.log 2>&1
 
-# active the new repository configuration and mirroring if available
-univention-config-registry set repository/online=yes repository/mirror?yes
+# remove statoverride for UMC; required to ensure that UCM is not restarted during update
+dpkg-statoverride --remove /usr/sbin/univention-management-console-server
+chmod +x /usr/sbin/univention-management-console-server
 
-# mark old repository servers as not migrated (old directory structure)
-univention-config-registry set repository/local/old=
-
-# update apt index files
-apt-get update >>/var/log/univention/updater.log 2>&1
-
+NEW_UCS_VERSION="2.2-1"
 # check for successful update
-if [ "${version_version}-${version_patchlevel}" != "2.2-0" ]; then
-	echo "The update to UCS 2.2-0 has failed!
-For further information how to finalize the update to UCS 2.2-0 please consult the release notes"
+if [ "${version_version}-${version_patchlevel}" != "$NEW_UCS_VERSION" ]; then
+	echo "The update to UCS $NEW_UCS_VERSION has failed!
+For further information how to finalize the update to UCS $NEW_UCS_VERSION please consult the release notes"
 fi
 exit 0
+

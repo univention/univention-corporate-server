@@ -1,3 +1,11 @@
+univention-updater (4.0.62-1) unstable; urgency=low
+
+  * preup/postup: ensure that UMC is not restarted during an update; the
+    fix in the the UMC modul will just work vor the next update (Bug
+    #13996)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  6 May 2009 08:31:02 +0200
+
 univention-updater (4.0.61-3) unstable; urgency=low
 
   * perform nameserver test only once in UniventionUpdater.__init__ (Bug #14087)
