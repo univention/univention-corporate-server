@@ -3,7 +3,7 @@
 #
 # Univention Kolab2 Tools
 #
-# Copyright (C) 2008 Univention GmbH
+# Copyright (C) 2008-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,6 +41,7 @@ cfgRegistry = ucr.ConfigRegistry()
 cfgRegistry.load()
 
 import event
+import contact
 
 class Kolab2Message( object ):
 	_counter = 0
@@ -116,6 +117,10 @@ http://www.kolab.org/kolab2-clients.html
 						charset.body_encoding = email.Charset.BASE64
 					elif transfer == 'quoted-printable':
 						charset.body_encoding = email.Charset.QP
+					else:
+						charset.body_encoding = email.Charset.BASE64
+						del msg[ 'Content-Transfer-Encoding' ]
+						msg[ 'Content-Transfer-Encoding' ] = charset.get_body_encoding()
 					msg.set_charset( charset )
 				xml = kolab_object.as_string()
 				msg.set_payload( charset.body_encode( xml ) )
@@ -130,6 +135,10 @@ http://www.kolab.org/kolab2-clients.html
 				ev = event.Kolab2Event()
 				ev.parse( msg.get_payload( decode = True ) )
 				return ev
+			if msg.get_content_type() == 'application/x-vnd.kolab.contact':
+				co = contact.Kolab2Contact()
+				co.parse( msg.get_payload( decode = True ) )
+				return co
 
 	def add_kolab_part( self, kolab_object ):
 		charset = email.Charset.Charset( 'utf-8' )

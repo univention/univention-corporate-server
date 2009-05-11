@@ -1,3 +1,12 @@
+univention-kolab2-tools (2.0.1-1) unstable; urgency=low
+
+  * moved the univention-kolab2-tools packages from a customer scope to
+    main.
+  * added a script for converting home2 to home1 and business2 to
+    business1. Bug #12361
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 May 2009 10:55:24 +0200
+
 univention-kolab2-tools (1.0.4-1) unstable; urgency=low
 
   * convert very email address to lowercase before comparsion

@@ -12,22 +12,22 @@ s = '''<?xml version="1.0" encoding="UTF-8"?>
 <sensitivity>public</sensitivity>
 <product-id>Bynari Insight Connector 3.0</product-id>
 <summary>TEST1</summary>
-<location> nach BTAG Kalender</location>
+<location> Bremen</location>
 <start-date>2008-11-13T08:30:00Z</start-date>
 <end-date>2008-11-13T09:00:00Z</end-date>
 <organizer>
-<display-name>Lorenz</display-name>
-<smtp-address>lorenz@medien-systempartner.net</smtp-address>
+<display-name>Mustermann</display-name>
+<smtp-address>mustermann@univention.local</smtp-address>
 </organizer>
 <attendee>
-<display-name>&apos;dion.lorenz@msp-hb.de&apos;</display-name>
-<smtp-address>dion.lorenz@msp-hb.de</smtp-address>
+<display-name>&apos;max.mustermann@univention-hb.de&apos;</display-name>
+<smtp-address>max.mustermann@univention-hb.de</smtp-address>
 <role>required</role>
 <status>none</status>
 </attendee>
 <attendee>
-<display-name>Lorenz, Dion (MSP)</display-name>
-<smtp-address>Dlorenz@medien-systempartner.net</smtp-address>
+<display-name>Mustermann, Max (Unternehmen)</display-name>
+<smtp-address>Mmustermann@univention.local</smtp-address>
 <role>required</role>
 <status>none</status>
 </attendee>

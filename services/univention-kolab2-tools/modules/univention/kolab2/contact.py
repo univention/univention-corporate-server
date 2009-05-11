@@ -3,7 +3,7 @@
 #
 # Univention LDAP addressbook synchronisation
 #
-# Copyright (C) 2008 Univention GmbH
+# Copyright (C) 2008-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -37,6 +37,12 @@ class Kolab2Contact( Kolab2Object ):
 
 	def parse( self, data ):
 		Kolab2Object.parse( self, data )
+		phones = self._doc.getElementsByTagName( 'phone' )
+		self.n_phones = 1
+		for phone in phones:
+			self._define_element( 'type', prefix = 'phone%d' % self.n_phones, parent = phone )
+			self._define_element( 'number', prefix = 'phone%d' % self.n_phones, parent = phone )
+			self.n_phones +=1
 
 	def create( self ):
 		Kolab2Object.create( self )
@@ -87,3 +93,8 @@ class Kolab2Contact( Kolab2Object ):
 	def __str__( self ):
 		self.create_message()
 		return self.as_string()
+
+	def create( self ):
+		Kolab2Object.create( self )
+		# TODO: to be implemented
+
