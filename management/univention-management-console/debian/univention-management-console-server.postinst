@@ -72,8 +72,10 @@ socket_dir=/var/run/univention-management-console/
 mkdir -p $socket_dir &>/dev/null
 chmod 700 $socket_dir
 
-# kill all running modules
-pkill -f "/usr/bin/python.* /usr/sbin/univention-management-console-module -m .*"
+# kill all running modules if update is not done via UMC
+if [ -x /usr/sbin/univention-management-console-server ]; then
+	pkill -f "/usr/bin/python.* /usr/sbin/univention-management-console-module -m .*"
+fi
 
 if [ "$1" = "configure" -a -n "$2" ]; then
 

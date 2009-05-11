@@ -1,3 +1,10 @@
+univention-management-console (1.0.16-1) unstable; urgency=low
+
+  * postinst: do not kill running UMC module processes if the update is
+    done via UMC. Bug #13996
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 11 May 2009 16:50:48 +0200
+
 univention-management-console (1.0.15-1) unstable; urgency=low
 
   * merge a select fix from the UDM frontend to UMC, we use the same
