@@ -1,3 +1,11 @@
+univention-ldap (4.0.7-1) unstable; urgency=low
+
+  * page_result_disabled.patch was removed in UCS 2.0,
+    OpenLDAP 2.4 does not allow option page-results
+    remove the option and UCR Key ldap/page-results (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 12 May 2009 11:21:51 +0200
+
 univention-ldap (4.0.6-1) unstable; urgency=low
 
   * added new attribute to univentionUDMProperty class (Bug: #1381)
