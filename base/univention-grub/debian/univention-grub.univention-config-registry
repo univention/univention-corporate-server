@@ -3,6 +3,7 @@ File: boot/grub/menu.lst
 Postinst: grub-update.py
 Variables: grub/groot
 Variables: grub/root
+Variables: grub/quit
 Variables: grub/timeout
 Variables: grub/append
 Variables: grub/vga

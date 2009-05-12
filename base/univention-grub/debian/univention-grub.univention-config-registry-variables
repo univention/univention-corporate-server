@@ -34,3 +34,8 @@ Description[en]=Grub vga code
 Type=str
 Categories=System
 
+[grub/quit]
+Description[de]=Kernel-Option "quit" für den Standardkernel
+Description[en]=Kernel option "quit" for the default entry
+Type=str
+Categories=System
