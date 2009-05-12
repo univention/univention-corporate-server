@@ -1,3 +1,10 @@
+univention-updater (4.0.63-1) unstable; urgency=low
+
+  * preup.sh: reduced required disk space estimation for the update to
+    2.2-1. Bug #14433
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 12 May 2009 10:45:51 +0200
+
 univention-updater (4.0.62-1) unstable; urgency=low
 
   * preup/postup: ensure that UMC is not restarted during an update; the
