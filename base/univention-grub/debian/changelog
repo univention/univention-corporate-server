@@ -1,3 +1,9 @@
+univention-grub (3.0.0-1) unstable; urgency=low
+
+  * bumped version Bug #14309
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 May 2009 11:29:22 +0200
+
 univention-grub (2.0.2-1) unstable; urgency=low
 
   * new ucr var for kernel boot option "quit" in grub config Bug #14309
