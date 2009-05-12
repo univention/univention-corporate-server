@@ -1,7 +1,9 @@
 Type: file
 File: etc/univention/client-boot-pxe/pxeconfig
 Variables: pxe/vga
+Variables: pxe/quit
 
 Type: module
 Module: clientbootpxe.py
 Variables: pxe/nameserver
+Variables: pxe/quit

@@ -1,3 +1,9 @@
+univention-client-boot-pxe (3.0.0-1) unstable; urgency=low
+
+  * new ucr var pxe/quit for quit kernel option via pxe boot Bug: #14309
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 May 2009 12:59:10 +0200
+
 univention-client-boot-pxe (2.0.1-8) unstable; urgency=low
 
   * changed bootspalsh resolution to 1024x768 (791)

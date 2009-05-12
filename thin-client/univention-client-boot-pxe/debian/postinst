@@ -44,6 +44,7 @@ fi
 
 univention-baseconfig set pxe/nfsroot?$interfaces_eth0_address
 univention-baseconfig set pxe/vga?791
+univention-baseconfig set pxe/quit?yes
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.15; then
     test -f "/var/cache/univention-config/cache" && rm -f "/var/cache/univention-config/cache"

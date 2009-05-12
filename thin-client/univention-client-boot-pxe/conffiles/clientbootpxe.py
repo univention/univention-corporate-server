@@ -47,12 +47,28 @@ def update_nameserver(line, nameserver):
 				line = element
 			else:
 				line = '%s %s' % (line, element)
-		print line
+		return line
 	else:
-		print line
+		return line
+
+def update_quit(line, quit):
+	line = line.strip('\n')
+	if 'APPEND root=' in line:
+		if ' quit' in line:
+			if not quit:
+				line = line.replace(" quit", "")
+		if not ' quit' in line:
+			if quit:
+				line = line + " quit"
+	return line
 
 def handler(baseConfig, changes):
 	nameserver = baseConfig.get(var)
-	if nameserver:
-		for line in input(glob(pattern), inplace = True):
-			update_nameserver(line, nameserver)
+	quit = False
+	if baseConfig.get('pxe/quit', "False").lower() in ['yes', 'true', '1']:
+		quit = True
+	for line in input(glob(pattern), inplace = True):
+		if nameserver:
+			line = update_nameserver(line, nameserver)
+		line = update_quit(line, quit)
+		print line
