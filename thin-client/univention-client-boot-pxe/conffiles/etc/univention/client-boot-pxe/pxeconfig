@@ -14,8 +14,8 @@ DEFAULT linux
 IPAPPEND 1
 APPEND root=/dev/nfs nfsroot=@%@pxe/nfsroot@%@:/var/lib/univention-client-root DNSSERVER=@%@pxe/nameserver@%@ vt.default_utf8=0 vga=@%@pxe/vga@%@ splash=silent initrd=initrd.splash@!@
 options=''
-if baseConfig.get('pxe/quit', "False").lower() in ['yes', 'true', '1']:
-	options += " quit"
+if baseConfig.get('pxe/quiet', "False").lower() in ['yes', 'true', '1']:
+	options += " quiet"
 print options
 @!@
 LABEL linux
