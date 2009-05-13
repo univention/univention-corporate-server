@@ -198,7 +198,7 @@ if [ -z "$grub_groot" ] ; then
 fi
 
 univention-baseconfig set kernel/postinst_hook?"/usr/sbin/update-grub"
-univention-baseconfig set grub/quit?"yes"
+univention-baseconfig set grub/quiet?"yes"
 
 exit 0
 

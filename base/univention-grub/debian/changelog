@@ -1,6 +1,6 @@
 univention-grub (3.0.0-1) unstable; urgency=low
 
-  * new ucr var for kernel boot option "quit" in grub config Bug #14309
+  * new ucr var for kernel boot option "quiet" in grub config Bug #14309
 
  -- Felix Botner <botner@univention.de>  Tue, 12 May 2009 11:08:36 +0200
 

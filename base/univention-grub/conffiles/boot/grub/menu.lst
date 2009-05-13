@@ -83,8 +83,8 @@ background = 000000
 defoptions=''
 if baseConfig.has_key('grub/vga'):
 	defoptions += ' vga=%s' % baseConfig['grub/vga']
-if baseConfig.get('grub/quit', "False").lower() in ['yes', 'true', '1']:
-	defoptions += ' quit'
+if baseConfig.get('grub/quiet', "False").lower() in ['yes', 'true', '1']:
+	defoptions += ' quiet'
 print defoptions
 @!@
 
