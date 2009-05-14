@@ -37,17 +37,11 @@ fi
 
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes dist-upgrade >>/var/log/univention/updater.log 2>&1
 
-update-initramfs -u -k all>>/var/log/univention/updater.log 2>&1
+update-initramfs -u -k all >>/var/log/univention/updater.log 2>&1
 
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update
 dpkg-statoverride --remove /usr/sbin/univention-management-console-server
 chmod +x /usr/sbin/univention-management-console-server
 
-NEW_UCS_VERSION="2.2-1"
-# check for successful update
-if [ "${version_version}-${version_patchlevel}" != "$NEW_UCS_VERSION" ]; then
-	echo "The update to UCS $NEW_UCS_VERSION has failed!
-For further information how to finalize the update to UCS $NEW_UCS_VERSION please consult the release notes"
-fi
 exit 0
 
