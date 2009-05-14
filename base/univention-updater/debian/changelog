@@ -1,3 +1,10 @@
+univention-updater (4.0.64-1) unstable; urgency=low
+
+  * perform the name server test before the ucr_reinit is called. Bug
+    #14087 and Bug #14483
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 May 2009 15:08:23 +0200
+
 univention-updater (4.0.63-1) unstable; urgency=low
 
   * preup.sh: reduced required disk space estimation for the update to

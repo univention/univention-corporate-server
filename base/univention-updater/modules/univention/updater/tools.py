@@ -99,7 +99,8 @@ class UniventionUpdater:
 		self.proxy_server = None
 		self.proxy_port = None
 
-		self.ucr_reinit()
+		self.configRegistry=univention.config_registry.ConfigRegistry()
+		self.configRegistry.load()
 
 		# check availability of at least one nameserver
 		# set flag self.nameserver_available to inform open_connection 
@@ -114,6 +115,7 @@ class UniventionUpdater:
 					self.nameserver_available=True
 					break
 
+		self.ucr_reinit()
 
 	# TODO set default value of the variable port to "self.repository_port"
 	def open_connection(self, server=None, port=None):
