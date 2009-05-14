@@ -14,7 +14,6 @@ if [ -n "$SSH_CLIENT" ]; then
 		killall univention-updater
 		exit 1
 	fi
-    
 fi
 
 if [ "$TERM" = "xterm" ]; then
@@ -33,7 +32,7 @@ check_space(){
 	size=$2
 	usersize=$3
 	if [ `df -P $partition|tail -n1 | awk '{print $4}'` -gt "$size" ]
-		then 
+		then
 		echo -e "Space on $partition:\t OK"
 	else
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
@@ -74,3 +73,4 @@ fi
 dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server
 chmod -x /usr/sbin/univention-management-console-server
 
+exit 0

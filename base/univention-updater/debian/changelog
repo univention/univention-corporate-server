@@ -1,3 +1,9 @@
+univention-updater (4.0.70-1) unstable; urgency=low
+
+  * bumped version for UCS 2.2-1 (Bug: #14484)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 14 May 2009 15:45:18 +0200
+
 univention-updater (4.0.64-1) unstable; urgency=low
 
   * perform the name server test before the ucr_reinit is called. Bug
