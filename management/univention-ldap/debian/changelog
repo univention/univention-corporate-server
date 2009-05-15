@@ -1,3 +1,9 @@
+univention-ldap (5.0.0-2) unstable; urgency=low
+
+  * the schemacheck option has been removed, schemacheck is default (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 15 May 2009 10:37:51 +0200
+
 univention-ldap (5.0.0-1) unstable; urgency=low
 
   * page_result_disabled.patch was removed in UCS 2.0,
