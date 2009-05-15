@@ -21,7 +21,7 @@ PORT=389
 SLAPDCONF=/etc/ldap/slapd.conf
 REPLICACONF=/etc/ldap/replica.conf
 
-DBRECOVER=/usr/bin/db4.2_recover
+DBRECOVER=/usr/bin/db4.7_recover
 
 check_subschema ()
 {
