@@ -53,7 +53,8 @@ univention-baseconfig set ldap/index/pres?"objectClass,uidNumber,gidNumber,membe
 univention-baseconfig set ldap/index/sub?"uid,cn,sn,givenName,mail,description,displayName,mailPrimaryAddress,mailAlternativeAddress,default,zoneName,sambaSID"
 univention-baseconfig set ldap/index/approx?"none"
 univention-baseconfig set ldap/sizelimit?400000
-univention-baseconfig set ldap/cachesize?10000000
+univention-baseconfig set ldap/cachesize?20000
+univention-baseconfig set ldap/idlcachesize?20000
 univention-baseconfig set ldap/idletimeout?0
 univention-baseconfig set ldap/threads?16
 univention-baseconfig set ldap/acl/user/kolab2/change?yes
@@ -416,4 +417,13 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1; t
 			--append users="uid=Administrator,cn=users,$ldap_base" || true
 	fi
 fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.0-4; then
+	eval `univention-baseconfig shell server/role ldap/cachesize`
+	if [ "$server_role" = "domaincontroller_master" -a "$ldap_cachesize" = "10000000" ]; then
+		# adjust to a more moderate setting, other cache layers need memory too
+		univention-baseconfig set ldap/cachesize=20000
+	fi
+fi
+
 exit 0

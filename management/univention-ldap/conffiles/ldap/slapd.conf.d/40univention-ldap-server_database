@@ -16,6 +16,7 @@ if baseConfig.has_key('ldap/translogfile') and baseConfig['ldap/translogfile']:
 @!@
 
 cachesize   @%@ldap/cachesize@%@
+idlcachesize   @%@ldap/idlcachesize@%@
 threads		@%@ldap/threads@%@
 
 @!@
