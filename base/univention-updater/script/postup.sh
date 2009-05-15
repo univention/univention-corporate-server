@@ -41,7 +41,8 @@ update-initramfs -u -k all >>/var/log/univention/updater.log 2>&1
 
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update
 dpkg-statoverride --remove /usr/sbin/univention-management-console-server
-chmod +x /usr/sbin/univention-management-console-server
+dpkg-statoverride --remove /usr/sbin/apache2
+chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 
 exit 0
 
