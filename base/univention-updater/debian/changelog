@@ -1,3 +1,10 @@
+univention-updater (4.0.71-1) unstable; urgency=low
+
+  * preup/postup: also ensure that apache is not restarted during the
+    update. Bug #13996
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 15 May 2009 11:01:10 +0200
+
 univention-updater (4.0.70-1) unstable; urgency=low
 
   * bumped version for UCS 2.2-1 (Bug: #14484)

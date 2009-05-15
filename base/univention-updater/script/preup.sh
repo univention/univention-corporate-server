@@ -71,6 +71,7 @@ fi
 
 # ensure that UMC is not restarted during the update process
 dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server
-chmod -x /usr/sbin/univention-management-console-server
+dpkg-statoverride --add root root 0644 /usr/sbin/apache2
+chmod -x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 
 exit 0
