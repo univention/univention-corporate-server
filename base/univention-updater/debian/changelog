@@ -1,3 +1,11 @@
+univention-updater (4.0.72-1) unstable; urgency=low
+
+  * remove the temporary sources.list entry
+    (/etc/apt/sources.list.d/00_ucs_temporary_installation.list) in the
+    postup.sh. Bug #14506
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 May 2009 14:06:33 +0200
+
 univention-updater (4.0.71-1) unstable; urgency=low
 
   * preup/postup: also ensure that apache is not restarted during the

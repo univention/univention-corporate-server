@@ -44,5 +44,9 @@ dpkg-statoverride --remove /usr/sbin/univention-management-console-server
 dpkg-statoverride --remove /usr/sbin/apache2
 chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 
+if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
+	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
+fi
+
 exit 0
 
