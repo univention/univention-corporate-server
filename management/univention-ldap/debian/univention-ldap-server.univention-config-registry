@@ -19,7 +19,6 @@ Variables: ldap/master
 Variables: ldap/base
 Variables: ldap/database/type
 Variables: ldap/database/bdb/checkpoint
-Variables: ldap/database/ldbm/dbsync
 Variables: ldap/index/eq
 Variables: ldap/index/pres
 Variables: ldap/index/sub
@@ -49,7 +48,6 @@ Variables: ldap/master
 Variables: ldap/base
 Variables: ldap/databse/type
 Variables: ldap/database/bdb/checkpoint
-Variables: ldap/database/ldbm/dbsync
 Variables: ldap/index/eq
 Variables: ldap/index/pres
 Variables: ldap/index/sub

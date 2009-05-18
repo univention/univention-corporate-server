@@ -20,10 +20,6 @@ idlcachesize   @%@ldap/idlcachesize@%@
 threads		@%@ldap/threads@%@
 
 @!@
-if baseConfig['ldap/database/type'] == "ldbm":
-	print 'dbcachesize     10000000\n'
-	if baseConfig.has_key('ldap/database/ldbm/dbsync') and baseConfig['ldap/database/ldbm/dbsync']:
-		print 'dbsync %s'%baseConfig['ldap/database/ldbm/dbsync']
 if baseConfig['ldap/database/type'] == "bdb":
 	if baseConfig.has_key('ldap/database/bdb/checkpoint') and baseConfig['ldap/database/bdb/checkpoint']:
 		print 'checkpoint %s'%baseConfig['ldap/database/bdb/checkpoint']

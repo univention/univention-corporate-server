@@ -1,3 +1,9 @@
+univention-ldap (5.0.0-6) unstable; urgency=low
+
+  * remove ldbm config options, ldbm was removed in OpenLDAP 2.4 (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 May 2009 09:56:51 +0200
+
 univention-ldap (5.0.0-5) unstable; urgency=low
 
   * slapd 2.4 reads DB_CONFIG into olcDbConfig attribute, which unfortunately

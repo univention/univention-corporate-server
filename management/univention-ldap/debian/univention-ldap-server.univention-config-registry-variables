@@ -48,8 +48,8 @@ Type=str
 Categories=LDAP
 
 [ldap/database/type]
-Description[de]=LDAP-Datenbank-Typ (bdb oder ldbm)
-Description[en]=LDAP database type (bdb or ldbm)
+Description[de]=LDAP-Datenbank-Typ (bdb oder hdb)
+Description[en]=LDAP database type (bdb or hdb)
 Type=str
 Categories=LDAP
 
@@ -92,13 +92,6 @@ Categories=LDAP
 [ldap/database/bdb/db_config_options]
 Description[de]=Liste von zu verwendenden BDB-Optionen
 Description[en]=List of BDB options to use
-Type=str
-Categories=LDAP
-
-
-[ldap/database/ldbm/dbsync]
-Description[de]=Häufigkeit, mit der die LDBM-Datenbank-Buffer auf die Festplatte geschrieben werden
-Description[en]=Frequency of flushing LDBM database buffers to disk
 Type=str
 Categories=LDAP
 
