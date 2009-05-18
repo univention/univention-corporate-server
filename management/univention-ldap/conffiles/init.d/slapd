@@ -16,10 +16,8 @@
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 DAEMON=/usr/sbin/slapd
-SLURPD=/usr/sbin/slurpd
 PORT=389
 SLAPDCONF=/etc/ldap/slapd.conf
-REPLICACONF=/etc/ldap/replica.conf
 
 DBRECOVER=/usr/bin/db4.7_recover
 
@@ -116,11 +114,8 @@ if baseConfig['ldap/database/type'] == 'bdb':
 
    @!@
 if baseConfig['ldap/server/type']=="master":	   
-    print "    replicas=`grep ^replica $REPLICACONF`"
-    print '    test -z "$replicas" || (echo -n " slurpd" && start-stop-daemon --start --quiet --name slurpd --exec $SLURPD -- -r /var/lib/univention-ldap/replog/replog -t /var/lib/univention-ldap/slurpd)'
     print 'check_subschema >/dev/null 2>&1'
    @!@
-
 
     echo "."
 
@@ -142,11 +137,6 @@ if baseConfig['ldap/server/type']=="master":
 	start-stop-daemon --stop --quiet --oknodo --retry 10 \
 	    --pidfile "$pidfile" \
 	    --exec /usr/sbin/slapd 2>&1
-    @!@
-if baseConfig['ldap/server/type']=="master":
-    print "    replicas=`grep ^replica $REPLICACONF`"
-    print '    test -z "$replicas" || (echo -n " slurpd" && killall slurpd > /dev/null 2>&1)'
-    @!@
     echo "."
     ;;
   restart|force-reload)
@@ -159,7 +149,7 @@ if baseConfig['ldap/server/type']=="master":
     ;;
   force-stop)
     echo -n "Stopping ldap servers (force): "
-    killall slapd slurpd > /dev/null 2>&1
+    killall slapd > /dev/null 2>&1
     echo "done."
     ;;
   crestart)
@@ -167,12 +157,7 @@ if baseConfig['ldap/server/type']=="master":
 		then
 		$0 restart
 	else
-		if pidof slurpd > /dev/null 2>&1
-			then
-			$0 restart
-		else
-			echo "No slapd or slurpd process found, don't need to restart"
-		fi
+		echo "No slapd process found, don't need to restart"
 	fi
 	;;
   *)

@@ -1,3 +1,10 @@
+univention-ldap (5.0.0-7) unstable; urgency=low
+
+  * remove references to slurpd (replica.conf), support for it was removed
+    in OpenLDAP 2.4 (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 May 2009 10:12:20 +0200
+
 univention-ldap (5.0.0-6) unstable; urgency=low
 
   * remove ldbm config options, ldbm was removed in OpenLDAP 2.4 (Bug #14411)

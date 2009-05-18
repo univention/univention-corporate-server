@@ -84,5 +84,4 @@ if baseConfig['ldap/server/type']=="master":
 	print "replogfile /var/lib/univention-ldap/replog/replog"
 elif baseConfig.has_key('ldap/replog') and (baseConfig['ldap/replog'].lower == 'true' or baseConfig['ldap/replog'].lower == 'yes'):
 	print "replogfile /var/lib/univention-ldap/replog/replog"
-print "include /etc/ldap/replica.conf"
 @!@
