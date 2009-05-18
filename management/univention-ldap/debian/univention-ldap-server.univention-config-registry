@@ -5,9 +5,6 @@ Variables: ldap/database/type
 Variables: ldap/schema/export
 
 Type: file
-File: etc/ldap/replica.conf
-
-Type: file
 File: var/lib/univention-ldap/ldap/DB_CONFIG
 Variables: ldap/database/bdb/*
 Variables: ldap/database/type
