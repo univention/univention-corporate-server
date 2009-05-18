@@ -109,6 +109,7 @@ BUILTIN_OIDS=[
 	# attributeTypes
 	'1.3.6.1.1.4',			# vendorName
 	'1.3.6.1.1.5',			# vendorVersion
+	'1.3.6.1.1.20',         # entryDN
 	'1.3.6.1.4.1.250.1.57',         # labeledURI
 	'1.3.6.1.4.1.250.1.32',         # krbName
 	'1.3.6.1.4.1.1466.101.119.2',   # dynamicObject
@@ -138,7 +139,6 @@ BUILTIN_OIDS=[
 	'1.3.6.1.4.1.4203.666.1.13',    # namingCSN
 	'1.3.6.1.4.1.4203.666.1.23',    # syncreplCookie
 	'1.3.6.1.4.1.4203.666.1.25',    # contextCSN
-	'1.3.6.1.4.1.4203.666.1.33',    # entryDN
 	'1.3.6.1.4.1.4203.666.3.4',     # glue
 	'1.3.6.1.4.1.4203.666.3.5',     # syncConsumerSubentry
 	'1.3.6.1.4.1.4203.666.3.6',     # syncProviderSubentry

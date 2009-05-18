@@ -1,3 +1,11 @@
+univention-directory-replication (3.0.0-1) unstable; urgency=low
+
+  * entryDN attribute OID was reassigned from OpenLDAP Experimental to
+    an official branch (Internet/Directory). (Bug #14411)
+  * Version bump for UCS 2.3-0
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 May 2009 11:42:58 +0200
+
 univention-directory-replication (2.0.5-1) unstable; urgency=low
 
   * set the permission for the failed.ldif to 0600. Bug #13775
