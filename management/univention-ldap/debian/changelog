@@ -1,3 +1,11 @@
+univention-ldap (5.0.0-10) unstable; urgency=low
+
+  * determine version of db_recover that back-bdb.so was linked against,
+    to avoid silent bdb update by db4.7_recover, causing slapd 2.3 to fail
+    (Bug #14411)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 19 May 2009 20:00:16 +0200
+
 univention-ldap (5.0.0-9) unstable; urgency=low
 
   * remove reference replica.conf template (Bug #14411)

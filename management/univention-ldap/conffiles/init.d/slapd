@@ -19,7 +19,26 @@ DAEMON=/usr/sbin/slapd
 PORT=389
 SLAPDCONF=/etc/ldap/slapd.conf
 
-DBRECOVER=/usr/bin/db4.7_recover
+bdbrecover ()
+{
+	# determine libdb version that back-bdb.so was linked against
+	back_bdb_version="$(/usr/bin/ldd /usr/lib/ldap/back_bdb.so | sed -n 's|.*/usr/lib/libdb-\([0-9.]*\).so.*|\1|p')"
+	if [ -e "/usr/bin/db${back_bdb_version}_recover" ]; then
+		# if the matching dbX.Y-util package is available
+		# check if the slapd backend database version matches
+		if "/usr/bin/db${back_bdb_version}_stat" -e -h /var/lib/univention-ldap/ldap 2>&1 | grep -q 'Environment version'; then
+			# version seems to match, so try a recover
+			cd /var/lib/univention-ldap/ldap
+			"/usr/bin/db${back_bdb_version}_recover" -h /var/lib/univention-ldap/ldap
+		else
+			echo "/var/lib/univention-ldap/ldap BDB Version does not match the one back-bdb uses"
+			echo "Skipping db${back_bdb_version}_recover to avoid damage"
+		fi
+	else
+		echo "back-bdb was linked against ${back_bdb_version}, but db${back_bdb_version}-util package does not seem to be installed"
+		echo "Skipping db${back_bdb_version}_recover"
+	fi
+}
 
 check_subschema ()
 {
@@ -100,7 +119,7 @@ case "$1" in
    @!@
 if baseConfig['ldap/database/type'] == 'bdb':
 	print 'echo -n "Check database: "'
-	print 'cd /var/lib/univention-ldap/ldap; $DBRECOVER'
+	print 'bdbrecover'
 	print 'echo "done"'
 	print 'echo -n "  "'
    @!@
