@@ -1,3 +1,12 @@
+univention-updater (4.0.73-1) unstable; urgency=low
+
+  * copy the pre- and postup.sh scripts during the repository update via
+    cdrom and copy them during the postinst if there is a local
+    repository and the scripts do not exist in the local repository. Bug
+    #14534
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 May 2009 07:04:41 +0200
+
 univention-updater (4.0.72-1) unstable; urgency=low
 
   * remove the temporary sources.list entry

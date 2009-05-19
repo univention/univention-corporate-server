@@ -126,4 +126,20 @@ univention-config-registry set \
 		update/commands/distupgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -y --force-yes -us dist-upgrade" \
 		update/commands/upgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -y --force-yes -us upgrade"
 
+if [ -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.73-0; then
+	
+	eval $(univention-config-registry shell repository/mirror/basepath)
+	if [ -z "${repository_mirror_basepath}" ]; then
+		repository_mirror_basepath=/var/lib/univention-repository
+	fi
+
+	if [ -d "${repository_mirror_basepath}/mirror/2.2/maintained/2.2-1/all" ]; then
+		all_path="${repository_mirror_basepath}/mirror/2.2/maintained/2.2-1/all"
+		for script in preup.sh postup.sh; do
+			if [ ! -e "${all_path}/${script}" ]; then
+				cp "/usr/share/univention-updater/${script}" "${all_path}/"
+			fi
+		done
+	fi
+fi
 exit 0
