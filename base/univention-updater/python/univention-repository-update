@@ -74,6 +74,10 @@ def copy_repository( options, source, version ):
 	# create Packages files
 	urepo.update_indexes( dest_repo )
 
+	for script in ('preup.sh', 'postup.sh'):
+		if os.path.exists(os.path.join(source, script)):
+			shutil.copy2(os.path.join(source, script), os.path.join(dest_repo, 'all', script))
+
 def update_cdrom( options ):
 	# try to mount update ISO image or DVD
 	if options.iso_file:
