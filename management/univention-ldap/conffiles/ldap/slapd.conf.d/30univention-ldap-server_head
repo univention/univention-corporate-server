@@ -1,6 +1,4 @@
 
-schemacheck		on
-
 pidfile			/var/run/slapd/slapd.pid
 argsfile		/var/run/slapd/slapd.args
 loglevel		@%@ldap/debug/level@%@
