@@ -18,8 +18,6 @@ if baseConfig.has_key('ldap/translogfile') and baseConfig['ldap/translogfile']:
 cachesize   @%@ldap/cachesize@%@
 threads		@%@ldap/threads@%@
 
-page-results @%@ldap/page-results@%@
-
 @!@
 if baseConfig['ldap/database/type'] == "ldbm":
 	print 'dbcachesize     10000000\n'
