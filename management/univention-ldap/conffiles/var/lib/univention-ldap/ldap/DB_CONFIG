@@ -1,4 +1,12 @@
-@%@BCWARNING=# @%@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-config-registry.
+#          Please edit the following file(s) instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-config-registry Ueberschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
+#
+#       /etc/univention/templates/files/var/lib/univention-ldap/ldap/DB_CONFIG
+#
 
 @!@
 if baseConfig['ldap/database/type'] == "bdb":
