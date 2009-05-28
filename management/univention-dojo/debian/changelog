@@ -1,3 +1,11 @@
+univention-dojo (3.0.1-1) unstable; urgency=low
+
+  * update to Dojo 1.3.1. Bug #14086
+  * build against sun java 6. Bug #14318
+  * rebuild for UCS 2.3. Bug #14128
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 May 2009 14:53:55 +0200
+
 univention-dojo (2.0.2-3) unstable; urgency=low
 
   * updated the copyright. Bug #6875

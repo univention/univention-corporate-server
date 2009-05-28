@@ -2,7 +2,7 @@ Source: univention-dojo
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, sun-java5-bin
+Build-Depends: debhelper, sun-java6-bin
 Standards-Version: 3.7.2
 
 Package: univention-dojo
