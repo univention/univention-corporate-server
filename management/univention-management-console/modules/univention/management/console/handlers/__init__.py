@@ -210,13 +210,18 @@ class simpleHandler( signals.Provider ):
 		in a dialog and send to the client."""
 		if self.__requests.has_key( id ):
 			object, method = self.__requests[ id ]
-			res = umcp.Response( object )
 
 			ret = self._exec_if( '_post', method, object )
 			if isinstance( ret, basestring ):
 				self.__execution_failed( object, ret )
 				return
-			res.dialog = dialog
+
+			if isinstance( dialog, umcp.Response ):
+				res = dialog
+			else:
+				res = umcp.Response( object )
+				res.dialog = dialog
+
 			if report:
 				res.report = report
 			if success:
@@ -226,7 +231,9 @@ class simpleHandler( signals.Provider ):
 
 			ret =  self._exec_if( '_%s' % self.__interface, method, ( object, res ) )
 			if ret == None:
-				res.dialog = self.__verify_dialog( dialog )
+				if not isinstance( dialog, umcp.Response ):
+					res.dialog = self.__verify_dialog( dialog )
+
 				self.result( res )
 			elif isinstance( ret, basestring ):
 				self.__execution_failed( object, ret )
