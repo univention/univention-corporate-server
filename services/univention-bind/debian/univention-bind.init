@@ -43,10 +43,12 @@ case "$1" in
 		fi
 		log_daemon_msg "Starting univention-bind daemon:"
 		sv up univention-bind
+		log_end_msg 0
 		;;
 	stop)
 		log_daemon_msg "Stopping univention-bind daemon:"
 		sv down univention-bind
+		log_end_msg 0
 		;;
 	restart|force-reload)
 		# check ucr autostart setting
@@ -56,6 +58,7 @@ case "$1" in
 		fi
 		log_daemon_msg "Restarting univention-bind daemon:"
 		sv restart univention-bind
+		log_end_msg 0
 		;;
 	crestart)
 		# check ucr autostart setting

@@ -43,10 +43,12 @@ case "$1" in
 		fi
 		log_daemon_msg "Starting univention-bind-proxy daemon:"
 		sv up univention-bind-proxy
+		log_end_msg 0
 		;;
 	stop)
 		log_daemon_msg "Stopping univention-bind-proxy daemon: "
 		sv down univention-bind-proxy
+		log_end_msg 0
 		;;
 	restart|force-reload)
 		# check ucr autostart setting
@@ -56,6 +58,7 @@ case "$1" in
 		fi
 		log_daemon_msg "Restarting univention-bind-proxy daemon: "
 		sv restart univention-bind-proxy
+		log_end_msg 0
 		;;
 	crestart)
 		# check ucr autostart setting
