@@ -1,3 +1,9 @@
+univention-dojo (3.0.1-2) unstable; urgency=low
+
+  * try to build against openjdk. Bug #14318
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 May 2009 16:25:32 +0200
+
 univention-dojo (3.0.1-1) unstable; urgency=low
 
   * update to Dojo 1.3.1. Bug #14086
