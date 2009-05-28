@@ -32,6 +32,8 @@ if [ ! -e /etc/runit/univention/univention-bind ]; then
 	exit 0
 fi
 
+. /lib/lsb/init-functions
+
 case "$1" in
 	start)
 		# check ucr autostart setting
@@ -39,14 +41,12 @@ case "$1" in
 			source "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart univention-bind bind/autostart
 		fi
-		echo -n "Starting univention-bind daemon: "
+		log_daemon_msg "Starting univention-bind daemon:"
 		sv up univention-bind
-		echo ""
 		;;
 	stop)
-		echo -n "Stopping univention-bind daemon: "
+		log_daemon_msg "Stopping univention-bind daemon:"
 		sv down univention-bind
-		echo ""
 		;;
 	restart|force-reload)
 		# check ucr autostart setting
@@ -54,9 +54,8 @@ case "$1" in
 			source "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart univention-bind bind/autostart
 		fi
-		echo -n "Restarting univention-bind daemon: "
+		log_daemon_msg "Restarting univention-bind daemon:"
 		sv restart univention-bind
-		echo ""
 		;;
 	crestart)
 		# check ucr autostart setting
@@ -68,11 +67,11 @@ case "$1" in
 			then
 			$0 restart
 		else
-			echo "sv status return no running bind, don't need to restart."
+			log_daemon_msg "sv status return no running bind, don't need to restart."
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-bind {start|stop|restart|crestart|force-reload}"
+		log_action_msg "Usage: /etc/init.d/univention-bind {start|stop|restart|crestart|force-reload}"
 		exit 1
 		;;
 esac

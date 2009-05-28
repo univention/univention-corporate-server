@@ -32,6 +32,8 @@ if [ ! -e /etc/runit/univention/univention-bind-proxy ]; then
 	exit 0
 fi
 
+. /lib/lsb/init-functions
+
 case "$1" in
 	start)
 		# check ucr autostart setting
@@ -39,14 +41,12 @@ case "$1" in
 			source "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart univention-bind-proxy bind/autostart
 		fi
-		echo -n "Starting univention-bind-proxy daemon: "
+		log_daemon_msg "Starting univention-bind-proxy daemon:"
 		sv up univention-bind-proxy
-		echo ""
 		;;
 	stop)
-		echo -n "Stopping univention-bind-proxy daemon: "
+		log_daemon_msg "Stopping univention-bind-proxy daemon: "
 		sv down univention-bind-proxy
-		echo ""
 		;;
 	restart|force-reload)
 		# check ucr autostart setting
@@ -54,9 +54,8 @@ case "$1" in
 			source "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart univention-bind-proxy bind/autostart
 		fi
-		echo -n "Restarting univention-bind-proxy daemon: "
+		log_daemon_msg "Restarting univention-bind-proxy daemon: "
 		sv restart univention-bind-proxy
-		echo ""
 		;;
 	crestart)
 		# check ucr autostart setting
@@ -68,11 +67,11 @@ case "$1" in
 			then
 			$0 restart
 		else
-			echo "sv status return no running bind-proxy, don't need to restart."
+			log_daemon_msg "sv status return no running bind-proxy, don't need to restart."
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-bind-proxy {start|stop|restart|crestart|force-reload}"
+		log_action_msg "Usage: /etc/init.d/univention-bind-proxy {start|stop|restart|crestart|force-reload}"
 		exit 1
 		;;
 esac
