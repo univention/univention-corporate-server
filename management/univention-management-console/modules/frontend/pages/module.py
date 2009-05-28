@@ -198,16 +198,21 @@ class Module( base.Page ):
 					ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: error layout' )
 					self.__layout = error_dialog
 				else:
-					ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: normal layout' )
 					cmd = self.__startups[ self.selected ]
-					if self.__restore_referrer:
-						self.__layout = cmd.cache
-						self.__restore_referrer = False
+					last_resp = responses[ -1 ]
+					if len( last_resp.dialog ) == 1 and list.__getitem__( last_resp.dialog, 0 ) == None:
+						ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: info layout' )
+						self.__layout = cmd.info_message( last_resp.report )
 					else:
-						self.__layout = responses[ -1 ].dialog
-						# should this page be cached?
-						if cmd.caching:
-							cmd.cache = self.__layout
+						ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: normal layout' )
+						if self.__restore_referrer:
+							self.__layout = cmd.cache
+							self.__restore_referrer = False
+						else:
+							self.__layout = last_resp.dialog
+							# should this page be cached?
+							if cmd.caching:
+								cmd.cache = self.__layout
 
 				self.__storage.clear()
 				self.__dialog = self.__storage.to_uniparts( self.__layout )

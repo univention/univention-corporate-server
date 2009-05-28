@@ -101,6 +101,15 @@ Univention Management Console Version: %s - %s'
 
 		return self.__error_dialog
 
+	def info_message( self, report ):
+		rows = []
+		lst = umcd.List()
+		lst.add_row( [ umcd.Image( 'actions/info', umc_tools.SIZE_MEDIUM ), str( report ) ] )
+		lst.add_row( [ '', umcd.ErrorButton() ] )
+		frame = umcd.Frame( [ lst ], _( 'Information' ) )
+
+		return umcd.Dialog( [ frame ] )
+
 	def error_active( self ):
 		return self.__error_dialog != None
 
