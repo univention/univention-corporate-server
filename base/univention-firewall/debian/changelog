@@ -1,3 +1,9 @@
+univention-firewall (1.2.1-1) unstable; urgency=low
+
+  * Make the init script LSB-compliant (Bug #14421)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 28 May 2009 17:01:01 +0200
+
 univention-firewall (1.1.1-6) unstable; urgency=low
 
   * Remove general rule to filter the time service, since it's needed
