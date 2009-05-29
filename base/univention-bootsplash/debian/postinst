@@ -37,6 +37,8 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.0-1; t
 	# remove divert
 	dpkg-divert --remove /etc/init.d/rc
 	dpkg-divert --remove /etc/init.d/rcS
+
+	univention-config-registry set bootsplash/theme="/usr/lib/usplash/univention-theme.so"
 fi
 
 
