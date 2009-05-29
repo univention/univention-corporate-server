@@ -3,7 +3,7 @@
 # Univention Devices
 #  init script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -36,10 +36,12 @@ if [ ! -e /var/log/univention/fuse.log ] ; then
 	chmod 640 /var/log/univention/fuse.log
 fi
 
+. /lib/lsb/init-functions
+
 case $1 in
 	start)
 		
-		echo -n "Starting autofs: "
+		log_action_msg "Starting autofs:"
 
 		modprobe fuse >>/var/log/univention/fuse.log 2>&1
 
@@ -91,7 +93,7 @@ case $1 in
 		echo ""
 		;;
 	stop)
-		echo -n "unmounting "
+		log_action_msg "unmounting "
 		if [ -n "$fuse_devices" ]; then
 			for i in $fuse_devices; do
 				device=`echo $i | awk -F':' '{print $1}'`
@@ -105,11 +107,11 @@ case $1 in
 			echo -n "floppy "
 			fusermount -u /floppy
 		fi
-		echo "done"
+		log_action_end_msg 0
 
-		echo -n "Stopping autofs "
+		log_action_msg "Stopping autofs "
 		killall /usr/lib/univention-automount/autofs >>/var/log/univention/fuse.log 2>&1
-		echo "done"
+		log_action_end_msg 0
 		;;
 	restart)
 		$0 stop
@@ -117,7 +119,7 @@ case $1 in
 		$0 start
 		;;
   *)
-    echo "Usage: /etc/init.d/univention-devices {start|stop|restart}"
+    log_action_msg "Usage: /etc/init.d/univention-devices {start|stop|restart}"
     exit 1
 esac
 
