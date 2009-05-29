@@ -41,14 +41,14 @@ case "$1" in
 			source "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart univention-bind-proxy bind/autostart
 		fi
-		log_daemon_msg "Starting univention-bind-proxy daemon:"
+		log_action_msg "Starting univention-bind-proxy daemon:"
 		sv up univention-bind-proxy
-		log_end_msg 0
+		log_action_end_msg 0
 		;;
 	stop)
-		log_daemon_msg "Stopping univention-bind-proxy daemon: "
+		log_action_msg "Stopping univention-bind-proxy daemon: "
 		sv down univention-bind-proxy
-		log_end_msg 0
+		log_action_end_msg 0
 		;;
 	restart|force-reload)
 		# check ucr autostart setting
@@ -56,9 +56,9 @@ case "$1" in
 			source "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart univention-bind-proxy bind/autostart
 		fi
-		log_daemon_msg "Restarting univention-bind-proxy daemon: "
+		log_action_msg "Restarting univention-bind-proxy daemon: "
 		sv restart univention-bind-proxy
-		log_end_msg 0
+		log_action_end_msg 0
 		;;
 	crestart)
 		# check ucr autostart setting
@@ -70,7 +70,7 @@ case "$1" in
 			then
 			$0 restart
 		else
-			log_daemon_msg "sv status return no running bind-proxy, don't need to restart."
+			log_action_msg "sv status return no running bind-proxy, don't need to restart."
 		fi
 		;;
 	*)
