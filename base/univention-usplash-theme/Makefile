@@ -15,8 +15,8 @@ all: theme.so
 theme.so: silent-splash-640x480.png.c.o silent-splash-800x600.png.c.o silent-splash-1024x768.png.c.o silent-splash-1280x1024.png.c.o silent-splash-1600x1200.png.c.o throbber_fore.png.c.o throbber_back.png.c.o theme.c.o
 	$(COMPILE) -shared -o $@ $^
 	#cp theme.so /usr/lib/usplash/usplash-artwork.so
-cmap.gif:
-	convert +dither originals/cmap.png cmap.gif
+#cmap.gif:
+#	convert +dither originals/cmap.png cmap.gif
 
 %.png.c: %.png cmap.gif
 	convert $< +dither -map cmap.gif gif:- | convert gif:- $<
