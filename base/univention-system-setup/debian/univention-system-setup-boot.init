@@ -30,9 +30,11 @@
 
 eval $(univention-config-registry shell system/setup/boot/start system/setup/boot/modules)
 
+. /lib/lsb/init-functions
+
 case "$1" in
 	start)
-		echo -n "Starting univention-system setup tools: "
+		log_action_msg "Starting univention-system setup tools"
 		if [ -n "$system_setup_boot_start" ] && [ "$system_setup_boot_start" = "yes" ] || [ "$system_setup_boot_start" = "true" ]; then
 			if [ -n "$system_setup_boot_modules" ]; then
 				univention-system-setup --modules=`echo $system_setup_boot_modules | sed -e 's| |,|g'`
@@ -40,13 +42,13 @@ case "$1" in
 				exit 0
 			fi
 		fi
-		echo "done"
+		log_action_end_msg 0
 		;;
 	stop)
-		echo "done"
+		log_action_end_msg 0
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-system-setup-boot {start}."
+		log_action_msg "Usage: /etc/init.d/univention-system-setup-boot {start}."
 		exit 1
 		;;
 esac
