@@ -15,7 +15,7 @@ test -f /usr/sbin/cron || exit 0
 
 #LSBNAMES='-l'  # Uncomment for LSB name support in /etc/cron.d/
 
-
+. /lib/lsb/init-functions
 
 case "$1" in
 start)	
@@ -24,15 +24,15 @@ start)
 	    source "/usr/share/univention-config-registry/init-autostart.lib"
 	    check_autostart cron cron/autostart
 	fi
-	echo -n "Starting periodic command scheduler: cron"
+	log_action_msg "Starting periodic command scheduler: cron"
         start-stop-daemon --start --quiet --pidfile /var/run/crond.pid --name cron --startas /usr/sbin/cron -- $LSBNAMES
-        echo "." 
+        log_action_end_msg 0
 	;;
-stop)	echo -n "Stopping periodic command scheduler: cron"
+stop)	log_action_msg "Stopping periodic command scheduler: cron"
         start-stop-daemon --stop --quiet --pidfile /var/run/crond.pid --name cron
-        echo "."
+        log_action_end_msg 0
         ;;
-restart) echo -n "Restarting periodic command scheduler: cron"
+restart) log_action_msg "Restarting periodic command scheduler: cron"
         start-stop-daemon --stop --retry 5 --quiet --pidfile /var/run/crond.pid --name cron
         # check ucr autostart setting
         if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
@@ -40,13 +40,13 @@ restart) echo -n "Restarting periodic command scheduler: cron"
             check_autostart cron cron/autostart
         fi
         start-stop-daemon --start --quiet --pidfile /var/run/crond.pid --name cron --startas /usr/sbin/cron -- $LSBNAMES
-        echo "."
+        log_action_end_msg 0
         ;;
 reload|force-reload) echo -n "Reloading configuration files for periodic command scheduler: cron"
 	# cron reloads automatically
-        echo "."
+        log_action_end_msg 0
         ;;
-*)	echo "Usage: /etc/init.d/cron start|stop|restart|reload|force-reload"
+*)	log_action_msg "Usage: /etc/init.d/cron start|stop|restart|reload|force-reload"
         exit 1 
         ;;
 esac
