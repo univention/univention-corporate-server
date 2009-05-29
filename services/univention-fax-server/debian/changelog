@@ -1,3 +1,10 @@
+univention-fax-server (3.0.0-1) unstable; urgency=low
+
+  * Make init script LSB-compliant (Bug #14421)
+  * Remove unused file
+  
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 29 May 2009 15:25:02 +0200
+
 univention-fax-server (2.0.0-3) unstable; urgency=low
 
   * set BASE64ENCODE in FaxDispatch

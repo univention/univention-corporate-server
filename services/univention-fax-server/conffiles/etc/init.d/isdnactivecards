@@ -3,7 +3,7 @@
 # Univention FAX Server
 #  init-script for capiinit
 #
-# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -32,39 +32,37 @@
 # modifications by Univention GmbH to respect univention-config-registry ha-settings
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
-DAEMON=/usr/sbin/capiinit
-NAME=isdnactivecards
-DESC='ISDN active cards'
-FLAGS="defaults"
 
-test -f $DAEMON || exit 0    # sanity check
+. /lib/lsb/init-functions
+
+test -f /usr/sbin/capiinit || exit 0    # sanity check
 
 set -e
 
 case "$1" in
   start)
-    echo -n "Starting $DESC :"
-    $DAEMON start
-    echo ' done.'
+    log_action_msg "Starting ISDN active cards"
+    /usr/sbin/capiinit start
+    log_action_end_msg 0
     ;;
   stop)
     if [ -d /proc/capi ]; then
-        echo -n "Stopping $DESC :"
-        $DAEMON stop
-        echo ' done.'
+        log_action_msg "Stopping ISDN active cards"
+        /usr/sbin/capiinit stop
+        log_action_end_msg 0
     fi
     exit 0
     ;;
   reload|restart|force-reload)
-    echo -n "Restarting $DESC :"
+    log_action_msg "Restarting ISDN active cards"
     if [ -d /proc/capi ]; then
-        $DAEMON stop
+        /usr/sbin/capiinit stop
     fi
-    $DAEMON start
-    echo ' done.'
+    /usr/sbin/capiinit start
+    log_action_end_msg 0
     ;;
   *)
-    echo "Usage: /etc/init.d/$NAME {start|stop|restart|force-reload}"
+    echo "Usage: /etc/init.d/isdnactivecards {start|stop|restart|force-reload}"
     exit 1
     ;;
 esac

@@ -4,6 +4,7 @@
 #  init-script for hylafax
 #
 # Copyright (C) 2004, 2005, 2006 Giuseppe Sacco <eppesuig@debian.org>
+# Copyright (C) 2009 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -32,6 +33,8 @@
 # modifications by Univention GmbH to respect univention-config-registry settings
 
 # Start or stop HylaFAX
+
+. /lib/lsb/init-functions
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 HYLAFAX_HOME=/var/spool/hylafax
@@ -157,41 +160,39 @@ case "$1" in
     if [ $count -eq 0 ];
     then
 		 copy_slash_etc
-		echo -n "Starting HylaFAX daemons:"
-		echo -n " faxq"
+		log_action_msg "Starting HylaFAX daemons: faxq"
 		start-stop-daemon --start --exec /usr/sbin/faxq
-		echo -n " hfaxd"
+		log_action_msg "Starting HylaFAX daemons: hfaxd"
 		start-stop-daemon --start --exec /usr/sbin/hfaxd -- -i 4559 -o 4557 -s 444
 		cd ${HYLAFAX_HOME}/etc
 		devices="`echo_fax_devices`"
 		if [ ${USE_FAXGETTY} = "yes" ]; then
-		  echo -n " faxgetty"
+		  log_action_msg "Starting HylaFAX daemons: faxgetty"
 		  for device in $devices none; do
 			[ "$device" = none ] && continue
 			${FAXGETTY} `echo $device | cut -d . -f 2` &
 		  done
 		else
-		  echo -n " faxmodem"
+		  log_action_msg "Starting HylaFAX daemons: faxmodem"
 		  for device in $devices none; do
 			[ "$device" = none ] && continue
 			${FAXMODEM} `echo $device | cut -d . -f 2` &
 		  done
 		fi
     else
-      echo "Not starting HylaFAX daemons since they are already running." 1>&2
-      exit 1
+      log_action_msg "Not starting HylaFAX daemons since they are already running."
+      log_action_end_msg 1
     fi
     echo "."
     ;;
   stop)
-    echo -n "Stopping HylaFAX daemons:"
-    echo -n " faxq"
+    log_action_msg "Stopping HylaFAX daemons: faxq"
     start-stop-daemon --stop --name faxq
-    echo -n " hfaxd"
+    log_action_msg "Stopping HylaFAX daemons: hfaxd"
     start-stop-daemon --stop --name hfaxd -- -i 4559 -o 4557 -s 444
-    echo -n " faxgetty"
+    log_action_msg "Stopping HylaFAX daemons: faxgetty"
     killall faxgetty 2> /dev/null || true
-    echo "."
+    log_action_end_msg 0
     ;;
   restart|force-reload)
   	$0 stop

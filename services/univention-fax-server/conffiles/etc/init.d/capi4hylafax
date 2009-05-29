@@ -4,6 +4,7 @@
 #  init-script for capi4hylafax
 #
 # Copyright (C) 2004, 2005, 2006 Giuseppe Sacco <eppesuig@debian.org>
+# Copyright (C) 2009 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -36,6 +37,8 @@
 
 test -x /usr/bin/c2faxrecv || exit 0
 
+. /lib/lsb/init-functions
+
 run_capi4hylafax=0
 if [ -f /etc/default/capi4hylafax ]; then
     . /etc/default/capi4hylafax
@@ -62,25 +65,25 @@ C2FAXRECVPID=/var/run/c2faxrecv.pid
 
 case "$1" in
 	start)
-		echo -n "Starting capi4hylafax: c2faxrev"
-		/bin/rm /var/spool/hylafax/FIFO.*
+		log_action_msg "Starting capi4hylafax: c2faxrev"
+		rm /var/spool/hylafax/FIFO.*
 		start-stop-daemon --start --quiet --background --make-pidfile --pidfile $C2FAXRECVPID \
 			--exec /usr/bin/c2faxrecv -- -C /etc/hylafax/modem.conf
-		echo "."
+		log_action_end_msg 0
 		;;
 	stop)
-		echo -n "Stopping capi4hylafax: c2faxrev"
+		log_action_msg "Stopping capi4hylafax: c2faxrev"
 		start-stop-daemon --stop --quiet --pidfile $C2FAXRECVPID
 		rm -f $C2FAXRECVPID
-		echo "."
+		log_action_end_msg 0
 		;;
 	restart | force-reload)
-		echo -n "Restarting capi4hylafax: c2faxrev"
+		log_action_msg "Restarting capi4hylafax: c2faxrev"
 		start-stop-daemon --stop --quiet --pidfile $C2FAXRECVPID
 		sleep 5
 		start-stop-daemon --start --quiet --background --make-pidfile --pidfile $C2FAXRECVPID \
 			--exec /usr/bin/c2faxrecv -- -C /etc/hylafax/modem.conf
-		echo "."
+		log_action_end_msg 0
 		;;
 	*)
 		echo "Usage: /etc/init.d/capi4hylafax {start|stop|restart|force-reload}"
