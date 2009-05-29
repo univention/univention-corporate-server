@@ -3,7 +3,7 @@
 # Univention RunIt
 #  init script
 #
-# Copyright (C) 2003, 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2003-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,16 +28,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+. /lib/lsb/init-functions
+
 case "$1" in
 	start)
-		echo -n "Starting univention-runit: "
+		log_action_msg "Starting univention-runit"
 		start-stop-daemon -S -b -x /usr/sbin/runsvdir-start
-		echo "done"
+		log_action_end_msg 0
 		;;
 	stop)
-		echo -n "Stopping univention-runit: "
+		log_action_msg "Stopping univention-runit:"
 		killall -s HUP runsvdir
-		echo "done"
+		log_action_end_msg 0
 		;;
 	restart|force-reload)
 		$0 stop

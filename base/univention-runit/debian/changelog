@@ -1,3 +1,9 @@
+univention-runit (2.0.0-1) unstable; urgency=low
+
+  * Make init script LSB-compliant (Bug #14421)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 29 May 2009 14:45:13 +0200
+
 univention-runit (1.0.0-3) unstable; urgency=low
 
   * Adapt to Univention Directory Listener/Notifier
