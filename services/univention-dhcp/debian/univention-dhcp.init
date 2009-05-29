@@ -3,7 +3,7 @@
 # Univention DHCP
 #  dhcp init script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,6 +32,7 @@ if [ ! -e /etc/runit/univention/univention-dhcp ]; then
 	exit 0
 fi
 
+. /lib/lsb/init-functions
 
 case "$1" in
 	start)
@@ -40,14 +41,14 @@ case "$1" in
 			source "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart dhcpd dhcpd/autostart
 		fi
-		echo -n "Starting univention-dhcp daemon: "
+		log_action_msg "Starting univention-dhcp daemon"
 		sv up univention-dhcp
-		echo ""
+		log_action_end_msg 0
 		;;
 	stop)
-		echo -n "Stopping univention-dhcp daemon: "
+		log_action_msg "Stopping univention-dhcp daemon"
 		sv down univention-dhcp
-		echo ""
+		log_action_end_msg 0
 		;;
 	restart|force-reload)
 		# check ucr autostart setting
@@ -55,9 +56,9 @@ case "$1" in
 			source "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart dhcpd dhcpd/autostart
 		fi
-		echo -n "Restarting univention-dhcp daemon: "
+		log_action_msg "Restarting univention-dhcp daemon"
 		sv restart univention-dhcp
-		echo ""
+		log_action_end_msg 0
 		;;
 	crestart)
 		# check ucr autostart setting
@@ -69,7 +70,7 @@ case "$1" in
 			then
 			$0 restart
 		else
-			echo "sv status return no running dhcpd, don't need to restart."
+			log_action_msg "sv status return no running dhcpd, don't need to restart."
 		fi
 		;;
 	*)
