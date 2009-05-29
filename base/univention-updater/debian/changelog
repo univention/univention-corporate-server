@@ -1,3 +1,9 @@
+univention-updater (5.0.0-1) unstable; urgency=low
+
+  * Make init script LSB-compliant (Bug #14421)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 29 May 2009 14:49:50 +0200
+
 univention-updater (4.0.73-1) unstable; urgency=low
 
   * copy the pre- and postup.sh scripts during the repository update via

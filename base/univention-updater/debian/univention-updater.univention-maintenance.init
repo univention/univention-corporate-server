@@ -28,12 +28,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+. /lib/lsb/init-functions
 
 case "$1" in
 	start|restart|stop)
 
 		dmesg -n 1
-		eval `univention-baseconfig shell`
+		eval `univention-config-registry shell`
 
 		# clean up updater settings
 		if [ -n "$update_reboot_required" ]; then
@@ -152,7 +153,7 @@ case "$1" in
 			fi
 		fi
 
-		echo -n "Starting Univention Updater: "
+		log_action_msg "Starting Univention Updater"
 
 		if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
 			if [ "$1" = "stop" ]; then
@@ -197,7 +198,7 @@ case "$1" in
 			rm "$LOCKFILE"
 		fi
 
-		echo "."
+		log_action_end_msg 0
 		dmesg -n 8
 
 		;;
