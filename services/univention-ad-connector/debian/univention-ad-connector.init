@@ -30,16 +30,18 @@
 
 ADCONNECTORPID=/var/run/univention-ad-connector
 
+. /lib/lsb/init-functions
+
 case "$1" in
 	start)
-		echo -n "Starting univention-ad-connector daemon: "
+		log_action_msg "Starting univention-ad-connector daemon"
 		start-stop-daemon --start --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-ad-connector
-		echo "done"
+		log_action_end_msg 0
 		;;
 	stop)
-		echo -n "Stopping univention-ad-connector daemon: "
+		log_action_msg "Stopping univention-ad-connector daemon"
 		start-stop-daemon --stop --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-ad-connector
-		echo "done"
+		log_action_end_msg 0
 		;;
 	restart|force-reload)
 		$0 stop
