@@ -1,0 +1,14 @@
+Source: univention-usplash-theme
+Section: misc
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 5.0.0), libusplash-dev, imagemagick, librsvg2-bin
+Standards-Version: 3.7.2.2
+
+Package: univention-usplash-theme
+Section: misc
+Architecture: amd64 i386 powerpc sparc
+Depends: ${shlibs:Depends}
+Provides: usplash-theme
+Description: Univention usplash theme
+ This package contains then Univention usplash theme.

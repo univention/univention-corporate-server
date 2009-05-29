@@ -1,0 +1,6 @@
+univention-usplash-theme (0.1-1) unstable; urgency=low
+
+  * initial release (Bug: #14524) 
+
+ -- Felix Botner <botner@univention.de>  Sun, 08 Jul 2007 19:50:12 -0300
+
