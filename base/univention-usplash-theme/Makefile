@@ -37,5 +37,5 @@ theme.so: silent-splash-640x480.png.c.o silent-splash-800x600.png.c.o silent-spl
 install: theme.so
 	$(INSTALL_DATA) -D $< $(DESTDIR)/usr/lib/usplash/univention-theme.so
 clean:
-	rm -f  *.o *.so *.png cmap.gif
+	rm -f  *.o *.so *.png 
 
