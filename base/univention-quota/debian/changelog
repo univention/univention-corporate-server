@@ -1,3 +1,9 @@
+univention-quota (4.0.0-1) unstable; urgency=low
+
+  * Make init script LSB-compliant (Bug #14421)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 29 May 2009 14:17:22 +0200
+
 univention-quota (3.0.0-1) unstable; urgency=low
 
   * bumped version for UCS 2.2 (Bug: #13730)

@@ -32,6 +32,8 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 NAME=rpc.rquotad
 DESC="quota service"
 
+. /lib/lsb/init-functions
+
 # names of binaries
 DAEMON=/usr/sbin/rpc.rquotad
 
@@ -50,33 +52,25 @@ set -e
 
 case "$1" in
   start)
-	# The daemon
 	if [ -x $DAEMON -a $need_rquotad = 1 ]; then
-	   echo -n "Starting $DESC: "
+	   log_action_msg "Starting $DESC: "
 	   if start-stop-daemon --start --quiet --exec $DAEMON
 	   then
-		echo "rpc.rquotad."
-	   else
-		echo "."
+	       log_action_end_msg 0
 	   fi
 	fi
 	;;
   stop)
-	echo -n "Stopping $DESC: "
+	log_action_msg "Stopping $DESC:"
 	start-stop-daemon --stop --quiet --oknodo --exec $DAEMON
 	echo "$NAME."
 	;;
   restart|force-reload)
-	#
-	#	If the "reload" option is implemented, move the "force-reload"
-	#	option to the "reload" entry above. If not, "force-reload" is
-	#	just the same as "restart".
-	#
 	$0 stop
 	$0 start
 	;;
   *)
-	echo "Usage: $0 {start|stop|restart|force-reload}" >&2
+	log_action_msg "Usage: $0 {start|stop|restart|force-reload}" >&2
 	exit 1
 	;;
 esac
