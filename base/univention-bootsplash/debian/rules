@@ -51,16 +51,16 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -d -m 0755 $B/usr/share/univention-bootsplash
-	install -d -m 0755 $B/etc/init.d
+	#install -d -m 0755 $B/usr/share/univention-bootsplash
+	#install -d -m 0755 $B/etc/init.d
 	cat univention-appendsplash | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-appendsplash_tmp
 	install -m 0755 univention-appendsplash_tmp $B/usr/lib/univention-bootsplash/univention-appendsplash
 	rm univention-appendsplash_tmp
-	install -m 0755 conffiles/etc/init.d/rc $B/etc/init.d/rc.ucs
-	install -m 0755 conffiles/etc/init.d/rcS $B/etc/init.d/rcS.ucs
+	#install -m 0755 conffiles/etc/init.d/rc $B/etc/init.d/rc.ucs
+	#install -m 0755 conffiles/etc/init.d/rcS $B/etc/init.d/rcS.ucs
 
-	install -m 644 etc/bootsplash/themes/ucs/config/*cfg debian/univention-bootsplash/etc/bootsplash/themes/ucs/config/
-	install -m 644 etc/bootsplash/themes/ucs/images/*jpg debian/univention-bootsplash/etc/bootsplash/themes/ucs/images/
+	#install -m 644 etc/bootsplash/themes/ucs/config/*cfg debian/univention-bootsplash/etc/bootsplash/themes/ucs/config/
+	#install -m 644 etc/bootsplash/themes/ucs/images/*jpg debian/univention-bootsplash/etc/bootsplash/themes/ucs/images/
 
 	univention-install-baseconfig
 

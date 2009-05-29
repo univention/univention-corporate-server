@@ -1,5 +1,2 @@
-etc/init.d
-etc/univention-bootsplash
-usr/lib/univention-bootsplash
-etc/bootsplash/themes/ucs/config
-etc/bootsplash/themes/ucs/images
+etc
+usr/lib/univention-bootsplash/univention-appendsplash

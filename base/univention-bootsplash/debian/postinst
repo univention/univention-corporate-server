@@ -28,35 +28,27 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
-# console-screen must be removed completely as it does interrupt the bootsplash
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.0-1; then
 
-if [ "$1" = configure -a -z "$2" ]; then
+	# remove symlinks
+	rm -f /etc/init.d/rc
+	rm -f /etc/init.d/rcS
 
-    dpkg-divert --rename --divert /etc/init.d/rcS.ucs-bak  --add /etc/init.d/rcS
-    dpkg-divert --rename --divert /etc/init.d/rc.ucs-bak  --add /etc/init.d/rc
-	(
-	 cd /etc/init.d
-	 ln -sf rc.ucs rc
-	 ln -sf rcS.ucs rcS
-	)
-
+	# remove divert
+	dpkg-divert --remove /etc/init.d/rc
+	dpkg-divert --remove /etc/init.d/rcS
 fi
 
-eval `univention-baseconfig shell`
 
-if [ -n "$splash_theme" ]; then
-	univention-baseconfig set bootsplash/theme?"$splash_theme"
-	univention-baseconfig set bootsplash/size?all
-	univention-baseconfig unset splash/theme
-fi
+eval `univention-config-registry shell`
 
+univention-config-registry set bootsplash/theme?"/usr/lib/usplash/univention-theme.so"
+univention-config-registry set grub/vga?791
 if [ -z "`echo $grub_append | grep splash`" ] ; then
-	univention-baseconfig set grub/append="splash=silent $grub_append"
+	univention-baseconfig set grub/append="splash $grub_append"
 fi
 
-univention-baseconfig set grub/vga?791
 
-univention-baseconfig set bootsplash/size?all
 
 
 #DEBHELPER#
