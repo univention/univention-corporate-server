@@ -3,7 +3,7 @@
 # Univention Log Collector
 #  postinst script
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,54 +29,33 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DESC="log-collector-server"
 NAME=univention-log-collector-server
 DAEMON=/usr/sbin/log-collector-server.py
 PIDFILE=/var/run/$NAME.pid
-SCRIPTNAME=/etc/init.d/univention-log-collector-server
 
 # Gracefully exit if the package has been removed.
 test -x $DAEMON || exit 0
 
-#
-#	Function that starts the daemon/service.
-#
-d_start() {
-	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --background --exec $DAEMON
-}
-
-#
-#	Function that stops the daemon/service.
-#
-d_stop() {
-	start-stop-daemon --stop --quiet --pidfile $PIDFILE
-}
-
 case "$1" in
   start)
-	echo -n "Starting $DESC: $NAME"
-	d_start
-	echo "."
+	log_action_msg "Starting Univention log collector server"
+	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --background --exec $DAEMON
+	log_action_end_msg 0
 	;;
   stop)
-	echo -n "Stopping $DESC: $NAME"
-	d_stop
-	echo "."
+	log_action_msg "Stopping Univention log collector server"
+	start-stop-daemon --stop --quiet --pidfile $PIDFILE
+	log_action_end_msg 0
 	;;
   restart)
-	#
-	#	If the "reload" option is implemented, move the "force-reload"
-	#	option to the "reload" entry above. If not, "force-reload" is
-	#	just the same as "restart".
-	#
-	echo -n "Restarting $DESC: $NAME"
-	d_stop
+	log_action_msg "Restarting Univention log collector server"
+	start-stop-daemon --stop --quiet --pidfile $PIDFILE
 	sleep 1
-	d_start
-	echo "."
+	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --background --exec $DAEMON
+	log_action_end_msg 0
 	;;
   *)
-	echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload}" >&2
+	echo "Usage: /etc/init.d/univention-log-collector-server {start|stop|restart|force-reload}" >&2
 	exit 1
 	;;
 esac

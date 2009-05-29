@@ -1,3 +1,9 @@
+univention-log-collector (3.0.0-1) unstable; urgency=low
+
+  * Make init script LSB-compliant (Bug #14421)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 29 May 2009 15:58:23 +0200
+
 univention-log-collector (2.0.1-2) unstable; urgency=low
 
   * Install changelog and copyright file
