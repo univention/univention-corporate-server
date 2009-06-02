@@ -1,3 +1,11 @@
+univention-config-registry (5.0.0-2) unstable; urgency=low
+
+  * Add a dependency on lsb-base, so that the LSB shell script
+    library functions can be used universally without declaring
+    a dependency on every package (Bug #14421)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  2 Jun 2009 15:01:27 +0200
+
 univention-config-registry (5.0.0-1) unstable; urgency=low
 
   * Make init script LSB-compliant (Bug #14421)
