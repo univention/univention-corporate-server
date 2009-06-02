@@ -1,3 +1,10 @@
+univention-ldap (5.0.0-11) unstable; urgency=low
+
+  * adjust default ldap/cachesize not only on UCS DC master (for Bug #14554)
+  * adjust version check in postinst to match version shipped with UCS 2.2-2
+
+ -- Arvid Requate <requate@univention.de>  Tue,  2 Jun 2009 10:20:08 +0200
+
 univention-ldap (5.0.0-10) unstable; urgency=low
 
   * determine version of db_recover that back-bdb.so was linked against,
