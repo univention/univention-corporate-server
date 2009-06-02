@@ -72,14 +72,14 @@ struct usplash_theme usplash_theme = {
 
 	/* Progress bar position and size in pixels */
   	.progressbar_x      = 640/2 - PROGRESSBAR_WIDTH/2,
-  	.progressbar_y      = 371,
+  	.progressbar_y      = 480/3*2,
   	.progressbar_width  = PROGRESSBAR_WIDTH,
   	.progressbar_height = PROGRESSBAR_HEIGHT,
 
 	/* Text box position and size in pixels */
-  	.text_x      = 120,
-  	.text_y      = 307,
-  	.text_width  = 360,
+  	.text_x      = 640/2 - PROGRESSBAR_WIDTH/2,
+  	.text_y      = 480/3*2 + PROGRESSBAR_HEIGHT + 10,
+  	.text_width  = PROGRESSBAR_WIDTH,
   	.text_height = 100,
 
 	/* Text details */
@@ -117,14 +117,14 @@ struct usplash_theme usplash_theme_800_600 = {
 
 	/* Progress bar position and size in pixels */
   	.progressbar_x      = 800/2 - PROGRESSBAR_WIDTH/2,
-  	.progressbar_y      = 371,
+  	.progressbar_y      = 600/3 *2,
   	.progressbar_width  = PROGRESSBAR_WIDTH,
   	.progressbar_height = PROGRESSBAR_HEIGHT,
 
 	/* Text box position and size in pixels */
-  	.text_x      = 120,
-  	.text_y      = 307,
-  	.text_width  = 360,
+  	.text_x      = 800/2 - PROGRESSBAR_WIDTH/2,
+  	.text_y      = 600/3 *2 + PROGRESSBAR_HEIGHT + 10,
+  	.text_width  = PROGRESSBAR_WIDTH,
   	.text_height = 100,
 
 	/* Text details */
@@ -158,16 +158,15 @@ struct usplash_theme usplash_theme_1024_768 = {
 	.text_failure           = TEXT_FAILURE,
 
 	/* Progress bar position and size in pixels */
-  	/*.progressbar_x      = 404,  1024/2 - 216/2 */
   	.progressbar_x      = 1024/2 - PROGRESSBAR_WIDTH/2,
-  	.progressbar_y      = 475,
+  	.progressbar_y      = 768/3 * 2,
   	.progressbar_width  = PROGRESSBAR_WIDTH,
   	.progressbar_height = PROGRESSBAR_HEIGHT,
 
 	/* Text box position and size in pixels */
-  	.text_x      = 322,
-  	.text_y      = 525,
-  	.text_width  = 380,
+  	.text_x      = 1024/2 - PROGRESSBAR_WIDTH/2,
+  	.text_y      = 768/3 * 2 + PROGRESSBAR_HEIGHT + 10,
+  	.text_width  = PROGRESSBAR_WIDTH,
   	.text_height = 100,
 
 	/* Text details */
@@ -201,15 +200,15 @@ struct usplash_theme usplash_theme_1280_1024 = {
 	.text_failure           = TEXT_FAILURE,
 
 	/* Progress bar position and size in pixels */
-  	.progressbar_x      = 1240/2 - PROGRESSBAR_WIDTH/2,
-  	.progressbar_y      = 475,
+  	.progressbar_x      = 1280/2 - PROGRESSBAR_WIDTH/2,
+  	.progressbar_y      = 1024/3*2,
   	.progressbar_width  = PROGRESSBAR_WIDTH,
   	.progressbar_height = PROGRESSBAR_HEIGHT,
 
 	/* Text box position and size in pixels */
-  	.text_x      = 322,
-  	.text_y      = 525,
-  	.text_width  = 380,
+  	.text_x      = 1240/2 - PROGRESSBAR_WIDTH/2,
+  	.text_y      = 1024/3 *2 + PROGRESSBAR_HEIGHT + 10,
+  	.text_width  = PROGRESSBAR_WIDTH,
   	.text_height = 100,
 
 	/* Text details */
