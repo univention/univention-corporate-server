@@ -1,3 +1,9 @@
+univention-mail-cyrus (2.0.0-1) unstable; urgency=low
+
+  * Make init script LSB-compliant (Bug #14421)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue,  2 Jun 2009 14:26:53 +0200
+
 univention-mail-cyrus (1.0.3-1) unstable; urgency=low
 
   * new default (400) for imap/pop/sieve maxchild value (Bug: #13665)

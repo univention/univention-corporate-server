@@ -14,6 +14,8 @@
 LC_ALL=C
 export LC_ALL
 
+. /lib/lsb/init-functions
+
 # Overridable defaults
 unset CYRUS_VERBOSE
 unset LISTENQUEUE
@@ -105,16 +107,16 @@ case "$1" in
 		    exit 2
 		}
 	}
-	echo -n "Starting ${DESC}: "
+	log_action_msg "Starting Cyrus IMAPd"
 	fixdirs >/dev/null 2>&1
 	if start-stop-daemon ${START} >/dev/null 2>&1 ; then
-		echo "$NAME."
+		log_action_end_msg 0
 	else
 		if start-stop-daemon --test ${START} >/dev/null 2>&1; then
-			echo "(failed)."
+			log_action_end_msg 1
 			exit 1
 		else
-			echo "${DAEMON} already running."
+			echo "Cyrus IMAPd already running."
 			exit 0
 		fi
 	fi
@@ -145,22 +147,22 @@ case "$1" in
 
 	;;
   stop)
-	echo -n "Stopping $DESC: "
+	log_action_msg "Stopping Cyrus IMAPd"
 	if start-stop-daemon --stop --quiet --pidfile /var/run/$NAME.pid \
 			--quiet --startas $DAEMON >/dev/null 2>&1 ; then
-		echo "$NAME."
+		log_action_end_msg 0
 	else
-		echo "(failed)."
+		log_action_end_msg 1
 	fi
 	;;
   reload|force-reload)
-	echo "Reloading $DESC configuration files."
+	log_action_msg "Reloading Cyrus IMAPd configuration files."
 	start-stop-daemon --stop --signal 1 --quiet \
 		--pidfile /var/run/$NAME.pid --exec $DAEMON >/dev/null 2>&1
   	;;
   restart)
   	$0 stop && {
-	  echo -n "Waiting for complete shutdown..."
+	  log_action_msg "Waiting for complete shutdown"
 	  i=5
 	  while [ $i -gt 0 ] ; do
 	  	if start-stop-daemon --start --test \
@@ -170,11 +172,11 @@ case "$1" in
 		fi
 		sleep 2s
 		i=$(($i - 1))
-		echo -n "."
+		log_action_end_msg 0
 	  done
 	  [ $i -eq 0 ] && {
-	  	echo
-		echo "fatal: incomplete shutdown detected, aborting."
+	  	log_action_end_msg 1
+		log_action_msg "Fatal: Incomplete Cyrus IMAPd shutdown detected, aborting."
 		exit 1
 	  }
 	  echo
