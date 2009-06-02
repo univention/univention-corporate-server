@@ -32,6 +32,8 @@ if [ ! -e /etc/runit/univention/univention-directory-notifier ]; then
 	exit 0
 fi
 
+. /lib/lsb/init-functions
+
 case "$1" in
 	start)
 		# check ucr autostart setting
@@ -39,26 +41,35 @@ case "$1" in
 		    source "/usr/share/univention-config-registry/init-autostart.lib"
 		    check_autostart notifier notifier/autostart
 		fi
-		echo -n "Starting univention-directory-notifier daemon: "
-		sv start univention-directory-notifier
-		echo ""
+		log_action_msg "Starting Univention Directory Notifier daemon"
+		if sv start univention-directory-notifier; then
+		    log_action_end_msg 0
+		else
+		    log_action_end_msg 1
+		fi
 		;;
 	stop)
-		echo -n "Stopping univention-directory-notifier daemon: "
-		sv stop univention-directory-notifier
-		echo ""
+		log_action_msg "Stopping univention-directory-notifier daemon: "
+		if sv stop univention-directory-notifier; then
+		    log_action_end_msg 0
+		else
+		    log_action_end_msg 1
+		fi
 		;;
 	restart|force-reload)
-		echo -n "Restarting univention-directory-notifier daemon: "
-		sv restart univention-directory-notifier
-		echo ""
+		log_action_msg "Restarting univention-directory-notifier daemon: "
+		if sv restart univention-directory-notifier; then
+		    log_action_end_msg 0
+		else
+		    log_action_end_msg 1
+		fi
 		;;
 	crestart)
 		if sv status univention-directory-notifier | grep ^run: > /dev/null 2>&1
 			then
 			$0 restart
 		else
-			echo "sv status returns no running notifier, don't need to restart."
+			log_action_msg "sv status returns no running notifier, don't need to restart."
 		fi
 		;;
 	*)
