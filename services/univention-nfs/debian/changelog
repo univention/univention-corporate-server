@@ -1,3 +1,9 @@
+univention-nfs (2.0.0-1) unstable; urgency=low
+
+  * Make init script LSB-compliant (Bug #14421)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  2 Jun 2009 15:17:59 +0200
+
 univention-nfs (1.0.1-8) unstable; urgency=low
 
   * register also existing register host share container as standard share container

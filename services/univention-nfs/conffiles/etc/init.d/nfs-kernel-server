@@ -3,7 +3,7 @@
 # Univention NFS
 #  init script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -43,15 +43,13 @@ PREFIX=/usr
 [ -x $PREFIX/sbin/rpc.mountd ] || exit 0
 [ -x $PREFIX/sbin/exportfs ] || exit 0
 
-# What is this?
-DESC="NFS kernel daemon"
-
 RPCNFSDCOUNT=8	# Number of servers to be started up by default
 RPCMOUNTDOPTS=
 
-# If we should be started by heartbeat exit here
+. /lib/lsb/init-functions
 
-eval `/usr/sbin/univention-baseconfig shell`
+# If we should be started by heartbeat exit here
+eval `/usr/sbin/univention-config-registry shell`
 
 if [ $nfsserver_ha_master ]
 	then
@@ -65,43 +63,43 @@ case "$1" in
 	cd /	# daemons should have root dir as cwd
 	if egrep -q '^["]{0,1}/' /etc/exports
 	then
-		printf "Exporting directories for $DESC..."
+		log_action_msg "Exporting directories for NFS kernel daemon"
 		$PREFIX/sbin/exportfs -r
 		echo "done."
 
-		printf "Starting $DESC:"
-		printf " nfsd"
+		log_action_msg "Starting NFS kernel daemon: nfsd"
 		start-stop-daemon --start --quiet \
 		    --exec $PREFIX/sbin/rpc.nfsd -- $RPCNFSDCOUNT
-		printf " mountd"
+		log_action_msg "Starting NFS kernel daemon: mountd"
 		$PREFIX/bin/rpcinfo -u localhost nfs 3 >/dev/null 2>&1 ||
 		    RPCMOUNTDOPTS="$RPCMOUNTDOPTS --no-nfs-version 3"
 		start-stop-daemon --start --quiet \
 		    --exec $PREFIX/sbin/rpc.mountd -- $RPCMOUNTDOPTS
-		echo "."
+		log_action_end_msg 0
 	else
-		echo "Not starting $DESC: No exports."
+		log_action_msg "Not starting NFS kernel daemon: No exports."
+		log_action_end_msg 1
 	fi
 	;;
 
   stop)
-	printf "Stopping $DESC: mountd"
+	log_action_msg "Stopping NFS kernel daemon: mountd"
 	start-stop-daemon --stop --oknodo --quiet \
 	    --name rpc.mountd --user 0
-	printf " nfsd"
+	log_action_msg "Stopping NFS kernel daemon: nfsd"
 	start-stop-daemon --stop --oknodo --quiet \
 	    --name nfsd --user 0 --signal 2
-	echo "."
+	log_action_end_msg 0
 
-	printf "Unexporting directories for $DESC..."
+	log_action_msg "Unexporting directories for NFS kernel daemon"
 	$PREFIX/sbin/exportfs -au
-	echo "done."
+	log_action_end_msg 0
 	;;
 
   reload | force-reload)
-	printf "Re-exporting directories for $DESC..."
+	log_action_msg "Re-exporting directories for NFS kernel daemon"
 	$PREFIX/sbin/exportfs -r
-	echo "done."
+	log_action_end_msg 0
 	;;
 
   restart)
