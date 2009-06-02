@@ -21,6 +21,8 @@ NAME=Postfix
 TZ=
 unset TZ
 
+. /lib/lsb/init-functions
+
 # Defaults - don't touch, edit /etc/default/postfix
 SYNC_CHROOT="y"
 
@@ -30,7 +32,7 @@ test -x $DAEMON && test -f /etc/postfix/main.cf || exit 0
 
 case "$1" in
     start)
-	echo -n "Starting mail transport agent: Postfix"
+	log_action_msg "Starting mail transport agent: Postfix"
 
         # check ucr autostart setting
         if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
@@ -72,14 +74,14 @@ case "$1" in
 
 	${DAEMON} start 2>&1 |
 		(grep -v 'starting the Postfix' 1>&2 || /bin/true)
-	echo "."
+	log_action_end_msg 0
     ;;
 
     stop)
-	echo -n "Stopping mail transport agent: Postfix"
+	log_action_msg "Stopping mail transport agent: Postfix"
 	${DAEMON} stop 2>&1 |
 		(grep -v 'stopping the Postfix' 1>&2 || /bin/true)
-	echo "."
+	log_action_end_msg 0
     ;;
 
     restart)
@@ -88,10 +90,10 @@ case "$1" in
     ;;
     
     force-reload|reload)
-	echo -n "Reloading Postfix configuration..."
+	log_action_msg "Reloading Postfix configuration"
 	${DAEMON} reload 2>&1 |
 		(grep -v 'refreshing the Postfix' 1>&2 || /bin/true)
-	echo "done."
+	log_action_end_msg 0
     ;;
 
     flush)
