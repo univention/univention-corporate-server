@@ -1,3 +1,9 @@
+univention-samba (4.0.0-1) unstable; urgency=low
+
+  * Make init script LSB-compliant (Bug #14421)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  2 Jun 2009 15:35:13 +0200
+
 univention-samba (3.0.11-2) unstable; urgency=low
 
   * added predependency samba to univention-samba-local-config (Bug: #12052)

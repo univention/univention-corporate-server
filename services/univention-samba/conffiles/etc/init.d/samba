@@ -51,7 +51,9 @@ SMBDPID=/var/run/samba/smbd.pid
 
 # If we should be started by heartbeat exit here
 
-eval `/usr/sbin/univention-baseconfig shell`
+. /lib/lsb/init-functions
+
+eval `/usr/sbin/univention-config-registry shell`
 
 if [ $samba_ha_master ]
 	then
@@ -75,22 +77,20 @@ case "$1" in
 		    check_autostart samba samba/autostart
 		fi
 
-		echo -n "Starting Samba daemons:"
-
-		echo -n " nmbd"
+	        log_action_msg "Starting Samba daemons: nmbd"
 		start-stop-daemon --start --quiet --pidfile $NMBDPID  -a /usr/sbin/nmbd -- -D
 
 		if [ "$RUN_MODE" != "inetd" ]; then
 			if [ -z "$samba_smbd_start" ] || [ "$samba_smbd_start" = "yes" ]; then
-				echo -n " smbd"
+				log_action_msg "Starting Samba daemons: nmbd"
 				start-stop-daemon --start --quiet --pidfile $SMBDPID -a /usr/sbin/smbd -- -D
 			fi
 		fi
 
-		echo "."
+		log_action_end_msg 0
 		;;
 	stop)
-		echo -n "Stopping Samba daemons: "
+		log_action_msg "Stopping Samba daemons: nmbd"
 
 		start-stop-daemon --stop --quiet --pidfile $NMBDPID
 		# Wait a little and remove stale PID file
@@ -100,7 +100,6 @@ case "$1" in
 			# Stale PID file (nmbd was succesfully stopped), remove it
 			rm -f $NMBDPID
 		fi
-		echo -n "nmbd"
 
 		if [ "$RUN_MODE" != "inetd" ]; then
 			if [ -z "$samba_smbd_start" ] || [ "$samba_smbd_start" = "yes" ]; then
@@ -112,18 +111,17 @@ case "$1" in
 					# Stale PID file (nmbd was succesfully stopped), remove it
 					rm -f $SMBDPID
 				fi
-				echo -n " smbd"
+				log_action_msg "Stopping Samba daemons: smbd"
 			fi
 		fi
 
-		echo "."
+		log_action_end_msg 0
 
 		;;
 	reload)
-		echo -n "Reloading /etc/samba/smb.conf (smbd only)"
+		log_action_msg "Reloading /etc/samba/smb.conf (smbd only)"
 		start-stop-daemon --stop --signal HUP --pidfile $SMBDPID
-
-		echo "."
+		log_action_end_msg 0
 		;;
 	restart|force-reload)
 		$0 stop
@@ -139,7 +137,7 @@ case "$1" in
 				then
 				$0 restart
 			else
-				echo "No smbd or nmbd process found, no need to restart."
+				log_action_msg "No smbd or nmbd process found, no need to restart."
 			fi
 		fi
 		;;
