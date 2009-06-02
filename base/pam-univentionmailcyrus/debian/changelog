@@ -1,3 +1,9 @@
+pam-univentionmailcyrus (2.0.0-0) unstable; urgency=low
+
+  * build fixes for UCS 2.3 (Bug: #14661)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 02 Jun 2009 13:34:42 +0200
+
 pam-univentionmailcyrus (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
@@ -6,7 +12,7 @@ pam-univentionmailcyrus (1.0.0-2) unstable; urgency=low
 
 pam-univentionmailcyrus (1.0.0-1) unstable; urgency=low
 
-  * 
+  * bumped version
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 May 2007 10:51:55 +0200
 
