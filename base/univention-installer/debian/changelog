@@ -1,3 +1,9 @@
+univention-installer (5.0.0-1) unstable; urgency=low
+
+  * load usb cdrom kernel modules if no nousbcdrom kernel parameter exists (Bug: #10246)
+
+ -- Felix Botner <botner@univention.de>  Tue,  2 Jun 2009 12:47:15 +0200
+
 univention-installer (4.0.26-2) unstable; urgency=low
 
   * rename (installation|installer|installation_error).log on /instmnt by
