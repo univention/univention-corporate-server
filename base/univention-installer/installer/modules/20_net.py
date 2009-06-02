@@ -76,9 +76,9 @@ class object(content):
 		if self.all_results.has_key('gateway'):
 			self.container['Gateway']=[]
 			self.container['Gateway'].append(self.all_results['gateway'])
-		if self.all_results.has_key('http_proxy'):
-			self.container['http_proxy']=[]
-			self.container['http_proxy'].append(self.all_results['http_proxy'])
+		if self.all_results.has_key('proxy_http'):
+			self.container['proxy_http']=[]
+			self.container['proxy_http'].append(self.all_results['proxy_http'])
 		if self.all_results.has_key('nameserver_1'):
 			self.container['Nameserver']=[]
 			self.container['Nameserver'].append(self.all_results['nameserver_1'])
@@ -113,9 +113,9 @@ class object(content):
 		if self.all_results.has_key('dns_forwarder_1'):
 			self.container['DNS-Forwarder']=[]
 			self.container['DNS-Forwarder'].append(self.all_results['dns_forwarder_1'])
-		if self.all_results.has_key('http_proxy'):
-			self.container['http_proxy']=[]
-			self.container['http_proxy'].append(self.all_results['http_proxy'])
+		if self.all_results.has_key('proxy_http'):
+			self.container['proxy_http']=[]
+			self.container['proxy_http'].append(self.all_results['proxy_http'])
 
 		for key in  ['nameserver_2', 'nameserver_3', 'dns_forwarder_2', 'dns_forwarder_3']:
 			if self.all_results.has_key(key):
@@ -395,10 +395,10 @@ class object(content):
 
 		# - Proxy
 		self.elements.append(textline(_('HTTP proxy'),self.minY+16,self.minX+2)) #15
-		if not self.container.has_key('http_proxy'):
+		if not self.container.has_key('proxy_http'):
 			self.elements.append(input('http://',self.minY+16,self.minX+20,MAXIP+8)) #16
 		else:
-			self.elements.append(input('%s'%self.container['http_proxy'][0],self.minY+16,self.minX+20,MAXIP+8)) #16
+			self.elements.append(input('%s'%self.container['proxy_http'][0],self.minY+16,self.minX+20,MAXIP+8)) #16
 
 		if not self.already_redraw:
 			#add first device
