@@ -1,3 +1,9 @@
+univention-mail-postfix-forward (2.0.0-1) unstable; urgency=low
+
+  * Make init script LSB-compliant (Bug #14421)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  2 Jun 2009 14:41:31 +0200
+
 univention-mail-postfix-forward (1.0.0-22) unstable; urgency=low
 
   * Fixed UTF-8 encoding issue
