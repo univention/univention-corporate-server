@@ -1152,6 +1152,10 @@ msgstr "Root-Passwort"
 msgid "Root password (retype):"
 msgstr "Passwort (zur Bestätigung bitte nochmal eingeben)"
 
+#: installer/modules/11_basis.py:179
+msgid "Please enter a valid windows domain name."
+msgstr "Bitte geben Sie einen gültigen Windows Domain Namen an."
+
 #: installer/modules/11_basis.py:176
 msgid "Please enter a valid hostname in lowercase."
 msgstr "Bitte geben Sie einen gültigen, klein-geschriebenen Systemnamen an."

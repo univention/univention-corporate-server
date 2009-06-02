@@ -53,9 +53,9 @@ class object(content):
 		if self.check('root_password') and self.check('root_password_crypted'):
 			return False
 		if self.all_results.has_key('root_password_crypted'):
-			self.message=self.check_values(self.all_results['hostname'], self.all_results['domainname'], self.all_results['ldap_base'], "XXXXXXXXXX", "XXXXXXXXXX", focus=False)
+			self.message=self.check_values(self.all_results['hostname'], self.all_results['domainname'], self.all_results['windows_domain'], self.all_results['ldap_base'], "XXXXXXXXXX", "XXXXXXXXXX", focus=False)
 		else:
-			self.message=self.check_values(self.all_results['hostname'], self.all_results['domainname'], self.all_results['ldap_base'], self.all_results['root_password'], self.all_results['root_password'], focus=False)
+			self.message=self.check_values(self.all_results['hostname'], self.all_results['domainname'], self.all_results['windows_domain'], self.all_results['ldap_base'], self.all_results['root_password'], self.all_results['root_password'], focus=False)
 		if self.message:
 			return False
 
@@ -161,14 +161,23 @@ class object(content):
 		else:
 			return self.elements[self.current].key_event(key)
 
-	def check_values (self, hostname, domainname, ldap_base, root_password1, root_password2, focus=True):
+	def check_values (self, hostname, domainname, windows_domain, ldap_base, root_password1, root_password2, focus=True):
 		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
 			password1_position=11
 			password2_position=13
+			windows_domain_position=9
 		else:
+			windows_domain_position=7
 			password1_position=9
 			password2_position=11
 
+		if not windows_domain.strip() == '':
+			if not self.syntax_is_domainname(windows_domain.lower()) or not windows_domain == windows_domain.upper():
+				if not self.ignore('windows_domain'):
+					if focus:
+						self.move_focus(windows_domain_position)
+					return _("Please enter a valid windows domain name.")
+			
 		if hostname.strip() == '' or hostname.strip() in ['localhost', 'local'] or hostname.strip().find(' ') != -1 or not self.syntax_is_hostname(hostname):
 			if not self.ignore('hostname'):
 				if focus:
@@ -268,8 +277,10 @@ class object(content):
 	def incomplete(self):
 		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
 			ldap_base=self.elements[7].result()
+			windows_domain_position=9
 		else:
 			ldap_base=''
+			windows_domain_position=7
 		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
 			password1_position=11
 			password2_position=13
@@ -282,7 +293,7 @@ class object(content):
 		else:
 			root_password1=self.elements[password1_position].result()
 			root_password2=self.elements[password2_position].result()
-		return self.check_values(self.elements[3].result(), self.elements[5].result(), ldap_base, root_password1, root_password2)
+		return self.check_values(self.elements[3].result(), self.elements[5].result(), self.elements[windows_domain_position].result(), ldap_base, root_password1, root_password2)
 
 	def helptext(self):
 		return _('Settings  \n \n Configuration of basic system settings like hostname, domain name and LDAP base and root password')

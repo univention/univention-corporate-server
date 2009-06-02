@@ -1,3 +1,9 @@
+univention-installer (5.0.2-1) unstable; urgency=low
+
+  * windows domain name sytanx check in 11_basis.py (Bug: #13826)
+
+ -- Felix Botner <botner@univention.de>  Tue,  2 Jun 2009 15:47:11 +0200
+
 univention-installer (5.0.1-1) unstable; urgency=low
 
   * fixed http_proxy proxy_http transposition (Bug: #13948)
