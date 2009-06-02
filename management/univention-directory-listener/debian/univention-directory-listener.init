@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention LDAP Listener
+# Univention Directory Listener
 #  init script
 #
 # Copyright (C) 2004-2009 Univention GmbH
@@ -32,6 +32,8 @@ if [ ! -e /etc/runit/univention/univention-directory-listener ]; then
 	exit 0
 fi
 
+. /lib/lsb/init-functions
+
 case "$1" in
 	start)
 		# check ucr autostart setting
@@ -39,14 +41,14 @@ case "$1" in
 			source "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart listener listener/autostart
 		fi
-		echo -n "Starting univention-directory-listener daemon: "
+		log_action_msg "Starting univention-directory-listener daemon"
 		sv up univention-directory-listener
-		echo ""
+		log_action_end_msg 0
 		;;
 	stop)
-		echo -n "Stopping univention-directory-listener daemon: "
+		log_action_msg "Stopping univention-directory-listener daemon"
 		sv down univention-directory-listener
-		echo ""
+		log_action_end_msg 0
 		;;
 	restart|force-reload)
 		# check ucr autostart setting
@@ -54,9 +56,9 @@ case "$1" in
 			source "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart listener listener/autostart
 		fi
-		echo -n "Restarting univention-directory-listener daemon: "
+		log_action_msg "Restarting univention-directory-listener daemon"
 		sv restart univention-directory-listener
-		echo ""
+		log_action_end_msg 0
 		;;
 	crestart)
 		# check ucr autostart setting
@@ -68,7 +70,7 @@ case "$1" in
 			then
 			$0 restart
 		else
-			echo "sv status returns no running listener, don't need to restart."
+			log_action_msg "sv status returns no running listener, don't need to restart."
 		fi
 		;;
 	*)
