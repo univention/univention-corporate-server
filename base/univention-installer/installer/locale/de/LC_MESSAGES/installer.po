@@ -1125,6 +1125,7 @@ msgstr ""
 "verwaltet werden."
 
 #: installer/modules/10_role.py:124
+#: installer/modules/95_overview.py:69
 msgid "System role"
 msgstr "Systemrolle"
 
@@ -2373,18 +2374,33 @@ msgid "System-Settings"
 msgstr "System-Optionen"
 
 #: installer/modules/95_overview.py:68
-msgid "Press \"Start installation\" to begin process"
-msgstr "Wählen Sie 'Installation starten', um fortzufahren."
+msgid "This is the last step of the interactive installation"
+msgstr "Dies ist der letzte Schritt der interaktiven"
 
-#: installer/modules/95_overview.py:69
-#, python-format
-msgid "System role:    %s"
-msgstr "Systemrolle:   %s"
+#: installer/modules/95_overview.py:68
+msgid "part. Please check all settings carefully. During the"
+msgstr "Installation. Alle Einstellungen sollten nochmals"
+
+#: installer/modules/95_overview.py:68
+msgid "next step software packages will be installed and"
+msgstr "sorgfältig geprüft werden. Im nächsten Schritt werden"
+
+#: installer/modules/95_overview.py:68
+msgid "(pre-)configured."
+msgstr "die Software-Pakete installiert und konfiguriert."
 
 #: installer/modules/95_overview.py:71
 #, python-format
-msgid "Domain name:    %s"
-msgstr "Domänenname:   %s"
+msgid "Domain name"
+msgstr "Domänenname"
+
+#: installer/modules/95_overview.py:71
+msgid "Hostname"
+msgstr "Systemname"
+
+#: installer/modules/95_overview.py:71
+msgid "eth0 netmask"
+msgstr "eth0 Netzmaske"
 
 #: installer/modules/95_overview.py:98
 msgid "No package will download files from the internet."

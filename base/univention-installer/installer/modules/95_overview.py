@@ -65,26 +65,39 @@ class object(content):
 		else:
 			role="Basesystem              "
 
-		self.elements.append(textline(_('Press "Start installation" to begin process'), self.minY+1, self.minX+2))
-		self.elements.append(textline(_('System role:    %s') % role , self.minY+3, self.minX+2))
-		self.elements.append(textline('Hostname:      %s' % self.all_results['hostname'] , self.minY+4, self.minX+2))
-		self.elements.append(textline(_('Domain name:    %s') % self.all_results['domainname'] , self.minY+5, self.minX+2))
-		count=0
+		just=16
+		self.elements.append(textline(_('This is the last step of the interactive installation'), self.minY+0, self.minX+2))
+		self.elements.append(textline(_('part. Please check all settings carefully. During the'), self.minY+1, self.minX+2))
+		self.elements.append(textline(_('next step software packages will be installed and'), self.minY+2, self.minX+2))
+		self.elements.append(textline(_('(pre-)configured.'), self.minY+3, self.minX+2))
+
+		head = _("System role") + ":"
+		self.elements.append(textline('%s %s' % (head.ljust(just), role) , self.minY+5, self.minX+2))
+		head = _('Hostname') + ":"
+		self.elements.append(textline('%s %s' % (head.ljust(just), self.all_results['hostname']) , self.minY+6, self.minX+2))
+		head = _('Domain name') + ":"
+		self.elements.append(textline('%s %s' % (head.ljust(just), self.all_results['domainname']) , self.minY+7, self.minX+2))
+		count=2
 		if self.all_results.has_key('eth0_type') and self.all_results['eth0_type'] == 'dynamic':
-			self.elements.append(textline('eth0 Network:  dynamic', self.minY+7, self.minX+2))
+			head = _("eth0 Network") + ":"
+			self.elements.append(textline('%s %s' % (head.ljust(just), _('dynamic')), self.minY+9, self.minX+2))
 		else:
-			self.elements.append(textline('eth0 IP:       %s' % self.all_results['eth0_ip'] , self.minY+7, self.minX+2))
-			self.elements.append(textline('eth0 Netmask:  %s' % self.all_results['eth0_netmask'] , self.minY+8, self.minX+2))
+			head = _("eth0 IP") + ":"
+			self.elements.append(textline('%s %s' % (head.ljust(just), self.all_results['eth0_ip']) , self.minY+9, self.minX+2))
+			head = _("eth0 netmask") + ":"
+			self.elements.append(textline('%s %s' % (head.ljust(just), self.all_results['eth0_netmask']) , self.minY+10, self.minX+2))
 			count=count+1
 
 		gateway=''
 		if self.all_results.has_key('gateway'):
 			gateway=self.all_results['gateway']
-		self.elements.append(textline('Gateway:       %s' % gateway , self.minY+8+count, self.minX+2))
+		head = _("Gateway") + ":"
+		self.elements.append(textline('%s %s' % (head.ljust(just), gateway) , self.minY+8+count, self.minX+2))
 		nameserver=''
 		if self.all_results.has_key('nameserver_1'):
 			nameserver=self.all_results['nameserver_1']
-		self.elements.append(textline('%s1:   %s' % (_('Name server'), nameserver) , self.minY+9+count, self.minX+2))
+		head = _('Nameserver1') + ":"
+		self.elements.append(textline('%s %s' % (head.ljust(just), nameserver) , self.minY+9+count, self.minX+2))
 
 		internet_files=[]
 		if 'msttcorefonts' in self.all_results['packages']:
