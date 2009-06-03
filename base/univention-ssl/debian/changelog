@@ -1,3 +1,9 @@
+univention-ssl (3.0.4-2) unstable; urgency=low
+
+  * set UCR:ssl/default/hashfunction to md5 on update installations (Bug #14231)
+
+ -- Arvid Requate <requate@univention.de>  Wed,  3 Jun 2009 11:14:13 +0200
+
 univention-ssl (3.0.4-1) unstable; urgency=low
 
   * change default message digest algorithm from md5 to sha256 (for Bug #14231)
