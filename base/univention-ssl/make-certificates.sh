@@ -38,6 +38,10 @@ DEFAULT_DAYS=$(/usr/sbin/univention-baseconfig get ssl/default/days)
 if [ -z "$DEFAULT_DAYS" ]; then
 	DEFAULT_DAYS=730
 fi
+DEFAULT_MD=$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)
+if [ -z "$DEFAULT_DAYS" ]; then
+	DEFAULT_MD=sha256
+fi
 
 if test -e /etc/univention/ssl/password; then
 	PASSWD=`cat /etc/univention/ssl/password`
@@ -93,7 +97,7 @@ x509_extensions     = ${CA}_ext
 crl_extensions     = crl_ext
 default_days        = $days
 default_crl_days    = 30
-default_md          = md5
+default_md          = ${DEFAULT_MD}
 preserve            = no
 
 policy              = policy_match

@@ -52,6 +52,7 @@ univention-baseconfig set ssl/organizationalunit?"Univention Corporate Server"
 univention-baseconfig set ssl/common?"Univention Corporate Server Root CA"
 univention-baseconfig set ssl/email?"ssl@$domainname"
 univention-baseconfig set ssl/default/days?730
+univention-baseconfig set ssl/default/hashfunction?sha256
 univention-baseconfig set ssl/validity/warning?30
 
 eval `univention-baseconfig shell`

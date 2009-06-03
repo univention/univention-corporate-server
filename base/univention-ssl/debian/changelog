@@ -1,3 +1,10 @@
+univention-ssl (3.0.4-1) unstable; urgency=low
+
+  * change default message digest algorithm from md5 to sha256 (for Bug #14231)
+  * new UCR variable ssl/default/hashfunction allows fallback to sha1
+
+ -- Arvid Requate <requate@univention.de>  Wed,  3 Jun 2009 10:58:34 +0200
+
 univention-ssl (3.0.3-1) unstable; urgency=low
 
   * create a link from /etc/univention/ssl/<hostname>.<domainname> to
