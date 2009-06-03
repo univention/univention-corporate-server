@@ -182,7 +182,8 @@ def createSuccessMsg():
 		msg.append( _('  https://%s/%s/') % (profile.get('eth0_ip'), postfix_umc ) )
 	msg.append( _('  Administrative account name: Administrator') )
 	msg.append( '' )
-	msg.append( _('Additional information: http://www.univention.de/dokumentation.html') )
+	msg.append( _('Additional information:   http://www.univention.de/dokumentation.html') )
+	msg.append( _('Support & Knowledge Base: http://www.sdb.univention.de') )
 
 	return msg
 

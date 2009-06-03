@@ -1,3 +1,9 @@
+univention-installer (5.0.2-3) unstable; urgency=low
+
+  * link to sdb in end.py (Bug: #13640)
+
+ -- Felix Botner <botner@univention.de>  Wed,  3 Jun 2009 09:45:39 +0200
+
 univention-installer (5.0.2-2) unstable; urgency=low
 
   * new message in 95_overview.py (Bug: #13683)
