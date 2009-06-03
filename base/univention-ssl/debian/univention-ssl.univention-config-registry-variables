@@ -46,6 +46,12 @@ Description[en]=Default lifetime of new SSL certificates
 Type=str
 Categories=SSL
 
+[ssl/default/hashfunction]
+Description[de]=Standard Hashfunktion für neue SSL-Zertifikate
+Description[en]=Default hash function for new SSL certificates
+Type=str
+Categories=SSL
+
 [ssl/validity/check]
 Description[de]=Aktiviere/Deaktiviere die regelmäßige Gültigkeitsprüfung für Zertifikate
 Description[en]=Enable/Disable regular checks for certificate validity
