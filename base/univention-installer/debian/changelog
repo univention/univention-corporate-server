@@ -1,3 +1,9 @@
+univention-installer (5.0.2-4) unstable; urgency=low
+
+  * fixed tab order in 70_system and 50_security (Bug: #10165)
+
+ -- Felix Botner <botner@univention.de>  Wed,  3 Jun 2009 10:48:44 +0200
+
 univention-installer (5.0.2-3) unstable; urgency=low
 
   * link to sdb in end.py (Bug: #13640)
