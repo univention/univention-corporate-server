@@ -1,3 +1,9 @@
+univention-ssl (3.0.4-3) unstable; urgency=low
+
+  * change default to sha1 since openssl-0.9.8c does not support sha256 (Bug #14231)
+
+ -- Arvid Requate <requate@univention.de>  Thu,  4 Jun 2009 09:49:24 +0200
+
 univention-ssl (3.0.4-2) unstable; urgency=low
 
   * set UCR:ssl/default/hashfunction to md5 on update installations (Bug #14231)
