@@ -1,3 +1,9 @@
+pam-runasroot (3.0.1-1) unstable; urgency=low
+
+  * include syslog.h in pam-runasroot.c. Bug #14660
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  8 Jun 2009 12:06:08 +0200
+
 pam-runasroot (3.0.0-1) unstable; urgency=low
 
   * rebuild for UCS 2.3. Bug #14128

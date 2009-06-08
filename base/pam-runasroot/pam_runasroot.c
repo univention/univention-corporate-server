@@ -48,6 +48,8 @@
 #include <security/pam_modules.h>
 #include <security/_pam_macros.h>
 
+#include <syslog.h>
+
 static unsigned int exp_pass = 0;
 static unsigned int save_pass = 0;
 static unsigned int run_in_user_context = 0;
