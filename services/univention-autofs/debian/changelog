@@ -1,3 +1,15 @@
+univention-autofs (2.0.1-1) unstable; urgency=low
+
+  * set hashbang to python2.4 (Bug #14709)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 08 Jun 2009 18:26:46 +0200
+
+univention-autofs (2.0.0-1) unstable; urgency=low
+
+  * bump version for UCS 2.3
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 08 Jun 2009 18:26:31 +0200
+
 univention-autofs (1.0.1-3) unstable; urgency=low
 
   * updated the copyright. Bug #6875

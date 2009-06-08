@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4 -OO
+#!/usr/bin/python2.4
 #
 # Univention Admin Modules
 #  synchronise attributes uniqueMember and memberUID of group objects

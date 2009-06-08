@@ -1,3 +1,15 @@
+univention-thin-client-basesystem (6.0.1-1) unstable; urgency=low
+
+  * set hashbang to python2.4 (Bug #14709)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 08 Jun 2009 18:28:40 +0200
+
+univention-thin-client-basesystem (6.0.0-1) unstable; urgency=low
+
+  * bump version for UCS 2.3
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 08 Jun 2009 18:28:28 +0200
+
 univention-thin-client-basesystem (5.0.10-1) unstable; urgency=low
 
   * added the /etc/apt/sources.list.d files to the thin client

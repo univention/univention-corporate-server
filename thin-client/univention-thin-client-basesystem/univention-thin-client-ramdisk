@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.4
 #
 # Univention Thin Client Basesystem
 #  creates directories and files in ramdisk of thin client basesystem

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.4
 #
 # Univention Thin Client Basesystem
 #  wrapper for APT to install packages for thin clients
