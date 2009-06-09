@@ -1,3 +1,9 @@
+univention-application-server (3.0.0-0) unstable; urgency=low
+
+  * bump version for UCS 2.3
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
+
 univention-application-server (2.0.2-1) unstable; urgency=low
 
   * only append the new linux terminal server in the join script

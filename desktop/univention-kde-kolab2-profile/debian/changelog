@@ -1,3 +1,9 @@
+univention-kde-kolab2-profile (2.0.0-0) unstable; urgency=low
+
+  * bump version for UCS 2.3
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
+
 univention-kde-kolab2-profile (1.1.1-1) unstable; urgency=low
 
   * use the correct join script name in the join script

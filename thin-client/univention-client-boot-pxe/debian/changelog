@@ -1,3 +1,9 @@
+univention-client-boot-pxe (4.0.0-0) unstable; urgency=low
+
+  * bump version for UCS 2.3
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
+
 univention-client-boot-pxe (3.0.0-1) unstable; urgency=low
 
   * new ucr var pxe/quiet for quiet kernel option via pxe boot Bug: #14309

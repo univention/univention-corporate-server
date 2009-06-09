@@ -1,3 +1,9 @@
+univention-squid (3.0.0-0) unstable; urgency=low
+
+  * bump version for UCS 2.3
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
+
 univention-squid (2.0.6-7) unstable; urgency=low
 
   * version bump

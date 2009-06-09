@@ -1,3 +1,9 @@
+univention-newsid (2.0.0-0) unstable; urgency=low
+
+  * bump version for UCS 2.3
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
+
 univention-newsid (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8

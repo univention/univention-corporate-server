@@ -1,3 +1,9 @@
+univention-thin-client-sound (3.0.0-0) unstable; urgency=low
+
+  * bump version for UCS 2.3
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
+
 univention-thin-client-sound (2.0.10-1) unstable; urgency=low
 
   * use gid and uid instead of groupname and username for sound
