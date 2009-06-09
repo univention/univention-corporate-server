@@ -1,3 +1,9 @@
+univention-management-console (1.0.17-1) unstable; urgency=low
+
+  * merged dojo date widget; Bug #12977 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 23 Dec 2008 11:24:38 +0100
+
 univention-management-console (1.0.16-1) unstable; urgency=low
 
   * postinst: do not kill running UMC module processes if the update is

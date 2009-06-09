@@ -78,6 +78,11 @@ class TextInput( Input ):
 	def __init__( self, option = ( None, None ), default = '', static_options = {}, attributes = {} ):
 		Input.__init__( self, option, default, static_options, attributes )
 
+class DateInput( Input ):
+	"""This class represent a simple date input field."""
+	def __init__( self, option = ( None, None ), default = '', static_options = {}, attributes = {} ):
+		Input.__init__( self, option, default, static_options, attributes )
+
 class SecretInput( Input ):
 	"""This class represent a password input field."""
 	def __init__( self, option = ( None, None ), default = '', static_options = {}, attributes = {} ):
@@ -106,8 +111,9 @@ class Selection( Input ):
 	the list) and the second one is the Text shown in the frontend. The
 	'default' attribute should contain the identifer of the pre-selected
 	item."""
-	def __init__( self, option = ( None, None ), default = '', static_options = {}, attributes = {} ):
+	def __init__( self, option = ( None, None ), default = '', static_options = {}, attributes = {}, labelID = None ):
 		Input.__init__( self, option, default, static_options, attributes )
+		self.labelID = labelID
 
 	def choices( self ):
 		if self.syntax:
@@ -122,4 +128,5 @@ class Selection( Input ):
 		return ( value, value )
 
 InputTypes = ( type( ReadOnlyInput() ), type( TextInput() ), type( SecretInput() ),
-			   type( Checkbox() ), type( Selection() ), type( MultiLineInput() ) )
+	       type( Checkbox() ), type( Selection() ), type( MultiLineInput() ),
+	       type( DateInput() ) )

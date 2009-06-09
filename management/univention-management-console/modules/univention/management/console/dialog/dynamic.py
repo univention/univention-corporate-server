@@ -113,12 +113,13 @@ class DynamicList( base.List, input.Input ):
 
 class MultiValue( input.Input ):
 	def __init__( self, option = ( None, None ), fields = [], default = None,
-				  static_options = {}, attributes = {}, separator = ' ' ):
+				  static_options = {}, attributes = {}, separator = ' ', label = None ):
 		input.Input.__init__( self, option, default, static_options,
 							  attributes )
 		self.fields = fields
 		self.separator = separator
 		self.field_ids = []
+		self.label = label
 		for field in self.fields:
 			self.field_ids.append( field.id() )
 

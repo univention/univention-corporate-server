@@ -151,8 +151,13 @@ class SelectionButtonMap( IButtonMap, mapper.IMapper ):
 					{ 'name' : '::select_all', 'description' : _( 'Select all' ) } ]
 		for key, descr in umcp_part.choices:
 			choices.append( { 'name' : key, 'description' : descr } )
+
+		attributes = utils.attributes( umcp_part )
+		#ud.debug( ud.ADMIN, ud.INFO, 'ATTRIBUTES: %s' % attributes )
+		if not 'width' in attributes:
+			attributes.update( { 'width' : '200' } )
 		selection = question_select( _( 'Selected objects ...' ),
-									 { 'width' : '200' },
+									 attributes,
 									 { 'helptext' : _( 'Selected objects ...' ),
 									   'choicelist' : choices, 'button' : commit_button } )
 		storage[ umcp_part.id() ] = ( ( selection, commit_button ), umcp_part )
@@ -234,8 +239,12 @@ class ChoiceButtonMap( IButtonMap, mapper.IMapper ):
 			else:
 				choices.append( { 'name': data['name'], 'description': data['description'] } )
 
+		attributes = utils.attributes( umcp_part )
+		ud.debug( ud.ADMIN, ud.INFO, 'ATTRIBUTES: %s' % attributes )
+		if not 'width' in attributes:
+			attributes.update( { 'width' : '120' } )
 		selection = question_select( umcp_part.get_text(),
-									 { 'width' : '200' },
+									 attributes,
 									 { 'helptext' : umcp_part.get_text(),
 										 'choicelist' : choices, 'button' : commit_button } )
 		storage[ umcp_part.id() ] = ( ( selection, commit_button ), umcp_part )
@@ -275,6 +284,146 @@ class ChoiceButtonMap( IButtonMap, mapper.IMapper ):
 
 
 mapper.add( umcd.ChoiceButton, ChoiceButtonMap() )
+
+class FilteringSelectButtonMap( IButtonMap, mapper.IMapper ):
+	def __init__( self ):
+		IButtonMap.__init__( self )
+		mapper.IMapper.__init__( self )
+
+	def layout( self, storage, umcp_part ):
+		commit_button = button( _( 'Select' ), {},
+								{ 'helptext' : _( 'Select entry' ) } )
+
+# umcp_part.choices = [ { 'description': ... ,
+#  		                  'actions': ( umcd.Action ( umcp.Command( args = [], opts= {} ), ... )
+#  		                },
+#                       ...
+#                     ]
+		default = utils.default( umcp_part )
+
+		choices = []
+		defaultset = False
+		for data in umcp_part.choices:
+			if default and data['name'] == default and not defaultset:
+				defaultset = True
+				choices.append( { 'name' : data['name'], 'description' : data['description'], 'selected' : '1' } )
+			else:
+				choices.append( { 'name': data['name'], 'description': data['description'] } )
+
+		attributes = utils.attributes( umcp_part )
+		ud.debug( ud.ADMIN, ud.INFO, 'ATTRIBUTES: %s' % attributes )
+		if not 'width' in attributes:
+			attributes.update( { 'width' : '120' } )
+		selection = question_dojo_select( umcp_part.get_text(),
+									 attributes,
+									 { 'helptext' : umcp_part.get_text(),
+										 'choicelist' : choices, 'button' : commit_button } )
+		storage[ umcp_part.id() ] = ( ( selection, commit_button ), umcp_part )
+
+		return selection
+
+	def _create_request( self, parameters, action ):
+		select, btn = parameters
+		req = copy.deepcopy( action.command )
+
+		for opt in action.options:
+			self._parse_dynamics( req, opt )
+			self._parse_inputs( req, opt )
+
+		return req
+
+	def apply( self, storage, umcp_part, parameters, *args ):
+		select, btn = parameters
+		self.inputs, self.dynamics = args
+
+		selected = select.getselected()
+		if not btn.pressed() or selected == '::none':
+			return [ '::none' ]
+
+		umcp_part.cached = selected
+
+		idx = umcp_part.name2index[selected]
+		requests = []
+		for action in umcp_part.choices[ idx ]['actions']:
+			req = self._create_request( parameters, action )
+			if req:
+				requests.append( req )
+			else:
+				break
+
+		return requests
+
+mapper.add( umcd.FilteringSelectButton, FilteringSelectButtonMap() )
+
+class ComboboxButtonMap( IButtonMap, mapper.IMapper ):
+	def __init__( self ):
+		IButtonMap.__init__( self )
+		mapper.IMapper.__init__( self )
+
+	def layout( self, storage, umcp_part ):
+		commit_button = button( _( 'Select' ), {},
+								{ 'helptext' : _( 'Select entry' ) } )
+
+# umcp_part.choices = [ { 'description': ... ,
+#  		                  'actions': ( umcd.Action ( umcp.Command( args = [], opts= {} ), ... )
+#  		                },
+#                       ...
+#                     ]
+		default = utils.default( umcp_part )
+
+		choices = []
+		defaultset = False
+		for data in umcp_part.choices:
+			if default and data['name'] == default and not defaultset:
+				defaultset = True
+				choices.append( { 'name' : data['name'], 'description' : data['description'], 'selected' : '1' } )
+			else:
+				choices.append( { 'name': data['name'], 'description': data['description'] } )
+
+		attributes = utils.attributes( umcp_part )
+		ud.debug( ud.ADMIN, ud.INFO, 'ATTRIBUTES: %s' % attributes )
+		if not 'width' in attributes:
+			attributes.update( { 'width' : '120' } )
+		selection = question_dojo_comboselect( umcp_part.get_text(),
+									 attributes,
+									 { 'helptext' : umcp_part.get_text(),
+										 'choicelist' : choices, 'button' : commit_button } )
+		storage[ umcp_part.id() ] = ( ( selection, commit_button ), umcp_part )
+
+		return selection
+
+	def _create_request( self, parameters, action ):
+		select, btn = parameters
+		req = copy.deepcopy( action.command )
+
+		for opt in action.options:
+			self._parse_dynamics( req, opt )
+			self._parse_inputs( req, opt )
+
+		return req
+
+	def apply( self, storage, umcp_part, parameters, *args ):
+		select, btn = parameters
+		self.inputs, self.dynamics = args
+
+		selected = select.getselected()
+		if not btn.pressed() or selected == '::none':
+			return [ '::none' ]
+
+		umcp_part.cached = selected
+
+		idx = umcp_part.name2index[selected]
+		requests = []
+		for action in umcp_part.choices[ idx ]['actions']:
+			req = self._create_request( parameters, action )
+			if req:
+				requests.append( req )
+			else:
+				break
+
+		return requests
+
+mapper.add( umcd.ComboboxButton, ComboboxButtonMap() )
 
 class SignalButtonMap( ButtonMap, mapper.IMapper ):
 	def __init__( self ):

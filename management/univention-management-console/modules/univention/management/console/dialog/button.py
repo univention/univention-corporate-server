@@ -61,7 +61,7 @@ class Button( base.Text, image.Image ):
 	"""Represents a button of any kind. The argument actions contains a
 	list of Action objects that defines the UMCP commands
 	to execute when the button is presssed."""
-	def __init__( self, label = '', tag = None, actions = [], attributes = {}, close_dialog = True ):
+	def __init__( self, label = '', tag = None, actions = [], attributes = {}, close_dialog = True, helptext = None ):
 		base.Text.__init__( self, label, attributes )
 		image.Image.__init__( self, tag )
 		if not isinstance( actions, ( list, tuple ) ):
@@ -69,22 +69,25 @@ class Button( base.Text, image.Image ):
 		else:
 			self.actions = actions
 		self.close_dialog = close_dialog
+		if helptext:
+			self.helptext = helptext
 
 class SearchButton( Button ):
-	def __init__( self, actions = [], attributes = {}, label = _( 'Search' ) ):
-		Button.__init__( self, label, 'actions/ok', actions = actions, attributes = attributes )
+	def __init__( self, actions = [], attributes = {}, close_dialog = True, label = _( 'Search' ) ):
+		Button.__init__( self, label, 'actions/ok', actions = actions,
+						 attributes = attributes, close_dialog = close_dialog )
 
 class SetButton( Button ):
-	def __init__( self, actions = [], attributes = {} ):
-		Button.__init__( self, _( 'Set' ), 'actions/ok', actions = actions, attributes = attributes )
+	def __init__( self, actions = [], attributes = {}, close_dialog = True ):
+		Button.__init__( self, _( 'Set' ), 'actions/ok', actions = actions, attributes = attributes, close_dialog = close_dialog )
 
 class AddButton( Button ):
-	def __init__( self, actions = [], attributes = {} ):
-		Button.__init__( self, _( 'Add' ), 'actions/add', actions = actions, attributes = attributes )
+	def __init__( self, actions = [], attributes = {}, close_dialog = True ):
+		Button.__init__( self, _( 'Add' ), 'actions/add', actions = actions, attributes = attributes, close_dialog = close_dialog )
 
 class SelectionButton( Button ):
-	def __init__( self, label = '', choices = [], actions = [], attributes = {} ):
-		Button.__init__( self, label, actions = actions, attributes = attributes )
+	def __init__( self, label = '', choices = [], actions = [], attributes = {}, close_dialog = True ):
+		Button.__init__( self, label, actions = actions, attributes = attributes, close_dialog = close_dialog )
 		self.choices = choices
 
 #		 choices = [ { 'description': ... ,
@@ -110,13 +113,50 @@ class ChoiceButton( Button ):
 			if i == default:
 				self.default = self.choices[ i ]['name']
 
+class FilteringSelectButton( Button ):
+	"""This class provides a filtering select field."""
+	def __init__( self, label = '', choices = [], actions = [], attributes = {}, default = None, close_dialog = True ):
+		Button.__init__( self, label, actions = actions, attributes = attributes, close_dialog = close_dialog )
+		self.choices = choices
+		self.name2index = {}
+		self.default = None
+		for i in range(len(self.choices)):
+			# add internal ids
+			if len(self.choices[ i ]['actions']) == 0:
+				self.choices[ i ]['name'] = '::none'
+			else:
+				self.choices[ i ]['name'] = 'choice-%d' % i
+			# add mapping "internal name" to "list index"
+			self.name2index[ self.choices[ i ]['name'] ] = i
+			# convert default
+			if i == default:
+				self.default = self.choices[ i ]['name']
+
+class ComboboxButton( Button ):
+	"""This class provides a combobox field."""
+	def __init__( self, label = '', choices = [], actions = [], attributes = {}, default = None, close_dialog = True ):
+		Button.__init__( self, label, actions = actions, attributes = attributes, close_dialog = close_dialog )
+		self.choices = choices
+		self.name2index = {}
+		self.default = None
+		for i in range(len(self.choices)):
+			# add internal ids
+			if len(self.choices[ i ]['actions']) == 0:
+				self.choices[ i ]['name'] = '::none'
+			else:
+				self.choices[ i ]['name'] = 'choice-%d' % i
+			# add mapping "internal name" to "list index"
+			self.name2index[ self.choices[ i ]['name'] ] = i
+			# convert default
+			if i == default:
+				self.default = self.choices[ i ]['name']
 
 class ISignalButton( Button ):
 	"""This a special button that does not perform any UMCP action, but
 	provides a possibility to create buttons that can be used to emit
 	signals with in the frontend."""
-	def __init__( self, label = '', tag = '', actions = [], attributes = {} ):
-		Button.__init__( self, label = label, tag = tag, actions = actions, attributes = attributes )
+	def __init__( self, label = '', tag = '', actions = [], attributes = {}, close_dialog = True ):
+		Button.__init__( self, label = label, tag = tag, actions = actions, attributes = attributes, close_dialog = close_dialog )
 
 class CancelButton( ISignalButton ):
 	"""Can be used for cancel buttons"""
@@ -138,12 +178,13 @@ class ErrorButton( ISignalButton ):
 
 class ResetButton( ISignalButton ):
 	"""Can be used for error ok buttons"""
-	def __init__( self, fields = [], attributes = {} ):
+	def __init__( self, fields = [], attributes = {}, close_dialog = True ):
 		ISignalButton.__init__( self, label = _( 'Reset' ), tag = 'actions/cancel',
-								actions = [ '::reset' ], attributes = attributes )
+								actions = [ '::reset' ], attributes = attributes, close_dialog = close_dialog )
 		self.fields = fields
 
 ButtonTypes = ( type( Button() ), type( SelectionButton() ), type( ChoiceButton() ),
 				type( CancelButton() ), type( CloseButton() ),
 				type( ErrorButton() ), type( ResetButton() ), type( SearchButton() ),
-				type( SetButton() ), type( AddButton() ) )
+				type( SetButton() ), type( AddButton() ),
+				type( FilteringSelectButton() ), type( ComboboxButton() ) )
