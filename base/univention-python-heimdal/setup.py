@@ -35,7 +35,7 @@ import sys,os,string,time
 
 setup(
 	name='python-heimdal',
-	version=0.1,
+	version='0.1',
 	description='Heimdal Python bindings',
 	author='Univention GmbH',
 	author_email='packages@univention.de',

@@ -1,3 +1,9 @@
+univention-python-heimdal (2.0.1-1) unstable; urgency=low
+
+  * update to Heimdal 1.2. Bug #14667
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  9 Jun 2009 08:06:40 +0200
+
 univention-python-heimdal (1.0.2-1) unstable; urgency=low
 
   * change the architecture to any
