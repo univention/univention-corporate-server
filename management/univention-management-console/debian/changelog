@@ -1,3 +1,9 @@
+univention-management-console (2.0.2-1) unstable; urgency=low
+
+  * merged dojo date widget; Bug #12977 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 23 Dec 2008 11:24:38 +0100
+
 univention-management-console (2.0.1-1) unstable; urgency=low
 
   * a command method may now return an UMCP reponse object directly; in

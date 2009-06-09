@@ -108,6 +108,17 @@ def readonlyinput_map( storage, umcp_part ):
 mapper.add( umcd.TextInput, textinput_map )
 mapper.add( umcd.ReadOnlyInput, readonlyinput_map )
 
+def dateinput_map( storage, umcp_part ):
+	default = utils.default( umcp_part )
+	quest = question_dojo_date_widget( unicode( umcp_part ), utils.layout_attrs( storage, umcp_part ),
+						   { 'usertext' : default,
+							 'helptext' : '' } )
+	storage[ umcp_part.id() ] = ( quest, umcp_part )
+
+	return quest
+
+mapper.add( umcd.DateInput, dateinput_map )
+
 def password_map( storage, umcp_part ):
 	quest = question_secure( unicode( umcp_part ), utils.layout_attrs( storage, umcp_part ),
 							{ 'usertext' : '' } )
@@ -160,3 +171,4 @@ def selection_map( storage, umcp_part ):
 	return quest
 
 mapper.add( umcd.Selection, selection_map )
+
