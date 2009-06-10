@@ -8,7 +8,7 @@ XS-Python-Version: all
 
 Package: univention-printserver
 Architecture: all
-Depends: univention-config-registry (>=0.06), cupsys, cupsys-client, cupsys-bsd, foomatic-filters-ppds, foomatic-db-gimp-print, foomatic-db-hpijs, cupsys-driver-gimpprint, univention-directory-listener, univention-printclient
+Depends: univention-config-registry (>=0.06), cupsys, cupsys-client, cupsys-bsd, foomatic-filters-ppds, foomatic-db-gutenprint, foomatic-db-hpijs, cupsys-driver-gimpprint, univention-directory-listener, univention-printclient
 Conflicts: univention-management-console (<<0.9.33-1)
 XB-Python-Version: ${python:Versions}
 Description: UCS - print server

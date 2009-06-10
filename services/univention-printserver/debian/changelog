@@ -1,3 +1,10 @@
+univention-printserver (3.0.0-1) unstable; urgency=low
+
+  * depend on foomatic-db-gutenprint replacing foomatic-db-gimp-print
+    (Bug #14737)
+
+ -- Arvid Requate <arequate@univention.de>  Wed, 10 Jun 2009 16:14:40 +0200
+
 univention-printserver (3.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
