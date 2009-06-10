@@ -405,6 +405,8 @@ class Module( base.Page ):
 						break
 					else:
 						requests = [ self.__startups[ self.selected ].request ]
+				elif requests[ -1 ] == '::return':
+					requests = [ self.__startups[ self.selected ].request ]
 
 				# is current category a startup dialog that must be closed?
 				if self.__startups[ self.selected ].dialog() and umcp_part.close_dialog:
@@ -439,6 +441,7 @@ class Module( base.Page ):
 					self.active.group( client.request_group_send( requests ) )
 				elif requests:
 					self.active.single( client.request_send( requests[ 0 ] ) )
+
 				# there can be just one button that was pressed -> break
 				break
 		else: # no button was pressed

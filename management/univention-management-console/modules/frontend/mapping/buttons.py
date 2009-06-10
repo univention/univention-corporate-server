@@ -439,6 +439,7 @@ class SignalButtonMap( ButtonMap, mapper.IMapper ):
 mapper.add( umcd.CancelButton, SignalButtonMap() )
 mapper.add( umcd.CloseButton, SignalButtonMap() )
 mapper.add( umcd.ErrorButton, SignalButtonMap() )
+mapper.add( umcd.ReturnButton, SignalButtonMap() )
 
 class ResetButtonMap( ButtonMap, mapper.IMapper ):
 	def __init__( self ):

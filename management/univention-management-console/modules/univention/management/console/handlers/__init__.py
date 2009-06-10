@@ -28,8 +28,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import notifier
+import copy
 
+import notifier
 import notifier.signals as signals
 
 import univention.management.console as umc
@@ -40,11 +41,19 @@ import univention.debug as ud
 
 _ = umc.Translation( 'univention.management.console.handlers' ).translate
 
+# confirmation request for an UMC command
+class Confirm( object ):
+	def __init__( self, title, question, yes = _( 'Yes' ), no = _( 'No' ) ):
+		self.title = title
+		self.question = question
+		self.yes = yes
+		self.no = no
+
 # UMC module command
 class command( object ):
 	'''Describes a command of UMC daemon module'''
 	def __init__( self, short_description, long_description = '', method = None, values = {},
-				  startup = False, caching = False, priority = 0 ):
+				  startup = False, caching = False, priority = 0, confirm = None ):
 		self.short_description = short_description
 		self.long_description = long_description
 		self.method = method
@@ -52,6 +61,7 @@ class command( object ):
 		self.startup = startup
 		self.caching = caching
 		self.priority = priority
+		self.confirm = confirm
 
 	def __getitem__( self, option ):
 		if self.values.has_key( option ):
@@ -132,9 +142,33 @@ class simpleHandler( signals.Provider ):
 
 		return False
 
+	def _confirmation_required( self, object ):
+		# command is already confirmed
+		if '::confirmed' in object.options:
+			return False
+
+		cmd = self.__commands.get( object.arguments[ 0 ] )
+		return ( cmd and cmd.confirm )
+
+	def _confirmation_response( self, object ):
+		res = umcp.Response( object )
+		new_req = copy.deepcopy( object )
+		new_req.recreate_id()
+		new_req.options[ '::confirmed' ] = 'yes'
+		cmd = self.__commands.get( object.arguments[ 0 ] )
+
+		res.dialog = [ umcd.YesNoQuestion( cmd.confirm.title, cmd.confirm.question, [ umcd.Action( new_req ) ], cmd.confirm.yes, cmd.confirm.no ) ]
+		res.status( 200 )
+		self.result( res )
+		
 	def execute( self, method, object ):
 # 		self._start_response_timer( object.id(), self.__message )
 		self.__requests[ object.id() ] = ( object, method )
+		# needs confirmation
+		if not object.incomplete and self._confirmation_required( object ):
+			self._confirmation_response( object )
+			return
+
 		ret = self._exec_if( '_pre', method, object )
 		if isinstance( ret, basestring ):
 			self.__execution_failed( object, ret )

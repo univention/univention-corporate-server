@@ -1,3 +1,16 @@
+univention-management-console (2.0.3-2) unstable; urgency=low
+
+  * Makefile: replace pycentral with pyshared (Bug #14311)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 10 Jun 2009 10:32:16 +0200
+
+univention-management-console (2.0.3-1) unstable; urgency=low
+
+  * add new option 'confirm' to command description. If this option is set
+    the command is not executed before the used has confirmed it. (Bug #14311)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 10 Jun 2009 10:22:28 +0200
+
 univention-management-console (2.0.2-1) unstable; urgency=low
 
   * merged dojo date widget; Bug #12977 

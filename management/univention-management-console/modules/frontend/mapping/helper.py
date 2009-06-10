@@ -49,3 +49,4 @@ def infobox_map( storage, umcp_part ):
 
 mapper.add( umcd.InfoBox, infobox_map )
 mapper.add( umcd.Question, structural.list_map )
+mapper.add( umcd.YesNoQuestion, structural.frame_map )

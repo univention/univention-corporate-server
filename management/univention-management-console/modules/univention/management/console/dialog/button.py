@@ -183,8 +183,16 @@ class ResetButton( ISignalButton ):
 								actions = [ '::reset' ], attributes = attributes, close_dialog = close_dialog )
 		self.fields = fields
 
+class ReturnButton( ISignalButton ):
+	"""return to the original command displayed on the current tab (used in
+combination with confirmation dialogs)"""
+	def __init__( self, label = _( 'Reset' ), fields = [], attributes = {} ):
+		ISignalButton.__init__( self, label = label, tag = 'actions/cancel',
+					actions = [ '::return' ], attributes = attributes )
+		self.fields = fields
+
 ButtonTypes = ( type( Button() ), type( SelectionButton() ), type( ChoiceButton() ),
 				type( CancelButton() ), type( CloseButton() ),
-				type( ErrorButton() ), type( ResetButton() ), type( SearchButton() ),
+				type( ErrorButton() ), type( ResetButton() ), type( ReturnButton() ), type( SearchButton() ),
 				type( SetButton() ), type( AddButton() ),
 				type( FilteringSelectButton() ), type( ComboboxButton() ) )

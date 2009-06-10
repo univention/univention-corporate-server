@@ -56,6 +56,16 @@ class Question( base.List ):
 		btn = button.CancelButton()
 		self.add_row( [ '', button.Button( okay, 'actions/ok', actions = actions ), btn ] )
 
+class YesNoQuestion( base.Frame ):
+	def __init__( self, title = _( 'Confirmation' ), text = _( 'Are you sure?' ), actions = [], yes = _( 'Yes' ), no = _( 'No' ), icon = 'actions/info' ):
+		lst = base.List()
+		self._image = image.Image( icon, umct.SIZE_SMALL )
+		self._text = base.Text( text, attributes = { 'colspan' : '2' } )
+		lst.add_row( [ self._image, self._text ] )
+		btn = button.ReturnButton( no )
+		lst.add_row( [ '', button.Button( yes, 'actions/ok', actions = actions ), btn ] )
+		base.Frame.__init__( self, [ lst ], title )
+
 class SearchForm( base.List ):
 	def __init__( self, command = None, fields = [], opts = {}, search_button_label = _("Search"), paged_results = False ):
 		base.List.__init__( self )
@@ -88,4 +98,4 @@ class SearchForm( base.List ):
 		self.add_row( [ num_result, btnlst ] )
 		self.add_row( [ base.Fill( 2 ) ] )
 
-HelperTypes = ( type( InfoBox() ), type( Question() ), type( SearchForm() ) )
+HelperTypes = ( type( InfoBox() ), type( Question() ), type( YesNoQuestion() ), type( SearchForm() ) )

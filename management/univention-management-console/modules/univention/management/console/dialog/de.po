@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-16 10:44+0100\n"
+"POT-Creation-Date: 2009-06-10 10:08+0200\n"
 "PO-Revision-Date: 2008-06-16 13:46+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: button.py:74 helper.py:60
+#: button.py:74 helper.py:70
 msgid "Search"
 msgstr "Suchen"
 
@@ -39,10 +39,26 @@ msgstr "Schließen"
 msgid "Ok"
 msgstr "OK"
 
-#: button.py:142
+#: button.py:142 button.py:149
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: helper.py:82
+#: helper.py:60
+msgid "Confirmation"
+msgstr "Bestätigung"
+
+#: helper.py:60
+msgid "Are you sure?"
+msgstr "Sind Sie sicher?"
+
+#: helper.py:60
+msgid "Yes"
+msgstr "Ja"
+
+#: helper.py:60
+msgid "No"
+msgstr "Nein"
+
+#: helper.py:92
 msgid "Results per page"
 msgstr "Ergebnisse pro Seite"

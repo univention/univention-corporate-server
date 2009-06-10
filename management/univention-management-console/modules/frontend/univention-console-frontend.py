@@ -37,7 +37,7 @@ ldir = '/usr/share/univention-management-console/frontend/'
 sys.path.append(ldir)
 os.chdir(ldir)
 
-import univention.debug2 as ud
+import univention.debug as ud
 import univention.management.console.protocol as umcp
 
 import univention.config_registry

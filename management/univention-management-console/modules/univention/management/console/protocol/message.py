@@ -46,6 +46,7 @@ class Message( object ):
 	RESPONSE, REQUEST = range( 0, 2 )
 
 	_header = re.compile( '(?P<type>REQUEST|RESPONSE)/(?P<id>[\d-]+)/(?P<length>\d+): ?(?P<command>\w+) ?(?P<arguments>[^\n]+)?', re.UNICODE )
+	__counter = 0
 
 	def __init__( self, type = REQUEST, command = '', data = None,
 				  arguments = [], options = {}, hosts = [], dialog = None,
@@ -90,6 +91,15 @@ class Message( object ):
 			args = ' '.join( map( lambda x: str( x ), self.arguments ) )
 		return '%s/%s/%d: %s %s\n%s' % ( type, self._id, len( data ),
 										 self.command, args, data )
+
+	def _create_id( self ):
+		# cut off 'L' for long
+		self._id = '%lu-%d' % ( long( time.time() * 100000 ),
+								Message.__counter )
+		Message.__counter += 1
+
+	def recreate_id( self ):
+		self._create_id()
 
 	def isType( self, type ):
 		return ( self._type == type )
@@ -191,23 +201,13 @@ class Request( Message ):
 	"""This class describes a request from the console frontend to the
 	console daemon"""
 
-	__counter = 0
 	def __init__( self, command, args = [], opts = {}, hosts = None, incomplete = False ):
 		if not command_is_known( command ):
 			raise UnknownCommandError( "'%s' is not a valid UMCP command" % command )
 		Message.__init__( self, Message.REQUEST, command, arguments = args,
 						  options = opts, hosts = hosts,
 						  incomplete = incomplete )
-		self.__create_id()
-
-	def __create_id( self ):
-		# cut off 'L' for long
-		self._id = '%lu-%d' % ( long( time.time() * 100000 ),
-								Request.__counter )
-		Request.__counter += 1
-
-	def recreate_id( self ):
-		self.__create_id()
+		self._create_id()
 
 class Command( Request ):
 	def __init__( self, args = [], opts = {}, hosts = None, incomplete = False ):
@@ -234,6 +234,8 @@ class Response( Message ):
 
 	def isFinal( self ):
 		return ( self._id and self.status() != 210 )
+
+	recreate_id = None
 
 class ParseError( Exception ):
 	pass
