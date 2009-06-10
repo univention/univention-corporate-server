@@ -1,3 +1,10 @@
+univention-management-console (2.0.4-1) unstable; urgency=low
+
+  * add optional argument icon to Confirm class to define the image
+    displayed in the confirmation dialog (Bug #14311)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 10 Jun 2009 11:46:55 +0200
+
 univention-management-console (2.0.3-2) unstable; urgency=low
 
   * Makefile: replace pycentral with pyshared (Bug #14311)

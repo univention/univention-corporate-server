@@ -43,11 +43,12 @@ _ = umc.Translation( 'univention.management.console.handlers' ).translate
 
 # confirmation request for an UMC command
 class Confirm( object ):
-	def __init__( self, title, question, yes = _( 'Yes' ), no = _( 'No' ) ):
+	def __init__( self, title, question, yes = _( 'Yes' ), no = _( 'No' ), icon = 'actions/info' ):
 		self.title = title
 		self.question = question
 		self.yes = yes
 		self.no = no
+		self.icon = icon
 
 # UMC module command
 class command( object ):
@@ -157,7 +158,7 @@ class simpleHandler( signals.Provider ):
 		new_req.options[ '::confirmed' ] = 'yes'
 		cmd = self.__commands.get( object.arguments[ 0 ] )
 
-		res.dialog = [ umcd.YesNoQuestion( cmd.confirm.title, cmd.confirm.question, [ umcd.Action( new_req ) ], cmd.confirm.yes, cmd.confirm.no ) ]
+		res.dialog = [ umcd.YesNoQuestion( cmd.confirm.title, cmd.confirm.question, [ umcd.Action( new_req ) ], cmd.confirm.yes, cmd.confirm.no, cmd.confirm.icon ) ]
 		res.status( 200 )
 		self.result( res )
 		
