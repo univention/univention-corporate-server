@@ -1,3 +1,9 @@
+univention-printserver (3.0.0-2) unstable; urgency=low
+
+  * install to /usr/share/pyshared for dh_pycentral (for Bug #14667)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Jun 2009 17:12:58 +0200
+
 univention-printserver (3.0.0-1) unstable; urgency=low
 
   * depend on foomatic-db-gutenprint replacing foomatic-db-gimp-print
