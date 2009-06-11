@@ -1,3 +1,9 @@
+univention-thin-client (3.0.0-1) unstable; urgency=low
+
+  * depend on ntp instead of ntp-server (for Bug #14667)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Jun 2009 14:56:36 +0200
+
 univention-thin-client (3.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
