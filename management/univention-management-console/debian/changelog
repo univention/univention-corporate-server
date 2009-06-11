@@ -1,3 +1,9 @@
+univention-management-console (2.0.6-1) unstable; urgency=low
+
+  * use univention.debug instead of univention.debug2 (Bug #14736)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 11 Jun 2009 13:42:02 +0200
+
 univention-management-console (2.0.5-1) unstable; urgency=low
 
   * add class SimpleCommand for easy creation of UMCP command objects (Bug #14337)
