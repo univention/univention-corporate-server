@@ -1,3 +1,9 @@
+univention-debug (3.0.1-0) unstable; urgency=low
+
+  * only build the python 2.4 package. Bug #14709
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Jun 2009 09:06:03 +0200
+
 univention-debug (3.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3

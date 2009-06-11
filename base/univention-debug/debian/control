@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
 Build-Depends: debhelper, autoconf, automake1.4, libtool, python, python-all-dev, python-central
-XS-Python-Version: all
+XS-Python-Version: 2.4
 
 Package: libunivention-debug0
 Architecture: any
