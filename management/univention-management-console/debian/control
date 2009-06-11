@@ -2,7 +2,7 @@ Source: univention-management-console
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, python, python-all-dev, python-central, python-xml, python-central, univention-config-dev
+Build-Depends: debhelper, python2.4, python-all-dev, python-central, python-xml, python-central, univention-config-dev
 Standards-Version: 3.7.2
 XS-Python-Version: 2.4
 

@@ -1,3 +1,9 @@
+univention-management-console (2.0.6-2) unstable; urgency=low
+
+  * switched to python2.4 (Bug: #14709)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 11 Jun 2009 12:13:05 +0200
+
 univention-management-console (2.0.6-1) unstable; urgency=low
 
   * use univention.debug instead of univention.debug2 (Bug #14736)

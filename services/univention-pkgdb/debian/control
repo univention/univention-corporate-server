@@ -2,9 +2,9 @@ Source: univention-pkgdb
 Section: univention
 Priority: standard
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, python, python-all-dev, python-central, univention-config-dev
+Build-Depends: debhelper, python2.4, python-all-dev, python-central, univention-config-dev
 Standards-Version: 3.5.2
-XS-Python-Version: all
+XS-Python-Version: 2.4
 
 Package: univention-pkgdb
 Architecture: all

@@ -1,3 +1,9 @@
+univention-printserver (3.0.0-3) unstable; urgency=low
+
+  * switched to python2.4 (Bug: #14709)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 11 Jun 2009 12:15:17 +0200
+
 univention-printserver (3.0.0-2) unstable; urgency=low
 
   * install to /usr/share/pyshared for dh_pycentral (for Bug #14667)

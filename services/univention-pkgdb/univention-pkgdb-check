@@ -37,16 +37,16 @@ if [ ! -e /etc/postgresql/pkgdb.secret ] ;then
 fi
 
 
-python /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py --test-superuser
+python2.4 /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py --test-superuser
 if [ $? -ne 0 ] ;then
   # or service record not found
-  echo "check the postgres installation, the command 'python /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py --test-superuser' failed"
+  echo "check the postgres installation, the command 'python2.4 /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py --test-superuser' failed"
   exit 1
 fi
 
 find /var/lib/univention-pkgdb/add/ -type f | while read file; do
 	host=`basename $file`
-	python /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py --add-system "$host"
+	python2.4 /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py --add-system "$host"
 	ret=$?
 	if [ $ret = 0 ]; then
 		rm $file
@@ -57,7 +57,7 @@ done
 
 find /var/lib/univention-pkgdb/delete/ -type f | while read file; do
 	host=`basename $file`
-	python /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py --del-system "$host"
+	python2.4 /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py --del-system "$host"
 	ret=$?
 	if [ $ret = 0 ]; then
 		rm $file

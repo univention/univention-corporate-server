@@ -40,7 +40,7 @@ _FORBIDDEN_MODULES = set((
 # So... process handling with subprocess is really broken: it just hangs on
 # large amounts of output.  To check for yourself, run the following command:
 #
-# > python -c "import subprocess; subprocess.call(('univention-admin', 'settings/printermodel', 'list'), stdout=subprocess.PIPE)"
+# > python2.4 -c "import subprocess; subprocess.call(('univention-admin', 'settings/printermodel', 'list'), stdout=subprocess.PIPE)"
 #
 # So we had to look for alternatives, of which subprocess names a few:
 # - os.system

@@ -1,3 +1,9 @@
+univention-kolab2-tools (2.0.2-2) unstable; urgency=low
+
+  * switched to python2.4 (Bug: #14709)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 11 Jun 2009 12:14:23 +0200
+
 univention-kolab2-tools (2.0.2-1) unstable; urgency=low
 
   * set hashbang to python2.4 (Bug #14709)

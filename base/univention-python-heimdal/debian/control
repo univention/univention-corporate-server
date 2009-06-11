@@ -2,7 +2,7 @@ Source: univention-python-heimdal
 Section: python
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, python, python-all-dev, python-central, heimdal-dev, sharutils
+Build-Depends: debhelper, python2.4, python-all-dev, python-central, heimdal-dev, sharutils
 XS-Python-Version: 2.4
 Standards-Version: 3.6.0
 

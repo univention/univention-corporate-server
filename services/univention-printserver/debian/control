@@ -2,9 +2,9 @@ Source: univention-printserver
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), univention-config-dev, python, python-all-dev, python-central
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev, python2.4, python-all-dev, python-central
 Standards-Version: 3.5.2
-XS-Python-Version: all
+XS-Python-Version: 2.4
 
 Package: univention-printserver
 Architecture: all

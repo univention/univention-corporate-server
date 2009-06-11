@@ -7,7 +7,7 @@ Standards-Version: 3.5.5
 
 Package: univention-apache
 Architecture: all
-Depends: univention-ssl, apache2, libapache2-mod-auth-pam, python, univention-config-registry, php5, univention-webui-style-base
+Depends: univention-ssl, apache2, libapache2-mod-auth-pam, python2.4, univention-config-registry, php5, univention-webui-style-base
 Conflicts: apache
 Description: UCS - Apache2 configuration
  This packages provides the basic configuration for the

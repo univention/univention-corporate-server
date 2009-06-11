@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, python, univention-config-dev
+Build-Depends: debhelper, python2.4, univention-config-dev
 
 Package: univention-nt-password-sync
 Architecture: all

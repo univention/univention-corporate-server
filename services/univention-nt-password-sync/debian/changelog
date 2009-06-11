@@ -1,3 +1,9 @@
+univention-nt-password-sync (1.0.0-1) unstable; urgency=low
+
+  * switched to python2.4 (Bug: #14709)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 11 Jun 2009 12:14:54 +0200
+
 univention-nt-password-sync (1.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3

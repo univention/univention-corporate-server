@@ -6,7 +6,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-log-collector-server
 Architecture: any
-Depends: python, gzip, univention-config-registry, python-pyopenssl
+Depends: python2.4, gzip, univention-config-registry, python-pyopenssl
 Description: Univention Log Collector Server
  Univention Log Collector - receives logfiles via SSL connection
  .
@@ -17,7 +17,7 @@ Description: Univention Log Collector Server
 
 Package: univention-log-collector-client
 Architecture: any
-Depends: python, univention-config-registry, python-pyopenssl
+Depends: python2.4, univention-config-registry, python-pyopenssl
 Description: Univention Log Collector Client
  Univention Log Collector - Sends logfiles via SSL connection to loghost
  .

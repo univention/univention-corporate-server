@@ -2,7 +2,7 @@ Source: univention-python
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, python, python-all-dev, python-central
+Build-Depends: debhelper, python2.4, python-all-dev, python-central
 XS-Python-Version: 2.4
 
 Package: python-univention
