@@ -83,9 +83,9 @@ install-ext-%:
 	install -m 0755 pkgdb.py ${D}/usr/lib/univention-directory-listener/system
 
 	# install Univention Management Console Module
-	install -d debian/$(PACKAGE_UMCMOD)/usr/share/pycentral/$(PACKAGE_UMCMOD)/site-packages
+	install -d debian/$(PACKAGE_UMCMOD)/usr/share/pyshared/$(PACKAGE_UMCMOD)/site-packages
 	@for i in $(UMC_MODULES); do\
-		o=debian/$(PACKAGE_UMCMOD)/usr/share/pycentral/$(PACKAGE_UMCMOD)/site-packages/$${i#modules};\
+		o=debian/$(PACKAGE_UMCMOD)/usr/share/pyshared/$(PACKAGE_UMCMOD)/site-packages/$${i#modules};\
 		install -d "`dirname $$o`";\
 		install -m755 $$i $$o;\
 	done

@@ -1,3 +1,9 @@
+univention-pkgdb (3.0.0-2) unstable; urgency=low
+
+  * install to /usr/share/pyshared for dh_pycentral (for Bug #14667)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 11 Jun 2009 17:01:59 +0200
+
 univention-pkgdb (3.0.0-1) unstable; urgency=low
 
   * switched to python2.4 (Bug: #14709)
