@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
 Build-Depends: debhelper, python, python-all-dev, python-central, univention-config-dev
-XS-Python-Version: all
+XS-Python-Version: 2.4
 
 Package: python-univention-connector
 Architecture: all
