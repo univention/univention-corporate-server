@@ -7,7 +7,7 @@ Build-Depends: debhelper, libparted1.7-dev, gettext
 
 Package: univention-installer
 Architecture: any
-Depends: univention-installer-modules
+Depends: univention-installer-modules, python2.4
 Conflicts: univention-server-master, univention-server-backup, univention-server-slave, univention-server-member
 Description: univention installer envoirnment
  .
