@@ -1,3 +1,9 @@
+univention-windows-installer (3.0.0-1) unstable; urgency=low
+
+  * added directory to library path (Bug: #14667)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 11 Jun 2009 15:50:50 +0200
+
 univention-windows-installer (3.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
