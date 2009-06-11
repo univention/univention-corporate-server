@@ -112,7 +112,7 @@ binary-arch: build install
 	dh_compress
 	dh_fixperms
 	dh_installdeb
-	dh_shlibdeps -l debian/univention-windows-installer-image-linux/var/lib/univention-windows-installer/install/linuxaux/lib -l debian/univention-windows-installer-image-linux/var/lib/univention-windows-installer/install/linuxaux/usr/lib 
+	dh_shlibdeps -Xlinuxaux
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

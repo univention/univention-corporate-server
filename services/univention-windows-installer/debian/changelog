@@ -1,6 +1,6 @@
-univention-windows-installer (3.0.0-1) unstable; urgency=low
+univention-windows-installer (3.0.0-2) unstable; urgency=low
 
-  * added directory to library path (Bug: #14667)
+  * fixed detection of shared libraries (Bug: #14667)
 
  -- Sönke Schwardt <schwardt@univention.de>  Thu, 11 Jun 2009 15:50:50 +0200
 
