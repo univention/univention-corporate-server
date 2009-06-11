@@ -31,14 +31,14 @@ fi
 if [ -n "$recover" ]; then
 
 
-	/bin/python -OO /lib/univention-installer/main.py $params
+	/bin/python2.4 -OO /lib/univention-installer/main.py $params
 	echo "Starting recover shell"
 	echo ""
 	/bin/sh
 else
 	while [ ! -e /tmp/installation_profile ]; do
 
-		/bin/python -OO /lib/univention-installer/main.py $params
+		/bin/python2.4 -OO /lib/univention-installer/main.py $params
 
 		if [ ! -e /tmp/installation_profile ]; then
 			echo "Press Return to restart the installer program."

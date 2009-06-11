@@ -39,5 +39,5 @@ if [ -n "$auto_reboot" ] && [ "$auto_reboot" = "Yes" -o "$auto_reboot" = "yes" -
 	echo "Auto reboot"
 else
 	clear
-	python /lib/univention-installer/end.py
+	python2.4 /lib/univention-installer/end.py
 fi
