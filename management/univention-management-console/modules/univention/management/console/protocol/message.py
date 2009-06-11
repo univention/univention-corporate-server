@@ -213,6 +213,12 @@ class Command( Request ):
 	def __init__( self, args = [], opts = {}, hosts = None, incomplete = False ):
 		Request.__init__( self, 'COMMAND', args, opts, hosts, incomplete )
 
+class SimpleCommand( Request ):
+	def __init__( self, command, options = {}, **flags ):
+		Request.__init__( self, 'COMMAND',  [ command ], options, None, False )
+		for k, v in flags.items():
+			self.set_flag( 'web:%s' % k, v )
+
 class Response( Message ):
 	"""This class describes a response to a request from the console
 	frontend to the console daemon"""

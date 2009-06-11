@@ -29,9 +29,9 @@ install-frontend: frontend
 	done
 
 install-modules: modules
-	install -d debian/$(PACKAGE)/usr/share/pyshared/$(PACKAGE)/site-packages
+	install -d debian/$(PACKAGE)/usr/share/pyshared/
 	@for i in $(MODULES); do\
-		o=debian/$(PACKAGE)/usr/share/pyshared/$(PACKAGE)/site-packages/$${i#modules};\
+		o=debian/$(PACKAGE)/usr/share/pyshared/$${i#modules};\
 		install -d "`dirname $$o`";\
 		install -m755 $$i $$o;\
 	done

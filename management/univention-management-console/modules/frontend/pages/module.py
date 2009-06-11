@@ -200,9 +200,17 @@ class Module( base.Page ):
 				else:
 					cmd = self.__startups[ self.selected ]
 					last_resp = responses[ -1 ]
+					# if there is no dialog 
 					if len( last_resp.dialog ) == 1 and list.__getitem__( last_resp.dialog, 0 ) == None:
 						ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: info layout' )
-						self.__layout = cmd.info_message( last_resp.report )
+						# ... display simple info message if report is set
+						if last_resp.report:
+							self.__layout = cmd.info_message( last_resp.report )
+						# ... re-invoke startup command or show cache 
+						else:	
+							# see pages/base.py apply
+							self.categorylist.bpressed = 1
+							
 					else:
 						ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: normal layout' )
 						if self.__restore_referrer:
