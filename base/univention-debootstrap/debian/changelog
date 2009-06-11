@@ -1,3 +1,9 @@
+univention-debootstrap (2.0.1-1) unstable; urgency=low
+
+  * switch to /usr/share/debootstrap/scripts. Bug #14667
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Jun 2009 13:55:15 +0200
+
 univention-debootstrap (2.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3

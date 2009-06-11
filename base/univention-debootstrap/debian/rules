@@ -43,7 +43,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m 0644 univention debian/univention-debootstrap/usr/lib/debootstrap/scripts/
+	install -m 0644 univention debian/univention-debootstrap/usr/share/debootstrap/scripts/
 
 binary-indep: build install
 
