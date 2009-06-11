@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (3.0.0-2) unstable; urgency=low
+
+  * removed duplicated Pre-Depends line in debian/control. Bug #14667
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Jun 2009 13:35:32 +0200
+
 univention-mail-postfix-kolab2 (3.0.0-1) unstable; urgency=low
 
   * Make init script LSB-compliant (Bug #14421)
