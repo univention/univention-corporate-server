@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ "$1" = "remove" ]; then
-	if which python >/dev/null 2>&1 && which pycentral >/dev/null 2>&1; then
+	if which python2.4 >/dev/null 2>&1 && which pycentral >/dev/null 2>&1; then
 		pycentral pkgremove python-univention-config-registry
 	else
 		flist=$(tempfile)
