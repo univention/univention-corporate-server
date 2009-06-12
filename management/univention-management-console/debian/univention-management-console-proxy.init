@@ -1,10 +1,37 @@
 #!/bin/sh
 
+# Copyright (C) 2006-2009 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+. /lib/lsb/init-functions
+
 if [ ! -e /etc/runit/univention/univention-console-proxy ]; then
 	exit 0
 fi
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 
 if [ -z "$umc_proxy_autostart" -o "$umc_proxy_autostart" = "no" ]; then
 	exit 1
@@ -12,26 +39,26 @@ fi
 
 case "$1" in
 	start)
-		echo -n "Starting Univention Management Console Proxy: "
+		log_action_msg "Starting Univention Management Console Proxy"
 		sv start univention-management-console-proxy
-		echo ""
+		log_action_end_msg 0
 		;;
 	stop)
-		echo -n "Stopping Univention Management Console Proxy: "
+		log_action_msg "Stopping Univention Management Console Proxy"
 		sv stop univention-management-console-proxy
-		echo ""
+		log_action_end_msg 0
 		;;
 	restart|force-reload)
-		echo -n "Restarting Univention Management Console Proxy: "
+		log_action_msg "Restarting Univention Management Console Proxy"
 		sv restart univention-management-console-proxy
-		echo ""
+		log_action_end_msg 0
 		;;
 	crestart)
 		if sv status univention-management-console-proxy | grep ^run: > /dev/null 2>&1
 			then
 			$0 restart
 		else
-			echo "sv status return no running Univention Management Console Proxy, don't need to restart."
+			log_action_msg "sv status return no running Univention Management Console Proxy, don't need to restart."
 		fi
 		;;
 	*)
