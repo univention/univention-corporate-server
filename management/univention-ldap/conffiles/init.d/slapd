@@ -19,6 +19,8 @@ DAEMON=/usr/sbin/slapd
 PORT=389
 SLAPDCONF=/etc/ldap/slapd.conf
 
+. /lib/lsb/init-functions
+
 bdbrecover ()
 {
 	# determine libdb version that back-bdb.so was linked against
@@ -31,12 +33,12 @@ bdbrecover ()
 			cd /var/lib/univention-ldap/ldap
 			"/usr/bin/db${back_bdb_version}_recover" -h /var/lib/univention-ldap/ldap
 		else
-			echo "/var/lib/univention-ldap/ldap BDB Version does not match the one back-bdb uses"
-			echo "Skipping db${back_bdb_version}_recover to avoid damage"
+			log_action_msg "/var/lib/univention-ldap/ldap BDB Version does not match the one back-bdb uses"
+			log_action_msg "Skipping db${back_bdb_version}_recover to avoid damage"
 		fi
 	else
-		echo "back-bdb was linked against ${back_bdb_version}, but db${back_bdb_version}-util package does not seem to be installed"
-		echo "Skipping db${back_bdb_version}_recover"
+		log_action_msg "back-bdb was linked against ${back_bdb_version}, but db${back_bdb_version}-util package does not seem to be installed"
+		log_action_msg "Skipping db${back_bdb_version}_recover"
 	fi
 }
 
@@ -124,8 +126,7 @@ if baseConfig['ldap/database/type'] == 'bdb':
 	print 'echo -n "  "'
    @!@
 
-    echo -n "Starting ldap server(s):"
-    echo -n " slapd"
+    log_action_msg "Starting ldap server(s): slapd"
     start-stop-daemon --start --quiet --pidfile "$pidfile" \
 		--exec $DAEMON -- -h "ldap:/// ldapi:/// ldaps:///"
 
@@ -139,44 +140,42 @@ if baseConfig['ldap/server/type']=="master":
     echo "."
 
 	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
-    	echo -n "Found failed.ldif. Importing ..."
+    	log_action_msg "Found failed.ldif. Importing"
 		test -x /usr/sbin/univention-directory-replication-resync && /usr/sbin/univention-directory-replication-resync /var/lib/univention-directory-replication/failed.ldif >>/var/log/univention/listener.log 2>&1
 		if [ $? = 0 ]; then
-			echo " done"
+			log_action_end_msg 0
 		else
-			echo " failed. Please check /var/log/univention/listener.log"
+			log_action_end_msg 1
+			log_action_msg "Please check /var/log/univention/listener.log"
 			exit 1
 		fi
 	fi
 	
     ;;
   stop)
-    echo -n "Stopping ldap server(s):"
-    echo -n " slapd"
+    log_action_msg "Stopping ldap server(s): slapd"
 	start-stop-daemon --stop --quiet --oknodo --retry 10 \
 	    --pidfile "$pidfile" \
 	    --exec /usr/sbin/slapd 2>&1
-    echo "."
+    log_action_end_msg 0
     ;;
   restart|force-reload)
-    echo "Restarting ldap server(s):"
-    echo -n "  "
+    log_action_msg "Restarting ldap server(s)"
     $0 stop
     sleep 2 # give it some time to die
-    echo -n "  "
     $0 start
     ;;
   force-stop)
-    echo -n "Stopping ldap servers (force): "
+    log_action_msg "Stopping ldap servers (forced) "
     killall slapd > /dev/null 2>&1
-    echo "done."
+    log_action_end_msg 0
     ;;
   crestart)
 	if pidof slapd > /dev/null 2>&1
 		then
 		$0 restart
 	else
-		echo "No slapd process found, don't need to restart"
+		log_action_msg "No slapd process found, no restart needed"
 	fi
 	;;
   *)

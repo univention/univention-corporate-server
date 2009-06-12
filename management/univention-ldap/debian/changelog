@@ -1,3 +1,9 @@
+univention-ldap (5.0.0-12) unstable; urgency=low
+
+  * Make init scripts LSB-compliant (Bug #14421)
+
+ -- Moritz Mühlenhoff <jmm@visdalen.knut.univention.de>  Fri, 12 Jun 2009 14:41:18 +0200
+
 univention-ldap (5.0.0-11) unstable; urgency=low
 
   * adjust default ldap/cachesize not only on UCS DC master (for Bug #14554)
