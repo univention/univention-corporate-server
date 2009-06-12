@@ -3,7 +3,7 @@
 # Univention Thin Client IPSec Support
 #  init script: initialize IPSec
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,19 +27,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
-echo -n "Running Thin Client IPSec Script ... "
+. /lib/lsb/init-functions
+
+log_action_msg "Running Thin Client IPSec Script "
 
 FLAGNFSBOOT=$(grep -c "root=/dev/nfs" /proc/cmdline)
 if [ "$FLAGNFSBOOT" != "0" ] ; then
     # NFS boot
-    echo "skipped"
+    log_action_msg "skipped"
     exit 0
 fi
 
 if [ -x /config/ipsec-setup.sh ]; then
 	/config/ipsec-setup.sh
-	echo "done"
-	exit 0
+	log_action_end_msg 0
+	exit
 else
-	echo not found
+	log_action_msg "not found"
+	log_action_end_msg 1
 fi

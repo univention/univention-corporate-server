@@ -3,7 +3,7 @@
 # Univention Thin Client IPSec Support
 #  init script: Updating IPSec Konfiguration
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,24 +27,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
-echo -n "Setting up Thin Client IPSec configuration ... "
+. /lib/lsb/init-functions
+
+log_action_msg "Setting up Thin Client IPSec configuration"
 
 FLAGNFSBOOT=$(grep -c "root=/dev/nfs" /proc/cmdline)
 if [ "$FLAGNFSBOOT" != "0" ] ; then
     # NFS boot
-    echo "skipped"
+    log_action_msg "skipped"
     exit 0
 fi
 
-eval $(univention-baseconfig shell thinclient/ipsec/update thinclient/ipsec/update/url univentionDesktopServer)
+eval $(univention-config-registry shell thinclient/ipsec/update thinclient/ipsec/update/url univentionDesktopServer)
 if [ -z "$thinclient_ipsec_update" -o "$thinclient_ipsec_update" = "no" ]; then
-	echo "skipped"
+	log_action_msg "skipped"
 	exit 0
 else
-	echo "checking"
+	log_action_msg "checking"
 fi
 
-echo -n "  Searching for IPSec Configuration ... "
+log_action_msg "Searching for IPSec Configuration"
 mac_address=$(ip link show eth0 | grep link/ether | sed 's/.*link\/ether \([0-9a-f:]*\) .*/\1/;s/:/-/g')
 
 if [ -z "$thinclient_ipsec_update_url" ]; then
@@ -58,18 +60,18 @@ url="${url}/${mac_address}.tar.gz"
 wget -O /tmp/ipsec.tar.gz "$url" >/dev/null 2>&1
 
 if [ ! "$?" = "0" ] ; then
-	echo "not found"
+	log_action_msg "not found"
 	read
     halt
 else
-	echo "found"
+	log_action_msg "found"
 fi
 
-echo -n "  Installing IPSec Configuration ... "
+log_action_msg "Installing IPSec Configuration"
 
 tar xzf /tmp/ipsec.tar.gz -C /config >/dev/null 2>&1
 rm -f /tmp/ipsec.tar.gz >/dev/null 2>&1
-echo "done"
+log_action_end_msg 0
 
 echo "The IPSec configuration has been updated."
 echo "Press any key to reboot the thin client."
