@@ -1,3 +1,9 @@
+univention-pkgdb (3.0.0-3) unstable; urgency=low
+
+  * fixed pyshared path (Bug: #14667)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 12 Jun 2009 10:02:54 +0200
+
 univention-pkgdb (3.0.0-2) unstable; urgency=low
 
   * install to /usr/share/pyshared for dh_pycentral (for Bug #14667)
