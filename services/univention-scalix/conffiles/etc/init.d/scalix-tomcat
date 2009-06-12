@@ -22,6 +22,8 @@
 #       "/etc/init.d/scalix-tomcat stop" to manually stop Tomcat.
 #
 
+. /lib/lsb/init-functions
+
 @!@
 if baseConfig.has_key('locale/default') and baseConfig['locale/default']:
 	print 'export LC_ALL="%s"' % baseConfig['locale/default'].split(':')[0]
@@ -78,10 +80,10 @@ is_catalina_process_running() {
 get_instance_status() {
     # returns 0 exit code if instance is running
     if [ -f "$CATALINA_PID" ] && is_catalina_process_running ; then
-		echo "Instance ($SCALIX_INSTANCE) is running"
+		log_action_msg "Instance ($SCALIX_INSTANCE) is running"
         return 0
     else
-		echo "Instance ($SCALIX_INSTANCE) is not running"
+		log_action_msg "Instance ($SCALIX_INSTANCE) is not running"
         return 3 # "not running" LSB code
     fi
 }
@@ -132,13 +134,13 @@ elif [ "$DISTRIBUTION" = "debian" ] ; then
 start() {
         # Clear out any temporary files, especially lock files.
         test -n "$CATALINA_BASE" && rm -f $CATALINA_BASE/temp/* >/dev/null 2>&1
-        echo -n "Starting Tomcat service ($SCALIX_INSTANCE)"
+        log_action_msg "Starting Tomcat service ($SCALIX_INSTANCE)"
         $startup
         RETVAL=$?
 }
 
 stop() {
-        echo -n "Stopping Tomcat service ($SCALIX_INSTANCE)"
+        log_action_msg "Stopping Tomcat service ($SCALIX_INSTANCE)"
         $shutdown
         RETVAL=$?
 }
