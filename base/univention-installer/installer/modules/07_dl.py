@@ -87,6 +87,7 @@ class object(content):
 		content.draw( self )
 
 	def layout(self):
+		del self.elements[2:]
 		self.elements.append(textline(_('Select your default system language:'),self.minY-1,self.minX+2)) #2
 
 		self.__create_selection()

@@ -1,3 +1,9 @@
+univention-installer (5.0.2-5) unstable; urgency=low
+
+  * back button in profile mode installation (Bug: #5971)
+
+ -- Felix Botner <botner@univention.de>  Fri, 12 Jun 2009 09:36:29 +0200
+
 univention-installer (5.0.2-4) unstable; urgency=low
 
   * fixed tab order in 70_system and 50_security (Bug: #10165)
