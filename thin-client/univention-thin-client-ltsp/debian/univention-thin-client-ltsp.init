@@ -3,7 +3,7 @@
 # Univention LTSP mount daemon
 #  init script
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,15 +30,15 @@
 
 case "$1" in
 	start)
-		eval $(univention-baseconfig shell thinclient/ltsp/autostart)
-		echo -n "Starting univention-ltsp-mountd daemon: "
+		eval $(univention-config-registry shell thinclient/ltsp/autostart)
+		log_action_msg "Starting univention-ltsp-mountd daemon"
 		start-stop-daemon --start --exec /usr/sbin/univention-ltsp-mountd --quiet --pidfile /var/run/univention-ltsp-mountd.pid --oknodo
-		echo ""
+		log_action_end_msg 0
 		;;
 	stop)
-		echo -n "Stopping univention-ltsp-mountd daemon: "
+		log_action_msg "Stopping univention-ltsp-mountd daemon"
 		start-stop-daemon --stop --quiet --pidfile /var/run/univention-ltsp-mountd.pid --oknodo
-		echo ""
+		log_action_end_msg 0
 		;;
 	restart)
 		$0 stop
