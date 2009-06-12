@@ -27,6 +27,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
+. /lib/lsb/init-functions
+
 log_action_msg "Setting up Thin Client Scanner Support"
 
 univention-config-registry commit /etc/sane.d/saned.conf >>/dev/tty8 2>&1

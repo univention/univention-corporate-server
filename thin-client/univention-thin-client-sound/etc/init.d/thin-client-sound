@@ -27,6 +27,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
+. /lib/lsb/init-functions
+
 eval $(univention-config-registry shell thinclient/sound/volume thinclient/sound/daemon univentionSoundEnabled univentionSoundModule)
 
 log_action_msg "Setting up Thin Client Sound Device"
