@@ -3,7 +3,7 @@
 # Univention Thin Client SSH Daemon
 #  init script: setting up a thin client
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,9 +27,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
-echo -n "Setting up Thin Client SSH daemon ... "
+. /lib/lsb/init-functions
 
-eval $(univention-baseconfig shell thinclient/sshd/generate_key)
+log_action_msg "Setting up Thin Client SSH daemon"
+
+eval $(univention-config-registry shell thinclient/sshd/generate_key)
 
 if [ "$thinclient_sshd_generate_key" = "yes" ]; then
 	ssh-keygen -q -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa >/dev/tty8 2>&1
@@ -40,8 +42,7 @@ else
 	cp /etc/ssh/ssh_host_dsa_key.pub.server /etc/ssh/ssh_host_dsa_key.pub
 fi
 
-univention-baseconfig set "sshd/port?22" "sshd/permitroot?yes" "sshd/xforwarding?no" \
+univention-config-registry set "sshd/port?22" "sshd/permitroot?yes" "sshd/xforwarding?no" \
 	"sshd/challengeresponse?no" "sshd/autostart?yes" >/dev/tty8 2>&1
 
-echo "done"
-
+log_action_end_msg 0
