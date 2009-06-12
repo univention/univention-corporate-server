@@ -75,6 +75,30 @@ univention-config-registry set windows/domain=$windows_domain
 if [ -n "$eth0_type" -a "$eth0_type" = "dynamic" ]; then
 	univention-config-registry set interfaces/eth0/type=dhcp
 fi
+if [ -n "$eth1_type" -a "$eth1_type" = "dynamic" ]; then
+	univention-config-registry set interfaces/eth1/type=dhcp
+fi
+if [ -n "$eth2_type" -a "$eth2_type" = "dynamic" ]; then
+	univention-config-registry set interfaces/eth2/type=dhcp
+fi
+if [ -n "$eth3_type" -a "$eth3_type" = "dynamic" ]; then
+	univention-config-registry set interfaces/eth3/type=dhcp
+fi
+
+__EOT__
+
+for i in 0 1 2 3; do 
+	for j in 0 1 2 3; do
+		nettmpxzy=$(eval echo  \$eth${i}_${j}_type)
+cat >>/instmnt/postconfigure_config_registry.sh <<__EOT__
+if [ -n "$nettmpxzy" -a "$nettmpxzy" = "dynamic" ]; then
+	univention-config-registry set interfaces/eth${i}_${j}/type=dhcp
+fi
+__EOT__
+	done
+done
+
+cat >>/instmnt/postconfigure_config_registry.sh <<__EOT__
 
 if [ -n "$use_external_nameserver" -a "$use_external_nameserver" = "true" ]; then
 	univention-config-registry set nameserver/external=true

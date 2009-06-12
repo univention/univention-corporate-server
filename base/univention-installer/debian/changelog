@@ -1,3 +1,9 @@
+univention-installer (5.0.2-6) unstable; urgency=low
+
+  * check more network devices in installer scripts (Bug: #9906) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 12 Jun 2009 10:31:25 +0200
+
 univention-installer (5.0.2-5) unstable; urgency=low
 
   * back button in profile mode installation (Bug: #5971)
