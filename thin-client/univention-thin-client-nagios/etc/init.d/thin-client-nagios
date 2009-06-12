@@ -3,7 +3,7 @@
 # Univention Thin Client Nagios
 #  init script: setup filesystem
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,7 +27,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
-echo -n "Setting up Nagios NRPE Configuration ... "
+. /lib/lsb/init-functions
+
+log_action_msg "Setting up Nagios NRPE Configuration"
 
 univention-config-registry set thinclient/nagios/load/warning?"0.2,0.2,0.2" thinclient/nagios/load/critical?"0.5,0.5,0.5" >>/dev/tty8 2>&1 
 echo "done"
