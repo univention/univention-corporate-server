@@ -23,9 +23,9 @@ clean:
 	@find modules/ -name '*.mo' -exec rm \{\} \;
 
 install-modules: modules
-	install -d debian/$(PACKAGE)/usr/share/pycentral/$(PACKAGE)/site-packages
+	install -d debian/$(PACKAGE)/usr/share/pyshared
 	@for i in $(MODULES); do\
-		o=debian/$(PACKAGE)/usr/share/pycentral/$(PACKAGE)/site-packages/$${i#modules};\
+		o=debian/$(PACKAGE)/usr/share/pyshared//$${i#modules};\
 		install -d "`dirname $$o`";\
 		install -m755 $$i $$o;\
 	done
