@@ -27,7 +27,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
-echo -n "Setting up Thin Client X.org configuration ... "
+. /lib/lsb/init-functions
+
+log_action_msg "Setting up Thin Client X.org configuration"
 
 getXModul()
 {
@@ -60,11 +62,11 @@ getXModul()
     echo "$driver" | head -1 |  tr [:upper:] [:lower:]
 }
 
-eval `univention-baseconfig shell ldap/server/name ldap/hostdn gdm/sessions/disabled`
+eval `univention-config-registry shell ldap/server/name ldap/hostdn gdm/sessions/disabled`
 
 script=`univention-policy-result -h $ldap_server_name -s $ldap_hostdn | grep univentionAutoStartScript= | sed -e 's|univentionAutoStartScript=||'`
 
-univention-baseconfig set xorg/device/driver?$(eval getXModul) \
+univention-config-registry set xorg/device/driver?$(eval getXModul) \
     xorg/resolution?1024x768 \
     xorg/screen/DefaultDepth?16 \
     xorg/monitor/HorizSync?30-70 \
@@ -117,7 +119,7 @@ univention-baseconfig set xorg/device/driver?$(eval getXModul) \
 	gdm/session/dir="/etc/gdm/Sessions/enabled" >>/dev/tty8 2>&1
 
 # prepare to run gdm
-univention-baseconfig commit \
+univention-config-registry commit \
 	/etc/default/gdm \
 	/etc/gdm/gdm.conf \
 	/etc/gdm/Init/Default \
@@ -140,4 +142,4 @@ done
 chown gdm.gdm /var/lib/gdm >>/dev/tty8 2>&1
 chmod 0750 /var/lib/gdm >>/dev/tty8 2>&1
 
-echo "done"
+log_action_end_msg 0
