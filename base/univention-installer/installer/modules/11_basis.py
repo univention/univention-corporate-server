@@ -43,11 +43,22 @@ class object(content):
 	def __init__(self, max_y, max_x, last, file, cmdline):
 		self.guessed = {}
 		content.__init__(self, max_y, max_x, last, file, cmdline)
+		self.interactive=False
 
 	def checkname(self):
 		return ['hostname','domainname','ldap_base']
 
 	def profile_complete(self):
+
+		if self.interactive:
+			self.message=self.incomplete()
+			if self.message:
+				return False
+			else:
+				return True
+
+		#self.interactive=False
+
 		if self.check('hostname') | self.check('domainname') | self.check('ldap_base') | self.check( 'windows_domain'):
 			return False
 		if self.check('root_password') and self.check('root_password_crypted'):

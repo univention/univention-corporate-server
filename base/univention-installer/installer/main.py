@@ -623,6 +623,7 @@ def next_screen_profile(view_warning, check_failed=False):
 		installer.current=installer.current+i
 		return 0
 	else:
+		installer.write_profile(1)
 		# save failed modules
 		already_failed = False
 		for i in installer.incompletes:
@@ -741,9 +742,11 @@ try:
 						debug('waiting 2')
 						c = stdscr.getch()
 						if c == 275: # F11 -> back
+							installer.result_update()
 							back = profile_failed_getlast()
 							prev_screen(goback=back)
 						if c == 276: # F12 -> next
+							installer.obj[installer.current].interactive=True
 							installer.result_update()
 							debug('check for f12_run')
 							if installer.obj[installer.current].profile_f12_run() == 1:
@@ -761,12 +764,14 @@ try:
 						else:
 							act = installer.input(c)
 							if act == 'next':
+								installer.obj[installer.current].interactive=True
 								installer.result_update()
 								if next_screen_profile(view_warning) == 1:
 									view_warning=1
 									debug('again invalid')
 								break
 							elif act == 'prev':
+								installer.result_update()
 								back = profile_failed_getlast()
 								prev_screen(goback=back)
 							elif act == 'tab':
