@@ -1,3 +1,10 @@
+univention-directory-replication (3.0.0-2) unstable; urgency=low
+
+  * add old entryDN attribute OID as well to allow replication of OpenLDAP 2.3
+    server data (Bug #14411).
+
+ -- Arvid Requate <requate@univention.de>  Tue, 16 Jun 2009 19:33:50 +0200
+
 univention-directory-replication (3.0.0-1) unstable; urgency=low
 
   * entryDN attribute OID was reassigned from OpenLDAP Experimental to
