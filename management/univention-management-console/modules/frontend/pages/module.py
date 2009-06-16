@@ -123,6 +123,21 @@ class Module( base.Page ):
 			self.active.single( client.request_send( cmd.request ) )
 		self.__operation_is_progress = False
 
+	def _in_progress( self, rows ):
+		self._refresh = True
+		self.__operation_is_progress = True
+		lst = umcd.List()
+		lst.add_row( [ umcd.Image( 'actions/info', umc_tools.SIZE_MEDIUM ),
+			       _( 'Operation still in progress. Please wait ...' ) ] )
+		frame = umcd.Frame( [ lst ], _( 'Information' ) )
+		self.__in_progress = umcd.Dialog( [ frame ] )
+		self.__storage.clear()
+		self.__dialog = self.__storage.to_uniparts( self.__in_progress )
+		col = uniparts.tablecol( '', {}, { 'obs' : [ self.__dialog ]})
+		row = uniparts.tablerow( '', {}, { 'obs' : [ col ]})
+		rows.append( row )
+		ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: no UMCP Response (yet)')
+
 	def layout( self ):
 		rows = base.Page.layout( self )
 		if not self.active:
@@ -209,8 +224,9 @@ class Module( base.Page ):
 						# ... re-invoke startup command or show cache 
 						else:	
 							# see pages/base.py apply
-							self.categorylist.bpressed = 1
-							
+							self.active.single( client.request_send( cmd.request ) )
+							self._in_progress( rows )
+							return rows
 					else:
 						ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: normal layout' )
 						if self.__restore_referrer:
@@ -228,21 +244,7 @@ class Module( base.Page ):
 				row = uniparts.tablerow( '', {}, { 'obs' : [ col ] } )
 				rows.append( row )
 			else:
-				self._refresh = True
-				self.__operation_is_progress = True
-				lst = umcd.List()
-				lst.add_row( [ umcd.Image( 'actions/info', umc_tools.SIZE_MEDIUM ),
-							   _( 'Operation still in progress. Please wait ...' ) ] )
-				frame = umcd.Frame( [ lst ], _( 'Information' ) )
-				self.__in_progress = umcd.Dialog( [ frame ] )
-# 				self.__layout = self.__in_progress
-				self.__storage.clear()
-				self.__dialog = self.__storage.to_uniparts( self.__in_progress )
-				col = uniparts.tablecol( '', {}, { 'obs' : [ self.__dialog ]})
-				row = uniparts.tablerow( '', {}, { 'obs' : [ col ]})
-				rows.append( row )
-				ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: no UMCP Response (yet)')
-
+				self._in_progress( rows )
 		return rows
 
 	def __set_warning( self, invalid_umcp ):

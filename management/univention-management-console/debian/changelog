@@ -1,3 +1,10 @@
+univention-management-console (2.0.7-1) unstable; urgency=low
+
+  * if an UMCP command does not return a dialog or a report, the command
+    assoziated with the current tab is invoked (Bug #12429)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 16 Jun 2009 11:17:32 +0200
+
 univention-management-console (2.0.6-3) unstable; urgency=low
 
   * Make init scripts LSB-compliant (Bug #14421)
@@ -52,7 +59,7 @@ univention-management-console (2.0.2-1) unstable; urgency=low
 univention-management-console (2.0.1-1) unstable; urgency=low
 
   * a command method may now return an UMCP reponse object directly; in
-    that case no revamp emthod is required. Bug #14336
+    that case no revamp method is required. Bug #14336
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 28 May 2009 17:15:25 +0200
 
