@@ -126,16 +126,14 @@ def run_process( command, timeout = 0, shell = True, output = True ):
 	# remove dspatcher function
 	notifier.dispatcher_remove( fake_dispatcher )
 
-	# move to beginning of files
-	if output:
-		out.seek( 0 )
-		err.seek( 0 )
-
 	# prepare return code
 	ret = { 'pid' : None, 'exit' : None, 'stdout' : out, 'stderr' : err }
 	if child.returncode == None:
 		ret[ 'pid' ] = child.pid
 	else:
+		# move to beginning of files
+		out.seek( 0 )
+		err.seek( 0 )
 		ret[ 'exit' ] = child.returncode
 	
 	return ret
