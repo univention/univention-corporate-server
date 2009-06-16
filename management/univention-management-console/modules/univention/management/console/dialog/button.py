@@ -90,14 +90,27 @@ class SelectionButton( Button ):
 		Button.__init__( self, label, actions = actions, attributes = attributes, close_dialog = close_dialog )
 		self.choices = choices
 
-#		 choices = [ { 'description': ... ,
-# 		               'actions': ( umcd.Action ( umcp.Command( args = [], opts= {} ), ... )
-#  		             },
-#                    ...
-#                  ]
+# choices = [ { 'description': ... ,
+# 	        'actions': ( umcd.Action ( umcp.Command( args = [], opts= {} ), ... )
+#  	      },
+#             ...
+#           ]
 class ChoiceButton( Button ):
-	def __init__( self, label = '', choices = [], actions = [], attributes = {}, default = None, close_dialog = True ):
-		Button.__init__( self, label, actions = actions, attributes = attributes, close_dialog = close_dialog )
+	"""
+	choices = [ { 'description': ... ,
+			   'actions': [ umcd.Action ( umcp.Command( args = [], opts= {} ) ), ... ]
+			 },
+			 { 'description': 'this description will be ignored' ,
+			   'actions': '::invert',
+			   'idlist': [ LIST OF UMC WIDGET IDs ],
+			 },
+				...
+			  ]
+	Valid string actions are: "::none", "::invert", "::select_all"
+	otherwise actions should be a list of umcd.Actions
+	"""
+	def __init__( self, label = '', choices = [], attributes = {}, default = None, close_dialog = True ):
+		Button.__init__( self, label, actions = [], attributes = attributes, close_dialog = close_dialog )
 		self.choices = choices
 		self.name2index = {}
 		self.default = None

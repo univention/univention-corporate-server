@@ -223,11 +223,7 @@ class ChoiceButtonMap( IButtonMap, mapper.IMapper ):
 		commit_button = button( _( 'Select' ), {},
 								{ 'helptext' : _( 'Select entry' ) } )
 
-# umcp_part.choices = [ { 'description': ... ,
-#  		                  'actions': ( umcd.Action ( umcp.Command( args = [], opts= {} ), ... )
-#  		                },
-#                       ...
-#                     ]
+# have a look at univention/management/console/dialog/button.py for structure of umcp_part.choices
 		default = utils.default( umcp_part )
 
 		choices = []
@@ -270,6 +266,30 @@ class ChoiceButtonMap( IButtonMap, mapper.IMapper ):
 			return [ '::none' ]
 
 		umcp_part.cached = selected
+
+		idx = umcp_part.name2index[selected]
+		# invert selection
+		if selected == '::invert':
+			idlist = umcp_part.choices[ idx ].get('idlist', [])
+			for ( uni, umcp ) in self.inputs:
+				if not umcp or umcp.option:
+					continue
+				if umcp.id() in idlist:
+					if uni.get_input() == 'checked':
+						umcp.cached = False
+					else:
+						umcp.cached = True
+			return [ '::dynamic' ]
+
+		# select all
+		if selected == '::select_all':
+			idlist = umcp_part.choices[ idx ].get('idlist', [])
+			for ( uni, umcp ) in self.inputs:
+				if not umcp or umcp.option:
+					continue
+				if umcp.id() in idlist:
+					umcp.cached = True
+			return [ '::dynamic' ]
 
 		idx = umcp_part.name2index[selected]
 		requests = []
@@ -342,7 +362,6 @@ class FilteringSelectButtonMap( IButtonMap, mapper.IMapper ):
 
 		umcp_part.cached = selected
 
-		idx = umcp_part.name2index[selected]
 		requests = []
 		for action in umcp_part.choices[ idx ]['actions']:
 			req = self._create_request( parameters, action )
