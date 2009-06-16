@@ -1,3 +1,10 @@
+univention-management-console (2.0.9-1) unstable; urgency=low
+
+  * add two functions for simple process handling: run_process and
+    kill_process (Bug #14310)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 16 Jun 2009 14:37:49 +0200
+
 univention-management-console (2.0.8-1) unstable; urgency=low
 
   * changed API of umcd.ChoiceButton (removed actions) (Bug: #14058)

@@ -30,10 +30,15 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os
+import subprocess
+import tempfile
+import time
 
-__all__ = [ 'image_get', 'image_path_append',
-			'SIZE_MICROSCOPIC', 'SIZE_TINY', 'SIZE_SMALL', 'SIZE_MEDIUM',
-			'SIZE_NORMAL', 'SIZE_LARGE', 'SIZE_HUGE' ]
+import notifier
+
+__all__ = [ 'image_get', 'image_path_append', 'run_process',
+	    'SIZE_MICROSCOPIC', 'SIZE_TINY', 'SIZE_SMALL', 'SIZE_MEDIUM',
+	    'SIZE_NORMAL', 'SIZE_LARGE', 'SIZE_HUGE' ]
 
 _image_theme = 'default'
 _image_prefix = '/usr/share/univention-management-console/www'
@@ -86,3 +91,96 @@ def image_path_append( path ):
 	if not path or path[ 0 ] != '/' or not os.path.isdir( path ):
 		raise Exception( 'error: image path must be an absolute path' )
 	_image_pathes.append( path )
+
+## sub-process handling
+
+class CountDown( object ):
+	def __init__( self, timeout ):
+		self.start = time.time() * 1000
+		self.timeout = timeout
+		
+	def __call__( self ):
+		now = time.time() * 1000
+		return not self.timeout or ( now - self.start < self.timeout )
+			
+def run_process( command, timeout = 0, shell = True, output = True ):
+	# we need to provide a dispatcher function to activate the minimal timeout
+	def fake_dispatcher(): return True
+	notifier.dispatcher_add( fake_dispatcher )
+
+	countdown = CountDown( timeout )
+	if output:
+		out = tempfile.NamedTemporaryFile()
+		err = tempfile.NamedTemporaryFile()
+		child = subprocess.Popen( command, shell = shell, stdout = out, stderr = err )
+	else:
+		out = err = None
+		child = subprocess.Popen( command, shell = shell )
+
+	while countdown():
+		exitcode = child.poll()
+		if exitcode != None:
+			break
+		notifier.step()
+
+	# remove dspatcher function
+	notifier.dispatcher_remove( fake_dispatcher )
+
+	# move to beginning of files
+	if output:
+		out.seek( 0 )
+		err.seek( 0 )
+
+	# prepare return code
+	ret = { 'pid' : None, 'exit' : None, 'stdout' : out, 'stderr' : err }
+	if child.returncode == None:
+		ret[ 'pid' ] = child.pid
+	else:
+		ret[ 'exit' ] = child.returncode
+	
+	return ret
+
+def kill_process( pid, signal = 15, timeout = 0 ):
+	# we need to provide a dispatcher function to activate the minimal timeout
+	def fake_dispatcher(): return True
+	notifier.dispatcher_add( fake_dispatcher )
+
+	countdown = CountDown( timeout )
+	while countdown():
+		dead_pid, sts = os.waitpid( pid, os.WNOHANG )
+		if dead_pid == pid:
+			break
+		notifier.step()
+	else:
+		# remove dspatcher function
+		notifier.dispatcher_remove( fake_dispatcher )
+		return None
+	
+	# remove dspatcher function
+	notifier.dispatcher_remove( fake_dispatcher )
+
+	if os.WIFSIGNALED( sts ):
+		returncode = -os.WTERMSIG( sts )
+	else:
+		returncode = os.WEXITSTATUS( sts )
+
+	return returncode
+	
+if __name__ == '__main__':
+	notifier.init()
+
+	def test_run_process():
+		print run_process( 'ls -latr' )
+		ret = run_process( [ 'ls', '-latr' ], timeout = 2000, shell = False )
+		print ret
+		print ret[ 'stdout' ].read()
+
+		ret = run_process( 'echo test;sleep 10', timeout = 5000 )
+		print ret
+		print kill_process( ret[ 'pid' ] )
+		print ret[ 'stdout' ].read()
+		return False
+
+	notifier.timer_add( 1000, test_run_process )
+
+	notifier.loop()
