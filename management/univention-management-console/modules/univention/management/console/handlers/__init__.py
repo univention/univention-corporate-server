@@ -253,6 +253,7 @@ class simpleHandler( signals.Provider ):
 
 			if isinstance( dialog, umcp.Response ):
 				res = dialog
+				res.dialog = self.__verify_dialog( dialog.dialog )
 			else:
 				res = umcp.Response( object )
 				res.dialog = dialog

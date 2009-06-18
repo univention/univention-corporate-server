@@ -1,3 +1,11 @@
+univention-management-console (2.0.10-1) unstable; urgency=low
+
+  * ensure that the dialog attribute of an UMCP Response object is a
+    Dialog object; required if the Response object is returned by the
+    command method (Bug #14336)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 18 Jun 2009 13:40:41 +0200
+
 univention-management-console (2.0.9-2) unstable; urgency=low
 
   * decrease interval for checking for the availability of a UMC module
