@@ -36,7 +36,7 @@ import time
 
 import notifier
 
-__all__ = [ 'image_get', 'image_path_append', 'run_process',
+__all__ = [ 'image_get', 'image_path_append', 'run_process', 'kill_process', 'CountDown',
 	    'SIZE_MICROSCOPIC', 'SIZE_TINY', 'SIZE_SMALL', 'SIZE_MEDIUM',
 	    'SIZE_NORMAL', 'SIZE_LARGE', 'SIZE_HUGE' ]
 

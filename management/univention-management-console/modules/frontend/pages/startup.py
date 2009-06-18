@@ -63,7 +63,7 @@ Please take a second to provide the following information
 	VERSION = '''
 ----------
 
-Univention Management Console Version: %s - %s'
+Univention Management Console Version: %s - %s
 ''' % (v.version, v.build)
 
 

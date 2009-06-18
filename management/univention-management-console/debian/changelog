@@ -1,3 +1,10 @@
+univention-management-console (2.0.9-2) unstable; urgency=low
+
+  * decrease interval for checking for the availability of a UMC module
+    process (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 18 Jun 2009 11:52:14 +0200
+
 univention-management-console (2.0.9-1) unstable; urgency=low
 
   * add two functions for simple process handling: run_process and

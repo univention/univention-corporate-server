@@ -315,7 +315,7 @@ class Processor( signals.Provider ):
 				mod_proc.signal_connect( 'finished', cb )
 				self.__processes[ module_name ] = mod_proc
 				cb = notifier.Callback( self._mod_connect, mod_proc, msg )
-				notifier.timer_add( 500, cb )
+				notifier.timer_add( 50, cb )
 			else:
 				self.__processes[ module_name ].request( msg )
 
@@ -323,7 +323,7 @@ class Processor( signals.Provider ):
 		ud.debug( ud.ADMIN, ud.PROCESS, 'trying to connect' )
 		if not mod.connect():
 			ud.debug( ud.ADMIN, ud.PROCESS, 'failed' )
-			if mod._connect_retries > 20:
+			if mod._connect_retries > 200:
 				ud.debug( ud.ADMIN, ud.ERROR, 'connection to module process failed')
 				res = Response( msg )
 				res.status( 503 ) # error connecting to module process
