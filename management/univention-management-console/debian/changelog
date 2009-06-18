@@ -1,3 +1,9 @@
+univention-management-console (2.0.10-2) unstable; urgency=low
+
+  * fixed bug in translation file
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 18 Jun 2009 14:04:27 +0200
+
 univention-management-console (2.0.10-1) unstable; urgency=low
 
   * ensure that the dialog attribute of an UMCP Response object is a
