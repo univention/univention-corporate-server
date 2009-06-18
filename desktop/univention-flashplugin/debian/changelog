@@ -1,3 +1,9 @@
+univention-flashplugin (4.0.1-0) unstable; urgency=low
+
+  * export http_proxy for wget in update script if proxy_http UCR var is defined (Bug: #7351)
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 Jun 2009 15:40:55 +0200
+
 univention-flashplugin (4.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3

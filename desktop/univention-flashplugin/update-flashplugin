@@ -32,8 +32,15 @@ fp_download_and_unpack() {
 		echo "noclobber = off" >> wgetrc
 		echo "dir_prefix = ." >> wgetrc
 		echo "dirstruct = off" >> wgetrc
+		echo "timeout = 120" >> wgetrc
 		echo "verbose = on" >> wgetrc
 		echo "progress = dot:default" >> wgetrc
+
+		# proxy
+		proxy_http=$(univention-config-registry get proxy/http)
+		if [ ! -z "$proxy_http" ]; then
+			export http_proxy=$proxy_http
+		fi
 
 		# downloading the plugin
 		echo "Downloading..."
