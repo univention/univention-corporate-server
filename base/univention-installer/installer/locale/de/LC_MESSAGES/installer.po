@@ -2287,8 +2287,8 @@ msgid "initially blocked by a packet filter (iptables)"
 msgstr "initial durch einen Paketfilter blockiert werden:"
 
 #: installer/modules/50_security.py:75
-msgid "    allowed."
-msgstr "    HTTPS sind erlaubt."
+msgid "    UCS UMC and UCS Listener/Notifier are allowed."
+msgstr "    UCS UMC und UCS Listener/Notifier sind erlaubt."
 
 #: installer/modules/50_security.py:78
 msgid "Disabled"
@@ -2299,8 +2299,8 @@ msgid "Typical selection of services (recommended)"
 msgstr "Empfohlene Auswahl an Systemdiensten"
 
 #: installer/modules/50_security.py:80
-msgid "Locked-down setup. Only SSH, LDAP and HTTPS are"
-msgstr "Abgesicherte Grundinstallation. Nur SSH, LDAP und"
+msgid "Locked-down setup. Only SSH, LDAP, HTTPS,"
+msgstr "Abgesicherte Installation. Nur SSH, LDAP, HTTPS,"
 
 #: installer/modules/50_security.py:118
 msgid ""

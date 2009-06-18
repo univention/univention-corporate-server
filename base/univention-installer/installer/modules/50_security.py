@@ -72,12 +72,12 @@ class object(content):
 		self.add_elem('security_profile_label2', textline(_('initially blocked by a packet filter (iptables)'), self.minY+3, self.minX+2))
 
 #		self.add_elem('security_profile_label3', textline(_('    allowed. Unsuitable for a typical production setup.'), self.minY+8, self.minX+2))
-		self.add_elem('security_profile_label3', textline(_('    allowed.'), self.minY+8, self.minX+2))
+		self.add_elem('security_profile_label3', textline(_('    UCS UMC and UCS Listener/Notifier are allowed.'), self.minY+8, self.minX+2))
 
 		dict={}
 		dict[_('Disabled')]=['open',0]
 		dict[_('Typical selection of services (recommended)')]=['normal',1]
-		dict[_('Locked-down setup. Only SSH, LDAP and HTTPS are')]=['strict',2]
+		dict[_('Locked-down setup. Only SSH, LDAP, HTTPS,')]=['strict',2]
 
 		list=['normal','strict','open']
 		select=1

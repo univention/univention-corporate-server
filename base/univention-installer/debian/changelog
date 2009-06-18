@@ -1,3 +1,9 @@
+univention-installer (5.0.2-7) unstable; urgency=low
+
+  * more infos about locked-down setup in 50_security.py (Bug: #10103) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 Jun 2009 16:30:05 +0200
+
 univention-installer (5.0.2-6) unstable; urgency=low
 
   * check more network devices in installer scripts (Bug: #9906) 
