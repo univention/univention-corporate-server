@@ -46,260 +46,308 @@ class webui_container{
 	var $tabindex;
 
 	function webui_container(&$ref_config, &$tabindex){
-	$this->ref_config = &$ref_config;
-	$this->tabindex = &$tabindex;
+		$this->ref_config = &$ref_config;
+		$this->tabindex = &$tabindex;
+				
+		if ($_SERVER['SERVER_PORT']=='80')
+			$this->port='http';
+		else
+			$this->port='https';
 	}
 
 	function set_current($str){
+		$bla = $this->ref_config->session_id;
 		switch($str){
-		case 'content': $this->current = &$this->content; $this->status = $str; break;
-		case 'menu': 	$this->current = &$this->menu; $this->status = $str; break;
-		case 'info': 	$this->current = &$this->info; $this->status = $str; break;
-		case 'info2': 	$this->current = &$this->info2; $this->status = $str; break;
-		case 'reiter': 	$this->current = &$this->reiter; $this->status = $str; break;
-		case 'header': 	$this->current = &$this->header; $this->status = $str; break;
-		case 'headertext': $this->current = &$this->headertext; $this->status = $str; break;
-		case 'title': 	$this->current = &$this->title; $this->status = $str; break;
+		case 'content':
+			$this->current = &$this->content;
+			break;
+		case 'menu':
+			$this->current = &$this->menu;
+			break;
+		case 'info':
+			$this->current = &$this->info;
+			break;
+		case 'info2':
+			$this->current = &$this->info2;
+			break;
+		case 'reiter':
+			$this->current = &$this->reiter;
+			break;
+		case 'header':
+			$this->current = &$this->header;
+			break;
+		case 'headertext':
+			$this->current = &$this->headertext;
+			break;
+		case 'title':
+			$this->current = &$this->title;
+			break;
 		}
+		$this->status = $str; 
 	}
 
 	function logout($type, $session_id){
 
-		$this->title = "Logout";
+		$this->title = 'Logout';
 
 		switch($type){
 		case '1':
-		  $headertext = _("Session closed");
-		  $maincontent = _("Your current session has been closed.");
-		  require("config.php");
+		  $headertext = _('Session closed');
+		  $maincontent = _('Your current session has been closed.');
+		  require('config.php');
 		  system("rm -r ".$temp_dir.$session_id.'/');
-		  header("Location: index.php");
+		  header('Location: index.php');
 		  break;
 		case '2':
-		  header("Location: index.php?sessioninvalid=1");
+		  header('Location: index.php?sessioninvalid=1');
 		  break;
 		}
 	}
 
 	function put($str){
-	$this->current .= $str;
+		$this->current .= $str;
 	}
 
-	function show(){
-		if($_SERVER["SERVER_PORT"]=='80') $port="http";
-		else $port="https";
+	function show_head() {
+		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>',$this->site_title,'   ',$this->title,'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+<link rel="SHORTCUT ICON" href="/style/favicon.ico"></link>
+<style type="text/css">
+@import "/univention-dojo/dojo/resources/dojo.css";
+</style>
+<link id="themeStyles" rel="stylesheet" href="/univention-dojo/dijit/themes/tundra/tundra.css" type="text/css"></link>
+<link rel="stylesheet" href="/style/stylesheet.css" type="text/css"></link>
+<link rel="stylesheet" href="/style/univention-dijit.css" type="text/css"></link>
+<script type="text/javascript" src="/style/tip.js"></script>
+<script type="text/javascript" src="/univention-dojo/dojo/dojo.js" ></script>
+<script type="text/javascript" src="/univention-dojo/unijit/unijit.js"></script>
+<script type="text/javascript"> 
+<!-- Todo: this should be moved into the univention-dojo package -->
+	 var hideLoader = function(){
+		 dojo.style("preloader", "display", "none");
+		 dojo.fadeOut({
+			 node:"preloader",
+			 duration:700,
+			 onEnd: function(){
+				 dojo.style("preloader", "display", "none");
+			 }
+			 }).play();
+	 }
+	 dojo.require("dojo.parser");
+	 dojo.addOnLoad(function(){
+		 dojo.parser.parse();
+		 hideLoader();
+});
+</script>
 
-
-		$this->ref_config->debug_put("HTML: ".(strlen($this->menu)+strlen($this->content)+strlen($this->info))." Byte");
-		#echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n";
-		echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
-		echo "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">\n\n";
-		echo "<head>\n";
-
-		echo "<title>".$this->site_title."   ".$this->title."</title>\n";
-		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></meta>\n";
-		echo "<link rel=\"SHORTCUT ICON\" href=\"/style/favicon.ico\"></link>\n";
-		echo "<style type=\"text/css\">\n";
-		echo "@import \"/univention-dojo/dojo/resources/dojo.css\";\n";
-		echo "\n</style>\n";
-		echo "<link id=\"themeStyles\" rel=\"stylesheet\" href=\"/univention-dojo/dijit/themes/tundra/tundra.css\" type=\"text/css\"></link>\n";
-		echo "<link rel=\"stylesheet\" href=\"/style/stylesheet.css\" type=\"text/css\"></link>\n";
-		echo "<link rel=\"stylesheet\" href=\"/style/univention-dijit.css\" type=\"text/css\"></link>\n";
-		echo "<script type=\"text/javascript\" src=\"/style/tip.js\"></script>\n";
-		echo "<script type=\"text/javascript\" src=\"/univention-dojo/dojo/dojo.js\" ></script>\n";
-		echo "<script type=\"text/javascript\" src=\"/univention-dojo/unijit/unijit.js\"></script>\n";
-		echo "<script type=\"text/javascript\"> \n";
-		# Todo: this should be moved into the univention-dojo package
-		echo "\t var hideLoader = function(){ \n";
-		echo "\t\t dojo.style(\"preloader\", \"display\", \"none\"); \n";
-		echo "\t\t dojo.fadeOut({ \n";
-		echo "\t\t\t node:\"preloader\", \n";
-		echo "\t\t\t duration:700, \n";
-		echo "\t\t\t onEnd: function(){ \n";
-		echo "\t\t\t\t dojo.style(\"preloader\", \"display\", \"none\"); \n";
-		echo "\t\t\t } \n";
-		echo "\t\t\t }).play(); \n";
-		echo "\t }\n";
-		echo "\t dojo.require(\"dojo.parser\"); \n";
-		echo "\t dojo.addOnLoad(function(){ \n";
-		echo "\t\t dojo.parser.parse(); \n";
-		echo "\t\t hideLoader(); \n";
-		echo "}); \n";
-
-		# // import all potetial dijit-elements here?
-#		echo "\t dojo.require(\"unijit.form.ComboBox\"); \n";
-#		echo "\t dojo.require(\"unijit.form.FilteringSelect\"); \n";
-		echo "</script>\n";
-
-		echo "</head>\n\n";
+</head>
+';
 		if($this->ref_config->refresh)
-			echo"<body class=\"tundra\" onload=\"doRefresh(".($this->ref_config->refresh)."); clear_cached(); \">\n";
+			echo '<body class="tundra" onload="doRefresh(',($this->ref_config->refresh),'); clear_cached(); ">';
 		else
-			echo"<body class=\"tundra\" onload=\"clear_cached()\">\n";
+			echo '<body class="tundra" onload="clear_cached()">';
 		$this->ref_config->debug_show();
+	}
 
-		echo "<div id=\"preloader\"></div> \n";
-
-		echo "<table class=\"global\" cellspacing=\"0\" cellpadding=\"0\">\n";// table1
-		echo "  <tr class=\"global_head\">\n"; //line 1
-		echo "    <td class=\"global_head_spacer\" colspan=\"4\"></td>\n";
-		echo "  </tr>\n";
-		echo "  <tr class=\"global_head\">\n"; //line 2
-		echo "    <td height=\"33\"><img src=\"style/logo_univention.gif\" alt=\"".$this->site_title."\" width=\"180\" height=\"33\" border=\"0\"></img>\n";
-		echo "	</td>\n";
-
-		echo "    <td width=\"15\" height=\"33\"></td>\n";
-		echo "    <td width=\"100\" height=\"33\">\n";
-		if (isset($this->header_img) && ($this->header_img != "")) {
-			echo "     <img src=\"".$this->header_img."\" alt=\"\" height=\"33\" border=\"0\"></td>\n";
+	function show_headertext() {
+		echo '
+<div id="preloader"></div>
+<table class="global" cellspacing="0" cellpadding="0">
+  <tr class="global_head">
+	<td class="global_head_spacer" colspan="4"></td>
+  </tr>
+  <tr class="global_head">
+	<td height="33"><img src="style/logo_univention.gif" alt="',$this->site_title,'" width="180" height="33" border="0"></img></td>
+    <td width="15" height="33"></td>
+    <td width="100" height="33">
+';
+		if (isset($this->header_img) && ($this->header_img != '')) {
+			echo '     <img src="',$this->header_img,'" alt="" height="33" border="0"></td>
+';
 		}
-		echo "    <td width=\"722\"><span class=\"Stil2\">".$this->headertext."</span></td>\n";
-		echo "  </tr>\n";
+		echo '    <td width="722"><span class="Stil2">',$this->headertext,'</span></td>
+  </tr>
+';
+	}
 
-		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless')
-		  {
-		    echo "  <tr>\n"; //line 3
-		    echo "   <td colspan=\"4\">\n";
-		    echo "   <!-- layout is menuless -->\n";
-		    echo "    <table width=\"98%\" class=\"global_menu\" cellspacing=\"0\" cellpadding=\"0\">\n"; // table2
-		    echo "      <tr class=\"global_menu\">\n";
-		    echo "        <td class=\"global_menu_slogan\" align=\"top\">\n";
-		    echo "          <img src=\"style/slogan_whitebg.gif\" alt=\"linux for your business\" width=\"180\" height=\"29\" border=\"0\"></img>\n";
-		    echo "        </td>\n";
-		    echo "        <td align=\"right\">\n";
-		    echo "\n\n<!-- ####### info2 ####### -->\n\n";
-		    if ($this->info2 && $this->info2 != "")
+	function show_info() {
+		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless') {
+		    echo '  <tr>
+   <td colspan="4">
+   <!-- layout is menuless -->
+	<table width="98%" class="global_menu" cellspacing="0" cellpadding="0">
+	  <tr class="global_menu">
+		<td class="global_menu_slogan" align="top">
+		  <img src="style/slogan_whitebg.gif" alt="linux for your business" width="180" height="29" border="0"></img>
+		</td>
+		<td align="right">
+
+<!-- ####### info2 ####### -->
+';
+		    if ($this->info2 && $this->info2 != '') {
 		       echo $this->info2;
-		    else
+		    } else {
 		       echo "        &nbsp;&nbsp;\n";
-		    echo "\n\n<!-- ####### end of info2 ####### -->\n\n";
-		    echo "\n\n<!-- ####### info ####### -->\n\n";
-		    if ($this->info && $this->info != "")
+			}
+		    echo '
+<!-- ####### end of info2 ####### -->
+<!-- ####### info ####### -->
+';
+		    if ($this->info && $this->info != '')
 		       echo $this->info;
 		    else
-		       echo "        &nbsp;&nbsp;";
-		    echo "\n\n<!-- ####### end of info ####### -->\n\n";
+		       echo '        &nbsp;&nbsp;';
 		    # include menu-form which is called by several javascripts
-		    echo "      <form class=\"menu\" name=\"menu\" method=\"post\" action=\"$port://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php\">\n";
-		    echo "      <input type=\"hidden\" name=\"session_id\" value=\"".$this->ref_config->number."_".$this->ref_config->session_id."\"></input>\n";
-		    echo "      <input type=\"hidden\" name=\"is_js\" value=\"".$this->ref_config->is_js."\"></input>\n";
-		    echo "      </form>\n";
-		    echo "          </td>\n";
-		    echo "        </tr>\n";
-		    echo "      </table>\n"; // table2
-		    echo "     </td>\n";
-		    echo "    </tr>\n";
+		    echo '
+<!-- ####### end of info ####### -->
+	  <form class="menu" name="menu" method="post" action="',$this->port,'://',$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']),'/index.php">
+	  <input type="hidden" name="session_id" value="',$this->ref_config->number,'_',$this->ref_config->session_id,'"></input>
+	  <input type="hidden" name="is_js" value="',$this->ref_config->is_js,'"></input>
+	  </form>
+		  </td>
+		</tr>
+	  </table>
+	 </td>
+	</tr>
+';
 		  }
 		else
 		  {
-		    echo "  <tr>\n"; //line 3
-		    echo "    <td class=\"global_left\" >\n";
-		    echo "      <table class=\"global_menu\" cellspacing=\"0\" cellpadding=\"0\">\n"; // table2
-		    echo "      <tr class=\"global_menu\">\n";
-		    echo "        <td colspan=\"2\" class=\"global_menu_slogan\"><img src=\"style/slogan.gif\" alt=\"linux for your business\" width=\"180\" height=\"29\" border=\"0\"></img></td>\n";
-		    echo "        </tr>\n";
-		    echo "      <tr>\n";
-		    echo "        <td width=\"35\" height=\"25\" class=\"global_menu\">&nbsp;</td>\n";
-		    echo "        <td width=\"145\" class=\"global_menu\">&nbsp;</td>\n";
-		    echo "      </tr>\n";
-		    echo "      <tr>\n";
-		    echo "        <td height=\"20\" class=\"global_menu\"></td>\n";
-		    echo "        <td class=\"global_menu\"></td>\n";
-		    echo "      </tr>\n";
-		    echo "      <tr>\n";
-		    echo "        <td class=\"global_menu_left\"></td>\n";
-		    echo "        <td class=\"global_menu_right\">\n";
+		    echo '  <tr>
+	<td class="global_left" >
+	  <table class="global_menu" cellspacing="0" cellpadding="0">
+	  <tr class="global_menu">
+		<td colspan="2" class="global_menu_slogan"><img src="style/slogan.gif" alt="linux for your business" width="180" height="29" border="0"></img></td>
+		</tr>
+	  <tr>
+		<td width="35" height="25" class="global_menu">&nbsp;</td>
+		<td width="145" class="global_menu">&nbsp;</td>
+	  </tr>
+	  <tr>
+		<td height="20" class="global_menu"></td>
+		<td class="global_menu"></td>
+	  </tr>
+	  <tr>
+		<td class="global_menu_left"></td>
+		<td class="global_menu_right">
 
-		    echo "\n\n<!-- ####### menu ####### --> \n\n";
-		    echo "      <form class=\"menu\" name=\"menu\" method=\"post\" action=\"$port://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php\">\n";
-		    echo "      <table class=\"menu\" cellspacing=\"0\" cellpadding=\"0\">\n"; //table3
+<!-- ####### menu ####### -->
 
-		    echo $this->menu;
-		    echo "\n\n<!-- ####### end of menu ####### -->\n\n";
+	  <form class="menu" name="menu" method="post" action="',$this->port,'://',$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']),'/index.php">
+	  <table class="menu" cellspacing="0" cellpadding="0">
+',$this->menu,'
 
-		    echo "        <tr><td colspan=\"3\">\n";
-		    echo "\n\n<!-- ####### info ####### -->\n\n";
-		    echo "        <br><br>\n";
-		    echo $this->info;
-		    echo "\n\n<!-- ####### end of info ####### -->\n\n";
-		    echo "\n\n<!-- ####### info2 ####### -->\n\n";
-		    echo "        <br><br>\n";
-		    echo $this->info2;
-		    echo "\n\n<!-- ####### end of info2 ####### -->\n\n";
-		    echo "        </td></tr>\n";
-		    echo "        <tr><td colspan=\"3\" class=\"menu_spacer\">\n";
-		    echo "        </td></tr>";
+<!-- ####### end of menu ####### -->
 
-		    echo "        </table>\n"; // table3
-		    echo "      <input type=\"hidden\" name=\"session_id\" value=\"".$this->ref_config->number."_".$this->ref_config->session_id."\"></input>\n";
-		    echo "      <input type=\"hidden\" name=\"is_js\" value=\"".$this->ref_config->is_js."\"></input>\n";
-		    echo "      </form>\n";
-		    echo "      </td></tr>\n";
-		    echo "      <tr><td colspan=\"3\" class=\"menu_foot\">&nbsp;</td></tr>";
-		    echo "      </table>\n"; // table2
-		    echo "	</td>\n";
+		<tr><td colspan="3">
+
+<!-- ####### info ####### -->
+		<br><br>',$this->info,'
+
+<!-- ####### end of info ####### -->
+
+<!-- ####### info2 ####### -->
+		<br><br>',$this->info2,'
+<!-- ####### end of info2 ####### -->
+		</td></tr>
+		<tr><td colspan="3" class="menu_spacer">
+		</td></tr>
+
+	</table>
+    <input type="hidden" name="session_id" value="',$this->ref_config->number,'_',$this->ref_config->session_id,'"></input>
+	<input type="hidden" name="is_js" value="',$this->ref_config->is_js,'"></input>
+	</form>
+	</td></tr>
+	<tr><td colspan="3" class="menu_foot">&nbsp;</td></tr>
+	</table>
+	</td>
+';
 		  }
+	}
 
+	function show_header() {
 		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless')
 		  {
-		    echo "    <tr><td colspan=\"4\" valign=\"top\">\n";
-		    echo "    <table class=\"global_content_menuless\" cellpadding=\"0\" cellspacing=\"0\">\n"; // table2
+		    echo '    <tr><td colspan="4" valign="top">
+    <table class="global_content_menuless" cellpadding="0" cellspacing="0">
+';
 		  }
 		else
 		  {
-		    echo "    <td colspan=\"3\" valign=\"top\">\n";
-		    echo "    <table class=\"global_content\" cellpadding=\"0\" cellspacing=\"0\">\n"; // table2
+		    echo '    <td colspan="3" valign="top">
+    <table class="global_content" cellpadding="0" cellspacing="0">
+'; // table2
 		  }
-		echo "      <tr>\n";
-		echo "        <td class=\"gc_small_spacer\"></td>\n";
-		echo "        <td class=\"gc_wide_spacer\"></td>\n";
-		echo "        <td class=\"gc_small_spacer\"></td>\n";
-		echo "      </tr>\n";
+		echo '      <tr>
+		<td class="gc_small_spacer"></td>
+		<td class="gc_wide_spacer"></td>
+		<td class="gc_small_spacer"></td>
+	  </tr>
 
-		echo "      <tr><td></td>\n";
-		echo "      <td colspan=\"2\" valign=\"top\">\n";
-		echo"\n\n<!-- ####### pre-content ####### -->\n\n";
+	  <tr><td></td>
+	  <td colspan="2" valign="top">
+<!-- ####### pre-content ####### -->
+';
 		$this->header=trim($this->header);
 
 		if($this->header)
-		  echo "<div class=\"header\">".$this->header."</div>\n";
+			echo "<div class=\"header\">",$this->header,"</div>\n";
 
-		echo"<form class=\"content\" name=\"content\" method=\"post\" enctype=\"multipart/form-data\" action=\"$port://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php\">\n";
-		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless')
-		  {
+		echo "<form class=\"content\" name=\"content\" method=\"post\" enctype=\"multipart/form-data\" action=\"",$this->port,"://",$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']),"/index.php\">\n";
+		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless') {
 		    echo "    <table class=\"global\"><tr><td width=\"20\" height=\"100\"></td><td>\n";
-		  }
+		}
+	}
 
-		echo"\n\n<!-- ####### content ####### -->\n\n";
-		echo $this->content;
-		echo"\n\n<!-- ####### end of content ####### -->\n\n";
+	function show_content() {
+		echo '
+<!-- ####### content ####### -->
+',$this->content,'
+<!-- ####### end of content ####### -->
+';
 
-		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless')
-		  {
+	}
+
+	function show_end() {
+		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless') {
 		    echo "\n    </td></tr></table>\n";
-		  }
+		}
 
-		echo"<input type=\"hidden\" name=\"session_id\" value=\"".$this->ref_config->number."_".$this->ref_config->session_id."\"></input>\n";
-		echo"<input type=\"hidden\" name=\"is_js\" value=\"".$this->ref_config->is_js."\"></input>\n";
-		echo"</form>\n";
+		echo '<input type="hidden" name="session_id" value="',$this->ref_config->number,'_',$this->ref_config->session_id,'"></input>
+<input type="hidden" name="is_js" value="',$this->ref_config->is_js,'"></input>
+</form>
 
-		echo "      </td></tr>\n";
-		echo "     </table>\n"; // table2
-		echo "   </td></tr>\n"; //end line 3
-		echo "\n";
-		echo "</table>\n"; // table1
+	  </td></tr>
+	 </table>
+   </td></tr>
 
-                echo"\n\n<!-- ####### cache-control ####### -->\n\n ";
-                echo"<form name=\"cache\" method=\"post\" action=\"\">";
-                echo"<input type=\"hidden\" value=\"\" name=\"cache\"></input>";
-                echo"</form>";
-                echo"\n\n<!-- ####### end of cache-control ####### -->\n\n ";
+</table>
 
-		echo "<p>&nbsp;</p>\n";
-		echo "<p>&nbsp;</p>\n";
-		echo "</body>\n";
-		echo "</html>\n";
+<!-- ####### cache-control ####### -->
 
+<form name="cache" method="post" action="">
+<input type="hidden" value="" name="cache"></input>
+</form>
+<!-- ####### end of cache-control ####### -->
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>
+';
+	}
+
+	function show(){
+		$this->ref_config->debug_put('HTML: '.(strlen($this->menu)+strlen($this->content)+strlen($this->info)).' Byte');
+		$this->show_head();
+		$this->show_headertext();
+		$this->show_info();
+		$this->show_header();
+		$this->show_content();
+		$this->show_end();
 	}
 }
 

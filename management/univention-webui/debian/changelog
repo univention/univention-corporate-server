@@ -1,3 +1,10 @@
+univention-webui (3.0.1-1) unstable; urgency=low
+
+  * first step in enhancing the performance of the PHP frontend.
+    Bug #8994
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 19 Jun 2009 16:46:04 +0200
+
 univention-webui (3.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
