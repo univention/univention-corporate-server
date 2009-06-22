@@ -7,6 +7,8 @@ set base_path    @%@repository/mirror/basepath@%@
 # set defaultarch  <running host architecture>
 set nthreads     @%@repository/mirror/threads@%@
 
+set recreate_packages @%@repository/mirror/recreate_packages@%@
+
 @!@
 import copy
 import sys
@@ -15,15 +17,20 @@ from univention.updater import UniventionMirror, UCS_Version
 
 try:
 	mirror = UniventionMirror()
-	start = configRegistry.get( 'repository/mirror/version/start', '%s.0-0' % mirror.version_major )
-	end = configRegistry.get( 'repository/mirror/version/end', None )
-	if start:
-		start = UCS_Version( start )
-	if end:
-		end = UCS_Version( end )
-	print mirror.print_version_repositories( clean = True, dists = True, start = copy.copy( start ), end = copy.copy( end ) )
-	print mirror.print_security_repositories( clean = True, start = copy.copy( start ), end = copy.copy( end ), all_security_updates = True )
-	print mirror.print_component_repositories( clean = True )
+	if mirror.online_repository in ['false', '0', 'no', 'disabled']:
+		print '# The mirror mode is disabled and can be enabled with:'
+		print '#   univention-config-registry set repository/mirror=true'
+		print ''
+	else:
+		start = configRegistry.get( 'repository/mirror/version/start', '%s.0-0' % mirror.version_major )
+		end = configRegistry.get( 'repository/mirror/version/end', None )
+		if start:
+			start = UCS_Version( start )
+		if end:
+			end = UCS_Version( end )
+		print mirror.print_version_repositories( clean = True, dists = True, start = copy.copy( start ), end = copy.copy( end ) )
+		print mirror.print_security_repositories( clean = True, start = copy.copy( start ), end = copy.copy( end ), all_security_updates = True )
+		print mirror.print_component_repositories( clean = True )
 except:
 	print '# An error occurred during the repository check. The error message:'
 	print '#   %s: %s' % sys.exc_info()[:2]

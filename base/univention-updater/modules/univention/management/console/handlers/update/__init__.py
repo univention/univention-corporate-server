@@ -350,9 +350,14 @@ class handler(umch.simpleHandler):
 		_d = ud.function('update.handler.install_release_updates')
 
 
-		(returncode, returnstring) = self.__create_at_job('univention-updater net --updateto %s' % self.next_release_update)
+		if self.updater.configRegistry.get('update/umc/nextversion', 'true').lower() in ['false', 'disabled', '0', 'no']:
+			(returncode, returnstring) = self.__create_at_job('univention-updater net')
+			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-updater net')
+		else:
+			(returncode, returnstring) = self.__create_at_job('univention-updater net --updateto %s' % self.next_release_update)
+			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-updater net --updateto %s' % self.next_release_update)
+
 		self.logfile = '/var/log/univention/updater.log'
-		ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-updater net --updateto %s' % self.next_release_update)
 
 		if returncode != 0:
 			self.finished(object.id(), None, returnstring, success = False)
@@ -398,7 +403,7 @@ class handler(umch.simpleHandler):
 			frame_info = umcd.Frame( [ list_info ], _( 'Important Information' ) )
 			list_info.add_row( [ umcd.InfoBox( _( 'The system has been updated to a newer version of UCS. It is suggested that the system should be rebooted after the update. This has not been done yet.' ), columns = 2 ) ] )
 			cmd = umcp.Command( args = [ 'reboot/do' ], opts = { 'action' : 'reboot', 'message' : _( 'Rebooting the system after an update' ) } )
-			list_info.add_row( [ '', umcd.Button( _( 'Reboot System' ), 'actions/ok', actions = [ umcd.Action( cmd ) ] ) ] )
+			list_info.add_row( [ '', umcd.Button( _( 'Reboot system' ), 'actions/ok', actions = [ umcd.Action( cmd ) ] ) ] )
 		#### UCS Releases
 		list_release = umcd.List()
 
@@ -413,10 +418,12 @@ class handler(umch.simpleHandler):
 		btn_install_sec_update = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
 
 		if self.__is_updater_running():
-			list_release.add_row([umcd.Text(_('The Update is still in process')), btn_install_release_update])
+			self.logfile = '/var/log/univention/updater.log'
+			list_release.add_row([umcd.Text(_('The update is still in progress')), btn_install_release_update])
 
 		elif self.__is_security_update_running():
-			list_release.add_row([umcd.Text(_('The Update is still in process')), btn_install_sec_update])
+			self.logfile = '/var/log/univention/security-updates.log'
+			list_release.add_row([umcd.Text(_('The update is still in progress')), btn_install_sec_update])
 
 		else:
 			req = umcp.Command(args=['update/release_settings'])
@@ -534,12 +541,12 @@ class handler(umch.simpleHandler):
 
 		if self.__is_updater_running() or self.__is_security_update_running():
 			log = res.dialog
-			html = '<h2>' + _('The updater is still in process.') + '</h2>' + '<pre>' + _('Please be patient the update may take a while. Press the refresh button to see the latest log.') + '</pre>' + '<body>' + self.__remove_status_messages(log) + '</body>'
+			html = '<h2>' + _('The update is still in progress.') + '</h2>' + '<pre>' + _('Please be patient the update may take a while. Press refresh button to see the latest log output.') + '</pre>' + '<body>' + self.__remove_status_messages(log) + '</body>'
 			result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
 			btn_refresh = umcd.Button(_('Refresh'), 'actions/refresh', actions = [umcd.Action(self.__get_logfile_request( self.logfile ))])
 			result.add_row([ btn_refresh, umcd.CloseButton()])
 		else:
-			html = '<h2>' + _('The updater finished.') + '</h2>'
+			html = '<h2>' + _('The update has been finished.') + '</h2>'
 			log = res.dialog
 			html +=  '<body>' + self.__remove_status_messages(log) + '</body>'
 			result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
@@ -771,7 +778,7 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 		req.set_flag('web:startup_cache', False)
 		req.set_flag('web:startup_dialog', True)
 		req.set_flag('web:startup_referrer', False)
-		req.set_flag('web:startup_format', _('Show the update process'))
+		req.set_flag('web:startup_format', _('Show the update progress'))
 
 		return req
 

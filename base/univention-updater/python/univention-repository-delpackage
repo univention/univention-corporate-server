@@ -83,7 +83,7 @@ if __name__ == '__main__':
 	baseConfig=univention_baseconfig.baseConfig()
 	baseConfig.load()
 
-	if not baseConfig.has_key('local/repository') and (baseConfig['local/repository'] == 'no' or baseConfig['local/repository'] == 'false'):
+	if baseConfig.get('local/repository', 'no').lower() in [ 'no', 'false' ]:
 		print >> sys.stderr, 'Error: The local repository is diabled. Use "univention-config-registry set local/repository=yes" to activate local repository'
 		sys.exit(1)
 

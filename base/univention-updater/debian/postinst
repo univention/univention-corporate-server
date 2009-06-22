@@ -47,10 +47,11 @@ if [ "$1" = "configure" ]; then
 		/usr/lib/univention-directory-policy/univention-policy-maintenance
 	fi
 	# coloured warning in univention-maintenance
-	univention-baseconfig set update/warning?"no"
-	univention-baseconfig set update/warning/coloured?"no"
-	univention-baseconfig set update/warning/lang?"default"
-	univention-baseconfig set update/warning/tty?"/dev/tty1 /dev/tty2 /dev/tty3 /dev/tty4 /dev/tty5 /dev/tty6 /dev/tty7"
+	univention-config-registry	set update/warning?"no" \
+								set update/warning/coloured?"no" \
+								set update/warning/lang?"default" \
+								set update/warning/tty?"/dev/tty1 /dev/tty2 /dev/tty3 /dev/tty4 /dev/tty5 /dev/tty6 /dev/tty7" \
+								set update/umc/nextversion?true 
 
 fi
 
@@ -99,6 +100,7 @@ univention-config-registry set	repository/online?no \
 								repository/online/unmaintained?no \
 								repository/online/hotfixes?no \
 								repository/mirror/threads?10 \
+								repository/mirror/recreate_packages?yes \
 								repository/mirror/basepath?/var/lib/univention-repository
 
 # set the repository server
@@ -142,4 +144,5 @@ if [ -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.73-0; then
 		done
 	fi
 fi
+
 exit 0

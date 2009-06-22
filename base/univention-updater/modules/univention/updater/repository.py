@@ -83,6 +83,11 @@ def copy_package_files( source_dir, dest_dir ):
 				shutil.copy2( src, dest )
 			except shutil.Error, e:
 				print >> sys.stderr, "Copying package '%s' failed." % filename
+		if filename in ['preup.sh', 'postup.sh']:
+			src = os.path.join( source_dir, filename )
+			dest = os.path.join( dest_dir, 'all', filename )
+			shutil.copy2( src, dest )
+			
 
 def update_indexes( base_dir, update_only = False, dists = False, stdout = None, stderr = None ):
 	# redirekt output

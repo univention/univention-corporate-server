@@ -37,12 +37,21 @@ fi
 
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes dist-upgrade >>/var/log/univention/updater.log 2>&1
 
-update-initramfs -u -k all >>/var/log/univention/updater.log 2>&1
+if [ -x /usr/sbin/update-initramfs ]; then
+	update-initramfs -u -k all >>/var/log/univention/updater.log 2>&1
+fi
 
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update
-dpkg-statoverride --remove /usr/sbin/univention-management-console-server
-dpkg-statoverride --remove /usr/sbin/apache2
-chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
+if [-e /usr/sbin/univention-management-console-server ]; then
+	dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
+	chmod +x /usr/sbin/univention-management-console-server
+fi
+if [ -e /usr/sbin/apache2 ]; then
+	dpkg-statoverride --remove /usr/sbin/apache2 >/dev/null 2>&1
+	chmod +x /usr/sbin/apache2
+fi
+
+univention-config-registry unset repository/local/old >>/var/log/univention/updater.log 2>&1
 
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list

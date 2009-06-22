@@ -116,7 +116,7 @@ class UniventionMirror( UniventionUpdater ):
 			if not os.path.exists( path ):
 				os.makedirs( path )
 
-		return subprocess.call( '/usr/bin/apt-mirror', shell = True )
+		return subprocess.call( '/usr/bin/apt-mirror >>/var/log/univention/repository.log', shell = True )
 
 	def mirror_update_scripts( self ):
 		'''mirrors the preup.sh and postup.sh scripts'''
