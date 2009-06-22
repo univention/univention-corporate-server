@@ -34,6 +34,7 @@ import univention.debug as ud
 import re
 import os
 import httplib, base64, string
+import socket
 import subprocess
 import univention.config_registry
 
@@ -102,26 +103,21 @@ class UniventionUpdater:
 		self.configRegistry=univention.config_registry.ConfigRegistry()
 		self.configRegistry.load()
 
-		# check availability of at least one nameserver
-		# set flag self.nameserver_available to inform open_connection 
+		# check availability of the repository server
 		self.nameserver_available=False
-		check_nameserver_cmd='/usr/bin/host -W%s 127.0.0.1 %s | grep -q "no servers could be reached"'
-		nstimeout=self.configRegistry.get('nameserver/option/timeout', 3)
-		for i in range(1,4):
-			ns=self.configRegistry.get('nameserver%s' % i)
-			if ns:
-				returncode = subprocess.call(check_nameserver_cmd % (nstimeout, ns), shell=True)
-				if returncode == 1:
-					self.nameserver_available=True
-					break
-
+		try:
+			socket.gethostbyname(self.configRegistry.get('repository/online/server', 'apt.univention.de'))
+			self.nameserver_available=True
+		except:
+			pass
+					
 		self.ucr_reinit()
 
 	# TODO set default value of the variable port to "self.repository_port"
 	def open_connection(self, server=None, port=None):
 
 		if not self.nameserver_available:
-			raise 'UniventionUpdater', 'No nameserver could be reached'
+			raise 'UniventionUpdater', 'The repository server %s could not be reached.' % (self.configRegistry.get('repository/online/server', 'apt.univention.de'))
 
 		if self.proxy and self.proxy != '':
 			if server:
@@ -217,7 +213,7 @@ class UniventionUpdater:
 			self.repository_prefix = ''
 			pass
 
-	def net_path_exists (self, path, server='', port='', prefix='', username='', password=''):
+	def net_path_exists (self, path, server='', port='', prefix='', username='', password='', debug=False):
 		# path MUST NOT contain the schema and hostname
 		proxy_headers = self.open_connection(server=server, port=port)
 		if server: #if we use a diffrent server we should also use a diffrent prefix
@@ -253,6 +249,18 @@ class UniventionUpdater:
 		if response.status == 200:
 			self.close_connection()
 			return True
+
+		if debug:
+			if response.status == 404:
+				print '# The site http://%s%s was not found' % (server, site)
+			elif response.status == 401:
+				if username and password:
+					print '# Authentication failure for http://%s:%s@%s%s' % (username, password, server, site)
+				else:
+					print '# Username and password are requiered for http://%s%s' % (server, site)
+			else:
+				print '# The http error code (%d) was returned for the site http://%s%s' % (response.status, server, site)
+
 
 		self.close_connection()
 		return False
@@ -530,8 +538,11 @@ class UniventionUpdater:
 			if clean:
 				clean = self.configRegistry.get( 'repository/online/component/%s/clean' % component, False )
 
-			# check for prefix on component repository server (if the repository server is reachable)
-			if not repository_prefix:
+			# allow None as a component prefix
+			if repository_prefix.lower() == 'None':
+				repository_prefix = ''
+			elif not repository_prefix:
+				# check for prefix on component repository server (if the repository server is reachable)
 				try:
 					if self.net_path_exists( '/univention-repository/', server = repository_server, port = repository_port, username = username, password = password ):
 						repository_prefix = 'univention-repository'
@@ -549,13 +560,13 @@ class UniventionUpdater:
 						auth_string = '%s:%s@' % (username, password)
 					#2.0/maintained/component/
 					path = '/%s/%s/component/%s/' % ( version, part, component )
-					if not self.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password):
+					if not self.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password, debug=True):
 						continue
 					printed = False
 
 					# support a diffrent repository
 					path = '/%s/%s/component/%s/Packages.gz' % ( version, part, component )
-					if self.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password):
+					if self.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password, debug=True):
 						if repository_prefix:
 							path = 'http://%s%s/%s/%s/%s/component/%s/' % ( auth_string, repository_server, repository_prefix, version, part, component)
 						else:
@@ -567,7 +578,7 @@ class UniventionUpdater:
 					else:
 						for arch in ['all', 'extern'] + self.architectures:
 							path = '/%s/%s/component/%s/%s/' % ( version, part, component, arch )
-							if not self.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password):
+							if not self.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password, debug=True):
 								continue
 							printed = True
 							if repository_prefix:

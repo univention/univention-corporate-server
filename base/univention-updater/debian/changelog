@@ -1,3 +1,46 @@
+univention-updater (4.0.74-1) unstable; urgency=low
+
+  * fixed a python traceback in the policy maintenance script which
+    occurs when no cron time was definied. Bug #9652
+  * added a ucr variable for recreate_packages in the mirror.list
+    (repository/mirror/recreate_packages). Bug #13947
+  * redirect the repository update messages to the logfile
+    (/var/log/univention/repository.log). Bug #13951
+  * unset repository/local/old after the upgrade because the variable is
+    no longer needed. Bug #13958
+  * observe repository/mirror during the creation of
+    /etc/apt/mirror.list. Bug #14512
+  * if the repository component prefix is set to None no repository
+    prefix will be used. Bug #14001
+  * fixed the repository/local check in univention-repository-
+    (addpackage|delpackage). Bug #14510
+  * in univention-repository-migrate check if the repository already
+    exists. Bug #14258
+  * in postup.sh check if update-initramfs exists. Bug #13620
+  * catch an exception in univention-updater and univention-security
+    update if the repository server could not be reached. Bug #13696
+  * create the default umc container in the join script. This is
+    necessary if UMC is not instealled. Bug #14175
+  * copy preup.sh and postup.sh from the dvd in univention-repository-
+    create. Bug #14535
+  * if the ucs system uses dhcp the nameserver ucr variables might be
+    empty. Starting from now we are checking the name server availability
+    with the python function socket.gethostbyname(). Bug 14561
+  * added a check in the pre- and postup.sh scripts if /usr/sbin/apache2
+    and /usr/sbin/univention-management-console really exist before
+    changing the permissions of these files. Bug #14584
+  * write some status lines into the sources.list.d/20_ucs-online-
+    component.list for example if the authentication failed. Bug #14574
+  * fixed a traceback in the UMC updater module which occurs when the
+    update was started at the command line and after that the UMC module
+    was called. Bug #13994
+  * if the ucr variable updater/umc/nextversion is set to true the
+    release update will stop after the update to the next version.
+    Default is true. Bug #14302
+  * fixed some translation errors. Bug #14695 and Bug #14672
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 22 Jun 2009 15:17:51 +0200
+
 univention-updater (4.0.73-1) unstable; urgency=low
 
   * copy the pre- and postup.sh scripts during the repository update via

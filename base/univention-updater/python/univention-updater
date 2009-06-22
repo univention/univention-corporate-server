@@ -39,6 +39,8 @@ import getopt
 import tempfile
 import shutil
 import subprocess
+import traceback
+import socket
 
 import univention_baseconfig
 
@@ -275,7 +277,19 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 	elif mode == 'net':
 		updater = UniventionUpdater()
 
-		nextversion = updater.release_update_available()
+		try:
+			nextversion = updater.release_update_available()
+		except socket.gaierror, msg:
+			dprint(traceback.format_exc ())
+
+			code, message = msg
+
+			if code == socket.EAI_NONAME:
+				dprint('Error: The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a diffrent value.' % (updater.repository_server), [ sys.stdout, stdout ])
+			else:
+				dprint('Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile /var/log/univention/updater.log' % (updater.repository_server), [ sys.stdout, stdout ])
+
+			sys.exit( 1 )
 
 		dprint('Nextupdate: [%s]' % nextversion)
 

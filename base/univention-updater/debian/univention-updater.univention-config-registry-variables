@@ -59,3 +59,8 @@ Description[en]=Terminals on which the update warning is displayed
 Type=str
 Categories=System
 
+[update/umc/nextversion]
+Description[de]=Das Release Update per UMC wird nach der Aktualisierung auf die nächste Version angehalten
+Description[en]=The release update via UMC will stop after the update to the next version
+Type=boolean
+Categories=System

@@ -43,13 +43,17 @@ eval `univention-baseconfig shell`
 
 # umc module
 
-# create CUPS operations
+univention-admin container/cn create $@ --ignore_exists --position cn=univention,$ldap_base --set name=console
+univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=acls
+univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations
+
+# create Updater operations
 univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
 																				 --set name=update \
 																				 --set description="Updater operations" \
 																				 --append operation="update/*" \
 
-# create CUPS acls
+# create Updater acls
 univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
 																				 --set name=update-all \
 																				 --set category="Updater" \

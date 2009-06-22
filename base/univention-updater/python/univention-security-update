@@ -35,6 +35,8 @@ import getopt
 import univention.config_registry as ucr
 import time
 import subprocess
+import traceback
+import socket
 
 import univention.updater
 
@@ -167,7 +169,19 @@ if __name__ == '__main__':
 
 	upgraded = False
 	while True:
-		nextupdate = updater.security_update_available()
+		try:
+			nextupdate = updater.security_update_available()
+		except socket.gaierror, msg:
+			dprint(traceback.format_exc ())
+
+			code, message = msg
+      
+			if code == socket.EAI_NONAME:
+				dprint('Error: The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a diffrent value.' % (updater.repository_server), [ sys.stdout, stdout ])
+			else:
+				dprint('Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile /var/log/univention/security-update.log' % (updater.repository_server), [ sys.stdout, stdout ])
+
+			sys.exit( 1 )
 
 		# we don't want an endless loop
 		if nextupdate == upgraded:

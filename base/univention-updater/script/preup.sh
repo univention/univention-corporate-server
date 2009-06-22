@@ -70,8 +70,14 @@ if [ $? = 0 ]; then
 fi
 
 # ensure that UMC is not restarted during the update process
-dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server
-dpkg-statoverride --add root root 0644 /usr/sbin/apache2
-chmod -x /usr/sbin/univention-management-console-server /usr/sbin/apache2
+if [ -e /usr/sbin/univention-management-console-server ]; then
+	dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server >/dev/null 2>&1
+	chmod -x /usr/sbin/univention-management-console-server
+fi
+
+if [ -e /usr/sbin/apache2 ]; then
+	dpkg-statoverride --add root root 0644 /usr/sbin/apache2 >/dev/null 2>&1
+	chmod -x /usr/sbin/apache2
+fi
 
 exit 0

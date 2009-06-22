@@ -54,7 +54,7 @@ _current_version = '%s-%s' % ( configRegistry.get( 'version/version' ), configRe
 _repo_base = os.path.join( _mirror_base, 'mirror', configRegistry.get( 'version/version' ), 'maintained', '%s-0' % configRegistry.get( 'version/version' ) )
 
 def copy_repository( options, source, version ):
-	print 'Copying packages. Please be patient ...',
+	print >>options.teefile, 'Copying packages. Please be patient ...',
 	sys.stdout.flush()
 
 	version = _exp_version.match( version ).groupdict()
@@ -210,6 +210,7 @@ if __name__ == '__main__':
 	options.logfile = open('/var/log/univention/repository.log', 'a+')
 	options.stdout = sys.stdout
 	options.teefile = urepo.TeeFile( ( options.stdout, options.logfile ) )
+	sys.stdout = options.logfile
 
 	print '***** Starting univention-repository-update at %s\n' % time.ctime()
 
@@ -222,7 +223,11 @@ if __name__ == '__main__':
 		print >> options.teefile, 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0'
 		sys.exit( 1 )
 
-	print 'Mirror Source: %s' % configRegistry['repository/mirror/server']
+	repository_server = configRegistry.get('repository/mirror/server', '')
+	if not repository_server:
+		repository_server = configRegistry.get('repository/online/server', '')
+	
+	print >> options.teefile, 'Starting the repository synchronisation from %s' % repository_server
 
 	if command == 'net':
 		local_server='%s.%s' % (configRegistry['hostname'], configRegistry['domainname'])
@@ -236,8 +241,8 @@ if __name__ == '__main__':
 		update_cdrom( options )
 	else:
 		if command == 'local':
-			print >> options.teefile, 'Error: This mode is not supported anymore'
+			print >> options.teefile, 'Error: This mode is not supported anymore by univention-repository-update'
 		else:
-			print >> options.teefile, 'Error: Unknown mode %s' % command
+			print >> options.teefile, 'Error: Unknown mode %s for univention-repsitory-update' % command
 		parser.print_usage()
 		sys.exit( 1 )
