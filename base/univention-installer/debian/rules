@@ -130,7 +130,6 @@ install: build
 	install -m 755 startup-scripts/S20syslogd ${D}/lib/univention-installer-startup.d/
 	install -m 755 startup-scripts/S45loadmodules ${D}/lib/univention-installer-startup.d/
 	install -m 755 startup-scripts/S50usbhid ${D}/lib/univention-installer-startup.d/
-	install -m 755 startup-scripts/S51usbcdrom ${D}/lib/univention-installer-startup.d/
 	install -m 755 startup-scripts/S88keyboard ${D}/lib/univention-installer-startup.d/
 	install -m 755 startup-scripts/S89cciss ${D}/lib/univention-installer-startup.d/
 
