@@ -53,7 +53,7 @@ read_cmdline = False
 
 if len(sys.argv) > 1:
 
-	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'loadmodule=', 'excludemodule=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'version=', 'edition=', 'expert_partition']
+	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'loadmodule=', 'excludemodule=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'version=', 'edition=', 'expert_partition', 'nousbstorage', 'nousbcdrom']
 	try:
 		opts, args=getopt.getopt(sys.argv[1:], '', longopts)
 	except getopt.error, msg:
@@ -94,6 +94,10 @@ if len(sys.argv) > 1:
 			read_cmdline = True
 		elif opt == '--expert_partition':
 			cmdline['expert_partition'] = True
+		elif opt == '--nousbstorage':
+			cmdline['nousbstorage'] = True
+		elif opt == '--nousbcdrom':
+			cmdline['nousbcdrom'] = True
 
 if len(sys.argv) < 1 or read_cmdline:
 	f=open('/proc/cmdline', 'r')
@@ -147,6 +151,11 @@ if len(sys.argv) < 1 or read_cmdline:
 			cmdline['use_text']=True
 		elif opt == 'expert_partition':
 			cmdline['expert_partition'] = True
+		elif opt == 'nousbstorage':
+			cmdline['nousbstorage'] = True
+		elif opt == 'nousbcdrom':
+			cmdline['nousbcdrom'] = True
+
 		elif next_profile:
 			if not val:
 				cmdline['profile_file']=opt

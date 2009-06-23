@@ -1,3 +1,9 @@
+univention-installer (5.0.2-8) unstable; urgency=low
+
+  * load usb-stoarge modules at the end of 01_modules (Bug: #10246)
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Jun 2009 13:50:49 +0200
+
 univention-installer (5.0.2-7) unstable; urgency=low
 
   * more infos about locked-down setup in 50_security.py (Bug: #10103) 
