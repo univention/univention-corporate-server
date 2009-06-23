@@ -1,3 +1,9 @@
+univention-installer (5.0.2-10) unstable; urgency=low
+
+  * "load usb-stoarge modules at the end of 01_modules" typo (Bug: #10246)
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Jun 2009 14:05:12 +0200
+
 univention-installer (5.0.2-9) unstable; urgency=low
 
   * "load usb-stoarge modules at the end of 01_modules" fix (Bug: #10246)

@@ -337,18 +337,18 @@ class object(content):
 				self.sub.draw()
 		# load usb-cdrom modules
 		if not self.cmdline.get('nousbcdrom', False):
-			for m in ["sr_mod", "cdcrom"]:
+			for m in ["sr_mod"]:
 				self.sub = self.active(self,_('Loading modules'),_('Loading module %s') % m)
 				self.sub.action='loadmodule'
 				self.sub.loadmodule=m
 				self.sub.draw()
 		# load usb-storage at the end
 		if not self.cmdline.get('nousbstorage', False):
-			m="usb-storage"
-			self.sub = self.active(self,_('Loading modules'),_('Loading module %s') % m)
-			self.sub.action='loadmodule'
-			self.sub.loadmodule=m
-			self.sub.draw()
+			for m in ["usb-storage"]:
+				self.sub = self.active(self,_('Loading modules'),_('Loading module %s') % m)
+				self.sub.action='loadmodule'
+				self.sub.loadmodule=m
+				self.sub.draw()
 		if os.path.exists('/lib/univention-installer/network.sh'):
 			os.system('/lib/univention-installer/network.sh >/dev/null')
 
