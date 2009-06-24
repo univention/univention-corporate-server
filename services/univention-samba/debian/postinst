@@ -150,8 +150,14 @@ if [ "$1" = "configure" -a -n "$2" ];
 fi
 
 if [ "$1" = configure -a -z "$2" ]; then
-# only set this for new installations
+	# only set this for new installations
 	univention-config-registry set samba/autostart="no"
+	if [ "$server_role" = "domaincontroller_master" ]
+		univention-config-registry set windows/wins-support=yes
+	else
+		univention-config-registry set windows/wins-support?no
+		univention-config-registry set windows/wins-server?$ldap_master
+	fi
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.4; then
