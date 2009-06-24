@@ -1,3 +1,11 @@
+univention-server (4.0.1-1) unstable; urgency=low
+
+  * remove the handling of windows/wins* from univention-server* and set
+    windows/wins-support and windows/wins-server only during the
+    installation. Bug #14734
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Jun 2009 08:36:36 +0200
+
 univention-server (4.0.0-1) unstable; urgency=low
 
   * bumped version for UCS 2.2 (Bug #13730)

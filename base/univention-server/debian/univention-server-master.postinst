@@ -33,8 +33,6 @@ eval $(univention-baseconfig shell)
 univention-baseconfig set ldap/server/name=$hostname.$domainname
 univention-baseconfig set ldap/server/type=master
 
-univention-baseconfig set windows/wins-support=yes
-
 univention-baseconfig set server/password/interval?21
 
 if [ -n "$splash_theme" ]; then

@@ -33,9 +33,6 @@ eval `univention-baseconfig shell`
 univention-baseconfig set server/role?domaincontroller_backup
 univention-baseconfig set ldap/server/type?slave
 
-univention-baseconfig set windows/wins-support?no
-univention-baseconfig set windows/wins-server?$ldap_master
-
 univention-baseconfig set server/password/interval?21
 
 if [ -n "$splash_theme" ]; then

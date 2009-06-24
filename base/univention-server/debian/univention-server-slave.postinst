@@ -30,7 +30,6 @@
 
 eval `univention-baseconfig shell`
 
-univention-baseconfig set windows/wins-support?no
 univention-baseconfig set server/password/interval?21
 
 if [ -n "$splash_theme" ]; then

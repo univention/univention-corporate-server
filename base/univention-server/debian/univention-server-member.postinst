@@ -29,8 +29,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 univention-baseconfig set server/password/interval?21
-univention-baseconfig set windows/wins-server?no
-univention-baseconfig set windows/wins-support?no
 univention-baseconfig set samba/share/home?no
 univention-baseconfig set samba/share/netlogon?no
 
