@@ -1,3 +1,10 @@
+univention-config-registry (4.0.6-1) unstable; urgency=low
+
+  * set the default gateway in the interfaces.py UCR handler and remove
+    the old route.py handler. Bug #13648
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Jun 2009 07:16:53 +0200
+
 univention-config-registry (4.0.5-5) unstable; urgency=low
 
   * don't call gzip for nonexisent files (Bug #9261)
