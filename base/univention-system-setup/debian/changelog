@@ -1,3 +1,10 @@
+univention-system-setup (2.0.3-1) unstable; urgency=low
+
+  * use the new certificate for cups after changing hostname or domain.
+    Bug #13583
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Jun 2009 15:55:41 +0200
+
 univention-system-setup (2.0.2-3) unstable; urgency=low
 
   * updated the copyright. Bug #6875
