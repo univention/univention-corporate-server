@@ -106,6 +106,7 @@ Type: multifile
 Multifile: etc/hosts
 Variables: interfaces/eth0/type
 Variables: interfaces/eth.*/address
+Variables: interfaces/eth.*/hosts
 Variables: hostname
 Variables: domainname
 
@@ -113,8 +114,15 @@ Type: subfile
 Multifile: etc/hosts
 Subfile: etc/hosts.d/00-base
 Variables: interfaces/eth.*/address
+Variables: interfaces/eth.*/type
+Variables: interfaces/eth.*/hosts
 Variables: hostname
 Variables: domainname
+
+Type: subfile
+Multifile: etc/hosts
+Subfile: etc/hosts.d/20-static
+Variables: hosts/static/.*
 
 Type: file
 File: etc/logrotate.conf

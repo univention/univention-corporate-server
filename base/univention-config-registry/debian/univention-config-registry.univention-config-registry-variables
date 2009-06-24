@@ -130,6 +130,12 @@ Description[en]=Type of network for each network interface
 Type=str
 Categories=Network
 
+[interfaces/eth.*/hosts]
+Description[de]=Rechnername und Domänenname für diese IP-Adresse
+Description[en]=Host name and domain name for this ip address
+Type=str
+Categories=Network
+
 [interfaces/eth.*/route/.*]
 Description[de]=Zusätzliche Routen für die einzelnen Interfaces
 Description[en]=Additional routing entries for each network interface
@@ -139,6 +145,12 @@ Categories=Network
 [interfaces/eth.*/options/.*]
 Description[de]=Zusätzliche Einstellungen für die einzelnen Interfaces
 Description[en]=Additional options for each network interface
+Type=str
+Categories=Network
+
+[hosts/static/.*]
+Description[de]=Zusätzliche /etc/hosts Eintr�ge
+Description[en]=Additional entries for /etc/hosts
 Type=str
 Categories=Network
 
