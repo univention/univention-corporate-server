@@ -1,3 +1,10 @@
+univention-thin-client-cups (4.0.1-1) unstable; urgency=low
+
+  * use the device uri parallel:/dev/usb/lp0 for usb printers at the
+    thin client. Bug #10414
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Jun 2009 15:22:32 +0200
+
 univention-thin-client-cups (4.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
