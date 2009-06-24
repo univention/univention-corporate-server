@@ -1,3 +1,9 @@
+univention-samba (4.0.1-2) unstable; urgency=low
+
+  * fixed bash typo in last commit. Bug #14734
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Jun 2009 09:01:35 +0200
+
 univention-samba (4.0.1-1) unstable; urgency=low
 
   * remove the handling of windows/wins* from univention-server* and set
