@@ -1,3 +1,11 @@
+univention-maintenance (3.0.1-1) unstable; urgency=low
+
+  * Set LANG to C in univention-mrtg because mrtg will most likely not
+    work properly when the environment variable LANG is set to UTF-8.
+    Bug #11895
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Jun 2009 06:44:42 +0200
+
 univention-maintenance (3.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3

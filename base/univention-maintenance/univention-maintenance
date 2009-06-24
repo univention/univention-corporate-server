@@ -3,7 +3,7 @@
 # Univention Maintenance
 #  maintenance script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,6 +27,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# Mrtg will most likely not work properly when the environment variable
+# LANG is set to UTF-8.
+export LANG=C
 
 # Name der Konfigurationsdatei
 configfile="/etc/univention/univention-maintenance.conf"
