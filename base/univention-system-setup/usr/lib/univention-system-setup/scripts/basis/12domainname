@@ -201,6 +201,14 @@ if [ -d "/etc/univention/ssl/$hostname.$old_domainname" ]; then
 	fi
 	rm -f /etc/univention/ssl/$hostname
 	ln -sf /etc/univention/ssl/$hostname.$new_domainname /etc/univention/ssl/$hostname
+
+	if [ -d /etc/cups/ssl ]; then
+		rm -f /etc/cups/ssl/server.crt
+		ln -s /etc/univention/ssl/$hostname.$new_domainname/cert.pem /etc/cups/ssl/server.crt
+		rm -f /etc/cups/ssl/server.key
+		ln -s /etc/univention/ssl/$hostname.$new_domainname/private.key /etc/cups/ssl/server.key
+	fi
+
 fi
 
 eval $(univention-config-registry shell)

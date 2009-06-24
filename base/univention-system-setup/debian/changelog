@@ -1,3 +1,10 @@
+univention-system-setup (3.0.1-1) unstable; urgency=low
+
+  * use the new certificate for cups after changing hostname or domain.
+    Bug #13583
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Jun 2009 15:55:41 +0200
+
 univention-system-setup (3.0.0-1) unstable; urgency=low
 
   * Make init script LSB-compliant (Bug #14421)
