@@ -1,3 +1,11 @@
+univention-directory-manager (6.0.21-1) unstable; urgency=low
+
+  * remove the univention-admin and univention-directory-manager entries
+    from /etc/hosts. The lines could be restored by setting the ucr
+    variable directory/manager/hosts/compatibility to yes. Bug #5815
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Jun 2009 11:22:08 +0200
+
 univention-directory-manager (6.0.20-1) unstable; urgency=low
 
   * check the result of the select in a correct way, otherwise we got an

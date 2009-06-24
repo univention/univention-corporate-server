@@ -1,12 +1,13 @@
 @!@
-for i in range(0,4):
-	if baseConfig['interfaces/eth%s/address' % i]:
-		print '%s\tunivention-admin.%s univention-admin' % (baseConfig['interfaces/eth%s/address' % i],baseConfig['domainname'])
-		print '%s\tunivention-directory-manager.%s univention-directory-manager' % (baseConfig['interfaces/eth%s/address' % i],baseConfig['domainname'])
+if configRegistry.get('directory/manager/hosts/compatibility', 'no').lower() in [ 'true', 'yes', '1' ]:
+	for i in range(0,4):
+		if configRegistry['interfaces/eth%s/address' % i]:
+			print '%s\tunivention-admin.%s univention-admin' % (configRegistry['interfaces/eth%s/address' % i],configRegistry['domainname'])
+			print '%s\tunivention-directory-manager.%s univention-directory-manager' % (configRegistry['interfaces/eth%s/address' % i],configRegistry['domainname'])
 
-for i in range(0,4):
-	for j in range(0,4):
-		if baseConfig['interfaces/eth%s_%s/address' % (i,j)]:
-			print '%s\tunivention-admin.%s univention-admin' % (baseConfig['interfaces/eth%s_%s/address' % (i,j)],baseConfig['domainname'])
-			print '%s\tunivention-directory-manager.%s univention-directory-manager' % (baseConfig['interfaces/eth%s_%s/address' % (i,j)],baseConfig['domainname'])
+	for i in range(0,4):
+		for j in range(0,4):
+			if configRegistry['interfaces/eth%s_%s/address' % (i,j)]:
+				print '%s\tunivention-admin.%s univention-admin' % (configRegistry['interfaces/eth%s_%s/address' % (i,j)],configRegistry['domainname'])
+				print '%s\tunivention-directory-manager.%s univention-directory-manager' % (configRegistry['interfaces/eth%s_%s/address' % (i,j)],configRegistry['domainname'])
 @!@
