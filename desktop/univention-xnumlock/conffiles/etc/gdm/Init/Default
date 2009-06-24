@@ -39,6 +39,6 @@ if command -v setxkbmap > /dev/null 2>&1; then
   fi
 fi
 
-xnumlock
+numlockx
 
 exit 0

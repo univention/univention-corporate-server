@@ -1,3 +1,9 @@
+univention-xnumlock (4.0.1-1) unstable; urgency=low
+
+  * switch to numlockx. Bug #14173
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Jun 2009 14:57:25 +0200
+
 univention-xnumlock (4.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
