@@ -1,3 +1,9 @@
+univention-updater (5.0.3-1) unstable; urgency=low
+
+  * added at to the univention-updater dependency list. Bug #14694
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Jun 2009 08:19:35 +0200
+
 univention-updater (5.0.2-1) unstable; urgency=low
 
   * fixed a python traceback in the policy maintenance script which
