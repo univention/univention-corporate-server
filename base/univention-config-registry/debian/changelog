@@ -1,3 +1,12 @@
+univention-config-registry (5.0.3-1) unstable; urgency=low
+
+  * added ucr variables for static lines in /etc/hosts, for example 'ucr
+    set hosts/static/192.168.1.1=test.local test'. Bug #14285
+  * added the ucr variable interfaces/eth.*/hosts to define /etc/hosts
+    entries for this interface. Bug #13371
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Jun 2009 11:35:39 +0200
+
 univention-config-registry (5.0.2-1) unstable; urgency=low
 
   * set the default gateway in the interfaces.py UCR handler and remove

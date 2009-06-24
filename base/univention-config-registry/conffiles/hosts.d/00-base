@@ -19,11 +19,15 @@ else:
 
 for i in range(0,4):
 	if configRegistry['interfaces/eth%s/address' % i]:
-		print '%s\t%s.%s %s' % (configRegistry['interfaces/eth%s/address' % i],configRegistry['hostname'],configRegistry['domainname'],configRegistry['hostname'])
+		name = configRegistry.get('interfaces/eth%s/hosts' % (i), '%s.%s %s' % (configRegistry['hostname'],configRegistry['domainname'],configRegistry['hostname']))
+		if name:
+			print '%s\t%s' % (configRegistry['interfaces/eth%s/address' % i],name)
 
 for i in range(0,4):
 	for j in range(0,4):
 		if configRegistry['interfaces/eth%s_%s/address' % (i,j)]:
-			print '%s\t%s.%s %s' % (configRegistry['interfaces/eth%s_%s/address' % (i,j)],configRegistry['hostname'],configRegistry['domainname'],configRegistry['hostname'])
+			name = configRegistry.get('interfaces/eth%s_%s/hosts' % (i,j), '%s.%s %s' % (configRegistry['hostname'],configRegistry['domainname'],configRegistry['hostname']))
+			if name:
+				print '%s\t%s' % (configRegistry['interfaces/eth%s_%s/address' % (i,j)],name)
 
 @!@
