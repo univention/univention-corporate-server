@@ -7,7 +7,7 @@ XS-Python-Version: all
 
 Package: univention-updater
 Architecture: all
-Depends: python, dpkg-dev, univention-config-registry | univention-baseconfig, univention-directory-policy | univention-ldap-policy, univention-security-update, netcat, wget, apt-mirror
+Depends: python, dpkg-dev, univention-config-registry | univention-baseconfig, univention-directory-policy | univention-ldap-policy, univention-security-update, netcat, wget, apt-mirror, at
 XB-Python-Version: ${python:Versions}
 Description: UCS - system upgrading tool
  Univention Updater can upgrade your version of UCS.
