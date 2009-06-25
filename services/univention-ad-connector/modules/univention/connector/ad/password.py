@@ -244,7 +244,7 @@ def password_sync(connector, key, ucs_object):
 		ntPwd = data[:32]
 		lmPwd = data[32:]
 		modlist=[]
-		res=connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdMustChange', 'sambaPwdLastSet','sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName'])
+		res=connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdMustChange', 'sambaPwdLastSet','sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd'])
 
 		if res[0][1].has_key('sambaLMPassword') and res[0][1].has_key('sambaNTPassword'):
 			ntPwd_ucs = res[0][1]['sambaNTPassword'][0]
@@ -272,6 +272,15 @@ def password_sync(connector, key, ucs_object):
 								[(ldap.MOD_REPLACE, 'krb5Key', nt_password_to_arcfour_hmac_md5(ntPwd.upper()))])
 			connector.lo.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']),
 							[(ldap.MOD_REPLACE, 'userPassword', lm_password_to_user_password(lmPwd.upper()))])
+		if pwd_changed:
+			# Remove the POSIX and Kerberos password expiry interval
+			if res[0][1].has_key('shadowLastChange'):
+				modlist.append(('shadowLastChange', res[0][1]['shadowLastChange'][0], None))
+			if res[0][1].has_key('shadowMax'):
+				modlist.append(('shadowMax', res[0][1]['shadowMax'][0], None))
+			if res[0][1].has_key('krb5PasswordEnd'):
+				modlist.append(('krb5PasswordEnd', res[0][1]['krb5PasswordEnd'][0], None))
+
 		if pwdLastSet or pwdLastSet == 0:
 			newSambaPwdMustChange = sambaPwdMustChange
 			if pwdLastSet == 0: # pwd change on next login
