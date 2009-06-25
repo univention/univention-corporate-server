@@ -33,5 +33,5 @@ import os
 def handler(configRegistry, changes):
 	for keymap in set(changes):
 		if configRegistry.has_key(keymap):
-			os.system('/usr/sbin/install-keymap %s' % keymap)
+			os.system('/usr/sbin/install-keymap %s' % configRegistry[keymap])
 
