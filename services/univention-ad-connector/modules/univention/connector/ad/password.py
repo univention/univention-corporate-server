@@ -90,7 +90,12 @@ def set_password_in_ad(connector, samaccountname, pwd):
 	_append ( a, univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0] )
 	_append ( a, connector.lo_ad.bindpw )
 	a.append ( 'S' )
-	_append ( a, compatible_modstring(samaccountname) )
+
+	# The copypwd utility on the windows side needs the
+	# username as iso8859 string. See Bug #8516
+	# _append ( a, compatible_modstring(samaccountname) )
+	_append ( a, samaccountname.encode(connector.baseConfig.get('connector/password/service/encoding', 'iso8859-15')))
+
 	_append ( a, str(pwd) )
 	package = array.array('c')
 	_append_array( package, a)

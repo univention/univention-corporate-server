@@ -105,3 +105,9 @@ Description[de]=Pfad zum SSL-Zertifikat des Active Directory Servers.
 Description[en]=
 Type=str
 Categories=AD-Connector
+
+[connector/password/service/encoding]
+Description[de]=Erwartetes Encoding des Passwortdienstes unter Windows für den Benutzernamen
+Description[en]=
+Type=str
+Categories=AD-Connector
