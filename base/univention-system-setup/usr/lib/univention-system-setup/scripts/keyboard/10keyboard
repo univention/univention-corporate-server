@@ -31,7 +31,7 @@
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 
-keymap=`get_profile_var keymap`
+keymap=`get_profile_var locale/keymap`
 
 if [ -z "$keymap" ]; then
 	exit 0

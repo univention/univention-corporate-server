@@ -1,3 +1,10 @@
+univention-system-setup (3.0.3-1) unstable; urgency=low
+
+  * read the correct ucr variable from the system setup profile. Bug
+    #9833
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Jun 2009 07:16:24 +0200
+
 univention-system-setup (3.0.2-1) unstable; urgency=low
 
   * use the ucr variable locale/keymap for storing the keyboard layout.
