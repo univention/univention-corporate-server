@@ -1,3 +1,9 @@
+univention-nagios (2.0.6-1) unstable; urgency=low
+
+  * added NRPE service to UMC service module (Bug: #11143)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 25 Jun 2009 11:42:34 +0200
+
 univention-nagios (2.0.5-1) unstable; urgency=low
 
   * do not crash if history file is corrupt (Bug: #10363)

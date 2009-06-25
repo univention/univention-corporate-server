@@ -21,6 +21,12 @@ Variables: nagios/server/checkexternalcmd
 Type: file
 File: etc/init.d/nagios2
 
+Type: multifile
+Multifile: var/www/ucs-overview/de.html
+
+Type: multifile
+Multifile: var/www/ucs-overview/en.html
+
 Type: subfile
 Multifile: var/www/ucs-overview/de.html
 Subfile: var/www/ucs-overview/de.html.d/50nagios-de.html
