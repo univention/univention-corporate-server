@@ -3,7 +3,7 @@
 # Univention Join
 #  joins a system into a UCS domain
 #
-# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,7 +32,7 @@
 
 export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 
 TYPE=0
 REMOVE_PWD_FILE=""
@@ -226,7 +226,7 @@ fi
 
 echo -n "Search ldap/base"
 ldap_base=`ldapsearch -x  -h $DCNAME -b "" -s base 'objectclass=*' NamingContexts -LLL | grep namingContexts | sed -e 's|namingContexts: ||'`
-univention-baseconfig set ldap/base="$ldap_base" >/dev/null 2>&1
+univention-config-registry set ldap/base="$ldap_base" >/dev/null 2>&1
 echo -e "\033[60Gdone"
 
 if [ -x /etc/init.d/slapd ]; then
@@ -312,7 +312,7 @@ if [ -n "$res" ]; then
 
 	ldap_dn="`echo $res | grep ldap_dn | sed -e 's|.*ldap_dn="||;s|".*||'`"
 	if [ -n "$ldap_dn" ]; then
-		univention-baseconfig set ldap/hostdn="$ldap_dn" >>/var/log/univention/join.log 2>&1
+		univention-config-registry set ldap/hostdn="$ldap_dn" >>/var/log/univention/join.log 2>&1
 	else
 		failed_message "No LDAP Host DN returned"
 	fi
@@ -366,10 +366,10 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	fi
 	echo -e "\033[60Gdone"
 
-	univention-baseconfig set ldap/server/name=$hostname.$domainname >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set ldap/server/ip=$interfaces_eth0_address >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set ldap/server/type=slave >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/server/name=$hostname.$domainname >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/server/ip=$interfaces_eth0_address >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/server/type=slave >>/var/log/univention/join.log 2>&1
 
 
 	echo -n "Sync SSL directory: "
@@ -384,7 +384,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	fi
 
 	echo -n "Sync SSL settings: "
-	eval `echo univention-baseconfig set \` univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-baseconfig dump ssl/common ssl/country ssl/email ssl/locality ssl/organization ssl/organizationalunit ssl/state | grep ^ssl| sed -e 's|: |="|' | sed -e 's|.$|"|'\`` >>/var/log/univention/join.log 2>&1
+	eval `echo univention-config-registry set \` univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry dump ssl/common ssl/country ssl/email ssl/locality ssl/organization ssl/organizationalunit ssl/state | grep ^ssl| sed -e 's|: |="|' | sed -e 's|.$|"|'\`` >>/var/log/univention/join.log 2>&1
 
 
 	echo -e "\033[60Gdone"
@@ -402,16 +402,16 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	# invalidate the nscd hosts cache
 	nscd -i hosts
 
-	univention-baseconfig set ldap/server/name?"$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set ldap/master?"$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set kerberos/adminserver?"$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-baseconfig get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/server/name?"$DCNAME" >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/master?"$DCNAME" >>/var/log/univention/join.log 2>&1
+	univention-config-registry set kerberos/adminserver?"$DCNAME" >>/var/log/univention/join.log 2>&1
+	univention-config-registry set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
 
-	eval `univention-baseconfig shell`
+	eval `univention-config-registry shell`
 
 	mkdir -p /var/lib/univention-ldap/notify/
 
-	touch /usr/share/univention-join/.joined
+	touch /var/univention-join/joined
 
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id
 	chown listener /var/lib/univention-ldap/schema/id/id
@@ -456,10 +456,10 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 
 	echo -e "\033[60Gdone"
 
-	univention-baseconfig set ldap/server/name=$hostname.$domainname >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set ldap/server/ip=$interfaces_eth0_address >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set ldap/server/type=slave >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/server/name=$hostname.$domainname >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/server/ip=$interfaces_eth0_address >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/server/type=slave >>/var/log/univention/join.log 2>&1
 
 	mkdir -p /etc/univention/ssl/ucsCA
 	univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/ucsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
@@ -486,15 +486,15 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	# invalidate the nscd hosts cache
 	nscd -i hosts
 
-	univention-baseconfig set ldap/server/name?"$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set ldap/master?"$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set kerberos/adminserver?"$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-baseconfig get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/server/name?"$DCNAME" >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/master?"$DCNAME" >>/var/log/univention/join.log 2>&1
+	univention-config-registry set kerberos/adminserver?"$DCNAME" >>/var/log/univention/join.log 2>&1
+	univention-config-registry set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
 
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id
 	chown listener /var/lib/univention-ldap/schema/id/id
 
-	touch /usr/share/univention-join/.joined
+	touch /var/univention-join/joined
 
 	if test -e "/usr/lib/univention-install/"; then
 		for i in /usr/lib/univention-install/*.inst; do
@@ -532,18 +532,18 @@ elif [ "$server_role" = "memberserver" ]; then
 
 	download_host_certificate
 
-	univention-baseconfig set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
 	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
 
 	# invalidate the nscd hosts cache
 	nscd -i hosts
 
-	univention-baseconfig set ldap/server/name?"$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set ldap/master?"$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set kerberos/adminserver?"$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-baseconfig get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/server/name?"$DCNAME" >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/master?"$DCNAME" >>/var/log/univention/join.log 2>&1
+	univention-config-registry set kerberos/adminserver?"$DCNAME" >>/var/log/univention/join.log 2>&1
+	univention-config-registry set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
 
-	touch /usr/share/univention-join/.joined
+	touch /var/univention-join/joined
 
 
 	if test -e "/usr/lib/univention-install/"; then
@@ -577,15 +577,15 @@ else
 	# invalidate the nscd hosts cache
 	nscd -i hosts
 
-	univention-baseconfig set ldap/server/name="$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set ldap/master="$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set kerberos/adminserver="$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-baseconfig set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-baseconfig get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/server/name="$DCNAME" >>/var/log/univention/join.log 2>&1
+	univention-config-registry set ldap/master="$DCNAME" >>/var/log/univention/join.log 2>&1
+	univention-config-registry set kerberos/adminserver="$DCNAME" >>/var/log/univention/join.log 2>&1
+	univention-config-registry set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
 	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
 
-	touch /usr/share/univention-join/.joined
-	univention-baseconfig set nsswitch/ldap=yes >>/var/log/univention/join.log 2>&1
-	eval `univention-baseconfig shell`
+	touch /var/univention-join/joined
+	univention-config-registry set nsswitch/ldap=yes >>/var/log/univention/join.log 2>&1
+	eval `univention-config-registry shell`
 
 	if test -e "/usr/lib/univention-install/"; then
 		for i in /usr/lib/univention-install/*.inst; do
@@ -618,7 +618,7 @@ if [ -n "$REMOVE_PWD_FILE" -a -n "$DCPWD" ]; then
 fi
 
 if [ "$interfaces_eth0_type" != "dhcp" ]; then
-	univention-baseconfig commit /etc/resolv.conf >>/var/log/univention/join.log 2>&1
+	univention-config-registry commit /etc/resolv.conf >>/var/log/univention/join.log 2>&1
 fi
 
 exit 0

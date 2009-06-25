@@ -3,7 +3,7 @@
 # Univention Join
 #  joins a server to an univention domain
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -179,7 +179,7 @@ if [ "$BINDPWFILE" ]; then
 fi
 
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 if [ -z "$ROLE" ]; then
 	log 1 "E: 	-role is missing"
 	display_help

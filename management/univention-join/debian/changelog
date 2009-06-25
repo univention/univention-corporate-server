@@ -1,3 +1,15 @@
+univention-join (2.0.0-1) unstable; urgency=low
+
+  * Add transition code which moves /usr/lib/univention-install/.index to
+    /var/univention-join/status. Also, add a symbolic link. (Bug #14846)
+  * Add transition code, which removes /usr/share/univention-join/.joined if it
+    exists. As a replacement /var/univention-join/joined is used.
+    Also adapt univention-join to the new file location
+  * Use univention-config-registry rather than univention-baseconfig in the scripts
+  * Update copyright notes
+  
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 24 Jun 2009 16:47:44 +0200
+
 univention-join (2.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3

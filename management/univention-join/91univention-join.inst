@@ -3,7 +3,7 @@
 # Univention Join
 #  join script
 #
-# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,7 @@
 
 VERSION=1
 
-if ! test -e "/usr/share/univention-join/.joined"; then
+if ! test -e "/var/univention-join/joined"; then
 	echo "The server has not joined yet"
 	exit 1
 fi
@@ -39,7 +39,7 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-join v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	if test -e /etc/slave-join.secret; then

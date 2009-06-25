@@ -3,7 +3,7 @@
 # Univention Join
 #  helper script: checks the join status of the local system
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -39,7 +39,7 @@ log_warn ()
 }
 
 echo "Start $0 at $(date)" >>/var/log/univention/check_join_status.log
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 
 if [ ! -e /etc/machine.secret ]; then
 	log_error "/etc/machine.secret not found"
@@ -56,8 +56,8 @@ if [ $? != 0 ]; then
 	log_error "ldapsearch -x -ZZ failed"
 fi
 
-if [ ! -e /usr/share/univention-join/.joined ]; then
-	log_error "/usr/share/univention-join/.joined not found"
+if [ ! -e /var/univention-join/joined ]; then
+	log_error "The system isn't joined yet"
 fi
 
 ldapsearch -x -ZZ -D "$ldap_hostdn" -w `cat /etc/machine.secret` -b $ldap_base -s base >>/var/log/univention/check_join_status.log 2>&1
