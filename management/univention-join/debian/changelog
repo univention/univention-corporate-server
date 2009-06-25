@@ -1,3 +1,10 @@
+univention-join (2.0.0-2) unstable; urgency=low
+
+  * Also add a symbolic link for /usr/share/univention-join/.joined, since the
+    status checks of the individual join scripts fail otherwise (Bug #14846)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 25 Jun 2009 11:30:25 +0200
+
 univention-join (2.0.0-1) unstable; urgency=low
 
   * Add transition code which moves /usr/lib/univention-install/.index to

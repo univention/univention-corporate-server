@@ -45,9 +45,12 @@ if [ -e /usr/lib/univention-install/.index.txt ]; then
 fi
 
 if [ -e /usr/share/univention-join/.joined ]; then
-    mkdir -p /var/univention-join/
-    touch /var/univention-join/joined
-    rm /usr/share/univention-join/.joined
+    if [ ! -L /usr/share/univention-join/.joined ]; then
+	mkdir -p /var/univention-join/
+	touch /var/univention-join/joined
+	rm /usr/share/univention-join/.joined
+	ln -s /var/univention-join/joined /usr/share/univention-join/.joined
+    fi
 fi
 
 exit 0
