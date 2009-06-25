@@ -77,16 +77,20 @@ class ReplicationCheck:
 
 	def load_history(self):
 		if os.path.exists(self.CACHEFN) and os.stat(self.CACHEFN)[6] > 0:
-			f = open(self.CACHEFN,'r')
-			cnt = pickle.load(f)
-			for i in range(cnt):
-				nid = pickle.load(f)
-				lid = pickle.load(f)
-				self.history.append( (nid, lid) )
-			f.close()
+			try:
+				f = open(self.CACHEFN,'r')
+				cnt = pickle.load(f)
+				for i in range(cnt):
+					nid = pickle.load(f)
+					lid = pickle.load(f)
+					self.history.append( (nid, lid) )
+				f.close()
 
-			if self.verbose > 1:
-				print 'History loaded:', self.history
+				if self.verbose > 1:
+					print 'History loaded:', self.history
+			except:
+				if self.verbose > 1:
+					print 'Loading history failed!'
 		else:
 			if self.verbose > 1:
 				print 'History not loaded!'

@@ -1,3 +1,9 @@
+univention-nagios (2.0.5-1) unstable; urgency=low
+
+  * do not crash if history file is corrupt (Bug: #10363)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 25 Jun 2009 11:06:19 +0200
+
 univention-nagios (2.0.4-1) unstable; urgency=low
 
   * fixed removal of nagios support of host objects (Bug: 10888)
