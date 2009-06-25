@@ -277,6 +277,7 @@ class mods:
 			'proxy/http':			'http_proxy',
 			'locale/default':		'locale_default',
 			'locale':				'locales',
+			'locale/keymap':		'keymap',
 		}
 		for i in range(0,4):
 			mapping['interfaces/eth%d/type' % (i)]='eth%d_type' % (i)
@@ -317,24 +318,6 @@ class mods:
 			f.close()
 		else:
 			self.baseconfig['timezone']=''
-
-
-		# get keymap
-		# the only known way to get the keyboard is to check the boottime keymap
-		if os.path.exists('/etc/console/boottime.kmap.gz'):
-			md5_dictonary={}
-			boottime_md5=md5.md5(string.join(open('/etc/console/boottime.kmap.gz').readlines())).hexdigest()
-			for dir in os.listdir('/usr/share/keymaps/i386/'):
-				if os.path.isdir(os.path.join('/usr/share/keymaps/i386/', dir)):
-					for file in os.listdir(os.path.join('/usr/share/keymaps/i386/', dir)):
-						filename=os.path.join(os.path.join('/usr/share/keymaps/i386/', dir), file)
-						md5_sum=md5.md5(string.join(open(filename).readlines())).hexdigest()
-						md5_dictonary[md5_sum]=file
-
-			if md5_dictonary.has_key(boottime_md5):
-				self.baseconfig['keymap']=md5_dictonary[boottime_md5].split('.')[0]
-			else:
-				self.baseconfig['keymap']=''
 
 
 		#             scan packages:

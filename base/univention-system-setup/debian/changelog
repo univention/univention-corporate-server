@@ -1,3 +1,10 @@
+univention-system-setup (2.0.4-1) unstable; urgency=low
+
+  * use the ucr variable locale/keymap for storing the keyboard layout.
+    Bug #9833
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Jun 2009 06:39:40 +0200
+
 univention-system-setup (2.0.3-1) unstable; urgency=low
 
   * use the new certificate for cups after changing hostname or domain.

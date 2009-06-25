@@ -249,11 +249,7 @@ ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
 
 mkdir -p /etc/console
 
-if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-	cp /usr/share/keymaps/powerpc/*/$keymap.kmap.gz /etc/console/boottime.kmap.gz >/dev/null 2>&1
-else
-	cp /usr/share/keymaps/i386/*/$keymap.kmap.gz /etc/console/boottime.kmap.gz
-fi
+univention-config-registry set locale/keymap="$keymap"
 univention-config-registry set xorg/keyboard/options/XkbLayout=$(echo $keymap | sed -e 's|-.*||')
 
 univention-config-registry set version/version=$version_version

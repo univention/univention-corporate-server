@@ -170,6 +170,10 @@ Type: module
 Module: locale.py
 Variables: locale
 
+Type: module
+Module: keymap.py
+Variables: locale/keymap
+
 Type: file
 File: etc/kernel-img.conf
 Variables: kernel/do_initrd

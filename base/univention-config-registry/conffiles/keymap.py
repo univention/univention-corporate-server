@@ -1,9 +1,9 @@
-#!/bin/sh -e
+# -*- coding: utf-8 -*-
 #
-# Univention Setup
-#  keyboard change script
+# Univention Configuration Registry
+#  config registry module for the network interfaces
 #
-# Copyright (C) 2004-2009 Univention GmbH
+# Copyright (C) 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,23 +28,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-. /usr/lib/univention-system-setup/scripts/setup_utils.sh
+import os
 
+def handler(configRegistry, changes):
+	for keymap in set(changes):
+		if configRegistry.has_key(keymap):
+			os.system('/usr/sbin/install-keymap %s' % keymap)
 
-keymap=`get_profile_var keymap`
-
-if [ -z "$keymap" ]; then
-	exit 0
-fi
-
-if [ "$check_ldap_access" = "1" ]; then
-	exit 0
-fi
-
-univention-config-registry set locale/keymap="$keymap"
-
-loadkeys $keymap
-
-univention-config-registry set xorg/keyboard/options/XkbLayout=$(echo $keymap | sed -e 's|-.*||')
-
-exit 0

@@ -304,6 +304,12 @@ Description[en]=Installed localisation data (Interface language, character sets,
 Type=str
 Categories=System
 
+[locale/keymap]
+Description[de]=Tastaturbelegung
+Description[en]=Keyboard layout
+Type=str
+Categories=System
+
 [log/rotate/weeks]
 Description[de]=Rotations-Intervall für System-Logdateien (in Wochen)
 Description[en]=Rotation interval for system log files (in weeks)
