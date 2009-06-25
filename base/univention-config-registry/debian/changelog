@@ -1,3 +1,10 @@
+univention-config-registry (5.0.4-1) unstable; urgency=low
+
+  * use the ucr variable locale/keymap for storing the keyboard layout.
+    Bug #9833
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Jun 2009 06:40:32 +0200
+
 univention-config-registry (5.0.3-1) unstable; urgency=low
 
   * added ucr variables for static lines in /etc/hosts, for example 'ucr

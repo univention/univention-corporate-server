@@ -149,6 +149,24 @@ if [ -n "$locale" ]; then
 	/usr/sbin/locale-gen || true
 fi
 
+eval `univention-baseconfig shell locale/keymap`
+if [ -z "$locale_keymap" ]; then
+	# try to catch the keymap from /etc/console/boottime.kmap.gz
+	if [ -e /etc/console/boottime.kmap.gz ]; then
+		md5_boottime=$(md5sum /etc/console/boottime.kmap.gz | sed -e 's| .*||')
+		for f in $(find /usr/share/keymaps/i386/); do
+			if [ -d "$f" ]; then
+				continue
+			fi
+			md5_file=$(md5sum $f | sed -e 's| .*||')
+			if [ "$md5_boottime" = "$md5_file" ]; then
+				ucr set locale/keymap=$(echo $f | sed -e 's|.*/||;s|.kmap.gz||')
+				break
+			fi
+		done
+	fi
+fi
+
 update-rc.d rdate defaults 21 >/dev/null 2>&1 || true
 
 if [ "$1" = configure -a -n "$2" ]; then
