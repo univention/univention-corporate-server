@@ -1,3 +1,14 @@
+univention-nagios (3.0.4-1) unstable urgency=low
+
+  * added default service for nscd checks for nagios clients systems 
+    (Bug: #14179) 
+  * added default service for kpasswdd checks for master and backup 
+    systems (Bug: #14491)
+  * added service for winbind checks - not enabled by default 
+    (Bug: #14437)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 25 Jun 2009 17:56:57 +0200
+
 univention-nagios (3.0.3-1) unstable; urgency=low
 
   * added NRPE service to UMC service module (Bug: #11143)
