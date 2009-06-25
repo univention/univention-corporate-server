@@ -1,3 +1,12 @@
+univention-ad-connector (4.0.2-1) unstable; urgency=low
+
+  * The copypwd utility on windows needs the username as iso8859 string.
+    Starting from now the encoding could be configured with the UCR
+    variable connector/password/service/encoding. Default is iso8859-15.
+    Bug #8516
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Jun 2009 11:51:45 +0200
+
 univention-ad-connector (4.0.1-2) unstable; urgency=low
 
   * switched to python2.4 (Bug: #14709)
