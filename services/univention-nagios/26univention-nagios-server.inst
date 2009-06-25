@@ -47,23 +47,23 @@ fi
 
 
 # create nagios container
-univention-admin container/cn create $@ --ignore_exists --position="$ldap_base" --set name="nagios" --set description="Nagios Objects"
+univention-directory-manager container/cn create $@ --ignore_exists --position="$ldap_base" --set name="nagios" --set description="Nagios Objects"
 
 # create default timeperiod objects
-univention-admin nagios/timeperiod create $@ --ignore_exists --position="cn=nagios,$ldap_base" \
+univention-directory-manager nagios/timeperiod create $@ --ignore_exists --position="cn=nagios,$ldap_base" \
                                           --set name="24x7"                   --set description="Default Timeperiod 24x7" \
                                           --set periodMonday="00:00-24:00"    --set periodTuesday="00:00-24:00" \
                                           --set periodWednesday="00:00-24:00" --set periodThursday="00:00-24:00" \
                                           --set periodFriday="00:00-24:00"    --set periodSaturday="00:00-24:00" \
                                           --set periodSunday="00:00-24:00"
 
-univention-admin nagios/timeperiod create $@  --ignore_exists --position="cn=nagios,$ldap_base" \
+univention-directory-manager nagios/timeperiod create $@  --ignore_exists --position="cn=nagios,$ldap_base" \
                                           --set name="WorkHours"              --set description="Default Timeperiod WorkHours" \
                                           --set periodMonday="08:00-16:00"    --set periodTuesday="08:00-16:00" \
                                           --set periodWednesday="08:00-16:00" --set periodThursday="08:00-16:00" \
                                           --set periodFriday="08:00-16:00"
 
-univention-admin nagios/timeperiod create $@  --ignore_exists --position="cn=nagios,$ldap_base" \
+univention-directory-manager nagios/timeperiod create $@  --ignore_exists --position="cn=nagios,$ldap_base" \
                                           --set name="NonWorkHours"                       --set description="Default Timeperiod NonWorkHours" \
                                           --set periodMonday="00:00-08:00,16:00-24:00"    --set periodTuesday="00:00-08:00,16:00-24:00" \
                                           --set periodWednesday="00:00-08:00,16:00-24:00" --set periodThursday="00:00-08:00,16:00-24:00" \
@@ -71,45 +71,45 @@ univention-admin nagios/timeperiod create $@  --ignore_exists --position="cn=nag
                                           --set periodSunday="00:00-24:00"
 
 # add default services
-univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_PING" --set description="Default Service: check if ${hostname} is alive" --set checkCommand="check_ping" --set checkArgs='50,20%!100,40%' --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+univention-directory-manager nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_PING" --set description="Default Service: check if ${hostname} is alive" --set checkCommand="check_ping" --set checkArgs='50,20%!100,40%' --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
 
-univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_DISK_ROOT" --set description="Default Service: check if / is out of diskspace" --set checkCommand="check_disk" --set checkArgs='25%!10%!/'  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+univention-directory-manager nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_DISK_ROOT" --set description="Default Service: check if / is out of diskspace" --set checkCommand="check_disk" --set checkArgs='25%!10%!/'  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
 
-univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_DNS" --set description="Default Service: check if service dns is ok" --set checkCommand="check_univention_dns" --set checkArgs='www.univention.de'  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+univention-directory-manager nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_DNS" --set description="Default Service: check if service dns is ok" --set checkCommand="check_univention_dns" --set checkArgs='www.univention.de'  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
 
-univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_LDAP" --set description="Default Service: check if service ldap is ok" --set checkCommand="check_ldap"  --set useNRPE="1" --set checkArgs="$ldap_base" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+univention-directory-manager nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_LDAP" --set description="Default Service: check if service ldap is ok" --set checkCommand="check_ldap"  --set useNRPE="1" --set checkArgs="$ldap_base" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
 
-univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_NTP" --set description="Default Service: check if service ntp is ok" --set checkCommand="check_ntp" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+univention-directory-manager nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_NTP" --set description="Default Service: check if service ntp is ok" --set checkCommand="check_ntp" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
 
-univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_SMTP" --set description="Default Service: check if service smtp is ok" --set checkCommand="check_smtp"  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+univention-directory-manager nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_SMTP" --set description="Default Service: check if service smtp is ok" --set checkCommand="check_smtp"  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
 
-univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_SSL" --set description="Default Service: check if ssl certificate is valid" --set checkCommand="check_univention_sslcert" --set checkArgs="40!20" --set useNRPE="1" --set normalCheckInterval="60" --set retryCheckInterval="5" --set maxCheckAttempts="3" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+univention-directory-manager nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_SSL" --set description="Default Service: check if ssl certificate is valid" --set checkCommand="check_univention_sslcert" --set checkArgs="40!20" --set useNRPE="1" --set normalCheckInterval="60" --set retryCheckInterval="5" --set maxCheckAttempts="3" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
 
-univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_REPLICATION" --set description="Default Service: check if ldap replication is uptodate" --set checkCommand="check_univention_replication" --set checkArgs="10!50!100" --set useNRPE="1" --set normalCheckInterval="2" --set retryCheckInterval="1" --set maxCheckAttempts="5" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+univention-directory-manager nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_REPLICATION" --set description="Default Service: check if ldap replication is uptodate" --set checkCommand="check_univention_replication" --set checkArgs="10!50!100" --set useNRPE="1" --set normalCheckInterval="2" --set retryCheckInterval="1" --set maxCheckAttempts="5" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
 
 /etc/init.d/nagios2 restart 2> /dev/null > /dev/null || true
 
-univention-admin container/cn create $@ --ignore_exists --position cn=univention,$ldap_base --set name=console
-univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=acls
-univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations
-univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
+univention-directory-manager container/cn create $@ --ignore_exists --position cn=univention,$ldap_base --set name=console
+univention-directory-manager container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=acls
+univention-directory-manager container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations
+univention-directory-manager container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
 
 # create nagios operations
-univention-admin settings/console_operation create $@ --ignore_exists \
+univention-directory-manager settings/console_operation create $@ --ignore_exists \
 	--position cn=operations,cn=console,cn=univention,$ldap_base \
 	--set name=wizard-nagios \
 	--set description="Nagios Wizard" \
 	--append operation="wizard/nagios/*"
 
 # create nagios operations
-univention-admin settings/console_operation create $@ --ignore_exists \
+univention-directory-manager settings/console_operation create $@ --ignore_exists \
 	--position cn=operations,cn=console,cn=univention,$ldap_base \
 	--set name=wizard-basis \
 	--set description="Basis Wizard" \
 	--append operation="wizard/basis/*"
 
 # create nagios wizard acls
-univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+univention-directory-manager settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
 	--set name=wizard-nagios-all \
 	--set category="Wizard Nagios" \
 	--set ldapbase="$ldap_base" \
@@ -118,11 +118,11 @@ univention-admin settings/console_acl create $@ --ignore_exists --position cn=ac
 
 
 # default policies
-univention-admin policies/console_access create $@ --ignore_exists \
+univention-directory-manager policies/console_access create $@ --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \
 	--set name=default-admin
 
-univention-admin policies/console_access modify $@ --ignore_exists \
+univention-directory-manager policies/console_access modify $@ --ignore_exists \
 	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
 	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
 
