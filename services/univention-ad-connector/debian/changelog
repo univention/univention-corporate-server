@@ -1,3 +1,11 @@
+univention-ad-connector (4.0.3-1) unstable; urgency=low
+
+  * remove the POSIX (shadowLastChange and shadowMax) and Kerberos
+    (shadowMax) attributes for the password expiration during the
+    password reset. Bug #10190
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Jun 2009 14:55:35 +0200
+
 univention-ad-connector (4.0.2-1) unstable; urgency=low
 
   * The copypwd utility on windows needs the username as iso8859 string.
