@@ -1,3 +1,14 @@
+univention-management-console (2.0.10-3) unstable; urgency=low
+
+  * Adapt UMC to the new run time data paths of univention-join
+    (Bug #14846)
+  * The join module of UMC calls the executable univention-join,
+    add a dependency on univention-join to python-univention-management-console
+  * Add missing include of LSB library in univention-management-console-server
+    init script
+    
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 25 Jun 2009 10:55:37 +0200
+
 univention-management-console (2.0.10-2) unstable; urgency=low
 
   * fixed bug in translation file

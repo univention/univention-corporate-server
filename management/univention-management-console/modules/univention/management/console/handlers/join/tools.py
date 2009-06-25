@@ -100,4 +100,4 @@ def read_status():
 
 	_read_index( scripts )
 
-	return ( os.path.isfile( '/usr/share/univention-join/.joined' ), scripts )
+	return ( os.path.isfile( '/var/univention-join/joined' ), scripts )

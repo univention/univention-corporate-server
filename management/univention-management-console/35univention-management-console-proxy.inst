@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if ! test -e "/usr/share/univention-join/.joined"; then
+if ! test -e "/var/univention-join/joined"; then
 	echo "The server has not joined yet"
 	exit 1
 fi
