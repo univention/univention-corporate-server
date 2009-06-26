@@ -1839,10 +1839,7 @@ class ad(univention.connector.ucs):
 				for f in self.property[property_type].post_con_modify_functions:
 					f(self, property_type, object)
 		elif object['modtype'] == 'delete':
-			try:
-				self.lo_ad.lo.delete_s(compatible_modstring(object['dn']))
-			except ldap.NO_SUCH_OBJECT:
-				pass # object already deleted
+			self.delete_in_ad( object )
 				
 		else:
 			ud.debug(ud.LDAP, ud.WARN,
@@ -1856,5 +1853,38 @@ class ad(univention.connector.ucs):
 		ud.debug(ud.LDAP, ud.ALL,
 							   "sync from ucs return True" )
 		return True # FIXME: return correct False if sync fails
+
+	def delete_in_ad(self, object ):
+		_d=ud.function('ldap.delete_in_ad')
+		try:
+			self.lo_ad.lo.delete_s(compatible_modstring(object['dn']))
+		except ldap.NO_SUCH_OBJECT:
+			pass # object already deleted
+		except ldap.NOT_ALLOWED_ON_NONLEAF:
+			ud.debug(ud.LDAP, ud.INFO,"remove object from AD failed, need to delete subtree")
+			for result in self.lo_ad.lo.search_ext_s(compatible_modstring(object['dn']),ldap.SCOPE_SUBTREE,'objectClass=*',timeout=-1,sizelimit=0):
+				if univention.connector.compare_lowercase(result[0], object['dn']):
+					continue
+				ud.debug(ud.LDAP, ud.INFO,"delete: %s"% result[0])
+				subobject={'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
+				key = None
+				for k in self.property.keys():
+					if self.modules[k].identify(result[0], result[1]):
+						key=k
+						break
+				object_mapping = self._object_mapping(key, subobject)
+				ud.debug(ud.LDAP, ud.WARN,"delete subobject: %s"% object_mapping['dn'])
+				if not self._ignore_object(key,object_mapping):
+					if not self.sync_from_ucs(key, subobject, object_mapping['dn']):
+						try:
+							ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed: %s"% result[0])
+						except (ldap.SERVER_DOWN, SystemExit):
+							raise							
+						except: # FIXME: which exception is to be caught?
+							ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed")
+						return False
+
+
+			return self.delete_in_ad(object)
 
 
