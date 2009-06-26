@@ -135,7 +135,7 @@ for i in /usr/lib/univention-install/*.inst ; do
 	SERVICE=$(basename $i .inst | cut -b3-)
 	grep -q "$SERVICE v$VERSION successful" /usr/lib/univention-install/.index.txt
 	if [ ! "$?" = "0" ] ; then
-		CNT=(($CNT + 1))
+		CNT=$(($CNT + 1))
 	fi
 done
 if [ $CNT -gt 0 ] ; then

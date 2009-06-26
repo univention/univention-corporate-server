@@ -1,3 +1,9 @@
+univention-nagios (2.0.10-1) unstable; urgency=low
+
+  * fixed typo (Bug: #7758)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 26 Jun 2009 15:21:11 +0200
+
 univention-nagios (2.0.9-1) unstable; urgency=low
 
   * added default service and plugin for join status check (Bug: #7758)
