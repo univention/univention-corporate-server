@@ -108,7 +108,7 @@ if [ -z "$CMD" ] ; then
 	exit $STATE_UNKNOWN
 fi
 
-output=$($CMD -U "$SMB_USER" -N -L "$SMB_HOST" 2>&1)
+output=$($CMD -U "$SMB_USER" -N -L "$SMB_HOST" 2> /dev/null)
 RET=$?
 
 msg=$(echo -n "$output" | head -n1)
