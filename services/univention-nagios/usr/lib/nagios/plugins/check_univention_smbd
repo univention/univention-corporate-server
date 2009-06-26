@@ -2,7 +2,7 @@
 #
 #
 # Univention Nagios Plugin
-#  check_univention_winbind: check winbind status
+#  check_univention_smbd: check smbd status
 #
 # Copyright (C) 2007-2009 Univention GmbH
 #
@@ -59,6 +59,7 @@ print_revision() {
 print_usage() {
     echo "Usage: $PROGNAME --help"
     echo "Usage: $PROGNAME --version"
+    echo "Usage: $PROGNAME [-U <username>] [-H <hostname>]"
 }
 
 print_help() {
@@ -67,6 +68,8 @@ print_help() {
     print_usage
 }
 
+SMB_USER="guest"
+SMB_HOST="$(/bin/hostname)"
 while test -n "$1"; do
     case "$1" in
         --help)
@@ -85,32 +88,40 @@ while test -n "$1"; do
             print_revision
             exit $STATE_OK
             ;;
+		-U)
+			SMB_USER="$2"
+			shift
+			;;
+		-H)
+			SMB_HOST="$2"
+			shift
+			;;
     esac
     shift
 done
 
 
 
-CMD=$(which wbinfo)
+CMD=$(which smbclient)
 if [ -z "$CMD" ] ; then
-	echo "Cannot find wbinfo executable"
+	echo "Cannot find smbclient executable"
 	exit $STATE_UNKNOWN
 fi
 
-output=$($CMD -t 2>&1)
+output=$($CMD -U "$SMB_USER" -N -L "$SMB_HOST" 2>&1)
 RET=$?
 
-msg=$(echo -n "$output" | tr '\n' ';' | sed -e 's/;$//')
+msg=$(echo -n "$output" | head -n1)
 
 if [ $RET != 0 ]; then
 	state=$STATE_CRITICAL
 	get_state_string $state
-	echo "${STATE_STRING}: wbinfo failed: $msg"
+	echo "${STATE_STRING}: smbclient failed: $msg"
 	exit $state
 else
 	state=$STATE_OK
 	get_state_string $state
-	echo "${STATE_STRING}: $msg"
+	echo "${STATE_STRING}: smbd is alive: smbclient -U $SMB_USER -N -L $SMB_HOST"
 	exit $state
 fi
 

@@ -1,3 +1,9 @@
+univention-nagios (3.0.5-1) unstable; urgency=low
+
+  * added default service and plugin for smbd checks (Bug: #14729)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 26 Jun 2009 09:45:32 +0200
+
 univention-nagios (3.0.4-1) unstable urgency=low
 
   * added default service for nscd checks for nagios clients systems 
