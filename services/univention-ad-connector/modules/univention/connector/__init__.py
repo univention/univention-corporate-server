@@ -502,13 +502,27 @@ class ucs:
 						change_type = 'add'
 				
 			else:
-				change_type="add"
-				old_dn = '' # there may be an old_dn if object was moved from ignored container
-				ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was added")
+				object = { 'dn': unicode(dn,'utf8'), 'modtype': 'modify', 'attributes': new}
+				try:
+					if self._ignore_object(key, object):
+						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: moved object is now ignored, will delete it")
+						change_type = 'delete'
+					else:
+						change_type="add"
+						old_dn = '' # there may be an old_dn if object was moved from ignored container
+						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was added")
+				except:
+					# the ignore_object method might throw an exception if the subschema will be synced
+					change_type="add"
+					old_dn = '' # there may be an old_dn if object was moved from ignored container
+					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was added")
 
 		if key:
 			if change_type == 'delete':
-				object = { 'dn': unicode(dn,'utf8'), 'modtype': change_type, 'attributes': old}
+				if old_dn:
+					object = { 'dn': unicode(old_dn,'utf8'), 'modtype': change_type, 'attributes': old}
+				else:
+					object = { 'dn': unicode(dn,'utf8'), 'modtype': change_type, 'attributes': old}
 			else:
 				object = { 'dn': unicode(dn,'utf8'), 'modtype': change_type, 'attributes': new}
 
@@ -884,14 +898,17 @@ class ucs:
 						if self.modules[k].identify(result[0], result[1]):
 							key=k
 							break
-					if not self.sync_to_ucs(key, subobject):
-						try:
-							ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed: %s"% result[0])
-						except (ldap.SERVER_DOWN, SystemExit):
-							raise							
-						except: # FIXME: which exception is to be caught?
-							ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed")
-						return False
+					object_mapping = self._object_mapping(key, subobject, 'ucs')
+					ud.debug(ud.LDAP, ud.WARN,"delete subobject: %s"% object_mapping['dn'])
+					if not self._ignore_object(key,object_mapping):
+						if not self.sync_to_ucs(key, subobject, object_mapping['dn']):
+							try:
+								ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed: %s"% result[0])
+							except (ldap.SERVER_DOWN, SystemExit):
+								raise							
+							except: # FIXME: which exception is to be caught?
+								ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed")
+							return False
 
 
 				return delete_in_ucs(property_type, object, module, position)
@@ -1123,7 +1140,7 @@ class ucs:
 			return True # ignore not existing object
 		for subtree in self.property[key].ignore_subtree:
 			if self._subtree_match(object['dn'], subtree):
-				ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of subtree match")
+				ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of subtree match: [%s]" % object['dn'])
 				return True		
 
 		if self.property[key].ignore_filter and self._filter_match(self.property[key].ignore_filter,object['attributes']):
