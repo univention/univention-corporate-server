@@ -518,20 +518,23 @@ class ucs:
 			if not self._ignore_object(key,object):
 				premapped_ucs_dn = object['dn']
 				object = self._object_mapping(key, object, 'ucs')
-				ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: finished mapping")
-				try:				
-					if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn,'utf8')))
-					    or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn))):
+				if not self._ignore_object(key,object):
+					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: finished mapping")
+					try:				
+						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn,'utf8')))
+							or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn))):
+							self._save_rejected_ucs(filename, dn)
+							return False
+						else:
+							return True
+					except (ldap.SERVER_DOWN, SystemExit):
+						raise
+					except: # FIXME: which exception is to be caught?
 						self._save_rejected_ucs(filename, dn)
+						self._debug_traceback(ud.WARN, "sync failed, saved as rejected")
 						return False
-					else:
-						return True
-				except (ldap.SERVER_DOWN, SystemExit):
-					raise
-				except: # FIXME: which exception is to be caught?
-					self._save_rejected_ucs(filename, dn)
-					self._debug_traceback(ud.WARN, "sync failed, saved as rejected")
-					return False
+				else:
+					return True
 			else:
 				return True
 		else:				
@@ -914,6 +917,8 @@ class ucs:
 			object['modtype'] = 'modify'
 		if not old_object and object['modtype'] == 'modify':
 			object['modtype'] = 'add'
+		if not old_object and object['modtype'] == 'move':
+			object['modtype'] = 'add'
 
 		try:
 			ud.debug(ud.LDAP, ud.PROCESS,
@@ -1128,6 +1133,8 @@ class ucs:
 		if self.property[key].match_filter and not self._filter_match(self.property[key].match_filter,object['attributes']):
 			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of match_filter")
 			return True
+
+		ud.debug(ud.LDAP, ud.INFO, "_ignore_object: Do not ignore %s" % object['dn'])
 
 		return False
 
