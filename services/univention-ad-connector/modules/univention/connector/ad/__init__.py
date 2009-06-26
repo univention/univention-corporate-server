@@ -1535,7 +1535,10 @@ class ad(univention.connector.ucs):
 						property_key = self.__identify(object)
 						mapped_object = self._object_mapping(property_key,object)
 						try:
-							sync_successfull = self.sync_to_ucs(property_key, mapped_object, premapped_ad_dn)
+							if not self._ignore_object(property_key,mapped_object) and not self._ignore_object(property_key,object):
+								sync_successfull = self.sync_to_ucs(property_key, mapped_object, premapped_ad_dn)
+							else:
+								sync_successfull = True
 						except (ldap.SERVER_DOWN, SystemExit):
 							raise
 						except: # FIXME: which exception is to be caught?
@@ -1590,12 +1593,28 @@ class ad(univention.connector.ucs):
 				
 			if object:
 				property_key = self.__identify(object)
-				if property_key and not self._ignore_object(property_key,object): # doesn't ignore in deletion?
+				if property_key:
+					
+					if self._ignore_object(property_key,object):
+						if object['modtype'] == 'move':
+							ud.debug(ud.LDAP, ud.INFO, "object_from_element: Detected a move of an AD object into a ignored tree: dn: %s" % object['dn'])
+							object['deleted_dn'] = object['olddn']
+							object['dn'] = object['olddn']
+							object['modtype'] = 'delete'
+							# check the move target
+						else:
+							self.__update_lastUSN(object)
+							done_counter += 1
+							print "%s"%done_counter,
+							continue
 
 					sync_successfull = False
 					try:
 						mapped_object = self._object_mapping(property_key,object)
-						sync_successfull = self.sync_to_ucs(property_key, mapped_object, object['dn'])
+						if not self._ignore_object(property_key,mapped_object):
+							sync_successfull = self.sync_to_ucs(property_key, mapped_object, object['dn'])
+						else:
+							sync_successfull = True
 					except (ldap.SERVER_DOWN, SystemExit):
 						raise
 					except univention.admin.uexceptions.ldapError, msg:
