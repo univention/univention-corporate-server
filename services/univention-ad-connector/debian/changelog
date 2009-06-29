@@ -1,3 +1,9 @@
+univention-ad-connector (4.0.6-1) unstable; urgency=low
+
+  * consider a move in UCS. Bug #13745
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Jun 2009 08:20:03 +0200
+
 univention-ad-connector (4.0.5-1) unstable; urgency=low
 
   * support operations on non-leaf objects. Bug #13803
