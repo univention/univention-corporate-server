@@ -1201,27 +1201,30 @@ class ucs:
 					object[dntype] = self._get_dn_by_con(object[dntype])
 					dn_mapping_stored.append(dntype)		
 		
-		if hasattr(self.property[key], 'dn_mapping_function'):
-			# DN mapping functions
-			for function in self.property[key].dn_mapping_function:
-				object=function(self, object, dn_mapping_stored, isUCSobject=(object_type == 'ucs'))
+		if self.property.has_key(key):
+			if hasattr(self.property[key], 'dn_mapping_function'):
+				# DN mapping functions
+				for function in self.property[key].dn_mapping_function:
+					object=function(self, object, dn_mapping_stored, isUCSobject=(object_type == 'ucs'))
 
 		if object_type == 'ucs':
-			if hasattr(self.property[key], 'position_mapping'):
-				for dntype in ['dn','olddn']:
-					if object.has_key(dntype) and dntype not in dn_mapping_stored:
-						for mapping in self.property[key].position_mapping:
-							object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[0].lower(),mapping[1].lower())
+			if self.property.has_key(key):
+				if hasattr(self.property[key], 'position_mapping'):
+					for dntype in ['dn','olddn']:
+						if object.has_key(dntype) and dntype not in dn_mapping_stored:
+							for mapping in self.property[key].position_mapping:
+								object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[0].lower(),mapping[1].lower())
 
-						object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo.base.lower(),self.lo_ad.base.lower()) # FIXME: lo_ad may change with other connectors
+							object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo.base.lower(),self.lo_ad.base.lower()) # FIXME: lo_ad may change with other connectors
 		else:
-			if hasattr(self.property[key], 'position_mapping'):
-				for dntype in ['dn','olddn']:
-					if object.has_key(dntype) and dntype not in dn_mapping_stored:
-						for mapping in self.property[key].position_mapping:
-							object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[1].lower(),mapping[0].lower())
+			if self.property.has_key(key):
+				if hasattr(self.property[key], 'position_mapping'):
+					for dntype in ['dn','olddn']:
+						if object.has_key(dntype) and dntype not in dn_mapping_stored:
+							for mapping in self.property[key].position_mapping:
+								object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[1].lower(),mapping[0].lower())
 
-						object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo_ad.base.lower(),self.lo.base.lower()) # FIXME: lo_ad may change with other connectors
+							object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo_ad.base.lower(),self.lo.base.lower()) # FIXME: lo_ad may change with other connectors
 
 		object_out = object
 

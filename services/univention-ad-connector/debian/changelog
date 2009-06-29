@@ -1,3 +1,9 @@
+univention-ad-connector (4.0.7-1) unstable; urgency=low
+
+  * catch some tracebacks during the remove on UCS side. Bug #11810
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Jun 2009 08:40:44 +0200
+
 univention-ad-connector (4.0.6-1) unstable; urgency=low
 
   * consider a move in UCS. Bug #13745
