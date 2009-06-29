@@ -59,4 +59,5 @@ def postinst(baseConfig, changes):
 	for iface in set(changes):
 		if baseConfig.has_key(iface):
 			start_iface(interface(iface))
-	restore_gateway(baseConfig.get('gateway'))
+	if 'gateway' in set(changes):
+		restore_gateway(baseConfig.get('gateway'))
