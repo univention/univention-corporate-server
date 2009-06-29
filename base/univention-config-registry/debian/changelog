@@ -1,3 +1,10 @@
+univention-config-registry (5.0.6-1) unstable; urgency=low
+
+  * Do not remove default gateway if UCR variable "gateway" has not 
+    been modified (Bug #13648)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 29 Jun 2009 16:36:34 +0200
+
 univention-config-registry (5.0.5-1) unstable; urgency=low
 
   * install the correct keymap while setting the ucr variable. Bug #9833
