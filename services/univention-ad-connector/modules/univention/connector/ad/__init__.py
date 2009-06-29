@@ -1360,11 +1360,12 @@ class ad(univention.connector.ucs):
 				add_members['group'].remove(member_dn.lower())
 			else:
 				ucs_object = {'dn':member_dn,'modtype':'modify','attributes':self.lo.get(member_dn)}
-				for k in self.property.keys():
-					# identify if DN is a user or a group (will be ignored it is a host)
-					if self.modules[k].identify(member_dn, ucs_object['attributes']):
-						del_members[k].append(member_dn)
-						break					
+				if not self._ignore_object(object_key, ucs_object):
+					for k in self.property.keys():
+						# identify if DN is a user or a group (will be ignored it is a host)
+						if self.modules[k].identify(member_dn, ucs_object['attributes']):
+							del_members[k].append(member_dn)
+							break					
 
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: members to add: %s" % add_members)
