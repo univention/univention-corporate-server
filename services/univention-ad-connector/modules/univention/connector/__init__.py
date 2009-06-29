@@ -508,9 +508,13 @@ class ucs:
 						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: moved object is now ignored, will delete it")
 						change_type = 'delete'
 					else:
-						change_type="add"
-						old_dn = '' # there may be an old_dn if object was moved from ignored container
-						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was added")
+						if old_dn and not old_dn == dn:
+							change_type="modify"
+							ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was moved")
+						else:
+							change_type="add"
+							old_dn = '' # there may be an old_dn if object was moved from ignored container
+							ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was added")
 				except:
 					# the ignore_object method might throw an exception if the subschema will be synced
 					change_type="add"
