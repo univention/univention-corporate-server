@@ -1,5 +1,12 @@
 univention-ad-connector (3.0.11-1) unstable; urgency=low
 
+  * don't remove ignored object from the list of the memberships. Bug
+    #13550
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Jun 2009 09:41:16 +0200
+
+univention-ad-connector (3.0.10-2) unstable; urgency=low
+
   * catch some tracebacks during the remove on UCS side. Bug #11810
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Jun 2009 08:40:44 +0200
