@@ -1212,19 +1212,27 @@ class ucs:
 				if hasattr(self.property[key], 'position_mapping'):
 					for dntype in ['dn','olddn']:
 						if object.has_key(dntype) and dntype not in dn_mapping_stored:
+							# save the old rdn with the correct upper and lower case
+							rdn_store = self._get_rdn(object[dntype])
 							for mapping in self.property[key].position_mapping:
 								object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[0].lower(),mapping[1].lower())
 
 							object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo.base.lower(),self.lo_ad.base.lower()) # FIXME: lo_ad may change with other connectors
+							# write the correct upper and lower case back to the DN
+							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
 		else:
 			if self.property.has_key(key):
 				if hasattr(self.property[key], 'position_mapping'):
 					for dntype in ['dn','olddn']:
 						if object.has_key(dntype) and dntype not in dn_mapping_stored:
+							# save the old rdn with the correct upper and lower case
+							rdn_store = self._get_rdn(object[dntype])
 							for mapping in self.property[key].position_mapping:
 								object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[1].lower(),mapping[0].lower())
 
 							object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo_ad.base.lower(),self.lo.base.lower()) # FIXME: lo_ad may change with other connectors
+							# write the correct upper and lower case back to the DN
+							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
 
 		object_out = object
 

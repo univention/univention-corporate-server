@@ -1,3 +1,10 @@
+univention-ad-connector (4.0.8-1) unstable; urgency=low
+
+  * keep the correct lower and upper case during a move in AD. Bug
+    #13824
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Jun 2009 08:29:31 +0200
+
 univention-ad-connector (4.0.7-1) unstable; urgency=low
 
   * don't remove ignored object from the list of the memberships. Bug
