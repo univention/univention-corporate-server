@@ -1,3 +1,15 @@
+univention-ad-connector (4.0.9-1) unstable; urgency=low
+
+  * added the groups which have a nested group by default to the ignore
+    filter:
+     - Computers
+     - Windows Hosts
+     - DC Slave Hosts
+     - DC Backup Hosts
+    Bug #11816
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Jun 2009 08:40:33 +0200
+
 univention-ad-connector (4.0.8-1) unstable; urgency=low
 
   * keep the correct lower and upper case during a move in AD. Bug

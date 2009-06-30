@@ -192,7 +192,7 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 			sync_mode='@%@connector/ad/mapping/syncmode@%@',
 			scope='sub',
 
-			ignore_filter='(|(sambaGroupType=5)(groupType=5))',
+			ignore_filter='(|(sambaGroupType=5)(groupType=5)(cn=Windows Hosts)(cn=DC Slave Hosts)(cn=DC Backup Hosts)(cn=Computers))',
 
 			ignore_subtree = global_ignore_subtree,
 			
