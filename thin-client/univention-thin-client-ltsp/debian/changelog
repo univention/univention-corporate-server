@@ -1,3 +1,9 @@
+univention-thin-client-ltsp (3.0.0-2) unstable; urgency=low
+
+  * Add missing include for LSB libs (Bug #14421)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  2 Jul 2009 14:04:54 +0200
+
 univention-thin-client-ltsp (3.0.0-1) unstable; urgency=low
 
   * Make init scripts LSB-compliant (Bug #14421)
