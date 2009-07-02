@@ -88,7 +88,7 @@ command_description = {
 			'ad_ldap_bindpw': umc.Password( _('Password of replication user'), required = False ),
 			'ad_poll_sleep': umc.String( _('Poll Interval (seconds)'), regex = '^[0-9]+$' ),
 			'ad_windows_version': UMC_AD_StaticSelection( title=_('Version of Windows server'),
-													choices = ( ( 'win2000', _( 'Windows 2000' ) ), ( 'win2003', _( 'Windows 2003' ) ) ) ),
+													choices = ( ( 'win2000', _( 'Windows 2000' ) ), ( 'win2003', _( 'Windows 2003/2008' ) ) ) ),
 			'ad_retry_rejected': umc.String( _('Retry interval for rejected objects'), regex = '^[0-9]+$' ),
 			# Workaround for Bug #13139: '_0_' up to '_4_' is a workaround
 			'debug_level': UMC_AD_StaticSelection( title=_('Debug level of Active Directory Connector'),
