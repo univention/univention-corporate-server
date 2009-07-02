@@ -44,9 +44,14 @@ def start_iface(iface):
 		os.system('ifup %s' % iface)
 
 def restore_gateway(gateway):
-	if gateway:
+	if type ( gateway ) == type ( () ):
+		old, new = gateway
+	else:
+		new = gateway
+
+	if new:
 		os.system('route del default >/dev/null 2>&1')
-		os.system('route add default gw %s' % gateway)
+		os.system('route add default gw %s' % new)
 	else:
 		os.system('route del default >/dev/null 2>&1')
 
@@ -60,4 +65,4 @@ def postinst(baseConfig, changes):
 		if baseConfig.has_key(iface):
 			start_iface(interface(iface))
 	if 'gateway' in set(changes):
-		restore_gateway(baseConfig.get('gateway'))
+		restore_gateway(changes['gateway'])
