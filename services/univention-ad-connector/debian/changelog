@@ -1,3 +1,9 @@
+univention-ad-connector (3.0.14-1) unstable; urgency=low
+
+  * suppport for Windows 2008. Bug #11701
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  2 Jul 2009 10:27:06 +0200
+
 univention-ad-connector (3.0.13-1) unstable; urgency=low
 
   * added the groups which have a nested group by default to the ignore
