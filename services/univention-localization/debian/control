@@ -1,0 +1,16 @@
+Source: univention-localization
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, python, python-all-dev, python-central, univention-config-dev, tzdata_2008h, kdekdebase, kdelibs
+XS-Python-Version: all
+
+Package: univention-localization
+Architecture: all
+Depends: python-univention, python-univention-license
+Pre-Depends: univention-config-registry | univention-baseconfig
+Description: UCS - Module to mofify the localization settings
+ This package contains the Univention Management Console
+ module to modify the localization settings.
+
