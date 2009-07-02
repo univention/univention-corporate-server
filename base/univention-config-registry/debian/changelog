@@ -1,3 +1,9 @@
+univention-config-registry (4.0.11-1) unstable; urgency=low
+
+  * use the changes syntax to catch the gateway change. Bug #13648
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  2 Jul 2009 13:54:29 +0200
+
 univention-config-registry (4.0.10-1) unstable; urgency=low
 
   * Do not remove default gateway if UCR variable "gateway" has not 
