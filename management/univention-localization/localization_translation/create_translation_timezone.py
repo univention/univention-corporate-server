@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 
 
@@ -28,5 +28,15 @@ for po_file in po_files:
 			else:
 				msg=""
 			if len(msg) > 0 and len(id)>0 and msg!=id and msg[-2:] != "\"\"" and id[-2:] != "\"\"":
-				print unicode(id,"latin-1")
-				print unicode(msg,"latin-1")
+				try:
+					a = unicode(id,"latin-1")
+				except:
+					a = id
+					
+				try:
+					b = unicode(msg,"latin-1")
+				except:
+					b = msg
+
+				print a
+				print b
