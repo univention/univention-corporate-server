@@ -3595,9 +3595,14 @@ class modedit(unimodule.unimodule):
 
 									aRecord = vals['aRecord'][0]
 									zoneDNs = self.lo.searchDn("(&(aRecord=%s)(objectClass=dNSZone))" % aRecord, base=position.getDomain(), scope='domain', timeout=10, sizelimit=200)
-									zone = self.lo.get(dn=zoneDNs[0], attr=[ 'zoneName' ] )['zoneName'][0]
-									fqdn="%s.%s" % (cn, zone)
-									packages.append({'name': fqdn, 'description': fqdn})
+									if len(zoneDNs) > 0:
+										zone = self.lo.get(dn=zoneDNs[0], attr=[ 'zoneName' ] )['zoneName'][0]
+										fqdn="%s.%s" % (cn, zone)
+										packages.append({'name': fqdn, 'description': fqdn})
+									else:
+										# an object with an ip but without a dns entry
+										continue
+
 								packages.sort(compare_dicts_by_attr('name'))
 								id_select = question_select(property.short_description,atts,{'choicelist':packages,'helptext':''})
 							else: # normal field

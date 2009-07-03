@@ -1,3 +1,11 @@
+univention-directory-manager (7.0.3-1) unstable; urgency=low
+
+  * fixed a traceback on the thin client settings tab which occurs when
+    an object with an ip but without a valid dns entry was found. Bug
+    #10044
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Jul 2009 07:08:34 +0200
+
 univention-directory-manager (7.0.2-1) unstable; urgency=low
 
   * translate kolab invitation policy strings in the web interface. Bug
