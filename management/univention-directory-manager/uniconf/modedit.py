@@ -2067,7 +2067,11 @@ class modedit(unimodule.unimodule):
 					elif property.syntax.name == 'kolabInvitationPolicy':
 						minput_rows=[]
 						too_many_results = 0
-						acls={"ACT_ALWAYS_ACCEPT": _("Always accept"), "ACT_REJECT_IF_CONFLICTS": _("Reject if conflicts"), "ACT_MANUAL_IF_CONFLICTS": _("Manual if conflicts"), "ACT_MANUAL": _("Manual"), "ACT_ALWAYS_REJECT": _("Always reject")}
+						acls={ "ACT_ALWAYS_ACCEPT":       str(_("Always accept")),
+						       "ACT_REJECT_IF_CONFLICTS": str(_("Reject if conflicts")),
+						       "ACT_MANUAL_IF_CONFLICTS": str(_("Manual if conflicts")),
+						       "ACT_MANUAL":              str(_("Manual")),
+						       "ACT_ALWAYS_REJECT":       str(_("Always reject")), }
 
 
 						# create variables if they don't exist
