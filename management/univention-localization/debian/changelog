@@ -1,3 +1,9 @@
+univention-localization (0.0.0-2) unstable; urgency=low
+
+  * Fixed translation generation. Bug #9645
+
+ -- Andre Fenske <fenske@univention.de>  Fri,  3 Jul 2009 09:36:40 +0200
+
 univention-localization (0.0.0-1) unstable; urgency=low
 
   * Fixed build-dependencys. Bug #9645

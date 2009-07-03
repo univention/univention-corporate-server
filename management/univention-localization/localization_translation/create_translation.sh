@@ -18,8 +18,9 @@ fi
 mkdir "$TMP_DIR/tzdata"
 TZDATA_DIR="$TMP_DIR/tzdata"
 OLD_DIR=$PWD
+cp "tzdata_2008h-2.5.200904110104.tar.gz" "$TZDATA_DIR/"
 cd $TZDATA_DIR
-tar xfz "/var/univention/buildsystem2/apt/ucs_2.3-0/source/tzdata_2008h-2.5.200904110104.tar.gz" 
+tar xfz "tzdata_2008h-2.5.200904110104.tar.gz" 
 cd $OLD_DIR
 
 TZDATA_DIR="$TZDATA_DIR/tzdata-2008h"
