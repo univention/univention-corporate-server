@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, python, python-all-dev, python-central, univention-config-dev, kdebase-data (>=3.5.9), tzdata (=2008h), kdelibs-data(>=3.5.10)
+Build-Depends: debhelper, python, python-all-dev, python-central, univention-config-dev, kdebase-data (>=3.5.9), tzdata (>=2007g), kdelibs-data(>=3.5.10)
 XS-Python-Version: all
 
 Package: univention-localization
