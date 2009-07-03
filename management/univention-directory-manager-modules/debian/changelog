@@ -1,3 +1,10 @@
+univention-directory-manager-modules (4.0.21-1) unstable; urgency=low
+
+  * throw an exception if a alias record with the name as the hostname
+    exists during the host record creation. Bug #14022
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Jul 2009 10:00:14 +0200
+
 univention-directory-manager-modules (4.0.20-1) unstable; urgency=low
 
   * fixed a superordinate traceback which avoid superordinate operations
