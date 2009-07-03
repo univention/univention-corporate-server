@@ -524,15 +524,6 @@ def doit(arglist):
 			out.append('authentication error: %s' % str(e))
 			return out + ["OPERATION FAILED"]
 
-	if superordinate_dn and univention.admin.modules.superordinate(module):
-		try:
-			superordinate=univention.admin.objects.get(univention.admin.modules.superordinate(module), co, lo, '', dn=superordinate_dn)
-		except univention.admin.uexceptions.insufficientInformation, e:
-			out.append('Insufficient Information: %s' % str(e))
-			return out + ["OPERATION FAILED"]
-	else:
-		superordinate=None
-
 	if not position_dn and superordinate_dn:
 		position_dn=superordinate_dn
 	elif not position_dn:
@@ -561,6 +552,16 @@ def doit(arglist):
 	univention.admin.modules.init(lo,position,module)
 
 	information=module_information(module)
+
+	if superordinate_dn and univention.admin.modules.superordinate(module):
+		try:
+			superordinate=univention.admin.objects.get(univention.admin.modules.superordinate(module), co, lo, '', dn=superordinate_dn)
+		except univention.admin.uexceptions.insufficientInformation, e:
+			out.append('Insufficient Information: %s' % str(e))
+			return out + ["OPERATION FAILED"]
+	else:
+		superordinate=None
+
 
 	if len(arglist) == 2:
 		out = usage() + module_usage(information)
