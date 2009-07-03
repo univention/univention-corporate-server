@@ -28,11 +28,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-VERSION=3
+JSNAME="univention-localization"
+JSFILE="/usr/lib/univention-install/.index.txt"
+VERSION="0"
 
-touch /usr/lib/univention-install/.index.txt
-
-test -n "`grep "univention-management-console-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+touch "${JSFILE}"
+test -n "$(grep "${JSNAME} v${VERSION} successful" ${JSFILE})" && exit 1
 
 eval $( univention-config-registry shell ldap/base )
 
@@ -55,3 +56,7 @@ univention-admin settings/console_acl create $@ --ignore_exists --position cn=ac
 univention-admin policies/console_access modify $@ --ignore_exists \
         --dn cn=default-admin,cn=console,cn=policies,$ldap_base \
         --append allow=cn=wizard-localization-all,cn=acls,cn=console,cn=univention,$ldap_base 
+
+test -n "$(grep "${JSNAME} v${VERSION} successful" ${JSFILE})" || echo "${JSNAME} v${VERSION} successful" >> "${JSFILE}"
+
+exit 0
