@@ -223,3 +223,7 @@ class nagiosARecordRequired(base):
 
 class nagiosDNSForwardZoneEntryRequired(base):
 	message=_('DNS Forward Zone entry required to assign nagios services!')
+
+class dnsAliasRecordExists(base):
+	message=_('The DNS forward entry could not be created. Please remove existing alias records or comparable DNS objects with the same name as this host from the forward zone.')
+

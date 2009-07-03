@@ -1007,7 +1007,7 @@ class simpleComputer( simpleLdap ):
 		if self [ 'name' ]:
 			tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
 
-			searchFilter = '(&(objectClass=dNSZone)(relativeDomainName=%s))' % self[ 'name' ]
+			searchFilter = '(&(objectClass=dNSZone)(relativeDomainName=%s)(!(cNAMERecord=*)))' % self[ 'name' ]
 			try:
 				result = self.lo.search( base = tmppos.getBase( ),scope = 'domain', filter = searchFilter, attr = [ 'zoneName', 'aRecord' ], unique = 0 )
 
@@ -1421,13 +1421,16 @@ class simpleComputer( simpleLdap ):
 	def __add_dns_forward_object( self, name, zoneDn, ip ):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object: zoneDn="%s", name="%s", ip="%s"' % ( zoneDn, name, ip ) )
 		if name and ip and zoneDn:
-			results = self.lo.search( base = zoneDn, scope = 'domain', attr = [ 'aRecord' ], filter = 'relativeDomainName=%s' % ( name ), unique = 0 )
+			results = self.lo.search( base = zoneDn, scope = 'domain', attr = [ 'aRecord' ], filter = '(&(relativeDomainName=%s)(!(cNAMERecord=*)))' % ( name ), unique = 0 )
 			if not results:
-				self.lo.add( 'relativeDomainName=%s,%s'% ( name, zoneDn ), [\
-									( 'objectClass', [ 'top', 'dNSZone' ]),\
-									( 'zoneName', univention.admin.uldap.explodeDn( zoneDn, 1 )[ 0 ]),\
-									( 'ARecord', [ ip ]),\
-									( 'relativeDomainName', [ name ])])
+				try:
+					self.lo.add( 'relativeDomainName=%s,%s'% ( name, zoneDn ), [\
+										( 'objectClass', [ 'top', 'dNSZone' ]),\
+										( 'zoneName', univention.admin.uldap.explodeDn( zoneDn, 1 )[ 0 ]),\
+										( 'ARecord', [ ip ]),\
+										( 'relativeDomainName', [ name ])])
+				except univention.admin.uexceptions.objectExists:
+					raise univention.admin.uexceptions.dnsAliasRecordExists
 
 				# TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
 				zone = univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zoneDn )

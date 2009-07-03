@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-07 17:22+0200\n"
-"PO-Revision-Date: 2009-05-08 12:31+0200\n"
+"POT-Creation-Date: 2009-07-03 09:45+0200\n"
+"PO-Revision-Date: 2009-07-03 09:46+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -251,7 +251,6 @@ msgstr ""
 "Der Wert darf nur Zahlen, Buchstaben, Leerzeichen und Punkte enthalten."
 
 #: syntax.py:326
-#, fuzzy
 msgid "Field must only contain ASCII characters!"
 msgstr "Der Wert darf nur ASCII Buchstaben enthalten!"
 
@@ -272,7 +271,7 @@ msgstr ""
 
 #: syntax.py:363
 msgid "Only the first letter of the username may be uppercase!"
-msgstr ""
+msgstr "Nur der erste Buchstabe des Benutzernames darf groß geschrieben sein!"
 
 #: syntax.py:388
 msgid ", a path must begin with \"/\"!"
@@ -753,7 +752,7 @@ msgstr "NFS-Freigabe"
 msgid "Language code must be in format \"xx_XX\"!"
 msgstr "Sprach-Code muss im Format \"xx_XX\" angegeben werden!"
 
-#: syntax.py:2054 syntax.py:2058 syntax.py:2061 syntax.py:2064
+#: syntax.py:2064 syntax.py:2068 syntax.py:2071 syntax.py:2074
 msgid "Language code (e.g. en_US)"
 msgstr "Sprachcode (z.B. de_DE)"
 
@@ -1036,6 +1035,16 @@ msgid "DNS Forward Zone entry required to assign nagios services!"
 msgstr ""
 "Zum Zuweisen von Nagios-Diensten wird ein Eintrag in der DNS Forward Zone "
 "benötigt!"
+
+#: uexceptions.py:228
+msgid ""
+"The DNS forward entry could not be created. Please remove existing alias "
+"records or comparable DNS objects with the same name as this host from the "
+"forward zone."
+msgstr ""
+"Der DNS-Forward Eintrag konnte nicht erzeugt werden. Es sollten existierende "
+"DNS Alias Records oder vergleichbare DNS-Objekte mit dem Namen dieses "
+"Rechners aus der DNS-Forward-Zone entfernt werden."
 
 #: uldap.py:75
 msgid "There was no LDAP base specified."
