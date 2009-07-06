@@ -3,18 +3,207 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: modconsole.py:150
+#: modconsole.py:163
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-16 10:32+0100\n"
+"POT-Creation-Date: 2009-07-06 07:37+0200\n"
 "PO-Revision-Date: 2008-06-16 13:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
+
+#: modconsole.py:140
+msgid "Language:"
+msgstr "Sprache:"
+
+#: modconsole.py:140
+msgid "Select language for this session"
+msgstr "Bitte wählen Sie eine Sprache für diese Sitzung"
+
+#: modconsole.py:142
+msgid "User name"
+msgstr "Benutzername"
+
+#: modconsole.py:142
+msgid "Please enter your uid."
+msgstr "Bitte geben Sie Ihren Benutzernamen ein."
+
+#: modconsole.py:143 modconsole.py:186
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: modconsole.py:143
+msgid "Abort login"
+msgstr "Anmeldung abbrechen"
+
+#: modconsole.py:145 modconsole.py:148
+msgid "Password"
+msgstr "Passwort"
+
+#: modconsole.py:145 modconsole.py:149
+msgid "Please enter your password."
+msgstr "Bitte geben Sie Ihr Passwort ein."
+
+#: modconsole.py:146 modconsole.py:150
+msgid "OK"
+msgstr "OK"
+
+#: modconsole.py:146 modconsole.py:150 modconsole.py:173
+msgid "Login"
+msgstr "Anmeldung"
+
+#: modconsole.py:164 modconsole.py:165
+msgid "Not using a secure SSL connection. Click to continue."
+msgstr ""
+"Es wird keine gesicherte SSL Verbindung verwendet. Bitte aktivieren um "
+"fortzufahren."
+
+#: modconsole.py:185 modconsole.py:197
+msgid "Logout"
+msgstr "Abmeldung"
+
+#: modconsole.py:186
+msgid "Abort logout"
+msgstr "Anmeldung abbrechen"
+
+#: modconsole.py:190
+msgid "Do you really want to logout?"
+msgstr "Möchten Sie sich wirklich abmelden?"
+
+#: modconsole.py:221
+msgid "Update status"
+msgstr "Status aktualisieren"
+
+#: modconsole.py:253
+msgid ""
+"Authentication failed: A connection to the UMC daemon could not be "
+"established."
+msgstr ""
+"Authentisierungfehler: Eine Verbindung zum UMC-Dämon konnte nicht "
+"hergestellt werden"
+
+#: modconsole.py:306
+msgid "The UMC server did not responed to the authentication request"
+msgstr "Der UMC-Server hat auf die Authentisierungsanfrage nicht geantwortet"
+
+#: modconsole.py:359
+#, python-format
+msgid "Authentication failed: %s"
+msgstr "Authentisierungsfehler: %s"
+
+#: modconsole.py:374
+msgid "Logout successful."
+msgstr "Abmeldung erfolgreich"
+
+#: unidialog.py:119
+#, python-format
+msgid "error while modifying: %s %s"
+msgstr "Während des Bearbeitens ist ein Fehler aufgetreten: %s %s"
+
+#: mapping/buttons.py:147
+msgid "Execute"
+msgstr "Ausführen"
+
+#: mapping/buttons.py:148
+msgid "Perform action on selected objects."
+msgstr "Aktion mit ausgewählten Objekten ausführen"
+
+#: mapping/buttons.py:150
+msgid "Invert selection"
+msgstr "Auswahl umkehren"
+
+#: mapping/buttons.py:151
+msgid "Select all"
+msgstr "Alle auswählen"
+
+#: mapping/buttons.py:159 mapping/buttons.py:161
+msgid "Selected objects ..."
+msgstr "Ausgewählte Objekte ..."
+
+#: mapping/buttons.py:223 mapping/buttons.py:314 mapping/buttons.py:383
+msgid "Select"
+msgstr "Auswählen"
+
+#: mapping/buttons.py:224 mapping/buttons.py:315 mapping/buttons.py:384
+msgid "Select entry"
+msgstr "Auswählen eines Eintrags"
+
+#: mapping/dynamics.py:95
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: mapping/dynamics.py:204
+msgid "Entries:"
+msgstr "Einträge:"
+
+#: mapping/dynamics.py:205
+#, python-format
+msgid "Current entries for '%s'"
+msgstr "Existierende Einträge für '%s'"
+
+#: mapping/dynamics.py:319
+msgid "any"
+msgstr "Alle"
+
+#: mapping/dynamics.py:320
+msgid "none"
+msgstr "Keine"
+
+#: mapping/dynamics.py:333
+msgid "Enter search filter"
+msgstr "Suchfilter"
+
+#: mapping/dynamics.py:341
+msgid "Display"
+msgstr "Anzeigen"
+
+#: mapping/dynamics.py:342
+msgid "Property"
+msgstr "Eigenschaft"
+
+#: mapping/dynamics.py:342
+msgid "Select attribute"
+msgstr "Wählen Sie ein Attribut aus"
+
+#: mapping/dynamics.py:462
+msgid "All"
+msgstr "Alles"
+
+#: mapping/dynamics.py:462
+msgid "Select objects to add"
+msgstr "Wählen Sie die Objekte zum Hinzufügen aus."
+
+#: mapping/dynamics.py:463
+msgid "Current"
+msgstr "Aktuell"
+
+#: mapping/dynamics.py:463
+msgid "Select objects to remove"
+msgstr "Wählen Sie die zu entfernenden Objekte aus."
+
+#: mapping/dynamics.py:606
+msgid "Select a file"
+msgstr "Datei auswählen"
+
+#: mapping/dynamics.py:607
+msgid "Upload file"
+msgstr "Datei hochladen"
+
+#: mapping/dynamics.py:607
+msgid "Upload selected file"
+msgstr "Ausgewählte Datei hochladen"
+
+#: mapping/dynamics.py:612
+msgid "Remove"
+msgstr "Entfernen"
+
+#: mapping/dynamics.py:612
+msgid "Delete file"
+msgstr "Datei entfernen"
 
 #: pages/about.py:46
 msgid "About"
@@ -56,6 +245,18 @@ msgstr "ALL RIGHTS RESERVED"
 msgid "Logout from Univention Management Console"
 msgstr "Abmelden von Univention Management Console"
 
+#: pages/module.py:131
+msgid "Operation still in progress. Please wait ..."
+msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte gedulden Sie sich ..."
+
+#: pages/module.py:132 pages/startup.py:109
+msgid "Information"
+msgstr "Hinweis"
+
+#: pages/overview.py:50
+msgid "Overview"
+msgstr "Überblick"
+
 #: pages/startup.py:50
 msgid "Bugreport: Univention Management Console Traceback"
 msgstr "Fehlerbericht: Univention Management Console Traceback"
@@ -93,203 +294,6 @@ msgstr ""
 #: pages/startup.py:99
 msgid "An error has occured"
 msgstr "Ein Fehler ist aufgetreten"
-
-#: pages/module.py:222
-msgid "Operation still in progress. Please wait ..."
-msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte gedulden Sie sich ..."
-
-#: pages/module.py:223
-msgid "Information"
-msgstr "Hinweis"
-
-#: pages/overview.py:50
-msgid "Overview"
-msgstr "Überblick"
-
-#: mapping/buttons.py:147
-msgid "Execute"
-msgstr "Ausführen"
-
-#: mapping/buttons.py:148
-msgid "Perform action on selected objects."
-msgstr "Aktion mit ausgewählten Objekten ausführen"
-
-#: mapping/buttons.py:150
-msgid "Invert selection"
-msgstr "Auswahl umkehren"
-
-#: mapping/buttons.py:151
-msgid "Select all"
-msgstr "Alle auswählen"
-
-#: mapping/buttons.py:154 mapping/buttons.py:156
-msgid "Selected objects ..."
-msgstr "Ausgewählte Objekte ..."
-
-#: mapping/buttons.py:218
-msgid "Select"
-msgstr "Auswählen"
-
-#: mapping/buttons.py:219
-msgid "Select entry"
-msgstr "Auswählen eines Eintrags"
-
-#: mapping/dynamics.py:95
-msgid "Add"
-msgstr "Hinzufügen"
-
-#: mapping/dynamics.py:192
-msgid "Entries:"
-msgstr "Einträge:"
-
-#: mapping/dynamics.py:193
-#, python-format
-msgid "Current entries for '%s'"
-msgstr "Existierende Einträge für '%s'"
-
-#: mapping/dynamics.py:304
-msgid "any"
-msgstr "Alle"
-
-#: mapping/dynamics.py:305
-msgid "none"
-msgstr "Keine"
-
-#: mapping/dynamics.py:318
-msgid "Enter search filter"
-msgstr "Suchfilter"
-
-#: mapping/dynamics.py:326
-msgid "Display"
-msgstr "Anzeigen"
-
-#: mapping/dynamics.py:327
-msgid "Property"
-msgstr "Eigenschaft"
-
-#: mapping/dynamics.py:327
-msgid "Select attribute"
-msgstr "Wählen Sie ein Attribut aus"
-
-#: mapping/dynamics.py:447
-msgid "All"
-msgstr "Alles"
-
-#: mapping/dynamics.py:447
-msgid "Select objects to add"
-msgstr "Wählen Sie die Objekte zum Hinzufügen aus."
-
-#: mapping/dynamics.py:448
-msgid "Current"
-msgstr "Aktuell"
-
-#: mapping/dynamics.py:448
-msgid "Select objects to remove"
-msgstr "Wählen Sie die zu entfernenden Objekte aus."
-
-#: mapping/dynamics.py:591
-msgid "Select a file"
-msgstr "Datei auswählen"
-
-#: mapping/dynamics.py:592
-msgid "Upload file"
-msgstr "Datei hochladen"
-
-#: mapping/dynamics.py:592
-msgid "Upload selected file"
-msgstr "Ausgewählte Datei hochladen"
-
-#: mapping/dynamics.py:597
-msgid "Remove"
-msgstr "Entfernen"
-
-#: mapping/dynamics.py:597
-msgid "Delete file"
-msgstr "Datei entfernen"
-
-#: unidialog.py:119
-#, python-format
-msgid "error while modifying: %s %s"
-msgstr "Während des Bearbeitens ist ein Fehler aufgetreten: %s %s"
-
-#: modconsole.py:127
-msgid "Language:"
-msgstr "Sprache:"
-
-#: modconsole.py:127
-msgid "Select language for this session"
-msgstr "Bitte wählen Sie eine Sprache für diese Sitzung"
-
-#: modconsole.py:129
-msgid "User name"
-msgstr "Benutzername"
-
-#: modconsole.py:129
-msgid "Please enter your uid."
-msgstr "Bitte geben Sie Ihren Benutzernamen ein."
-
-#: modconsole.py:130 modconsole.py:173
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: modconsole.py:130
-msgid "Abort login"
-msgstr "Anmeldung abbrechen"
-
-#: modconsole.py:132 modconsole.py:135
-msgid "Password"
-msgstr "Passwort"
-
-#: modconsole.py:132 modconsole.py:136
-msgid "Please enter your password."
-msgstr "Bitte geben Sie Ihr Passwort ein."
-
-#: modconsole.py:133 modconsole.py:137
-msgid "OK"
-msgstr "OK"
-
-#: modconsole.py:133 modconsole.py:137 modconsole.py:160
-msgid "Login"
-msgstr "Anmeldung"
-
-#: modconsole.py:151 modconsole.py:152
-msgid "Not using a secure SSL connection. Click to continue."
-msgstr ""
-"Es wird keine gesicherte SSL Verbindung verwendet. Bitte aktivieren um "
-"fortzufahren."
-
-#: modconsole.py:172 modconsole.py:184
-msgid "Logout"
-msgstr "Abmeldung"
-
-#: modconsole.py:173
-msgid "Abort logout"
-msgstr "Anmeldung abbrechen"
-
-#: modconsole.py:177
-msgid "Do you really want to logout?"
-msgstr "Möchten Sie sich wirklich abmelden?"
-
-#: modconsole.py:208
-msgid "Update status"
-msgstr "Status aktualisieren"
-
-#: modconsole.py:240
-msgid ""
-"Authentication failed: A connection to the UMC daemon could not be "
-"established."
-msgstr ""
-"Authentisierungfehler: Eine Verbindung zum UMC-Dämon konnte nicht "
-"hergestellt werden"
-
-#: modconsole.py:335
-#, python-format
-msgid "Authentication failed: %s"
-msgstr "Authentisierungsfehler: %s"
-
-#: modconsole.py:350
-msgid "Logout successful."
-msgstr "Abmeldung erfolgreich"
 
 #~ msgid ""
 #~ "Report this error to Univention Feedback &lt;feedback@univention.de&gt;"

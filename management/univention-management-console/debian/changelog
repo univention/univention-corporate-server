@@ -1,3 +1,10 @@
+univention-management-console (1.0.18-1) unstable; urgency=low
+
+  * improve error message shown if the authentication has failed because
+    the UCM server did not answer (Bug #14124)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  6 Jul 2009 08:19:26 +0200
+
 univention-management-console (1.0.17-1) unstable; urgency=low
 
   * merged dojo date widget; Bug #12977 
