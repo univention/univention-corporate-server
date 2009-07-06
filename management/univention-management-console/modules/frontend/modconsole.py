@@ -303,7 +303,7 @@ class modconsole(unimodule.unimodule):
 						  umcp.status_information( response.status() ) )
 				else:
 					authenticated = False
-					statusinformation = 'no response yet :('
+					statusinformation = _( 'The UMC server did not responed to the authentication request' )
 				if authenticated:
 					self.save.put( 'auth_ok', True )
 

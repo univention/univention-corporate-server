@@ -1,3 +1,10 @@
+univention-management-console (2.0.11-1) unstable; urgency=low
+
+  * improve error message shown if the authentication has failed because
+    the UCM server did not answer (Bug #14124)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  6 Jul 2009 07:48:50 +0200
+
 univention-management-console (2.0.10-3) unstable; urgency=low
 
   * Adapt UMC to the new run time data paths of univention-join
