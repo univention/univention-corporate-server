@@ -1,3 +1,10 @@
+univention-directory-manager-modules (5.0.4-1) unstable; urgency=low
+
+  * avoid an exception which could be occur during the map of the
+    hardware address in dhcp/host. Bug #14327
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  6 Jul 2009 11:31:06 +0200
+
 univention-directory-manager-modules (5.0.3-1) unstable; urgency=low
 
   * throw an exception if a alias record with the name as the hostname
