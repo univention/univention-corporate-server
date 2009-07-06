@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.24-1) unstable; urgency=low
+
+  * support a mutli line object in the search property in modwizard. Bug
+    #14327
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  6 Jul 2009 11:26:39 +0200
+
 univention-directory-manager (6.0.23-1) unstable; urgency=low
 
   * fixed a traceback on the thin client settings tab which occurs when
