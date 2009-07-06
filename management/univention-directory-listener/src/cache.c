@@ -61,6 +61,7 @@
 #include <string.h>
 #include <limits.h>
 #include <unistd.h>
+#include <ctype.h>
 #include <sys/types.h>
 #include <sys/file.h>
 #include <sys/stat.h>
@@ -95,6 +96,21 @@ static void cache_panic_call(DB_ENV *dbenvp, int errval)
 }
 #endif
 
+char* _convert_to_lower(char *dn)
+{
+	char *lower_dn = NULL;
+	int i, dn_length;
+
+	dn_length = strlen(dn);
+	lower_dn = malloc((dn_length+1) * sizeof(char));
+	memset(lower_dn, 0, dn_length+1);
+
+	for(i=0; i<dn_length; i++) {
+		lower_dn[i] = tolower(dn[i]);
+	}
+
+	return lower_dn;
+}
 static void cache_error_message(const char *errpfx, char *msg)
 {
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
@@ -350,6 +366,7 @@ int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 	DBT key, data;
 	DB_TXN *dbtxnp;
 	int rv = 0;
+	char *lower_dn;
 
 	memset(&key, 0, sizeof(DBT));
 	memset(&data, 0, sizeof(DBT));
@@ -374,7 +391,8 @@ int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 	dbtxnp = NULL;
 #endif
 
-	key.data=dn;
+	lower_dn = _convert_to_lower(dn);
+	key.data=lower_dn;
 	key.size=strlen(dn)+1;
 
 	if ((rv=dbp->put(dbp, dbtxnp, &key, &data, 0)) != 0) {
@@ -385,6 +403,7 @@ int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 #ifdef WITH_DB42
 		dbtxnp->abort(dbtxnp);
 #endif
+		free(lower_dn);
 		free(data.data);
 		return rv;
 	}
@@ -397,6 +416,7 @@ int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 	}
 	signals_unblock();
 
+	free(lower_dn);
 	free(data.data);
 	return rv;
 }
@@ -470,8 +490,23 @@ int cache_get_entry(NotifierID id, char *dn, CacheEntry *entry)
 		dbp->err(dbp, rv, "get");
 		return rv;
 	} else if (rv == DB_NOTFOUND) {
-		signals_unblock();
-		return rv;
+		// convert to a lowercase dn
+		char *lower_dn;
+		lower_dn = _convert_to_lower(dn);
+		key.data=lower_dn;
+		if ((rv=dbp->get(dbp, NULL, &key, &data, 0)) != 0 && rv != DB_NOTFOUND) {
+			signals_unblock();
+			free(lower_dn);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
+					"reading %s from database failed", lower_dn);
+			dbp->err(dbp, rv, "get");
+			return rv;
+		} else if (rv == DB_NOTFOUND) {
+			signals_unblock();
+			free(lower_dn);
+			return rv;
+		}
+		free(lower_dn);
 	}
 	signals_unblock();
 	
