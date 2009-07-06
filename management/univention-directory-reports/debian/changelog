@@ -1,3 +1,9 @@
+univention-directory-reports (2.0.2-1) unstable; urgency=low
+
+  * if loading a policy module fails, it will be ignored (Bug #11131)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  6 Jul 2009 15:31:00 +0200
+
 univention-directory-reports (2.0.1-1) unstable; urgency=low
 
   * if an UDM object could not be opened it will be shown in the report

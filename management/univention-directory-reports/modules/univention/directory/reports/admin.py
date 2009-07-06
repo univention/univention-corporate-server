@@ -146,6 +146,8 @@ class AdminConnection( object ):
 		for policy_oc, attrs in policies.items():
 			module_name = ua_objects.ocToType( policy_oc )
 			module = ua_modules.get( module_name )
+			if not module:
+				continue
 			for attr_name, value_dict in attrs.items():
 				dict[attr_name]=value_dict[ 'value' ]
 
