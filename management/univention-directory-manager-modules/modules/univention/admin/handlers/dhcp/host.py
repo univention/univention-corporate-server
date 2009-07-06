@@ -32,6 +32,7 @@ import sys, string
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+import univention.debug
 
 translation=univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _=translation.translate
@@ -90,15 +91,20 @@ layout=[
 ]
 
 def unmapHWAddress(old):
+	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'host.py: unmapHWAddress: old: %s' % old)
 	if not old:
 		return ['', '']
 	return old[0].split(' ')
 
 def mapHWAddress(old):
+	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'host.py: mapHWAddress: old: %s' % old)
 	if not old[0]:
 		return ''
 	else:
-		return '%s %s' % (old[0], old[1])
+		if len (old) > 1:
+			return '%s %s' % (old[0], old[1])
+		else:
+			return old
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('host', 'cn', None, univention.admin.mapping.ListToString)
