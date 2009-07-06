@@ -1,3 +1,10 @@
+univention-management-console (1.0.18-2) unstable; urgency=low
+
+  * add a fix that ensures that a valid page is selected after a response
+    (Bug #12626)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  6 Jul 2009 09:38:28 +0200
+
 univention-management-console (1.0.18-1) unstable; urgency=low
 
   * improve error message shown if the authentication has failed because

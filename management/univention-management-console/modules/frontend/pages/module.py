@@ -200,6 +200,12 @@ class Module( base.Page ):
 				else:
 					ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: normal layout' )
 					cmd = self.__startups[ self.selected ]
+					# the selected page is not available anymore -> select the next available page
+					if cmd == None:
+						while self.selected >= 0 and not self.__startups[ self.selected ]:
+							self.selected -= 1
+						cmd = self.__startups[ self.selected ]
+					
 					if self.__restore_referrer:
 						self.__layout = cmd.cache
 						self.__restore_referrer = False
