@@ -1,3 +1,11 @@
+univention-directory-reports (1.0.2-1) unstable; urgency=low
+
+  * if an UDM object could not be opened it will be shown in the report
+    with empty values and a log entry with the traceback is written (Bug
+    #12930)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  6 Jul 2009 14:02:46 +0200
+
 univention-directory-reports (1.0.1-2) unstable; urgency=low
 
   * Added UCR Warning.
