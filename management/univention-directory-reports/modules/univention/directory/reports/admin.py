@@ -37,6 +37,8 @@ import univention.admin.config as ua_config
 
 import univention_baseconfig as ub
 
+import univention.debug as ud
+
 from locales import *
 from filter import *
 
@@ -88,7 +90,20 @@ class AdminConnection( object ):
 				return None
 			ua_modules.init( self._access, self._position, module )
 		new = ua_objects.get( module, self._config, self._access, position = self._position, dn = dn )
-		new.open()
+		# if the object is not valid it should be displayed as an empty object
+		try:
+			new.open()
+		except Exception, e:
+			# write the traceback in the logfile
+			import traceback
+			
+			ud.debug( ud.ADMIN, ud.ERROR, 'The object %s could not be opened' % dn )
+			try:
+				tb = traceback.format_exc().encode( 'ascii', 'replace' ).replace( '%', '?' )
+				# this might fail because of problems with univention.debug
+				ud.debug( ud.ADMIN, ud.ERROR, 'Traceback: %s' % tb )
+			except:
+				pass
 		for key, value in new.items():
 			if self._format:
 				i, j = self.format_property( new.descriptions, key, value )
