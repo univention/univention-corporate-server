@@ -214,6 +214,11 @@ class Module( base.Page ):
 					self.__layout = error_dialog
 				else:
 					cmd = self.__startups[ self.selected ]
+					# the selected page is not available anymore -> select the next available page
+					if cmd == None:
+						while self.selected >= 0 and not self.__startups[ self.selected ]:
+							self.selected -= 1
+						cmd = self.__startups[ self.selected ]
 					last_resp = responses[ -1 ]
 					# if there is no dialog 
 					if len( last_resp.dialog ) == 1 and list.__getitem__( last_resp.dialog, 0 ) == None:
