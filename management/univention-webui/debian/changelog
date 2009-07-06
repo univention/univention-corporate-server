@@ -1,3 +1,9 @@
+univention-webui (3.0.2-1) unstable; urgency=low
+
+  * applied patch that fixes the date widget (Bug #14721)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  6 Jul 2009 10:27:09 +0200
+
 univention-webui (3.0.1-1) unstable; urgency=low
 
   * first step in enhancing the performance of the PHP frontend.

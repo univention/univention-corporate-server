@@ -280,7 +280,7 @@ class question_text extends extra{
 class question_dojo_date_widget extends extra {
 	function show(){
 		if(isset($this->attribute['passive'])) $access = 'disabled';
-		$str .= '<script type="text/javascript">dojo.require("unijit.form.DateWidget");</script>
+		$str .= '<script type="text/javascript">dojo.require("dijit.form.DateTextBox");</script>
 <table border="0" cellspacing="0" cellpadding="0">
 ';
 		if($this->basket['description']) {
@@ -298,7 +298,7 @@ class question_dojo_date_widget extends extra {
 		if($this->warn) $str .= ' class="text_warn" ';
 		else $str .= ' class="date_widget" ';
 		$str .= ' type="text" '.$access.' name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"
- dojoType="unijit.form.DateWidget"></input>';
+ dojoType="dijit.form.DateTextBox"></input>';
 		if(isset($this->basket["update"])) $str .= $this->basket['update'];
 		$str .= '</td></tr>
 </table>';
