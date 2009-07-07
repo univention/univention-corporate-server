@@ -40,7 +40,7 @@ cat >>/instmnt/install_initrd.sh <<__EOT__
 
 export DEBIAN_FRONTEND=noninteractive
 
-$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install initrd-tools
+apt-get -y -o APT::Get::AllowUnauthenticated=1 install initrd-tools
 $PIPE dpkg --configure -a
 
 __EOT__
@@ -98,15 +98,15 @@ if [ -n "$modules" ]; then
 fi
 
 if [ "$architecture" = "powerpc" ]; then
-	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install initramfs-tools parted
+	apt-get -y -o APT::Get::AllowUnauthenticated=1 install initramfs-tools parted
 else
-	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-initrd
+	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-initrd
 fi
 
-$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install $kernel_package
+apt-get -y -o APT::Get::AllowUnauthenticated=1 install $kernel_package
 if [ "\$?" != "0" ]; then
 	if [ -n "$fallback_kernel_package" ]; then
-		$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install $fallback_kernel_package
+		apt-get -y -o APT::Get::AllowUnauthenticated=1 install $fallback_kernel_package
 	fi
 fi
 
@@ -140,10 +140,10 @@ export DEBIAN_FRONTEND=noninteractive
 
 mount | grep /dev/md 2>&1 1>/dev/null
 if [ 0 -eq \$? ]; then
-	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install mdadm
+	apt-get -y -o APT::Get::AllowUnauthenticated=1 install mdadm
 fi
 
-$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-grub
+apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-grub
 
 __EOT__
 

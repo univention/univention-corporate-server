@@ -109,25 +109,25 @@ export DEBIAN_FRONTEND=noninteractive
 for((i=0;i<4;i++)); do
 	dhcp=\`univention-config-registry get interfaces/eth\$i/type | grep dhcp\`
 	if [ -n "\$dhcp" ]; then
-		$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install dhcp-client --yes
+		apt-get -y -o APT::Get::AllowUnauthenticated=1 install dhcp-client --yes
 		dhclient eth\$i
 	fi
 done
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-server-master --yes
+	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-server-master --yes
 elif [ "$server_role" = "domaincontroller_backup" ]; then
-	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-server-backup --yes
+	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-server-backup --yes
 elif [ "$server_role" = "domaincontroller_slave" ]; then
-	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-server-slave --yes
+	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-server-slave --yes
 elif [ "$server_role" = "memberserver" ]; then
-	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-server-member --yes
+	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-server-member --yes
 elif [ "$server_role" = "managed_client" ]; then
-	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-managed-client --yes
+	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-managed-client --yes
 elif [ "$server_role" = "mobile_client" ]; then
-	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-mobile-client --yes
+	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-mobile-client --yes
 elif [ "$server_role" = "basesystem" ]; then
-	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-basesystem --yes
+	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-basesystem --yes
 fi
 
 $PIPE dpkg --configure -a
@@ -135,20 +135,20 @@ $PIPE dpkg --configure -a
 
 if [ -n "$packages" ]; then
 	for p in $packages; do
-		$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install \$p
+		apt-get -y -o APT::Get::AllowUnauthenticated=1 install \$p
 		$PIPE dpkg --configure -a
 	done
 fi
 
 if [ -n "$extra_packages" ]; then
 	for p in $extra_packages; do
-		$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install \$p
+		apt-get -y -o APT::Get::AllowUnauthenticated=1 install \$p
 		$PIPE dpkg --configure -a
 	done
 fi
 if [ -n "$local_repository" ]; then
 	if [ "$local_repository" = "true" ] || [ "$local_repository" = "yes" ]; then
-		$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-debmirror
+		apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-debmirror
 		$PIPE dpkg --configure -a
 	fi
 fi

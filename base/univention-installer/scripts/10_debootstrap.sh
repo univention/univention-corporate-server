@@ -73,4 +73,9 @@ else
 	fi
 fi
 
+if [ -e /instmnt/dev/.udev ]; then
+	# disable udev during the installer process
+	mv /instmnt/dev/.udev /instmnt/dev/.udev.disabled
+fi
+
 # do not umount the source device as it is required in 14_sources_list.sh again

@@ -41,3 +41,9 @@ if [ -f "/tmp/dummy-network-interface.txt" ] ; then
 	cat $UDEVRULEFN | grep -v "eth0" | grep -v "$MACADDR" > $TMPFN
 	cat $TMPFN > $UDEVRULEFN
 fi
+
+if [ -e /instmnt/dev/.udev.disabled ]; then
+	# enable udev, also see 10_debootstrap.sh
+	mv /instmnt/dev/.udev.disabled /instmnt/dev/.udev
+fi
+
