@@ -1,3 +1,9 @@
+univention-samba (3.0.14-1) unstable; urgency=low
+
+  * provide new UCR category service-samba (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Jul 2009 14:00:36 +0200
+
 univention-samba (3.0.13-1) unstable; urgency=low
 
   * fixed bash typo in last commit. Bug #14734
