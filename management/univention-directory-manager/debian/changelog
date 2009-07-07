@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.5-1) unstable; urgency=low
+
+  * provide new UCR category management-udm (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Jul 2009 15:48:51 +0200
+
 univention-directory-manager (7.0.4-1) unstable; urgency=low
 
   * support a mutli line object in the search property in modwizard. Bug
