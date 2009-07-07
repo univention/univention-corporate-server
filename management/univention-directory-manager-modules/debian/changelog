@@ -1,3 +1,11 @@
+univention-directory-manager-modules (5.0.5-1) unstable; urgency=low
+
+  * if an error has occured in _ldap_post_create, the created object is
+    removed to avoid further errors, when the create process is invoked
+    again (Bug #14236)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Jul 2009 08:55:26 +0200
+
 univention-directory-manager-modules (5.0.4-1) unstable; urgency=low
 
   * avoid an exception which could be occur during the map of the
