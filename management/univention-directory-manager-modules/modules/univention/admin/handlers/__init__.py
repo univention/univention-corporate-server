@@ -623,8 +623,14 @@ class simpleLdap(base):
 		self.lo.add(self.dn, al)
 
 		if hasattr(self,'_ldap_post_create'):
-			self._ldap_post_create()
-
+			# if anything goes wrong we need to remove the already created object, otherwise we run into 'already exists' errors
+			try:
+				self._ldap_post_create()
+			except Exception, e:
+				# ensure that there is no lock left
+				self.cancel()
+				self.remove()
+				raise e
 		self.call_udm_property_hook('hook_ldap_post_create', self)
 
 		self.save()
