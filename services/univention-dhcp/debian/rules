@@ -63,6 +63,7 @@ install: build
 	touch ${D}/etc/runit/univention-dhcp/down
 	ln -s /usr/share/univention-runit/sleep-dynamic ${D}/etc/runit/univention-dhcp/finish
 	univention-install-config-registry
+	univention-install-config-registry-info
 	univention-install-service-info
 
 binary-arch: build install

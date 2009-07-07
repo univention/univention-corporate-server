@@ -1,3 +1,10 @@
+univention-dhcp (3.0.5-1) unstable; urgency=low
+
+  * provide new UCR category service-dhcp and descriptions for variables
+    (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Jul 2009 14:51:52 +0200
+
 univention-dhcp (3.0.4-3) unstable; urgency=low
 
   * don't check the autostart setting in the runit file otherwise the
