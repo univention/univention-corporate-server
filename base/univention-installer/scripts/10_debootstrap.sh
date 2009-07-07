@@ -57,19 +57,19 @@ fi
 # Installing univention base system
 if [ -z "$USE_NO_LOG" ]; then
 	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-		debootstrap --arch powerpc --exclude="pcmcia-cs" univention /instmnt/ $repo_dir 2>&1 | tee -a /instmnt/.log
+		debootstrap --arch powerpc --exclude="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog" univention /instmnt/ $repo_dir 2>&1 | tee -a /instmnt/.log
 	elif [ "$architecture" = "x86_64" ]; then
-		debootstrap --arch amd64 --exclude="pcmcia-cs" univention /instmnt/ $repo_dir 2>&1 | tee -a /instmnt/.log
+		debootstrap --arch amd64 --exclude="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog" univention /instmnt/ $repo_dir 2>&1 | tee -a /instmnt/.log
 	else
-		debootstrap --arch i386 --exclude="pcmcia-cs" univention /instmnt/ $repo_dir 2>&1 | tee -a /instmnt/.log
+		debootstrap --arch i386 --exclude="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog" univention /instmnt/ $repo_dir 2>&1 | tee -a /instmnt/.log
 	fi
 else
 	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-		debootstrap --arch powerpc --exclude="pcmcia-cs" univention /instmnt/ $repo_dir
+		debootstrap --arch powerpc --exclude="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog" univention /instmnt/ $repo_dir
 	elif [ "$architecture" = "x86_64" ]; then
-		debootstrap --arch amd64 --exclude="pcmcia-cs" univention /instmnt/ $repo_dir
+		debootstrap --arch amd64 --exclude="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog" univention /instmnt/ $repo_dir
 	else
-		debootstrap --arch i386 --exclude="pcmcia-cs" univention /instmnt/ $repo_dir
+		debootstrap --arch i386 --exclude="pcmcia-cs libpcre3-udeb udev-udeb libc6-udeb rsyslog" univention /instmnt/ $repo_dir
 	fi
 fi
 

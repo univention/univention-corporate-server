@@ -1,3 +1,10 @@
+univention-installer (5.0.5-1) unstable; urgency=low
+
+  * added some packages to the exclude list during debootstrap. Bug
+    #14416
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Jul 2009 11:25:46 +0200
+
 univention-installer (5.0.4-1) unstable; urgency=low
 
   * since parted 1.8 the first line could be start with Model. The parse
