@@ -2,53 +2,53 @@
 Description[de]=Debug-Level des Univention Directory Manager Webfrontends
 Description[en]=Debug level of the Univention Directory Manager web frontend
 Type=str
-Categories=Management
+Categories=management-udm
 
 [directory/manager/web/language]
 Description[de]=Sprache des Univention Directory Manager Webfrontends
 Description[en]=Language of the Univention Directory Manager web frontend
 Type=str
-Categories=Management
+Categories=management-udm
 
 [directory/manager/timeout]
 Description[de]=Sitzungsablaufintervall des Univention Directory Manager-Webfrontends
 Description[en]=Session timeout of the Univention Directory Manager web frontend
 Type=str
-Categories=Management
+Categories=management-udm
 
 [directory/manager/cmd/timeout]
 Description[de]=Sitzungsablaufintervall des Univention Directory Manager-Kommandozeilenfrontends
 Description[en]=Session timeout of the commandline Univention Directory Manager
 Type=str
-Categories=Management
+Categories=management-udm
 
 [directory/manager/cmd/debug/level]
 Description[de]=Debug-Level des Univention Directory Manager-Kommandozeilenfrontends
 Description[en]=Debug level of the commandline Univention Directory Manager
 Type=str
-Categories=Management
+Categories=management-udm
 
 [directory/manager/cmd/language]
 Description[de]=Sprache des Univention Directory Manager-Kommandozeilenfrontends
 Description[en]=Language of the commandline Univention Directory Manager
 Type=str
-Categories=Management
+Categories=management-udm
 
 [directory/manager/web/modules/autosearch]
 Description[de]=Automatische Suche im Univention Directory Manager-Webfrontend
 Description[en]=Automatic search for the Univention Directory Manager-Web-frontend
 Type=str
-Categories=Management
+Categories=management-udm
 
 [directory/manager/web/modbrowse/defaults/visible-results]
 Description[de]=Default-Anzahl der Sucheregbnisse je Seite im Navigations-Modul des Univention Directory Manager.
 Description[en]=Default amount of results per page in the navigation-module of Univention Directory Manager.
 Type=int
-Categories=Management
+Categories=management-udm
 
 [directory/manager/web/modwizard/defaults/visible-results]
 Description[de]=Default-Anzahl der Sucheregbnisse je Seite in den Wizard-Modulen des Univention Directory Manager.
 Description[en]=Default amount of results per page in the wizard-modules of Univention Directory Manager.
 Type=int
-Categories=Management
+Categories=management-udm
 
