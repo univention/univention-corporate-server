@@ -1,3 +1,10 @@
+univention-installer (5.0.6-1) unstable; urgency=low
+
+  * install postfix during debootstrap. In former times bootstrap
+    installed by default exim. Bug #14416
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Jul 2009 14:26:43 +0200
+
 univention-installer (5.0.5-1) unstable; urgency=low
 
   * added some packages to the exclude list during debootstrap. Bug
