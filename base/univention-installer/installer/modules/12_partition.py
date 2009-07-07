@@ -1433,24 +1433,25 @@ class object(content):
 						self.debug('INFO: %s: BIOS CHS geometry = %s/%s/%s' % (dev, chs[0], chs[1], chs[2]))
 			pchs.close()
 
-			# parse disk size
-			if first_line.startswith('Disk '):
-				mb_size = int(first_line.split(' ')[-1].split('B')[0].split(',')[0]) / 1024.0 / 1024.0
-				tmpsize = self.getCHSandPosition(mb_size, geometry, PARTTYPE_PRIMARY, correction = 'increase', force = True)
-				self.debug('DEBUG: mb_size = %f  tmpsize = %f  chs=%s/%s/%s' % (mb_size, tmpsize['position'],
-																				tmpsize['cyls'], tmpsize['heads'], tmpsize['sectors']))
-				mb_size = tmpsize['position']
-			else:
-				mb_size = 0
-
+			mb_size = 0
 			extended=0
 			primary=0
 			logical=0
 			partList={}
 			last_end=float(0)
 			_re_int=re.compile('^[0-9].*')
-			for line in p.readlines():
+			for line in [ first_line ] + p.readlines():
 				line=line.strip()
+
+				# parse disk size
+				if line.startswith('Disk '):
+					mb_size = int(line.split(' ')[-1].split('B')[0].split(',')[0]) / 1024.0 / 1024.0
+					tmpsize = self.getCHSandPosition(mb_size, geometry, PARTTYPE_PRIMARY, correction = 'increase', force = True)
+					self.debug('DEBUG: mb_size = %f  tmpsize = %f  chs=%s/%s/%s' % (mb_size, tmpsize['position'],
+																					tmpsize['cyls'], tmpsize['heads'], tmpsize['sectors']))
+					mb_size = tmpsize['position']
+					continue
+
 				if not _re_int.match(line):
 					if _re_error.match(line):
 						self.debug('Line starts with Error: [%s]' % line)
@@ -1458,6 +1459,8 @@ class object(content):
 						devices_remove.append(dev)
 					continue
 				line=line.strip()
+
+
 				cols=line.split()
 				num=cols[0]
 				part=dev+cols[0]

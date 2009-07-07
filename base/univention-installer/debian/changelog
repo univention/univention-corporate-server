@@ -1,3 +1,10 @@
+univention-installer (5.0.4-1) unstable; urgency=low
+
+  * since parted 1.8 the first line could be start with Model. The parse
+    order was adjusted. Bug #14416
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Jul 2009 08:15:51 +0200
+
 univention-installer (5.0.3-1) unstable; urgency=low
 
   * use the ucr variable locale/keymap for storing the keyboard layout.
