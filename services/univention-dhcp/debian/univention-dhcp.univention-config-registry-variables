@@ -1,0 +1,17 @@
+[dhcpd/ldap/base]
+Description[de]=LDAP-Basis für den DHCP-Dienst
+Description[en]=LDAP base for the DHCP service
+Type=str
+Categories=service-dhcp
+
+[dhcpd/autostart]
+Description[de]=Definiert, ob der DHCP-Dienst automatisch gestartet werden soll
+Description[en]=Defines if the DHCP service should be started automatically
+Type=bool
+Categories=service-dhcp,system-services
+
+[dhcpd/ddns.*]
+Description[de]=Dynamic DNS Konfiguration
+Description[en]=Dynamic DNS Settings
+Type=str
+Categories=service-dhcp
