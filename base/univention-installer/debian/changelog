@@ -1,3 +1,9 @@
+univention-installer (5.0.7.1) unstable; urgency=low
+
+  * switch to libparted1.8. Bug #14416
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Jul 2009 14:52:12 +0200
+
 univention-installer (5.0.6-1) unstable; urgency=low
 
   * install postfix during debootstrap. In former times bootstrap
