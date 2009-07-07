@@ -1,3 +1,10 @@
+univention-ldap (4.0.12-1) unstable; urgency=low
+
+  * add LDAP attributes for extended attributes to LDAP index (eq, pres)
+    (Bug #14976)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Jul 2009 10:52:40 +0200
+
 univention-ldap (4.0.11-1) unstable; urgency=low
 
   * adjust default ldap/cachesize not only on UCS DC master (for Bug #14554)
