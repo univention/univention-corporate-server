@@ -1,3 +1,10 @@
+univention-ldap (5.0.0-13) unstable; urgency=low
+
+  * add LDAP attributes for extended attributes to LDAP index (eq, pres)
+    (Bug #14976)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Jul 2009 11:15:04 +0200
+
 univention-ldap (5.0.0-12) unstable; urgency=low
 
   * Make init scripts LSB-compliant (Bug #14421)
