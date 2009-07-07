@@ -1,3 +1,9 @@
+univention-ssl (3.0.5-1) unstable; urgency=low
+
+  * provide new UCR category system-ssl (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Jul 2009 15:34:50 +0200
+
 univention-ssl (3.0.4-3) unstable; urgency=low
 
   * change default to sha1 since openssl-0.9.8c does not support sha256 (Bug #14231)
