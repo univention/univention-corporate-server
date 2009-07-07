@@ -1,3 +1,9 @@
+univention-debootstrap (2.0.2-1) unstable; urgency=low
+
+  * be sure we do not use the busybox dpkg. Bug #14416
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Jul 2009 11:20:11 +0200
+
 univention-debootstrap (2.0.1-1) unstable; urgency=low
 
   * switch to /usr/share/debootstrap/scripts. Bug #14667

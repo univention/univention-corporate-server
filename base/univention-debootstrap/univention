@@ -75,7 +75,7 @@ Status: install ok installed" >> "$TARGET/var/lib/dpkg/status"
 
 second_stage_install () {
     x_core_install () {
-	smallyes '' | in_target dpkg --force-depends --install $(debfor "$@")
+	smallyes '' | in_target /usr/bin/dpkg --force-depends --install $(debfor "$@")
     }
 
     p () {
@@ -137,7 +137,7 @@ second_stage_install () {
 
     smallyes '' | 
      (repeat 5 in_target_failmsg UNPACK_REQ_FAIL_FIVE "Failure while unpacking required packages.  This will be attempted up to five times." "" \
-        dpkg --status-fd 8 --force-depends --unpack $(debfor $required) 8>&1 1>&7 || echo EXITCODE $?) |
+        /usr/bin/dpkg --status-fd 8 --force-depends --unpack $(debfor $required) 8>&1 1>&7 || echo EXITCODE $?) |
      dpkg_progress $baseprog $bases UNPACKREQ "Unpacking required packages" UNPACKING
 
     info CONFREQ "Configuring required packages..."
@@ -153,7 +153,7 @@ echo \"Warning: Fake start-stop-daemon called, doing nothing\"" > "$TARGET/sbin/
 
     smallyes '' | 
      (in_target_failmsg CONF_REQ_FAIL "Failure while configuring required packages." "" \
-       dpkg --status-fd 8 --configure --pending --force-configure-any --force-depends 8>&1 1>&7 || echo EXITCODE $?) |
+       /usr/bin/dpkg --status-fd 8 --configure --pending --force-configure-any --force-depends 8>&1 1>&7 || echo EXITCODE $?) |
      dpkg_progress $baseprog $bases CONFREQ "Configuring required packages" CONFIGURING
 
     baseprog=0
@@ -163,7 +163,7 @@ echo \"Warning: Fake start-stop-daemon called, doing nothing\"" > "$TARGET/sbin/
 
     smallyes '' | 
      (repeat 5 in_target_failmsg INST_BASE_FAIL_FIVE "Failure while installing base packages.  This will be re-attempted up to five times." "" \
-       dpkg --status-fd 8 --force-overwrite --force-confold --skip-same-version --unpack $(debfor $base) 8>&1 1>&7 || echo EXITCODE $?) |
+       /usr/bin/dpkg --status-fd 8 --force-overwrite --force-confold --skip-same-version --unpack $(debfor $base) 8>&1 1>&7 || echo EXITCODE $?) |
      dpkg_progress $baseprog $bases UNPACKBASE "Unpacking base system" UNPACKING
 
     info CONFBASE "Configuring the base system..."
@@ -171,7 +171,7 @@ echo \"Warning: Fake start-stop-daemon called, doing nothing\"" > "$TARGET/sbin/
     smallyes '' |
      (repeat 5 \
       in_target_failmsg CONF_BASE_FAIL "Failure while configuring base packages." "" \
-      dpkg --status-fd 8 --force-confold --skip-same-version --configure -a 8>&1 1>&7 || echo EXITCODE $?) |
+      /usr/bin/dpkg --status-fd 8 --force-confold --skip-same-version --configure -a 8>&1 1>&7 || echo EXITCODE $?) |
      dpkg_progress $baseprog $bases CONFBASE "Configuring base system" CONFIGURING
   
     mv "$TARGET/sbin/start-stop-daemon.REAL" "$TARGET/sbin/start-stop-daemon"
