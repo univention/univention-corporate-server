@@ -1,3 +1,9 @@
+univention-printquotadb (1.0.4-1) unstable; urgency=low
+
+  * move UCR variables to category service-cups (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 14:10:23 +0200
+
 univention-printquotadb (1.0.3-3) unstable; urgency=low
 
   * change package priotiry from optional to standard
