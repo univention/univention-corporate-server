@@ -1,3 +1,9 @@
+univention-directory-manager-modules (4.0.25-1) unstable; urgency=low
+
+  * fixed translation in computers/ipmanagedclient (Bug #14620)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 16:54:29 +0200
+
 univention-directory-manager-modules (4.0.24-1) unstable; urgency=low
 
   * add 7 video drivers to selection (Bug #13695)
