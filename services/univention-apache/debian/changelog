@@ -1,3 +1,9 @@
+univention-apache (2.0.21-1) unstable; urgency=low
+
+  * provide new UCR category service-apache (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 10:18:24 +0200
+
 univention-apache (2.0.20-1) unstable; urgency=low
 
   * fixed some php UCR settings. Bug #12454
@@ -452,6 +458,4 @@ univention-apache (0.1) unstable; urgency=low
 
  -- Roland Bauerschmidt <bauerschmidt@univention.de>  Mon,  8 Oct 2001 13:47:19 +0200
 
-Local variables:
-mode: debian-changelog
-End:
+
