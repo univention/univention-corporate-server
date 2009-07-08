@@ -1,0 +1,5 @@
+[service-pkgdb]
+name[de]=Dienst: Software-Monitor
+name[en]=Service: Software Monitor
+icon=service-pkgdb.gif
+
