@@ -1,3 +1,9 @@
+univention-squid (3.0.1-1) unstable; urgency=low
+
+  * provide new UCR category service-webproxy (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 11:28:27 +0200
+
 univention-squid (3.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
