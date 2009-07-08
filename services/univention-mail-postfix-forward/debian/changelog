@@ -1,3 +1,9 @@
+univention-mail-postfix-forward (2.0.1-1) unstable; urgency=low
+
+  * provide new UCR category service-mail (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 08:24:22 +0200
+
 univention-mail-postfix-forward (2.0.0-1) unstable; urgency=low
 
   * Make init script LSB-compliant (Bug #14421)
