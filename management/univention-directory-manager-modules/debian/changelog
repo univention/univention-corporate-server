@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.6-1) unstable; urgency=low
+
+  * add 7 video drivers to selection (Bug #13695)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 16:32:07 +0200
+
 univention-directory-manager-modules (5.0.5-1) unstable; urgency=low
 
   * if an error has occured in _ldap_post_create, the created object is
