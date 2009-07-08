@@ -2,29 +2,35 @@
 Description[de]=Erster DNS-Forwarder
 Description[en]=First DNS forwarder
 Type=str
-Categories=Network
+Categories=service-bind
 
 [dns/forwarder2]
 Description[de]=Zweiter DNS-Forwarder
 Description[en]=Second DNS forwarder
 Type=str
-Categories=Network
+Categories=service-bind
 
 [dns/forwarder3]
 Description[de]=Dritter DNS-Forwarder
 Description[en]=Third DNS forwarder
 Type=str
-Categories=Network
+Categories=service-bind
 
 [dns/master/address]
 Description[de]=Erlaube Bind-Proxy-Anfragen von dieser IP-Adresse
 Description[en]=Allow Bind proxy queries from this IP address
 Type=str
-Categories=Network
+Categories=service-bind
 
 [dns/master/port]
 Description[de]=Port auf dem auf Anfragen gewartet wird
 Description[en]=Port to listen on
 Type=str
-Categories=Network
+Categories=service-bind
+
+[bind/autostart]
+Description[de]=Definiert, ob der Bind-Dienst automatisch gestartet werden soll
+Description[en]=Defines if the bind service should be started automatically
+Type=str
+Categories=service-bind,system-services
 
