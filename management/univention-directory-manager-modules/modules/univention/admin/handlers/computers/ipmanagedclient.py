@@ -125,7 +125,7 @@ property_descriptions={
 			identifies=0
 		),
 	'dhcpEntryZone': univention.admin.property(
-			short_description=_('Service for DHCP entry'),
+			short_description=_('DHCP service'),
 			long_description='',
 			syntax=univention.admin.syntax.dhcpEntry,
 			multivalue=1,

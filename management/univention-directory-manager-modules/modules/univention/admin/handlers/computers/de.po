@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-12 09:25+0100\n"
+"POT-Creation-Date: 2009-07-08 16:49+0200\n"
 "PO-Revision-Date: 2007-09-26 16:28+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -131,8 +131,9 @@ msgid "Reverse zone for DNS entry"
 msgstr "Reverse Zone für DNS-Eintrag"
 
 #: domaincontroller_backup.py:166 domaincontroller_master.py:166
-#: domaincontroller_slave.py:166 macos.py:137 managedclient.py:146
-#: memberserver.py:166 mobileclient.py:146 thinclient.py:127 windows.py:135
+#: domaincontroller_slave.py:166 ipmanagedclient.py:128 macos.py:137
+#: managedclient.py:146 memberserver.py:166 mobileclient.py:146
+#: thinclient.py:127 windows.py:135
 msgid "DHCP service"
 msgstr "Service für DHCP-Eintrag"
 
@@ -285,10 +286,6 @@ msgstr "Rechner: IP-Managed-Client"
 msgid "IP managed client name"
 msgstr "Name des IP-Managed-Client"
 
-#: ipmanagedclient.py:128
-msgid "Service for DHCP entry"
-msgstr "Reverse Zone für DNS-Eintrag"
-
 #: macos.py:52
 msgid "Computer: Mac OS X Client"
 msgstr "Rechner: Mac OS X Client"
@@ -373,6 +370,9 @@ msgstr "Rechnerkonto"
 #: windows.py:218
 msgid "Machine account settings"
 msgstr "Rechnerkonto-Einstellungen"
+
+#~ msgid "Service for DHCP entry"
+#~ msgstr "Reverse Zone für DNS-Eintrag"
 
 #~ msgid "Mobile Client Name"
 #~ msgstr "Mobile Client Name"
