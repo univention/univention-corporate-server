@@ -1,30 +1,35 @@
-[System]
-name=System
-icon=desktop.gif
+[system-base]
+name[de]=System: Basiseinstellungen
+name[en]=System: Base Settings
+icon=system-base.gif
 
-[Network]
-name[de]=Netz
-name[en]=Network
-icon=network.gif
+[system-network]
+name[de]=System: Netzwerkeinstellungen
+name[en]=System: Network Configuration
+icon=system-network.gif
 
-[LDAP]
-name=LDAP
-icon=ldap.gif
+[system-repository]
+name[de]=System: Repository
+name[en]=System: Repository
+icon=system-repository.gif
 
-[Misc]
-name[de]=Sonstiges
-name[en]=Miscellaneous
-icon=misc.gif
+[system-locale]
+name[de]=System: Spracheinstellungen
+name[en]=System: Locale Settings
+icon=system-locale.gif
 
-[Mail]
-name=Mail
-icon=mail.gif
+[system-services]
+name[de]=System: Verfügbare Dienste
+name[en]=System: Available Services
+icon=system-services.gif
 
-[Printing]
-name[de]=Drucken
-name[en]=Printing
-icon=printing.gif
+[service-ssh]
+name[de]=Dienst: SSH
+name[en]=Service: SSH
+icon=service-ssh.gif
 
-[Desktop]
-name=Desktop
-icon=desktop.gif
+[service-ldap]
+name[de]=Dienst: LDAP Konfiguration
+name[en]=Service: LDAP Configuration
+icon=service-ldap.gif
+
