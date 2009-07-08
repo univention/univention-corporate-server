@@ -1,3 +1,9 @@
+univention-grub (2.0.2-1) unstable; urgency=low
+
+  * move UCR variables to category system-base (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 14:28:31 +0200
+
 univention-grub (2.0.1-1) unstable; urgency=low
 
   * disable framebuffer on Xen Dom0 systems. Bug #13432

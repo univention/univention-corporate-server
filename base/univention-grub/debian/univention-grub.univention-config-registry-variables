@@ -2,35 +2,35 @@
 Description[de]=Weitere durch den Grub-Bootloader übergebene Kernel-Optionen
 Description[en]=Additional kernel options passed to the Grub boot loader
 Type=str
-Categories=System
+Categories=system-base
 
 [grub/groot]
 Description[de]=Standard-Festplatte oder -laufwerk für Grub-Bootloader
 Description[en]=Default device of Grub boot loader (Grub notation)
 Type=str
-Categories=System
+Categories=system-base
 
 [grub/root]
 Description[de]=Wurzelverzeichnis für Grub-Bootloader
 Description[en]=Root device of Grub boot loader
 Type=str
-Categories=System
+Categories=system-base
 
 [grub/memtest86]
 Description[de]=Aktiviere/Deaktiviere memtest86 Bootoption
 Description[en]=Enable/Disable memtest86 boot option
 Type=str
-Categories=System
+Categories=system-base
 
 [grub/timeout]
 Description[de]=Wartezeit in Sekunden bevor der Standardkernel gebootet wird
 Description[en]=Timeout in seconds, before automatically booting the default entry
 Type=str
-Categories=System
+Categories=system-base
 
 [grub/vga]
 Description[de]=Grub VGA-Code
 Description[en]=Grub vga code
 Type=str
-Categories=System
+Categories=system-base
 
