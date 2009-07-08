@@ -1,3 +1,9 @@
+univention-installer (5.0.9.1) unstable; urgency=low
+
+  * fixed parted error handling in 12_partition (Bug: #15033)
+
+ -- Felix Botner <botner@univention.de>  Wed,  8 Jul 2009 14:54:53 +0200
+
 univention-installer (5.0.8.1) unstable; urgency=low
 
   * use -y as apt-get switch instead of a yes pipe. The yes pipe seems

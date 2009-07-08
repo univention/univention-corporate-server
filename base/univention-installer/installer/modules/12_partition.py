@@ -1393,7 +1393,7 @@ class object(content):
 
 		diskList={}
 		_re_warning=re.compile('^Warning: Unable to open .*')
-		_re_error=re.compile('^Error: Unable to open .*')
+		_re_error=re.complie('^Error: .*')
 		devices_remove=[]
 		for dev in devices:
 			dev=dev.strip()
