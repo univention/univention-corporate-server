@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.6-1) unstable; urgency=low
+
+  * replace description for license import field (Bug #14407)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 17:13:25 +0200
+
 univention-directory-manager (7.0.5-1) unstable; urgency=low
 
   * provide new UCR category management-udm (Bug #13505)
