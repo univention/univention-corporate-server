@@ -1,3 +1,10 @@
+univention-updater (5.0.5-1) unstable; urgency=low
+
+  * change the parsing of the apt-get output. Before we got a problem
+    with Release labels including a space. Bug #15035
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  8 Jul 2009 16:00:22 +0200
+
 univention-updater (5.0.4-1) unstable; urgency=low
 
   * provide UCR category service-software-management (Bug #13505)

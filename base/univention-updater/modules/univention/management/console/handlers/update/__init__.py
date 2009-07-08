@@ -262,11 +262,15 @@ class handler(umch.simpleHandler):
 					#   Inst univention-updater [3.1.1-5] (3.1.1-6.408.200810311159 192.168.0.10)
 					# inst:
 					#   Inst mc (1:4.6.1-6.12.200710211124 oxae-update.open-xchange.com)
-					if len(line_split) == 5: #upgrade
-						upgraded_packages.append((line_split[1], line_split[2].replace('[','').replace(']',''), line_split[3].replace('(','')))
-					elif len(line_split) == 4: #upgrade
-						new_packages.append((line_split[1], line_split[2].replace('(','')))
+					if len(line_split) > 3:
+						if line_split[2].startswith('[') and line_split[2].endswith(']'):
+							ud.debug(ud.ADMIN, ud.PROCESS, 'Added %s to the list of upgraded packages' % line_split[1])
+							upgraded_packages.append((line_split[1], line_split[2].replace('[','').replace(']',''), line_split[3].replace('(','')))
+						else:
+							ud.debug(ud.ADMIN, ud.PROCESS, 'Added %s to the list of new packages' % line_split[1])
+							new_packages.append((line_split[1], line_split[2].replace('(','')))
 					else:
+						ud.debug(ud.ADMIN, ud.WARN, 'unable to parse the update line: %s' % line)
 						continue
 
 			update_text = ''
