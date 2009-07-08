@@ -2,10 +2,10 @@
 Description[de]=Minmales Intervall bis NFS Freigabe ausgebunden werden
 Description[en]=Minimal timeout to umount a NFS share
 Type=str
-Categories=Management
+Categories=system-network
 
 [autofs/smb/timeout]
 Description[de]=Minmales Intervall bis Samba-Freigabe ausgebunden werden
 Description[en]=Minimal timeout to umount a Samba share
 Type=str
-Categories=Management
+Categories=system-network
