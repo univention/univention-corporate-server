@@ -1,3 +1,9 @@
+univention-bind (4.0.1-1) unstable; urgency=low
+
+  * provide new UCR category service-bind (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 10:39:43 +0200
+
 univention-bind (4.0.0-1) unstable; urgency=low
 
   * Make init script LSB-compliant (Bug #14421)
@@ -307,6 +313,4 @@ univention-bind (0.1.univention) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu,  6 Mar 2003 08:37:11 +0200
 
-Local variables:
-mode: debian-changelog
-End:
+
