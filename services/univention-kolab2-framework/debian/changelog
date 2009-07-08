@@ -1,3 +1,9 @@
+univention-kolab2-framework (2.0.3-1) unstable; urgency=low
+
+  * move UCR variables to new category service-mail (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 12:08:40 +0200
+
 univention-kolab2-framework (2.0.2-1) unstable; urgency=low
 
   * Version bump for Cyrus Murder integration (Bug #10439)
