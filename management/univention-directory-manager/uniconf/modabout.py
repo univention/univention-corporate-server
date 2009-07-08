@@ -335,7 +335,7 @@ class modabout(unimodule.unimodule):
 		self.certLoadTextBtn = button(_("Update License"),{'icon':'/style/ok.gif'},{"helptext":_("Upload the License")})
 		rows.append(tablerow("",{},{"obs":[
 						tablecol("",{'type':'about_layout'},{"obs":[
-									header(_("Update License via Mail"),{"type":"4"},{})
+									header(_("Insert License Key"),{"type":"4"},{})
 									]}),
 						tablecol("",{'colspan':'2','type':'about_layout'},{"obs":[
 									self.certText,
