@@ -1,3 +1,9 @@
+univention-bootsplash (2.0.1-1) unstable; urgency=low
+
+  * move UCR variables to category system-base (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 15:07:03 +0200
+
 univention-bootsplash (2.0.0-2) unstable; urgency=low
 
   * reset bootsplash/theme  (Bug: #14524)
@@ -154,6 +160,4 @@ univention-bootsplash (0.1) unstable; urgency=low
 
  -- Felix Meier <meier@univention.de>  Fri,  3 Dec 2004 17:02:27 +0100
 
-Local variables:
-mode: debian-changelog
-End:
+
