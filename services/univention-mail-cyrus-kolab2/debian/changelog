@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.15-1) unstable; urgency=low
+
+  * provide new UCR category service-mail (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 08:13:54 +0200
+
 univention-mail-cyrus-kolab2 (1.0.14-1) unstable; urgency=low
 
   * new default (400) for imap/pop/sieve maxchild value (Bug: #13665) 
