@@ -1,3 +1,9 @@
+univention-antivir-web (3.0.1-2) unstable; urgency=low
+
+  * moved UCR category service-webproxy to univention-squid (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 11:34:18 +0200
+
 univention-antivir-web (3.0.1-1) unstable; urgency=low
 
   * provide new UCR category service-webproxy (Bug #13505)
