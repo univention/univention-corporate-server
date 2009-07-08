@@ -1,3 +1,9 @@
+univention-config-registry (5.0.8-1) unstable; urgency=low
+
+  * provide new UCR categories (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 15:37:48 +0200
+
 univention-config-registry (5.0.7-1) unstable; urgency=low
 
   * use the changes syntax to catch the gateway change. Bug #13648

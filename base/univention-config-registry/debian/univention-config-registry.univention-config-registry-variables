@@ -2,133 +2,133 @@
 Description[de]=Proxy für HTTP-Verbindungen
 Description[en]=Proxy for HTTP connections
 Type=str
-Categories=Network
+Categories=system-base
 
 [locale/default]
 Description[de]=Standard-Lokalisierung (Sprache der Oberfläche, Zeichensätze, etc.)
 Description[en]=Default localisation (Interface language, character sets, etc.)
 Type=str
-Categories=System
+Categories=system-base
 
 [umask]
 Description[de]=Standard umask für Benutzer
 Description[en]=Default umask for Users
 Type=str
-Categories=System
+Categories=system-base
 
 [sshd/autostart]
 Description[de]=Definiert, ob der SSH-Dienst automatisch gestartet werden soll
 Description[en]=defines if the SSH daemon should be started automatically
 Type=str
-Categories=Network
+Categories=service-ssh
 
 [sshd/port]
 Description[de]=Port für den SSH-Dienst
 Description[en]=Port for the SSH daemon
 Type=str
-Categories=Network
+Categories=service-ssh
 
 [sshd/permitroot]
 Description[de]=root Zugang per SSH erlauben
 Description[en]=permit root access via SSH
 Type=str
-Categories=Network
+Categories=service-ssh
 
 [sshd/xforwarding]
 Description[de]=Portweiterleitung für die X-Sitzung
 Description[en]=Port forwarding for the X session
 Type=str
-Categories=Network
+Categories=service-ssh
 
 [sshd/xdisplayoffset]
 Description[de]=Erster Port für die Weiterleitung der X-Sitzung
 Description[en]=First port for forwarded X sessions
 Type=str
-Categories=Network
+Categories=service-ssh
 
 [sshd/xuselocalhost]
 Description[de]=Den lokalen Rechner die Weiterleitung verwenden
 Description[en]=Use localhost for the port forwarding
 Type=str
-Categories=Network
+Categories=service-ssh
 
 [sshd/challengeresponse]
 Description[de]=Aktiviere/Deaktiviere challenge response authentication
 Description[en]=Enalbe/Disable challenge response authentication
 Type=str
-Categories=Network
+Categories=service-ssh
 
 [domainname]
 Description[de]=DNS-Domäne
 Description[en]=DNS domain
 Type=str
-Categories=Network
+Categories=system-network
 
 [domain/domainname]
 Description[de]=Lokale-Domäne
 Description[en]=Lokal domain
 Type=str
-Categories=Network
+Categories=system-network
 
 [domain/search]
 Description[de]=Automatisch zu durchsuchende DNS-Domänen
 Description[en]=Automatically searched DNS domains
 Type=str
-Categories=Network
+Categories=system-network
 
 [windows/domain]
 Description[de]=Windows Domänenname
 Description[en]=Windows domainname
 Type=str
-Categories=Network
+Categories=system-network
 
 [gateway]
 Description[de]=Standard-Netz-Gateway
 Description[en]=Default gateway of network
 Type=str
-Categories=Network
+Categories=system-network
 
 [hostname]
 Description[de]=Name des Rechners
 Description[en]=Name of the computer
 Type=str
-Categories=Network
+Categories=system-network
 
 [interfaces/eth.*/address]
 Description[de]=IP-Adresse des Netz-Interfaces
 Description[en]=IP address of the network interface
 Type=str
-Categories=Network
+Categories=system-network
 
 [interfaces/eth.*/broadcast]
 Description[de]=Broadcast Adresse des Netz-Interfaces
 Description[en]=Broadcase address of the network interface
 Type=str
-Categories=Network
+Categories=system-network
 
 [interfaces/eth.*/mac]
 Description[de]=MAC-Adresse des Netz-Interfaces
 Description[en]=MAC address of the network interface
 Type=str
-Categories=Network
+Categories=system-network
 
 [interfaces/eth.*/netmask]
 Description[de]=Netzmaske des Netz-Interfaces
 Description[en]=Netmask of the network interface
 Type=str
-Categories=Network
+Categories=system-network
 
 [interfaces/eth.*/network]
 Description[de]=Netzwerk des Netz-Interfaces
 Description[en]=Network of the network interface
 Type=str
-Categories=Network
+Categories=system-network
 
 [interfaces/eth.*/type]
 Description[de]=Netztypen für die einzelnen Interfaces
 Description[en]=Type of network for each network interface
 Type=str
-Categories=Network
+Categories=system-network
 
 [interfaces/eth.*/hosts]
 Description[de]=Rechnername und Domänenname für diese IP-Adresse
@@ -140,13 +140,13 @@ Categories=Network
 Description[de]=Zusätzliche Routen für die einzelnen Interfaces
 Description[en]=Additional routing entries for each network interface
 Type=str
-Categories=Network
+Categories=system-network
 
 [interfaces/eth.*/options/.*]
 Description[de]=Zusätzliche Einstellungen für die einzelnen Interfaces
 Description[en]=Additional options for each network interface
 Type=str
-Categories=Network
+Categories=system-network
 
 [hosts/static/.*]
 Description[de]=Zusätzliche /etc/hosts Eintr�ge
@@ -158,151 +158,151 @@ Categories=Network
 Description[de]=Kernel Module die geladen werden sollen
 Description[en]=Kernel modules to load
 Type=str
-Categories=System
+Categories=system-base
 
 [kernel/clobber_modules]
 Description[de]=Verschiebe Modulverzeichnis wenn gleiche Kernelversion installiert wird
 Description[en]=Move modules directory if the same kernel version gets installed
 Type=str
-Categories=System
+Categories=system-base
 
 [kernel/do_bootfloppy]
 Description[de]=Unterbinde Fragen bzgl. Erstellung einer Bootdiskette
 Description[en]=Prevent questions about creating a boot floppy
 Type=str
-Categories=System
+Categories=system-base
 
 [kernel/do_initrd]
 Description[de]=Unterbinde Warnmeldungen wenn ein Initrd Kernel installiert wird
 Description[en]=Prevent warning message when installing an initrd kernel
 Type=str
-Categories=System
+Categories=system-base
 
 [kernel/postinst_hook]
 Description[de]=Script das vor dem starten des Bootloaders ausgeführt wird
 Description[en]=Script to be executed before running the bootloader
 Type=str
-Categories=System
+Categories=system-base
 
 [kernel/ramdisk]
 Description[de]=Programm das die initiale RAM-Disk erzeugt
 Description[en]=Executable that creates an initial RAM disk
 Type=str
-Categories=System
+Categories=system-base
 
 [kernel/ramdisk]
 Description[de]=Programm das die initiale RAM-Disk erzeugt
 Description[en]=Executable that creates an initial RAM disk
 Type=str
-Categories=System
+Categories=system-base
 
 [kernel/silent_loader]
 Description[de]=Überspringe die Frage ob der Bootloader gestartet werden soll
 Description[en]=Skip the question asked before running the bootloader
 Type=str
-Categories=System
+Categories=system-base
 
 [ldap/backup]
 Description[de]=Das UCS Backup-System der Domäne
 Description[en]=The UCS backup system of the domain
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/master]
 Description[de]=Das UCS Master-System der Domäne
 Description[en]=The UCS master system of the domain
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/server/name]
 Description[de]=Vollständiger Rechnername (FQDN) des LDAP-Servers
 Description[en]=Fully qualified domain name of LDAP server
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/server/addition]
 Description[de]=Sekundäre LDAP-Server, falls primärer nicht erreichbar
 Description[en]=Secondary LDAP servers, used if primary server is not reachable
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/binaryattributes]
 Description[de]=Von Zeichensatz-Kodierungen ausgenommene Attribute
 Description[en]=Attributes which don't get encoded/decoded
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/server/ip]
 Description[de]=IP-Adresse des lokalen LDAP-Servers
 Description[en]=IP address of the local LDAP server
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/base]
 Description[de]=Basis DN des LDAP-Verzeichnis
 Description[en]=Base DN of the LDAP directory
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/hostdn]
 Description[de]=DN dieses Rechners
 Description[en]=DN of this machine
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/policy/cron]
 Description[de]=Cronjob-Intervall für das regelmäßige Ausführen der Univention Directory Policy-Skripte
 Description[en]=Cron job interval for regular execution of Univention Directory Policy scripts
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [lilo/append]
 Description[de]=Zusätzliche Kernel-Optionen für den Lilo-Bootloader
 Description[en]=Additional kernel options passed to the Lilo boot loader
 Type=str
-Categories=System
+Categories=system-base
 
 [lilo/append/.*acpi]
 Description[de]=Hinzufügen von ACPI Option für Lilo
 Description[en]=Add ACPI options for lilo
 Type=str
-Categories=System
+Categories=system-base
 
 [lilo/boot]
 Description[de]=Wo lilo installiert werden soll
 Description[en]=Where to install lilo
 Type=str
-Categories=System
+Categories=system-base
 
 [lilo/compact]
 Description[de]=Beschleunigung des Bootvorgangs mt Lilo
 Description[en]=Increase speed for boot process with lilo
 Type=str
-Categories=System
+Categories=system-base
 
 [lilo/default]
 Description[de]=Standardkernel für den Lilo-Bootloader
 Description[en]=Default kernel for the Lilo boot loader
 Type=str
-Categories=System
+Categories=system-base
 
 [lilo/root]
 Description[de]=Wurzelverzeichnis für Lilo-Bootloader
 Description[en]=Root device of Lilo boot loader
 Type=str
-Categories=System
+Categories=system-base
 
 [lilo/vga]
 Description[de]=Graphikmodus in Lilo
 Description[en]=Graphics mode for lilo
 Type=str
-Categories=System
+Categories=system-base
 
 [locale]
 Description[de]=Installierte Lokalisierungen (Sprache der Oberfläche, Zeichensätze, etc.)
 Description[en]=Installed localisation data (Interface language, character sets, etc.)
 Type=str
-Categories=System
+Categories=system-locale
 
 [locale/keymap]
 Description[de]=Tastaturbelegung
@@ -314,100 +314,100 @@ Categories=System
 Description[de]=Rotations-Intervall für System-Logdateien (in Wochen)
 Description[en]=Rotation interval for system log files (in weeks)
 Type=str
-Categories=System
+Categories=system-base
 
 [nameserver1]
 Description[de]=1. DNS-Server
 Description[en]=1. DNS server
 Type=str
-Categories=Network
+Categories=system-network
 
 [nameserver2]
 Description[de]=2. DNS-Server
 Description[en]=2. DNS server
 Type=str
-Categories=Network
+Categories=system-network
 
 [nameserver3]
 Description[de]=3. DNS-Server
 Description[en]=3. DNS server
 Type=str
-Categories=Network
+Categories=system-network
 
 [nameserver/option/timeout]
 Description[de]=Nach wievielen Sekunden der nächste DNS-Server gefragt wird
 Description[en]=After how may seconds the next DNS servers is used
 Type=str
-Categories=Network
+Categories=system-network
 
 [pkgdb/overwrite/joincheck]
-Description[de]=Der Software-Monitor prüft den Join-Status nicht vor dem Update der Datenabnk
+Description[de]=Der Software-Monitor prüft den Join-Status nicht vor dem Update der Datenbank
 Description[en]=The software monitor does not check the join status before updating the database
 Type=str
-Categories=System
+Categories=system-swmon
 
 [pkgdb/scan]
 Description[de]=Konfiguriert die Aktualisierung der Software-Monitor-Datenbank
 Description[en]=Configure update of the software monitor database
 Type=str
-Categories=System
+Categories=system-swmon
 
 [proxy/password]
 Description[de]=Passwort für die Authentifizierung am HTTP-Proxy-Server
 Description[en]=Password for the proxy authentication
 Type=str
-Categories=Network
+Categories=service-proxy
 
 [proxy/username]
 Description[de]=Benutzername für die Authentifizierung am HTTP-Proxy-Server
 Description[en]=Username for the proxy authentication
 Type=str
-Categories=Network
+Categories=service-proxy
 
 [server/role]
 Description[de]=Systemrolle
 Description[en]=System role
 Type=str
-Categories=System
+Categories=system-base
 
 [timeserver]
 Description[de]=Der erste NTP-Server
 Description[en]=The first NTP server
 Type=str
-Categories=Network
+Categories=system-network
 
 [timeserver2]
 Description[de]=Der zweite NTP-Server
 Description[en]=The second NTP server
 Type=str
-Categories=Network
+Categories=system-network
 
 [timeserver3]
 Description[de]=Der dritte NTP-Server
 Description[en]=The third NTP server
 Type=str
-Categories=Network
+Categories=system-network
 
 [version/patchlevel]
 Description[de]=Patchlevel der UCS Version
 Description[en]=Patchlevel of the UCS version
 Type=str
-Categories=System
+Categories=system-base
 
 [version/security-patchlevel]
 Description[de]=Security-Patchlevel der UCS Version
 Description[en]=Security patchlevel of the UCS version
 Type=str
-Categories=System
+Categories=system-base
 
 [version/version]
 Description[de]=Hauptversion der installierten UCS-Version
 Description[en]=Major version of UCS
 Type=str
-Categories=System
+Categories=system-base
 
 [version/releasename]
 Description[de]=Codename des UCS-Release
 Description[en]=Codename for UCS releases
 Type=str
-Categories=System
+Categories=system-base
