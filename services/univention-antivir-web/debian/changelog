@@ -1,3 +1,9 @@
+univention-antivir-web (2.0.2-1) unstable; urgency=low
+
+  * provide new UCR category service-webproxy (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 11:08:09 +0200
+
 univention-antivir-web (2.0.1-7) unstable; urgency=low
 
   * temporarily deactivate freshclam before restarting dansguardian to avoid locking conflict on /var/lib/clamav
