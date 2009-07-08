@@ -1,3 +1,4 @@
-[AD-Connector]
-name=AD-Connector
-icon=misc.gif
+[service-adcon]
+name[de]=Dienst: Active Directory Connector
+name[en]=Service: Active Directory Connector
+icon=service-adcon.gif
