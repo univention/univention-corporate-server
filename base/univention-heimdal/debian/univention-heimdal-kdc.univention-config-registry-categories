@@ -1,0 +1,4 @@
+[service-heimdal]
+name[de]=Dienst: Kerberos
+name[en]=Service: Kerberos
+icon=service-heimdal.gif
