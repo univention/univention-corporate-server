@@ -1,3 +1,9 @@
+univention-management-console (1.0.19-1) unstable; urgency=low
+
+  * provide new UCR category management-umc (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 07:04:25 +0200
+
 univention-management-console (1.0.18-2) unstable; urgency=low
 
   * add a fix that ensures that a valid page is selected after a response

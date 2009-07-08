@@ -2,5 +2,18 @@
 Description[de]=Laufzeit von Univention Management Console Sitzungen
 Description[en]=Timout of Univention Management Console session
 Type=str
-Categories=Management
+Categories=management-umc
+
+[umc/web/debug/level]
+Description[de]=Debug-Level für das Web-Frontend von UMC
+Description[en]=Debug level of the UMC web frontend
+Type=int
+Categories=management-umc
+
+[umc/web/language]
+Description[de]=Sprache für das Web-Frontend von UMC
+Description[en]=Language of the UMC web frontend
+Type=str
+Categories=management-umc
+
 
