@@ -2,4 +2,4 @@
 Description[de]=Alle Maildomänen die dieser Server verwaltet
 Description[en]=All maildomains hosted by this server
 Type=str
-Categories=Mail
+Categories=service-mail
