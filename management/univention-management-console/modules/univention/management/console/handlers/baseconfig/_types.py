@@ -29,6 +29,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import operator
+
 import univention.management.console as umc
 import univention.management.console.dialog as umcd
 
@@ -49,7 +51,7 @@ class BaseconfigCategory( umc.StaticSelection ):
 			cat = info.get_category( cat_name )
 			lst.append( ( cat_name, cat[ 'name' ] ) )
 
-		return lst
+		return sorted( lst, key = operator.itemgetter( 1 ) )
 
 umcd.copy( umc.StaticSelection, BaseconfigCategory )
 

@@ -1,3 +1,9 @@
+univention-management-console (1.0.20-1) unstable; urgency=low
+
+  * UCR module: sort list of UCR categories (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 15:55:57 +0200
+
 univention-management-console (1.0.19-1) unstable; urgency=low
 
   * provide new UCR category management-umc (Bug #13505)
