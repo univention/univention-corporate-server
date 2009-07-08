@@ -1,3 +1,9 @@
+univention-updater (5.0.4-1) unstable; urgency=low
+
+  * provide UCR category service-software-management (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 14:56:33 +0200
+
 univention-updater (5.0.3-1) unstable; urgency=low
 
   * added at to the univention-updater dependency list. Bug #14694

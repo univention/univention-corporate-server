@@ -2,65 +2,64 @@
 Description[de]=Server, auf dem das Repository vorgehalten wird
 Description[en]=Server holding the Repository
 Type=str
-Categories=System
+Categories=service-software-management
 
 [update/directory]
 Description[de]=Updateverzeichnis auf dem Repository Server
 Description[en]=Update directory on the repository server
 Type=str
-Categories=System
+Categories=service-software-management
 
 [local/repository]
 Description[de]=Aktiviere/Deaktiviere das lokale Repository
 Description[en]=Enable/Disable the local repository
 Type=str
-Categories=System
+Categories=service-software-management
 
 [update/security/server]
 Description[de]=Server für Univention Security Updates
 Description[en]=Server for Univention Security Updates
 Type=str
-Categories=System
+Categories=service-software-management
 
 [update/security/proxy]
 Description[de]=Zu verwendender Proxy beim Laden von Sicherheits-Updates
 Description[en]=Proxy to use while fetching security updates
 Type=str
-Categories=System
+Categories=service-software-management
 
 [update/security/prefix]
 Description[de]=Verzeichnisspräfix für Security Updates
 Description[en]=Directory prefix for security updates
 Type=str
-Categories=System
-
+Categories=service-software-management
 
 [update/warning]
 Description[de]=Aktiviere/deaktiviere Warnmeldungen vor automatischen Updates
 Description[en]=Enable/Disable warning messages before automatic updates
 Type=str
-Categories=System
+Categories=service-software-management
 
 [update/warning/coloured]
 Description[de]=Aktiviere/deaktiviere farbige Warnmeldungen
 Description[en]=Enable/Disable colors in warning messages
 Type=str
-Categories=System
+Categories=service-software-management
 
 [update/warning/lang]
 Description[de]=Sprache in der die Update Warnungen angezeigt werden
 Description[en]=Language of the update warning messages
 Type=str
-Categories=System
+Categories=service-software-management
 
 [update/warning/tty]
 Description[de]=Terminals auf denen die Update Warnungen ausgegeben werden
 Description[en]=Terminals on which the update warning is displayed
 Type=str
-Categories=System
+Categories=service-software-management
 
 [update/umc/nextversion]
 Description[de]=Das Release Update per UMC wird nach der Aktualisierung auf die n�chste Version angehalten
 Description[en]=The release update via UMC will stop after the update to the next version
 Type=boolean
-Categories=System
+Categories=service-software-management
