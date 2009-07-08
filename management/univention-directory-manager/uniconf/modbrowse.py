@@ -47,8 +47,13 @@ import re
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
-directory_manager_web_ldap_sizelimit = ucr.get('directory/manager/web/ldap/sizelimit', 1000) # maximum number of results searched. This is more than the number of results that can be displayed !
+
+DEFAULT_SIZELIMIT=1000
+directory_manager_web_ldap_sizelimit = ucr.get('directory/manager/web/ldap/sizelimit', DEFAULT_SIZELIMIT) # maximum number of results searched. This is more than the number of results that can be displayed !
 max_results = int(directory_manager_web_ldap_sizelimit)
+# if the definied sizelimit is invalid -> failback to default
+if not directory_manager_web_ldap_sizelimit:
+	directory_manager_web_ldap_sizelimit = DEFAULT_SIZELIMIT
 
 def create(a,b,c):
 	return modbrowse(a,b,c)
