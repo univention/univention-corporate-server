@@ -1,3 +1,9 @@
+univention-xen (2.0.0-1) unstable; urgency=low
+
+  * provide new UCR category service-xen (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 11:43:53 +0200
+
 univention-xen (2.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
@@ -152,6 +158,4 @@ univention-xen (0.1) unstable; urgency=low
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  14 Aug 2007 16:39:19 +0200
 
-Local variables:
-mode: debian-changelog
-End:
+
