@@ -1,4 +1,4 @@
-univention-directory-manager (6.0.27-1) unstable; urgency=low
+univention-directory-manager (6.0.28-1) unstable; urgency=low
 
   * if directory/manager/web/ldap/sizelimit is set to an invalid value the
     default value DEFAULT_SIZELIMIT is used (Bug #13225)

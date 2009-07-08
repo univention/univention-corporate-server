@@ -50,9 +50,10 @@ ucr.load()
 
 DEFAULT_SIZELIMIT=1000
 directory_manager_web_ldap_sizelimit = ucr.get('directory/manager/web/ldap/sizelimit', DEFAULT_SIZELIMIT) # maximum number of results searched. This is more than the number of results that can be displayed !
-max_results = int(directory_manager_web_ldap_sizelimit)
 # if the definied sizelimit is invalid -> failback to default
-if not directory_manager_web_ldap_sizelimit:
+try:
+	max_results = int(directory_manager_web_ldap_sizelimit)
+except:
 	directory_manager_web_ldap_sizelimit = DEFAULT_SIZELIMIT
 
 def create(a,b,c):
