@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (2.0.1-1) unstable; urgency=low
+
+  * provide new UCR category service-mail (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 08:25:31 +0200
+
 univention-mail-postfix-kolab2 (2.0.0-1) unstable; urgency=low
 
   * bumped version for UCS 2.2 (Bug: #13730)
