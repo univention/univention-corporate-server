@@ -1,3 +1,9 @@
+univention-nagios (3.0.8-1) unstable; urgency=low
+
+  * provide new UCR category service-nagios (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 13:24:43 +0200
+
 univention-nagios (3.0.7-1) unstable; urgency=low
 
   * fixed typo (Bug: #7758)
