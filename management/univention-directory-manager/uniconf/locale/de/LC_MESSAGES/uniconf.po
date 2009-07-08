@@ -268,8 +268,8 @@ msgid "Upload the License"
 msgstr "Lizenz aktualisieren"
 
 #: modabout.py:338
-msgid "Update License via Mail"
-msgstr "Lizenz über Mail aktualisieren"
+msgid "Insert License Key"
+msgstr "Lizenz-Schlüssel einfügen"
 
 #: modabout.py:350
 msgid "Contact"
@@ -1539,7 +1539,7 @@ msgid "Your search did not match any objects."
 msgstr "Es wurden keine mit Ihrer Suchanfrage übereinstimmenden Objekte gefunden."
 
 # msgid "Your search did not match any objects."
-# msgstr "Es wurden keine Ergebnisse f�r Ihre Suchanfrage gefunden."
+# msgstr "Es wurden keine Ergebnisse für Ihre Suchanfrage gefunden."
 
 #: unidialog.py:110
 msgid ""
