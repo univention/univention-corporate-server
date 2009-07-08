@@ -2,120 +2,120 @@
 Description[de]=Typ des LDAP-Servers
 Description[en]=Type of LDAP server
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/replog]
 Description[de]=Aktiviere/Deaktiviere das Schreiben der Replikations-Logdatei
 Description[en]=Enable/Disable writing of replication log file
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/translogfile]
 Description[de]=Pfad zur LDAP-Transaktions-Logdatei
 Description[en]=Path to LDAP transaction log file
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/port]
 Description[de]=Port des LDAP-Servers slapd
 Description[en]=Port of the LDAP server slapd
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/page-results]
 Description[de]=Aktiviere/Deaktiviere das Aufteilen der Ergebnisse einer Suchoperation
 Description[en]=Enable/Disable pagination of data returned by search operations
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/sizelimit]
 Description[de]=Maximale Anzahl von Einträgen, die von einer Suchoperation zurückgegeben werden
 Description[en]=Maximum amount of entries returned by a search operation
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/threads]
 Description[de]=Anzahl der verwendeten Server-Threads
 Description[en]=Threads used by the LDAP server
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 
 [ldap/schema/export]
 Description[de]=Exportiere die LDAP-Schemata beim LDAP-Start in das Webverzeichnis
 Description[en]=Export LDAP schemas to webroot at startup
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/database/type]
 Description[de]=LDAP-Datenbank-Typ (bdb oder hdb)
 Description[en]=LDAP database type (bdb or hdb)
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/database/bdb/*]
 Description[de]=Optionen des BDB LDAP-Backends
 Description[en]=Options for the bdb LDAP backend
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/database/bdb/checkpoint]
 Description[de]=Häufigkeit in der die Daten aus der Transaction Log in die Datenbank geschrieben werden
 Description[en]=Frequency for checkpointing the database transaction log upon updating of the database
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 #[ldap/database/bdb/set_flags]
 #Description[de]=
 #Description[en]=
 #Type=str
-#Categories=LDAP
+#Categories=service-ldap
 
 [ldap/database/bdb/set_cachesize]
 Description[de]=Anzahl der Einträge die vom BDB-Backend zwischengespeichert werden
 Description[en]=Amount of entries being cached by the BDB LDAP backend
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/database/bdb/set_lg_bsize]
 Description[de]=Maximale Größe der BDB-Transaction-Logdateien in Byte
 Description[en]=Maximum size of BDB transaction logs in byte
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/database/bdb/set_lg_max]
 Description[de]=Maximales Alter der BDB-Transaction-Logdateien
 Description[en]=Maximum age of BDB transaction logs
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/database/bdb/db_config_options]
 Description[de]=Liste von zu verwendenden BDB-Optionen
 Description[en]=List of BDB options to use
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/index/approx]
 Description[de]=LDAP-Indizes für ähnliche Attribute
 Description[en]=LDAP indices for similar attributes
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/index/eq]
 Description[de]=LDAP-Indizes für auf Gleichheit geprüfte Attribute
 Description[en]=LDAP indices for attributes checked for equality
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/index/pres]
 Description[de]=LDAP-Indizes für auf Präsenz geprüfte Attribute
 Description[en]=LDAP indices for attributes checked for presence
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/index/sub]
 Description[de]=LDAP-Indizes für Attribute die auf Teilausdrücke geprüft werden
 Description[en]=LDAP indices for attributes checked for substring matches
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
