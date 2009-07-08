@@ -1,3 +1,9 @@
+univention-ad-connector (3.0.15-1) unstable; urgency=low
+
+  * provide new UCR category service-adcon (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Jul 2009 10:00:21 +0200
+
 univention-ad-connector (3.0.14-1) unstable; urgency=low
 
   * suppport for Windows 2008. Bug #11701
