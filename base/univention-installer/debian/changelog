@@ -1,3 +1,9 @@
+univention-installer (5.0.9.3) unstable; urgency=low
+
+  * start rpc.statd for proper nfs mounts (Bug: 15030)
+
+ -- Felix Botner <botner@univention.de>  Wed,  8 Jul 2009 16:02:44 +0200
+
 univention-installer (5.0.9.2) unstable; urgency=low
 
   * typo in parted error handling in 12_partition (Bug: #15033)

@@ -41,6 +41,9 @@ if [ -n "$ip_cmdline" ]; then
 	if [ -x /sbin/portmap ]; then
 		/sbin/portmap
 	fi
+	if [ -x /sbin/rpc.statd ]; then
+		/sbin/rpc.statd
+	fi
 	echo -n " eth0 "
 	ifconfig eth0 $_ip netmask $_netmask
 	if [ ! "$_gateway" = "0.0.0.0" ] ; then
