@@ -1,0 +1,5 @@
+[service-webproxy]
+name[de]=Dienst: Web-Proxy
+name[en]=Service: Web Proxy
+icon=service-webproxy.gif
+
