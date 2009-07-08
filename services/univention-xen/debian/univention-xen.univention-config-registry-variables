@@ -2,4 +2,4 @@
 Description[de]=Repository zur Installation von Xen-Gastinstanzen
 Description[en]=Repository for the installation of Xen guests
 Type=str
-Categories=Management
+Categories=service-xen
