@@ -2,17 +2,17 @@
 Description[de]=Gruppenauflösung wenn auth_unix verwendet wird
 Description[en]=Look up groups when using auth_unix
 Type=str
-Categories=Network
+Categories=service-mail
 
 [mail/cyrus/imap/quota]
 Description[de]=Aktiviert/Deaktiert Mailquota
 Description[en]=Enable/Disable mailquota
 Type=str
-Categories=Network
+Categories=service-mail
 
 [mail/cyrus/version]
 Description[de]=Version des Cyrus IMAPd
 Description[en]=Version of Cyrus IMAPd 
 Type=str
-Categories=Network
+Categories=service-mail
 
