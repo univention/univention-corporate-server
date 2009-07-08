@@ -1,0 +1,4 @@
+[service-apache]
+name[de]=Dienst: Web-Server
+name[en]=Service: Web Server
+icon=service-apache.gif
