@@ -1,3 +1,10 @@
+univention-system-setup (2.0.6-1) unstable; urgency=low
+
+  * use new private.key for cyrus if hostname or domainname was changed
+    (Bug #11177)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  9 Jul 2009 11:37:27 +0200
+
 univention-system-setup (2.0.5-1) unstable; urgency=low
 
   * read the correct ucr variable from the system setup profile. Bug
