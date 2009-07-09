@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.9-1) unstable; urgency=low
+
+  * fixed a typo (Bug #13225)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  9 Jul 2009 09:31:28 +0200
+
 univention-directory-manager (7.0.8-1) unstable; urgency=low
 
   * if directory/manager/web/ldap/sizelimit is set to an invalid value the

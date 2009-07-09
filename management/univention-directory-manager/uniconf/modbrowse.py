@@ -54,7 +54,7 @@ directory_manager_web_ldap_sizelimit = ucr.get('directory/manager/web/ldap/sizel
 try:
 	max_results = int(directory_manager_web_ldap_sizelimit)
 except:
-	directory_manager_web_ldap_sizelimit = DEFAULT_SIZELIMIT
+	max_results = DEFAULT_SIZELIMIT
 
 def create(a,b,c):
 	return modbrowse(a,b,c)
