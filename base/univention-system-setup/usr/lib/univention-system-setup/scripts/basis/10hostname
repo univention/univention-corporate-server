@@ -326,9 +326,11 @@ ln -sf /etc/univention/ssl/$new_hostname.$domainname /etc/univention/ssl/$new_ho
 
 if [ -d "/var/lib/cyrus/" ]; then
 	echo `date` : "Include new host certificate for Cyrus"  >> /var/log/univention/setup.log
-	cp /etc/univention/ssl/$new_hostname.$domainname/cert.pem /var/lib/cyrus/cert.pem
-	chown cyrus: /var/lib/cyrus/cert.pem
-	chmod 600 /var/lib/cyrus/cert.pem
+	for file in cert.pem private.key; do
+		cp /etc/univention/ssl/$new_hostname.$domainname/$file /var/lib/cyrus/$file
+		chown cyrus: /var/lib/cyrus/$file
+		chmod 600 /var/lib/cyrus/$file
+	done
 fi
 
 
