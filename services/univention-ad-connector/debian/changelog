@@ -1,3 +1,11 @@
+univention-ad-connector (3.0.16-1) unstable; urgency=low
+
+  * rename an object in AD only if it exists in AD otherwise the user
+    will be created. This happens when an object is moved in UCS from an
+    ignored subtree into a normal area. Bug #11032
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  9 Jul 2009 14:20:11 +0200
+
 univention-ad-connector (3.0.15-1) unstable; urgency=low
 
   * provide new UCR category service-adcon (Bug #13505)

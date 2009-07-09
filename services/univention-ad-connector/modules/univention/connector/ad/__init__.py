@@ -1705,18 +1705,26 @@ class ad(univention.connector.ucs):
 				for mapping in self.property[property_type].position_mapping:
 					old_dn=self._subtree_replace(old_dn,mapping[0],mapping[1])
 				old_dn = self._subtree_replace(old_dn,self.lo.base,self.lo_ad.base)
-			ud.debug(ud.LDAP, ud.INFO, "move %s from [%s] to [%s]" % (property_type, old_dn, object['dn']))
+
+			# the old object was moved in UCS, but does this object exist in AD?
 			try:
-				self.lo_ad.rename(unicode(old_dn), object['dn'])
-			except ldap.NO_SUCH_OBJECT: # check if object is already moved (we may resync now)
-				new = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(compatible_modstring(object['dn']),ldap.SCOPE_BASE,'objectClass=*',timeout=-1,sizelimit=0))
-				if not new:
-					raise
-			# need to actualise the GUID and DN-Mapping
-			self._set_DN_for_GUID(self.lo_ad.lo.search_ext_s(compatible_modstring(object['dn']),ldap.SCOPE_BASE,'objectClass=*',timeout=-1,sizelimit=0)[0][1]['objectGUID'][0],
-					      object['dn'])
-			self._remove_dn_mapping(pre_mapped_ucs_old_dn, unicode(old_dn))
-			self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
+				old_object = self.lo_ad.lo.search_ext_s(compatible_modstring(old_dn),ldap.SCOPE_BASE,'objectClass=*',timeout=-1,sizelimit=0)
+			except:
+				old_object=None
+
+			if old_object:
+				ud.debug(ud.LDAP, ud.INFO, "move %s from [%s] to [%s]" % (property_type, old_dn, object['dn']))
+				try:
+					self.lo_ad.rename(unicode(old_dn), object['dn'])
+				except ldap.NO_SUCH_OBJECT: # check if object is already moved (we may resync now)
+					new = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(compatible_modstring(object['dn']),ldap.SCOPE_BASE,'objectClass=*',timeout=-1,sizelimit=0))
+					if not new:
+						raise
+				# need to actualise the GUID and DN-Mapping
+				self._set_DN_for_GUID(self.lo_ad.lo.search_ext_s(compatible_modstring(object['dn']),ldap.SCOPE_BASE,'objectClass=*',timeout=-1,sizelimit=0)[0][1]['objectGUID'][0],
+							  object['dn'])
+				self._remove_dn_mapping(pre_mapped_ucs_old_dn, unicode(old_dn))
+				self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
 		ud.debug(ud.LDAP, ud.INFO,
 							   'sync from ucs: [%10s] [%10s] %s' % (property_type,object['modtype'], object['dn']))
