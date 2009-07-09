@@ -316,8 +316,8 @@ class lang_win(subwin):
 		fp.close()
 
 		if self.elements[1].result()[0].strip() == 'de':
-			if os.path.exists('/usr/keymaps/de-latin1.bmap'):
-				os.system('/bin/loadkmap < /usr/keymaps/de-latin1.bmap > /dev/null 2>&1')
+			if os.path.exists('/usr/keymaps/de-latin1.kmap'):
+				os.system('/bin/loadkeys </usr/keymaps/de-latin1.kmap > /dev/null 2>&1')
 			if os.path.exists('/lib/univention-installer-startup.d/S88keyboard'):
 				os.system('/lib/univention-installer-startup.d/S88keyboard > /dev/null 2>&1')
 		debug('Set LANGUAGE to %s\n' % self.elements[1].result()[0].strip())
@@ -714,8 +714,8 @@ try:
 	if cmdline.has_key('lang'):
 		os.environ['LANGUAGE'] = "%s" % cmdline['lang']
 		if cmdline['lang'].strip() == 'de':
-			if os.path.exists('/usr/keymaps/de-latin1.bmap'):
-				os.system('/bin/loadkmap < /usr/keymaps/de-latin1.bmap 2>&1 > /dev/null')
+			if os.path.exists('/usr/keymaps/de-latin1.kmap'):
+				os.system('/bin/loadkeys < /usr/keymaps/de-latin1.kmap 2>&1 > /dev/null')
 		debug('Set LANGUAGE to %s\n' % cmdline['lang'].strip())
 	elif not cmdline.has_key('profile'):
 		# init main window

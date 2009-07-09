@@ -135,17 +135,17 @@ class object(content):
 			#Trying to load the choosen keyset
 			if hasattr(self.parent, 'profile_kmap'):
 				if self.parent.profile_kmap.find(':') > -1:
-					binkeyset='/usr/keymaps/%s.bmap'%string.split(self.parent.profile_kmap, ':')[1]
+					binkeyset='/usr/keymaps/%s.kmap'%string.split(self.parent.profile_kmap, ':')[1]
 				else:
-					binkeyset='/usr/keymaps/%s.bmap'%self.parent.profile_kmap
+					binkeyset='/usr/keymaps/%s.kmap'%self.parent.profile_kmap
 			else:
-				binkeyset='/usr/keymaps/%s.bmap'%string.split(self.parent.elements[3].result()[0], ':')[1]
+				binkeyset='/usr/keymaps/%s.kmap'%string.split(self.parent.elements[3].result()[0], ':')[1]
 			self.parent.debug('binary-keyset: %s'%binkeyset)
 
 			if os.path.exists(binkeyset):
 				#loadkeys will return 0 if it was successful
 				try:
-					res=os.system('/bin/loadkmap < %s > /dev/null 2>&1'% binkeyset)
+					res=os.system('/bin/loadkeys < %s > /dev/null 2>&1'% binkeyset)
 				except:
 					res=1
 
