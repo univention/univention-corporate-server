@@ -1,3 +1,9 @@
+univention-installer (5.0.9.5) unstable; urgency=low
+
+  * typo in parted error handling in 12_partition (Bug: #15033)
+
+ -- Felix Botner <botner@univention.de>  Thu,  9 Jul 2009 09:00:58 +0200
+
 univention-installer (5.0.9.4) unstable; urgency=low
 
   * fixed parted error handling in 12_partition (Bug: #15033)
