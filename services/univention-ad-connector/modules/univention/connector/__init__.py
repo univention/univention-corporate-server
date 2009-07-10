@@ -1217,7 +1217,10 @@ class ucs:
 							for mapping in self.property[key].position_mapping:
 								object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[0].lower(),mapping[1].lower())
 
-							object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo.base.lower(),self.lo_ad.base.lower()) # FIXME: lo_ad may change with other connectors
+							if self.lo_ad.base.lower() == object[dntype][len(object[dntype])-len(self.lo_ad.base):].lower() and len(self.lo_ad.base) > len(self.lo.base):
+								ud.debug(ud.LDAP, ud.INFO,"The dn %s is already converted to the AD base, don't do this again." % object[dntype])
+							else:	
+								object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo.base.lower(),self.lo_ad.base.lower()) # FIXME: lo_ad may change with other connectors
 							# write the correct upper and lower case back to the DN
 							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
 		else:
@@ -1230,7 +1233,10 @@ class ucs:
 							for mapping in self.property[key].position_mapping:
 								object[dntype]=self._subtree_replace(object[dntype].lower(),mapping[1].lower(),mapping[0].lower())
 
-							object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo_ad.base.lower(),self.lo.base.lower()) # FIXME: lo_ad may change with other connectors
+							if self.lo.base.lower() == object[dntype][len(object[dntype])-len(self.lo.base):].lower() and len(self.lo.base) > len(self.lo_ad.base):
+								ud.debug(ud.LDAP, ud.INFO,"The dn %s is already converted to the UCS base, don't do this again." % object[dntype])
+							else:
+								object[dntype] = self._subtree_replace(object[dntype].lower(),self.lo_ad.base.lower(),self.lo.base.lower()) # FIXME: lo_ad may change with other connectors
 							# write the correct upper and lower case back to the DN
 							object[dntype] = object[dntype].replace(object[dntype][0:len(rdn_store)], rdn_store, 1)
 
