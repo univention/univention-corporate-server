@@ -1,3 +1,10 @@
+univention-ad-connector (3.0.17-1) unstable; urgency=low
+
+  * don't replace the UCS base with the AD base twice. This is a problem
+    when the UCS base is a component of the AD base. Bug #13745
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Jul 2009 09:29:35 +0200
+
 univention-ad-connector (3.0.16-1) unstable; urgency=low
 
   * rename an object in AD only if it exists in AD otherwise the user
