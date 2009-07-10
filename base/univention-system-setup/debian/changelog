@@ -1,3 +1,9 @@
+univention-system-setup (3.0.5-1) unstable; urgency=low
+
+  * ldif_rewrite.py: do not skip the last object in the LDIF (Bug #10940)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 10 Jul 2009 08:24:00 +0200
+
 univention-system-setup (3.0.4-1) unstable; urgency=low
 
   * use new private.key for cyrus if hostname or domainname was changed

@@ -131,7 +131,7 @@ ldif_writer=ldif.LDIFWriter(f)
 
 ldif_writer.unparse(new_base_object_dn,new_base_object_attr)
 
-for attr in ldif_input[1:-1]:
+for attr in ldif_input[1:]:
 	attr_dict={}
 	for key in attr[1].keys():
 		attr_dict[key]=[]
