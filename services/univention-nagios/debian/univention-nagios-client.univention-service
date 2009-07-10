@@ -1,4 +1,4 @@
-[nrpe]
+[nagios-nrpe-server]
 Description[de]=Nagios-RPE-Server
 Description[en]=Nagios RPE server
 icon=service/nrpe

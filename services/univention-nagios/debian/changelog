@@ -1,3 +1,10 @@
+univention-nagios (3.0.9-1) unstable; urgency=low
+
+  * rename service entry for NRPE to nagios-nrpe-server; mustbe the name
+    of the init script (Bug #11143)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 10 Jul 2009 08:56:55 +0200
+
 univention-nagios (3.0.8-1) unstable; urgency=low
 
   * provide new UCR category service-nagios (Bug #13505)
