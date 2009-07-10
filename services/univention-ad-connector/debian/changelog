@@ -1,3 +1,9 @@
+univention-ad-connector (3.0.19-1) unstable; urgency=low
+
+  * the ldap ignore filter should be case insensitive. Bug #13550
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Jul 2009 13:38:46 +0200
+
 univention-ad-connector (3.0.18-1) unstable; urgency=low
 
   * open the ucs object before removing it. Bug #14062

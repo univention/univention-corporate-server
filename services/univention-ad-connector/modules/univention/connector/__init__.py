@@ -1063,12 +1063,12 @@ class ucs:
 			pos = string.find(filter,'=')
 			if pos < 0:
 				raise ValueError,'missing "=" in filter: %s' % filter
-			attribute = filter[:pos]
+			attribute = filter[:pos].lower()
 			if not attribute:
 				raise ValueError,'missing attribute in filter: %s' % filter
 			value = filter[pos+1:]
 			if value == '*':
-				return attribute in attributes.keys()
+				return attribute in list_lower(attributes.keys())
 			elif attributes.has_key(attribute):
 				return value.lower() in list_lower(attributes[attribute])
 			else:
