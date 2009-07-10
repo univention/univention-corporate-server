@@ -887,7 +887,9 @@ class ucs:
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 
 		try:
-			return ucs_object.remove()
+			ucs_object.open()
+			ucs_object.remove()
+			return True
 		except Exception, e:
 			ud.debug(ud.LDAP, ud.INFO,"delete object exception: %s"%e)
 			if str(e) == "Operation not allowed on non-leaf": # need to delete subtree
