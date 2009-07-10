@@ -2547,9 +2547,10 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if groupObjects:
 			for i in range(0, len(groupObjects)):
 				groupObjects[i].open()
-				if self.dn in groupObjects[i]['users']:
-					groupObjects[i]['users'].remove(self.dn)
-					groupObjects[i].modify(ignore_license=1)
+				for users_dn in groupObjects[i]['users']:
+					if users_dn.lower() == self.dn.lower():
+						groupObjects[i]['users'].remove(users_dn)
+						groupObjects[i].modify(ignore_license=1)
 
  		admin_settings_dn='uid=%s,cn=admin-settings,cn=univention,%s' % (self['username'], self.lo.base)
  		# delete admin-settings object of user if it exists
