@@ -1204,6 +1204,10 @@ msgstr ""
 "Ihr Passwort ist zu kurz. Aus Sicherheitsgründen sollte Ihr Passwort "
 "mindestens 8 Zeichen lang sein."
 
+#: installer/modules/11_basis.py:236
+msgid "Illegal password: A password may only contain ascii characters."
+msgstr "Ungültiges Passwort: Nur ASCII Zeichen sind erlaubt."
+
 #: installer/modules/11_basis.py:239 installer/modules/11_basis.py:244
 msgid "Illegal password: A password may not contain blanks."
 msgstr "Ungültiges Passwort: Leerzeichen nicht möglich"

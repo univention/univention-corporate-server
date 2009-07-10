@@ -1,3 +1,9 @@
+univention-installer (5.0.9.7) unstable; urgency=low
+
+  * allow only ascii characters in password (Bug: #11824)
+
+ -- Felix Botner <botner@univention.de>  Fri, 10 Jul 2009 10:32:12 +0200
+
 univention-installer (5.0.9.6) unstable; urgency=low
 
   * load keymaps with loadkeys (Bug: #14678)

@@ -252,6 +252,11 @@ class object(content):
 					if focus:
 						self.move_focus( password1_position )
 					return _("Your password is too short. For security reasons, your password must contain at least 8 characters.")
+			try:
+				root_password1.strip().decode("ascii")
+			except :
+				return _("Illegal password: A password may only contain ascii characters.")
+				
 			if root_password1.strip().find(" ") != -1:
 				if not self.ignore('password'):
 					if focus:
