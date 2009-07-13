@@ -126,6 +126,7 @@ install-ext-%:
 	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_ssl_certificate ${DC}/usr/lib/nagios/plugins/
 	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_winbind ${DC}/usr/lib/nagios/plugins/
 	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_smbd ${DC}/usr/lib/nagios/plugins/
+	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_nmbd ${DC}/usr/lib/nagios/plugins/
 	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_joinstatus ${DC}/usr/lib/nagios/plugins/
 	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper ${DC}/usr/lib/nagios/plugins/
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper
