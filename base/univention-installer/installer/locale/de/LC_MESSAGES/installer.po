@@ -1277,6 +1277,18 @@ msgstr "    [ALT]+[F1]"
 msgid "the installation will be continued."
 msgstr "kann die Installation fortgesetzt werden."
 
+#: installer/modules/12_expert_partition.py:70
+msgid "This is a highly experimental filesystem"
+msgstr "Dies ist ein experimentelles Dateisystem"
+
+#: installer/modules/12_expert_partition.py:70
+msgid "and should not be used in productive"
+msgstr "und sollte nicht in produktiven"
+
+#: installer/modules/12_expert_partition.py:70
+msgid "environments."
+msgstr "Umgebungen eingesetzt werden."
+
 #: installer/modules/12_expert_partition.py:88
 msgid ""
 "Partitioning (expert mode):\n"
@@ -1329,9 +1341,30 @@ msgstr "Fehlender '/' als Mount-Point"
 msgid "Wrong file system type '%s' for mount point '/'"
 msgstr "Falsches Dateisystem '%s' für '/'"
 
+#: installer/modules/12_partition.py:444
+#, python-format
+msgid "Wrong file system type '%s' for mount point '/boot'"
+msgstr "Falsches Dateisystem '%s' für '/boot'"
+
 #: installer/modules/12_partition.py:466
 msgid "Unable to create bootable config!"
 msgstr "Erstellung bootbarer Konfiguration fehlgeschlagen!"
+
+#: installer/modules/12_partition.py:466
+msgid "Unbootable config! /boot needs non LVM partition"
+msgstr "Erstellung bootbarer Konfiguration fehlgeschlagen! /boot darf nicht auf einer LVM Partition liegen."
+
+#: installer/modules/12_partition.py:466
+msgid "Unbootable config! / on ext4 needs /boot-partition with other than ext4!"
+msgstr "Erstellung bootbarer Konfiguration fehlgeschlagen! /boot darf nicht auf einer ext4 Partition liegen."
+
+#: installer/modules/12_partition.py:466
+msgid "Unbootable config! / on btrfs needs /boot-partition with other than btrfs!"
+msgstr "Erstellung bootbarer Konfiguration fehlgeschlagen! /boot darf nicht auf einer btrfs Partition liegen."
+
+#: installer/modules/12_partition.py:466
+msgid "Filesystem %s:"
+msgstr "Dateisystem %s:"
 
 #: installer/modules/12_partition.py:467
 msgid "/-partition is located on LVM and"

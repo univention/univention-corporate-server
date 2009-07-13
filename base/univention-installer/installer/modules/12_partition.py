@@ -70,6 +70,12 @@ PARTTYPE_LVM_VG = 100
 PARTTYPE_LVM_LV = 101
 PARTTYPE_LVM_VG_FREE = 102
 
+# file systems
+EXPERIMENTAL_FSTYPES = ['btrfs']
+EXPERIMENTAL_FSTYPES_MSG = ['This is a highly experimental filesystem','and should not be used in productive','environments.']
+ALLOWED_BOOT_FSTYPES = ['xfs','ext2','ext3']
+ALLOWED_ROOT_FSTYPES = ['xfs','ext2','ext3','ext4','btrfs']
+
 class object(content):
 	def __init__(self,max_y,max_x,last=(1,1), file='/tmp/installer.log', cmdline={}):
 		self.written=0
@@ -278,6 +284,9 @@ class object(content):
 		root_device=None
 		boot_device=None
 		root_fs=None
+		boot_fs=None
+		root_fs_type=None
+		boot_fs_type=None
 		mpoint_list = []
 		for key in self.container['profile']['create'].keys():
 			for minor in self.container['profile']['create'][key].keys():
@@ -291,11 +300,15 @@ class object(content):
 
 				if mpoint == '/boot':
 					boot_device = 'PHY'
+					boot_fs_type=fstype
+					if not fstype.lower() in ALLOWED_BOOT_FSTYPES:
+						boot_fs = fstype
 
 				if mpoint == '/':
 					root_device = 'PHY'
-					if fstype.lower() in ['xfs','ext2','ext3']:
-						root_fs = True
+					root_fs_type=fstype
+					if not fstype.lower() in ALLOWED_ROOT_FSTYPES:
+						root_fs = fstype
 
 		for lvname, lv in self.container['profile']['lvmlv']['create'].items():
 			mpoint = lv['mpoint']
@@ -309,24 +322,42 @@ class object(content):
 
 			if mpoint == '/boot':
 				boot_device = 'LVM'
+				boot_fs_type=fstype
+				if not fstype.lower() in ALLOWED_BOOT_FSTYPES:
+					boot_fs = fstype
 
 			if mpoint == '/':
 				root_device = 'LVM'
-				if fstype.lower() in ['xfs','ext2','ext3']:
-					root_fs = True
+				root_fs_type=fstype
+				if not fstype.lower() in ALLOWED_ROOT_FSTYPES:
+					root_fs = fstype
 
 		if root_device == None:
 			self.message = 'Missing / as mountpoint'
 			return False
 
-		self.debug('root_device=%s  boot_device=%s' % (root_device, boot_device))
+		if boot_device in ['LVM']:
+			self.message = 'Unbootable config! /boot needs non LVM partition!'
+			return False
+
 		if root_device == 'LVM' and boot_device in [ None, 'LVM' ]:
 			self.message = 'Unbootable config! / on LVM needs /boot-partition!'
 			return False
 
-		if not root_fs:
-			#Wrong filesystemtype for mountpoint /
-			self.message='Wrong filesystemtype for mountpoint /'
+		if root_fs:
+			self.message='Wrong filesystem type \'%s\' for mount point \'/\'' % root_fs
+			return False
+
+		if boot_fs:
+			self.message='Wrong filesystem type \'%s\' for mountpoint /boot' % boot_fs
+			return False
+
+		if root_fs_type == 'ext4' and boot_fs_type in [ None, 'ext4' ]:
+			self.message='Unbootable config! / on ext4 needs /boot-partition with other than ext4!'
+			return False
+
+		if root_fs_type == 'btrfs' and boot_fs_type in [ None, 'btrfs' ]:
+			self.message='Unbootable config! / on btrfs needs /boot-partition with other than btrfs!'
 			return False
 
 		if 'auto_part' in self.all_results.keys():
@@ -407,6 +438,9 @@ class object(content):
 		self.debug('incomplete')
 		root_device=0
 		root_fs=0
+		boot_fs=None
+		root_fs_type=None
+		boot_fs_type=None
 		mpoint_temp=[]
 		for disk in self.container['disk'].keys():
 			for part in self.container['disk'][disk]['partitions']:
@@ -416,9 +450,15 @@ class object(content):
 							return _('Double mount point \'%s\'') % self.container['disk'][disk]['partitions'][part]['mpoint']
 						mpoint_temp.append(self.container['disk'][disk]['partitions'][part]['mpoint'])
 					if self.container['disk'][disk]['partitions'][part]['mpoint'] == '/':
-						if not self.container['disk'][disk]['partitions'][part]['fstype'] in ['xfs','ext2','ext3']:
+						root_fs_type=self.container['disk'][disk]['partitions'][part]['fstype']
+						if not self.container['disk'][disk]['partitions'][part]['fstype'] in ALLOWED_ROOT_FSTYPES:
 							root_fs=self.container['disk'][disk]['partitions'][part]['fstype']
 						root_device=1
+
+					if self.container['disk'][disk]['partitions'][part]['mpoint'] == '/boot':
+						boot_fs_type=self.container['disk'][disk]['partitions'][part]['fstype']
+						if not self.container['disk'][disk]['partitions'][part]['fstype'] in ALLOWED_BOOT_FSTYPES:
+							boot_fs=self.container['disk'][disk]['partitions'][part]['fstype']
 
 		# check LVM Logical Volumes if LVM is enabled
 		if self.container['lvm']['enabled'] and self.container['lvm']['vg'].has_key( self.container['lvm']['ucsvgname'] ):
@@ -431,17 +471,21 @@ class object(content):
 						return _('Double mount point \'%s\'') % mpoint
 				mpoint_temp.append(mpoint)
 				if mpoint == '/':
-					if not lv['fstype'] in ['xfs','ext2','ext3']:
+					if not lv['fstype'] in ALLOWED_ROOT_FSTYPES:
 						root_fs = lv['fstype']
 					root_device=1
 
 		if not root_device:
-			self.move_focus( 1 )
+			#self.move_focus( 1 )
 			return _('Missing \'/\' as mount point')
 
 		if root_fs:
-			self.move_focus( 1 )
+			#self.move_focus( 1 )
 			return _('Wrong file system type \'%s\' for mount point \'/\'' % root_fs)
+
+		if boot_fs:
+			#self.move_focus( 1 )
+			return _('Wrong file system type \'%s\' for mount point \'/boot\'' % boot_fs)
 
 		# check if LVM is enabled, /-partition is LVM LV and /boot is missing
 		rootfs_is_lvm = False
@@ -471,10 +515,19 @@ class object(content):
 			self.sub.sub.draw()
 			return 1
 
+		if bootfs_is_lvm:
+			return _('Unbootable config! /boot needs non LVM partition')
+
 		if len(self.container['history']) or self.test_changes():
 			self.sub.sub=self.sub.verify_exit(self.sub,self.sub.minY+(self.sub.maxHeight/8)+2,self.sub.minX+(self.sub.maxWidth/8),self.sub.maxWidth,self.sub.maxHeight-7)
 			self.sub.sub.draw()
 			return 1
+
+		if root_fs_type == 'ext4' and boot_fs_type in [ None, 'ext4' ]:
+			return _('Unbootable config! / on ext4 needs /boot-partition with other than ext4!')
+
+		if root_fs_type == 'btrfs' and boot_fs_type in [ None, 'btrfs' ]:
+			return _('Unbootable config! / on btrfs needs /boot-partition with other than btrfs!')
 
 	def profile_f12_run(self):
 		self.debug('profile_f12_run')
@@ -1113,7 +1166,7 @@ class object(content):
 
 						mkfs_cmd = None
 						fstype = fstype.lower()
-						if fstype in ['ext2','ext3','vfat','msdos']:
+						if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
 							mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,self.get_real_partition_device_name(disk,num))
 						elif fstype == 'xfs':
 							mkfs_cmd='/sbin/mkfs.xfs -f %s' % self.get_real_partition_device_name(disk,num)
@@ -1130,7 +1183,7 @@ class object(content):
 
 					mkfs_cmd = None
 					fstype = fstype.lower()
-					if fstype in ['ext2','ext3','vfat','msdos']:
+					if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
 						mkfs_cmd='/sbin/mkfs.%s %s' % (fstype, device)
 					elif fstype == 'xfs':
 						mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
@@ -3209,7 +3262,7 @@ class object(content):
 							if self.parent.container['disk'][disk]['partitions'][part]['format']:
 								device = self.parent.parent.get_device(disk, part)
 								fstype=self.parent.container['disk'][disk]['partitions'][part]['fstype']
-								if fstype in ['ext2','ext3','vfat','msdos']:
+								if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
 									mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,device)
 								elif fstype == 'xfs':
 									mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
@@ -3228,7 +3281,7 @@ class object(content):
 							if vg['lv'][lvname]['format']:
 								device = vg['lv'][lvname]['dev']
 								fstype = vg['lv'][lvname]['fstype']
-								if fstype in ['ext2','ext3','vfat','msdos']:
+								if fstype in ['ext2','ext3','vfat','msdos', 'ext4', 'btrfs']:
 									mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,device)
 								elif fstype == 'xfs':
 									mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
@@ -3247,6 +3300,7 @@ class object(content):
 
 		class edit(subwin):
 			def __init__(self,parent,pos_x,pos_y,width,heigth):
+				self.close_on_subwin_exit = False
 				subwin.__init__(self,parent,pos_x,pos_y,width,heigth)
 
 			def helptext(self):
@@ -3280,6 +3334,9 @@ class object(content):
 				self.parent.container['disk'][path]['partitions'][part]['fstype']=fstype
 				return 0
 
+			def ignore_experimental_fstype(self):
+				self.expFStype = True
+				return 0
 
 			def input(self, key):
 				dev = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
@@ -3290,7 +3347,10 @@ class object(content):
 				if hasattr(self,"sub"):
 					if not self.sub.input(key):
 						self.parent.layout()
-						return 0
+						self.sub.exit()
+						self.draw()
+						if self.close_on_subwin_exit:
+							return 0
 					return 1
 				if key == 260 and self.get_elem('BT_save').active:
 					#move left
@@ -3317,6 +3377,16 @@ class object(content):
 								return 1
 							format=self.get_elem('CB_format').result()
 							fstype=self.get_elem('SEL_fstype').result()[0]
+							# check experimental filesystems
+							msg = [_("Filesystem %s:") % fstype]
+							for i in EXPERIMENTAL_FSTYPES_MSG:
+								msg.append(_(i))
+							if fstype in EXPERIMENTAL_FSTYPES and not hasattr(self,"expFStype"):
+								self.sub = msg_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
+									callback=self.ignore_experimental_fstype, msglist=msg)
+								self.sub.draw()
+								return 1
+
 							type=int(self.get_elem('RB_pri_log').result())
 							if float(disk['partitions'][part]['size']) < size:
 								size=float(disk['partitions'][part]['size'])
@@ -3350,6 +3420,7 @@ class object(content):
 										_('Do you want to format this partition?') ]
 
 							if not format:
+								self.close_on_subwin_exit = True
 								self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
 													  msglist=msglist, callback_yes=self.no_format_callback_part_create,
 													  callback_no=self.no_format_callback_part_create, default='no' )
@@ -3366,6 +3437,16 @@ class object(content):
 							mpoint=self.get_elem('INP_mpoint').result().strip()
 							fstype=self.get_elem('SEL_fstype').result()[0]
 							flag=[]
+							# check experimental filesystems
+							msg = [_("Filesystem %s:") % fstype]
+							for i in EXPERIMENTAL_FSTYPES_MSG:
+								msg.append(_(i))
+							if fstype in EXPERIMENTAL_FSTYPES and not hasattr(self,"expFStype"):
+								self.sub = msg_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
+									callback=self.ignore_experimental_fstype, msglist=msg)
+								self.sub.draw()
+								return 1
+
 							if self.get_elem('CB_bootable').result():
 								flag.append('boot')
 							if self.elem_exists('CB_ppcprep') and self.get_elem('CB_ppcprep').result():
@@ -3408,6 +3489,7 @@ class object(content):
 												_('Do you want to format this partition?')
 												]
 
+								self.close_on_subwin_exit = True
 								self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
 													  msglist=msglist, callback_yes=self.no_format_callback_part_edit,
 													  callback_no=self.no_format_callback_part_edit, default='no', path=path, part=part )
@@ -3618,6 +3700,9 @@ class object(content):
 				lv['format'] = format
 				return result
 
+			def ignore_experimental_fstype(self):
+				self.expFStype = True
+
 			def input(self, key):
 				parttype, vgname, lvname = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
 
@@ -3708,6 +3793,16 @@ class object(content):
 								return 1
 							size = int(vg['PEsize'] * currentLE / 1024.0)
 
+							# check experimental filesystems
+							msg = [_("Filesystem %s:") % fstype]
+							for i in EXPERIMENTAL_FSTYPES_MSG:
+								msg.append(_(i))
+							if fstype in EXPERIMENTAL_FSTYPES and not hasattr(self,"expFStype"):
+								self.sub = msg_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
+									callback=self.ignore_experimental_fstype, msglist=msg)
+								self.sub.draw()
+								return 1
+
 							# data seems to be ok ==> create LVM LV
 							self.parent.lv_create(vgname, lvname, currentLE, format, fstype, '', mpoint)
 
@@ -3724,6 +3819,8 @@ class object(content):
 								self.sub.draw()
 								return 1
 
+	
+
 						elif self.operation is 'edit': # Speichern
 
 							# get and save values
@@ -3736,6 +3833,17 @@ class object(content):
 							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['fstype'] = fstype
 
 							rootfs = (self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['mpoint'] == '/')
+
+							# check experimental filesystems
+							msg = [_("Filesystem %s:") % fstype]
+							for i in EXPERIMENTAL_FSTYPES_MSG:
+								msg.append(_(i))
+							if fstype in EXPERIMENTAL_FSTYPES and not hasattr(self,"expFStype"):
+								self.sub = msg_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
+									callback=self.ignore_experimental_fstype, msglist=msg)
+								self.sub.draw()
+								return 1
+
 							# if format is not set and mpoint == '/' OR
 							#    format is not set and fstype changed
 							if ( oldfstype != fstype or rootfs) and not self.get_elem('CB_format').result():
