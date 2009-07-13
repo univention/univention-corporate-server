@@ -1,3 +1,9 @@
+univention-management-console (2.0.15-1) unstable; urgency=low
+
+  * Actually kill the process in kill_process (Bug #14310)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 13 Jul 2009 07:05:45 +0200
+
 univention-management-console (2.0.14-1) unstable; urgency=low
 
   * UCR module: sort list of UCR categories (Bug #13505)

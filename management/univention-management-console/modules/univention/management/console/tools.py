@@ -144,6 +144,7 @@ def kill_process( pid, signal = 15, timeout = 0 ):
 	notifier.dispatcher_add( fake_dispatcher )
 
 	countdown = CountDown( timeout )
+	os.kill( pid, signal )
 	while countdown():
 		dead_pid, sts = os.waitpid( pid, os.WNOHANG )
 		if dead_pid == pid:
