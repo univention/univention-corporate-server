@@ -1,3 +1,10 @@
+univention-ad-connector (4.0.15-2) unstable; urgency=low
+
+  * Fixed upper- and lowercase problems in the attribute_filter
+    function. Bug #13550
+
+ -- Andre Fenske <fenske@univention.de>  Mon, 13 Jul 2009 16:10:08 +0200
+
 univention-ad-connector (4.0.15-1) unstable; urgency=low
 
   * the ldap ignore filter should be case insensitive. Bug #13550
