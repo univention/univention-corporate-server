@@ -1,3 +1,9 @@
+univention-nagios (3.0.11-1) unstable; urgency=low
+
+  * added missing file (Bug: #14179)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 13 Jul 2009 16:51:52 +0200
+
 univention-nagios (3.0.10-1) unstable; urgency=low
 
   * added default service and plugin for nmbd service check (Bug: #14179)
