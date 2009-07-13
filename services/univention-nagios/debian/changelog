@@ -1,3 +1,9 @@
+univention-nagios (3.0.10-1) unstable; urgency=low
+
+  * added default service and plugin for nmbd service check (Bug: #14179)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 13 Jul 2009 16:37:30 +0200
+
 univention-nagios (3.0.9-1) unstable; urgency=low
 
   * rename service entry for NRPE to nagios-nrpe-server; mustbe the name
