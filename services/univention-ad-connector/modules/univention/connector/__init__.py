@@ -1058,8 +1058,18 @@ class ucs:
 				return retlist
 			else:
 				return elements
+		def dict_lower(dict):
+			if type(dict) == type({}):
+				retdict = {}
+				for key in dict:
+					retdict[key.lower()] = dict[key]
+				return retdict
+			else:
+				return dict
 
 		def attribute_filter(filter, attributes):
+			attributes = dict_lower(attributes)
+
 			pos = string.find(filter,'=')
 			if pos < 0:
 				raise ValueError,'missing "=" in filter: %s' % filter
@@ -1067,6 +1077,7 @@ class ucs:
 			if not attribute:
 				raise ValueError,'missing attribute in filter: %s' % filter
 			value = filter[pos+1:]
+
 			if value == '*':
 				return attribute in list_lower(attributes.keys())
 			elif attributes.has_key(attribute):
