@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Installer
-#  join computer
+#  Join a system in the UCS domain
 #
 # Copyright (C) 2004-2009 Univention GmbH
 #
@@ -63,8 +63,8 @@ fi
 
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	mkdir -p /usr/share/univention-join/
-	touch /usr/share/univention-join/.joined
+	mkdir -p /var/univention-join/
+	touch /var/univention-join/joined
 	for i in /usr/lib/univention-install/*.inst; do
 		echo "Configure \`basename \$i\`";
 		\$i >>/var/log/univention/join.log;

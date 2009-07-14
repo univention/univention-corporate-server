@@ -1,3 +1,11 @@
+univention-installer (5.0.10-3) unstable; urgency=low
+
+  * Modify the installation path of the join script handling
+    performed on a DC master installation to the new FHS-compliant
+    paths (Bug #14846)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 14 Jul 2009 08:59:40 +0200
+
 univention-installer (5.0.10-2) unstable; urgency=low
 
   * added filesystem checking startup script (Bug: #14417)
