@@ -1,3 +1,9 @@
+univention-installer (5.0.10-2) unstable; urgency=low
+
+  * added filesystem checking startup script (Bug: #14417)
+
+ -- Felix Botner <botner@univention.de>  Tue, 14 Jul 2009 08:47:32 +0200
+
 univention-installer (5.0.10-1) unstable; urgency=low
 
   * support more filesystem types (Bug: #14417)
