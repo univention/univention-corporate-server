@@ -7,8 +7,8 @@ set -e
 eval $(univention-baseconfig shell)
 
 DOWNLOAD_DIR=/var/cache/flashplugin-nonfree
-DOWNLOAD_FILE=install_flash_player_9.tar.gz
-DOWNLOAD_URL=http://download.macromedia.com/pub/flashplayer/installers/current/9/install_flash_player_9.tar.gz
+DOWNLOAD_FILE=install_flash_player_10_linux
+DOWNLOAD_URL=http://fpdownload.macromedia.com/get/flashplayer/current/install_flash_player_10_linux.tar.gz
 TARGET_DIR=/usr/lib/flashplugin-nonfree
 
 fp_exit_with_error() {
@@ -21,7 +21,7 @@ fp_download_and_unpack() {
 
 	cd $DOWNLOAD_DIR
 
-	if [ -d "$DOWNLOAD_DIR" -a -f "$DOWNLOAD_DIR/$DOWNLOAD_FILE" ]; then
+	if [ -d "$DOWNLOAD_DIR" -a -f "$DOWNLOAD_DIR/$DOWNLOAD_FILE.tar.gz" ]; then
 
 		echo "Installing from local file $DOWNLOAD_DIR/$DOWNLOAD_FILE"
 
@@ -59,8 +59,8 @@ fp_download_and_unpack() {
 	fi # end if local file
 
         # unpacking the plugin
-	rm -rf install_flash_player_9_linux/
-	tar xzf install_flash_player_9.tar.gz || fp_exit_with_error "cannot unpack plugin"
+	rm -rf $DOWNLOAD_FILE
+	tar xzf $DOWNLOAD_FILE.tar.gz || fp_exit_with_error "cannot unpack plugin"
 }
 
 OLDDIR=/usr/lib/flashplugin-nonfree-unpackdir
@@ -73,14 +73,14 @@ safe_move() {
 
 fp_download_and_unpack
 
-install -m 644 install_flash_player_9_linux/libflashplayer.so $TARGET_DIR
-rm -f $TARGET_DIR/flashplayer.xpt
-rm -rf install_flash_player_9_linux/
+install -m 644 $DOWNLOAD_FILE/libflashplayer.so $TARGET_DIR
+rm -rf $DOWNLOAD_FILE
 
 safe_move FP9_plugin_beta_101806.tar.gz
 safe_move FP9_plugin_beta_112006.tar.gz
 safe_move install_flash_player_7_linux.tar.gz
 safe_move install_flash_player_9_linux.tar.gz
+safe_move install_flash_player_10_linux.tar.gz
 rmdir $OLDDIR 2> /dev/null || true
 
 if [ -e /usr/bin/nspluginwrapper ] ; then

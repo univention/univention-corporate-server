@@ -1,3 +1,9 @@
+univention-flashplugin (4.0.2-0) unstable; urgency=low
+
+  * update to flash plugin 10 (Bug: #14427)
+
+ -- Felix Botner <botner@univention.de>  Tue, 14 Jul 2009 11:10:44 +0200
+
 univention-flashplugin (4.0.1-0) unstable; urgency=low
 
   * export http_proxy for wget in update script if proxy_http UCR var is defined (Bug: #7351)
