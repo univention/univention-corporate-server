@@ -1,3 +1,9 @@
+univention-installer (5.0.10-4) unstable; urgency=low
+
+  * mkfs.btrfs is in /bin not in /sbin (Bug: #14417)
+
+ -- Felix Botner <botner@univention.de>  Tue, 14 Jul 2009 09:02:27 +0200
+
 univention-installer (5.0.10-3) unstable; urgency=low
 
   * Modify the installation path of the join script handling
