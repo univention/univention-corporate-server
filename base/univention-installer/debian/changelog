@@ -1,3 +1,11 @@
+univention-installer (5.0.10-5) unstable; urgency=low
+
+  * Since all join scripts still test for the old paths, we need
+    to create the symlinks also in case of a new DC Master installation
+    (Bug #14846)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 16 Jul 2009 11:34:29 +0200
+
 univention-installer (5.0.10-4) unstable; urgency=low
 
   * mkfs.btrfs is in /bin not in /sbin (Bug: #14417)

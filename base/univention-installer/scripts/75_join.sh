@@ -64,7 +64,12 @@ fi
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	mkdir -p /var/univention-join/
+	mkdir -p /usr/share/univention-join/
 	touch /var/univention-join/joined
+	touch /var/univention-join/status
+	ln -s /var/univention-join/joined /usr/share/univention-join/.joined
+        ln -s /var/univention-join/status /usr/lib/univention-install/.index.txt
+
 	for i in /usr/lib/univention-install/*.inst; do
 		echo "Configure \`basename \$i\`";
 		\$i >>/var/log/univention/join.log;
