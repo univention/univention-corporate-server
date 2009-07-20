@@ -1,0 +1,5 @@
+univention-kernel-image-2.6.30 (1.0.0-1) unstable; urgency=low
+
+  * Initial Release. (Bug #15057)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  7 Nov 2006 14:38:31 +0100
