@@ -432,7 +432,7 @@ def main():
 		for arch in ['all', architecture, 'extern']:
 			if os.path.exists('%s/mirror/%d.%d/maintained/%s/%s' % ( repository_path, new_version.major, new_version.minor, nextversion, arch ) ):
 				add_temporary_sources_list ( 'deb file:%s/mirror/%d.%d/maintained/ %s/%s/' % ( repository_path, new_version.major, new_version.minor, nextversion, arch ) )
-		scriptPath = '%s/%s/%s' % (repository_path, nextversion, arch)
+		scriptPath = '%s/mirror/%d.%d/maintained/%s/all/' % ( repository_path, new_version.major, new_version.minor, nextversion )
 
 	elif command == 'cdrom':
 		dprint('starting cdrom mode')
