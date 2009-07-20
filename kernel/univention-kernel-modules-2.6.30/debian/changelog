@@ -1,5 +1,6 @@
 univention-kernel-modules-2.6.30 (1.0.0-1) unstable; urgency=low
 
   * Initial release (Bug #15057)
+    - Squashfs has been merged into the mainline kernel
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 20 Jul 2009 15:50:39 +0200

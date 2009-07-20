@@ -53,7 +53,7 @@ install:
 	dh_clean -k
 	dh_installdirs
 
-	for m in avm-capi-fcpci-modules squashfs drbd8; do \
+	for m in avm-capi-fcpci-modules drbd8; do \
 		for i in $$(ls -d /usr/src/linux-headers-* | grep -v "\-common" ); do \
 			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
 			m-a -t -l $$kversion prepare; \
