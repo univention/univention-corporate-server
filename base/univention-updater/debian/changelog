@@ -1,3 +1,10 @@
+univention-updater (4.0.78-1) unstable; urgency=low
+
+  * search for preup.sh und postup.sh in the correct directory on a
+    repository server. Bug #15128
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 20 Jul 2009 11:28:04 +0200
+
 univention-updater (4.0.77-1) unstable; urgency=low
 
   * change the parsing of the apt-get output. Before we got a problem
