@@ -1,3 +1,9 @@
+univention-kernel-modules-2.6.30 (1.0.0-2) unstable; urgency=low
+
+  * Disable Xen kernel headers for now (Bug #15057)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 21 Jul 2009 09:10:08 +0200
+
 univention-kernel-modules-2.6.30 (1.0.0-1) unstable; urgency=low
 
   * Initial release (Bug #15057)
