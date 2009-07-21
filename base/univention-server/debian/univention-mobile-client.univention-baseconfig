@@ -2,5 +2,5 @@ Type: file
 File: etc/cron.d/univention-mobile-client
 
 Type: file
-File: etc/default/ifplugd
-Variables: interfaces/eth.*
+File: etc/dbus-1/system.d/ucs-networkmanager.conf
+Variables: networkmanager/group

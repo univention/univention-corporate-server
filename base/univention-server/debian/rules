@@ -78,17 +78,18 @@ install: build
 
 	install -m 755 managed-client debian/univention-managed-client/etc/init.d/
 	install -m 755 univention-domain-connection debian/univention-managed-client/usr/bin/
-	install -m 755 etc/ifplugd/action.d/nscd debian/univention-managed-client/etc/ifplugd/action.d/nscd
-	install -m 755 etc/ifplugd/action.d/gdm debian/univention-managed-client/etc/ifplugd/action.d/gdm
-	install -m 755 etc/ifplugd/action.d/mount debian/univention-managed-client/etc/ifplugd/action.d/mount
+
+	install -m 755 etc/network/if-up.d/[0-9]* debian/univention-managed-client/etc/network/if-up.d
+	install -m 755 etc/network/if-down.d/[0-9]* debian/univention-managed-client/etc/network/if-down.d
+
 	install -m 755 univention-directory-policy/univention-set-ldap-server debian/univention-managed-client/usr/lib/univention-directory-policy/
 	install -m 755 check_connection debian/univention-managed-client/usr/share/univention-managed-client/
 
 	install -m 755 mobile-client debian/univention-mobile-client/etc/init.d/
 	install -m 755 check_connection debian/univention-mobile-client/usr/share/univention-mobile-client/
-	install -m 755 etc/ifplugd/action.d/nscd debian/univention-mobile-client/etc/ifplugd/action.d/nscd
-	install -m 755 etc/ifplugd/action.d/gdm debian/univention-mobile-client/etc/ifplugd/action.d/gdm
-	install -m 755 etc/ifplugd/action.d/mount debian/univention-mobile-client/etc/ifplugd/action.d/mount
+
+	install -m 755 etc/network/if-up.d/[0-9]* debian/univention-managed-client/etc/network/if-up.d
+	install -m 755 etc/network/if-down.d/[0-9]* debian/univention-managed-client/etc/network/if-down.d
 	install -m 755 univention-directory-policy/univention-set-ldap-server debian/univention-mobile-client/usr/lib/univention-directory-policy/
 
 	# add ntpd information used by univention-console

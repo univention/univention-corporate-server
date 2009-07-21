@@ -1,5 +1,7 @@
 /usr/lib/univention-server
 usr/lib/univention-directory-policy
+etc/network/if-up.d/
+etc/network/if-down.d/
 etc/univention/daemons
 etc/bootsplash/themes/memberserver/images
 etc/bootsplash/themes/memberserver/config

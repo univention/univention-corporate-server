@@ -43,7 +43,7 @@ fi
 
 
 action () {
-	/etc/ifplugd/ifplugd.action all $1 >/dev/null
+	/etc/NetworkManager/dispatcher.d/01ifupdown all $1 >/dev/null
 }
 
 connection_okay=0

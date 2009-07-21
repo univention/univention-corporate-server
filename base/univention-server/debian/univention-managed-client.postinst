@@ -87,7 +87,16 @@ if [ "$1" = "configure" -a -z "$2" ]; then
 	fi
 fi
 
-univention-baseconfig set ifplugd/action/mount?yes
+if [ -z "$ifplugd_action_mount" ]; then
+	   ifplugd_action_mount="yes"
+fi
+
+univention-config-registry set networkmanager/action/mount?$ifplugd_action_mount
+univention-config-registry set networkmanager/group?"Domain Users"
+
+# need to restart dbus to read new permissions for networkmanager/group
+/etc/init.d/dbus restart
+
 
 #DEBHELPER#
 

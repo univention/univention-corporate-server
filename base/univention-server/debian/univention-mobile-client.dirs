@@ -1,6 +1,7 @@
 etc/init.d
 usr/bin
-etc/ifplugd/action.d/
+etc/network/if-up.d/
+etc/network/if-down.d/
 etc/bootsplash/themes/mobileclient
 etc/bootsplash/themes/mobileclient/images
 etc/bootsplash/themes/mobileclient/config
