@@ -1,6 +1,13 @@
+univention-server (5.0.3-1) unstable; urgency=low
+
+  * rename UCR variables interfaces/eth0*/ifplugd to
+    interfaces/eth0*/networkmanager. Bug #8994
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 21 Jul 2009 15:30:56 +0200
+
 univention-server (5.0.2-1) unstable; urgency=low
 
-  * replace ifplugd with the network manager
+  * replace ifplugd with the network manager. Bug #8994
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 21 Jul 2009 14:09:41 +0200
 
