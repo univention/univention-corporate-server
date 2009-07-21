@@ -29,15 +29,11 @@ def check_gateway (ip, netmask, gateway):
 gateway=False
 for i in range(0,4):
 	if configRegistry.has_key('interfaces/eth%s/type' % i) and configRegistry['interfaces/eth%s/type' % i] == 'dhcp':
-		if configRegistry.has_key('server/role') and ( configRegistry['server/role'] == 'mobileclient' or configRegistry['server/role'] == 'fatclient' ) and not (configRegistry.has_key('interfaces/eth%s/ifplugd' % i) and configRegistry['interfaces/eth%s/ifplugd' % i] == 'no'):
-			pass
-		else:
+		if not configRegistry.get('interfaces/eth%s/networkmanager' % i, 'yes' ).lower() in ( 'no', 'false', '0' ):
 			print 'auto eth%s' % i
 		print 'iface eth%s inet dhcp' % i
 	elif  configRegistry['interfaces/eth%s/address' % i]:
-		if configRegistry.has_key('server/role') and ( configRegistry['server/role'] == 'mobileclient' or configRegistry['server/role'] == 'fatclient' ) and not (configRegistry.has_key('interfaces/eth%s/ifplugd' % i) and configRegistry['interfaces/eth%s/ifplugd' % i] == 'no'):
-			pass
-		else:
+		if not configRegistry.get('interfaces/eth%s/networkmanager' % i, 'yes' ).lower() in ( 'no', 'false', '0' ):
 			print 'auto eth%s' % i
 		print 'iface eth%s inet static' % i
 		print 'address '+configRegistry['interfaces/eth%s/address' % i]
@@ -54,15 +50,11 @@ for i in range(0,4):
 
 	for j in range(0,4):
 		if configRegistry.has_key('interfaces/eth%s_%s/type' % (i,j)) and configRegistry['interfaces/eth%s_%s/type' % (i,j) ] == 'dhcp':
-			if configRegistry.has_key('server/role') and ( configRegistry['server/role'] == 'mobileclient' or configRegistry['server/role'] == 'fatclient' ) and not (configRegistry.has_key('interfaces/eth%s_%s/ifplugd' % (i,j)) and configRegistry['interfaces/eth%s_%s/ifplugd' % (i,j)] == 'no'):
-				pass
-			else:
+			if not configRegistry.get('interfaces/eth%s_%s/networkmanager' % ( i, j ), 'yes' ).lower() in ( 'no', 'false', '0' ):
 				print 'auto eth%s:%s' % (i,j)
 			print 'iface eth%s:%s inet dchp' % (i,j)
 		elif configRegistry['interfaces/eth%s_%s/address' % (i,j) ]:
-			if configRegistry.has_key('server/role') and ( configRegistry['server/role'] == 'mobileclient' or configRegistry['server/role'] == 'fatclient' ) and not (configRegistry.has_key('interfaces/eth%s_%s/ifplugd' % (i,j)) and configRegistry['interfaces/eth%s_%s/ifplugd' % (i,j)] == 'no'):
-				pass
-			else:
+			if not configRegistry.get('interfaces/eth%s_%s/networkmanager' % ( i, j ), 'yes' ).lower() in ( 'no', 'false', '0' ):
 				print 'auto eth%s:%s' % (i,j)
 			print 'iface eth%s:%s inet static' % (i,j)
 			print 'address '+configRegistry['interfaces/eth%s_%s/address' % (i,j) ]
