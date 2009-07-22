@@ -1,3 +1,9 @@
+univention-webui (3.0.4-1) unstable; urgency=low
+
+  * added iso8601Date to modules/syntax.py (Bug: #15149)
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Jul 2009 12:22:48 +0200
+
 univention-webui (3.0.3-1) unstable; urgency=low
 
   * optimized PHP code for performance. Bug #8871

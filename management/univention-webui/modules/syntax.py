@@ -380,6 +380,9 @@ class question_syntax(uniconf.uniconf):
 			if self.syntax.name == 'long_string':
 				self.subfields.append(question_ltext(name,self.atts,{"usertext":value,"helptext":self.args.get('helptext', '')}))
 				self.subobjs.append(self.subfields[0])
+			elif self.syntax.name == 'iso8601Date':
+				self.subfields.append(question_dojo_date_widget(name,self.atts,{"usertext":value,"helptext":self.args.get('helptext', '')}))
+				self.subobjs.append(self.subfields[0])
 			elif self.syntax.name == 'file' or self.syntax.name == 'binaryfile':
 				self.subfields.append(question_file(name,self.atts,{"usertext":value,"filename":"","filesize":"","filetype":"","fileerror":"","helptext":self.args.get('helptext', '')}))
 				self.subobjs.append(self.subfields[0])
