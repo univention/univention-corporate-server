@@ -1,3 +1,10 @@
+univention-directory-manager-modules (4.0.28-1) unstable; urgency=low
+
+  * renamed the tab 'contact (private)' to 'private contact'; required to
+    be able add extended attributes to this tab. Bug #15170
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 22 Jul 2009 15:02:59 +0200
+
 univention-directory-manager-modules (4.0.27-1) unstable; urgency=low
 
   * remove an user from his group whatever the dn is upper or lower

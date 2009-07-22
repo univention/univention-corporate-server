@@ -1082,7 +1082,7 @@ layout=[
 		[univention.admin.field("departmentNumber")],
 		[univention.admin.field("secretary")]
 	]),
-	univention.admin.tab(_('Contact (private)'),_('Private contact information'),[
+	univention.admin.tab(_('Private contact'),_('Private contact information'),[
 		[univention.admin.field("mobileTelephoneNumber"), univention.admin.field("homeTelephoneNumber")],
 		[univention.admin.field("pagerTelephoneNumber"),univention.admin.field("homePostalAddress")]
 	]),

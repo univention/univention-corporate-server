@@ -565,7 +565,7 @@ msgid "Organisational information"
 msgstr "Organisations-/Mitarbeiterinformationen"
 
 #: user.py:1085
-msgid "Contact (private)"
+msgid "Private contact"
 msgstr "Kontakt privat"
 
 #: user.py:1085
