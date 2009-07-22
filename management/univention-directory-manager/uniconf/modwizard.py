@@ -644,7 +644,7 @@ class modwizard(unimodule.unimodule):
 			os.unlink( pdffile )
 
 			url = '/univention-directory-manager/directory-reports/%s' % os.path.basename( pdffile )
-			link = '<a href="%s">%s (%s)</a>' % ( url, module_descr, report_name )
+			link = '<a target="_blank" href="%s">%s (%s)</a>' % ( url, module_descr, report_name )
 
 			return ( nresults, module_descr, report_name, link, doc_type )
 		else:
