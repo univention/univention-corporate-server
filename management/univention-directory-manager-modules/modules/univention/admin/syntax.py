@@ -575,6 +575,18 @@ class emailAddressTemplate(simple):
 			return text
 		raise univention.admin.uexceptions.valueError,_("Not a valid email address!")
 
+ 
+class iso8601Date(simple):
+	name = 'iso8601Date'
+
+	# regexp-source: http://regexlib.com/REDetails.aspx?regexp_id=2092
+	_re=re.compile('^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]5[0-3])(?:\-)?[1-7])?)?)$')
+	
+	def parse(self, text):
+		if self._re.match(text) != None:
+			return text
+		raise univention.admin.uexceptions.valueError,_("The given date does not confirm iso8601, example: \"2009-01-01T12:00:00+01:00\".")
+
 class date(simple):
 	name='date'
 	min_length=5

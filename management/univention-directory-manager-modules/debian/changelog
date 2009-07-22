@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.11-1) unstable; urgency=low
+
+  *  added class iso8601Date to admin/syntax.py (Bug: #15149)
+
+ -- Felix Botner <botner@univention.de>  Tue, 21 Jul 2009 12:32:28 +0200
+
 univention-directory-manager-modules (5.0.10-1) unstable; urgency=low
 
   * renamed the tab 'contact (private)' to 'private contact'; required to
