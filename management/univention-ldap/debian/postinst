@@ -39,40 +39,40 @@ test -f /var/lib/univention-ldap/replog/replog.lock || \
 	touch /var/lib/univention-ldap/replog/replog.lock
 
 
-univention-baseconfig set ldap/autostart?yes
+univention-config-registry set ldap/autostart?yes
 
 #DEBHELPER#
 
-eval `univention-baseconfig shell server/role`
+eval `univention-config-registry shell server/role`
 
-univention-baseconfig set ldap/debug/level?0
-univention-baseconfig set ldap/port?389
-univention-baseconfig set ldap/database/type?bdb
+univention-config-registry set ldap/debug/level?0
+univention-config-registry set ldap/port?389
+univention-config-registry set ldap/database/type?bdb
 # UDM Property Attributes
 udm_prop_attrs="univentionUDMPropertyVersion,univentionUDMPropertyModule,univentionUDMPropertyShortDescription,univentionUDMPropertyLongDescription,univentionUDMPropertySyntax,univentionUDMPropertyMultivalue,univentionUDMPropertyDefault,univentionUDMPropertyLdapMapping,univentionUDMPropertyObjectClass,univentionUDMPropertyDeleteObjectClass,univentionUDMPropertyValueMayChange,univentionUDMPropertyLayoutTabName,univentionUDMPropertyLayoutOverwriteTab,univentionUDMPropertyLayoutOverwritePosition,univentionUDMPropertyLayoutPosition,univentionUDMPropertyCLIName,univentionUDMPropertyTranslationShortDescription,univentionUDMPropertyTranslationLongDescription,univentionUDMPropertyTranslationTabName,univentionUDMPropertyOptions,univentionUDMPropertyLayoutTabAdvanced,univentionUDMPropertyValueRequired,univentionUDMPropertyHook,univentionUDMPropertyDoNotSearch"
-univention-baseconfig set ldap/index/eq?"objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,sambaSID,sambaPrimaryGroupSID,sambaDomainName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,relativeDomainName,pTRRecord,zoneName,mailPrimaryAddress,mailAlternativeAddress,univentionServerRole,univentionService,kolabHomeServer,automountInformation,sambaAcctFlags,univentionPolicyReference,homeDirectory,$udm_prop_attrs"
-univention-baseconfig set ldap/index/pres?"objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,mailPrimaryAddress,mailAlternativeAddress,kolabHomeServer,univentionPolicyReference,homeDirectory,$udm_prop_attrs"
-univention-baseconfig set ldap/index/sub?"uid,cn,sn,givenName,mail,description,displayName,mailPrimaryAddress,mailAlternativeAddress,default,zoneName,sambaSID"
-univention-baseconfig set ldap/index/approx?"none"
-univention-baseconfig set ldap/sizelimit?400000
-univention-baseconfig set ldap/cachesize?20000
-univention-baseconfig set ldap/idlcachesize?20000
-univention-baseconfig set ldap/idletimeout?0
-univention-baseconfig set ldap/threads?16
-univention-baseconfig set ldap/acl/user/kolab2/change?yes
-univention-baseconfig set ldap/acl/user/password/change?no
-univention-baseconfig set ldap/acl/slavepdc?yes
-univention-baseconfig set ldap/acl/nestedgroups?yes
+univention-config-registry set ldap/index/eq?"objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,sambaSID,sambaPrimaryGroupSID,sambaDomainName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,relativeDomainName,pTRRecord,zoneName,mailPrimaryAddress,mailAlternativeAddress,univentionServerRole,univentionService,kolabHomeServer,automountInformation,sambaAcctFlags,univentionPolicyReference,homeDirectory,$udm_prop_attrs"
+univention-config-registry set ldap/index/pres?"objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,mailPrimaryAddress,mailAlternativeAddress,kolabHomeServer,univentionPolicyReference,homeDirectory,$udm_prop_attrs"
+univention-config-registry set ldap/index/sub?"uid,cn,sn,givenName,mail,description,displayName,mailPrimaryAddress,mailAlternativeAddress,default,zoneName,sambaSID"
+univention-config-registry set ldap/index/approx?"none"
+univention-config-registry set ldap/sizelimit?400000
+univention-config-registry set ldap/cachesize?20000
+univention-config-registry set ldap/idlcachesize?20000
+univention-config-registry set ldap/idletimeout?0
+univention-config-registry set ldap/threads?16
+univention-config-registry set ldap/acl/user/kolab2/change?yes
+univention-config-registry set ldap/acl/user/password/change?no
+univention-config-registry set ldap/acl/slavepdc?yes
+univention-config-registry set ldap/acl/nestedgroups?yes
 
-univention-baseconfig set ldap/database/bdb/db_config_options?"set_flags"
-univention-baseconfig set ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE"
+univention-config-registry set ldap/database/bdb/db_config_options?"set_flags"
+univention-config-registry set ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE"
 
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	univention-baseconfig set ldap/translogfile?"/var/lib/univention-ldap/listener/listener"
+	univention-config-registry set ldap/translogfile?"/var/lib/univention-ldap/listener/listener"
 fi
 
-test -f /var/lib/univention-ldap/ldap/DB_CONFIG || univention-baseconfig commit /var/lib/univention-ldap/ldap/DB_CONFIG
+test -f /var/lib/univention-ldap/ldap/DB_CONFIG || univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
 
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/01univention-ldap-server-init.inst || true
@@ -121,38 +121,38 @@ fi
 
 if [ "$1" = configure -a -z "$2" ]; then
 	# only set this for new installations
-	univention-baseconfig set ldap/index/approx="uid,mail,alias,cn,sn,givenName"
+	univention-config-registry set ldap/index/approx="uid,mail,alias,cn,sn,givenName"
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.12; then
-	eval `univention-baseconfig shell hostname ldap/base server/role`
+	eval `univention-config-registry shell hostname ldap/base server/role`
 	if [ "$server_role" = "domaincontroller_master" ]; then
-		univention-baseconfig set ldap/hostdn="cn=$hostname,cn=dc,cn=computers,$ldap_base"
+		univention-config-registry set ldap/hostdn="cn=$hostname,cn=dc,cn=computers,$ldap_base"
 	fi
 fi
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.18; then
-	eval `univention-baseconfig shell hostname domainname server/role ldap/base`
+	eval `univention-config-registry shell hostname domainname server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		/usr/share/univention-admin-tools/univention-dnsedit --ignore-exists $domainname add srv domaincontroller_master tcp 0 0 0 $hostname.$domainname.
 	fi
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.19; then
-	eval `univention-baseconfig shell hostname domainname server/role ldap/base`
+	eval `univention-config-registry shell hostname domainname server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-admin container/cn create --ignore_exists --set name=mac --position="cn=temporary,cn=univention,$ldap_base" || true
 	fi
 fi
 
 if [ "$1" = "configure" -a -n "$2" ]; then
-	eval `univention-baseconfig shell hostname domainname server/role ldap/base`
+	eval `univention-config-registry shell hostname domainname server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-admin container/cn create --ignore_exists --position "cn=computers,$ldap_base" --set name=memberserver || true
 	fi
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.21; then
-	eval `univention-baseconfig shell hostname domainname server/role ldap/base`
+	eval `univention-config-registry shell hostname domainname server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-admin container/cn create --ignore_exists --set name=shares --position="cn=policies,$ldap_base" || true
 		univention-admin container/cn create --ignore_exists --set name=userquota --position="cn=shares,cn=policies,$ldap_base" || true
@@ -160,7 +160,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.21; then
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.25; then
-	eval `univention-baseconfig shell hostname domainname server/role ldap/base`
+	eval `univention-config-registry shell hostname domainname server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-admin container/cn create --ignore_exists --set name=packages --position="cn=univention,$ldap_base" || true
 		univention-admin container/cn create --ignore_exists --set name=ldap --position="cn=policies,$ldap_base" || true
@@ -205,14 +205,14 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.25; then
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.37; then
-	eval `univention-baseconfig shell hostname domainname server/role ldap/base`
+	eval `univention-config-registry shell hostname domainname server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-admin container/cn create --ignore_exists --set name=mail --position="cn=policies,$ldap_base" || true
 	fi
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.34; then
-	eval `univention-baseconfig shell hostname domainname server/role ldap/base`
+	eval `univention-config-registry shell hostname domainname server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		if [ -e /var/lib/univention-ldap/schema/id/id ]; then
 			id=`cat /var/lib/univention-ldap/schema/id/id`
@@ -245,7 +245,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.34; then
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.28; then
-	eval `univention-baseconfig shell hostname domainname server/role ldap/base`
+	eval `univention-config-registry shell hostname domainname server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		#create idmap folder
 		univention-admin container/cn create --position "cn=univention,$ldap_base" --set name=idmap
@@ -263,7 +263,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.28; then
 	fi
 fi
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.34; then
-	eval `univention-baseconfig shell hostname domainname server/role ldap/base`
+	eval `univention-config-registry shell hostname domainname server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-admin container/cn create --ignore_exists --set name=printquota --position="cn=shares,cn=policies,$ldap_base" || true
 	univention-admin container/cn create --ignore_exists --set name=groupName --position="cn=temporary,cn=univention,$ldap_base" || true
@@ -273,13 +273,13 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.34; then
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.34; then
-	eval `univention-baseconfig shell hostname domainname server/role ldap/base`
+	eval `univention-config-registry shell hostname domainname server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-admin container/cn create --ignore_exists --set name=samba || true
 	fi
 fi
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.41-28; then
-	eval `univention-baseconfig shell hostname domainname server/role ldap/base`
+	eval `univention-config-registry shell hostname domainname server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-admin container/cn create --ignore_exists --set name=admin-settings --position cn=univention,$ldap_base
 		univention-admin container/cn create --ignore_exists --set name=services --position cn=univention,$ldap_base
@@ -329,7 +329,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.41-28; t
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.42-10; then
-	eval `univention-baseconfig shell server/role ldap/base`
+	eval `univention-config-registry shell server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-admin container/cn create --ignore_exists			\
 			--set name=admin-settings					\
@@ -361,13 +361,13 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.42-10; t
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.42-19; then
-	eval `univention-baseconfig shell server/role ldap/base domainname ldap/hostdn`
+	eval `univention-config-registry shell server/role ldap/base domainname ldap/hostdn`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-admin computers/domaincontroller_master modify --dn "$ldap_hostdn" --set domain=$domainname
 	fi
 fi
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.42-29; then
-	eval `univention-baseconfig shell server/role ldap/base domainname ldap/hostdn`
+	eval `univention-config-registry shell server/role ldap/base domainname ldap/hostdn`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		ldapsearch -x '(&(objectClass=univentionPolicyUpdate)(!(univentionUpdateActivate=*)))' -LLL | grep ^dn | sed -e 's|dn: ||' | while read dn; do
 			temp=`mktemp`
@@ -381,7 +381,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.42-29; t
 	fi
 fi
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.43-18; then
-	eval `univention-baseconfig shell server/role ldap/base domainname ldap/hostdn`
+	eval `univention-config-registry shell server/role ldap/base domainname ldap/hostdn`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		/usr/share/univention-ldap/convert_shadowMax.py
 	fi
@@ -390,7 +390,7 @@ fi
 
 # add DC Backup Hosts to the other computer groups
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.43-19.170; then
-	eval `univention-baseconfig shell server/role ldap/base domainname ldap/hostdn`
+	eval `univention-config-registry shell server/role ldap/base domainname ldap/hostdn`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-admin groups/group modify --dn "cn=DC Backup Hosts,cn=groups,$ldap_base" \
 			--append memberOf="cn=DC Slave Hosts,cn=groups,$ldap_base" \
@@ -403,7 +403,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.43-19.17
 	fi
 fi
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.2.3-1; then
-	eval `univention-baseconfig shell server/role ldap/base domainname ldap/hostdn`
+	eval `univention-config-registry shell server/role ldap/base domainname ldap/hostdn`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-admin container/cn create --ignore_exists \
 			--set name=printservers \
@@ -412,7 +412,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.2.3-1; t
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1; then
-	eval `univention-baseconfig shell server/role ldap/base domainname ldap/hostdn`
+	eval `univention-config-registry shell server/role ldap/base domainname ldap/hostdn`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-directory-manager groups/group modify  --ignore_exists \
 			--dn "cn=Domain Users,cn=groups,$ldap_base" \
@@ -421,10 +421,10 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1; t
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.11-1; then
-	eval `univention-baseconfig shell ldap/cachesize`
+	eval `univention-config-registry shell ldap/cachesize`
 	if [ "$ldap_cachesize" = "10000000" ]; then
 		# adjust to a more moderate setting, other cache layers need memory too
-		univention-baseconfig set ldap/cachesize=20000
+		univention-config-registry set ldap/cachesize=20000
 	fi
 fi
 
