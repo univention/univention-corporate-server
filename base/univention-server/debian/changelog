@@ -1,3 +1,10 @@
+univention-server (5.0.3-2) unstable; urgency=low
+
+  * add directories /etc/network/if-(up|down).d to package
+    univention-managed-client. Bug #8994
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 22 Jul 2009 08:49:49 +0200
+
 univention-server (5.0.3-1) unstable; urgency=low
 
   * rename UCR variables interfaces/eth0*/ifplugd to
