@@ -1,3 +1,10 @@
+univention-webui (3.0.3-1) unstable; urgency=low
+
+  * optimized PHP code for performance. Bug #8871
+  * fixed a bug in question_bool. Bug #15120
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 22 Jul 2009 08:27:50 +0200
+
 univention-webui (3.0.2-1) unstable; urgency=low
 
   * applied patch that fixes the date widget (Bug #14721)

@@ -417,34 +417,33 @@ class question_secure extends extra{
 
 class question_bool extends extra{
 	function show(){
-		if (isset($this->attribute['passive'])) 
-			$access = 'disabled';
-		if (trim($this->basket['content'])!='') 
-			$is='checked';
+	  if (isset($this->attribute['passive'])) 
+	    $access = 'disabled';
+	  if (trim($this->basket['content'])!='') 
+	    $is='checked';
 
-		$str .= '<script type="text/javascript">dojo.require("dijit.form.CheckBox");</script>
+	  $str .= '<script type="text/javascript">dojo.require("dijit.form.CheckBox");</script>
 <table border="0" cellpadding="0" cellspacing="0"><tr>
 <td valign="middle">
-<input dojoType="dijit.form.CheckBox" title="'.$this->basket['helptext'].'" tabindex="'.$this->tabindex.'" class="bool" type="checkbox" '.$access;
-		if ($this->js && isset($this->basket['update'])) 
-			$str .= 'onChange="sendForm('.$this->update_byteindex.')" ';
-		$str .= 'name="usrinput['.$this->byteindex.']" value="checked" '.$is-'></input></td>';
-		if (trim($this->basket["description"]) != '')
+<input dojoType="dijit.form.CheckBox" title="'.$this->basket['helptext'].'"
+ tabindex="'.$this->tabindex.'" class="bool" type="checkbox" '.$access.' ';
+	  if ($this->js && isset($this->basket['update'])) 
+	    $str .= 'onChange="sendForm('.$this->update_byteindex.')" ';
+	  $str .= 'name="usrinput['.$this->byteindex.']" value="checked" '.$is.'></input></td>';
+	  if (trim($this->basket['description']) != '')
 	    {
-			$str .= '<td class="description" align="left" valign="middle">
-<img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['description'].'</td>
-';
+	      $str .= '<td class="description" align="left" valign="middle">
+<img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket["description"].'</td>';
 	    }
-		$str .= '<td>';
-		if ($this->warn) 
-			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
-		if (isset($this->basket['update'])) 
-			$str .= $this->basket['update'];
-		$str .= '</td></tr>
-</table>';
-		$is='';
+	  $str .= '<td>';
+	  if ($this->warn) 
+	    $str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
+	  if (isset($this->basket['update'])) 
+	    $str .= $this->basket['update'];
+	  $str .= '</td></tr></table>';
+	  $is='';
 	  
-		return $str;
+	  return $str;
 	}
 }
 
@@ -881,55 +880,56 @@ class language_dojo_select extends extra_multi{
 	}
 }
 
-// PERFORMANCE MISSING!!!!
 // dojo ComboBoxWidget: allows one of the given options or any other
 class question_dojo_comboselect extends extra_multi{
 	function show(){
 		$appendstr = '';
 		if(isset($this->attribute['passive'])) $access = 'disabled';
-		$str .= "\n\n";
-		$str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.ComboBox\");</script>\n";
-		$str .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
-		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket['description']."\n";
-		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
-		$str .= "</td></tr>\n<tr><td>\n";
-		$str .= "<select dojoType=\"dijit.form.ComboBox\" autocomplete=\"true\" $access title=\"".$this->basket['helptext']."\" tabindex=\"".$this->tabindex."\"";
-	
+		$str .= '
+<script type="text/javascript">dojo.require("dijit.form.ComboBox");</script>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['description'];
+		if($this->warn) $str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
+		$str .= '</td></tr>
+<tr><td>
+<select dojoType="dijit.form.ComboBox" autocomplete="true" '.$access.' title="'.$this->basket['helptext'].' tabindex="'.$this->tabindex.'"';
+
 		if($this->warn) 
-			$str .= " class=\"select_warn\" ";
+			$str .= ' class="select_warn" ';
 		else 
-			$str .= " class=\"select\" ";
+			$str .= ' class="select" ';
 	
 		if($this->attribute['width']) 
-			$str .= "style=\"width:".($this->attribute['width'])."px\" ";
+			$str .= 'style="width:'.($this->attribute['width']).'px" ';
 	
 		if($this->js && isset($this->basket['update'])) 
-			$str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
-	
+			$str .= 'onChange="sendForm('.$this->update_byteindex.')" ';
+
 		// - this breaks the whole page if used with dojo_combobox
 		//if ($access != 'disabled')
 		//  $str .= "name=\"usrinput[multiple#".$this->tabindex."][]\"";
-		$str .= ">\n";
+
+		$str .= '>';
 		if($this->basket['choice'])
 			foreach($this->basket['choice'] as $key=>$val) {
 				if(trim($this->basket['var'][$key]['content'])!='') {
 					$is='selected';
 					if ($access == 'disabled') {
-						$appendstr = "<input type=\"hidden\" name=\"usrinput[multiple#".$this->tabindex."][]\"";
-						$appendstr .= " value=\"".$this->basket['var'][$key]['byteindex']."\"></input>\n";
+						$appendstr = '<input type="hidden" name="usrinput[multiple#'.$this->tabindex.'][]"
+ value="'.$this->basket['var'][$key]['byteindex'].'"></input>';
 					}
 				}
-				for($x=0; $x < $this->basket['choice'][$key]['level']; $x++) $space .= "&nbsp;";
-				$str .= "<option value=\"".$this->basket['var'][$key]['byteindex']."\" $is>";
+				for($x=0; $x < $this->basket['choice'][$key]['level']; $x++) $space .= '&nbsp;';
+				$str .= '<option value="'.$this->basket['var'][$key]['byteindex'].'" $is>';
 				$str .= $space.$this->basket['choice'][$key]['description'];
-				$str .= "</option>\n";
+				$str .= '</option>';
 				$is = '';
 				$space = '';
 			}
-		$str .="</select>\n";
+		$str .='</select>';
 		if(isset($this->basket['update'])) $str .= $this->basket['update']."\n";
 		$str .= $appendstr;
-		$str .= "</td></tr>\n</table>\n";
+		$str .= '</td></tr></table>';
 		return $str;
 	}
 }
@@ -940,46 +940,45 @@ class question_mselect extends extra_multi{
 		if (isset($this->attribute['passive'])) 
 			$access = 'disabled';
 
-		$str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.MultiSelect\");</script>\n";
-
-		$str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
-		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket['description']."\n";
+		$str .= '<script type="text/javascript">dojo.require("dijit.form.MultiSelect");</script>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['description'];
 		if ($this->warn) 
-			$str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
-		$str .= "</td></tr><tr><td>\n";
-		$str .= "<select $access title=\"".$this->basket['helptext']."\" tabindex=\"".$this->tabindex."\"";
+			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
+		$str .= '</td></tr><tr><td>;
+<select $access title="'.$this->basket['helptext'].'" tabindex="'.$this->tabindex.'"';
 # FIXME: enabling dojo.form.MultiSelect leads to unusable question_mselect
 		#$str .= " dojoType=\"dijit.form.MultiSelect\"";
 		if ($this->warn) 
-			$str .= " class=\"mselect_warn\" ";
+			$str .= ' class="mselect_warn" ';
 		else 
-			$str .= " class=\"mselect\" ";
+			$str .= ' class="mselect" ';
 		if ($this->js && isset($this->basket['update'])) 
-			$str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
+			$str .= 'onChange="sendForm('.$this->update_byteindex.')" ';
 		if ($this->attribute['width'] || $this->attribute['height'])
 	    {
-			$str .= "style=\" ";
+			$str .= 'style=" ';
 			if ($this->attribute['width']) 
-				$str .= "width:".($this->attribute['width'])."px; ";
+				$str .= 'width:'.($this->attribute['width']).'px; ';
 			if ($this->attribute['height']) 
-				$str .= "height:".($this->attribute['height']).'px';
-			$str .= "\" ";
+				$str .= 'height:'.($this->attribute['height']).'px';
+			$str .= '" ';
 	    }
-		$str .= "name=\"usrinput[multiple#".$this->tabindex."][]\" multiple size=\"5\">\n";
+		$str .= 'name="usrinput[multiple#'.$this->tabindex.'][]" multiple size="5">';
 		if ($this->basket['choice'])	    
 			foreach($this->basket['choice'] as $key=>$val)
 			{
 				if (trim($this->basket['var'][$key]['content'])!='') 
 					$is='selected';
-				$str .= "<option value=\"".$this->basket['var'][$key]['byteindex']."\" $is>\n";
+				$str .= '<option value="'.$this->basket['var'][$key]['byteindex'].'" '.$is.'>';
 				$str .= $this->basket['choice'][$key]['description'];
-				$str .= "</option>\n";
+				$str .= '</option>';
 				$is = '';
 			}
-		$str .="</select>\n";
-		$str .= "</td></tr>\n</table>\n";
+		$str .='</select>
+</td></tr></table>';
 		if (isset($this->basket['update'])) 
-			$str .= $this->basket['update']."\n";
+			$str .= $this->basket['update'];
 	  
 		return $str;
 	}
@@ -991,28 +990,28 @@ class question_choice extends extra_multi{
 		if (isset($this->attribute['passive'])) 
 			$access = 'disabled';
 	  
-		$str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.CeckBox\");</script>\n";
-	
-		$str .= "<div title=\"".$this->basket['helptext']."\" >\n";
+		$str .= '<script type="text/javascript">dojo.require("dijit.form.CeckBox");</script>
+<div title="'.$this->basket['helptext'].'" >
+';
 		if (isset($this->basket['description']) && trim($this->basket['description']) != '')
-			$str .= $this->basket['description']."<br />\n";
+			$str .= $this->basket['description'].'<br />';
 		if ($this->warn) 
-			$str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
+			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		foreach ($this->basket['choice'] as $key=>$val)
 	    {
 			if (trim($this->basket['var'][$key]['content'])!='') 
 				$is = 'checked';
-			$str .= "<input tabindex=\"".$this->tabindex."\" class=\"choice\" dojoType=\"dijit.form.RadioButton\" ";
+			$str .= '<input tabindex="'.$this->tabindex.'" class="choice" dojoType="dijit.form.RadioButton" ';
 			if ($this->js && isset($this->basket['update'])) 
-				$str .= "onClick=\"sendForm(".$this->update_byteindex.")\" ";
-			$str .= "type=\"radio\" name=\"usrinput[multiple#".$this->tabindex."][]\"";
-			$str .= "$access value=\"".$this->basket['var'][$key]['byteindex']."\" $is></input>\n";
+				$str .= 'onClick="sendForm('.$this->update_byteindex.')" ';
+			$str .= 'type="radio" name="usrinput[multiple#'.$this->tabindex.'][]"';
+			$str .= $access.' value="'.$this->basket['var'][$key]['byteindex'].'" '.$is.'></input>';
 			$str .= $this->basket['choice'][$key]['description']."<br />\n";
 			$is='';
 	    }
 		if (isset($this->basket['update'])) 
-			$str .= $this->basket['update']."\n";
-		$str .= "</div>\n";
+			$str .= $this->basket['update'];
+		$str .= '</div>';
 	  
 		return $str;
 	}
@@ -1037,7 +1036,7 @@ class session_data{
 		else return FALSE;
 	}
 	function show(){
-		return "<input type=\"hidden\" name=\"session_data[".$this->name."]\" value=\"".$this->value."\"></input>\n";
+		return '<input type="hidden" name="session_data['.$this->name.']" value="'.$this->value.'"></input>';
 	}
 
 }
@@ -1101,9 +1100,21 @@ class categorylist{
 
 	function show()
 	{
-		$str_start = "\n\n<!-- start of categorylist--> \n<div id=\"category\">\n<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
-		$str_start .= "<tr><td nowrap valign=\"top\">\n<div id=\"categorystart\">&nbsp;</div>\n</td><td width=\"100%\">\n<div id=\"categorycenter\">\n";
-		$str_end = "</div>\n</td><td nowrap valign=\"top\">\n<div id=\"categoryend\">&nbsp;</div>\n</td></tr>\n</table>\n</div>\n<!-- end of categorylist-->\n\n";
+		$str_start = '<!-- start of categorylist--> 
+<div id="category">
+<table border="0" cellspacing="0" cellpadding="0">
+<tr><td nowrap valign="top">
+<div id="categorystart">&nbsp;</div>
+</td><td width="100%">
+<div id="categorycenter">';
+		$str_end = '</div>
+</td><td nowrap valign="top">
+<div id="categoryend">&nbsp;</div>
+</td></tr>
+</table>
+</div>
+<!-- end of categorylist-->
+';
 		$str_buttons = '';
 		for($i=1; $i < $this->count+1; $i++) # i is index for button-object-array
 		{
@@ -1114,7 +1125,7 @@ class categorylist{
 			if( $this->category_buttons[$i]->basket[active] )
 			{ // active button
 				if(!$this->category_buttons[$i]->attribute['closebutton'] == "1")
-					$str_buttons .= "<span class=\"categoryitem-active\">\n";
+					$str_buttons .= '<span class="categoryitem-active">';
 			}
 
 			// the button
@@ -1123,7 +1134,7 @@ class categorylist{
 			if( $this->category_buttons[$i]->basket[active] )
 			{ // active button
 				if($this->category_buttons[$i]->attribute['closebutton'] == "1" || !$this->category_buttons[$i]->attribute['closeable'])
-					$str_buttons .= "</span>\n";
+					$str_buttons .= '</span>';
 			}
 		}
 
@@ -1222,15 +1233,15 @@ class notebook{
 					{
 						if ($last_on)
 						{
-							$img = "reiter_rotgrau18x24.gif";
+							$img = 'reiter_rotgrau18x24.gif';
 						}
 						elseif ($this->all_notebook[$j]->basket[active]) // this_on
 						{
-							$img = "reiter_graurot18x24.gif";
+							$img = 'reiter_graurot18x24.gif';
 						}
 						else
 						{
-							$img = "reiter_graugrau18x24.gif";
+							$img = 'reiter_graugrau18x24.gif';
 						}
 					}
 
@@ -1240,7 +1251,7 @@ class notebook{
 						if($j==$end-1)
 						{
 							// last in line
-							$img_end = "reiter_rot18x24.gif";
+							$img_end = 'reiter_rot18x24.gif';
 						}
 						//$bg='bg_on.gif';
 						$last_on=TRUE; // need to know for next button
@@ -1250,7 +1261,7 @@ class notebook{
 						if($j==$end-1)
 						{
 							//last in line
-							$img_end="reiter_grau18x24.gif";
+							$img_end='reiter_grau18x24.gif';
 						}
 						//$bg='bg_off.gif';
 						$last_on=FALSE; // need to know for next button
@@ -1268,7 +1279,7 @@ class notebook{
 						$width = (490 - $total)+3;
 					} else {
 						$width = $factor*(strlen($this->all_notebook[$j]->basket[text]));
-						if ($this->all_notebook[$j]->attribute['closebutton'] == "1") {
+						if ($this->all_notebook[$j]->attribute['closebutton'] == '1') {
 							$width = 14; // width of closebutton object
 						}
 						$total += $width;
@@ -1277,7 +1288,7 @@ class notebook{
 					
 					$show_start = TRUE;
 					$show_end = TRUE;
-					if ($this->all_notebook[$j]->attribute['closebutton'] == "1") {
+					if ($this->all_notebook[$j]->attribute['closebutton'] == '1') {
 						$show_start = FALSE;
 					}
 					if ($this->all_notebook[$j]->attribute['closeable']) {
@@ -1286,15 +1297,15 @@ class notebook{
 					#############################################################################################################################
 					if($pressed)
 					{
-						if (($image!='') && $show_start) $str[pressed] .= '<td class="tab">'.$image."</td>\n";
+						if (($image!='') && $show_start) $str[pressed] .= '<td class="tab">'.$image.'</td>';
 						$str[pressed] .= $this->all_notebook[$j]->show($width);
-						if (($img_end != '') && $show_end)  $str[pressed] .= '<td class="tab">'.$image_end."</td>\n";
+						if (($img_end != '') && $show_end)  $str[pressed] .= '<td class="tab">'.$image_end.'</td>';
 					}
 					else
 					{
-						if (($image!='') && $show_start)  $str[$x] .= '<td class="tab">'.$image."</td>\n";
+						if (($image!='') && $show_start)  $str[$x] .= '<td class="tab">'.$image.'</td>';
 						$str[$x] .= $this->all_notebook[$j]->show($width);
-						if (($img_end != '') && $show_end) $str[$x] .= '<td class="tab">'.$image_end."</td>\n";
+						if (($img_end != '') && $show_end) $str[$x] .= '<td class="tab">'.$image_end.'</td>';
 					}
 					##############################################################################################################################
 				} #end of for
@@ -1312,12 +1323,22 @@ class notebook{
 		{
 			if($key != 'pressed')
 			{
-				$passive .= "    <tr class=\"notebook_line\"><td class=\"notebook_line\"><table class=\"tabs\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
-				$passive .= "     <tr class=\"notebook\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">".$val."</tr>\n";
-				$passive .= "    </table></td></tr><tr><td class=\"notebook_spacer\"></td></tr>\n";
+				$passive .= '    <tr class="notebook_line"><td class="notebook_line"><table class="tabs" border="0" cellpadding="0" cellspacing="0">
+     <tr class="notebook" border="0" cellpadding="0" cellspacing="0">'.$val.'</tr>
+    </table></td></tr><tr><td class="notebook_spacer"></td></tr>
+';
 			}
 		}
-		return "<table class=\"tabs\" summary=\"\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n<tr><td class=\"notebook_spacer\"></td></tr>\n".$passive."\n<tr class=\"notebook_pressed\">\n<td class=\"notebook_pressed\">\n   <table class=\"tabs\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>".$str[pressed]."</tr>\n</table>\n</td></tr><tr><td class=\"notebook_spacer\"></td></tr>\n</table>\n";
+		return '<table class="tabs" summary="" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="notebook_spacer"></td></tr>
+'.$passive.'
+<tr class="notebook_pressed">
+<td class="notebook_pressed">
+   <table class="tabs" border="0" cellpadding="0" cellspacing="0"><tr>'.$str[pressed].'</tr>
+</table>
+</td></tr><tr><td class="notebook_spacer"></td></tr>
+</table>
+';
 	}
 }
 
@@ -1387,11 +1408,12 @@ class question_group{
 
 	}
 	function show(){
-		$group .= "<table class=\"group\">\n<tr>\n";
-		if($this->warn) $group .= "<td>\n<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n</td>\n";
+		$group .= '<table class="group">
+<tr>';
+		if($this->warn) $group .= '<td><img src="style/'.$this->warn.'.gif" alt="" class="warn"></img></td>';
 		foreach($this->group as $key => $value)
-				$group .= "<td>\n".$value."\n</td>\n";
-		$group .= "</tr>\n</table>\n";
+				$group .= '<td>'.$value.'</td>';
+		$group .= '</tr></table>';
 		return $group;
 
 	}
@@ -1434,38 +1456,38 @@ class dynamic_longtable extends webui_translator
 
 	function show() {
 
-		$str = "\n<!-- start dynamic_longtable of type ".$type."-->\n";
-		$str .= "<script type=\"text/javascript\">dojo.require(\"dijit.layout.StackContainer\");</script>\n";
-		$str .= "<script type=\"text/javascript\">dojo.require(\"dijit.layout.ContentPane\");</script>\n";
+		$str = '<!-- start dynamic_longtable of type '.$type.'-->
+<script type="text/javascript">dojo.require("dijit.layout.StackContainer");</script>
+<script type="text/javascript">dojo.require("dijit.layout.ContentPane");</script>';
 
 
 # copy & paste from class table
 		$space_bottom='';
 		if (isset($this->attribute['type']))
 		{
-			$attrib_str .= " class=\"".$this->attribute['type']."\"";
+			$attrib_str .= ' class="'.$this->attribute['type'].'"';
 			$type = $this->attribute['type'];
 		}
 		else
 		{
 			$type = 'default';
-			$attrib_str .= " class=\"table_default\"";
+			$attrib_str .= ' class="table_default"';
 		}
 
 		if ($this->attribute['type'] == 'content_main')
 		{
-			$space_bottom="<tr><td class=\"content_spacer\">&nbsp;</td></tr>\n";
+			$space_bottom='<tr><td class="content_spacer">&nbsp;</td></tr>';
 		}
 
 		if($this->attribute['width'])
 		{
 			if(is_numeric($this->attribute['width']))
 			{
-				$attrib_str .= "style=\"width:".($this->attribute['width'])."px\" ";
+				$attrib_str .= 'style="width:'.($this->attribute['width']).'px" ';
 			}
 			else
 			{
-				$attrib_str .= "style=\"width:".($this->attribute['width'])."\" ";
+				$attrib_str .= 'style="width:'.($this->attribute['width']).'" ';
 			}
 		}
 		# -> end of copy&paste from class table
@@ -1489,34 +1511,32 @@ class dynamic_longtable extends webui_translator
 		$button_str = '';
 # show buttons only if more than one StackContainer, which means: if total > visible
 		if ( $totalrows > $visiblerows ) {
-			$button_str .="<div class=\"dynlongtable-buttons\" id=\"dynlongtable_buttons\" align=\"center\">\n";
-
 # back button
-			$button_str .= "<button class=\"dynlongtable-button\" dojoType=\"dijit.form.Button\">\n";
-			$button_str .= "  <img alt=\"&lt;\" style=\"margin: 4px;\" src=\"style/l_ar_small.gif\" />\n";
-			$button_str .= "  <script type=\"dojo/method\" event=\"onClick\" args=\"evt\">\n";
-			$button_str .= "     dijit.byId(\"longtable\").back()\n";
-			$button_str .= "  </script>\n";
-			$button_str .= "</button>\n";    
+			$button_str .='<div class="dynlongtable-buttons" id="dynlongtable_buttons" align="center">
+<button class="dynlongtable-button" dojoType="dijit.form.Button">
+  <img alt="&lt;" style="margin: 4px;" src="style/l_ar_small.gif" />
+  <script type="dojo/method" event="onClick" args="evt">
+     dijit.byId("longtable").back()
+  </script>
+</button>';    
     
 # direct access buttons
-			$button_str .= "<span class=\"dynlongtable-controller\" dojoType=\"dijit.layout.StackController\" containerId=\"longtable\"></span>\n";
+			$button_str .= '<span class="dynlongtable-controller" dojoType="dijit.layout.StackController" containerId="longtable"></span>';
 
 # forward button
-			$button_str .= "<button class=\"dynlongtable-button\" dojoType=\"dijit.form.Button\">\n";
-			$button_str .= "  <img alt=\"&gt;\" style=\"margin: 4px;\" src=\"style/r_ar_small.gif\" />\n";
-			$button_str .= "  <script type=\"dojo/method\" event=\"onClick\" args=\"evt\">\n";
-			$button_str .= "     dijit.byId(\"longtable\").forward()\n";
-			$button_str .= "  </script>\n";
-			$button_str .= "</button>\n";
-      
-			$button_str .="</div>\n";
+			$button_str .= '<button class="dynlongtable-button" dojoType="dijit.form.Button">
+  <img alt="&gt;" style="margin: 4px;" src="style/r_ar_small.gif" />
+  <script type="dojo/method" event="onClick" args="evt">
+     dijit.byId("longtable").forward()
+  </script>
+</button>
+</div>';
 			## End Buttons
 		}    	  
 
-		$str .= "<div class=\"dynlongtable-container\" id=\"longtable\" dojoType=\"dijit.layout.StackContainer\" dolayout=\"false\"";
+		$str .= '<div class="dynlongtable-container" id="longtable" dojoType="dijit.layout.StackContainer" dolayout="false"';
 #FIXME: define in CSS ?
-		$str .= " style=\"margin:5px, border:none\">\n"; 
+		$str .= ' style="margin:5px, border:none">'; 
     
 # buttons - top # commented out
 		# $str .= $button_str;
@@ -1524,12 +1544,12 @@ class dynamic_longtable extends webui_translator
 # if totalrows is not correct we will loop forever, so we check also if displayedrows has been changed
 		while ( $totalrows > $displayedrows && $olddisplayedrows != $displayedrows) {
 			$olddisplayedrows = $displayedrows;
-			$str .= "<div class=\"dynlongtable-pane\" dojoType=\"dijit.layout.ContentPane\" title=\"".$stackNumber."\">\n";
+			$str .= '<div class="dynlongtable-pane" dojoType="dijit.layout.ContentPane" title="'.$stackNumber.'">';
       
 # Debug-message
 			# $str .= "<h2> Content pane Nr. ".$stackNumber.", shows from element ".$displayedrows." to ".($displayedrows+$visiblerows)."</h2>\n";
       
-			$str .= "<table $attrib_str  summary=\"\">\n";
+			$str .= '<table $attrib_str  summary="">';
 					       
 			$rowsinthispane = 0;
 			$checkedrows = 0;
@@ -1559,32 +1579,34 @@ class dynamic_longtable extends webui_translator
 				}
 			}
       
-			$str .= $space_bottom."</table>\n";      
-			$str .= "</div>\n";
+			$str .= $space_bottom.'</table>';
+			$str .= '</div>';
 
 			$stackNumber += 1;
 		}
     
 # last pane for debug, should be "false"
 		if (false) {
-			$str .= "<div dojoType=\"dijit.layout.ContentPane\" title=\"debug\">\n";      
-			$str .= "<h2> Debug pane </h2>\n<br>\n";
-			$str .= "visible: ".$this->attribute['visible']."<br>\n";
-			$str .= "total: ".$this->attribute['total']."<br>\n";
-			$str .= "headerrows: ".$headerrows."<br>\n";
-			$str .= "start: ".$this->attribute['start']."<br>\n";
-			$str .= "displayed: ".$displayedrows."<br>\n";    
-			$str .= "</div>\n";
+			$str .= '<div dojoType="dijit.layout.ContentPane" title="debug">      
+<h2> Debug pane </h2>
+<br>
+visible: '.$this->attribute['visible'].'<br>
+total: '.$this->attribute['total'].'<br>
+headerrows: '.$headerrows.'<br>
+start: '.$this->attribute['start'].'<br>
+displayed: '.$displayedrows.'<br>	 
+</div>
+';
 		}
 
 # close longtable div
-		$str .= "</div>\n";
+		$str .= '</div>';
 
 # buttons - foot
 		$str .= $button_str;
 
 
-		$str .= "<!-- finished dynmic_longtable of type ".$type."-->\n\n";
+		$str .= '<!-- finished dynmic_longtable of type '.$type.'-->';
 		return $str;
 	}
 
@@ -1637,10 +1659,11 @@ class long_table extends webui_translator
 		$this->conti_ref->set_parameter($this->attribute['visible'], $this->attribute['total'], $this->attribute['start']);
 		#	$this->count_row
 		$wrap_view = $this->conti_ref->wrap_view();
-		$table = "\n<!-- start longtable -->\n";
-		$table="<table class=\"content_list\" summary=\"\">\n".$this->conti_ref->show()."</table>\n";
-		$table .= "<!-- finished longtable -->\n\n";
-		$tb_index="<table class=\"content_sublist\" summary=\"\">\n<tr><td class=\"content_wrapview\">\n".$wrap_view."</td></tr>\n</table>\n";
+		$table = '<table class="content_list" summary="">'.$this->conti_ref->show().'</table>';
+		$tb_index = '<table class="content_sublist" summary="">
+<tr><td class="content_wrapview">
+'.$wrap_view.'</td></tr>
+</table>';
 		return $table.$tb_index;
 	}
 }
@@ -1678,45 +1701,45 @@ class table extends webui_translator
 	{
 		if (isset($this->attribute['border'])) // border is deprecated
 		{
-			if ($this->attribute['border']=="1")
-				$attrib_str .= " class=\"content_border\"";
-			if ($this->attribute['border']=="0")
-				$attrib_str .= " class=\"content_plain\"";
+			if ($this->attribute['border']=='1')
+				$attrib_str .= ' class="content_border"';
+			if ($this->attribute['border']=='0')
+				$attrib_str .= ' class="content_plain"';
 		}
 
 		$space_bottom='';
 
 		if (isset($this->attribute['type']))
 		{
-			$attrib_str .= " class=\"".$this->attribute['type']."\"";
+			$attrib_str .= ' class="'.$this->attribute['type'].'"';
 			$type = $this->attribute['type'];
 		}
 		else
 		{
 			$type = 'default';
-			$attrib_str .= " class=\"table_default\"";
+			$attrib_str .= ' class="table_default"';
 		}
 
 		if ($this->attribute['type'] == 'content_main')
 		{
-			$space_bottom="<tr><td class=\"content_spacer\">&nbsp;</td></tr>\n";
+			$space_bottom='<tr><td class="content_spacer">&nbsp;</td></tr>';
 		}
 
 		if($this->attribute['width'])
 		{
 			if(is_numeric($this->attribute['width']))
 			{
-				$attrib_str .= "style=\"width:".($this->attribute['width'])."px\" ";
+				$attrib_str .= 'style="width:'.($this->attribute['width']).'px" ';
 			}
 			else
 			{
-				$attrib_str .= "style=\"width:".($this->attribute['width'])."\" ";
+				$attrib_str .= 'style="width:'.($this->attribute['width']).'" ';
 			}
 		}
 
-		$table = "\n<!-- start table of type ".$type."-->\n";
-		$table .= "<table $attrib_str  summary=\"\">\n".$this->conti_ref->show_all().$space_bottom."</table>\n";
-		$table .= "<!-- finished table of type ".$type."-->\n\n";
+		$table = '<!-- start table of type '.$type.'-->';
+		$table .= '<table '.$attrib_str.'  summary="">'.$this->conti_ref->show_all().$space_bottom.'</table>';
+		$table .= '<!-- finished table of type '.$type.'-->';
 		return $table;
 	}
 
@@ -1762,12 +1785,12 @@ class row extends webui_translator{
 	}
 	function show(){
 		if(isset($this->attribute['border'])) {
-			if($this->attribute['border']=="1")$attrib_str .= " class=\"border\"";
-			if($this->attribute['border']=="0")$attrib_str .= " class=\"plain\"";
+			if($this->attribute['border']=="1")$attrib_str .= ' class="border"';
+			if($this->attribute['border']=="0")$attrib_str .= ' class="plain"';
 		}
 		if(isset($this->attribute['type']))
-			$attrib_str = "class=\"".$this->attribute['type']."\"";
-		$row="<tr $attrib_str>".$this->conti_ref->show_all()."</tr>\n";
+			$attrib_str = 'class="'.$this->attribute['type'].'"';
+		$row='<tr '.$attrib_str.'>'.$this->conti_ref->show_all().'</tr>';
 		return $row;
 	}
 }
@@ -1815,20 +1838,20 @@ class col extends webui_translator
 	function show()
 	{
 		if(isset($this->attribute['type']))
-			$attrib_str .= " class=\"".$this->attribute['type']."\"";
+			$attrib_str .= ' class="'.$this->attribute['type'].'"';
 		if(isset($this->attribute['colspan']))
-			$attrib_str .= " colspan=\"".$this->attribute['colspan']."\"";
+			$attrib_str .= ' colspan="'.$this->attribute['colspan'].'"';
 		if(isset($this->attribute['rowspan']))
-			$attrib_str .= " rowspan=\"".$this->attribute['rowspan']."\"";
+			$attrib_str .= ' rowspan="'.$this->attribute['rowspan'].'"';
 		if(isset($this->attribute['align']))
-			$attrib_str .= " align=\"".$this->attribute['align']."\"";
+			$attrib_str .= ' align="'.$this->attribute['align'].'"';
 		if(isset($this->attribute['nofill']))
-			$attrib_str .= " width=\"1\" ";
+			$attrib_str .= ' width="1" ';
 		$all=$this->conti_ref->show_all();
 		if(trim($all)=='')
-			$row="<td $attrib_str>&nbsp;</td>\n";
+			$row='<td '.$attrib_str.'>&nbsp;</td>';
 		else
-			$row="<td $attrib_str>".$all."</td>\n";
+			$row='<td '.$attrib_str.'>'.$all.'</td>';
 		return $row;
 	}
 }
@@ -1912,113 +1935,113 @@ class dummy_container extends webui_container{
 
 		if($first != $last || $current > 1)
 		{
-			$str .= "<table>\n<tr><td>\n";
+			$str .= '<table><tr><td>';
 
 			if(!$this->ref_config->is_js)
 			{
-				$str .= "<!-- script -->\n";
+				$str .= '<!-- script -->';
 
 				if ($first > 1)
-					$str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"<<\"></input>\n";
+					$str .= '<input class="buttoncontent" type="submit" name="long_table['.$this->byteindex.']" value="<<"></input>';
 				else
-					$str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
+					$str .= '<img class="icon" src="style/no_arrow.gif" style="margin:4px" alt=""></img>';
 
-				$str .= "</td><td>\n";
+				$str .= '</td><td>';
 
 				if ($current > 1)
-					$str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"<\"></input>\n";
+					$str .= '<input class="buttoncontent" type="submit" name="long_table['.$this->byteindex.']" value="<"></input>';
 				else
-					$str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
+					$str .= '<img class="icon" src="style/no_ar.gif" style="margin:4px" alt=""></img>';
 
-				$str .= "</td><td>\n";
+				$str .= '</td><td>';
 
 				for ($y=$first; $y <= $last; $y++)
 				{
 					if ($y==$current)
-						$str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"$y\" disabled></input>\n";
+						$str .= '<input class="buttoncontent" type="submit" name="long_table['.$this->byteindex.']" value="'.$y.'" disabled></input>';
 					else
-						$str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"$y\" style=\"color:#000000\"></input>\n";
+						$str .= '<input class="buttoncontent" type="submit" name="long_table['.$this->byteindex.']" value="'.$y.'" style="color:#000000"></input>';
 				}
 
-				$str .= "</td><td>\n";
+				$str .= '</td><td>';
 
 				if ($current < $max)
-					$str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\">\"></input>\n";
+					$str .= '<input class="buttoncontent" type="submit" name="long_table['.$this->byteindex.']" value=">"></input>';
 				else
-					$str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
+					$str .= '<img class="icon" src="style/no_ar.gif" style="margin:4px" alt=""></img>';
 
-				$str .= "</td><td>\n";
+				$str .= '</td><td>';
 
 				if ($last < $max)
-					$str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\">>\"></input>\n";
+					$str .= '<input class="buttoncontent" type="submit" name="long_table['.$this->byteindex.']" value=">>"></input>';
 				else
-					$str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
+					$str .= '<img class="icon" src="style/no_arrow.gif" style="margin:4px" alt=""></img>';
 
 			}
 			else
 			{
-				$str .= "<!-- no script -->\n";
+				$str .= '<!-- no script -->';
 				if($first > 1)
 				{
-					$str .= "<a class=\"$class\" onClick=\"sendForm('".$this->byteindex."','<<')\">\n";
-					$str .= "<img class=\"icon\" src=\"style/l_arrow.gif\" style=\"margin:4px\" alt=\"\"></img></a>\n";
+					$str .= '<a class="'.$class.'" onClick="sendForm(\''.$this->byteindex.'\',\'<<\')">
+<img class="icon" src="style/l_arrow.gif" style="margin:4px" alt=""></img></a>';
 				}
 				else
-					$str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
+					$str .= '<img class="icon" src="style/no_arrow.gif" style="margin:4px" alt=""></img>';
 
-				$str .= "</td><td>\n";
+				$str .= '</td><td>';
 
 				if ($current > 1)
 				{
-					$str .= "<a class=\"$class\" onClick=\"sendForm('".$this->byteindex."','".($current - 1)."')\">\n";
-					$str .= "<img class=\"icon\" src=\"style/l_ar.gif\" style=\"margin:4px\" alt=\"\"></img></a>\n";
+					$str .= '<a class="'.$class.'" onClick="sendForm(\''.$this->byteindex.'\',\''.($current - 1).'\')">
+<img class="icon" src="style/l_ar.gif" style="margin:4px" alt=""></img></a>';
 				}
 				else
-					$str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
+					$str .= '<img class="icon" src="style/no_ar.gif" style="margin:4px" alt=""></img>';
 
-				$str .= "</td><td>\n";
+				$str .= '</td><td>';
 
 				for ($y=$first; $y <= $last; $y++)
 				{
 					if ($y==$current )
-						$str .= "<b style=\"vertical-align:middle; font-size:12px; margin:5px; color:#cc0033;\"> $y </b>\n";
+						$str .= '<b style="vertical-align:middle; font-size:12px; margin:5px; color:#cc0033;"> '.$y.' </b>';
 					else
 					{
-						$str .= "<a class=\"$class\" onClick=\"sendForm('".$this->byteindex."','$y')\">\n";
-						$str .= "<b style=\"vertical-align:middle; font-size:12px; margin:5px;\"> $y </b>\n";
-						$str .= "</a>\n";
+						$str .= '<a class="'.$class.'" onClick="sendForm(\''.$this->byteindex.'\',\''.$y.'\')">
+<b style="vertical-align:middle; font-size:12px; margin:5px;"> '.$y.' </b>';
+						$str .= '</a>';
 					}
 				}
 
-				$str .= "</td><td>\n";
+				$str .= '</td><td>';
 
 				if ($current < $max)
 				{
-					$str .= "<a class=\"$class\" onClick=\"sendForm('".$this->byteindex."','".($current + 1)."')\">\n";
-					$str .= "<img class=\"icon\" src=\"style/r_ar.gif\" style=\"margin:4px\" alt=\"\"></img></a>\n";
+					$str .= '<a class="'.$class.'" onClick="sendForm(\''.$this->byteindex.'\',\''.($current + 1).'\')">
+<img class="icon" src="style/r_ar.gif" style="margin:4px" alt=""></img></a>';
 				}
 				else
-					$str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
+					$str .= '<img class="icon" src="style/no_ar.gif" style="margin:4px" alt=""></img>';
 
-				$str .= "</td><td>\n";
+				$str .= '</td><td>';
 
 				if ($last < $max)
 				{
-					$str .= "<a class=\"$class\" onClick=\"sendForm('".$this->byteindex."','>>')\">\n";
-					$str .= "<img class=\"icon\" src=\"style/r_arrow.gif\" style=\"margin:4px\" alt=\"\"></img></a>\n";
+					$str .= '<a class="'.$class.'" onClick="sendForm(\''.$this->byteindex.'\',\'>>\')">
+<img class="icon" src="style/r_arrow.gif" style="margin:4px" alt=""></img></a>';
 				}
 				else
-					$str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
+					$str .= '<img class="icon" src="style/no_arrow.gif" style="margin:4px" alt=""></img>';
 
-				$str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"long_table[".$this->byteindex."]\" value=\"\"></input>\n";
+				$str .= '<input type="hidden" id="'.$this->byteindex.'" name="long_table['.$this->byteindex.']" value=""></input>';
 
 			}
-			$str .= "</td></tr>\n</table>\n";
-
-			$str .= "<input type=\"hidden\" name=\"current\" value=\"".$current."\"></input>\n";
-			$str .= "<input type=\"hidden\" name=\"visible\" value=\"".$this->visible."\"></input>\n";
-			$str .= "<input type=\"hidden\" name=\"previous\" value=\"".$first."\"></input>\n";
-			$str .= "<input type=\"hidden\" name=\"next\" value=\"".$last."\"></input>\n";
+			$str .= '</td></tr>
+</table>
+<input type="hidden" name="current" value="'.$current.'"></input>
+<input type="hidden" name="visible" value="'.$this->visible.'"></input>;
+<input type="hidden" name="previous" value="'.$first.'"></input>
+<input type="hidden" name="next" value="'.$last.'"></input>';
 		}
 		return $str;
 	}
@@ -2032,38 +2055,39 @@ class question_select_old extends extra_multi{
 	function show(){
 		$appendstr = '';
 		if(isset($this->attribute['passive'])) $access = 'disabled';
-		$str .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
-		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket['description']."\n";
-		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
-		$str .= "</td></tr>\n<tr><td>\n";
-		$str .= "<select $access title=\"".$this->basket['helptext']."\" tabindex=\"".$this->tabindex."\"";
-		if($this->warn) $str .= " class=\"select_warn\" ";
-		else $str .= " class=\"select\" ";
-		if($this->attribute['width']) $str .= "style=\"width:".($this->attribute['width'])."px\" ";
-		if($this->js && isset($this->basket['update'])) $str .= "onchange=\"sendForm(".$this->update_byteindex.")\" ";
+		$str .= '<table border="0" cellpadding="0" cellspacing="0">
+<tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['description'];
+		if($this->warn) $str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
+		$str .= '</td></tr>
+<tr><td>;
+<select '.$access.' title="'.$this->basket['helptext'].'" tabindex="'.$this->tabindex.'"';
+		if($this->warn) $str .= ' class="select_warn" ';
+		else $str .= ' class="select" ';
+		if($this->attribute['width']) $str .= 'style="width:'.($this->attribute['width']).'px" ';
+		if($this->js && isset($this->basket['update'])) $str .= 'onchange="sendForm('.$this->update_byteindex.')" ';
 		if ($access != 'disabled')
-			$str .= "name=\"usrinput[multiple#".$this->tabindex."][]\"";
-		$str .= ">\n";
+			$str .= 'name="usrinput[multiple#'.$this->tabindex.'][]"';
+		$str .= '>';
 		if($this->basket['choice'])
 			foreach($this->basket['choice'] as $key=>$val) {
 				if(trim($this->basket['var'][$key]['content'])!='') {
 					$is='selected';
 					if ($access == 'disabled') {
-						$appendstr = "<input type=\"hidden\" name=\"usrinput[multiple#".$this->tabindex."][]\"";
-						$appendstr .= " value=\"".$this->basket['var'][$key]['byteindex']."\"></input>\n";
+						$appendstr = '<input type="hidden" name="usrinput[multiple#'.$this->tabindex.'][]"
+ value="'.$this->basket['var'][$key]['byteindex'].'"></input>';
 					}
 				}
-				for($x=0; $x < $this->basket['choice'][$key]['level']; $x++) $space .= "&nbsp;";
-				$str .= "<option value=\"".$this->basket['var'][$key]['byteindex']."\" $is >\n";
+				for($x=0; $x < $this->basket['choice'][$key]['level']; $x++) $space .= '&nbsp;';
+				$str .= "<option value=\"".$this->basket['var'][$key]['byteindex'].'" '.$is.' >';
 				$str .= $space.$this->basket['choice'][$key]['description'];
-				$str .= "</option>\n";
+				$str .= '</option>';
 				$is = '';
 				$space = '';
 			}
-		$str .="</select>\n";
+		$str .='</select>';
 		if(isset($this->basket['update'])) $str .= $this->basket['update']."\n";
 		$str .= $appendstr;
-		$str .= "</td></tr>\n</table>\n";
+		$str .= '</td></tr></table>';
 		return $str;
 	}
 }
