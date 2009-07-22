@@ -1,3 +1,10 @@
+univention-x-core (3.0.2-1) unstable; urgency=low
+
+  * support Xorg auto-detection; controlled by the UCR variable
+    xorg/autodetect. Bug #9132
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 22 Jul 2009 13:23:42 +0200
+
 univention-x-core (3.0.1-1) unstable; urgency=low
 
   * provide new UCR category system-desktop (Bug #13505)

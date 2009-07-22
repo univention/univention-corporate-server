@@ -117,7 +117,8 @@ if [ -n "$univentionXKeyboardLayout" ]; then
 fi
 
 
-univention-baseconfig set	xorg/device/driver?$(eval getXModul) \
+univention-baseconfig set	xorg/autodetect?yes \
+							xorg/device/driver?$(eval getXModul) \
 							xorg/resolution?1024x768 \
 							xorg/screen/DefaultDepth?16 \
 							xorg/monitor/HorizSync?30-70 \
