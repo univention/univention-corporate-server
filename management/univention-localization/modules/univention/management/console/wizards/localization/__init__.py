@@ -64,20 +64,17 @@ import univention.management.console.values as umcv
 
 import notifier.popen
 
-
+#TODO soll dievorausgewaehlte standard lokale nicht der aktuellen system lokale entsprechen?
+# bisher wird sie anhand der vorauswahl asgewählty
 _ = umc.Translation( 'univention.management.console.wizards.localization' ).translate
 
 icon = 'localization/module'
-#TODO translate
 short_description = _( 'Localization' )
 long_description = _( 'Change the localization settings' )
 categories = [ 'wizards' ]
 
 add_locale_country_ddb = _types.DropDownBox(_("Additional locales:"))
 add_locale_multi_ddb = _types.MultiValueList("", [], required=False)
-
-#TODO FIXME fuer locales ohne land einen standard definieren wie 'Unknown country'
-#genauso bei Sprachen
 
 command_description = {
 	'localization/modify/choose_language' : umch.command(
@@ -102,8 +99,6 @@ command_description = {
 	),
 }
 
-
-#class handler( umch.simpleHandler, _revamp.Web ):
 class handler( umch.simpleHandler):
 	force_encoding = "utf-8"
 	timezone_err = ""
@@ -172,7 +167,7 @@ class handler( umch.simpleHandler):
 			else:
 				ud.debug( ud.ADMIN, ud.WARN, 'could not find a language name for locale %s' % supported_locale)
 				language_sel_items.append( [_("Unknown locale - %s") % supported_locale , supported_locale[0:2] ])
-#TODO - was passiert mit locales auf die die warnung zutrift
+
 		language_sel_items.sort()
 
 		# find the best default selection based on the umc language
@@ -211,7 +206,7 @@ class handler( umch.simpleHandler):
 		ud.debug( ud.ADMIN, ud.INFO, 'localization/modify/choose_locale options: %s' % str( object.options ) )
 		
 
-		# create a list of possible locales based on the country code
+		# create a list of possible locales based on the language code
 		full_locale_list = self.get_available_locales(filter=self.force_encoding)
 		language_locales = []
 		if object.options != None and "language_code" in object.options:
@@ -257,13 +252,10 @@ class handler( umch.simpleHandler):
 				default_locale_items.append( [_("Unknown language code %s (%s)") % (language_id ,_(country_name)), language_locale])
 
 		# preselect a locale
-		best = ""
-		sel = None
-		# select the best default selection
 		for item in default_locale_items:
-			if item[1].startswith(locale_default) and len(locale_default) > len(best):
-				best = locale_default
-				sel = item[1]
+			if item[1].startswith(language_code):
+			    sel = item[1]
+			    break
 		locale_default = sel
 
 
@@ -498,9 +490,11 @@ class handler( umch.simpleHandler):
 			add_locale_multi = object.options.get("add_locale_multi")
 			timezone = object.options.get("timezone")
 			hidden_system_locales = object.options.get("hidden_system_locales")
+			if not hidden_system_locales:
+			    hidden_system_locales = []
 			language_code = object.options.get("language_code")
 
-			if locale_default and keymap and add_locale_multi and timezone and hidden_system_locales and language_code:
+			if locale_default and keymap and add_locale_multi and timezone and language_code:
 				# formating default locale
 				locale_default_str = locale_default.replace(" ",":").strip()
 				ud.debug( ud.ADMIN, ud.INFO, "formated locale/default='%s'" % locale_default_str)
@@ -540,6 +534,7 @@ class handler( umch.simpleHandler):
 				default_locale_proc.wait()
 				default_locale_out, default_locale_err = default_locale_proc.communicate()
 				if default_locale_err:
+
 					result.add_row( [ umcd.Text(_("An error has occurred. The default system locale could not be generated.")) ] )
 					result.add_row( [ umcd.Text(_("Error message: %s" % default_locale_err)) ] )
 					ok = False
@@ -577,13 +572,35 @@ class handler( umch.simpleHandler):
 				if ok:
 					self.choose_locale(object)
 			else:
-				result.add_row( [ umcd.Text(_("An internal Error has occurred - missing parameter.")) ] )
-		else:
+			    if not locale_default:
+				result.add_row( [ umcd.Text(_("Missing parameter locale_default.")) ] )
+				ok = False
+			    if not keymap:
+				result.add_row( [ umcd.Text(_("Missing parameter keymap.")) ] )							
+				ok = False
+			    if not add_locale_multi:
+				result.add_row( [ umcd.Text(_("Missing parameter add_locale_multi.")) ] )
+				ok = False
+			    if not timezone:		
+				result.add_row( [ umcd.Text(_("Missing parameter timezone.")) ] )
+				ok = False
+			    if not language_code:
+				result.add_row( [ umcd.Text(_("Missing parameter language_code.")) ] )
+				ok = False
+			    else:
 				result.add_row( [ umcd.Text(_("An internal Error has occurred.")) ] )
 				ok = False
+		else:
+		    result.add_row( [ umcd.Text(_("An internal Error has occurred.")) ] )
+		    ok = False
+#		else:
+		result.add_row( [ umcd.Text(_("An internal Error has occurredsaasassa.")) ] )
+		ok = False
 	
 		res.dialog = [result]
 		self.finished( object.id(), res, success = ok)
+# TODO report feature benutzen
+#		self.finished( object.id(), None, report="Fehler - FALSE", success = False)
 
 	# return values are None, [], or ["xx_YY.UTF8", ...]
 	def get_available_locales(self, filter="") :

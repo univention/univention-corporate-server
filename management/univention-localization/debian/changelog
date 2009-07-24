@@ -1,3 +1,9 @@
+univention-localization (0.0.0-6) unstable; urgency=low
+
+  * Some workflow enhanchements.
+
+ -- Andre Fenske <fenske@univention.de>  Fri, 24 Jul 2009 15:58:41 +0200
+
 univention-localization (0.0.0-5) unstable; urgency=low
 
   * Fixed install script. Bug #9645
