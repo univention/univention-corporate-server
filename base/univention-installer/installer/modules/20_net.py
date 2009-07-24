@@ -38,6 +38,7 @@ import objects, re, string, curses
 from objects import *
 from local import _
 import inspect
+import os, tempfile, subprocess
 
 class object(content):
 
@@ -58,6 +59,26 @@ class object(content):
 		info = inspect.getframeinfo(inspect.currentframe().f_back)[0:3]
 		line = info[1]
 		content.debug(self, 'NETWORK:%d: %s' % (line,txt))
+
+	def dhclient(self, interface):
+		self.debug('DHCP broadcast on %s' % interface)
+		fd, filename = tempfile.mkstemp(dir='/tmp')
+		os.close(fd)
+		#p = os.popen('/sbin/dhclient -lf /tmp/dhclient.leases -sf /lib/univention-installer/dhclient-script -e dhclientscript_outputfile="%s" %s' % (filename, interface))
+		cmd='/sbin/dhclient -lf /tmp/dhclient.leases -sf /lib/univention-installer/dhclient-script -e dhclientscript_outputfile="%s" %s' % (filename, interface)
+		p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE).stderr
+		output = p.read()
+		self.debug('DHCP output: %s' % output)
+		p.close()
+		file = open(filename)
+		dhcp_dict={}
+		for line in file.readlines():
+			key, value = line.strip().split(':', 1)
+			dhcp_dict[key]=value.strip()
+		self.debug('DHCP answer: %s' % dhcp_dict)
+		file.close()
+		os.unlink(filename)
+		return dhcp_dict
 
 	def start(self):
 		for i in range(0,4):
@@ -436,11 +457,11 @@ class object(content):
 			elif resultkey == 'tab':
 				self.sub.tab()
 		elif key == 266:# F2 - Add
-			self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight)
+			self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight)
 			self.sub.draw()
 		elif key == 267:# F3 - Edit
 			if self.ifaceselected():
-				self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight,'edit')
+				self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight,'edit')
 				self.sub.draw()
 			else:
 				pass
@@ -607,6 +628,10 @@ class object(content):
 			subwin.__init__(self,parent,pos_y,pos_x,width,heigh)
 
 		def layout(self):
+			self.minY=self.parent.minY
+			self.minX=self.parent.minX-16
+			self.maxWidth=self.parent.maxWidth
+			self.maxHeight=self.parent.maxHeight
 			MAXIP=18
 			#example: [device, ip, netmask, broadcast, network, mode, virtual='']
 			if self.mode == 'edit':
@@ -617,116 +642,89 @@ class object(content):
 						if self.parent.interfaces[i][0] == self.parent.cmdline['interface']:
 							device=self.parent.interfaces[i]
 
-				if device[5] == 'static':
-					selectmode=1
+			if self.mode == 'edit':
+				interface_str=device[0]
+				ip_str=device[1]
+				netmask_str=device[2]
+				if device[5]:
+					dhcp_checkbox_value=[0]
 				else:
-					selectmode=0
-			elif self.parent.all_results.has_key('system_role') and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
-				selectmode=0
+					dhcp_checkbox_value=[]
 			else:
-				selectmode=1
+				interface_str=self.parent.getnext()[1]
+				ip_str=''
+				netmask_str=''
+				if 'system_role' in self.parent.all_results and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
+					dhcp_checkbox_value=[0]
+				else:
+					dhcp_checkbox_value=[]	# default for server roles
+
+			self.add_elem('edit.TXT_INTERFACE', textline(_('Device:'),self.pos_y+2,self.pos_x+2))#0
+			self.add_elem('edit.INPUT_INTERFACE', input(interface_str, self.pos_y+2, self.pos_x+10, 10))#1
+
+			#if self.parent.all_results.has_key('system_role') and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
+			#	dict={_('Dynamic (DHCP)'): ['dynamic',0], _('Static'): ['static',1]}
+			#	self.elements.append(radiobutton(dict,self.pos_y+4,self.pos_x+2,18,2,[selectmode]))#2
+			#elif 'system_role' in self.parent.all_results and (self.parent.all_results['system_role'] in [ 'domaincontroller_master', 'domaincontroller_backup',  'domaincontroller_slave',  'memerserver']):
+			#	dict={_('Static'): ['static',0],  _('Dynamic (DHCP)'): ['dynamic',1]}
+			#	self.elements.append(radiobutton(dict,self.pos_y+4,self.pos_x+2,18,2,[selectmode]))#2
+			#else:
+			#	dict={_('Static'): ['static',0]}
+			#	self.elements.append(radiobutton(dict,self.pos_y+4,self.pos_x+2,18,1,[0]))#2
 
 
-			self.elements.append(textline(_('Device:'),self.pos_y+2,self.pos_x+2))#0
-			if self.mode == 'edit':
-				self.elements.append(input(device[0], self.pos_y+2, self.pos_x+10, 10))#1
-			else:
-				self.elements.append(input('%s' %self.parent.getnext()[1], self.pos_y+2, self.pos_x+10, 10))#1
+			self.add_elem('edit.TXT_IP', textline(_('IP address:'), self.pos_y+4, self.pos_x+2))#1
+			self.add_elem('edit.INPUT_IP', input(ip_str, self.pos_y+4, self.pos_x+14, MAXIP))#2
 
-			if self.parent.all_results.has_key('system_role') and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
-				dict={_('Dynamic (DHCP)'): ['dynamic',0], _('Static'): ['static',1]}
-				self.elements.append(radiobutton(dict,self.pos_y+4,self.pos_x+2,18,2,[selectmode]))#2
-			else:
-				dict={_('Static'): ['static',0]}
-				self.elements.append(radiobutton(dict,self.pos_y+4,self.pos_x+2,18,1,[0]))#2
+			self.add_elem('edit.TXT_NETMASK', textline(_('Netmask:'), self.pos_y+5, self.pos_x+2))#3
+			self.add_elem('edit.INPUT_NETMASK', input(netmask_str, self.pos_y+5, self.pos_x+14, MAXIP))#4
 
-			self.elements.append(textline(_('IP address:'), self.pos_y+8, self.pos_x+4))#3
-			if self.mode == 'edit':
-				self.elements.append(input(device[1], self.pos_y+8, self.pos_x+16, MAXIP))#4
-			else:
-				self.elements.append(input('', self.pos_y+8, self.pos_x+16, MAXIP))#4
+			dict={_('Dynamic (DHCP)'): ['dhcp',1]}
+			self.add_elem('edit.CHECKBOX_DHCP', checkbox(dict,self.pos_y+7,self.pos_x+2,18,2,dhcp_checkbox_value))#5
 
-			self.elements.append(textline(_('Netmask:'), self.pos_y+9, self.pos_x+4))#5
-			if self.mode == 'edit':
-				self.elements.append(input(device[2], self.pos_y+9, self.pos_x+16, MAXIP))#6
-			else:
-				self.elements.append(input('', self.pos_y+9, self.pos_x+16, MAXIP))#6
-
-			self.elements.append(textline(_('Broadcast:'), self.pos_y+10, self.pos_x+4))#7
-			if self.mode == 'edit':
-				self.elements.append(input(device[3], self.pos_y+10, self.pos_x+16, MAXIP))#8
-			else:
-				self.elements.append(input('', self.pos_y+10, self.pos_x+16, MAXIP))#8
-
-			self.elements.append(textline(_('Network:'), self.pos_y+11, self.pos_x+4))#9
-			if self.mode == 'edit':
-				self.elements.append(input(device[4], self.pos_y+11, self.pos_x+16, MAXIP))#10
-			else:
-				self.elements.append(input('', self.pos_y+11, self.pos_x+16, MAXIP))#10
-
-			self.elements.append(button('F12-'+_('Ok'),self.pos_y+15,self.pos_x+(self.width)-6,align='right')) #11
-			self.elements.append(button('ESC-'+_('Cancel'),self.pos_y+15,self.pos_x+8)) #12
-			self.current=1
-			if selectmode:
+			self.add_elem('edit.BUTTON_CANCEL', button('ESC-'+_('Cancel'),self.pos_y+15,self.pos_x+4)) #12
+			self.add_elem('edit.BUTTON_DHCLIENT', button('F5-'+_('DHCP Query'),self.pos_y+15,self.pos_x+(self.width/2)-(len(_('DHCP Query'))+3)/2)) #12
+			self.add_elem('edit.BUTTON_OK', button('F12-'+_('Ok'),self.pos_y+15,self.pos_x+(self.width)-4,align='right')) #11
+			self.current=self.get_elem_id('edit.INPUT_INTERFACE')
+			if not dhcp_checkbox_value:
 				self.enable()
 			else:
 				self.disable()
 			self.elements[self.current].set_on()
 
 		def disable(self):
-			self.elements[4].disable()
-			self.elements[6].disable()
-			self.elements[8].disable()
-			self.elements[10].disable()
+			self.get_elem('edit.INPUT_IP').disable()
+			self.get_elem('edit.INPUT_NETMASK').disable()
 
 		def enable(self):
-			self.elements[4].enable()
-			self.elements[6].enable()
-			self.elements[8].enable()
-			self.elements[10].enable()
+			self.get_elem('edit.INPUT_IP').enable()
+			self.get_elem('edit.INPUT_NETMASK').enable()
 
 		def tab(self):
-			pos_in_button = 2
-
-			if self.elements[pos_in_button].result().strip() == 'static' and self.tabinit <= 1:
-				if self.current == 4 and self.elements[4].result().strip() and self.parent.is_ip(self.elements[4].result().strip()):
-					if not (self.elements[6].text):
-						self.elements[6].text='255.255.255.0'
-						self.elements[6].set_cursor(len('255.255.255.0'))
-					self.tabinit=1
-				elif self.current == 6 and self.elements[6].result().strip() and self.parent.is_ip(self.elements[6].result().strip()):
-					networkbcast=self.ipcalc(self.elements[4].result().strip(),self.elements[6].result().strip())
-					self.elements[8].text=networkbcast[1]
-					self.elements[8].set_cursor(len(networkbcast[1]))
-					self.elements[10].text=networkbcast[0]
-					self.elements[10].set_cursor(len(networkbcast[0]))
-					self.tabinit=2
-					subwin.tab(self)
-				else:
-					subwin.tab(self)
-
-			if self.mode != 'edit': # add a new interface
-				if self.elements[pos_in_button].result().strip() == 'static' and self.tabinit <= 1:
-					if self.current == 4 and self.elements[4].result().strip() and self.parent.is_ip(self.elements[4].result().strip()):
-						if not (self.elements[6].text):
-							self.elements[6].text='255.255.255.0'
-							self.elements[6].set_cursor(len('255.255.255.0'))
+			if not self.get_elem('edit.CHECKBOX_DHCP').result() and self.tabinit <= 1:
+				if self.current == self.get_elem_id('edit.INPUT_IP'):
+					ip_str=self.get_elem('edit.INPUT_IP').result().strip()
+					if ip_str and self.parent.is_ip(ip_str):
+						element=self.get_elem('edit.INPUT_NETMASK')
+						if not (element.text):
+							element.text='255.255.255.0'
+							element.set_cursor(len(element.text))
 						self.tabinit=1
-						subwin.tab(self)
-					elif self.current == 6 and self.elements[6].result().strip() and self.parent.is_ip(self.elements[6].result().strip()) and self.tabinit == 1:
-						networkbcast=self.ipcalc(self.elements[4].result().strip(),self.elements[6].result().strip())
-						self.elements[8].text=networkbcast[1]
-						self.elements[8].set_cursor(len(networkbcast[1]))
-						self.elements[10].text=networkbcast[0]
-						self.elements[10].set_cursor(len(networkbcast[0]))
-						self.tabinit=2
-						subwin.tab(self)
-					else:
-						subwin.tab(self)
-				else:
-					subwin.tab(self)
-			else:
-				subwin.tab(self)
+			subwin.tab(self)
+
+			#if self.mode != 'edit': # add a new interface
+			#	if not self.get_elem('edit.CHECKBOX_DHCP').result() and self.tabinit <= 1:
+			#		if self.current == self.get_elem_id('edit.INPUT_IP') and ip_str and self.parent.is_ip(ip_str):
+			#			element=self.get_elem('edit.INPUT_NETMASK')
+			#			if not (element.text):
+			#				element.text='255.255.255.0'
+			#				element.set_cursor(len('255.255.255.0'))
+			#			self.tabinit=1
+			#			subwin.tab(self)
+			#	else:
+			#		subwin.tab(self)
+			#else:
+			#	subwin.tab(self)
 
 
 		def ipcalc(self, ip, netmask):
@@ -771,12 +769,14 @@ class object(content):
 		def put_result(self):
 			result={}
 			virtual=''
-			if len(self.elements[1].result().strip().split(':')) > 1:
+			if len(self.get_elem('edit.INPUT_INTERFACE').result().strip().split(':')) > 1:
 				virtual='virtual'
+			networkbcast=self.ipcalc(self.get_elem('edit.INPUT_IP').result().strip(),self.get_elem('edit.INPUT_NETMASK').result().strip())
+			interface_parameters=[self.get_elem('edit.INPUT_IP').result().strip(), self.get_elem('edit.INPUT_NETMASK').result().strip(), networkbcast[1], networkbcast[0], self.get_elem('edit.CHECKBOX_DHCP').result(), virtual]
 			#example: result['eth0']=[ip, netmask, broadcast, network, mode]
-			result[self.elements[1].result().strip()]=[self.elements[4].result().strip(), self.elements[6].result().strip(), self.elements[8].result().strip(), self.elements[10].result().strip(), self.elements[2].result().strip(), virtual]
+			result[self.get_elem('edit.INPUT_INTERFACE').result().strip()]=interface_parameters
 			#example: [device, ip, netmask, broadcast, network, mode, virtual='']
-			self.parent.addinterface(self.elements[1].result().strip(),self.elements[4].result().strip(), self.elements[6].result().strip(), self.elements[8].result().strip(), self.elements[10].result().strip(), self.elements[2].result().strip(), virtual)
+			self.parent.addinterface(self.get_elem('edit.INPUT_INTERFACE').result().strip(), *interface_parameters)
 			return result
 
 		def incomplete(self):
@@ -785,32 +785,25 @@ class object(content):
 			#Device
 			ethregexp=re.compile('^eth[0-9]+:[0-9]+$|^eth[0-9]+$')
 
-			if self.elements[1].result().strip() == '':
+			interface_str=self.get_elem('edit.INPUT_INTERFACE').result().strip()
+			if interface_str == '':
 				return missing+_('Device')
-			elif not re.match(ethregexp, self.elements[1].result().strip()):
+			elif not re.match(ethregexp, interface_str):
 				return invalid+_('Device')
 
-			if self.elements[2].result() == 'static':
+			ip_str=self.get_elem('edit.INPUT_IP').result().strip()
+			if not self.get_elem('edit.CHECKBOX_DHCP').result():
+				netmask_str=self.get_elem('edit.INPUT_NETMASK').result().strip()
 				#IP
-				if self.elements[4].result().strip() == '':
+				if ip_str == '':
 					return missing+_('IP address')
-				elif not self.parent.is_ip(self.elements[4].result().strip().strip('\n')):
+				elif not self.parent.is_ip(ip_str.strip('\n')):
 					return invalid+_('IP address')
 				#Netmask
-				elif self.elements[6].result().strip() == '':
+				elif netmask_str == '':
 					return missing+_('Netmask')
-				elif not self.parent.is_ip(self.elements[6].result().strip().strip('\n')):
+				elif not self.parent.is_ip(netmask_str.strip('\n')):
 					return invalid+_('Netmask')
-				#Broadcast
-				elif self.elements[8].result().strip() == '':
-					return missing+_('Broadcast')
-				elif not self.parent.is_ip(self.elements[8].result().strip().strip('\n')):
-					return invalid+_('Broadcast')
-				#Network
-				elif self.elements[10].result().strip() == '':
-					return missing+_('Network')
-				elif not self.parent.is_ip(self.elements[10].result().strip().strip('\n')):
-					return invalid+_('Network')
 				else:
 					return 0
 			else:
@@ -822,42 +815,81 @@ class object(content):
 					delattr(self,"warn")
 				self.parent.draw()
 				self.draw()
-			if ( key in [ 10, 32 ] and self.elements[11].usable() and self.elements[11].get_status() ) or key == 276: # Ok
+			ok_button=self.get_elem('edit.BUTTON_OK')
+			dhclient_button=self.get_elem('edit.BUTTON_DHCLIENT')
+			cancel_button=self.get_elem('edit.BUTTON_CANCEL')
+			dhcp_toggle=self.get_elem('edit.CHECKBOX_DHCP')
+			if ( key in [ 10, 32 ] and ok_button.usable() and ok_button.get_status() ) or key == 276: # Ok
 				if self.incomplete() != 0:
 					self.warn=warning(self.incomplete(),self.pos_y+25,self.pos_x+90)
 					self.warn.draw()
 					return 1
 				self.put_result()
 				return 0
-			elif key in [ 10, 32 ] and self.elements[12].usable() and self.elements[12].get_status(): #Cancel
+			elif key in [ 10, 32 ] and cancel_button.usable() and cancel_button.get_status(): #Cancel
 					return 0
-			elif key in [ 10, 32 ] and self.elements[2].usable(): #Space in Radiobutton
-				if self.parent.all_results.has_key('system_role') and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
-					self.elements[self.current].key_event(32)
-					if self.elements[2].result().strip() in [ 'dynamic', 'dhcp']:
-						self.disable()
-					elif self.elements[2].result().strip() == 'static':
-						self.enable()
-						if self.mode != 'edit':
-							self.current=1
-						self.tab()
-			elif key == 10 and self.elements[self.current].usable():
-				return self.elements[self.current].key_event(key)
-			elif key == 261 and self.elements[11].active:
-				#move right
-				self.elements[11].set_off()
-				self.elements[12].set_on()
-				self.current=12
-				self.draw()
-			elif key == 260 and self.elements[12].active:
+			elif key in [ 10, 32 ] and dhcp_toggle.usable(): #Space in Checkbox
+				#if self.parent.all_results.has_key('system_role') and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'managedclient', 'mobileclient']):
+				self.elements[self.current].key_event(32)
+				if dhcp_toggle.result():
+					self.disable()
+				else:
+					self.enable()
+					self.current=self.get_elem_id('edit.INPUT_INTERFACE')
+					self.tab()
+			elif ( key in [ 10, 32 ] and dhclient_button.usable() and dhclient_button.get_status() ) or key == 269: # F5
+				self.act = self.dhclient_active(self,_('DHCP Query'),_('Please wait ...'),name='act')
+				self.act.draw()
+			elif key == 260:
 				#move left
-				self.elements[12].set_off()
-				self.elements[11].set_on()
-				self.current=11
-				self.draw()
+				active=0
+				for elemid in ['edit.BUTTON_OK']:
+					if self.get_elem(elemid).active:
+						active=self.get_elem_id(elemid)
+				if active:
+					self.get_elem_by_id(active).set_off()
+					self.get_elem_by_id(active-1).set_on()
+					self.current=active-1
+					self.draw()
+			elif key == 261:
+				#move right
+				active=0
+				for elemid in ['edit.BUTTON_CANCEL']:
+					if self.get_elem(elemid).active:
+						active=self.get_elem_id(elemid)
+				if active:
+					self.get_elem_by_id(active).set_off()
+					self.get_elem_by_id(active+1).set_on()
+					self.current=active+1
+					self.draw()
 			elif self.elements[self.current].usable():
 				self.elements[self.current].key_event(key)
 			return 1
+
+		class dhclient_active(act_win):
+			def function(self):
+				self.parent.parent.debug('DEBUG dhclient_button')
+				interface=self.parent.get_elem('edit.INPUT_INTERFACE').result().strip()
+				dhcp_dict=self.parent.parent.dhclient(interface)
+				ip_input=self.parent.get_elem('edit.INPUT_IP')
+				ip_input.text=dhcp_dict['address']
+				ip_input.set_cursor(len(ip_input.text))
+				ip_input.paste_text()
+				ip_input.draw()
+				netmask_input=self.parent.get_elem('edit.INPUT_NETMASK')
+				netmask_input.text=dhcp_dict['netmask']
+				netmask_input.set_cursor(len(netmask_input.text))
+				netmask_input.paste_text()
+				netmask_input.draw()
+				#self.parent.container['Gateway']=dhcp_dict['gateway']
+				#self.parent.container['%s_ip' % interface]=dhcp_dict['address']
+				#self.parent.container['%s_netmask' % interface]=dhcp_dict['netmask']
+				#self.parent.container['%s_network' % interface]=networkbcast[0]
+				#self.parent.container['%s_broadcast' % interface]=networkbcast[1]
+				#self.parent.container['Nameserver']=dhcp_dict['nameserver_1']
+				#self.parent.dns['nameserver_2']=dhcp_dict['nameserver_2']
+				#self.parent.dns['nameserver_3']=dhcp_dict['nameserver_3']
+				self.stop()
 
 	class more(subwin):
 		def __init__(self,parent,pos_y,pos_x,width,heigh,type):
