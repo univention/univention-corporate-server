@@ -120,6 +120,11 @@ attributetype ( 1.3.6.1.4.1.10176.1000.3.1.13 NAME 'univentionXVideoRam'
 	EQUALITY integerMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE)
 
+attributetype ( 1.3.6.1.4.1.10176.1000.3.1.14 NAME 'univentionXAutoDetect'
+	DESC 'Defines if auto detection of the X.org configuration should be used'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
 objectclass ( 1.3.6.1.4.1.10176.1000.3.2.1 NAME 'univentionPolicyXConfiguration'
 	SUP 'univentionPolicy' STRUCTURAL
 	DESC 'X configuration policy object'

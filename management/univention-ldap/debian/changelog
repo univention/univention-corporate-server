@@ -1,3 +1,10 @@
+univention-ldap (5.0.3-1) unstable; urgency=low
+
+  * add LDAP attribute for Xorg auto detection flag to schemata
+    definition. Bug #9132
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 27 Jul 2009 13:12:16 +0200
+
 univention-ldap (5.0.2-1) unstable; urgency=low
 
   * add substring matching rules to printer protocol uri, printer share name
