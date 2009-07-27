@@ -119,6 +119,8 @@ fi
 # activate auto-detection on installation but not on update
 if [ "$1" = "configure" -a -z "$2" ]; then
 	univention-config-registry set xorg/autodetect=yes
+else
+	univention-config-registry set xorg/autodetect?no
 fi
 
 univention-baseconfig set	xorg/device/driver?$(eval getXModul) \

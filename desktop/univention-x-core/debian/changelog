@@ -1,3 +1,9 @@
+univention-x-core (3.0.4-1) unstable; urgency=low
+
+  * add mapping for UCR variable xorg/autodetect. Bug #9132
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 27 Jul 2009 13:23:42 +0200
+
 univention-x-core (3.0.3-1) unstable; urgency=low
 
   * just activate the auto-detection on installation. Bug #9132

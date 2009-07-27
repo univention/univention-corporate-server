@@ -22,6 +22,8 @@ univentionXKeyboardVariant="xorg/keyboard/options/XkbVariant"
 
 univentionXKeyboardLayout="xorg/keyboard/options/XkbLayout"
 
+univentionXAutoDetect="xorg/autodetect"
+
 X_VNC_Export_Type="xorg/vnc/exporttype"
 
 X_Mouse_Device="xorg/mouse/device"
