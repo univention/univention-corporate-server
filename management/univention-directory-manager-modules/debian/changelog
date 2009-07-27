@@ -1,3 +1,10 @@
+univention-directory-manager-modules (5.0.12-1) unstable; urgency=low
+
+  * policies/xfree: add attribute for activating automatic detection. Bug
+    #9132
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 27 Jul 2009 13:58:48 +0200
+
 univention-directory-manager-modules (5.0.11-1) unstable; urgency=low
 
   *  added class iso8601Date to admin/syntax.py (Bug: #15149)

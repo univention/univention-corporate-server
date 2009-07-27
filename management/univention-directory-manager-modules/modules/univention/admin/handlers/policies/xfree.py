@@ -40,6 +40,7 @@ _=translation.translate
 class xfreeFixedAttributes(univention.admin.syntax.select):
 	name='xfreeFixedAttributes'
 	choices=[
+		('univentionXAutoDetect',_('Automatic detection')),
 		('univentionXResolution',_('Resolution')),
 		('univentionXColorDepth',_('Color depth')),
 		('univentionXMouseProtocol',_('Mouse protocol')),
@@ -271,6 +272,15 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 		),
+	'autodetect': univention.admin.property(
+			short_description=_( 'Automatic detection' ),
+			long_description='',
+			syntax=univention.admin.syntax.boolean,
+			multivalue=0,
+			required=0,
+			may_change=1,
+			identifies=0,
+		),
 	'filler': univention.admin.property(
 			short_description='',
 			long_description='',
@@ -284,7 +294,9 @@ property_descriptions={
 }
 layout=[
 	univention.admin.tab(_('General'),_('Display settings'), [
-		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('xModule'), univention.admin.field('filler', hide_in_normalmode=1) ],
+		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field( 'autodetect' ), univention.admin.field('filler', hide_in_normalmode=1) ],
+		[ univention.admin.field('xModule') ],
+		
 		[univention.admin.field('resolution'), univention.admin.field('colorDepth')],
 		[univention.admin.field('mouseProtocol'), univention.admin.field('mouseDevice')],
 		[univention.admin.field('keyboardLayout'), univention.admin.field('keyboardVariant')],
@@ -314,6 +326,7 @@ mapping.register('displaySize', 'univentionXDisplaySize', None, univention.admin
 mapping.register('vncExport', 'univentionXVNCExportType', None, univention.admin.mapping.ListToString)
 mapping.register('videoRam', 'univentionXVideoRam', None, univention.admin.mapping.ListToString)
 mapping.register('vncExportViewonly', 'univentionXVNCExportViewonly', None, univention.admin.mapping.ListToString)
+mapping.register('autodetect', 'univentionXAutoDetect', None, univention.admin.mapping.ListToString)
 mapping.register('requiredObjectClasses', 'requiredObjectClasses')
 mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
 mapping.register('fixedAttributes', 'fixedAttributes')
