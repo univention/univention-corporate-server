@@ -1,3 +1,10 @@
+univention-ldap (5.0.4-1) unstable; urgency=low
+
+  * add univentionXAutoDetect to object class
+    univentionPolicyXConfiguration. Bug #9132
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 28 Jul 2009 11:43:39 +0200
+
 univention-ldap (5.0.3-1) unstable; urgency=low
 
   * add LDAP attribute for Xorg auto detection flag to schemata
