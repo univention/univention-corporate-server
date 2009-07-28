@@ -539,7 +539,7 @@ class UniventionUpdater:
 				clean = self.configRegistry.get( 'repository/online/component/%s/clean' % component, False )
 
 			# allow None as a component prefix
-			if repository_prefix.lower() == 'None':
+			if repository_prefix.lower() == 'none':
 				repository_prefix = ''
 			elif not repository_prefix:
 				# check for prefix on component repository server (if the repository server is reachable)

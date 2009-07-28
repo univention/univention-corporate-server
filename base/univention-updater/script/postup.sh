@@ -42,7 +42,7 @@ if [ -x /usr/sbin/update-initramfs ]; then
 fi
 
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update
-if [-e /usr/sbin/univention-management-console-server ]; then
+if [ -e /usr/sbin/univention-management-console-server ]; then
 	dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
 	chmod +x /usr/sbin/univention-management-console-server
 fi
