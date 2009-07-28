@@ -60,6 +60,19 @@ class object(content):
 		line = info[1]
 		content.debug(self, 'NETWORK:%d: %s' % (line,txt))
 
+##	Uncomment this to prevent the ESC-Key close a window that has a sub or warning window
+#
+#	def kill_subwin(self):
+#		#self.debug('kill_subwin(net module)')
+#		#Defined to prevent subwin from killing
+#		if hasattr(self.sub, 'sub'):
+#			self.sub.sub.exit()
+#		elif hasattr(self.sub, 'warn'):
+#			delattr(self.sub,'warn')
+#			self.draw()
+#		else:
+#			self.sub.exit()
+
 	def dhclient(self, interface):
 		self.debug('DHCP broadcast on %s' % interface)
 		fd, filename = tempfile.mkstemp(dir='/tmp')
@@ -83,12 +96,12 @@ class object(content):
 	def start(self):
 		for i in range(0,4):
 			if self.all_results.has_key('eth%d_type' % i) and (self.all_results['eth%d_type' % i] == 'dynamic' or self.all_results['eth%d_type' % i] == 'dhcp'):
-				self.interfaces.append(['eth%d' % i, '', '', '', '', 'dynmic', 0])
+				self.interfaces.append(['eth%d' % i, '', '', '', '', 'dynamic', 0])
 			elif self.all_results.has_key('eth%d_ip' % i) and self.all_results['eth%d_ip' % i] and self.all_results.has_key('eth%d_netmask' % i) and self.all_results.has_key('eth%d_broadcast' % i) and self.all_results.has_key('eth%d_network' % i):
 				self.interfaces.append(['eth%d' % i, self.all_results['eth%d_ip' % i], self.all_results['eth%d_netmask' % i], self.all_results['eth%d_broadcast' % i], self.all_results['eth%d_network' % i], 'static', 0])
 			for j in range(0,4):
 				if self.all_results.has_key('eth%d:%d_type' % (i,j)) and self.all_results['eth%d:%d_type' % (i,j)] and (self.all_results['eth%d:%d_type' % (i,j)] == 'dynamic' or self.all_results['eth%d:%d_type' % (i,j)] == 'dhcp'):
-					self.interfaces.append(['eth%d:%d' % (i,j), '', '', '', '', 'dynmic', 'virtual'])
+					self.interfaces.append(['eth%d:%d' % (i,j), '', '', '', '', 'dynamic', 'virtual'])
 				elif self.all_results.has_key('eth%d:%d_ip' % (i,j)) and self.all_results['eth%d:%d_ip' % (i,j)] and self.all_results.has_key('eth%d:%d_netmask' % (i,j)) and self.all_results.has_key('eth%d:%d_broadcast' % (i,j)) and self.all_results.has_key('eth%d:%d_network' % (i,j)):
 					self.interfaces.append(['eth%d:%d' % (i,j), self.all_results['eth%d:%d_ip' % (i,j)], self.all_results['eth%d:%d_netmask' % (i,j)], self.all_results['eth%d:%d_broadcast' % (i,j)], self.all_results['eth%d:%d_network' % (i,j)], 'static', 'virtual'])
 				elif self.all_results.has_key('eth%d_%d_ip' % (i,j)) and self.all_results.has_key('eth%d_%d_ip' % (i,j)) and self.all_results.has_key('eth%d_%d_netmask' % (i,j)) and self.all_results.has_key('eth%d_%d_broadcast' % (i,j)) and self.all_results.has_key('eth%d_%d_network' % (i,j)):
@@ -114,7 +127,7 @@ class object(content):
 		if self.cmdline:
 			if self.cmdline.has_key('interface'):
 				self.mode='edit'
-				self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight,'edit')
+				self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight-8,'edit')
 				self.sub.draw()
 
 	def checkname(self):
@@ -444,10 +457,11 @@ class object(content):
 					self.needs_draw_all = True
 					self.sub.draw()
 				else:
-					self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight)
+					self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight-8)
 					self.sub.draw()
 
 	def input(self,key):
+		#self.debug('DEBUG: input(net object): %d' % key)
 		if hasattr(self,"sub"):
 			resultkey=self.sub.input(key)
 			if not resultkey:
@@ -457,11 +471,11 @@ class object(content):
 			elif resultkey == 'tab':
 				self.sub.tab()
 		elif key == 266:# F2 - Add
-			self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight)
+			self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight-8)
 			self.sub.draw()
 		elif key == 267:# F3 - Edit
 			if self.ifaceselected():
-				self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight,'edit')
+				self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight-8,'edit')
 				self.sub.draw()
 			else:
 				pass
@@ -473,13 +487,13 @@ class object(content):
 			return 'prev'
 		elif key in [ 10, 32 ] and self.elements[4].usable() and self.elements[4].get_status():# Enter & Button: Add
 			if not self.ifaceselected():
-				self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight)
+				self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight-8)
 				self.sub.draw()
 			else:
 				pass
 		elif key in [ 10, 32 ] and self.elements[5].usable() and self.elements[5].get_status():# Enter & Button: Edit
 			if self.ifaceselected():
-				self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight,'edit')
+				self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight-8,'edit')
 				self.sub.draw()
 			else:
 				pass
@@ -626,6 +640,10 @@ class object(content):
 			self.mode=mode
 			self.tabinit=0
 			subwin.__init__(self,parent,pos_y,pos_x,width,heigh)
+			if 'system_role' in self.parent.all_results and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
+				self.serverrole=False
+			else:
+				self.serverrole=True
 
 		def layout(self):
 			self.minY=self.parent.minY
@@ -644,17 +662,25 @@ class object(content):
 
 			if self.mode == 'edit':
 				interface_str=device[0]
+			else:
+				interface_str=self.parent.getnext()[1]
+
+			if len(interface_str.strip().split(':')) > 1:
+				virtual='virtual'
+			else:
+				virtual=''
+
+			if self.mode == 'edit':
 				ip_str=device[1]
 				netmask_str=device[2]
-				if device[5]:
+				if device[5] == "dynamic":
 					dhcp_checkbox_value=[0]
 				else:
 					dhcp_checkbox_value=[]
 			else:
-				interface_str=self.parent.getnext()[1]
 				ip_str=''
 				netmask_str=''
-				if 'system_role' in self.parent.all_results and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
+				if not self.serverrole:
 					dhcp_checkbox_value=[0]
 				else:
 					dhcp_checkbox_value=[]	# default for server roles
@@ -662,35 +688,30 @@ class object(content):
 			self.add_elem('edit.TXT_INTERFACE', textline(_('Device:'),self.pos_y+2,self.pos_x+2))#0
 			self.add_elem('edit.INPUT_INTERFACE', input(interface_str, self.pos_y+2, self.pos_x+10, 10))#1
 
-			#if self.parent.all_results.has_key('system_role') and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
-			#	dict={_('Dynamic (DHCP)'): ['dynamic',0], _('Static'): ['static',1]}
-			#	self.elements.append(radiobutton(dict,self.pos_y+4,self.pos_x+2,18,2,[selectmode]))#2
-			#elif 'system_role' in self.parent.all_results and (self.parent.all_results['system_role'] in [ 'domaincontroller_master', 'domaincontroller_backup',  'domaincontroller_slave',  'memerserver']):
-			#	dict={_('Static'): ['static',0],  _('Dynamic (DHCP)'): ['dynamic',1]}
-			#	self.elements.append(radiobutton(dict,self.pos_y+4,self.pos_x+2,18,2,[selectmode]))#2
-			#else:
-			#	dict={_('Static'): ['static',0]}
-			#	self.elements.append(radiobutton(dict,self.pos_y+4,self.pos_x+2,18,1,[0]))#2
-
+			if not virtual:
+				dict={_('Dynamic (DHCP)'): ['dhcp',1]}
+				self.add_elem('edit.CHECKBOX_DHCP', checkbox(dict,self.pos_y+2,self.pos_x+31,18,2,dhcp_checkbox_value))#5
 
 			self.add_elem('edit.TXT_IP', textline(_('IP address:'), self.pos_y+4, self.pos_x+2))#1
 			self.add_elem('edit.INPUT_IP', input(ip_str, self.pos_y+4, self.pos_x+14, MAXIP))#2
+			if not virtual:
+				self.add_elem('edit.BUTTON_DHCLIENT', button('F5-'+_('DHCP Query'),self.pos_y+4,self.pos_x+(self.width)-4,align='right')) #12
 
 			self.add_elem('edit.TXT_NETMASK', textline(_('Netmask:'), self.pos_y+5, self.pos_x+2))#3
 			self.add_elem('edit.INPUT_NETMASK', input(netmask_str, self.pos_y+5, self.pos_x+14, MAXIP))#4
 
-			dict={_('Dynamic (DHCP)'): ['dhcp',1]}
-			self.add_elem('edit.CHECKBOX_DHCP', checkbox(dict,self.pos_y+7,self.pos_x+2,18,2,dhcp_checkbox_value))#5
+			self.add_elem('edit.BUTTON_CANCEL', button('ESC-'+_('Cancel'),self.pos_y+7,self.pos_x+4)) #12
+			self.add_elem('edit.BUTTON_OK', button('F12-'+_('Ok'),self.pos_y+7,self.pos_x+(self.width)-4,align='right')) #11
 
-			self.add_elem('edit.BUTTON_CANCEL', button('ESC-'+_('Cancel'),self.pos_y+15,self.pos_x+4)) #12
-			self.add_elem('edit.BUTTON_DHCLIENT', button('F5-'+_('DHCP Query'),self.pos_y+15,self.pos_x+(self.width/2)-(len(_('DHCP Query'))+3)/2)) #12
-			self.add_elem('edit.BUTTON_OK', button('F12-'+_('Ok'),self.pos_y+15,self.pos_x+(self.width)-4,align='right')) #11
-			self.current=self.get_elem_id('edit.INPUT_INTERFACE')
 			if not dhcp_checkbox_value:
-				self.enable()
+				self.enable()	# enable the main edit textboxes
+				self.current=self.get_elem_id('edit.INPUT_IP')	# set the tab cursor
 			else:
-				self.disable()
-			self.elements[self.current].set_on()
+				self.disable()	# disable the main edit textboxes
+				self.current=self.get_elem_id('edit.BUTTON_DHCLIENT')	# set the tab cursor
+
+
+			self.elements[self.current].set_on()		# set the focus highlight
 
 		def disable(self):
 			self.get_elem('edit.INPUT_IP').disable()
@@ -701,7 +722,7 @@ class object(content):
 			self.get_elem('edit.INPUT_NETMASK').enable()
 
 		def tab(self):
-			if not self.get_elem('edit.CHECKBOX_DHCP').result() and self.tabinit <= 1:
+			if not (self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').result()) and self.tabinit <= 1:
 				if self.current == self.get_elem_id('edit.INPUT_IP'):
 					ip_str=self.get_elem('edit.INPUT_IP').result().strip()
 					if ip_str and self.parent.is_ip(ip_str):
@@ -709,23 +730,8 @@ class object(content):
 						if not (element.text):
 							element.text='255.255.255.0'
 							element.set_cursor(len(element.text))
-						self.tabinit=1
+						self.tabinit=1	# traditional flag of unknown function
 			subwin.tab(self)
-
-			#if self.mode != 'edit': # add a new interface
-			#	if not self.get_elem('edit.CHECKBOX_DHCP').result() and self.tabinit <= 1:
-			#		if self.current == self.get_elem_id('edit.INPUT_IP') and ip_str and self.parent.is_ip(ip_str):
-			#			element=self.get_elem('edit.INPUT_NETMASK')
-			#			if not (element.text):
-			#				element.text='255.255.255.0'
-			#				element.set_cursor(len('255.255.255.0'))
-			#			self.tabinit=1
-			#			subwin.tab(self)
-			#	else:
-			#		subwin.tab(self)
-			#else:
-			#	subwin.tab(self)
-
 
 		def ipcalc(self, ip, netmask):
 			ip_list=ip.split('.')
@@ -772,7 +778,11 @@ class object(content):
 			if len(self.get_elem('edit.INPUT_INTERFACE').result().strip().split(':')) > 1:
 				virtual='virtual'
 			networkbcast=self.ipcalc(self.get_elem('edit.INPUT_IP').result().strip(),self.get_elem('edit.INPUT_NETMASK').result().strip())
-			interface_parameters=[self.get_elem('edit.INPUT_IP').result().strip(), self.get_elem('edit.INPUT_NETMASK').result().strip(), networkbcast[1], networkbcast[0], self.get_elem('edit.CHECKBOX_DHCP').result(), virtual]
+			if (self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').result()):
+				mode='dynamic'
+			else:
+				mode='static'
+			interface_parameters=[self.get_elem('edit.INPUT_IP').result().strip(), self.get_elem('edit.INPUT_NETMASK').result().strip(), networkbcast[1], networkbcast[0], mode, virtual]
 			#example: result['eth0']=[ip, netmask, broadcast, network, mode]
 			result[self.get_elem('edit.INPUT_INTERFACE').result().strip()]=interface_parameters
 			#example: [device, ip, netmask, broadcast, network, mode, virtual='']
@@ -792,7 +802,7 @@ class object(content):
 				return invalid+_('Device')
 
 			ip_str=self.get_elem('edit.INPUT_IP').result().strip()
-			if not self.get_elem('edit.CHECKBOX_DHCP').result():
+			if not (self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').result()):
 				netmask_str=self.get_elem('edit.INPUT_NETMASK').result().strip()
 				#IP
 				if ip_str == '':
@@ -807,18 +817,21 @@ class object(content):
 				else:
 					return 0
 			else:
-				return 0
+				if not self.serverrole:
+					return 0
+				else:
+					return _('For a server role an IP address must be determined at this point, please press F5 or deselect the DHCP option')
+
 
 		def input(self,key):
+			#self.parent.debug('DEBUG: input(edit): %d' % key)
 			if hasattr(self,'warn'):
 				if not self.warn.key_event(key):
 					delattr(self,"warn")
 				self.parent.draw()
 				self.draw()
 			ok_button=self.get_elem('edit.BUTTON_OK')
-			dhclient_button=self.get_elem('edit.BUTTON_DHCLIENT')
 			cancel_button=self.get_elem('edit.BUTTON_CANCEL')
-			dhcp_toggle=self.get_elem('edit.CHECKBOX_DHCP')
 			if ( key in [ 10, 32 ] and ok_button.usable() and ok_button.get_status() ) or key == 276: # Ok
 				if self.incomplete() != 0:
 					self.warn=warning(self.incomplete(),self.pos_y+25,self.pos_x+90)
@@ -827,19 +840,27 @@ class object(content):
 				self.put_result()
 				return 0
 			elif key in [ 10, 32 ] and cancel_button.usable() and cancel_button.get_status(): #Cancel
-					return 0
-			elif key in [ 10, 32 ] and dhcp_toggle.usable(): #Space in Checkbox
-				#if self.parent.all_results.has_key('system_role') and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'managedclient', 'mobileclient']):
-				self.elements[self.current].key_event(32)
-				if dhcp_toggle.result():
-					self.disable()
-				else:
-					self.enable()
-					self.current=self.get_elem_id('edit.INPUT_INTERFACE')
-					self.tab()
-			elif ( key in [ 10, 32 ] and dhclient_button.usable() and dhclient_button.get_status() ) or key == 269: # F5
+				return 0
+			elif ( key in [ 10, 32 ] and self.elem_exists('edit.BUTTON_DHCLIENT') and self.get_elem('edit.BUTTON_DHCLIENT').usable() and self.get_elem('edit.BUTTON_DHCLIENT').get_status() ) or key == 269: # F5
 				self.act = self.dhclient_active(self,_('DHCP Query'),_('Please wait ...'),name='act')
 				self.act.draw()
+				self.parent.already_redraw=1
+				self.parent.redraw()
+				self.parent.draw()
+				self.draw()
+			elif key in [ 10, 32 ] and self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').usable() and self.get_elem('edit.CHECKBOX_DHCP').active: #Space in Checkbox
+				dhcp_checkbox=self.get_elem('edit.CHECKBOX_DHCP')
+				self.elements[self.current].key_event(32)	# send the event to the widget
+				if dhcp_checkbox.result():
+					self.disable()
+					dhcp_checkbox.set_off()
+					self.current=self.get_elem_id('edit.BUTTON_DHCLIENT')	# set the tab cursor
+				else:
+					self.enable()
+					dhcp_checkbox.set_off()
+					self.current=self.get_elem_id('edit.INPUT_IP')	# set the tab cursor
+				self.get_elem_by_id(self.current).set_on()	# set the focus highlight
+				self.draw()
 			elif key == 260:
 				#move left
 				active=0
@@ -868,27 +889,22 @@ class object(content):
 
 		class dhclient_active(act_win):
 			def function(self):
-				self.parent.parent.debug('DEBUG dhclient_button')
 				interface=self.parent.get_elem('edit.INPUT_INTERFACE').result().strip()
 				dhcp_dict=self.parent.parent.dhclient(interface)
 				ip_input=self.parent.get_elem('edit.INPUT_IP')
-				ip_input.text=dhcp_dict['address']
+				ip_input.text=dhcp_dict.get('address') or ''
 				ip_input.set_cursor(len(ip_input.text))
 				ip_input.paste_text()
 				ip_input.draw()
 				netmask_input=self.parent.get_elem('edit.INPUT_NETMASK')
-				netmask_input.text=dhcp_dict['netmask']
+				netmask_input.text=dhcp_dict.get('netmask') or ''
 				netmask_input.set_cursor(len(netmask_input.text))
 				netmask_input.paste_text()
 				netmask_input.draw()
-				#self.parent.container['Gateway']=dhcp_dict['gateway']
-				#self.parent.container['%s_ip' % interface]=dhcp_dict['address']
-				#self.parent.container['%s_netmask' % interface]=dhcp_dict['netmask']
-				#self.parent.container['%s_network' % interface]=networkbcast[0]
-				#self.parent.container['%s_broadcast' % interface]=networkbcast[1]
-				#self.parent.container['Nameserver']=dhcp_dict['nameserver_1']
-				#self.parent.dns['nameserver_2']=dhcp_dict['nameserver_2']
-				#self.parent.dns['nameserver_3']=dhcp_dict['nameserver_3']
+				#self.parent.container['Gateway']=dhcp_dict.get('gateway') or ''
+				#self.parent.container['Nameserver']=dhcp_dict.get('nameserver_1'] or ''
+				#self.parent.dns['nameserver_2']=dhcp_dict.get('nameserver_2'] or ''
+				#self.parent.dns['nameserver_3']=dhcp_dict.get('nameserver_3'] or ''
 				self.stop()
 
 	class more(subwin):
