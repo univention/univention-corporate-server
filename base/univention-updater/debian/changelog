@@ -1,3 +1,10 @@
+univention-updater (5.0.7-1) unstable; urgency=low
+
+  * fix the check for None as component repository prefix. Bug #14001
+  * fixed a typo in the postup.sh script. Bug #14584
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Jul 2009 08:02:04 +0200
+
 univention-updater (5.0.6-1) unstable; urgency=low
 
   * search for preup.sh und postup.sh in the correct directory on a
