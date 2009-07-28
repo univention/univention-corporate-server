@@ -938,8 +938,14 @@ class ad(univention.connector.ucs):
 		object_ucs = self._object_mapping(object_key,object)
 
 		ldap_object_ucs = self.get_ucs_ldap_object(object_ucs['dn'])
-
+		if not ldap_object_ucs:
+			ud.debug(ud.LDAP, ud.PROCESS, 'primary_group_sync_from_ucs: The UCS object (%s) was not found. The object was removed.' % object_ucs['dn'])
+			return
+			
 		ldap_object_ad = self.get_object(object['dn'])
+		if not ldap_object_ad:
+			ud.debug(ud.LDAP, ud.PROCESS, 'primary_group_sync_from_ucs: The AD object (%s) was not found. The object was removed.' % object['dn'])
+			return
 		
 		ucs_group_id = ldap_object_ucs['gidNumber'][0] # FIXME: fails if group does not exsist
 		ucs_group_ldap = self.lo.search(filter='(&(objectClass=univentionGroup)(gidNumber=%s))' % ucs_group_id) # is empty !?
@@ -1081,6 +1087,11 @@ class ad(univention.connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO,"group_members_sync_from_ucs: type of object_ucs['dn']: %s"%type(object_ucs['dn']))
 		ud.debug(ud.LDAP, ud.INFO,"group_members_sync_from_ucs: dn is: %s"%object_ucs['dn'])
 		ldap_object_ucs = self.get_ucs_ldap_object(object_ucs['dn'])
+
+		if not ldap_object_ucs:
+			ud.debug(ud.LDAP, ud.PROCESS, 'group_members_sync_from_ucs:: The UCS object (%s) was not found. The object was removed.' % object_ucs['dn'])
+			return
+
 		if ldap_object_ucs.has_key('uniqueMember'):
 			ucs_members = ldap_object_ucs['uniqueMember']
 		else:
@@ -1108,6 +1119,10 @@ class ad(univention.connector.ucs):
 							   "group_members_sync_from_ucs: clean ucs_members: %s" % ucs_members)
 
 		ldap_object_ad = self.get_object(object['dn'])
+		if not ldap_object_ad:
+			ud.debug(ud.LDAP, ud.PROCESS, 'group_members_sync_from_ucs:: The AD object (%s) was not found. The object was removed.' % object['dn'])
+			return
+		
 		if ldap_object_ad and ldap_object_ad.has_key('member'):
 			ad_members = ldap_object_ad['member']
 		else:

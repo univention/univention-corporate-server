@@ -1,3 +1,12 @@
+univention-ad-connector (3.0.21-1) unstable; urgency=low
+
+  * read the pickle files from the listener in the correct order. Bug
+    #11803
+  * catch some more possible expetions during the group member sync for
+    example if the user was removed in the meantime. Bug #11803
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Jul 2009 15:48:57 +0200
+
 univention-ad-connector (3.0.20-1) unstable; urgency=low
 
   * Fixed upper- and lowercase problems in the attribute_filter

@@ -674,7 +674,9 @@ class ucs:
 		print "done:",
 		sys.stdout.flush()
 		done_counter = 0
-		for listener_file in os.listdir(self.listener_dir):
+		files = os.listdir(self.listener_dir)
+		files.sort()
+		for listener_file in files:
 			sync_successfull = False
 			delete_file = False
 			filename = os.path.join(self.listener_dir, listener_file)

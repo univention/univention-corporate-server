@@ -150,7 +150,11 @@ def password_sync_ucs(connector, key, object):
 	except: # FIXME: which exception is to be caught?
 		ud.debug(ud.LDAP, ud.INFO, "   UCS DN not printable")
 
-	res = connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword','sambaPwdLastSet','sambaPwdMustChange'])
+	try:
+		res = connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword','sambaPwdLastSet','sambaPwdMustChange'])
+	except ldap.NO_SUCH_OBJECT:
+		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: The UCS object (%s) was not found. The object was removed." % ucs_object['dn'])
+		return
 	
 	sambaPwdLastSet = None
 	if res[0][1].has_key('sambaPwdLastSet'):
