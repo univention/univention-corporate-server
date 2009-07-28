@@ -109,6 +109,7 @@ Variables: interfaces/eth.*/address
 Variables: interfaces/eth.*/hosts
 Variables: hostname
 Variables: domainname
+Variables: hosts/static/.*
 
 Type: subfile
 Multifile: etc/hosts
