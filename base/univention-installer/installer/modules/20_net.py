@@ -77,8 +77,7 @@ class object(content):
 		self.debug('DHCP broadcast on %s' % interface)
 		fd, filename = tempfile.mkstemp(dir='/tmp')
 		os.close(fd)
-		#p = os.popen('/sbin/dhclient -lf /tmp/dhclient.leases -sf /lib/univention-installer/dhclient-script -e dhclientscript_outputfile="%s" %s' % (filename, interface))
-		cmd='/sbin/dhclient -lf /tmp/dhclient.leases -sf /lib/univention-installer/dhclient-script -e dhclientscript_outputfile="%s" %s' % (filename, interface)
+		cmd='/sbin/dhclient -lf /tmp/dhclient.leases -sf /lib/univention-installer/dhclient-script-wrapper -e dhclientscript_outputfile="%s" %s' % (filename, interface)
 		p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE).stderr
 		output = p.read()
 		self.debug('DHCP output: %s' % output)
@@ -605,24 +604,23 @@ class object(content):
 		#Fill in interfaces
 		#example: [device, ip, netmask, broadcast, network, mode, virtual='']
 		for dev in self.interfaces:
-			if dev[5] in [ 'dynamic', 'dhcp']:
-				if dev[6] == 'virtual':
-					result['%s_type'%dev[0].replace(':','_')]=dev[5]
-				else:
-					result['%s_type'%dev[0]]=dev[5]
+			if dev[6] == 'virtual':
+				device=dev[0].replace(':','_')
 			else:
-				if dev[6] == 'virtual':
-					device=dev[0].replace(':','_')
+				device=dev[0]
+
+			if dev[5] in [ 'dynamic', 'dhcp']:
+				result['%s_type'%device]=dev[5]
+				if self.serverrole:
 					result['%s_ip'%device]=dev[1]
 					result['%s_netmask'%device]=dev[2]
 					result['%s_broadcast'%device]=dev[3]
 					result['%s_network'%device]=dev[4]
-				else:
-					device=dev[0]
-					result['%s_ip'%device]=dev[1]
-					result['%s_netmask'%device]=dev[2]
-					result['%s_broadcast'%device]=dev[3]
-					result['%s_network'%device]=dev[4]
+			else:
+				result['%s_ip'%device]=dev[1]
+				result['%s_netmask'%device]=dev[2]
+				result['%s_broadcast'%device]=dev[3]
+				result['%s_network'%device]=dev[4]
 
 		for i in range(0,4):
 			for val in ['ip', 'netmask', 'broadcast', 'network']:
@@ -844,10 +842,6 @@ class object(content):
 			elif ( key in [ 10, 32 ] and self.elem_exists('edit.BUTTON_DHCLIENT') and self.get_elem('edit.BUTTON_DHCLIENT').usable() and self.get_elem('edit.BUTTON_DHCLIENT').get_status() ) or key == 269: # F5
 				self.act = self.dhclient_active(self,_('DHCP Query'),_('Please wait ...'),name='act')
 				self.act.draw()
-				self.parent.already_redraw=1
-				self.parent.redraw()
-				self.parent.draw()
-				self.draw()
 			elif key in [ 10, 32 ] and self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').usable() and self.get_elem('edit.CHECKBOX_DHCP').active: #Space in Checkbox
 				dhcp_checkbox=self.get_elem('edit.CHECKBOX_DHCP')
 				self.elements[self.current].key_event(32)	# send the event to the widget
@@ -888,6 +882,12 @@ class object(content):
 			return 1
 
 		class dhclient_active(act_win):
+			def __init__(self,parent,header,text,name):
+				# set this further right to avoid backdrop on left_menu, which fails to be redrawn
+				self.pos_x=parent.minX+17
+				self.pos_y=parent.minY+5
+				act_win.__init__(self,parent,header,text,name)
+
 			def function(self):
 				interface=self.parent.get_elem('edit.INPUT_INTERFACE').result().strip()
 				dhcp_dict=self.parent.parent.dhclient(interface)

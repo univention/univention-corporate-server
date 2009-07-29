@@ -1,3 +1,15 @@
+univention-installer (5.0.10-6) unstable; urgency=low
+
+  * simplified interface edit window layout with dhcp query on F5 (Bug #12130)
+  * dhclient-script-wrapper calls /sbin/dhclient-script if dhcp3-client is installed
+  * don't offer DHCP options for virtual interfaces, dhclient will not do anything usefull currently
+  * set profile ethX_ip and so on along with ethX_type for server roles
+  * note: this causes ifconfig to redo the dhcp interface configuration in scripts/06_network.sh
+  * translate ethX_ip into UCR interfaces/extX/fallback/address and so on if available and ethX_type is dhcp
+  * fix internal typo 'dynmic'
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 Jul 2009 18:25:28 +0200
+
 univention-installer (5.0.10-5) unstable; urgency=low
 
   * Since all join scripts still test for the old paths, we need
