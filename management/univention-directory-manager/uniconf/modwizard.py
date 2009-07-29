@@ -1032,6 +1032,8 @@ class modwizard(unimodule.unimodule):
 
 				# search...
 				if search_property_name != '*':
+					if not search_value:
+						search_value = '*'
 					filter=univention.admin.filter.expression(search_property_name, search_value)
 				else:
 					filter=''
