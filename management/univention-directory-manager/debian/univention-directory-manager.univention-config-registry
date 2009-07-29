@@ -2,12 +2,14 @@ Type: multifile
 Multifile: etc/hosts
 Variables: interfaces/eth.*/address
 Variables: domainname
+Variables: directory/manager/hosts/compatibility
 
 Type: subfile
 Multifile: etc/hosts
 Subfile: etc/hosts.d/10-directory-manager
 Variables: interfaces/eth.*/address
 Variables: domainname
+Variables: directory/manager/hosts/compatibility
 
 Type: file
 File: usr/share/univention-directory-manager/www/config.php
