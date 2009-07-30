@@ -49,34 +49,36 @@ fi
 # setup virtual interfaces during second run
 for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
     set | egrep "${ifaceregex}type=" | while read line; do
-    	network_device=`echo $line | sed -e 's|_type.*||'`
+    	ucr_network_device=`echo $line | sed -e 's|_type.*||'`
     	if [ -z "$network_device" ]; then
     		continue
     	fi
     	dynamic=`echo $line | sed -e 's|.*=||'`
     	if [ -n "$dynamic" ] && [ "$dynamic" = "dynamic" -o "$dynamic" = "dhcp" ]; then
-    		python2.4 /sbin/univention-config-registry set interfaces/$network_device/type=dhcp
+    		python2.4 /sbin/univention-config-registry set interfaces/$ucr_network_device/type=dhcp
+
+			address=`set | egrep "^${ucr_network_device}_ip=" | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
+			if [ -n "$address" ]; then
+				netmask=`set | egrep "^${ucr_network_device}_netmask=" | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
+				broadcast=`set | egrep "^${ucr_network_device}_broadcast=" | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
+				network=`set | egrep "^${ucr_network_device}_network=" | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
+				if [ -n "$netmask" ] || [ -n "$broadcast" ] || [ -n "$network" ]; then
+					# for serverroles with ${ucr_network_device}_type='dynamic' or 'dhcp' the installer module 20_net also outputs
+					# the data that was determined by dhclient at configuration time,
+					# these values are recorded here to reflect the status that is written in the directory
+					python2.4 /sbin/univention-config-registry set \
+						interfaces/$ucr_network_device/fallback/address=$address \
+						interfaces/$ucr_network_device/fallback/netmask=$netmask \
+						interfaces/$ucr_network_device/fallback/broadcast=$broadcast \
+						interfaces/$ucr_network_device/fallback/network=$network
+				fi
+			fi
     	fi
-    	network_device=`echo $network_device | sed -e 's|_|:|g'`
+
+    	network_device=`echo $ucr_network_device | sed -e 's|_|:|g'`
 
 		ifconfig $network_device up		# this does not cause dhclient to run, ifup would be needed
 
-    	address=`set | egrep "^${network_device}_ip=" | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
-		if [ -n "$address" ]; then
-    		netmask=`set | egrep "^${network_device}_netmask=" | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
-    		broadcast=`set | egrep "^${network_device}_broadcast=" | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
-    		network=`set | egrep "^${network_device}_network=" | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
-    		if [ -n "$netmask" ] || [ -n "$broadcast" ] || [ -n "$network" ]; then
-				# for serverroles with ${network_device}_type='dynamic' or 'dhcp' the installer module 20_net also outputs
-				# the data that was determined by dhclient at configuration time,
-				# these values are recorded here to reflect the status that is written in the directory
-				python2.4 /sbin/univention-config-registry set \
-					interfaces/$network_device/fallback/address=$address \
-					interfaces/$network_device/fallback/netmask=$netmask \
-					interfaces/$network_device/fallback/broadcast=$broadcast \
-					interfaces/$network_device/fallback/network=$network
-			fi
-		fi
     done
     set | egrep "${ifaceregex}ip=" | while read line; do
 
