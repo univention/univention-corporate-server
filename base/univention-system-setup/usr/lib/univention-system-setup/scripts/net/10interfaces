@@ -39,27 +39,44 @@ ldap_available=1
 eval $(univention-config-registry shell server/role)
 
 for interface in eth0 eth1 eth2 eth3; do
-	for type in address broadcast netmask network type; do
-		is_variable_set "interfaces/$interface/$type"
+	for attr in address broadcast netmask network type; do
+		is_variable_set "interfaces/$interface/$attr"
 
 		if [ $? = 0 ]; then
 			continue
 		fi
 
-		var=`get_profile_var "interfaces/$interface/$type"`
+		var=`get_profile_var "interfaces/$interface/$attr"`
 		if [ -z "$var" ]; then
-			baseconfig_unset="$baseconfig_unset interfaces/$interface/$type"
-			if [ "$type" = "address" ]; then
+			baseconfig_unset="$baseconfig_unset interfaces/$interface/$attr"
+			if [ "$attr" = "address" ]; then
 				ifdown="$ifdown $interface"
 			fi
 
 		else
-			if [ "$type" = "type" ]; then
-				baseconfig_set="$baseconfig_set interfaces/$interface/$type=dhcp"
+			if [ "$attr" = "type" ]; then
+				baseconfig_set="$baseconfig_set interfaces/$interface/$attr=dhcp"
+
+				# for serverroles with ${interface}_type='dynamic' or 'dhcp' the installer module 20_net also outputs
+				# the data that was determined by dhclient at configuration time,
+				# these values are recorded here to reflect the status that is written in the directory
+				address="$(get_profile_var "interfaces/$interface/address")"
+				if [ -n "$address" ]; then
+					netmask="$(get_profile_var "interfaces/$interface/netmask")"
+					broadcast="$(get_profile_var "interfaces/$interface/broadcast")"
+					network="$(get_profile_var "interfaces/$interface/network")"
+
+					if [ -n "$netmask" ] || [ -n "$broadcast" ] || [ -n "$network" ]; then
+						baseconfig_set="$baseconfig_set interfaces/$interface/fallback/address=$address"
+						baseconfig_set="$baseconfig_set interfaces/$interface/fallback/netmask=$netmask"
+						baseconfig_set="$baseconfig_set interfaces/$interface/fallback/broadcast=$broadcast"
+						baseconfig_set="$baseconfig_set interfaces/$interface/fallback/network=$network"
+					fi
+				fi
 			else
-				baseconfig_set="$baseconfig_set interfaces/$interface/$type=$var"
+				baseconfig_set="$baseconfig_set interfaces/$interface/$attr=$var"
 			fi
-			if [ "$type" = "address" ]; then
+			if [ "$attr" = "address" ]; then
 				old_address=`univention-config-registry get interfaces/$interface/address`
 				baseconfig_unset="$baseconfig_unset interfaces/$interface/type"
 				if [ -z "$old_address" ]; then
@@ -68,7 +85,7 @@ for interface in eth0 eth1 eth2 eth3; do
 			fi
 		fi
 
-		if [ "$type" = "address" ]; then
+		if [ "$attr" = "address" ]; then
 			to_change="$to_change $interface"
 			if [ "$check_ldap_access" = "1" ]; then
 				if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
