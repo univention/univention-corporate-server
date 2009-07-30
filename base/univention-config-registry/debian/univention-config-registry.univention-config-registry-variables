@@ -149,7 +149,7 @@ Type=str
 Categories=system-network
 
 [hosts/static/.*]
-Description[de]=Zusätzliche /etc/hosts Eintr�ge
+Description[de]=Zusätzliche /etc/hosts Einträge
 Description[en]=Additional entries for /etc/hosts
 Type=str
 Categories=Network

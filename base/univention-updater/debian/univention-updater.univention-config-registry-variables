@@ -59,7 +59,7 @@ Type=str
 Categories=service-software-management
 
 [update/umc/nextversion]
-Description[de]=Das Release Update per UMC wird nach der Aktualisierung auf die n‰chste Version angehalten
+Description[de]=Das Release Update per UMC wird nach der Aktualisierung auf die n√§chste Version angehalten
 Description[en]=The release update via UMC will stop after the update to the next version
 Type=boolean
 Categories=service-software-management
