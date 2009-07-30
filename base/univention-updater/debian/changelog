@@ -1,3 +1,10 @@
+univention-updater (5.0.8-1) unstable; urgency=low
+
+  * use utf8 in the ucr variable definitions otherwise we got an UMC
+    error. Bug #14285
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Jul 2009 07:36:54 +0200
+
 univention-updater (5.0.7-1) unstable; urgency=low
 
   * fix the check for None as component repository prefix. Bug #14001
