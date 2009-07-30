@@ -38,7 +38,7 @@ import objects, re, string, curses
 from objects import *
 from local import _
 import inspect
-import os, tempfile, subprocess
+import os, subprocess
 
 class object(content):
 
@@ -75,21 +75,18 @@ class object(content):
 
 	def dhclient(self, interface):
 		self.debug('DHCP broadcast on %s' % interface)
-		fd, filename = tempfile.mkstemp(dir='/tmp')
-		os.close(fd)
-		cmd='/sbin/dhclient -lf /tmp/dhclient.leases -sf /lib/univention-installer/dhclient-script-wrapper -e dhclientscript_outputfile="%s" %s' % (filename, interface)
-		p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE).stderr
-		output = p.read()
-		self.debug('DHCP output: %s' % output)
-		p.close()
-		file = open(filename)
+		tempfilename='/tmp/dhclient%s.out' % os.getpid()
+		cmd='/sbin/dhclient -lf /tmp/dhclient.leases -sf /lib/univention-installer/dhclient-script-wrapper -e dhclientscript_outputfile="%s" %s' % (tempfilename, interface)
+		p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+		self.debug('DHCP output: %s' % p.stderr.read())
+		file = open(tempfilename)
 		dhcp_dict={}
 		for line in file.readlines():
 			key, value = line.strip().split(':', 1)
 			dhcp_dict[key]=value.strip()
 		self.debug('DHCP answer: %s' % dhcp_dict)
 		file.close()
-		os.unlink(filename)
+		os.unlink(tempfilename)
 		return dhcp_dict
 
 	def start(self):
