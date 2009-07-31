@@ -92,22 +92,22 @@ for interface in eth0 eth1 eth2 eth3; do
 		is_variable_set "interfaces/$interface/type"
 		if [ $? = 0 ]; then
 			# the type has not changed
-			type=$(univention-config-registry get interfaces/$device/type)
+			type=$(univention-config-registry get interfaces/$interface/type)
 			if [ "$type" = "dynamic" -o "$type" = "dhcp" ]; then
 				# * the address might have changed meanwhile,
 				#   must get it from the fallback settings
 				#   that where noted after last run of
 				#   univention-installerlast or u-s-s-net
-				hook_old_type="get_old_from_fallback"
+				eval ${interface}_hook_old_type="get_old_from_fallback"
 				# we must save the fallback interface configuration
-				hook_new_type="save_fallback"
+				eval ${interface}_hook_new_type="save_fallback"
 			fi
 		else
 			# whoopa, the type changed as well
-			type=$(get_profile_var "interfaces/$device/type")
+			type=$(get_profile_var "interfaces/$interface/type")
 			if [ "$type" = "dynamic" -o "$type" = "dhcp" ]; then
 				# we must save the fallback interface configuration
-				hook_new_type="save_fallback"
+				eval ${interface}_hook_new_type="save_fallback"
 			elif [ -z "$type" ]; then
 				# the type changed to unset, i.e from dhcp to static
 				# 1. the address might have changed meanwhile,
@@ -115,12 +115,12 @@ for interface in eth0 eth1 eth2 eth3; do
 				#    that where noted after last run of
 				#    univention-installerlast or u-s-s-net
 				# 2. we must note all current values to LDAP
-				hook_old_type="get_old_from_fallback get_new_from_profile_or_ucr"
+				eval ${interface}_hook_old_type="get_old_from_fallback get_new_from_profile_or_ucr"
 				# we should unset the fallback interface configuration
-				hook_new_type="unset_fallback"
+				eval ${interface}_hook_new_type="unset_fallback"
 			fi
 		fi
-		if [ -n "$hook_old_type" -o -n "$hook_new_type" ]; then
+		if eval test -n \"\$${interface}_hook_old_type\" -o -n \"\$${interface}_hook_new_type\"; then
 			found=0
 			for device in $to_change; do
 				if [ "$device" = "$interface" ]; then
@@ -188,28 +188,28 @@ oldvalues=""
 newvalues=""
 
 save_fallback() {
-  is_variable_set "interfaces/$interface/address"
+  is_variable_set "interfaces/$device/address"
   if [ $? = 0 ]; then
     baseconfig_set="$baseconfig_set interfaces/$device/fallback/address=$old_ip"
   else
     baseconfig_set="$baseconfig_set interfaces/$device/fallback/address=$new_ip"
   fi
 
-  is_variable_set "interfaces/$interface/network"
+  is_variable_set "interfaces/$device/network"
   if [ $? = 0 ]; then
     baseconfig_set="$baseconfig_set interfaces/$device/fallback/network=$old_network"
   else
     baseconfig_set="$baseconfig_set interfaces/$device/fallback/network=$new_network"
   fi
 
-  is_variable_set "interfaces/$interface/netmask"
+  is_variable_set "interfaces/$device/netmask"
   if [ $? = 0 ]; then
     baseconfig_set="$baseconfig_set interfaces/$device/fallback/netmask=$old_netmask"
   else
     baseconfig_set="$baseconfig_set interfaces/$device/fallback/netmask=$new_netmask"
   fi
 
-  is_variable_set "interfaces/$interface/broadcast"
+  is_variable_set "interfaces/$device/broadcast"
   if [ $? = 0 ]; then
     baseconfig_set="$baseconfig_set interfaces/$device/fallback/broadcast=$old_broadcast"
   else
@@ -225,28 +225,28 @@ get_old_from_fallback(){
 }
 
 get_new_from_profile_or_ucr(){
-  is_variable_set "interfaces/$interface/address"
+  is_variable_set "interfaces/$device/address"
   if [ $? = 0 ]; then
     new_ip=$(univention-config-registry get interfaces/$device/address)
   else
     new_ip=$(get_profile_var "interfaces/$device/address")
   fi
 
-  is_variable_set "interfaces/$interface/netmask"
+  is_variable_set "interfaces/$device/netmask"
   if [ $? = 0 ]; then
     new_netmask=$(univention-config-registry get interfaces/$device/netmask)
   else
     new_netmask=$(get_profile_var "interfaces/$device/netmask")
   fi
 
-  is_variable_set "interfaces/$interface/network"
+  is_variable_set "interfaces/$device/network"
   if [ $? = 0 ]; then
     new_network=$(univention-config-registry get interfaces/$device/network)
   else
     new_network=$(get_profile_var "interfaces/$device/network")
   fi
 
-  is_variable_set "interfaces/$interface/broadcast"
+  is_variable_set "interfaces/$device/broadcast"
   if [ $? = 0 ]; then
     new_broadcast=$(univention-config-registry get interfaces/$device/broadcast)
   else
@@ -283,13 +283,15 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
  		old_broadcast=$(univention-config-registry get interfaces/$device/broadcast)
 
  		# interface dhcp type handling for server roles
- 		if [ -n "$hook_old_type" ]; then
- 		  for funct in $hook_old_type; do
+		if eval test -n \"\$${device}_hook_old_type\"; then
+			eval hookfunctions=\"\$${device}_hook_old_type\"
+ 		  for funct in $hookfunctions; do
  		    eval $funct
  		  done
  		fi
- 		if [ -n "$hook_new_type" ]; then
- 		  for funct in $hook_new_type; do
+		if eval test -n \"\$${device}_hook_new_type\"; then
+			eval hookfunctions=\"\$${device}_hook_new_type\"
+ 		  for funct in $hookfunctions; do
  		    eval $funct
  		  done
  		fi
