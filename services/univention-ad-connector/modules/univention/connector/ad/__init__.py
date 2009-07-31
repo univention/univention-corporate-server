@@ -1375,7 +1375,9 @@ class ad(univention.connector.ucs):
 				add_members['group'].remove(member_dn.lower())
 			else:
 				ucs_object = {'dn':member_dn,'modtype':'modify','attributes':self.lo.get(member_dn)}
-				if not self._ignore_object(object_key, ucs_object):
+
+				# TODO: check if ucs_object is really an user
+				if not self._ignore_object('user', ucs_object):
 					for k in self.property.keys():
 						# identify if DN is a user or a group (will be ignored it is a host)
 						if self.modules[k].identify(member_dn, ucs_object['attributes']):
