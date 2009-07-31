@@ -1,3 +1,10 @@
+univention-config-registry (5.0.13-1) unstable; urgency=low
+
+  * Issue a warning message on server systems for each network device using DHCP,
+    that obtained an IP address different from the one the system was set up with.	(Bug #12130)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 31 Jul 2009 13:29:53 +0200
+
 univention-config-registry (5.0.12-1) unstable; urgency=low
 
   * use utf8 in the ucr variable definitions otherwise we got an UMC

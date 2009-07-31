@@ -10,6 +10,8 @@
 #
 
 menutitle=''
+serversystem=False
+recommend_ussnet=False
 
 if   baseConfig['server/role'] == 'fatclient':
 	menutitle="Univention Managed Client"
@@ -17,16 +19,38 @@ elif baseConfig['server/role'] =='mobileclient':
 	menutitle="Univention Mobile Client"
 elif baseConfig['server/role'] =='domaincontroller_master':
 	menutitle="Univention DC Master"
+	serversystem=True
 elif baseConfig['server/role'] =='domaincontroller_backup':
 	menutitle="Univention DC Backup"
+	serversystem=True
 elif baseConfig['server/role'] =='domaincontroller_slave':
 	menutitle="Univention DC Slave"
+	serversystem=True
 elif baseConfig['server/role'] =='memberserver':
 	menutitle="Univention Memberserver"
+	serversystem=True
 else:
 	menutitle="Univention Corporate Server"
 
 print  '%s %s-%s-%s' % (menutitle, baseConfig['version/version'], baseConfig['version/patchlevel'], baseConfig['version/security-patchlevel'])
-							
+
+if serversystem:
+	for device in ['eth0', 'eth1', 'eth2', 'eth3']:
+		type=baseConfig.get('interfaces/%s/type' % device)
+		if type == 'dhcp':
+			fallback_address=baseConfig.get('interfaces/%s/fallback/address' % device)
+			if fallback_address:
+		  		current_address=baseConfig.get('interfaces/%s/address' % device ):
+		  		if current_address != fallback_address:
+					print ''
+					print 'Warning: Network device %s currently uses the IP address "%s", obtained via dhcp,' % (device, current_address)
+					print '         but it was setup with IP address "%s".' % fallback_address
+					recommend_ussnet=True
+	if recommend_ussnet:
+		print ''
+		print '         Please consider running univention-system-setup-net'
+		print '         to update the information in the UCS directory service.'
+		print ''
+fi
 @!@
 
