@@ -1,3 +1,10 @@
+univention-ad-connector (3.0.23-1) unstable; urgency=low
+
+  * consider the ignore_filter of the user mapping during the membership
+    synchronisation. Bug #13550
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 31 Jul 2009 09:23:09 +0200
+
 univention-ad-connector (3.0.22-1) unstable; urgency=low
 
   * be sure a user will be deleted in AD after moving the user on UCS
