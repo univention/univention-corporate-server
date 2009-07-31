@@ -105,18 +105,19 @@ class base(object):
 				changes.append((key, null, value))
 
 		# verify that no key is listed that requires an disabled option (Bug #13964)
-		for item in changes[ : ]:
-			key, old, new = item
-			# removing a key is ok
-			if new == None:
-				continue
-			if self.descriptions[ key ].options:
-				for opt in self.descriptions[ key ].options:
-					if opt in self.options:
-						break
-				else:
-					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "simpleLdap.diff: key %s not valid (option not set)" % key )
-					changes.remove( item )
+		if hasattr( self, 'options' ):
+			for item in changes[ : ]:
+				key, old, new = item
+				# removing a key is ok
+				if new == None:
+					continue
+				if self.descriptions[ key ].options:
+					for opt in self.descriptions[ key ].options:
+						if opt in self.options:
+							break
+					else:
+						univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "simpleLdap.diff: key %s not valid (option not set)" % key )
+						changes.remove( item )
 			
 		return changes
 
