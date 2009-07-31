@@ -34,9 +34,14 @@ to_change=""
 ifdown=""
 ifup=""
 ldap_available=1
+serversystem=0
 
 
 eval $(univention-config-registry shell server/role)
+
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ] || [ "$server_role" = "domaincontroller_slave" ] || [ "$server_role" = "memberserver" ]; then
+  serversystem=1
+fi
 
 for interface in eth0 eth1 eth2 eth3; do
 	for attr in address broadcast netmask network type; do
@@ -56,23 +61,6 @@ for interface in eth0 eth1 eth2 eth3; do
 		else
 			if [ "$attr" = "type" ]; then
 				baseconfig_set="$baseconfig_set interfaces/$interface/$attr=dhcp"
-
-				# for serverroles with ${interface}_type='dynamic' or 'dhcp' the installer module 20_net also outputs
-				# the data that was determined by dhclient at configuration time,
-				# these values are recorded here to reflect the status that is written in the directory
-				address="$(get_profile_var "interfaces/$interface/address")"
-				if [ -n "$address" ]; then
-					netmask="$(get_profile_var "interfaces/$interface/netmask")"
-					broadcast="$(get_profile_var "interfaces/$interface/broadcast")"
-					network="$(get_profile_var "interfaces/$interface/network")"
-
-					if [ -n "$netmask" ] || [ -n "$broadcast" ] || [ -n "$network" ]; then
-						baseconfig_set="$baseconfig_set interfaces/$interface/fallback/address=$address"
-						baseconfig_set="$baseconfig_set interfaces/$interface/fallback/netmask=$netmask"
-						baseconfig_set="$baseconfig_set interfaces/$interface/fallback/broadcast=$broadcast"
-						baseconfig_set="$baseconfig_set interfaces/$interface/fallback/network=$network"
-					fi
-				fi
 			else
 				baseconfig_set="$baseconfig_set interfaces/$interface/$attr=$var"
 			fi
@@ -99,6 +87,58 @@ for interface in eth0 eth1 eth2 eth3; do
 		
 	done
 
+	# interface dhcp type handling for server roles
+	if [ $serversystem -eq 1 ]; then
+		is_variable_set "interfaces/$interface/type"
+		if [ $? = 0 ]; then
+			# the type has not changed
+			type=$(univention-config-registry get interfaces/$device/type)
+			if [ "$type" = "dynamic" -o "$type" = "dhcp" ]; then
+				# * the address might have changed meanwhile,
+				#   must get it from the fallback settings
+				#   that where noted after last run of
+				#   univention-installerlast or u-s-s-net
+				hook_old_type="get_old_from_fallback"
+				# we must save the fallback interface configuration
+				hook_new_type="save_fallback"
+			fi
+		else
+			# whoopa, the type changed as well
+			type=$(get_profile_var "interfaces/$device/type")
+			if [ "$type" = "dynamic" -o "$type" = "dhcp" ]; then
+				# we must save the fallback interface configuration
+				hook_new_type="save_fallback"
+			elif [ -z "$type" ]; then
+				# the type changed to unset, i.e from dhcp to static
+				# 1. the address might have changed meanwhile,
+				#    must get it from the fallback settings
+				#    that where noted after last run of
+				#    univention-installerlast or u-s-s-net
+				# 2. we must note all current values to LDAP
+				hook_old_type="get_old_from_fallback get_new_from_profile_or_ucr"
+				# we should unset the fallback interface configuration
+				hook_new_type="unset_fallback"
+			fi
+		fi
+		if [ -n "$hook_old_type" -o -n "$hook_new_type" ]; then
+			found=0
+			for device in $to_change; do
+				if [ "$device" = "$interface" ]; then
+					found=1
+				fi
+			done
+			if [ $found -ne 1 ]; then
+				to_change="$to_change $interface"
+				if [ "$check_ldap_access" = "1" ]; then
+					if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+						exit 0
+					else
+						exit 1
+					fi
+				fi
+			fi
+		fi
+	fi
 done
 
 if [ "$check_ldap_access" = "1" ]; then
@@ -147,6 +187,80 @@ fi
 oldvalues=""
 newvalues=""
 
+save_fallback() {
+  is_variable_set "interfaces/$interface/address"
+  if [ $? = 0 ]; then
+    baseconfig_set="$baseconfig_set interfaces/$device/fallback/address=$old_ip"
+  else
+    baseconfig_set="$baseconfig_set interfaces/$device/fallback/address=$new_ip"
+  fi
+
+  is_variable_set "interfaces/$interface/network"
+  if [ $? = 0 ]; then
+    baseconfig_set="$baseconfig_set interfaces/$device/fallback/network=$old_network"
+  else
+    baseconfig_set="$baseconfig_set interfaces/$device/fallback/network=$new_network"
+  fi
+
+  is_variable_set "interfaces/$interface/netmask"
+  if [ $? = 0 ]; then
+    baseconfig_set="$baseconfig_set interfaces/$device/fallback/netmask=$old_netmask"
+  else
+    baseconfig_set="$baseconfig_set interfaces/$device/fallback/netmask=$new_netmask"
+  fi
+
+  is_variable_set "interfaces/$interface/broadcast"
+  if [ $? = 0 ]; then
+    baseconfig_set="$baseconfig_set interfaces/$device/fallback/broadcast=$old_broadcast"
+  else
+    baseconfig_set="$baseconfig_set interfaces/$device/fallback/broadcast=$new_broadcast"
+  fi
+}
+
+get_old_from_fallback(){
+  old_ip=$(univention-config-registry get interfaces/$device/fallback/address)
+  old_netmask=$(univention-config-registry get interfaces/$device/fallback/netmask)
+  old_network=$(univention-config-registry get interfaces/$device/fallback/network)
+  old_broadcast=$(univention-config-registry get interfaces/$device/fallback/broadcast)
+}
+
+get_new_from_profile_or_ucr(){
+  is_variable_set "interfaces/$interface/address"
+  if [ $? = 0 ]; then
+    new_ip=$(univention-config-registry get interfaces/$device/address)
+  else
+    new_ip=$(get_profile_var "interfaces/$device/address")
+  fi
+
+  is_variable_set "interfaces/$interface/netmask"
+  if [ $? = 0 ]; then
+    new_netmask=$(univention-config-registry get interfaces/$device/netmask)
+  else
+    new_netmask=$(get_profile_var "interfaces/$device/netmask")
+  fi
+
+  is_variable_set "interfaces/$interface/network"
+  if [ $? = 0 ]; then
+    new_network=$(univention-config-registry get interfaces/$device/network)
+  else
+    new_network=$(get_profile_var "interfaces/$device/network")
+  fi
+
+  is_variable_set "interfaces/$interface/broadcast"
+  if [ $? = 0 ]; then
+    new_broadcast=$(univention-config-registry get interfaces/$device/broadcast)
+  else
+    new_broadcast=$(get_profile_var "interfaces/$device/broadcast")
+  fi
+}
+
+unset_fallback() {
+  baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/address"
+  baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/netmask"
+  baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/network"
+  baseconfig_unset="$baseconfig_unset interfaces/$device/fallback/broadcast"
+}
+
 if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 
 	binddn=`ldap_binddn`
@@ -163,7 +277,23 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		old_ip=$(univention-config-registry get interfaces/$device/address)
 		new_network=$(get_profile_var "interfaces/$device/network")
 		old_network=$(univention-config-registry get interfaces/$device/network)
+ 		new_netmask=$(get_profile_var "interfaces/$device/netmask")
 		old_netmask=$(univention-config-registry get interfaces/$device/netmask)
+ 		new_broadcast=$(get_profile_var "interfaces/$device/broadcast")
+ 		old_broadcast=$(univention-config-registry get interfaces/$device/broadcast)
+
+ 		# interface dhcp type handling for server roles
+ 		if [ -n "$hook_old_type" ]; then
+ 		  for funct in $hook_old_type; do
+ 		    eval $funct
+ 		  done
+ 		fi
+ 		if [ -n "$hook_new_type" ]; then
+ 		  for funct in $hook_new_type; do
+ 		    eval $funct
+ 		  done
+ 		fi
+
 		# edit LDAP entry
 		if [ "$server_role" = "fatclient" ]; then
 			server_role="client"
