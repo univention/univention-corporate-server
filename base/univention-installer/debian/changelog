@@ -1,3 +1,9 @@
+univention-installer (5.0.11-3) unstable; urgency=low
+
+  * add dependency on dhcp3-client for univention-installer-modules (Bug #12130)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 31 Jul 2009 17:04:55 +0200
+
 univention-installer (5.0.11-2) unstable; urgency=low
 
   * avoid using additional module 'tempfile', which currently is not part of the initial ramdisk (Bug #12130)

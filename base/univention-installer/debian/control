@@ -18,6 +18,7 @@ Description: univention installer envoirnment
 
 Package: univention-installer-modules
 Architecture: all
+Depends: dhcp3-client
 Description: univention installer modules
  .
  This package is part of Univention Corporate Server (UCS),
