@@ -1,3 +1,9 @@
+univention-config-registry (5.0.13-2) unstable; urgency=low
+
+  * fix syntax typos in /etc/issue template (Bug #12130)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 31 Jul 2009 16:16:24 +0200
+
 univention-config-registry (5.0.13-1) unstable; urgency=low
 
   * Issue a warning message on server systems for each network device using DHCP,

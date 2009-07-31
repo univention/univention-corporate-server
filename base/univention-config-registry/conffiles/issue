@@ -40,7 +40,7 @@ if serversystem:
 		if type == 'dhcp':
 			fallback_address=baseConfig.get('interfaces/%s/fallback/address' % device)
 			if fallback_address:
-		  		current_address=baseConfig.get('interfaces/%s/address' % device ):
+		  		current_address=baseConfig.get('interfaces/%s/address' % device )
 		  		if current_address != fallback_address:
 					print ''
 					print 'Warning: Network device %s currently uses the IP address "%s", obtained via dhcp,' % (device, current_address)
@@ -51,6 +51,5 @@ if serversystem:
 		print '         Please consider running univention-system-setup-net'
 		print '         to update the information in the UCS directory service.'
 		print ''
-fi
 @!@
 
