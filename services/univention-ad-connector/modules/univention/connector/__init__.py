@@ -469,6 +469,11 @@ class ucs:
 		old = recode_attribs(old)
 
 		key=None
+
+		# if the object was moved into a ignored tree
+		# we should delete this object
+		ignore_subtree_match = False
+		
 		if not new:
 			change_type="delete"
 			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: objected was deleted")
@@ -495,6 +500,7 @@ class ucs:
 						# moved into ignored subtree, delete:
 						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: moved object is now ignored, will delete it")
 						change_type = 'delete'
+						ignore_subtree_match = True
 					
 					if self._ignore_object(key, old_object):
 						# moved from ignored subtree, add:
@@ -507,6 +513,7 @@ class ucs:
 					if self._ignore_object(key, object):
 						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: moved object is now ignored, will delete it")
 						change_type = 'delete'
+						ignore_subtree_match = True
 					else:
 						if old_dn and not old_dn == dn:
 							change_type="modify"
@@ -533,10 +540,10 @@ class ucs:
 			if change_type == 'modify' and old_dn:
 				object['olddn'] = unicode(old_dn, 'utf8') # needed for correct samaccount-mapping
 
-			if not self._ignore_object(key,object):
+			if not self._ignore_object(key,object) or ignore_subtree_match:
 				premapped_ucs_dn = object['dn']
 				object = self._object_mapping(key, object, 'ucs')
-				if not self._ignore_object(key,object):
+				if not self._ignore_object(key,object) or ignore_subtree_match:
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: finished mapping")
 					try:				
 						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn,'utf8')))
