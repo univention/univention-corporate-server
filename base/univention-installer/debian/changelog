@@ -1,3 +1,10 @@
+univention-installer (5.0.11-4) unstable; urgency=low
+
+  * touch the dhclient output file to avoid nasty tracebacks for a simple DHCP timeout (Bug #12130)
+  * fix warning message about incomplete network settings for serversystems
+
+ -- Arvid Requate <requate@univention.de>  Fri, 31 Jul 2009 17:22:26 +0200
+
 univention-installer (5.0.11-3) unstable; urgency=low
 
   * add dependency on dhcp3-client for univention-installer-modules (Bug #12130)

@@ -55,6 +55,11 @@ class object(content):
 		#For more nameservers and dns-forwarders
 		self.dns={}
 
+		if 'system_role' in self.all_results and (self.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
+			self.serversystem=False
+		else:
+			self.serversystem=True
+
 	def debug(self, txt):
 		info = inspect.getframeinfo(inspect.currentframe().f_back)[0:3]
 		line = info[1]
@@ -609,7 +614,7 @@ class object(content):
 
 			if dev[5] in [ 'dynamic', 'dhcp']:
 				result['%s_type'%device]=dev[5]
-				if self.serverrole:
+				if self.serversystem:
 					result['%s_ip'%device]=dev[1]
 					result['%s_netmask'%device]=dev[2]
 					result['%s_broadcast'%device]=dev[3]
@@ -636,10 +641,6 @@ class object(content):
 			self.mode=mode
 			self.tabinit=0
 			subwin.__init__(self,parent,pos_y,pos_x,width,heigh)
-			if 'system_role' in self.parent.all_results and (self.parent.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
-				self.serverrole=False
-			else:
-				self.serverrole=True
 
 		def layout(self):
 			self.minY=self.parent.minY
@@ -676,7 +677,7 @@ class object(content):
 			else:
 				ip_str=''
 				netmask_str=''
-				if not self.serverrole:
+				if not self.parent.serversystem:
 					dhcp_checkbox_value=[0]
 				else:
 					dhcp_checkbox_value=[]	# default for server roles
@@ -813,10 +814,22 @@ class object(content):
 				else:
 					return 0
 			else:
-				if not self.serverrole:
-					return 0
+				if self.parent.serversystem:
+					netmask_str=self.get_elem('edit.INPUT_NETMASK').result().strip()
+					#IP
+					if ip_str == '':
+						return _('For a server role an IP address must be determined at this point, please press F5 or deselect the DHCP option')
+					elif not self.parent.is_ip(ip_str.strip('\n')):
+						return invalid+_('IP address')
+					#Netmask
+					elif netmask_str == '':
+						return missing+_('Netmask')
+					elif not self.parent.is_ip(netmask_str.strip('\n')):
+						return invalid+_('Netmask')
+					else:
+						return 0
 				else:
-					return _('For a server role an IP address must be determined at this point, please press F5 or deselect the DHCP option')
+						return 0
 
 
 		def input(self,key):
