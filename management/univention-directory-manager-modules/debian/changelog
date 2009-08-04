@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.14-1) unstable; urgency=low
+
+  * Translation update (Bug #14815)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue,  4 Aug 2009 13:58:18 +0200
+
 univention-directory-manager-modules (5.0.13-1) unstable; urgency=low
 
   * check that the options attribute exists before trying to access it for

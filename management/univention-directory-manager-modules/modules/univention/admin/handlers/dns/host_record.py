@@ -101,13 +101,13 @@ layout=[
 		[univention.admin.field('a', first_only=1, short_description=_('Primary IP-Address'))],
 		[univention.admin.field('zonettl')]
 	]),
-	univention.admin.tab(_('IP-Addresses'), _('IP Addresses of the Host'), fields=[
+	univention.admin.tab(_('IP addresses'), _('IP addresses of the host'), fields=[
 		[univention.admin.field('a')],
 	]),
-	univention.admin.tab(_('Mail'), _('Mail Exchangers for this Host'), fields=[
+	univention.admin.tab(_('Mail'), _('Mail exchangers for this host'), fields=[
 		[univention.admin.field('mx')],
 	], advanced = True),
-	univention.admin.tab(_('Text'), _('Optional Text'), fields=[
+	univention.admin.tab(_('Text'), _('Optional text'), fields=[
 		[univention.admin.field('txt')],
 	], advanced = True)
 ]

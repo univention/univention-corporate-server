@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-12 09:30+0100\n"
-"PO-Revision-Date: 2008-06-27 14:59+0200\n"
+"POT-Creation-Date: 2009-08-04 13:47+0200\n"
+"PO-Revision-Date: 2009-08-04 13:52+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -188,11 +188,11 @@ msgid "Primary IP-Address"
 msgstr "Primäre IP-Adresse"
 
 #: host_record.py:104
-msgid "IP-Addresses"
+msgid "IP addresses"
 msgstr "IP-Adressen"
 
 #: host_record.py:104
-msgid "IP Addresses of the Host"
+msgid "IP addresses of the host"
 msgstr "IP-Adressen des Rechners"
 
 #: host_record.py:107
@@ -200,7 +200,7 @@ msgid "Mail"
 msgstr "Mail"
 
 #: host_record.py:107
-msgid "Mail Exchangers for this Host"
+msgid "Mail exchangers for this host"
 msgstr "Mail Exchanger für diesen Rechner"
 
 #: host_record.py:110
@@ -208,7 +208,7 @@ msgid "Text"
 msgstr "Text"
 
 #: host_record.py:110
-msgid "Optional Text"
+msgid "Optional text"
 msgstr "Optionaler Text"
 
 #: host_record.py:155 ptr_record.py:96 srv_record.py:133
