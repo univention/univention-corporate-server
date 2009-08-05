@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.14-1) unstable; urgency=low
+
+  * Remove accidentaly introduced foo bar strings in translation-file  (Bug #14815)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Wed,  5 Aug 2009 11:08:21 +0200
+
 univention-directory-manager (7.0.13-1) unstable; urgency=low
 
   * Translation update (Bug #14815)
