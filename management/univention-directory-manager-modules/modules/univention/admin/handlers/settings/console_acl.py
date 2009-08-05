@@ -37,7 +37,7 @@ import univention.admin.localization
 
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.settings.umc')
+translation=univention.admin.localization.translation('univention.admin.handlers.settings')
 _=translation.translate
 
 module='settings/console_acl'

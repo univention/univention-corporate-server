@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.16-1) unstable; urgency=low
+
+  * Translation bugfix (Bug #14670)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Wed,  5 Aug 2009 12:15:22 +0200
+
 univention-directory-manager-modules (5.0.15-1) unstable; urgency=low
 
   * Translation update (Bug #14815)
