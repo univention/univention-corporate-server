@@ -1,3 +1,9 @@
+univention-printquota (2.0.1-1) unstable; urgency=low
+
+  * add a comment, why join-script should be kept and correct wrong exit-code (Bug #13218)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Wed,  5 Aug 2009 14:54:37 +0200
+
 univention-printquota (2.0.0-1) unstable; urgency=low
 
   * move UCR variables to category service-cups (Bug #13505)

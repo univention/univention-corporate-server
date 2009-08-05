@@ -37,6 +37,11 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep "univention-printquota v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-printquota v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-printquota v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+# Does nothing at the moment. This file is kept anyway, because otherwise a pre-existing .index.txt-entry would
+# prevent future executions of re-added versions of this script.
+
+echo "univention-printquota v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
