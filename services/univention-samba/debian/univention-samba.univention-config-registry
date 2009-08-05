@@ -144,7 +144,6 @@ Type: file
 File: etc/samba/base.conf
 Variables: samba/share/home
 Variables: samba/share/groups
-Variables: samba/share/profiles
 Variables: server/role
 Variables: samba/domainmaster
 
