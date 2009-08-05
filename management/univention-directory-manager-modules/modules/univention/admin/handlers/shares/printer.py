@@ -199,7 +199,7 @@ layout=[
 			[univention.admin.field('setQuota'), univention.admin.field('model')],
 			[univention.admin.field('pagePrice'),univention.admin.field('jobPrice')],
 			]),
-	univention.admin.tab(_('Access Control'),_('Access control for users and groups'),[
+	univention.admin.tab(_('Access control'),_('Access control for users and groups'),[
 			[univention.admin.field('ACLtype')],
 			[univention.admin.field('ACLUsers')],
 			[univention.admin.field('ACLGroups')],

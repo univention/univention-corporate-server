@@ -43,11 +43,11 @@ _=translation.translate
 class thinclientFixedAttributes(univention.admin.syntax.select):
 	name='thinclientFixedAttributes'
 	choices=[
-		('univentionFileServer',_('File server')),
-		('univentionDesktopServer',_('Linux terminal server')),
-		('univentionWindowsTerminalServer',_('Windows terminal server')),
+		('univentionFileServer',_('File servers')),
+		('univentionDesktopServer',_('Linux terminal servers')),
+		('univentionWindowsTerminalServer',_('Windows terminal servers')),
 		('univentionWindowsDomain',_('Windows domain')),
-		('univentionAuthServer',_('Authentication server')),
+		('univentionAuthServer',_('Authentication servers')),
 		]
 
 

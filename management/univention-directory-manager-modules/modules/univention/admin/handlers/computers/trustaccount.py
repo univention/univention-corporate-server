@@ -46,7 +46,7 @@ operations=['add','edit','remove','search','move']
 usewizard=1
 docleanup=1
 childs=0
-short_description=_('Computer: Domain Trust Account')
+short_description=_('Computer: Domain trust account')
 long_description=''
 options={
 }
@@ -86,7 +86,7 @@ layout=[
 	univention.admin.tab(_('General'),_('Basic Values'),[
 			[univention.admin.field("name"), univention.admin.field("description")],
 		]),
-	univention.admin.tab(_('Domain Trust Account'),_('Trust Account Settings'),[
+	univention.admin.tab(_('Domain trust account'),_('Trust account settings'),[
 			[univention.admin.field("password")]
 		])
 ]

@@ -90,7 +90,7 @@ nagios_mapping = [
 
 nagios_options={
 	'nagios': univention.admin.option(
-			short_description=_('Nagios Support'),
+			short_description=_('Nagios support'),
 			default=0,
 			editable=1,
 			objectClasses = ['univentionNagiosHostClass'],

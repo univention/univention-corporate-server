@@ -2,13 +2,12 @@
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-12 09:41+0100\n"
-"PO-Revision-Date: 2009-02-16 10:53+0100\n"
+"POT-Creation-Date: 2009-08-04 17:37+0200\n"
+"PO-Revision-Date: 2009-08-04 17:38+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -109,7 +108,7 @@ msgstr "Protokoll"
 msgid "Printer model"
 msgstr "Drucker-Modell"
 
-#: printer.py:163
+#: printer.py:163 printer.py:202
 msgid "Access control"
 msgstr "Zugriffskontrolle"
 
@@ -133,10 +132,6 @@ msgstr "Zugelassene/abgewiesene Gruppen"
 #: printer.py:185
 msgid "For the given groups printing is explicitly allowed or denied."
 msgstr "Für die angegebenen Gruppen wird der Zugriff erlaubt oder abgewiesen."
-
-#: printer.py:202
-msgid "Access Control"
-msgstr "Zugriffskontrolle"
 
 #: printer.py:202
 msgid "Access control for users and groups"
@@ -943,6 +938,9 @@ msgstr "Die/Der %s %s%s %s diese Freigabe als Heimatverzeichnisfreigabe"
 #, python-format
 msgid "%s (%s on %s)"
 msgstr "%s (%s auf %s)"
+
+#~ msgid "Access Control"
+#~ msgstr "Zugriffskontrolle"
 
 #~ msgid "Access list"
 #~ msgstr "Zugriffslisten"

@@ -67,7 +67,7 @@ property_descriptions={
 			may_change=1
 		),
 	'zonettl': univention.admin.property(
-			short_description=_('Zone Time-to-Live'),
+			short_description=_('Zone time to live'),
 			long_description='',
 			syntax=univention.admin.syntax.unixTimeInterval,
 			multivalue=0,

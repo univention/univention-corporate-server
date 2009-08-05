@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-04 13:47+0200\n"
-"PO-Revision-Date: 2009-08-04 13:52+0200\n"
+"POT-Creation-Date: 2009-08-04 14:45+0200\n"
+"PO-Revision-Date: 2009-08-04 14:47+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr "Alias"
 
 #: alias.py:61 forward_zone.py:63 host_record.py:60 reverse_zone.py:63
 #: srv_record.py:70
-msgid "Zone Time-to-Live"
+msgid "Zone time to live"
 msgstr "Zone Time-to-Live"
 
 #: alias.py:72
@@ -107,7 +107,7 @@ msgid "Expiry interval"
 msgstr "Ablaufintervall"
 
 #: forward_zone.py:129 reverse_zone.py:129
-msgid "Minimum Time-to-Live"
+msgid "Minimum time to live"
 msgstr "Minimum Time-to-Live"
 
 #: forward_zone.py:140

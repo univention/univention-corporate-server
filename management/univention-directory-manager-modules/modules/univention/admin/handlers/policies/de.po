@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-12 09:35+0100\n"
-"PO-Revision-Date: 2009-02-07 12:45+0100\n"
+"POT-Creation-Date: 2009-08-05 09:43+0200\n"
+"PO-Revision-Date: 2009-08-05 09:43+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,7 @@ msgstr "Univention Directory Manager Container Konfiguration"
 #: nfsmounts.py:64 policy.py:63 print_quota.py:67 printserver.py:64
 #: pwhistory.py:66 registry.py:61 release.py:64 repositoryserver.py:64
 #: repositorysync.py:65 share_userquota.py:67 slavepackages.py:65 sound.py:65
-#: thinclient.py:69 windowsinstallation.py:64 xfree.py:73
+#: thinclient.py:69 windowsinstallation.py:64 xfree.py:74
 msgid "Name"
 msgstr "Name"
 
@@ -54,7 +54,7 @@ msgstr "Verfügbare Univention Directory Manager Module"
 #: printserver.py:84 pwhistory.py:106 registry.py:81 release.py:94
 #: repositoryserver.py:84 repositorysync.py:125 share_userquota.py:117
 #: slavepackages.py:95 sound.py:95 thinclient.py:129 windowsinstallation.py:84
-#: xfree.py:191
+#: xfree.py:192
 msgid "Required object classes"
 msgstr "Benötigte Objektklassen"
 
@@ -68,7 +68,7 @@ msgstr "Benötigte Objektklassen"
 #: printserver.py:94 pwhistory.py:116 registry.py:91 release.py:104
 #: repositoryserver.py:94 repositorysync.py:135 share_userquota.py:127
 #: slavepackages.py:105 sound.py:105 thinclient.py:139
-#: windowsinstallation.py:94 xfree.py:201
+#: windowsinstallation.py:94 xfree.py:202
 msgid "Excluded object classes"
 msgstr "Ausgeschlossene Objektklassen"
 
@@ -82,7 +82,7 @@ msgstr "Ausgeschlossene Objektklassen"
 #: print_quota.py:127 printserver.py:104 pwhistory.py:126 registry.py:101
 #: release.py:114 repositoryserver.py:104 repositorysync.py:145
 #: share_userquota.py:137 slavepackages.py:115 sound.py:115 thinclient.py:149
-#: windowsinstallation.py:104 xfree.py:211
+#: windowsinstallation.py:104 xfree.py:212
 msgid "Fixed attributes"
 msgstr "Festgelegte Attribute"
 
@@ -108,7 +108,7 @@ msgstr "Leere Attribute"
 #: print_quota.py:158 printserver.py:135 pwhistory.py:157 registry.py:132
 #: release.py:145 repositoryserver.py:135 repositorysync.py:176
 #: share_userquota.py:168 slavepackages.py:146 sound.py:146 thinclient.py:180
-#: windowsinstallation.py:135 xfree.py:286
+#: windowsinstallation.py:135 xfree.py:296
 msgid "General"
 msgstr "Allgemein"
 
@@ -126,7 +126,7 @@ msgstr "Univention Directory Manager Konfiguration"
 #: print_quota.py:163 printserver.py:139 pwhistory.py:162 registry.py:136
 #: release.py:149 repositoryserver.py:139 repositorysync.py:182
 #: share_userquota.py:173 slavepackages.py:151 sound.py:151 thinclient.py:186
-#: windowsinstallation.py:139 xfree.py:296
+#: windowsinstallation.py:139 xfree.py:308
 msgid "Object"
 msgstr "Objekt"
 
@@ -1113,15 +1113,15 @@ msgid "Policy: User Quota"
 msgstr "Richtlinie: Benutzer-Quota"
 
 #: share_userquota.py:61
-msgid "User Quota Policy"
-msgstr "Benutzer-Quota-Richtlinie"
+msgid "User quota"
+msgstr "Druck-Quota"
 
 #: share_userquota.py:62
-msgid "Default Quota for each User on a Share"
+msgid "Default quota for each user on a share"
 msgstr "Standard-Speicherplatzbegrenzung für jeden User auf der Freigabe"
 
 #: share_userquota.py:78 share_userquota.py:98
-msgid "Soft Limit. If exceeded users can be warned."
+msgid "Soft limit. If exceeded users can be warned."
 msgstr ""
 "Weiche Grenze, bei deren Überschreitung der Benutzer gewarnt werden kann"
 
@@ -1129,12 +1129,8 @@ msgstr ""
 msgid "Hard Limit (Bytes)"
 msgstr "Hard-Limit (Anzahl Byte)"
 
-#: share_userquota.py:88
+#: share_userquota.py:88 share_userquota.py:108
 msgid "Hard limit. Can not be exceeded."
-msgstr "Harte Grenze, die nicht überschritten werden kann."
-
-#: share_userquota.py:108
-msgid "Hard Limit. Can not be exceeded."
 msgstr "Harte Grenze, die nicht überschritten werden kann."
 
 #: share_userquota.py:168
@@ -1165,32 +1161,28 @@ msgstr "Soundkarten-Treiber"
 msgid "Policy: Sound"
 msgstr "Richtlinie: Sound"
 
-#: sound.py:59
-msgid "Sound Settings"
-msgstr "Sound-Einstellungen"
-
-#: sound.py:146
+#: sound.py:59 sound.py:146
 msgid "Sound settings"
 msgstr "Sound-Einstellungen"
 
-#: thinclient.py:46 thinclient.py:89
-msgid "File server"
+#: thinclient.py:46
+msgid "File servers"
 msgstr "File-Server"
 
-#: thinclient.py:47 thinclient.py:79
-msgid "Linux terminal server"
+#: thinclient.py:47
+msgid "Linux terminal servers"
 msgstr "Linux-Terminal-Server"
 
-#: thinclient.py:48 thinclient.py:109
-msgid "Windows terminal server"
+#: thinclient.py:48
+msgid "Windows terminal servers"
 msgstr "Windows-Terminal-Server"
 
 #: thinclient.py:49 thinclient.py:119
 msgid "Windows domain"
 msgstr "Windows-Domäne"
 
-#: thinclient.py:50 thinclient.py:99
-msgid "Authentication server"
+#: thinclient.py:50
+msgid "Authentication servers"
 msgstr "Authentisierungsserver"
 
 #: thinclient.py:62
@@ -1200,6 +1192,22 @@ msgstr "Richtlinie: Thin Client"
 #: thinclient.py:63
 msgid "Thin client configuration"
 msgstr "Thin-Client-Konfiguration"
+
+#: thinclient.py:79
+msgid "Linux terminal server"
+msgstr "Linux-Terminal-Server"
+
+#: thinclient.py:89
+msgid "File server"
+msgstr "File-Server"
+
+#: thinclient.py:99
+msgid "Authentication server"
+msgstr "Authentisierungsserver"
+
+#: thinclient.py:109
+msgid "Windows terminal server"
+msgstr "Windows-Terminal-Server"
 
 #: thinclient.py:180
 msgid "Servers to use"
@@ -1217,77 +1225,94 @@ msgstr "Richtlinie: Windows-Installation"
 msgid "Windows installation"
 msgstr "Windows-Installation"
 
-#: xfree.py:43 xfree.py:83
+#: xfree.py:43 xfree.py:276
+msgid "Automatic detection"
+msgstr "Automatische Erkennung"
+
+#: xfree.py:44 xfree.py:84
 msgid "Resolution"
 msgstr "Auflösung"
 
-#: xfree.py:44 xfree.py:95
+#: xfree.py:45 xfree.py:96
 msgid "Color depth"
 msgstr "Farbtiefe"
 
-#: xfree.py:45 xfree.py:107
+#: xfree.py:46 xfree.py:108
 msgid "Mouse protocol"
 msgstr "Maus Protokoll"
 
-#: xfree.py:46 xfree.py:119
+#: xfree.py:47 xfree.py:120
 msgid "Mouse device"
 msgstr "Mausanschluss"
 
-#: xfree.py:47 xfree.py:131
+#: xfree.py:48 xfree.py:132
 msgid "Keyboard layout"
 msgstr "Tastaturbelegung"
 
-#: xfree.py:48 xfree.py:143
+#: xfree.py:49 xfree.py:144
 msgid "Keyboard variant"
 msgstr "Variante der Tastaturbelegung"
 
-#: xfree.py:49 xfree.py:155
+#: xfree.py:50 xfree.py:156
 msgid "Horizontal sync"
 msgstr "Horizontale Synchronisation"
 
-#: xfree.py:50 xfree.py:167
+#: xfree.py:51 xfree.py:168
 msgid "Vertical refresh"
 msgstr "Vertikale Wiederholfrequenz"
 
-#: xfree.py:51 xfree.py:179
+#: xfree.py:52 xfree.py:180
 msgid "Graphics adapter driver"
 msgstr "Graphikkarten-Treiber"
 
-#: xfree.py:52
+#: xfree.py:53
 msgid "Display size"
 msgstr "Display-Grösse"
 
-#: xfree.py:53 xfree.py:243
+#: xfree.py:54 xfree.py:244
 msgid "Enable VNC export"
 msgstr "Erlaube VNC Display-Freigabe"
 
-#: xfree.py:54 xfree.py:254
+#: xfree.py:55 xfree.py:255
 msgid "Viewonly VNC export"
 msgstr "VNC Display-Freigabe nur anzeigen"
 
-#: xfree.py:55
+#: xfree.py:56
 msgid "Amount of RAM on the graphics adapter"
 msgstr "Die Größe des RAM auf der Grafikkarte"
 
-#: xfree.py:66
+#: xfree.py:67
 msgid "Policy: Display"
 msgstr "Richtlinie: Display"
 
-#: xfree.py:67 xfree.py:286
+#: xfree.py:68 xfree.py:296
 msgid "Display settings"
 msgstr "Display-Einstellungen"
 
-#: xfree.py:221
+#: xfree.py:222
 msgid "Empty Attributes"
 msgstr "Leere Attribute"
 
-#: xfree.py:231
+#: xfree.py:232
 msgid "Display size (mm)"
 msgstr "Display-Grösse (mm)"
 
-#: xfree.py:265
+#: xfree.py:266
 msgid "RAM on the graphics adapter in kB"
 msgstr "RAM auf der Grafikkarte in kB"
+
+#~ msgid "Soft Limit. If exceeded users can be warned."
+#~ msgstr ""
+#~ "Weiche Grenze, bei deren Überschreitung der Benutzer gewarnt werden kann"
+
+#~ msgid "Hard Limit. Can not be exceeded."
+#~ msgstr "Harte Grenze, die nicht überschritten werden kann."
+
+#~ msgid "User Quota Policy"
+#~ msgstr "Benutzer-Quota-Richtlinie"
+
+#~ msgid "Sound Settings"
+#~ msgstr "Sound-Einstellungen"
 
 #~ msgid "Visible Directory Manager wizards"
 #~ msgstr "Sichtbare Web-Directory Manager Assistenten"

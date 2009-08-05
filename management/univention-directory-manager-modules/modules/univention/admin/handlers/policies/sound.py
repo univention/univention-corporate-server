@@ -56,7 +56,7 @@ policy_position_dn_prefix="cn=sound"
 usewizard=1
 childs=0
 short_description=_('Policy: Sound')
-policy_short_description=_('Sound Settings')
+policy_short_description=_('Sound settings')
 long_description=''
 options={
 }

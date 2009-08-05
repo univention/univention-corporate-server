@@ -60,7 +60,7 @@ property_descriptions={
 			identifies=1
 		),
 	'zonettl': univention.admin.property(
-	        short_description=_('Zone Time-to-Live'),
+	        short_description=_('Zone time to live'),
 	        long_description='',
 			syntax=univention.admin.syntax.unixTimeInterval,
 			multivalue=0,
@@ -126,7 +126,7 @@ property_descriptions={
 			default=('604800', [])
 		),
 	'ttl': univention.admin.property(
-			short_description=_('Minimum Time-to-Live'),
+			short_description=_('Minimum time to live'),
 			long_description='',
 			syntax=univention.admin.syntax.unixTimeInterval,
 			multivalue=0,

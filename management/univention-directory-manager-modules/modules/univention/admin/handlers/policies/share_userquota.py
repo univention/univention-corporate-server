@@ -58,8 +58,8 @@ policy_position_dn_prefix="cn=userquota,cn=shares"
 
 childs=0
 short_description=_('Policy: User Quota')
-policy_short_description=_('User Quota Policy')
-long_description=_('Default Quota for each User on a Share')
+policy_short_description=_('User quota')
+long_description=_('Default quota for each user on a share')
 options={
 }
 property_descriptions={
@@ -75,7 +75,7 @@ property_descriptions={
 		),
 	'softLimitSpace': univention.admin.property(
 			short_description=_('Soft limit (Bytes)'),
-			long_description=_('Soft Limit. If exceeded users can be warned.'),
+			long_description=_('Soft limit. If exceeded users can be warned.'),
 			syntax=univention.admin.syntax.filesize,
 			multivalue=0,
 			options=[],
@@ -95,7 +95,7 @@ property_descriptions={
 		),
 	'softLimitInodes': univention.admin.property(
 			short_description=_('Soft limit (Files)'),
-			long_description=_('Soft Limit. If exceeded users can be warned.'),
+			long_description=_('Soft limit. If exceeded users can be warned.'),
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
 			options=[],
@@ -105,7 +105,7 @@ property_descriptions={
 		),
 	'hardLimitInodes': univention.admin.property(
 			short_description=_('Hard limit (Files)'),
-			long_description=_('Hard Limit. Can not be exceeded.'),
+			long_description=_('Hard limit. Can not be exceeded.'),
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
 			options=[],

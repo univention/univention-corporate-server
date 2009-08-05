@@ -1828,21 +1828,21 @@ class sambaLogonHours(string):
 class printQuotaGroup(complex):
 	name='printQuotaGroup'
 	searchFilter='(&(cn=*)(objectClass=posixGroup))'
-	subsyntaxes=[(_('Soft-Limit'), integer), (_('Hard-Limit'), integer), (_('Group'), string)]
+	subsyntaxes=[(_('Soft limit'), integer), (_('Hard limit'), integer), (_('Group'), string)]
 	all_required=0
 
 
 class printQuotaUser(complex):
 	name='printQuotaUser'
 	searchFilter='(&(uid=*)(objectClass=posixAccount)(!(objectClass=univentionHost)))'
-	subsyntaxes=[(_('Soft-Limit'), integer), (_('Hard-Limit'), integer), (_('User'), string)]
+	subsyntaxes=[(_('Soft limit'), integer), (_('Hard limit'), integer), (_('User'), string)]
 	all_required=0
 
 
 class printQuotaGroupsPerUser(complex):
 	name='printQuotaUser'
 	searchFilter='(&(uid=*)(objectClass=posixAccount)(!(objectClass=univentionHost)))'
-	subsyntaxes=[(_('Soft-Limit'), integer), (_('Hard-Limit'), integer), (_('Group'), string)]
+	subsyntaxes=[(_('Soft limit'), integer), (_('Hard limit'), integer), (_('Group'), string)]
 	all_required=0
 
 
