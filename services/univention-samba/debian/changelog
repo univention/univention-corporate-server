@@ -1,3 +1,9 @@
+univention-samba (4.0.5-1) unstable; urgency=low
+
+  * make samba-option "bind interfaces only" configurable via UCR (Bug #13483)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Thu,  6 Aug 2009 11:09:12 +0200
+
 univention-samba (4.0.4-1) unstable; urgency=low
 
   * add check to prevent ugly messages when /etc/cups/printers.conf is missing (Bug #14174)

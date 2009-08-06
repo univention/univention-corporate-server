@@ -26,7 +26,8 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 		       ('samba/charset/dos', 'dos charset'),
 		       ('samba/charset/unix', 'unix charset'),
 		       ('samba/charset/display', 'display charset'),
-		       ('samba/enable-privileges', 'enable privileges'),]:
+		       ('samba/enable-privileges', 'enable privileges'),
+			   ('samba/interfaces/bindonly', 'bind interfaces only'),]:
 	if baseConfig.has_key(key) and baseConfig[key]:
 		print '\t%s = %s' % (smbstring, baseConfig[key])
 

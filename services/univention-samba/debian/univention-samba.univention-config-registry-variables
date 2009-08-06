@@ -291,3 +291,9 @@ Description[de]=Aktiviert/Deaktiviert die Unterstützung für Windows 9X Netlogo
 Description[en]=Enables/Disables support for windows 9X network logons and NT4 style domain services (valid values: no/auto/yes)
 Type=str
 Categories=service-samba
+
+[samba/interfaces/bindonly]
+Description[de]=Beschränkt Samba darauf nur auf den in samba/interfaces genannten Netzwerkgeräten zu horchen.
+Description[en]=Limits Samba to listen only on the interfaces listed in samba/interfaces.
+Type=str
+Categories=service-samba
