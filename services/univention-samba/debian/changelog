@@ -1,3 +1,9 @@
+univention-samba (4.0.4-1) unstable; urgency=low
+
+  * add check to prevent ugly messages when /etc/cups/printers.conf is missing (Bug #14174)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Thu,  6 Aug 2009 09:23:28 +0200
+
 univention-samba (4.0.3-1) unstable; urgency=low
 
   * remove registration of samba/share/profiles from etc/samba/base.conf (Bug #8707)

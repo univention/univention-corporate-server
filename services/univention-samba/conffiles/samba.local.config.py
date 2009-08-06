@@ -142,21 +142,22 @@ def set_options (match, value):
 # get invalid/valid users from cups and samba config
 def get_printers():
 	
-	etc = open("/etc/cups/printers.conf")
+	if os.path.isfile("/etc/cups/printers.conf"):
+		etc = open("/etc/cups/printers.conf")
 
-	reg_cups = re.compile('\s*<Printer\s+([^>]+)>')
-	reg_smb = re.compile('\s*\[([^\]]+)\]')
-	reg_smb_cups = re.compile('\s*printer name =(.*)')
-	reg_invalid = re.compile('\s*invalid users =(.*)')
-	reg_valid = re.compile('\s*valid users =(.*)')
+		reg_cups = re.compile('\s*<Printer\s+([^>]+)>')
+		reg_smb = re.compile('\s*\[([^\]]+)\]')
+		reg_smb_cups = re.compile('\s*printer name =(.*)')
+		reg_invalid = re.compile('\s*invalid users =(.*)')
+		reg_valid = re.compile('\s*valid users =(.*)')
 
-	# cups
-	for line in etc.readlines():
-		m_cups = reg_cups.match(line)
+		# cups
+		for line in etc.readlines():
+			m_cups = reg_cups.match(line)
 
-		if m_cups:
-			printer = m_cups.group(1).strip()
-			printers[printer] = {}
+			if m_cups:
+				printer = m_cups.group(1).strip()
+				printers[printer] = {}
 			
 
 	# samba
