@@ -1,3 +1,9 @@
+univention-webui (3.0.5-1) unstable; urgency=low
+
+  * fix translation bug (Bug: #14074)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Thu,  6 Aug 2009 15:11:27 +0200
+
 univention-webui (3.0.4-1) unstable; urgency=low
 
   * added iso8601Date to modules/syntax.py (Bug: #15149)

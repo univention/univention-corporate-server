@@ -37,7 +37,7 @@ import univention.admin.modules
 import univention.debug
 
 _options_description = _('Options')
-_options_short_description = '(%s)' % _options_description
+_options_short_description = _options_description
 _policies_description = _('Policies')
 
 def _format_tab(tab):
@@ -111,7 +111,7 @@ class Tabbing(list):
 		return None
 
 	def __mk_opt_tab(self):
-		short = _options_short_description
+		short = '(%s)' % _options_short_description
 		long  = _options_description
 		if self.advanced:
 			return univention.admin.tab(short, long), self._module
@@ -212,7 +212,7 @@ class Tabbing(list):
 		return False
 
 	def is_options(self, name):
-		return self.opt_tab and name == _options_short_description
+		return self.opt_tab and name == '(%s)' % _options_short_description
 
 	def is_policy_selection(self, name):
 		return self.pol_sel and name == _policies_description
