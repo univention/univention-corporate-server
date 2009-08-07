@@ -87,25 +87,6 @@ if [ "$1" = "configure" -a -z "$2" ]; then
 	fi
 fi
 
-if [ -z "$ifplugd_action_mount" ]; then
-	   ifplugd_action_mount="yes"
-fi
-
-univention-config-registry set networkmanager/action/mount?$ifplugd_action_mount
-univention-config-registry set networkmanager/group?"Domain Users"
-
-# need to restart dbus to read new permissions for networkmanager/group
-/etc/init.d/dbus restart
-
-for i in $(seq 0 4); do
-	var="interfaces_eth${i}_ifplugd"
-	
-	if [ -n "${!var}" -a ${!var} = 'no' ]; then
-		univention-config-registry set "interfaces/eth${i}/networkmanager=no"
-		univention-config-registry unset "${!var}"
-	fi
-done
-
 #DEBHELPER#
 
 exit 0

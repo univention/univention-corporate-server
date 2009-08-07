@@ -78,23 +78,6 @@ univention-baseconfig set bootsplash/theme?mobileclient
 
 univention-baseconfig set ldap/connection/check?"*/3 * * * *"
 
-if [ "$1" = "configure" -a -z "$2" ]; then
-	update-inetd --debug --comment-chars '#' --enable time
-	if [ -e /usr/lib/univention-bootsplash/univention-appendsplash ] ; then
-		/usr/lib/univention-bootsplash/univention-appendsplash
-	fi
-fi
-
-if [ -z "$ifplugd_action_mount" ]; then
-	   ifplugd_action_mount="yes"
-fi
-
-univention-config-registry set networkmanager/action/mount?$ifplugd_action_mount
-univention-config-registry set networkmanager/group?"Domain Users"
-
-# need to restart dbus to read new permissions for networkmanager/group
-/etc/init.d/dbus restart
-
 #DEBHELPER#
 
 exit 0

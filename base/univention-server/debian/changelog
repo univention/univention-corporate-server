@@ -1,3 +1,10 @@
+univention-server (5.0.4-1) unstable; urgency=low
+
+  * removed network manager configuration
+  * add dependency to univention-network-manager (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  7 Aug 2009 07:57:10 +0200
+
 univention-server (5.0.3-2) unstable; urgency=low
 
   * add directories /etc/network/if-(up|down).d to package
