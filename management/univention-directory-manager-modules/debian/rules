@@ -69,6 +69,7 @@ install-ext-%:
 	dh_installdirs
 
 	install -m755 univention-dnsedit ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
+	install -m755 scripts/check_group_recursion ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 	install -m755 scripts/proof_uniqueMembers ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 	install -m755 scripts/proof_policies ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 	install -m755 scripts/proof_kerberos_deactivation ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
