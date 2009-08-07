@@ -1,0 +1,3 @@
+Type: file
+File: etc/dbus-1/system.d/ucs-networkmanager.conf
+Variables: networkmanager/group

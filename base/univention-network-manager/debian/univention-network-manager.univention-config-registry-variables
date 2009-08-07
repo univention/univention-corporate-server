@@ -1,0 +1,5 @@
+[networkmanager/group]
+Description[de]=Gruppe für den Zugriff auf den Network Manager
+Description[en]=Group with access to the network manager
+Type=str
+Categories=system-base
