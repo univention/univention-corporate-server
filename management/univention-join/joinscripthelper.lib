@@ -1,0 +1,93 @@
+# Helper lib for writing join-scripts.
+#
+# Usage:
+#--------------------------------------------------------------------
+#VERSION=x
+#. /usr/share/univention-join/joinscripthelper.lib
+#check_joined
+#init
+#check_already_executed
+#
+# Do fancy stuff
+#
+#remember_execution
+#--------------------------------------------------------------------
+
+LAST_EXECUTED_VERSION=
+EXEC="`readlink -f \"$0\"`"
+PACKAGE=`echo ${EXEC%.inst} | sed 's/.*\///' | sed 's/^[0-9]\+//'`
+
+INDEXFILE=/var/univention-join/status
+
+#Returns 0 if any version of the script has been previously executed, 1 otherwise
+function check_any_version_executed () {
+	test -n "`grep -e "${PACKAGE} v[0-9]\+ successful" $INDEXFILE`"
+}
+
+#Requires 1 parameter specifying the version to check for.
+#
+#Returns 0 if the specified version of the script has been previously
+#executed, 1 otherwise.
+function check_specific_version_executed () {
+	version=$1
+
+	test -n "`grep "${PACKAGE} v${version} successful" $INDEXFILE`"
+}
+
+#Requires 2 parameters specifying the minimum and maximum version to check for.
+#
+#Returns 0 if any version of the script within the specified range has been previously
+#executed, 1 otherwise.
+function check_version_in_range_executed () {
+	min=$1
+	max=$2
+
+	for i in $( seq $min $max )
+	do
+		check_specific_version_executed $i && return 0
+	done
+
+	return 1
+}
+
+#Permanently stores the current execution of the script
+function remember_execution () {
+	check_specific_version_executed $VERSION \
+		|| echo "${PACKAGE} v${VERSION} successful" >>$INDEXFILE
+
+	if [ $VERSION -gt $LAST_EXECUTED_VERSION ]; then
+		LAST_EXECUTED_VERSION=$VERSION
+	fi
+}
+
+function get_last_executed_version () {
+
+	if [ ! check_any_version_executed ]; then
+		LAST_EXECUTED_VERSION=0
+		return 0
+	fi
+
+	LAST_EXECUTED_VERSION=`grep -e "${PACKAGE} v[0-9]\+ successful" $INDEXFILE \
+		| sed s/"^${PACKAGE} v"// \
+		| sed s/" successful$"// \
+		| sort -n \
+		| tail -n 1`
+
+	return 0
+}
+
+function check_joined () {
+	if ! test -e "/usr/share/univention-join/.joined"; then
+		echo "The server has not joined yet"
+		exit 1
+	fi
+}
+
+function init () {
+	touch $INDEXFILE
+	get_last_executed_version
+}
+
+function check_already_executed () {
+	check_specific_version_executed $VERSION && exit 1
+}

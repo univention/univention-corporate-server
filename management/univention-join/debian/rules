@@ -72,6 +72,8 @@ install: build
 	install -m755 univention-run-join-scripts_tmp ${D}/usr/share/univention-join/univention-run-join-scripts
 	rm univention-run-join-scripts_tmp
 
+	install -m644 joinscripthelper.lib ${D}/usr/share/univention-join/joinscripthelper.lib
+
 	install -m755 check_join_status.sh ${D}/usr/share/univention-join/check_join_status
 	install -m755 91univention-join.inst ${D}/usr/lib/univention-install/
 	dh_install
