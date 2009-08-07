@@ -281,6 +281,10 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		self.check_for_group_recursion()
+
+	def _ldap_pre_modify(self):
+		self.check_for_group_recursion()
 
 	def _ldap_addlist(self):
 
@@ -563,6 +567,78 @@ class object(univention.admin.handlers.simpleLdap):
 				remove_element = element
 		list.remove(remove_element)
 		return list
+
+	def check_for_group_recursion(self):
+		# perform check only if membership of groups has changed
+		if not self.hasChanged('memberOf') and not self.hasChanged('nestedGroup'):
+			return
+
+		# perform check only if enabled via UCR
+		if univention.admin.baseConfig.get('directory/manager/web/modules/groups/group/checks/circular_dependency','yes').lower() in ('no','false','0'):
+			return
+
+		grpdn2childgrpdns = {}
+		grp_module=univention.admin.modules.get('groups/group')
+
+		cn = self.info.get('name', 'UNKNOWN')
+
+		# test self dependency
+		# ==> nestedGroup or memberOf contains self.dn
+		for field in ('nestedGroup', 'memberOf'):
+			if self.dn.lower() in [ x.lower() for x in self.info.get(field,[]) ]:
+				raise univention.admin.uexceptions.circularGroupDependency('%s ==> %s' % (cn, cn))
+
+		# test short dependencies: A -> B -> A
+		# ==> intersection of nestedGroup and memberOf is not empty
+		set_nestedGroup = set( [ x.lower() for x in self.info.get('nestedGroup',[]) ] )
+		set_memberOf = set( [ x.lower() for x in self.info.get('memberOf',[]) ] )
+		set_intersection = set_nestedGroup & set_memberOf
+		if set_intersection:
+			childdn = list(set_intersection)[0]
+			# get cn for first detected object
+			childobj = univention.admin.objects.get(grp_module, self.co, self.lo, position='', dn=childdn, arg='')
+			childcn = childobj.info.get('name','UNKNOWN')
+			raise univention.admin.uexceptions.circularGroupDependency('%s ==> %s ==> %s' % (childcn, cn, childcn))
+
+		# test long dependencies: A -> B -> C -> A
+		if self.info.get('memberOf'):   # TODO: FIXME:  perform extended check only if self.hasChanged('memberOf') is True
+			# if user added some groups to memberOf, the group objects specified in memberOf do not contain self als
+			# uniqueMember (aka nestedGroup) when this test is performed. So this test has to perform the recursion check
+			# with each member of memberOf as parent
+			for upgrp in self.info.get('memberOf',[]):
+				for subgrp in self.info.get('nestedGroup',[]):
+					self._check_group_childs_for_recursion(grp_module, grpdn2childgrpdns, subgrp.lower(), [ upgrp.lower(), self.dn.lower() ])
+		else:
+			for subgrp in self.info.get('nestedGroup',[]):
+				self._check_group_childs_for_recursion(grp_module, grpdn2childgrpdns, subgrp.lower(), [ self.dn.lower() ])
+
+
+	def _check_group_childs_for_recursion(self, grp_module, grpdn2childgrpdns, dn, parents=[]):
+		if not dn in grpdn2childgrpdns:
+			grpobj = univention.admin.objects.get(grp_module, self.co, self.lo, position='', dn=dn, arg='')
+			grpobj.open()
+			childs = grpobj.info.get('nestedGroup',[])
+			grpdn2childgrpdns[ dn ] = childs
+		else:
+			childs = grpdn2childgrpdns[ dn ]
+
+		new_parents = parents + [ dn ]
+		for childgrp in childs:
+			if childgrp.lower() in new_parents:
+				dnCircle = new_parents[ new_parents.index(childgrp.lower()): ] + [ childgrp.lower() ]
+				cnCircle = []
+				# get missing cn's if required
+				grpdn2cn = { self.dn.lower(): self.info.get('name','UNKNOWN') }
+				for x in dnCircle:
+					if not x.lower() in grpdn2cn:
+						xobj = univention.admin.objects.get(grp_module, self.co, self.lo, position='', dn=x, arg='')
+						grpdn2cn[ x.lower() ] = xobj.info.get('name','UNKNOWN')
+					cnCircle.append( grpdn2cn[x.lower()] )
+				raise univention.admin.uexceptions.circularGroupDependency(' ==> '.join(cnCircle))
+
+			self._check_group_childs_for_recursion(grp_module, grpdn2childgrpdns, childgrp.lower(), new_parents)
+
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 

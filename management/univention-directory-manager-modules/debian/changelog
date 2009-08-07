@@ -1,3 +1,11 @@
+univention-directory-manager-modules (5.0.18-1) unstable; urgency=low
+
+  * added circular group dependency check (Bug: #15290)
+    check may be disabled by setting UCR variable
+    directory/manager/web/modules/groups/group/checks/circular_dependency=no
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 07 Aug 2009 14:12:11 +0200
+
 univention-directory-manager-modules (5.0.17-1) unstable; urgency=low
 
   * added script check_group_recursion (Bug: #15290)

@@ -793,6 +793,9 @@ def doit(arglist):
 			except univention.admin.uexceptions.noObject:
 				out.append('E: object not found')
 				return out + ["OPERATION FAILED"]
+			except univention.admin.uexceptions.circularGroupDependency, e:
+				out.append('E: circular group dependency detected: %s' % e)
+				return out + ["OPERATION FAILED"]
 
 			if extraOC or extraAttributes:
 				if extraOC:
@@ -909,6 +912,9 @@ def doit(arglist):
 						return out + ["OPERATION FAILED"]
 					except univention.admin.uexceptions.invalidDhcpEntry:
 						out.append('E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
+						return out + ["OPERATION FAILED"]
+					except univention.admin.uexceptions.circularGroupDependency, e:
+						out.append('E: circular group dependency detected: %s' % e)
 						return out + ["OPERATION FAILED"]
 
 			if extraOC or extraAttributes:

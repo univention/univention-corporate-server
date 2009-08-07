@@ -227,3 +227,5 @@ class nagiosDNSForwardZoneEntryRequired(base):
 class dnsAliasRecordExists(base):
 	message=_('The DNS forward entry could not be created. Please remove existing alias records or comparable DNS objects with the same name as this host from the forward zone.')
 
+class circularGroupDependency(base):
+	message=_('Circular group dependency detected: ')
