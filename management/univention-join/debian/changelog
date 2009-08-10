@@ -1,3 +1,10 @@
+univention-join (2.0.3-1) unstable; urgency=low
+
+  * add check to univention-join that verifies, that the specified dname matches
+    the cname in the master certificate. (Bug #9650)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Mon, 10 Aug 2009 15:41:04 +0200
+
 univention-join (2.0.2-1) unstable; urgency=low
 
   * some renaming and cosmetics in joinscript-helperlib (Bug #14873)

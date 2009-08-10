@@ -100,6 +100,13 @@ download_host_certificate () {
 		univention-scp $HOSTPWD "-r $HOSTACCOUNT@$DCNAME:/etc/univention/ssl/$hostname /etc/univention/ssl/" >>/var/log/univention/join.log 2>&1
 		univention-scp $HOSTPWD "-r $HOSTACCOUNT@$DCNAME:/etc/univention/ssl/$hostname.$domainname /etc/univention/ssl/" >>/var/log/univention/join.log 2>&1
 	done
+
+	local commonName=`univention-ssh $DCPWD "$DCNAME 'openssl x509 -noout -in ""/etc/univention/ssl/$DCNAME/cert.pem"" -subject -nameopt multiline'" | grep commonName | sed s/.*\ // | tr -d '\r\n'`
+
+	if [ "$commonName" != "$DCNAME" ]; then
+		failed_message "The specified dcname ($DCNAME) doesn't match the common Name in the host certificate ($commonName)"
+	fi
+
 	echo -e "\033[60Gdone"
 }
 
