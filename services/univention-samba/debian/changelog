@@ -1,3 +1,9 @@
+univention-samba (4.0.7-1) unstable; urgency=low
+
+  * re-insert "exit 0" at end of the Join-Script (Bug #3562)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Mon, 10 Aug 2009 11:44:51 +0200
+
 univention-samba (4.0.6-1) unstable; urgency=low
 
   * remove "printer admin" option from default template (Bug #3562)
