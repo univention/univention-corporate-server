@@ -4,71 +4,73 @@
 #--------------------------------------------------------------------
 #VERSION=x
 #. /usr/share/univention-join/joinscripthelper.lib
-#check_joined
-#init
-#check_already_executed
+#joinscript_init
 #
 # Do fancy stuff
 #
-#remember_execution
+#joinscript_save_current_version
 #--------------------------------------------------------------------
 
-LAST_EXECUTED_VERSION=
-EXEC="`readlink -f \"$0\"`"
-PACKAGE=`echo ${EXEC%.inst} | sed 's/.*\///' | sed 's/^[0-9]\+//'`
+JS_SCRIPT_FULLNAME="`readlink -f \"$0\"`"
+JS_STATUSFILE=/var/univention-join/status
 
-INDEXFILE=/var/univention-join/status
+#The Value 0 means, that the script has never been executed.
+JS_LAST_EXECUTED_VERSION=
+JS_PACKAGE=`echo ${JS_SCRIPT_FULLNAME%.inst} | sed 's/.*\///' | sed 's/^[0-9]\+//'`
 
 #Returns 0 if any version of the script has been previously executed, 1 otherwise
-function check_any_version_executed () {
-	test -n "`grep -e "${PACKAGE} v[0-9]\+ successful" $INDEXFILE`"
+function joinscript_check_any_version_executed () {
+	touch $JS_STATUSFILE
+	test -n "`grep -e "${JS_PACKAGE} v[0-9]\+ successful" $JS_STATUSFILE`"
 }
 
 #Requires 1 parameter specifying the version to check for.
 #
 #Returns 0 if the specified version of the script has been previously
 #executed, 1 otherwise.
-function check_specific_version_executed () {
-	version=$1
+function joinscript_check_specific_version_executed () {
+	local version=$1
 
-	test -n "`grep "${PACKAGE} v${version} successful" $INDEXFILE`"
+	touch $JS_STATUSFILE
+	test -n "`grep "${JS_PACKAGE} v${version} successful" $JS_STATUSFILE`"
 }
 
 #Requires 2 parameters specifying the minimum and maximum version to check for.
 #
 #Returns 0 if any version of the script within the specified range has been previously
 #executed, 1 otherwise.
-function check_version_in_range_executed () {
-	min=$1
-	max=$2
+function joinscript_check_version_in_range_executed () {
+	local min=$1
+	local max=$2
 
 	for i in $( seq $min $max )
 	do
-		check_specific_version_executed $i && return 0
+		joinscript_check_specific_version_executed $i && return 0
 	done
 
 	return 1
 }
 
 #Permanently stores the current execution of the script
-function remember_execution () {
-	check_specific_version_executed $VERSION \
-		|| echo "${PACKAGE} v${VERSION} successful" >>$INDEXFILE
+function joinscript_save_current_version () {
+	joinscript_check_specific_version_executed $VERSION \
+		|| echo "${JS_PACKAGE} v${VERSION} successful" >>$JS_STATUSFILE
 
-	if [ $VERSION -gt $LAST_EXECUTED_VERSION ]; then
-		LAST_EXECUTED_VERSION=$VERSION
+	if [ $VERSION -gt $JS_LAST_EXECUTED_VERSION ]; then
+		JS_LAST_EXECUTED_VERSION=$VERSION
 	fi
 }
 
-function get_last_executed_version () {
+function joinscript_get_last_executed_version () {
 
-	if [ ! check_any_version_executed ]; then
-		LAST_EXECUTED_VERSION=0
+	joinscript_check_any_version_executed
+	if [ $? -ne 0 ]; then
+		JS_LAST_EXECUTED_VERSION=0
 		return 0
 	fi
 
-	LAST_EXECUTED_VERSION=`grep -e "${PACKAGE} v[0-9]\+ successful" $INDEXFILE \
-		| sed s/"^${PACKAGE} v"// \
+	JS_LAST_EXECUTED_VERSION=`grep -e "${JS_PACKAGE} v[0-9]\+ successful" $JS_STATUSFILE \
+		| sed s/"^${JS_PACKAGE} v"// \
 		| sed s/" successful$"// \
 		| sort -n \
 		| tail -n 1`
@@ -76,18 +78,19 @@ function get_last_executed_version () {
 	return 0
 }
 
-function check_joined () {
+function joinscript_check_joinstatus () {
 	if ! test -e "/usr/share/univention-join/.joined"; then
 		echo "The server has not joined yet"
 		exit 1
 	fi
 }
 
-function init () {
-	touch $INDEXFILE
-	get_last_executed_version
+function joinscript_check_already_executed () {
+	joinscript_check_specific_version_executed $VERSION && exit 1
 }
 
-function check_already_executed () {
-	check_specific_version_executed $VERSION && exit 1
+function joinscript_init () {
+	joinscript_check_joinstatus
+	joinscript_check_already_executed
+	joinscript_get_last_executed_version
 }

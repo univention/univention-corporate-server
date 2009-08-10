@@ -1,3 +1,9 @@
+univention-join (2.0.2-1) unstable; urgency=low
+
+  * some renaming and cosmetics in joinscript-helperlib (Bug #14873)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Mon, 10 Aug 2009 10:54:48 +0200
+
 univention-join (2.0.1-1) unstable; urgency=low
 
   * add helper lib for join scripts (Bug #14873)
