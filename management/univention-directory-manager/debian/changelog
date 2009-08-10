@@ -1,3 +1,11 @@
+univention-directory-manager (7.0.14-2) unstable; urgency=low
+
+  * added UCR variable
+    directory/manager/web/modules/groups/group/checks/circular_dependency
+    (Bug: #15290)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 10 Aug 2009 11:06:20 +0200
+
 univention-directory-manager (7.0.14-1) unstable; urgency=low
 
   * Remove accidentaly introduced foo bar strings in translation-file  (Bug #14815)

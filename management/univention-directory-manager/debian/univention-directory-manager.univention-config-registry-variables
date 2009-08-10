@@ -52,3 +52,8 @@ Description[en]=Default amount of results per page in the wizard-modules of Univ
 Type=int
 Categories=management-udm
 
+[directory/manager/web/modules/groups/group/checks/circular_dependency]
+Description[de]=Aktivierung automatischer Tests zur Erkennung von zyklischen Gruppenabhängigkeiten im Univention Directory Manager (Standard: yes)
+Description[en]=Enables automatic check for circular group dependency checks in Univention Directory Manager (default: yes)
+Type=str
+Categories=Management
