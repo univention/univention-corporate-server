@@ -1,3 +1,12 @@
+univention-samba (4.0.6-1) unstable; urgency=low
+
+  * remove "printer admin" option from default template (Bug #3562)
+  * set corresponding privileges using "net rpc rights grant" via the joinscript (Bug #3562)
+  * make samba-joinscript use joinscripthelper.lib in univention-join
+  * add dependency on univention-join >= 2.0.2
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Mon, 10 Aug 2009 11:17:06 +0200
+
 univention-samba (4.0.5-1) unstable; urgency=low
 
   * make samba-option "bind interfaces only" configurable via UCR (Bug #13483)
