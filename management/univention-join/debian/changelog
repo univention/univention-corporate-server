@@ -1,3 +1,9 @@
+univention-join (2.0.4-1) unstable; urgency=low
+
+  * move the check from the last commit to the right position. (Bug #9650)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Mon, 10 Aug 2009 15:57:32 +0200
+
 univention-join (2.0.3-1) unstable; urgency=low
 
   * add check to univention-join that verifies, that the specified dname matches
