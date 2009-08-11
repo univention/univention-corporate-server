@@ -1404,7 +1404,7 @@ class modedit(unimodule.unimodule):
 							primary_group_choicelist.sort(compare_dicts_by_two_attr('item','description'))
 
 							atts=copy.deepcopy(attributes)
-							primary_group_select=question_select(property.syntax.description,atts,{'choicelist':primary_group_choicelist,'helptext':_('select attribute')})
+							primary_group_select=question_select(property.syntax.description,atts,{'choicelist':primary_group_choicelist,'helptext':property.long_description})
 							cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [\
 										primary_group_select\
 								]}))
@@ -1415,7 +1415,7 @@ class modedit(unimodule.unimodule):
 							primary_group_choicelist[-1]['selected']='1'
 
 							atts=copy.deepcopy(attributes)
-							primary_group_select=question_select(property.syntax.description,atts,{'choicelist':primary_group_choicelist,'helptext':_('select attribute')})
+							primary_group_select=question_select(property.syntax.description,atts,{'choicelist':primary_group_choicelist,'helptext':property.long_description})
 							cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [\
 										primary_group_select\
 								]}))
@@ -1442,7 +1442,7 @@ class modedit(unimodule.unimodule):
 						primary_group_choicelist.sort()
 
 						atts=copy.deepcopy(attributes)
-						primary_group_select=question_select(property.short_description,atts,{'choicelist':primary_group_choicelist,'helptext':_('select attribute')})
+						primary_group_select=question_select(property.short_description,atts,{'choicelist':primary_group_choicelist,'helptext':property.long_description})
 						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [\
 									primary_group_select\
 							]}))
@@ -1489,7 +1489,7 @@ class modedit(unimodule.unimodule):
 								id_choicelist.append(id_choicelist_sort[key])
 
 							atts=copy.deepcopy(attributes)
-							id_select=question_select(property.short_description,atts,{'choicelist':id_choicelist,'helptext':_('select attribute')})
+							id_select=question_select(property.short_description,atts,{'choicelist':id_choicelist,'helptext':property.long_description})
 							self.pinput[name]=id_select
 						else: # normal field
 							self.userinfo_append(_("%s: Too many entries for selectbox")%property.short_description)
@@ -1511,7 +1511,7 @@ class modedit(unimodule.unimodule):
 									generic_choicelist[-1]['selected']='1'
 
 						atts=copy.deepcopy(attributes)
-						generic_select=question_select(property.short_description,atts,{'choicelist':generic_choicelist,'helptext':_('select attribute')})
+						generic_select=question_select(property.short_description,atts,{'choicelist':generic_choicelist,'helptext':property.long_description})
 
 						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [\
 									generic_select\
@@ -1987,7 +1987,7 @@ class modedit(unimodule.unimodule):
 							for key in keys:
 								id_choicelist.append(id_choicelist_sorted[key])
 
-							lst_user = question_select(property.short_description,{"width":"250"},{'choicelist':id_choicelist,'helptext':_('select attribute')})
+							lst_user = question_select(property.short_description,{"width":"250"},{'choicelist':id_choicelist,'helptext':property.long_description})
 							self.sharedFolderACLUserList[property.syntax.name]=lst_user
 						else: # normal field
 							self.userinfo_append(_("%s: Too many entries for selectbox")%property.short_description)
@@ -2116,7 +2116,7 @@ class modedit(unimodule.unimodule):
 								id_choicelist.append(id_choicelist_sorted[key])
 							id_choicelist.append({'name': "anyone", "description": _("Anyone")})
 
-							lst_user = question_select(_("E-Mail address"),atts,{'choicelist':id_choicelist,'helptext':_('select attribute')})
+							lst_user = question_select(_("E-Mail address"),atts,{'choicelist':id_choicelist,'helptext':property.long_description})
 							self.kolabIntevationPolicyUserList[property.syntax.name]=lst_user
 						else: # normal field
 							self.userinfo_append(_("%s: Too many entries for selectbox")%property.short_description)
@@ -2420,7 +2420,7 @@ class modedit(unimodule.unimodule):
 							if not atts.get('width'):
 								atts['width']='100' # FIXME Design
 
-							id_select=question_select(property.short_description,atts,{'choicelist':id_choicelist,'helptext':_('select attribute')})
+							id_select=question_select(property.short_description,atts,{'choicelist':id_choicelist,'helptext':property.long_description})
 							atts['width'] = '110'
 							self.minput[name].append(id_select)
 							b_atts['width'] = '185'
@@ -2520,7 +2520,7 @@ class modedit(unimodule.unimodule):
 									id_choicelist.append(id_choicelist_sort[key])
 
 								atts=copy.deepcopy(attributes)
-								id_select=question_select(property.short_description,atts,{'choicelist':id_choicelist,'helptext':_('select attribute')})
+								id_select=question_select(property.short_description,atts,{'choicelist':id_choicelist,'helptext':property.long_description})
 							else: # normal field
 								self.userinfo_append(_("%s: Too many entries for selectbox")%property.short_description)
 								if not property.short_description[-2:] == "ID":
@@ -2643,7 +2643,7 @@ class modedit(unimodule.unimodule):
 									id_choicelist.append(id_choicelist_sort[key])
 
 								atts=copy.deepcopy(attributes)
-								id_select=question_select(property.short_description,atts,{'choicelist':id_choicelist,'helptext':_('select attribute')})
+								id_select=question_select(property.short_description,atts,{'choicelist':id_choicelist,'helptext':property.long_description})
 								self.minput[name].append(id_select)
 								self.minput[name].append(question_text(_("Soft limit (Pages)"),
 												       atts,
@@ -3918,7 +3918,7 @@ class modedit(unimodule.unimodule):
 								if obj.dn == value:
 									module_choicelist[-1]['selected']='1'
 
-							module_select=question_select(property.short_description,atts,{'choicelist':module_choicelist,'helptext':_('select attribute')})
+							module_select=question_select(property.short_description,atts,{'choicelist':module_choicelist,'helptext':property.long_description})
 							self.pinput[name]=module_select
 						else:
 							self.userinfo_append(_("%s: Too many entries for selectbox")%property.syntax.description)
@@ -4094,7 +4094,7 @@ class modedit(unimodule.unimodule):
 							self.search_input=text('',{},{'text':['']})
 
 						self.search_property_button=button('go',{},{'helptext':_('go ahead')})
-						self.search_property_select=question_select(_('Property'),{},{'helptext':_('select attribute'),'choicelist':search_properties,'button':self.search_property_button})
+						self.search_property_select=question_select(_('Property'),{},{'helptext':property.long_description,'choicelist':search_properties,'button':self.search_property_button})
 
 						# make fields available in apply
 						search_property_select=self.search_property_select

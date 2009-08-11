@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.15-1) unstable; urgency=low
+
+  * fix tooltips (Bug: #13222)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue, 11 Aug 2009 15:13:30 +0200
+
 univention-directory-manager (7.0.14-2) unstable; urgency=low
 
   * added UCR variable
