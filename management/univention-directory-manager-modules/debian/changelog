@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.18-2) unstable; urgency=low
+
+  * typo-fix in admincli (Bug #13582)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue, 11 Aug 2009 12:03:20 +0200
+
 univention-directory-manager-modules (5.0.18-1) unstable; urgency=low
 
   * added circular group dependency check (Bug: #15290)

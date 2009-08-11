@@ -254,7 +254,7 @@ def object_input(module, object, input, append=None, remove=None):
 					if not object.has_key(key):
 						object[key]=[]
 					if val in object[key]:
-						out.append('WARNING: can not append %s to %s, value exists'%(val,key))
+						out.append('WARNING: cannot append %s to %s, value exists'%(val,key))
 					elif object[key] == ['']:
 						object[key]=[val]
 					else:
@@ -262,7 +262,7 @@ def object_input(module, object, input, append=None, remove=None):
 			else:
 				for val in value:
 					if val in object[key]:
-						out.append('WARNING: can not append %s to %s, value exists'%(val,key))
+						out.append('WARNING: cannot append %s to %s, value exists'%(val,key))
 					elif object[key] == [''] or object[key] == []:
 						object[key]=[val]
 					else:
@@ -293,7 +293,7 @@ def object_input(module, object, input, append=None, remove=None):
 						if val and val in object[key]:
 							object[key].remove(val)
 						else:
-							out.append("WARNING: can not remove %s from %s, value does not exist"%(val,key))
+							out.append("WARNING: cannot remove %s from %s, value does not exist"%(val,key))
 				else:
 					object[key]=[]
 
@@ -308,7 +308,7 @@ def object_input(module, object, input, append=None, remove=None):
 					if val in object[key]:
 						object[key].remove(val)
 					else:
-						out.append("WARNING: can not remove %s from %s, value does not exist"%(val,key))
+						out.append("WARNING: cannot remove %s from %s, value does not exist"%(val,key))
 	if input:
 		for key, value in input.items():
 			if module.property_descriptions[key].syntax.name == 'binaryfile':
@@ -668,7 +668,7 @@ def doit(arglist):
 							extraAttributes.append((ldapMapping,'',[i]))
 				else:
 					if len(customattribute[module.property_descriptions[pname].short_description])>1:
-						out.append('WARNING: can not set singlevalue customattribute "%s" with more than one entry'%module.property_descriptions[pname].short_description)
+						out.append('WARNING: cannot set singlevalue customattribute "%s" with more than one entry'%module.property_descriptions[pname].short_description)
 					else:
 						replaced=0
 						if action in ['create','new'] or not dn or dn == '':
@@ -973,7 +973,7 @@ def doit(arglist):
 					upr['univentionPolicyReference'] = []
 				for el in policy_reference:
 					if val in upr['univentionPolicyReference']:
-						out.append('WARNING: can not append %s to univentionPolicyReference, value exists' % val)
+						out.append('WARNING: cannot append %s to univentionPolicyReference, value exists' % val)
 					else:
 						modlist.append(('univentionPolicyReference','',el))
 				if modlist:
