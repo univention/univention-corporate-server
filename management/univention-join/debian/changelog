@@ -1,3 +1,9 @@
+univention-join (2.0.6-1) unstable; urgency=low
+
+  * add copyright header for joinscripthelper.lib (Bug #14873)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue, 11 Aug 2009 11:48:25 +0200
+
 univention-join (2.0.5-1) unstable; urgency=low
 
   * replace "(exitcode 1)" by "skipped" in univention-run-join-scripts output (Bug #15082)
