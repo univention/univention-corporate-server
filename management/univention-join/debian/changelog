@@ -1,3 +1,10 @@
+univention-join (2.0.5-1) unstable; urgency=low
+
+  * replace "(exitcode 1)" by "skipped" in univention-run-join-scripts output (Bug #15082)
+  * add symlink for check_join_status.sh to /usr/sbin, and make log more verbose (Bug #11888)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue, 11 Aug 2009 11:15:44 +0200
+
 univention-join (2.0.4-1) unstable; urgency=low
 
   * move the check from the last commit to the right position. (Bug #9650)

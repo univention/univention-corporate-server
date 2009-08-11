@@ -28,30 +28,36 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+LOG_FILE=/var/log/univention/check_join_status.log
+
 log_error ()
 {
-	echo "Error: $1"
+	local message="Error: $1"
+	echo $message
+	echo $message >> $LOG_FILE
 	exit 1
 }
 log_warn ()
 {
-	echo "Warning: $1"
+	local message="Warning: $1"
+	echo $message
+	echo $message >> $LOG_FILE
 }
 
-echo "Start $0 at $(date)" >>/var/log/univention/check_join_status.log
+echo "Start $0 at $(date)" >>$LOG_FILE
 eval `univention-config-registry shell`
 
 if [ ! -e /etc/machine.secret ]; then
 	log_error "/etc/machine.secret not found"
 fi
 
-ldapsearch -x -h "$ldap_master" -D "$ldap_hostdn" -w `cat /etc/machine.secret` -b $ldap_base -s base >>/var/log/univention/check_join_status.log 2>&1
+ldapsearch -x -h "$ldap_master" -D "$ldap_hostdn" -w `cat /etc/machine.secret` -b $ldap_base -s base >>$LOG_FILE 2>&1
 if [ $? != 0 ]; then
 	log_error "ldapsearch -x failed"
 fi
 
 
-ldapsearch -x -ZZ -h "$ldap_master" -D "$ldap_hostdn" -w `cat /etc/machine.secret` -b $ldap_base -s base >>/var/log/univention/check_join_status.log 2>&1
+ldapsearch -x -ZZ -h "$ldap_master" -D "$ldap_hostdn" -w `cat /etc/machine.secret` -b $ldap_base -s base >>$LOG_FILE 2>&1
 if [ $? != 0 ]; then
 	log_error "ldapsearch -x -ZZ failed"
 fi
@@ -60,7 +66,7 @@ if [ ! -e /var/univention-join/joined ]; then
 	log_error "The system isn't joined yet"
 fi
 
-ldapsearch -x -ZZ -D "$ldap_hostdn" -w `cat /etc/machine.secret` -b $ldap_base -s base >>/var/log/univention/check_join_status.log 2>&1
+ldapsearch -x -ZZ -D "$ldap_hostdn" -w `cat /etc/machine.secret` -b $ldap_base -s base >>$LOG_FILE 2>&1
 if [ $? != 0 ]; then
 	log_error "localhost ldapsearch failed"
 fi
@@ -72,8 +78,7 @@ if [ $configured -lt $inst_files ]; then
 	log_error "Not all install files configured"
 fi
 
-echo ""
-echo ""
 echo "Joined successful"
-echo ""
-echo ""
+echo "Joined successfully" >> $LOG_FILE
+
+exit 0

@@ -154,7 +154,7 @@ if test -e "/usr/lib/univention-install/"; then
 		RET=$?
 		echo "EXITCODE=$RET" >>/var/log/univention/join.log 2>&1
 		if [ $RET != 0 ]; then
-			echo -e "\033[60G(exitcode $RET)"
+			echo -e "\033[60G(skipped)"
 		else
 			echo -e "\033[60Gdone"
 		fi
