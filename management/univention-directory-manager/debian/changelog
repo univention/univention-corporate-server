@@ -1,4 +1,4 @@
-univention-directory-manager (7.0.15-2) unstable; urgency=low
+univention-directory-manager (7.0.16-1) unstable; urgency=low
 
   * reset type-selection after changing superordinate to fix stack traces in dhcp and dns-module (Bug #3601)
 
