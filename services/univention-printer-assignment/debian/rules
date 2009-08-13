@@ -36,6 +36,8 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
+	install -m 755 75univention-printer-assignment.inst ${D}/usr/lib/univention-install/75univention-printer-assignment.inst
+
 	univention-install-baseconfig
 
 # Build architecture-independent files here.
