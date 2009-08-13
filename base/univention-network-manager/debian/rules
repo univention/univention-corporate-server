@@ -57,6 +57,8 @@ install: build
 
 	install -m 755 etc/network/if-up.d/[0-9]* debian/univention-network-manager/etc/network/if-up.d
 	install -m 755 etc/network/if-down.d/[0-9]* debian/univention-network-manager/etc/network/if-down.d
+	install -m 755 etc/NetworkManager/dhcp-hooks.d/[0-9]* debian/univention-network-manager/etc/NetworkManager/dhcp-hooks.d
+	install -m 755 nm-dhcp-client.action.sh debian/univention-network-manager/usr/lib/NetworkManager/nm-dhcp-client.action
 
 	univention-install-config-registry
 	univention-install-config-registry-info

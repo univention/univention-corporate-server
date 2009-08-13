@@ -1,3 +1,12 @@
+univention-network-manager (0.2.0-1) unstable; urgency=low
+
+  * replace network manager dhclient action script with a version
+    supporting hooks (Bug #8994)
+  * implement fallback mechanism: if DHCP fails read UCR fallback
+    configuration and pass it to the network manager
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 13 Aug 2009 10:56:48 +0200
+
 univention-network-manager (0.1.0-1) unstable; urgency=low
 
   * Initial Release.

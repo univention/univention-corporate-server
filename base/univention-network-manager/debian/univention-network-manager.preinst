@@ -1,10 +1,9 @@
 #!/bin/sh
 #
-# Univention Server
-#  network script: fix time
-#  the network link is down
+# Univention Network Manager
+#  preinst script
 #
-# Copyright (C) 2008-2009 Univention GmbH
+# Copyright (C) 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,4 +28,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-/etc/init.d/ntp stop
+#DEBHELPER#
+
+if [ install = "$1" -o upgrade = "$1" ]; then 
+   dpkg-divert --package univention-network-manager --add --rename --divert /usr/lib/NetworkManager/nm-dhcp-client.action.real /usr/lib/NetworkManager/nm-dhcp-client.action
+fi  
+
+exit 0

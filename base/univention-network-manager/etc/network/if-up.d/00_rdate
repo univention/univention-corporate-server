@@ -1,10 +1,10 @@
 #!/bin/sh
 #
-# Univention Server
+# Univention Network Manager
 #  network script: fix time
 #  the network link is active
 #
-# Copyright (C) 2008 Univention GmbH
+# Copyright (C) 2008-2009 Univention GmbH
 #
 # http://www.univention.de/
 #

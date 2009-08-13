@@ -1,10 +1,9 @@
 #!/bin/sh
 #
-# Univention Server
-#  network script: fix time
-#  the network link is down
+# Univention Network Manager
+#  script used by NM as dhclient script
 #
-# Copyright (C) 2008-2009 Univention GmbH
+# Copyright (C) 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -22,11 +21,22 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
-/etc/init.d/ntp stop
+HOOKS_DIR=/etc/NetworkManager/dhcp-hooks.d/
+
+# call hooks: each hook script might write shell script to standard output to change environment variables
+for script in ${HOOKS_DIR}/*; do
+	eval $($script)
+done
+
+/usr/lib/NetworkManager/nm-dhcp-client.action.real
+
+exit 0
+
+	
