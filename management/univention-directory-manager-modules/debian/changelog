@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.19-1) unstable; urgency=low
+
+  * config registry policies were not able to have a = in the value. Bug #15069
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 15 Jul 2009 15:54:05 +0200
+
 univention-directory-manager-modules (5.0.18-2) unstable; urgency=low
 
   * typo-fix in admincli (Bug #13582)

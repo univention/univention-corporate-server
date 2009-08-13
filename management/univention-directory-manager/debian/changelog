@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.17-1) unstable; urgency=low
+
+  * config registry policies were not able to have a = in the value. Bug #15069
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 15 Jul 2009 15:55:39 +0200
+
 univention-directory-manager (7.0.16-1) unstable; urgency=low
 
   * reset type-selection after changing superordinate to fix stack traces in dhcp and dns-module (Bug #3601)

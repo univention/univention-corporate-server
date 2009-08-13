@@ -3143,7 +3143,7 @@ class modedit(unimodule.unimodule):
 
 									if found:
 
-										self.registryinput[v]=question_text( _('Variable: %s') % key_name, atts,{"helptext": _('Config Registry value for %s') % key_name, 'usertext': '%s' % string.join(v.split('=')[1:])})
+										self.registryinput[v]=question_text( _('Variable: %s') % key_name, atts,{"helptext": _('Config Registry value for %s') % key_name, 'usertext': '%s' % string.join(v.split('=', 1)[1:])})
 
 										registryinput_rows.append(tablerow("",{},{"obs":[\
 													tablecol('',{}, {'obs': [\

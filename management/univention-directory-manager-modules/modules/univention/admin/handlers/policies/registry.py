@@ -189,7 +189,7 @@ class object(univention.admin.handlers.simplePolicy):
 			for k in new_keys:
 				for line in self.info['registry']:
 					if line.startswith('%s=' % k ):
-						value=string.join(line.split('=')[1:])
+						value=string.join(line.split('=', 1)[1:])
 						if value == "None":
 							ml.append( ('univentionRegistry;entry-hex-%s' % k.encode('hex'), self.oldattr.get('univentionRegistry;entry-hex-%s' % k.encode('hex'), ''), None ) )
 						else:
