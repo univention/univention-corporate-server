@@ -28,9 +28,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-if [ ! -L "/var/service" ]; then
-	rmdir /var/service
-	ln -s /etc/runit/univention /var/service
+if [ ! -L "/etc/service" ]; then
+	rmdir /etc/service
+	ln -s /etc/runit/univention /etc/service
 fi
 
 if grep 'runsvdir' /etc/inittab >/dev/null; then

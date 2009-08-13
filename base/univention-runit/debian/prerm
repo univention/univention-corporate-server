@@ -29,6 +29,13 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 if [ "$1" = "purge" -o "$1" = "remove" ]; then
+	if [ "`readlink /etc/service`" = "/etc/runit/univention" ]; then
+		rm -f /etc/service
+		mkdir /etc/service
+	fi
+fi
+
+if [ "$1" = "purge" -o "$1" = "remove" ]; then
 	if [ "`readlink /var/service`" = "/etc/runit/univention" ]; then
 		rm -f /var/service
 		mkdir /var/service
