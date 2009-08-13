@@ -111,23 +111,24 @@ if os.environ.get( 'reason' ) in ( 'FAIL', 'TIMEOUT' ):
 elif os.environ.get( 'reason' ) in ( 'BOUND', 'RENEW', 'REBIND' ):
 	print 'new_network=%s' % get_network( os.environ[ 'new_ip_address' ], os.environ[ 'new_sub_netmask' ] )
 
-	# DNS server
-	if not os.environ.get( 'new_domain_name_servers' ):
-		servers = get_dns_servers()
-		if servers:
-			print 'new_domain_name_servers=%s' % ','.join( servers )
+	if configRegistry.get( 'networkmanager/dhcp/options/fallback', 'no' ).lower() in ( 'yes', 'true', '1' ):
+		# DNS server
+		if not os.environ.get( 'new_domain_name_servers' ):
+			servers = get_dns_servers()
+			if servers:
+				print 'new_domain_name_servers=%s' % ','.join( servers )
 
-	# hostname
-	if not os.environ.get( 'new_host_name' ):
-		print 'new_host_name=%s' % configRegistry[ 'hostname' ]
+		# hostname
+		if not os.environ.get( 'new_host_name' ):
+			print 'new_host_name=%s' % configRegistry[ 'hostname' ]
 
-	# domainname
-	if not os.environ.get( 'new_domain_name' ):
-		print 'new_domain_name=%s' % configRegistry[ 'domainname' ]
+		# domainname
+		if not os.environ.get( 'new_domain_name' ):
+			print 'new_domain_name=%s' % configRegistry[ 'domainname' ]
 
-	# domain search option
-	if not os.environ.get( 'new_domain_search' ) and 'domain/search' in configRegistry:
-		print 'new_domain_search=%s' % configRegistry[ 'domain/search' ]
+		# domain search option
+		if not os.environ.get( 'new_domain_search' ) and 'domain/search' in configRegistry:
+			print 'new_domain_search=%s' % configRegistry[ 'domain/search' ]
 else:
 	sys.exit( 0 )
 
