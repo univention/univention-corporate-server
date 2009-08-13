@@ -1,3 +1,9 @@
+univention-webui (3.0.6-1) unstable; urgency=low
+
+  * fixed question_date widget (Bug #15135)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 13 Aug 2009 16:46:57 +0200
+
 univention-webui (3.0.5-1) unstable; urgency=low
 
   * fix translation bug (Bug: #14074)

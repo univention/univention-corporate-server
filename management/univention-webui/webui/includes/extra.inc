@@ -185,7 +185,7 @@ class question_date extends extra{
 		$content = explode('.',$this->basket['content']);
 		$class='class="date"';
 		if($this->warn)	$class='class="date_warn"';
-		$attribs='maxlength="2" $class $access type="text" ';
+		$attribs='maxlength="2" '.$class.' '.$access.' type="text" ';
 		$str .= '<input tabindex="'.$this->tabindex.'" '.$attribs.'name="usrinput[date#'.$this->byteindex.'][]" value="'.$content[0].'"></input>
 </td><td width="8">&nbsp;</td><td width="40">
 <input tabindex="'.$this->tabindex.'" '.$attribs.'name="usrinput[date#'.$this->byteindex.'][]" value="'.$content[1].'"></input>
@@ -945,8 +945,8 @@ class question_mselect extends extra_multi{
 <tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['description'];
 		if ($this->warn) 
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
-		$str .= '</td></tr><tr><td>;
-<select $access title="'.$this->basket['helptext'].'" tabindex="'.$this->tabindex.'"';
+		$str .= '</td></tr><tr><td>
+<select '.$access.' title="'.$this->basket['helptext'].'" tabindex="'.$this->tabindex.'"';
 # FIXME: enabling dojo.form.MultiSelect leads to unusable question_mselect
 		#$str .= " dojoType=\"dijit.form.MultiSelect\"";
 		if ($this->warn) 
