@@ -1,3 +1,9 @@
+univention-config-registry (5.0.14-1) unstable; urgency=low
+
+  * remove UCR module resolv.py (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 13 Aug 2009 09:48:21 +0200
+
 univention-config-registry (5.0.13-2) unstable; urgency=low
 
   * fix syntax typos in /etc/issue template (Bug #12130)

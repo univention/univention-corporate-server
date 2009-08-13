@@ -29,11 +29,11 @@ def check_gateway (ip, netmask, gateway):
 gateway=False
 for i in range(0,4):
 	if configRegistry.has_key('interfaces/eth%s/type' % i) and configRegistry['interfaces/eth%s/type' % i] == 'dhcp':
-		if not configRegistry.get('interfaces/eth%s/networkmanager' % i, 'yes' ).lower() in ( 'no', 'false', '0' ):
+		if configRegistry.get('interfaces/eth%s/networkmanager' % i, 'yes' ).lower() in ( 'no', 'false', '0' ):
 			print 'auto eth%s' % i
 		print 'iface eth%s inet dhcp' % i
 	elif  configRegistry['interfaces/eth%s/address' % i]:
-		if not configRegistry.get('interfaces/eth%s/networkmanager' % i, 'yes' ).lower() in ( 'no', 'false', '0' ):
+		if configRegistry.get('interfaces/eth%s/networkmanager' % i, 'yes' ).lower() in ( 'no', 'false', '0' ):
 			print 'auto eth%s' % i
 		print 'iface eth%s inet static' % i
 		print 'address '+configRegistry['interfaces/eth%s/address' % i]
