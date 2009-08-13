@@ -1575,6 +1575,9 @@ class modwizard(unimodule.unimodule):
 			return
 		if hasattr(self,"select_superordinate_button") and self.select_superordinate_button.pressed():
 			self.save.put('wizard_superordinate',self.superordinate_select.getselected())
+			self.save.put('wizard_search_type', None)
+			self.save.put('wizard_search_value', None)
+
 		# search
 		old_start = self.save.get('wizard_table_start', 0)
 		if hasattr(self, 'resultstab'):
