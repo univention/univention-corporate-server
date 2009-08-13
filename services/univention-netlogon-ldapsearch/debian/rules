@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-D=$(CURDIR)/debian/univention-printer-assignment
+D=$(CURDIR)/debian/univention-netlogon-ldapsearch
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -36,7 +36,13 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	univention-install-baseconfig
+	install -m 644 netlogon/README.txt ${D}/var/lib/samba/netlogon/
+	install -m 644 netlogon/ldapsearch.exe ${D}/var/lib/samba/netlogon/
+	install -m 644 netlogon/libcrypto.dll ${D}/var/lib/samba/netlogon/
+	install -m 644 netlogon/liblber.dll ${D}/var/lib/samba/netlogon/
+	install -m 644 netlogon/libldap.dll ${D}/var/lib/samba/netlogon/
+	install -m 644 netlogon/libssl.dll ${D}/var/lib/samba/netlogon/
+
 
 # Build architecture-independent files here.
 binary-indep: build install

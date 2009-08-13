@@ -1,0 +1,13 @@
+Source: univention-netlogon-ldapsearch
+Section: master
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper
+Standards-Version: 1.0.0
+
+Package: univention-netlogon-ldapsearch
+Architecture: all
+Description: ldapsearch for Win32
+ This package provides binary files from OpenLDAP for Win32.
+ They are intended to be used from Windows systems
+ via their Netlogon scripts.

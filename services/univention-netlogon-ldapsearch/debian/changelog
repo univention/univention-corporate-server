@@ -1,0 +1,6 @@
+univention-netlogon-ldapsearch (1.0.0-1) unstable; urgency=low
+
+  * create initial package (Bug #14944)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Thu, 13 Aug 2009 14:57:03 +0200
+
