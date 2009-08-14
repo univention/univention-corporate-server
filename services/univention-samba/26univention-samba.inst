@@ -28,9 +28,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-VERSION=3
-. /usr/share/univention-join/joinscripthelper.lib
-joinscript_init
+VERSION=2
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-samba v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 rm -f /var/cache/samba/dont_start >/dev/null 2>&1
 
@@ -74,22 +81,6 @@ else
 	smbpasswd -w `cat /etc/ldap.secret`
 fi
 
-if [ $JS_LAST_EXECUTED_VERSION -le 2 ]; then
-	joinuser="Administrator"
-	if [ "$3" == "--bindpwd" ]; then
-		passwd=$4
-	fi
-	if [ "$1" == "--binddn" ]; then
-		joinuser=$(ldapsearch -x -LLL -b $2 uid | grep ^uid: | cut -d' ' -f2- | tr -d '\n')
-	fi
-
-	if [ -n "$passwd" ]; then
-		net rpc rights grant Administrator SePrintOperatorPrivilege -U "${joinuser}%${passwd}"
-		net rpc rights grant root SePrintOperatorPrivilege -U "${joinuser}%${passwd}"
-		net rpc rights grant Printer-Admins SePrintOperatorPrivilege -U "${joinuser}%${passwd}"
-	fi
-fi
-
 mkdir -p /var/lib/samba/drivers
 chgrp -R "Printer-Admins" /var/lib/samba/drivers
 chmod g+w /var/lib/samba/drivers
@@ -125,6 +116,7 @@ if [ -n "$nfsd_pid" ]; then
 	test -x /etc/init.d/nfs-kernel-server && /etc/init.d/nfs-kernel-server start
 fi
 
-joinscript_save_current_version
+test -n "`grep "univention-samba v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-samba v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+
 
 exit 0

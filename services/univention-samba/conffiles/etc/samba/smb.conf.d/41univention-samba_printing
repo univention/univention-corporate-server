@@ -5,4 +5,5 @@ if baseConfig.has_key('cups/server') and baseConfig['cups/server'] in ['127.0.0.
     print '	load printers = yes'
     print '	printing = cups'
     print '	printcap name = cups '
+    print '	printer admin = @"Printer-Admins", root, Administrator'
 @!@
