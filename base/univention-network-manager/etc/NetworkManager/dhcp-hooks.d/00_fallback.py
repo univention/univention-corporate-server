@@ -36,40 +36,18 @@ import sys
 
 import univention.config_registry as ucr
 
-VARIABLE_MAP = ( ( 'new_ip_address', 'address' ), ( 'new_broadcast_address', 'broadcast' ), ( 'new_sub_netmask', 'netmask' ), ( 'new_network', 'network' ) )
+VARIABLE_MAP = ( ( 'new_ip_address', 'address' ), ( 'new_broadcast_address', 'broadcast' ), ( 'new_subnet_mask', 'netmask' ), ( 'new_network_number', 'network' ) )
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
-def aton( ip_address ):
-	'''convert decimal dotted quad string to long integer'''
-	return struct.unpack( 'I', socket.inet_aton( ip_address ) )[ 0 ]
+new_env = {}
 
-def ntoa( num ):
-	'''convert long int to dotted quad string'''
-	return socket.inet_ntoa( struct.pack( 'I',num ) )
-	  
-def get_network( ip_address, netmask ):
-	'''examples:
-	print get_network( '192.168.0.154', '255.255.255.0' )
-	print get_network( '192.168.0.154', 24 )'''
-
-	n_ip = aton( ip_address )
-
-	if isinstance( netmask, int ):
-		n_mask = ( 2 << ( netmask - 1 ) ) - 1
-	else:
-		n_mask = aton( netmask )
-
-	n_network = n_ip & n_mask
-
-	return ntoa( n_network )
-
-def update_ucr_variables():
+def update_ucr_variables( environ ):
 	variables = []
 	for env, var in VARIABLE_MAP:
-		if os.environ[ env ] != configRegistry.get( 'interfaces/%s/%s' % ( os.environ[ 'interface' ], var ) ):
-			variables.append( 'interfaces/%s/%s=%s' % ( os.environ[ 'interface' ], var, os.environ[ env ] ) )
+		if environ[ env ] != configRegistry.get( 'interfaces/%s/%s' % ( os.environ[ 'interface' ], var ) ):
+			variables.append( 'interfaces/%s/%s=%s' % ( os.environ[ 'interface' ], var, environ[ env ] ) )
 
 	ucr.handler_set( variables )
 
@@ -78,61 +56,63 @@ def get_dns_servers():
 	nameservers = []
 	for i in range( 1, 4 ):
 		var = 'nameserver%d' % i
-		if var in configRegistry:
-			namservers.append( configRegistry[ var ] )
+		if var in configRegistry.keys():
+			nameservers.append( configRegistry[ var ] )
 
 	return nameservers
 
 if os.environ.get( 'reason' ) in ( 'FAIL', 'TIMEOUT' ):
-	os.environ[ 'reason' ] = 'BOUND'
+	new_env[ 'reason' ] = 'BOUND'
 	for env, var in VARIABLE_MAP:
-		print '%s=%s' % ( env, configRegistry.get( 'interfaces/%s/fallback/%s' % ( os.environ[ 'interface' ], var ) ) )
-	print '%s=%s' % ( 'new_routers', configRegistry.get( 'fallback/gateway' ) )
+		new_env[ env ] = configRegistry.get( 'interfaces/%s/fallback/%s' % ( os.environ[ 'interface' ], var ) )
+	new_env[ 'new_routers' ] = configRegistry.get( 'fallback/gateway' )
 
 	# DNS server
 	servers = get_dns_servers()
 	if servers:
-		print 'new_domain_name_servers=%s' % ','.join( servers )
-
-	# DNS server
-	servers = get_dns_servers()
-	if servers:
-		print 'new_domain_name_servers=%s' % ','.join( servers )
+		new_env[ 'new_domain_name_servers' ] = ' '.join( servers )
 
 	# hostname
-	print 'new_host_name=%s' % configRegistry[ 'hostname' ]
+	new_env[ 'new_host_name' ] = configRegistry[ 'hostname' ]
 
 	# domainname
-	print 'new_domain_name=%s' % configRegistry[ 'domainname' ]
+	new_env[ 'new_domain_name' ] = configRegistry[ 'domainname' ]
 
 	# domain search option
-	if 'domain/search' in configRegistry:
-		print 'new_domain_search=%s' % configRegistry[ 'domain/search' ]
+	if 'domain/search' in configRegistry.keys():
+		new_new[ 'new_domain_search' ] % configRegistry[ 'domain/search' ]
 elif os.environ.get( 'reason' ) in ( 'BOUND', 'RENEW', 'REBIND' ):
-	print 'new_network=%s' % get_network( os.environ[ 'new_ip_address' ], os.environ[ 'new_sub_netmask' ] )
-
 	if configRegistry.get( 'networkmanager/dhcp/options/fallback', 'no' ).lower() in ( 'yes', 'true', '1' ):
 		# DNS server
 		if not os.environ.get( 'new_domain_name_servers' ):
 			servers = get_dns_servers()
 			if servers:
-				print 'new_domain_name_servers=%s' % ','.join( servers )
+				new_env[ 'new_domain_name_servers' ] = ' '.join( servers )
 
 		# hostname
 		if not os.environ.get( 'new_host_name' ):
-			print 'new_host_name=%s' % configRegistry[ 'hostname' ]
+			new_env[ 'new_host_name' ] = configRegistry[ 'hostname' ]
 
 		# domainname
 		if not os.environ.get( 'new_domain_name' ):
-			print 'new_domain_name=%s' % configRegistry[ 'domainname' ]
+			new_env[ 'new_domain_name' ] = configRegistry[ 'domainname' ]
+
+		# gateway
+		if not os.environ.get( 'new_routers' ) and 'gateway' in configRegistry.keys():
+			new_env[ 'new_routers' ] = configRegistry[ 'gateway' ]
 
 		# domain search option
-		if not os.environ.get( 'new_domain_search' ) and 'domain/search' in configRegistry:
-			print 'new_domain_search=%s' % configRegistry[ 'domain/search' ]
+		if not os.environ.get( 'new_domain_search' ) and 'domain/search' in configRegistry.keys():
+			new_env[ 'new_domain_search' ] = configRegistry[ 'domain/search' ]
 else:
 	sys.exit( 0 )
 
-update_ucr_variables()
+# update modified values in UCR variables
+update_ucr_variables( new_env )
+
+#print out modified environment variables
+for item in new_env.items():
+	print 'export %s="%s"' % item
 
 sys.exit( 0 )
 

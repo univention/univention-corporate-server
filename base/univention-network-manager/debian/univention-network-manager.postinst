@@ -40,6 +40,9 @@ univention-config-registry set networkmanager/action/mount?$ifplugd_action_mount
 univention-config-registry set networkmanager/group?"Domain Users"
 univention-config-registry set networkmanager/dhcp/options/fallback?"no"
 
+univention-config-registry set dhclient/options/timeout?"40"
+univention-config-registry set dhclient/options/retry?"60"
+
 # need to restart dbus to read new permissions for networkmanager/group
 /etc/init.d/dbus restart
 

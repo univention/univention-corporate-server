@@ -4,7 +4,7 @@
 #  network script: (re)mounts all entries from /etc/fstab when
 #  the network link is active
 #
-# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,3 +33,5 @@ eval $(univention-baseconfig shell networkmanager/action/mount)
 [ "$networkmanager_action_mount" = "yes" -o "$networkmanager_action_mount" = "true" ] ||  exit 0
 
 [ -x /bin/mount ] && /bin/mount -a
+
+exit 0

@@ -31,10 +31,13 @@
 HOOKS_DIR=/etc/NetworkManager/dhcp-hooks.d/
 
 # call hooks: each hook script might write shell script to standard output to change environment variables
-for script in ${HOOKS_DIR}/*; do
+for script in $(find ${HOOKS_DIR} -type f -name "*.py" -o -name "*.sh"); do
 	eval $($script)
 done
 
+# debugging
+set | egrep '(new_|old_|reason)' > /tmp/nm-env
+ 
 /usr/lib/NetworkManager/nm-dhcp-client.action.real
 
 exit 0

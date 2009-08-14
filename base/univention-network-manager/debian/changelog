@@ -1,3 +1,12 @@
+univention-network-manager (0.3.0-1) unstable; urgency=low
+
+  * add support for the UCR variable nameserver/option/timeout when using
+    network manager
+  * several enhancements für the fallback mode when there is no answer
+    from a DHCP server (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 14 Aug 2009 11:26:06 +0200
+
 univention-network-manager (0.2.1-1) unstable; urgency=low
 
   * add UCR variable networkmanager/dhcp/options/fallback: if options like

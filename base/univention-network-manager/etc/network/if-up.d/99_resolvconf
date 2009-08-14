@@ -1,0 +1,7 @@
+#!/bin/sh
+eval $(univention-config-registry shell nameserver/option/timeout)
+
+if [ -n "$nameserver_option_timeout" ]; then
+	echo "options timeout:$nameserver_option_timeout" >> /etc/resolv.conf
+fi
+

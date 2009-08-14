@@ -32,3 +32,5 @@
 /etc/init.d/rdate start
 
 /etc/init.d/ntp start
+
+exit 0
