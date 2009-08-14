@@ -34,27 +34,25 @@ joinscript_init
 
 eval `univention-config-registry shell`
 
-if [ "$server_role" = "domaincontroller_master" ] ; then
-	univention-directory-manager settings/syntax create --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
-		--set name="univention-printer-syntax" \
-		--set description="syntax for custom attribute univention-printer-list" \
-		--set attribute="shares/printer: name" \
-		--set value="shares/printer: dn" \
-		--set filter="(objectclass=univentionPrinter)" \
-		--set base="$ldap_base" \
-		--set viewonly="FALSE"
+univention-directory-manager settings/syntax create --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name="univention-printer-syntax" \
+	--set description="syntax for custom attribute univention-printer-list" \
+	--set attribute="shares/printer: name" \
+	--set value="shares/printer: dn" \
+	--set filter="(objectclass=univentionPrinter)" \
+	--set base="$ldap_base" \
+	--set viewonly="FALSE"
 
-	univention-directory-manager settings/customattribute create --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
-		--set name="univention-printer-list" \
- 		--set module="groups/group" \
-		--set tabName="Druckerzuordnung" \
-		--set tabPosition="0" \
-		--set objectClass="univentionGroup" \
-		--set shortDescription="Zugewiesene Drucker" \
-		--set syntax="univention-printer-syntax" \
- 		--set ldapMapping="univentionAssignedPrinter" \
-		--set multivalue="1"
-fi
+univention-directory-manager settings/customattribute create --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name="univention-printer-list" \
+ 	--set module="groups/group" \
+	--set tabName="Druckerzuordnung" \
+	--set tabPosition="0" \
+	--set objectClass="univentionGroup" \
+	--set shortDescription="Zugewiesene Drucker" \
+	--set syntax="univention-printer-syntax" \
+ 	--set ldapMapping="univentionAssignedPrinter" \
+	--set multivalue="1"
 
 joinscript_save_current_version
 
