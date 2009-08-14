@@ -1,3 +1,9 @@
+univention-network-manager (0.3.1-1) unstable; urgency=low
+
+  * 99_resolvconf: just add timeout option if not already set (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 14 Aug 2009 11:43:00 +0200
+
 univention-network-manager (0.3.0-1) unstable; urgency=low
 
   * add support for the UCR variable nameserver/option/timeout when using
