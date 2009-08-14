@@ -1,3 +1,9 @@
+univention-apache (3.0.3-1) unstable; urgency=low
+
+  * enable ssl in postinst only if certificate is available (Bug: #10205)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Fri, 14 Aug 2009 10:39:19 +0200
+
 univention-apache (3.0.2-1) unstable; urgency=low
 
   * added a config template for etc/apache/ports.conf (Bug: #15025)
