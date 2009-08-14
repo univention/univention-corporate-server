@@ -16,7 +16,7 @@ ErrorLog /var/log/apache2/error.log
 # alert, emerg.
 LogLevel @%@apache2/loglevel@%@
 
-DocumentRoot /var/www/
+DocumentRoot @%@apache2/documentroot@%@
 <Directory />
 	Options FollowSymLinks
 	AllowOverride None

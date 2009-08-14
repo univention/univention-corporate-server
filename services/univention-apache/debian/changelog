@@ -1,3 +1,9 @@
+univention-apache (3.0.4-1) unstable; urgency=low
+
+  * add ucr-variable apache2/documentroot (Bug: #11789)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Fri, 14 Aug 2009 13:12:49 +0200
+
 univention-apache (3.0.3-1) unstable; urgency=low
 
   * enable ssl in postinst only if certificate is available (Bug: #10205)

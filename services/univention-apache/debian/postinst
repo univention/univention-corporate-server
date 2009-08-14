@@ -42,10 +42,11 @@ elif [ "$1" = configure -a -z "$2" ]; then
 	a2enmod ssl || true
 fi
 
-univention-baseconfig set apache2/autostart?"yes"
-univention-baseconfig set apache2/loglevel?"warn"
-univention-baseconfig set apache2/startsite?"ucs-overview/de.html"
-univention-baseconfig set mail/alias/webmaster?root
+univention-config-registry set apache2/autostart?"yes"
+univention-config-registry set apache2/loglevel?"warn"
+univention-config-registry set apache2/startsite?"ucs-overview/de.html"
+univention-config-registry set apache2/documentroot?"/var/www/"
+univention-config-registry set mail/alias/webmaster?root
 
 eval `univention-config-registry shell`
 
