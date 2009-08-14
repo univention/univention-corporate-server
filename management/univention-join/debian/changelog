@@ -1,3 +1,9 @@
+univention-join (2.0.7-1) unstable; urgency=low
+
+  * explain "skipped" output to avoid even more confusion (Bug #15082)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Fri, 14 Aug 2009 16:15:22 +0200
+
 univention-join (2.0.6-1) unstable; urgency=low
 
   * add copyright header for joinscripthelper.lib (Bug #14873)
