@@ -1143,7 +1143,7 @@ layout=[
 layout.append( mungeddial.tab )
 
 def posixDaysToDate(days):
-	return time.strftime("%d.%m.%y",time.gmtime(long(days)*3600*24))
+	return time.strftime("%Y-%m-%d",time.gmtime(long(days)*3600*24))
 
 def sambaWorkstationsMap(workstations):
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'samba: sambaWorkstationMap: in=%s; out=%s' % (workstations,string.join(workstations, ',')))
@@ -1265,7 +1265,7 @@ def load_certificate(user_certificate):
 			dl[0]=month.index(dl[0])
 		except:
 			return ''
-		return "%s.%s.%s" % (dl[1], dl[0], dl[3][-2:])
+		return "%s-%02d-%02d" % ( dl[ 3 ], int( dl[ 0 ] ), int( dl[ 1 ] ) )
 
 	issuer=str(x509.get_issuer())
 	if not issuer:
@@ -1563,10 +1563,10 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					self.info['gidNumber'] = self.oldattr.get('gidNumber', [''])[0]
 
 			if self['passwordexpiry']:
-				today=time.strftime('%d.%m.%y').split('.')
-				expiry=self['passwordexpiry'].split('.')
-				expiry.reverse()
-				today.reverse()
+				today=time.strftime('%Y-%m-%d').split('-')
+				expiry=self['passwordexpiry'].split('-')
+				# expiry.reverse()
+				# today.reverse()
 				if int(string.join(today,''))>=int(string.join(expiry,'')):
 					self['pwdChangeNextLogin']='1'
 

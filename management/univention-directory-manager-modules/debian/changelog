@@ -1,3 +1,10 @@
+univention-directory-manager-modules (5.0.20-1) unstable; urgency=low
+
+  * migrate user properties with syntax date to the new dojo date widget
+    (Bug #12039)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 17 Aug 2009 17:30:38 +0200
+
 univention-directory-manager-modules (5.0.19-1) unstable; urgency=low
 
   * config registry policies were not able to have a = in the value. Bug #15069

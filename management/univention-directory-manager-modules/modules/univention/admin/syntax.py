@@ -598,13 +598,13 @@ class date(simple):
 		if self._re_iso.match(text) != None:
 			year, month, day = map(lambda(x): int(x), text.split('-'))
 			if year > 1960 and year < 2100 and month < 13 and day < 31:
-				return text
+				return '%02d.%02d.%s' % ( day, month, str( year )[ 2 : ] )
 		if self._re_de.match(text) != None:
 			day, month, year = map(lambda(x): int(x), text.split('.'))
 			if year > 0 and year < 99 and month < 13 and day < 32:
 				return text
 		raise univention.admin.uexceptions.valueError,_("Not a valid Date")
-
+		
 class reverseLookupSubnet(simple):
 	name='reverseLookupSubnet'
 	min_length=1
