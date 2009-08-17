@@ -1376,7 +1376,7 @@ class question_group{
 				case 'link': $this->member = new link($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_bool': $this->member = new question_bool($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_secure': $this->member = new question_secure($tag, $this->conti_ref, $this->config, $attribute);return;
-				case 'question_date': $this->member = new question_date($tag, $this->conti_ref, $this->config, $attribute);return;
+				case 'question_date': $this->member = new question_dojo_date_widget($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_text': $this->member = new question_text($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_ltext': $this->member = new question_ltext($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_mselect': $this->member = new question_mselect($tag, $this->conti_ref, $this->config, $attribute);return;

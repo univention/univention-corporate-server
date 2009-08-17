@@ -134,7 +134,7 @@ class webui_translator{
 				case 'link': $this->extra = new link($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
 				case 'question_bool': $this->extra = new question_bool($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
 				case 'question_secure': $this->extra = new question_secure($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
-				case 'question_date': $this->extra = new question_date($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
+				case 'question_date': $this->extra = new question_dojo_date_widget($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
 				case 'question_dojo_date_widget': $this->extra = new question_dojo_date_widget($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
 				case 'question_text': $this->extra = new question_text($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
 				case 'question_ltext': $this->extra = new question_ltext($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
