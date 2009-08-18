@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.24 (2.0.1-9) unstable; urgency=low
+
+  * Update to latest security kernel image (Bug #15388)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 18 Aug 2009 09:28:33 +0200
+
 univention-kernel-image-2.6.24 (2.0.1-8) unstable; urgency=low
 
   * Update kernel version (Bug #11249)
