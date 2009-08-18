@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.18 (2.0.1-7) unstable; urgency=low
+
+  * Bump version Bug #15381
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 18 Aug 2009 09:26:42 +0200
+
 univention-kernel-image-2.6.18 (2.0.1-6) unstable; urgency=low
 
   * Update meta packages to latest security release. Bug #15381
