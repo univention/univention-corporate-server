@@ -1,3 +1,10 @@
+univention-installer (5.0.11-5) unstable; urgency=low
+
+  * install dhclient-script-wrapper in debian/rules (Bug #12130)
+  * include PREINIT commands from dhclient-script
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Aug 2009 15:44:47 +0200
+
 univention-installer (5.0.11-4) unstable; urgency=low
 
   * touch the dhclient output file to avoid nasty tracebacks for a simple DHCP timeout (Bug #12130)

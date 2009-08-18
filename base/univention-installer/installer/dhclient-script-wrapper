@@ -29,17 +29,31 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 case "$reason" in
+	PREINIT)
+		# The DHCP client is requesting that an interface be
+		# configured as required in order to send packets prior to
+		# receiving an actual address. - dhclient-script(8)
+		
+		if [ -n "$alias_ip_address" ]; then
+			# Bring down alias interface. Its routes will disappear too.
+			ifconfig $interface:0- inet 0
+		fi
+		ifconfig $interface inet 0 up
+		
+		# We need to give the kernel some time to get the interface up.
+		sleep 1
+		;;
     BOUND|RENEW|REBIND|REBOOT)
-	set -- $new_routers
-	first_router="$1"
+		set -- $new_routers
+		first_router="$1"
 
-	i=1
-	for new_nameserver in $new_domain_name_servers; do
-		eval nameserver_$i=$new_nameserver
-		i=$((i+1))
-	done
-	if [ -n "$dhclientscript_outputfile" ]; then
-		cat > $dhclientscript_outputfile <<%EOF%
+		i=1
+		for new_nameserver in $new_domain_name_servers; do
+			eval nameserver_$i=$new_nameserver
+			i=$((i+1))
+		done
+		if [ -n "$dhclientscript_outputfile" ]; then
+			cat > $dhclientscript_outputfile <<%EOF%
 address: $new_ip_address
 netmask: $new_subnet_mask
 broadcast: $new_broadcast_address
@@ -49,7 +63,7 @@ nameserver_2: $nameserver_2
 nameserver_3: $nameserver_3
 domainname: $new_domain_name
 %EOF%
-	fi
+		fi
 
         ;;
 esac
