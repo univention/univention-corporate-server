@@ -82,7 +82,7 @@ class object(content):
 		self.debug('DHCP broadcast on %s' % interface)
 		tempfilename='/tmp/dhclient%s.out' % os.getpid()
 		open(tempfilename, 'w').close()	# touch the file in case dhclient does not receive a propper answer
-		cmd='/sbin/dhclient -lf /tmp/dhclient.leases -sf /lib/univention-installer/dhclient-script-wrapper -e dhclientscript_outputfile="%s" %s' % (tempfilename, interface)
+		cmd='/sbin/dhclient -d -1 -lf /tmp/dhclient.leases -sf /lib/univention-installer/dhclient-script-wrapper -e dhclientscript_outputfile="%s" %s' % (tempfilename, interface)
 		p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 		self.debug('DHCP output: %s' % p.stderr.read())
 		file = open(tempfilename)
