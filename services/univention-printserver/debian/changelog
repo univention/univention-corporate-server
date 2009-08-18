@@ -1,3 +1,9 @@
+univention-printserver (3.0.5-1) unstable; urgency=low
+
+  * rename cups/log/level to cups/debug/level (Bug #7027)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue, 18 Aug 2009 14:00:10 +0200
+
 univention-printserver (3.0.4-1) unstable; urgency=low
 
   * insert commata (Bug #7027)

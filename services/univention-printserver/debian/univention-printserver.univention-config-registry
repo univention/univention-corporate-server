@@ -7,7 +7,7 @@ Variables: cups/systemgroup
 Variables: cups/filedevice
 Variables: cups/location/base
 Variables: cups/location/admin
-Variables: cups/log/level
+Variables: cups/debug/level
 
 Type: file
 File: etc/pam.d/cupsys
