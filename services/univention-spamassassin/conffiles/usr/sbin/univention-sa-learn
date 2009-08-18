@@ -30,21 +30,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-GLOBALSPAMFOLDER="@%@mail/antispam/globalfolder@%@"
+#GLOBALSPAMFOLDER="@%@mail/antispam/globalfolder@%@"
 CYRUSVER="@%@mail/cyrus/version@%@"
-USER="$(echo $GLOBALSPAMFOLDER | cut -d@ -f1)"
-DOMAIN="$(echo $GLOBALSPAMFOLDER | cut -d@ -f2)"
-USER_ONE="$(echo $USER | cut -c 1)"
-DOMAIN_ONE="$(echo $DOMAIN | cut -c 1)"
-USER_ESCAPED="$(echo $USER | sed 's/\./\^/g;s/[A-Z]/\l&/g')"
-
-if [ "$CYRUSVER" = "2.2" ]; then
-	MAILFOLDER="/var/spool/cyrus/mail/domain/$DOMAIN_ONE/$DOMAIN/$USER_ONE/user/$USER"
-else
-	MAILFOLDER="/var/spool/cyrus/mail/$USER_ONE/user/$USER_ESCAPED"
-fi
-
-SA_LEARN="/usr/bin/sa-learn"
+#USER="$(echo $GLOBALSPAMFOLDER | cut -d@ -f1)"
+#DOMAIN="$(echo $GLOBALSPAMFOLDER | cut -d@ -f2)"
+#USER_ONE="$(echo $USER | cut -c 1)"
+#DOMAIN_ONE="$(echo $DOMAIN | cut -c 1)"
+#USER_ESCAPED="$(echo $USER | sed 's/\./\^/g;s/[A-Z]/\l&/g')"
 
 if [ ! -f /var/lib/amavis/.spamassassin/bayes_toks ]; then	
 	touch /var/lib/amavis/.spamassassin/bayes_toks
@@ -52,6 +44,18 @@ if [ ! -f /var/lib/amavis/.spamassassin/bayes_toks ]; then
 	chmod 600 /var/lib/amavis/.spamassassin/bayes_toks
 fi
 
-$SA_LEARN --dbpath /var/lib/amavis/.spamassassin --spam "$MAILFOLDER/Spam"
-$SA_LEARN --dbpath /var/lib/amavis/.spamassassin --ham "$MAILFOLDER/Ham"
+SA_LEARN="/usr/bin/sa-learn"
 
+if [ "$CYRUSVER" = "2.2" ]; then
+	find /var/spool/cyrus/mail/domain/ -wholename \*/\*/\*/user/\*/Spam \
+		-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --spam {} \;
+
+	find /var/spool/cyrus/mail/domain/ -wholename \*/\*/\*/user/\*/Ham \
+		-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --ham {} \;
+else
+	find /var/spool/cyrus/mail/ -wholename \*/user/\*/Spam \
+		-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --spam {} \;
+
+	find /var/spool/cyrus/mail/ -wholename \*/user/\*/Ham \
+		-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --ham {} \;
+fi

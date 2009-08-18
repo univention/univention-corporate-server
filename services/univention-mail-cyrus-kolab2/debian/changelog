@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (2.0.2-1) unstable; urgency=low
+
+  * have every user automatically get a Ham-folder (Bug #15313)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue, 18 Aug 2009 09:12:21 +0200
+
 univention-mail-cyrus-kolab2 (2.0.1-1) unstable; urgency=low
 
   * provide new UCR category service-mail (Bug #13505)

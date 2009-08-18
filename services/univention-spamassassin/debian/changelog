@@ -1,3 +1,9 @@
+univention-spamassassin (2.0.2-1) unstable; urgency=low
+
+  * make spamassassin learn daily from all user's Spam and Ham-folders (Bug #15313)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue, 18 Aug 2009 09:10:19 +0200
+
 univention-spamassassin (2.0.1-1) unstable; urgency=low
 
   * move UCR variables to category service-mail (Bug #13505)

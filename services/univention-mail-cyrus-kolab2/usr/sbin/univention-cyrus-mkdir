@@ -127,8 +127,7 @@ if not os.path.exists('/var/spool/cyrus/mail/domain/%s/%s/%s/user/%s/Spam' % (do
 			child.sendline('cm user/%s' % user_name)
 			if not remote:
 				child.sendline('cm user/%s/Spam@%s' % (userpart, domainpart))
-				if adminuser:
-					child.sendline('cm user/%s/Ham@%s' % (userpart, domainpart))
+				child.sendline('cm user/%s/Ham@%s' % (userpart, domainpart))
 			child.sendline('disc')
 			child.sendline('exit')
 		elif i == 2 and not remote:
