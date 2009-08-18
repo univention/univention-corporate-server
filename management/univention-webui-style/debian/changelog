@@ -1,3 +1,9 @@
+univention-webui-style (4.0.1-1) unstable; urgency=low
+
+  * set a darker background for read-only fields. Bug #13209
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 18 Aug 2009 11:00:00 +0200
+
 univention-webui-style (4.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3

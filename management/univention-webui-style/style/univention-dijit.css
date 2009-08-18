@@ -267,6 +267,12 @@ background-image: none !important;
 font-weight:bold;
 }
 
+/* darker background for read-only fields */
+.dijitReadOnly *, .dijitDisabled *, .dijitReadOnly, .dijitDisabled, .dijitDisabledClickableRegion, .dijitDisabled input {
+	background:#f6f6f6 none repeat scroll 0 0 !important;
+	cursor:not-allowed !important;
+}
+
 /*
 .text input {
 font-weight:bold;
