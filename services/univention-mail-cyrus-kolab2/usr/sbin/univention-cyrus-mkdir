@@ -38,8 +38,7 @@ def cyrescape(address):
 	return address.strip()
 def usage():
 	print 'usage: univention-cyrus-mkdir [-a] <USERNAME>'
-	print 'use -a only for the mail admin user it creates'
-	print 'a Ham box in addition to the Spam box'
+	print 'use -a only for the mail admin user'
 	print ''
 	print 'to create Cyrus accounts on a remote machine, use'
 	print 'univention-cyrus-mkdir -h <HOSTNAME> -u <ADMINUSER> -p <PASSWORD> <USERNAME>'

@@ -38,8 +38,7 @@ def cyrescape(address):
 	return address.strip()
 def usage():
 	print 'usage: univention-cyrus-mkdir [-a] <USERNAME>'
-	print 'use -a only for the mail admin user it creates'
-	print 'a Ham box in addition to the Spam box'
+	print 'use -a only for the mail admin user'
 	print ''
 	print 'to create Cyrus accounts on a remote machine, use'
 	print 'univention-cyrus-mkdir -h <HOSTNAME> -u <ADMINUSER> -p <PASSWORD> <USERNAME>'
@@ -178,8 +177,7 @@ def create_cyrus21(user_name):
 			child.sendline('cm user/%s' % user_name)
 			if not remote:
 				child.sendline('cm user/%s/Spam' % user_name)
-				if adminuser:
-					child.sendline('cm user/%s/Ham' % user_name)
+				child.sendline('cm user/%s/Ham' % user_name)
 			child.sendline('disc')
 			child.sendline('exit')
 		elif i == 2 and not remote:
@@ -205,8 +203,7 @@ def create_cyrus21(user_name):
 		escapedname=cyrescape(user_name)
 
 		create_toltec_message("Spam", user_name, escapedname)
-		if adminuser:
-			create_toltec_message("Ham", user_name, escapedname)
+		create_toltec_message("Ham", user_name, escapedname)
 
 def create_cyrus22(user_name):
 	global password
@@ -241,8 +238,7 @@ def create_cyrus22(user_name):
 				child.sendline('cm user/%s' % user_name)
 				if not remote:
 					child.sendline('cm user/%s/Spam@%s' % (userpart, domainpart))
-					if adminuser:
-						child.sendline('cm user/%s/Ham@%s' % (userpart, domainpart))
+					child.sendline('cm user/%s/Ham@%s' % (userpart, domainpart))
 				child.sendline('disc')
 				child.sendline('exit')
 			elif i == 2 and not remote:
