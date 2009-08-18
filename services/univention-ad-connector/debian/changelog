@@ -1,3 +1,9 @@
+univention-ad-connector (4.1.0-1) unstable; urgency=low
+
+  * extend connector to run in several instances on one server
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 18 Aug 2009 10:44:53 +0200
+
 univention-ad-connector (4.0.18-1) unstable; urgency=low
 
   * consider the ignore_filter of the user mapping during the membership

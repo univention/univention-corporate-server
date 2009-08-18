@@ -558,10 +558,11 @@ def explode_unicode_dn(dn, notypes=0):
 	return ret
 
 class ad(univention.connector.ucs):
-	def __init__(self, property, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir):
+	def __init__(self, CONFIGBASENAME, property, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir):
 
-		univention.connector.ucs.__init__(self, property, baseConfig, listener_dir)
+		univention.connector.ucs.__init__(self, CONFIGBASENAME, property, baseConfig, listener_dir)
 
+		self.CONFIGBASENAME = CONFIGBASENAME
 		self.lo_ad=univention.uldap.access(host=ad_ldap_host, port=int(ad_ldap_port), base=ad_ldap_base, binddn=ad_ldap_binddn, bindpw=ad_ldap_bindpw, start_tls=2, ca_certfile=ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
 		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
 		self.baseConfig = baseConfig
@@ -793,7 +794,7 @@ class ad(univention.connector.ucs):
 
 		# In Windows 2000 there's no lastKnownParent attribute. Thus, we have to map the
 		# relevant object according to the objectGUID of the removed object
-		if self.baseConfig.has_key('connector/ad/windows_version') and self.baseConfig['connector/ad/windows_version'] == "win2000":
+		if self.baseConfig.has_key('%s/ad/windows_version' % self.CONFIGBASENAME) and self.baseConfig['%s/ad/windows_version' % self.CONFIGBASENAME] == "win2000":
 			ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: DN fallback to w2k-mode: get dn from GUID-mapping-cache")
 			#GUID = object['objectGUID'][0] #the GUID is given
 			return self._get_DN_for_GUID(GUID)
@@ -914,7 +915,7 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO,
 								   "set_primary_group_to_ucs_user: AD rid: %s"%ad_group_rid)
 			object_sid_string = str(self.ad_sid) + "-" + str(ad_group_rid)
-			if self.baseConfig.has_key('connector/ad/windows_version') and self.baseConfig['connector/ad/windows_version'] == "win2000":
+			if self.baseConfig.has_key('%s/ad/windows_version' % self.CONFIGBASENAME) and self.baseConfig['%s/ad/windows_version' % self.CONFIGBASENAME] == "win2000":
 				object_sid_string = encode_object_sid_to_binary_ldapfilter(object_sid_string)
 
 			ldap_group_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
@@ -1015,7 +1016,7 @@ class ad(univention.connector.ucs):
 
 		object_sid_string = str(self.ad_sid) + "-" + str(ad_group_rid)
 
-		if self.baseConfig.has_key('connector/ad/windows_version') and self.baseConfig['connector/ad/windows_version'] == "win2000":
+		if self.baseConfig.has_key('%s/ad/windows_version' % self.CONFIGBASENAME) and self.baseConfig['%s/ad/windows_version' % self.CONFIGBASENAME] == "win2000":
 			object_sid_string = encode_object_sid_to_binary_ldapfilter(object_sid_string)
 
 		ldap_group_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
@@ -1847,7 +1848,7 @@ class ad(univention.connector.ucs):
 						# the description attribute in w2k is managed internally by AD and cannot
 						# be removed directly. Thus we set it to "x" instead
 						# This is configurable by config registry
-						if yank_empty_attr != "description" or not (self.baseConfig.has_key('connector/ad/windows_version') and self.baseConfig['connector/ad/windows_version'] == "win2000"):
+						if yank_empty_attr != "description" or not (self.baseConfig.has_key('%s/ad/windows_version' % self.CONFIGBASENAME) and self.baseConfig['%s/ad/windows_version' % self.CONFIGBASENAME] == "win2000"):
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Empty value can be set")
 							modlist_empty_attrs.append((ldap.MOD_REPLACE, yank_empty_attr, ""))
 						else:

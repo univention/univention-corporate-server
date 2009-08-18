@@ -31,8 +31,7 @@
 
 
 import sys, string, os, time, signal, shutil
-
-sys.path=['/etc/univention/connector/ad/']+sys.path
+from optparse import OptionParser
 
 import ldap, traceback
 import univention
@@ -41,7 +40,23 @@ import univention.connector.ad
 
 import univention_baseconfig
 
+# parse commandline options
+
+parser = OptionParser()
+parser.add_option("--configbasename", dest="configbasename",
+                  help="", metavar="CONFIGBASENAME", default="connector")
+(options, args) = parser.parse_args()
+
+CONFIGBASENAME = "connector"
+if options.configbasename:
+	CONFIGBASENAME = options.configbasename
+STATUSLOGFILE = "/var/log/univention/%s-status.log" % CONFIGBASENAME
+
+sys.path=['/etc/univention/%s/ad/' % CONFIGBASENAME]+sys.path
+
+
 import mapping
+
 
 def daemon():
 	try:
@@ -60,7 +75,7 @@ def daemon():
 			os.chdir("/")
 			os.umask(0)
 		else:
-			pf=open('/var/run/univention-ad-connector', 'w+')
+			pf=open('/var/run/univention-ad-%s' % CONFIGBASENAME, 'w+')
 			pf.write(str(pid))
 			pf.close()
 			os._exit(0)
@@ -87,59 +102,66 @@ def connect():
 
 	daemon()
 
-	f=open('/var/log/univention/connector-status.log', 'w+')
+	f=open(STATUSLOGFILE, 'w+')
 	sys.stdout=f
 	print time.ctime()
 
 	baseConfig=univention_baseconfig.baseConfig()
 	baseConfig.load()
 
-	if not baseConfig.has_key('connector/ad/ldap/host'):
-		print 'connector/ad/ldap/host not set'
+	if not baseConfig.has_key('%s/ad/ldap/host' % CONFIGBASENAME):
+		print '%s/ad/ldap/host not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)
-	if not baseConfig.has_key('connector/ad/ldap/port'):
-		print 'connector/ad/ldap/port not set'
+	if not baseConfig.has_key('%s/ad/ldap/port' % CONFIGBASENAME):
+		print '%s/ad/ldap/port not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)
-	if not baseConfig.has_key('connector/ad/ldap/base'):
-		print 'connector/ad/ldap/base not set'
+	if not baseConfig.has_key('%s/ad/ldap/base' % CONFIGBASENAME):
+		print '%s/ad/ldap/base not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)
-	if not baseConfig.has_key('connector/ad/ldap/binddn'):
-		print 'connector/ad/ldap/binddn not set'
+	if not baseConfig.has_key('%s/ad/ldap/binddn' % CONFIGBASENAME):
+		print '%s/ad/ldap/binddn not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)
-	if not baseConfig.has_key('connector/ad/ldap/bindpw'):
-		print 'connector/ad/ldap/bindpw not set'
+	if not baseConfig.has_key('%s/ad/ldap/bindpw' % CONFIGBASENAME):
+		print '%s/ad/ldap/bindpw not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)
-	if not baseConfig.has_key('connector/ad/ldap/certificate'):
-		print 'connector/ad/ldap/certificate not set'
-		f.close()
-		sys.exit(1)
-
-	if not baseConfig.has_key('connector/ad/listener/dir'):
-		print 'connector/ad/listener/dir not set'
+	if not baseConfig.has_key('%s/ad/ldap/certificate' % CONFIGBASENAME):
+		print '%s/ad/ldap/certificate not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)
 
-	if not baseConfig.has_key('connector/ad/retryrejected'):
+	if not baseConfig.has_key('%s/ad/listener/dir' % CONFIGBASENAME):
+		print '%s/ad/listener/dir not set' % CONFIGBASENAME
+		f.close()
+		sys.exit(1)
+
+	if not baseConfig.has_key('%s/ad/retryrejected' % CONFIGBASENAME):
 		baseconfig_retry_rejected=10
 	else:
-		baseconfig_retry_rejected=baseConfig['connector/ad/retryrejected']
+		baseconfig_retry_rejected=baseConfig['%s/ad/retryrejected' % CONFIGBASENAME]
 
-	ad_ldap_bindpw=open(baseConfig['connector/ad/ldap/bindpw']).read()
+	ad_ldap_bindpw=open(baseConfig['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
 	if ad_ldap_bindpw[-1] == '\n':
 		ad_ldap_bindpw=ad_ldap_bindpw[0:-1]
 	
-	poll_sleep=int(baseConfig['connector/ad/poll/sleep'])
+	poll_sleep=int(baseConfig['%s/ad/poll/sleep' % CONFIGBASENAME])
 	ad_init=None
 	while not ad_init:
 		try:
-			ad=univention.connector.ad.ad(	mapping.ad_mapping, baseConfig, baseConfig['connector/ad/ldap/host'], baseConfig['connector/ad/ldap/port'],
-											baseConfig['connector/ad/ldap/base'], baseConfig['connector/ad/ldap/binddn'],
-											ad_ldap_bindpw, baseConfig['connector/ad/ldap/certificate'], baseConfig['connector/ad/listener/dir'])
+			ad=univention.connector.ad.ad(	CONFIGBASENAME,
+							mapping.ad_mapping,
+							baseConfig,
+							baseConfig['%s/ad/ldap/host' % CONFIGBASENAME],
+							baseConfig['%s/ad/ldap/port' % CONFIGBASENAME],
+							baseConfig['%s/ad/ldap/base' % CONFIGBASENAME],
+							baseConfig['%s/ad/ldap/binddn' % CONFIGBASENAME],
+							ad_ldap_bindpw,
+							baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME],
+							baseConfig['%s/ad/listener/dir' % CONFIGBASENAME])
 			ad_init=True
 		except ldap.SERVER_DOWN:
 			print "Warning: Can't initialize LDAP-Connections, wait..."
@@ -173,7 +195,7 @@ def connect():
 	retry_rejected=0
 	connected = True
 	while connected:
-		f=open('/var/log/univention/connector-status.log', 'w+')
+		f=open(STATUSLOGFILE, 'w+')
 		sys.stdout=f
 		print time.ctime()
 		# Aenderungen pollen
@@ -217,7 +239,7 @@ def main():
 		except SystemExit:
 			raise
 		except:
-			f=open('/var/log/univention/connector-status.log', 'w+')
+			f=open(STATUSLOGFILE, 'w+')
 			sys.stdout=f
 			print time.ctime()
 			

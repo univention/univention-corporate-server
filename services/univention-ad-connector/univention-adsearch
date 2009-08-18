@@ -68,41 +68,67 @@ def encode_object_sid_to_binary_ldapfilter(sid_string):
 
     return "\\01\\05\\00\\00\\00\\00\\00\\05" + binary_encoding
 
+def usage():
+    print ""
+    print "This is univention-adsearch"
+    print ""
+    print "Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server."
+    print ""
+    print "Usage:"
+    print "univention-adsearch [-c configbase] filter <attributes>"
+    print ""
+    print "The default configbase is \"connector\"."
 
-if len(sys.argv)<2 or len(sys.argv)>3:
-	print ""
-	print "This is univention-adsearch"
-	print ""
-	print "Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server."
-	print ""
-	print "Usage:"
-	print "univention-adsearch filter <attributes>"
-	print ""
-	sys.exit(1)
+
+if len(sys.argv)<2 or sys.argv[1] in ["-h","-?","--help"]:
+    usage()
+    sys.exit(1)
+
+CONFIGBASENAME = "connector"
+oiterator = 1
+if sys.argv[oiterator] == "-c":
+    if len(sys.argv) < oiterator+1:
+        print "ERROR: need argument for option -c"
+        usage()
+        sys.exit(1)
+    else:
+        CONFIGBASENAME = sys.argv[oiterator+1]
+        oiterator = oiterator+2
+
+if len(sys.argv) < oiterator+1:
+    print "ERROR: no filter given"
+    usage()
+    sys.exit(1)
+filter_tmp = sys.argv[oiterator].decode('latin')
+
+if len(sys.argv) > oiterator+1:
+    filter_attributes = sys.argv[oiterator+1].split(',')
+else:
+    filter_attributes = None
 
 baseConfig=univention_baseconfig.baseConfig()
 baseConfig.load()
 
-if not (baseConfig.has_key('connector/ad/ldap/host')
-	and baseConfig.has_key('connector/ad/ldap/port')
-	and baseConfig.has_key('connector/ad/ldap/binddn')
-	and baseConfig.has_key('connector/ad/ldap/bindpw')
-	and baseConfig.has_key('connector/ad/ldap/base')):
+if not (baseConfig.has_key('%s/ad/ldap/host' % CONFIGBASENAME)
+	and baseConfig.has_key('%s/ad/ldap/port' % CONFIGBASENAME)
+	and baseConfig.has_key('%s/ad/ldap/binddn' % CONFIGBASENAME)
+	and baseConfig.has_key('%s/ad/ldap/bindpw' % CONFIGBASENAME)
+	and baseConfig.has_key('%s/ad/ldap/base' % CONFIGBASENAME)):
 	print ""
 	print "This is univention-adsearch"
 	print ""
 	print "Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server."
 	print ""
 	print "The Settings are not complete, please check the following univention-config-registry Values:"
-	print "connector/ad/ldap/host, connector/ad/ldap/port,"
-	print "connector/ad/ldap/binddn, connector/ad/ldap/bindpw,"
-	print "connector/ad/ldap/base"
+	print "%s/ad/ldap/host, %s/ad/ldap/port," % (CONFIGBASENAME, CONFIGBASENAME)
+	print "%s/ad/ldap/binddn, %s/ad/ldap/bindpw," % (CONFIGBASENAME, CONFIGBASENAME)
+	print "%s/ad/ldap/base" % CONFIGBASENAME
 	sys.exit(1)
 	
-lo = ldap.open(baseConfig['connector/ad/ldap/host'],int(baseConfig['connector/ad/ldap/port']))
+lo = ldap.open(baseConfig['%s/ad/ldap/host' % CONFIGBASENAME],int(baseConfig['%s/ad/ldap/port' % CONFIGBASENAME]))
 lo.set_option(ldap.OPT_REFERRALS,0)
-login_dn = baseConfig['connector/ad/ldap/binddn']
-pw_file = baseConfig['connector/ad/ldap/bindpw']
+login_dn = baseConfig['%s/ad/ldap/binddn' % CONFIGBASENAME]
+pw_file = baseConfig['%s/ad/ldap/bindpw' % CONFIGBASENAME]
 fp = open(pw_file,'r')
 login_pw = fp.readline()
 if login_pw[-1] == '\n':
@@ -113,7 +139,6 @@ lo.simple_bind_s(login_dn, login_pw)
 # LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
 lc1 = LDAPControl('1.2.840.113556.1.4.417',criticality=1)
 
-filter_tmp=sys.argv[1].decode('latin')
 filter = ""
 
 for i in filter_tmp.split(","):
@@ -122,11 +147,10 @@ for i in filter_tmp.split(","):
 		j[1] = encode_object_sid_to_binary_ldapfilter(j[1])
 	filter += (j[0] + "=" + j[1])
 
-if len(sys.argv)>2:
-	print sys.argv[1].split(',')
-	res = lo.search_ext_s(baseConfig['connector/ad/ldap/base'],ldap.SCOPE_SUBTREE,filter.encode('utf8'),sys.argv[2].split(','),serverctrls=[lc1])
+if filter_attributes:
+	res = lo.search_ext_s(baseConfig['%s/ad/ldap/base' % CONFIGBASENAME],ldap.SCOPE_SUBTREE,filter.encode('utf8'),filter_attributes,serverctrls=[lc1])
 else:
-	res = lo.search_ext_s(baseConfig['connector/ad/ldap/base'],ldap.SCOPE_SUBTREE,filter.encode('utf8'),serverctrls=[lc1])
+	res = lo.search_ext_s(baseConfig['%s/ad/ldap/base' % CONFIGBASENAME],ldap.SCOPE_SUBTREE,filter.encode('utf8'),serverctrls=[lc1])
 
 n_results = len(res)
 n_referrals = 0

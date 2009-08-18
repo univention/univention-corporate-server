@@ -220,9 +220,10 @@ class property:
 		pass
 	
 class ucs:
-	def __init__(self, _property, baseConfig, listener_dir):
+	def __init__(self, CONFIGBASENAME, _property, baseConfig, listener_dir):
 		_d=ud.function('ldap.__init__')
 
+		self.CONFIGBASENAME = CONFIGBASENAME
 
 		self.ucs_no_recode=['krb5Key','userPassword','pwhistory','sambaNTPassword','sambaLMPassword']
 
@@ -235,7 +236,7 @@ class ucs:
 		self.listener_dir=listener_dir
 
 
-		self.configfile='/etc/univention/connector/internal.cfg'
+		self.configfile='/etc/univention/%s/internal.cfg' % self.CONFIGBASENAME
 		if not os.path.exists(self.configfile):
 			os.mknod(self.configfile)
 		self.config = configsaver(self.configfile)
@@ -256,18 +257,18 @@ class ucs:
 		
 	def init_debug(self):
 		_d=ud.function('ldap.init_debug')
-		if self.baseConfig.has_key('connector/debug/function'):
+		if self.baseConfig.has_key('%s/debug/function' % self.CONFIGBASENAME):
 			try:
-				function_level=int(self.baseConfig['connector/debug/function'])
+				function_level=int(self.baseConfig['%s/debug/function' % self.CONFIGBASENAME])
 			except (ldap.SERVER_DOWN, SystemExit):
 				raise
 			except: # FIXME: which exception is to be caught?
 				function_level = 0
 		else:
 			function_level=0
-		ud.init('/var/log/univention/connector.log', 1, function_level)
-		if self.baseConfig.has_key('connector/debug/level'):
-			debug_level=self.baseConfig['connector/debug/level']
+		ud.init('/var/log/univention/%s.log' % self.CONFIGBASENAME, 1, function_level)
+		if self.baseConfig.has_key('%s/debug/level' % self.CONFIGBASENAME):
+			debug_level=self.baseConfig['%s/debug/level' % self.CONFIGBASENAME]
 		else:
 			debug_level=2
 		ud.set_level(ud.LDAP, int(debug_level))
@@ -275,8 +276,8 @@ class ucs:
 	def close_debug(self):
 		_d=ud.function('ldap.close_debug')
 		ud.debug(ud.LDAP, ud.INFO, "close debug")
-		ud.end('/var/log/univention/connector.log')
-		ud.exit('/var/log/univention/connector.log')
+		ud.end('/var/log/univention/%s.log' % self.CONFIGBASENAME)
+		ud.exit('/var/log/univention/%s.log' % self.CONFIGBASENAME)
 
 	def _get_config_option(self, section, option):
 		_d=ud.function('ldap._get_config_option')
@@ -411,7 +412,7 @@ class ucs:
 		'''
 		exc_info = sys.exc_info()
 		_d=ud.function('ldap._debug_traceback')
-		tracebackFile = '/var/log/univention/connector-tracebacks.log'
+		tracebackFile = '/var/log/univention/%s-tracebacks.log' % self.CONFIGBASENAME
 
 		ud.debug(ud.LDAP, level , text)
 		ud.debug(ud.LDAP, level , ' --  for details see %s -- ' % tracebackFile)		
@@ -687,7 +688,7 @@ class ucs:
 			sync_successfull = False
 			delete_file = False
 			filename = os.path.join(self.listener_dir, listener_file)
-			if not filename == "/var/lib/univention-connector/ad/tmp":
+			if not filename == "%s/tmp" % self.baseConfig['%s/ad/listener/dir' % self.CONFIGBASENAME]:
 				if not filename in rejected_files:
 					try:
 						sync_successfull = self.__sync_file_from_ucs(filename)
