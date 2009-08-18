@@ -1,3 +1,9 @@
+univention-printserver (3.0.3-1) unstable; urgency=low
+
+  * add ucr-variable to set cups loglevel (Bug #7027)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue, 18 Aug 2009 13:32:36 +0200
+
 univention-printserver (3.0.2-1) unstable; urgency=low
 
   * provide new UCR category service-cups (Bug #13505)
