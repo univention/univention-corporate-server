@@ -148,6 +148,16 @@ then
     mkdir -p /var/lib/univention-"$CONFIGBASENAME"/ad/tmp
     chgrp nogroup /var/lib/univention-"$CONFIGBASENAME"/ad/tmp
 
+    echo "-- register second listener-instance"
+    eval `univention-config-registry shell connector/listener/additionalbasenames`
+    echo $connector_listener_additionalbasenames | grep -q "$CONFIGBASENAME" || univention-config-registry set connector/listener/additionalbasenames="$connector_listener_additionalbasenames $CONFIGBASENAME"
+
+    echo ""
+    echo "Finished preparation. You'll need to restart univention-directory-listener and maybe resync the listener-plugin."
+    echo "You can start the new connector instance after configuration using \"/etc/init.d/univention-ad-$CONFIGBASENAME start\"."
+    echo "Remember to remove additional instances manually before deinstallation of the univention-ad-connector debian package."   
+    echo ""
+
 fi
 
 if [ "$deleteflag" = "1" ]
@@ -155,6 +165,9 @@ then
 
     echo "-- stop connector"
     /etc/init.d/univention-ad-"$CONFIGBASENAME" stop
+
+    echo "-- stop listener"
+    /etc/init.d/univention-directory-listener stop
 
     echo "-- unregister initscript"
     update-rc.d -f univention-ad-"$CONFIGBASENAME" remove
@@ -188,7 +201,14 @@ then
     echo "-- remove config-dir /etc/univention$CONFIGBASENAME"
     rm -r /etc/univention/"$CONFIGBASENAME"
     
+    echo "-- unregister second listener-instance"
+    eval `univention-config-registry shell connector/listener/additionalbasenames`
+    univention-config-registry set connector/listener/additionalbasenames=`echo $connector_listener_additionalbasenames | sed "s| $CONFIGBASENAME||"`
+
     echo "-- remove listener-dir"
-    rm -r /var/lib/univention-"$CONFIGBASENAME"/ad
+    rm -r /var/lib/univention-"$CONFIGBASENAME"
+
+    echo "-- start listener"
+    /etc/init.d/univention-directory-listener start
 
 fi

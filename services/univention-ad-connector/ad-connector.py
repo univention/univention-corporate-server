@@ -30,6 +30,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import listener, cPickle, time, os
+import univention.debug
 
 name='ad-connector'
 description='AD Connector replication'
@@ -39,39 +40,49 @@ attributes=[]
 # use the modrdn listener extension
 modrdn="1"
 
-dir=listener.baseConfig['connector/ad/listener/dir']
+dirs = [listener.baseConfig['connector/ad/listener/dir']]
+if listener.baseConfig.has_key('connector/listener/additionalbasenames') and listener.baseConfig['connector/listener/additionalbasenames']:
+	for configbasename in listener.baseConfig['connector/listener/additionalbasenames'].split(' '):
+		if listener.baseConfig.has_key('%s/ad/listener/dir' % configbasename) and listener.baseConfig['%s/ad/listener/dir' % configbasename]:
+			dirs.append(listener.baseConfig['%s/ad/listener/dir' % configbasename])
+		else:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "ad-connector: additional config basename %s given, but %s/ad/listener/dir not set; ignore basename." % (configbasename, configbasename))
+
+			       
 
 def handler(dn, new, old, command):
 
 	listener.setuid(0)
-	if not os.path.exists(os.path.join(dir, 'tmp')):
-		os.mkdir(os.path.join(dir, 'tmp'))
 	try:
-		old_dn=None
-		if os.path.exists(os.path.join(dir, 'tmp','old_dn')):
-			f=open(os.path.join(dir, 'tmp','old_dn'),'r')
-			old_dn=cPickle.load(f)
-			f.close()
-		if command == 'r':
-			filename=os.path.join(dir, 'tmp','old_dn')
+		for directory in dirs:
+			if not os.path.exists(os.path.join(directory, 'tmp')):
+				os.mkdir(os.path.join(directory, 'tmp'))
 
-			f=open(filename, 'w+')
-			os.chmod(filename, 0600)
-			cPickle.dump(dn, f)
-			f.close()
-		else:
-			object=(dn, new, old, old_dn)
+			old_dn=None
+			if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
+				f=open(os.path.join(directory, 'tmp','old_dn'),'r')
+				old_dn=cPickle.load(f)
+				f.close()
+			if command == 'r':
+				filename=os.path.join(directory, 'tmp','old_dn')
 
-			filename=os.path.join(dir,"%f"%time.time())
+				f=open(filename, 'w+')
+				os.chmod(filename, 0600)
+				cPickle.dump(dn, f)
+				f.close()
+			else:
+				object=(dn, new, old, old_dn)
 
-			f=open(filename, 'w+')
-			os.chmod(filename, 0600)
-			cPickle.dump(object, f)
-			f.close()
+				filename=os.path.join(directory,"%f"%time.time())
 
-			if os.path.exists(os.path.join(dir, 'tmp','old_dn')):
-				os.unlink(os.path.join(dir, 'tmp','old_dn'))
-				pass
+				f=open(filename, 'w+')
+				os.chmod(filename, 0600)
+				cPickle.dump(object, f)
+				f.close()
+
+				if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
+					os.unlink(os.path.join(directory, 'tmp','old_dn'))
+					pass
 
 	finally:
 		listener.unsetuid()
@@ -80,11 +91,12 @@ def handler(dn, new, old, command):
 def clean():
 	listener.setuid(0)
 	try:
-		for filename in os.listdir(dir):
-			if filename != "tmp":
-				os.remove(os.path.join(dir,filename))
-		for filename in os.listdir(os.path.join(dir,'tmp')):
-			os.remove(os.path.join(dir,filename))
+		for directory in dirs:
+			for filename in os.listdir(directory):
+				if filename != "tmp":
+					os.remove(os.path.join(directory,filename))
+			for filename in os.listdir(os.path.join(directory,'tmp')):
+				os.remove(os.path.join(directory,filename))
 	finally:
 		listener.unsetuid()
 
