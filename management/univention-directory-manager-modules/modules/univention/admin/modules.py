@@ -236,6 +236,10 @@ def init(lo, position, module, template_object=None):
 
 	# add new properties
 	update_extended_attributes( lo, module, position )
+
+	# re-build layout if there any overwrites defined
+	univention.admin.ucr_overwrite_module_layout( module )
+
 	module.initialized=1
 
 

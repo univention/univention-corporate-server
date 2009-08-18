@@ -226,7 +226,46 @@ def ucr_overwrite_layout (module, ucr_property, tab):
 	else:
 		return True
 
+def ucr_overwrite_module_layout( module ):
+	'''
+	Overwrite the tab layout
+	'''
+	univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "layout overwrite" )
+	new_layout = []
+	for tab in module.layout[ : ]:
+		desc = tab.short_description
+		if hasattr( tab.short_description, 'data' ):
+			desc = tab.short_description.data
+		tab_layout = baseConfig.get( 'directory/manager/web/modules/%s/layout/%s' % ( module.module, desc ) )
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "layout overwrite: tab_layout='%s'" % tab_layout )
+		tab_name = baseConfig.get( 'directory/manager/web/modules/%s/layout/%s/name' % ( module.module, desc ) )
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "layout overwrite: tab_name='%s'" % tab_name )
+		tab_descr = baseConfig.get( 'directory/manager/web/modules/%s/layout/%s/description' % ( module.module, desc ) )
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "layout overwrite: tab_descr='%s'" % tab_descr )
+		if tab_name:
+			tab.short_description = tab_name
+		if tab_descr:
+			tab.long_description = tab_descr
+		if tab_layout and tab_layout.lower() != 'none':
+			tab.fields = []
+			for row in tab_layout.split( ';' ):
+				line = []
+				for col in row.split( ',' ):
+					col = col.strip()
+					if not col:
+						line.append( field( 'filler' ) )
+					elif col in module.property_descriptions:
+						line.append( field( col ) )
+					else:
+						univention.debug.debug( univention.debug.ADMIN, univention.debug.ERROR, "layout overwrite: unknown property: %s" % col )
+				tab.fields.append( line )
 
+		if not tab_layout or tab_layout.lower() != 'none':
+			new_layout.append( tab )
+
+	del module.layout
+	module.layout = new_layout
+			
 class extended_attribute(object):
 	def __init__(self, name, objClass, ldapMapping, deleteObjClass = False, syntax = 'string', hook = None):
 		self.name = name
