@@ -1,3 +1,9 @@
+univention-printserver (3.0.4-1) unstable; urgency=low
+
+  * insert commata (Bug #7027)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue, 18 Aug 2009 13:46:20 +0200
+
 univention-printserver (3.0.3-1) unstable; urgency=low
 
   * add ucr-variable to set cups loglevel (Bug #7027)
