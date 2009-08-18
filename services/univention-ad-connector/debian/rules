@@ -64,7 +64,7 @@ install-ext-%:
 	install -m755 univention-ad-connector ${AD_TOOLS_DEST}/usr/sbin
 	install -m755 univention-adsearch ${AD_TOOLS_DEST}/usr/sbin
 	install -m755 univention-connector-list-rejected ${AD_TOOLS_DEST}/usr/sbin
-	install -m755 scripts/prepare-new-instance ${AD_TOOLS_DEST}usr/share/univention-ad-connector/scripts
+	install -m755 scripts/prepare-new-instance ${AD_TOOLS_DEST}/usr/share/univention-ad-connector/scripts
 	install -m600 conffiles/etc/univention/connector/ad/mapping.py ${AD_TOOLS_DEST}/etc/univention/connector/ad/mapping
 	
 	# Connector Modules

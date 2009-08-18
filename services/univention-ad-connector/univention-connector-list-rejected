@@ -41,6 +41,18 @@ import univention_baseconfig
 
 CONFIGBASENAME="connector"
 
+def usage():
+    print ""
+    print "This is univention-connector-list-rejected"
+    print ""
+    print "Univention-connector-list-rejected tries to summarize the objects which are rejected due to sync failures"
+    print ""
+    print "Usage:"
+    print "univention-connector-list-rejected [-c configbase]"
+    print ""
+    print "The default configbase is \"connector\"."
+
+
 if len(sys.argv) > 1:
 	if sys.argv[1] in ['-h', '--help', '-?']:
 		usage()
@@ -57,18 +69,6 @@ if len(sys.argv) > 1:
 
 sys.path=['/etc/univention/%s/ad/'%CONFIGBASENAME]+sys.path
 import mapping
-
-def usage():
-    print ""
-    print "This is univention-connector-list-rejected"
-    print ""
-    print "Univention-connector-list-rejected tries to summarize the objects which are rejected due to sync failures"
-    print ""
-    print "Usage:"
-    print "univention-connector-list-rejected [-c configbase]"
-    print ""
-    print "The default configbase is \"connector\"."
-
 
 def main():
 	baseConfig=univention_baseconfig.baseConfig()
