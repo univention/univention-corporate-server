@@ -69,3 +69,5 @@ domainname: $new_domain_name
 esac
 
 [ -x /sbin/dhclient-script ] && /sbin/dhclient-script
+
+exit 0

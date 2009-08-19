@@ -82,9 +82,10 @@ class object(content):
 		self.debug('DHCP broadcast on %s' % interface)
 		tempfilename='/tmp/dhclient%s.out' % os.getpid()
 		open(tempfilename, 'w').close()	# touch the file in case dhclient does not receive a propper answer
-		cmd='/sbin/dhclient -d -1 -lf /tmp/dhclient.leases -sf /lib/univention-installer/dhclient-script-wrapper -e dhclientscript_outputfile="%s" %s' % (tempfilename, interface)
+		cmd='/sbin/dhclient -1 -lf /tmp/dhclient.leases -sf /lib/univention-installer/dhclient-script-wrapper -e dhclientscript_outputfile="%s" %s' % (tempfilename, interface)
 		p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 		self.debug('DHCP output: %s' % p.stderr.read())
+		os.kill(p.pid, 15)
 		file = open(tempfilename)
 		dhcp_dict={}
 		for line in file.readlines():
@@ -129,7 +130,7 @@ class object(content):
 		if self.cmdline:
 			if self.cmdline.has_key('interface'):
 				self.mode='edit'
-				self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight-8,'edit')
+				self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight-8,'edit')
 				self.sub.draw()
 
 	def checkname(self):
@@ -459,7 +460,7 @@ class object(content):
 					self.needs_draw_all = True
 					self.sub.draw()
 				else:
-					self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight-8)
+					self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight-8)
 					self.sub.draw()
 
 	def input(self,key):
@@ -489,13 +490,13 @@ class object(content):
 			return 'prev'
 		elif key in [ 10, 32 ] and self.elements[4].usable() and self.elements[4].get_status():# Enter & Button: Add
 			if not self.ifaceselected():
-				self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight-8)
+				self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight-8)
 				self.sub.draw()
 			else:
 				pass
 		elif key in [ 10, 32 ] and self.elements[5].usable() and self.elements[5].get_status():# Enter & Button: Edit
 			if self.ifaceselected():
-				self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight-8,'edit')
+				self.sub=self.edit(self,self.minY,self.minX,self.maxWidth,self.maxHeight-8,'edit')
 				self.sub.draw()
 			else:
 				pass
@@ -853,6 +854,8 @@ class object(content):
 			elif ( key in [ 10, 32 ] and self.elem_exists('edit.BUTTON_DHCLIENT') and self.get_elem('edit.BUTTON_DHCLIENT').usable() and self.get_elem('edit.BUTTON_DHCLIENT').get_status() ) or key == 269: # F5
 				self.act = self.dhclient_active(self,_('DHCP Query'),_('Please wait ...'),name='act')
 				self.act.draw()
+				self.parent.draw()
+				self.draw()
 			elif key in [ 10, 32 ] and self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').usable() and self.get_elem('edit.CHECKBOX_DHCP').active: #Space in Checkbox
 				dhcp_checkbox=self.get_elem('edit.CHECKBOX_DHCP')
 				self.elements[self.current].key_event(32)	# send the event to the widget
