@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.22-1) unstable; urgency=low
+
+  * update sound driver list (Bug #15176)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Aug 2009 12:10:32 +0200
+
 univention-directory-manager-modules (5.0.21-1) unstable; urgency=low
 
   * add UCR-Variables to redefine the layout of the module tabs (Bug
