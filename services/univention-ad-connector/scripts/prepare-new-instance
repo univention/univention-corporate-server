@@ -43,6 +43,8 @@ usage() {
     echo "$0 -a delete -c connector2"
     echo "         Stops the connector, removes files and UCR-Variables for"
     echo "         basename \"connector2\""
+    echo "conventions:"
+    echo "The given config base name (option -c) must start with \"con\"."
 }
 
 CONFIGBASENAME=""
@@ -100,6 +102,13 @@ then
     exit 2
 fi
 
+#CONFIGBASENAME should start with "con" to match UCR-info-templates
+echo "$CONFIGBASENAME" | grep -q \^con
+if [ "$?" = "1" ]
+then 
+    echo "ERROR: config base name must start with \"con\". "
+    exit 3
+fi
 
 if [ "$createflag" = "0" -a "$deleteflag" = "0" ]
 then

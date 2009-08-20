@@ -1,113 +1,113 @@
-[connector/ad/listener/dir]
+[con.*/ad/listener/dir]
 Description[de]=Verzeichnis-Pfad in dem UCS-Änderungen durch das Directory-Listener-Plugin gespeichert werden.
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/poll/sleep]
+[con.*/ad/poll/sleep]
 Description[de]=Wartezeit in Sekunden bevor auf neue Änderungen in AD oder UCS geprüft wird.
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/retryrejected]
+[con.*/ad/retryrejected]
 Description[de]=Anzahl der durch Synchronisationsläufe bevor erneut versucht wird fehgeschlagene Änderungen zu synchronisieren.
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/ldap/port]
+[con.*/ad/ldap/port]
 Description[de]=TCP-Port über den das AD-LDAP erreichbar ist (default: 389).
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/ldap/host]
+[con.*/ad/ldap/host]
 Description[de]=FQDN des Active Directory Servers.
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/debug/function]
+[con.*/debug/function]
 Description[de]=Debug-Level für die Rückverfolgung von Funktionsaufrufen im AD-Connector (0 oder 1).
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/debug/level]
+[con.*/debug/level]
 Description[de]=Debug-Level für die Ausgaben in der connector.log (0-4).
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/mapping/user/primarymail]
+[con.*/ad/mapping/user/primarymail]
 Description[de]=Konfiguriert, ob die Synchronisation der primären Mailadresse von Benutzern durchgeführt werden soll (default: false).
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/mapping/user/win2000/description]
+[con.*/ad/mapping/user/win2000/description]
 Description[de]=Konfiguriert, ob der Abgleich von Benutzer-Beschreibungen bei der Synchronisation mit Windows 2000 Domänencontrolern aktiviert werden soll.
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/mapping/group/primarymail]
+[con.*/ad/mapping/group/primarymail]
 Description[de]=Konfiguriert, ob die Synchronisation der primären Mailadresse von Gruppen durchgeführt werden soll (default: false).
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/mapping/group/language]
+[con.*/ad/mapping/group/language]
 Description[de]=Konfiguriert, ob ein Mapping der englischen Standardgruppen im UCS auf anderssprachige Standardgruppen im AD durchgeführt werden soll (default: de).
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/mapping/group/win2000/description]
+[con.*/ad/mapping/group/win2000/description]
 Description[de]=Konfiguriert, ob der Abgleich von Gruppen-Beschreibungen bei der Synchronisation mit Windows 2000 Domänencontrolern aktiviert werden soll.
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/mapping/syncmode]
+[con.*/ad/mapping/syncmode]
 Description[de]=Konfiguriert, ob bidirectional ("sync", default) oder unidirektional ("read" oder "write") synchronisiert werden soll.
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/windows_version]
+[con.*/ad/windows_version]
 Description[de]=Definiert die Windows-Server Version, mit der Active Directory betrieben wird, ohne Angabe wird Windows 2003 vorausgesetzt..
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/ldap/base]
+[con.*/ad/ldap/base]
 Description[de]=LDAP Basis des Active Directories.
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/ldap/binddn]
+[con.*/ad/ldap/binddn]
 Description[de]=LDAP-DN des Synchronisationsaccounts im Active Directory.
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/ldap/bindpw]
+[con.*/ad/ldap/bindpw]
 Description[de]=Pfad zur Datei aus der das Passwort des Synchronisationsaccounts gelesen werden soll.
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/ad/ldap/certificate]
+[con.*/ad/ldap/certificate]
 Description[de]=Pfad zum SSL-Zertifikat des Active Directory Servers.
 Description[en]=
 Type=str
 Categories=service-adcon
 
-[connector/password/service/encoding]
-Description[de]=Erwartetes Encoding des Passwortdienstes unter Windows für den Benutzernamen
+[con.*/password/service/encoding]
+Description[de]=Erwartetes Encoding des Passwortdienstes unter Windows für den Benutzernamen.
 Description[en]=
 Type=str
 Categories=service-adcon
