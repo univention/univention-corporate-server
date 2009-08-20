@@ -564,7 +564,7 @@ class ad(univention.connector.ucs):
 
 		self.CONFIGBASENAME = CONFIGBASENAME
 		tls_mode = 2
-		if baseConfig.has_key('%s/ad/ssl' % CONFIGBASENAME) and self.baseConfig['%s/ad/ssl' % CONFIGBASENAME] == "no":
+		if baseConfig.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and self.baseConfig['%s/ad/ldap/ssl' % CONFIGBASENAME] == "no":
 			ud.debug(ud.LDAP, ud.INFO,"__init__: LDAP-connection to AD switched of by UCR.")
 			tls_mode = 0
 

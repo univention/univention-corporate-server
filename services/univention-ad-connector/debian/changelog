@@ -1,13 +1,19 @@
+univention-ad-connector (4.1.0-3) unstable; urgency=low
+
+  * use connector/ad/ldap/ssl in univention-adsearch, use ssl by default (Bug #14826)
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 20 Aug 2009 08:34:14 +0200
+
 univention-ad-connector (4.1.0-2) unstable; urgency=low
 
-  * Add Univention Configuration Registry variable connector/ad/ssl, which configures
+  * Add Univention Configuration Registry variable connector/ad/ldap/ssl, which configures
     an unencrypted operation to the Active Directory domain controller. (Bug #14807)
 
  -- Ingo Steuwer <steuwer@univention.de>  Thu, 20 Aug 2009 08:07:46 +0200
 
 univention-ad-connector (4.1.0-1) unstable; urgency=low
 
-  * extend connector to run in several instances on one server
+  * extend connector to run in several instances on one server (Bug #15415)
 
  -- Ingo Steuwer <steuwer@univention.de>  Tue, 18 Aug 2009 10:44:53 +0200
 

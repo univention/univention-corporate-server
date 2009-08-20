@@ -130,7 +130,7 @@ def connect():
 		f.close()
 		sys.exit(1)
 
-	if not baseConfig.has_key('%s/ad/ldap/certificate' % CONFIGBASENAME) and not (baseConfig.has_key('%s/ad/ssl' % CONFIGBASENAME) and baseConfig['%s/ad/ssl' % CONFIGBASENAME] == 'no') :
+	if not baseConfig.has_key('%s/ad/ldap/certificate' % CONFIGBASENAME) and not (baseConfig.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and baseConfig['%s/ad/ldap/ssl' % CONFIGBASENAME] == 'no') :
 		print '%s/ad/ldap/certificate not set' % CONFIGBASENAME
 		f.close()
 		sys.exit(1)

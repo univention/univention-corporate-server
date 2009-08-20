@@ -113,8 +113,9 @@ if not (baseConfig.has_key('%s/ad/ldap/host' % CONFIGBASENAME)
 	and baseConfig.has_key('%s/ad/ldap/port' % CONFIGBASENAME)
 	and baseConfig.has_key('%s/ad/ldap/binddn' % CONFIGBASENAME)
 	and baseConfig.has_key('%s/ad/ldap/bindpw' % CONFIGBASENAME)
-	and baseConfig.has_key('%s/ad/ldap/base' % CONFIGBASENAME)):
-	print ""
+	and baseConfig.has_key('%s/ad/ldap/base' % CONFIGBASENAME)
+	and (baseConfig.has_key('%s/ad/ldap/certificate' % CONFIGBASENAME) or (baseConfig.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and baseConfig['%s/ad/ldap/ssl' % CONFIGBASENAME] == 'no'))):
+        print ""
 	print "This is univention-adsearch"
 	print ""
 	print "Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server."
@@ -122,11 +123,12 @@ if not (baseConfig.has_key('%s/ad/ldap/host' % CONFIGBASENAME)
 	print "The Settings are not complete, please check the following univention-config-registry Values:"
 	print "%s/ad/ldap/host, %s/ad/ldap/port," % (CONFIGBASENAME, CONFIGBASENAME)
 	print "%s/ad/ldap/binddn, %s/ad/ldap/bindpw," % (CONFIGBASENAME, CONFIGBASENAME)
-	print "%s/ad/ldap/base" % CONFIGBASENAME
+	print "%s/ad/ldap/base, %s/ad/ldap/certificate" % (CONFIGBASENAME, CONFIGBASENAME)
 	sys.exit(1)
 	
-lo = ldap.open(baseConfig['%s/ad/ldap/host' % CONFIGBASENAME],int(baseConfig['%s/ad/ldap/port' % CONFIGBASENAME]))
-lo.set_option(ldap.OPT_REFERRALS,0)
+
+ldapuri = "LDAP://%s:%d" % (baseConfig['%s/ad/ldap/host' % CONFIGBASENAME],int(baseConfig['%s/ad/ldap/port' % CONFIGBASENAME]))
+
 login_dn = baseConfig['%s/ad/ldap/binddn' % CONFIGBASENAME]
 pw_file = baseConfig['%s/ad/ldap/bindpw' % CONFIGBASENAME]
 fp = open(pw_file,'r')
@@ -134,7 +136,25 @@ login_pw = fp.readline()
 if login_pw[-1] == '\n':
 	login_pw = login_pw[:-1]
 
-lo.simple_bind_s(login_dn, login_pw)
+ca_file = baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME]
+
+
+start_tls = 2
+if baseConfig.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and baseConfig['%s/ad/ldap/ssl' % CONFIGBASENAME] == "no":
+    start_tls = 0
+
+lo = ldap.ldapobject.SmartLDAPObject(uri=ldapuri,
+                                     who = login_dn,
+                                     cred = login_pw,
+                                     start_tls = start_tls,
+                                     tls_cacertfile = ca_file)
+
+#lo = ldap.initialize(ldapuri)
+
+
+lo.set_option(ldap.OPT_REFERRALS,0)
+
+#lo.simple_bind_s(login_dn, login_pw)
 
 # LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
 lc1 = LDAPControl('1.2.840.113556.1.4.417',criticality=1)

@@ -106,6 +106,12 @@ Description[en]=
 Type=str
 Categories=service-adcon
 
+[con.*/ad/ldap/ssl]
+Description[de]=Verwendung von SSL beim Zugriff auf die LDAP-Schnittstelle des AD aktivieren/deaktivieren.
+Description[en]=
+Type=str
+Categories=service-adcon
+
 [con.*/password/service/encoding]
 Description[de]=Erwartetes Encoding des Passwortdienstes unter Windows für den Benutzernamen.
 Description[en]=

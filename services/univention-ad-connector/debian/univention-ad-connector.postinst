@@ -44,6 +44,7 @@ univention-config-registry set connector/ad/listener/dir?/var/lib/univention-con
 univention-config-registry set connector/ad/poll/sleep?5
 univention-config-registry set connector/ad/retryrejected?10
 univention-config-registry set connector/ad/ldap/port?389
+univention-config-registry set connector/ad/ldap/ssl?yes
 univention-config-registry set connector/debug/function?0
 univention-config-registry set connector/debug/level?1
 univention-config-registry set connector/password/service/encoding?"iso8859-15"
