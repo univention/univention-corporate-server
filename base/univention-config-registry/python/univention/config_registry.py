@@ -29,7 +29,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os, sys, re, string, cPickle, types, copy
+import os, sys, re, string, cPickle, types, copy, subprocess
 import pwd, grp
 
 variable_pattern = re.compile('@%@([^@]+)@%@')
@@ -308,7 +308,7 @@ def filter(template, dir, srcfiles=[], opts = {}):
 			start = i.next()
 			end = i.next()
 
-			p = subprocess.Popen('usr/bin/python2.4', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
+			p = subprocess.Popen('/usr/bin/python2.4', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
 			child_stdin, child_stdout = p.stdin, p.stdout
 			if opts.get( 'encode-utf8', False ):
 				child_stdin.write('# -*- coding: utf-8 -*-\n')

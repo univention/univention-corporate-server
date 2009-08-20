@@ -1,3 +1,9 @@
+univention-config-registry (5.0.17-1) unstable; urgency=low
+
+  * add missing import and missing / (Bug #13979)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Thu, 20 Aug 2009 13:37:35 +0200
+
 univention-config-registry (5.0.16-1) unstable; urgency=low
 
   * os.popen2 -> subprocess.Popen which contains faster
