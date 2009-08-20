@@ -308,7 +308,8 @@ def filter(template, dir, srcfiles=[], opts = {}):
 			start = i.next()
 			end = i.next()
 
-			child_stdin, child_stdout = os.popen2('/usr/bin/python2.4', 'w+')
+			p = subprocess.Popen('usr/bin/python2.4', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
+			child_stdin, child_stdout = p.stdin, p.stdout
 			if opts.get( 'encode-utf8', False ):
 				child_stdin.write('# -*- coding: utf-8 -*-\n')
 			child_stdin.write('import univention.config_registry\n')
@@ -334,7 +335,8 @@ def runScript(script, arg, changes):
 		if value and len(value) > 1 and value[0] and value[1]:
 			s += '%s@%%@%s@%%@%s\n' % (key, value[0], value[1])
 
-	p_out, p_in = os.popen2(script+" "+arg)
+	p = subprocess.Popen(script+" "+arg, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
+	p_out, p_in = p.stdin, p.stdout
 	p_out.write(s)
 	p_out.close()
 	p_in.close()
