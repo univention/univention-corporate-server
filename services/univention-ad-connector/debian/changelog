@@ -1,3 +1,10 @@
+univention-ad-connector (4.1.0-4) unstable; urgency=low
+
+  * corrected recreation of mapping in prepare-instance
+  * fixed typo in prepare-instance
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 20 Aug 2009 14:49:11 +0200
+
 univention-ad-connector (4.1.0-3) unstable; urgency=low
 
   * use connector/ad/ldap/ssl in univention-adsearch, use ssl by default (Bug #14826)
