@@ -244,7 +244,12 @@ class ucs:
 		bindpw=open('/etc/ldap.secret').read()
 		if bindpw[-1] == '\n':
 			bindpw=bindpw[0:-1]
-			self.lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseConfig['ldap/base'], binddn='cn=admin,'+baseConfig['ldap/base'], bindpw=bindpw, start_tls=2)
+
+			tls_mode = 2
+			if baseConfig.has_key('connector/ad/ssl') and self.baseConfig['connector/ad/ssl'] == "no":
+			    tls_mode = 0
+
+			self.lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseConfig['ldap/base'], binddn='cn=admin,'+baseConfig['ldap/base'], bindpw=bindpw, start_tls=tls_mode)
 
 		for section in ['DN Mapping UCS','DN Mapping CON','UCS rejected']:
 			if not self.config.has_section(section):

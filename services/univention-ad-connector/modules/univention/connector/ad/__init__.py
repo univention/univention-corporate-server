@@ -563,7 +563,14 @@ class ad(univention.connector.ucs):
 		univention.connector.ucs.__init__(self, CONFIGBASENAME, property, baseConfig, listener_dir)
 
 		self.CONFIGBASENAME = CONFIGBASENAME
-		self.lo_ad=univention.uldap.access(host=ad_ldap_host, port=int(ad_ldap_port), base=ad_ldap_base, binddn=ad_ldap_binddn, bindpw=ad_ldap_bindpw, start_tls=2, ca_certfile=ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
+		tls_mode = 2
+		if baseConfig.has_key('%s/ad/ssl' % CONFIGBASENAME) and self.baseConfig['%s/ad/ssl' % CONFIGBASENAME] == "no":
+			ud.debug(ud.LDAP, ud.INFO,"__init__: LDAP-connection to AD switched of by UCR.")
+			tls_mode = 0
+
+
+		self.lo_ad=univention.uldap.access(host=ad_ldap_host, port=int(ad_ldap_port), base=ad_ldap_base, binddn=ad_ldap_binddn, bindpw=ad_ldap_bindpw, start_tls=tls_mode, ca_certfile=ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
+
 		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
 		self.baseConfig = baseConfig
 

@@ -1,3 +1,10 @@
+univention-ad-connector (4.1.0-2) unstable; urgency=low
+
+  * Add Univention Configuration Registry variable connector/ad/ssl, which configures
+    an unencrypted operation to the Active Directory domain controller. (Bug #14807)
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 20 Aug 2009 08:07:46 +0200
+
 univention-ad-connector (4.1.0-1) unstable; urgency=low
 
   * extend connector to run in several instances on one server
