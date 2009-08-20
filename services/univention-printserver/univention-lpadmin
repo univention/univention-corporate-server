@@ -59,7 +59,8 @@ os.setuid(machine_uid)
 
 command = '%s ' % lpadminexec
 for arg in args:
-	command += ' "%s"' % arg
+	if not (arg.startswith('"') and arg.endswith('"')):
+		command += ' %s' % arg
 
 child = spawn( command )
 

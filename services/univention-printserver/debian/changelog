@@ -1,3 +1,9 @@
+univention-printserver (3.0.6-1) unstable; urgency=low
+
+  * prevent double argument quoting in univention-ldapadmin (Bug #15142)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Thu, 20 Aug 2009 15:31:19 +0200
+
 univention-printserver (3.0.5-1) unstable; urgency=low
 
   * rename cups/log/level to cups/debug/level (Bug #7027)
