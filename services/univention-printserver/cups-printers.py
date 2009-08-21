@@ -246,7 +246,7 @@ def handler(dn, new, old):
 					args+=[options[a], new.get(a, [''])[0]]
 
 				else:
-					args+=[options[a], '"%s"' % new.get(a, [''])[0]]
+					args+=[options[a], '"%s"' % new.get(a, [''])[0].replace(' ', '\ ')]
 
 			args+=[options['univentionPrinterURI'], modified_uri]
 

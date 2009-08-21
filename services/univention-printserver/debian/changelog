@@ -1,3 +1,9 @@
+univention-printserver (3.0.8-1) unstable; urgency=low
+
+  * yet another correction to the previous change (Bug #15142)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Fri, 21 Aug 2009 11:38:14 +0200
+
 univention-printserver (3.0.7-1) unstable; urgency=low
 
   * correct previous change (Bug #15142)
