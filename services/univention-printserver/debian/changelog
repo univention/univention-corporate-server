@@ -1,3 +1,9 @@
+univention-printserver (3.0.10-1) unstable; urgency=low
+
+  * revert previous change (Bug #14282)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Mon, 24 Aug 2009 10:31:49 +0200
+
 univention-printserver (3.0.9-1) unstable; urgency=low
 
   * prevent creation of %U-dir in joinscript (Bug #14282)
