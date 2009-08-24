@@ -1,3 +1,9 @@
+univention-printserver (3.0.9-1) unstable; urgency=low
+
+  * prevent creation of %U-dir in joinscript (Bug #14282)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Mon, 24 Aug 2009 10:07:01 +0200
+
 univention-printserver (3.0.8-1) unstable; urgency=low
 
   * yet another correction to the previous change (Bug #15142)

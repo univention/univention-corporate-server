@@ -57,7 +57,7 @@ univention-directory-manager shares/share create $@ --ignore_exist \
 	--position="cn=shares,$ldapbase" \
 	--option samba --set "name=pdfPrinterShare" \
 	--set "host=${hostname}.${domainname}" \
-	--set "path=/var/cache/cups-pdf/%U" \
+	--set "path=/var/cache/cups-pdf/" \
 	--set "webaccessName=pdfPrinterShare" \
 	--set "name=pdfPrinterShare" \
 	--set "description=pdf printer share"
