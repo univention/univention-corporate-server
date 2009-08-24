@@ -1169,7 +1169,7 @@ class ad(univention.connector.ucs):
 			except (ldap.SERVER_DOWN, SystemExit):
 				raise
 			except:  # FIXME: which exception is to be caught?
-				self._debug_traceback(ud.INFO, "group_members_sync_from_ucs: failed to get dn from ad, assume object doesn't exist")
+				ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: failed to get dn from ad, assume object doesn't exist")
 
 		ud.debug(ud.LDAP, ud.INFO,
 							   "group_members_sync_from_ucs: UCS-members in ad_members_from_ucs %s" % ad_members_from_ucs)
@@ -1299,8 +1299,9 @@ class ad(univention.connector.ucs):
 			ucs_members = ldap_object_ucs['uniqueMember']
 		else:
 			ucs_members = []
-		ud.debug(ud.LDAP, ud.INFO,"group_members_sync_to_ucs:ucs_members: %s" % ucs_members)
-		
+		ud.debug(ud.LDAP, ud.INFO,"group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
+
+		# FIXME: does not use dn-mapping-function
 		ldap_object_ad = self.get_object(ad_object['dn']) # FIXME: may fail if object doesn't exist
 		if ldap_object_ad and ldap_object_ad.has_key('member'):
 			ad_members = ldap_object_ad['member']
@@ -1331,15 +1332,17 @@ class ad(univention.connector.ucs):
 			if member_object:
 				mo_key = self.__identify({'dn':member_dn,'attributes':member_object})
 				if not mo_key:
+					ud.debug(ud.LDAP, ud.WARN, "group_members_sync_to_ucs: failed to identify object type of ad member, ignore membership: %s" % member_dn)
 					continue # member is an object which will not be synced
 				ucs_dn = self._object_mapping(key, {'dn':member_dn,'attributes':member_object})['dn']
+				ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: mapped ad member to ucs DN %s" % ucs_dn)
 				try:
 					if self.lo.get(ucs_dn):
 						ucs_members_from_ad[key].append(ucs_dn.lower())
 				except (ldap.SERVER_DOWN, SystemExit):
 					raise
 				except: # FIXME: which exception is to be caught?
-					self._debug_traceback(ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs, assume object doesn't exist")
+					ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs, assume object doesn't exist")
 				
 		# check if members in UCS don't exist in AD, if true they need to be added in UCS
 		for member_dn in ucs_members:
