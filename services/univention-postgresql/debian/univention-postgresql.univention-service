@@ -1,7 +1,14 @@
 [postgresql-7.4]
-Description[de]=PostgreSQL Server
-Description[en]=PostgreSQL server
+Description[de]=PostgreSQL 7.4 Server
+Description[en]=PostgreSQL 7.4 server
 icon=service/postgres
 programs=/usr/lib/postgresql/7.4/bin/postmaster
 start_type=postgres/autostart
+
+[postgresql-8.3]
+Description[de]=PostgreSQL 8.3 Server
+Description[en]=PostgreSQL 8.3 server
+icon=service/postgres
+programs=/usr/lib/postgresql/8.3/bin/postmaster
+start_type=postgres8/autostart
 

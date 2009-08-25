@@ -1,5 +1,20 @@
 [postgres/autostart]
-Description[de]=Automatischer Start der PostgreSQL Datenbank
+Description[de]=Automatischer Start der PostgreSQL 7.4 Datenbank
 Description[en]=Automatically start of the postgres database
 Type=str
 Categories=system-services
+[postgres8/autostart]
+Description[de]=Automatischer Start der PostgreSQL 8.3 Datenbank
+Description[en]=Automatically start of the postgres database
+Type=str
+Categories=system-services
+postgres8/maxconnections]
+Description[de]=Maximal gleichzeitige Verbindungen
+Description[en]=Maximum connections
+Type=str
+Categories=System
+[postgres8/listenaddress]
+Description[de]=IP Adresse(n) über die Verbindungen angenommen werden
+Description[en]=What IP address(es) to listen on
+Type=str
+Categories=System
