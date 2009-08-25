@@ -1,3 +1,9 @@
+univention-postgresql (2.0.1-4) unstable; urgency=low
+
+  * fix baseconfig info file syntax (Bug #12754)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Aug 2009 16:13:21 +0200
+
 univention-postgresql (2.0.1-3) unstable; urgency=low
 
   * provide UCR templates for 8.3 configuration (Bug #12754)
