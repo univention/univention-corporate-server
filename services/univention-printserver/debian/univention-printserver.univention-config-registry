@@ -11,3 +11,9 @@ Variables: cups/debug/level
 
 Type: file
 File: etc/pam.d/cupsys
+
+Type: file
+File: etc/cups/restrictedprinters.conf
+Variables: cups/restrictedprinters
+Variables: hostname
+Variables: domainname

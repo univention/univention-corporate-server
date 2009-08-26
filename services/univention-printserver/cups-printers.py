@@ -81,6 +81,7 @@ def filter_match(object):
 
 def handler(dn, new, old):
 	need_to_reload_samba = 0
+	need_to_reload_cups = 0
 	printer_is_group = 0
 	quota_support = 0
 
@@ -127,7 +128,20 @@ def handler(dn, new, old):
 
 	if filter_match(old):
 		if 'cn' in changes or not filter_match(new):
-			# delete printer
+			#Deletions done via UCR-Variables
+			printer_name = old['cn'][0]
+			printer_list = listener.baseConfig.get('cups/restrictedprinters', '').split()
+			printer_is_restricted = printer_name in printer_list
+			if printer_is_restricted:
+				printer_list.remove (printer_name)
+				keyval = 'cups/restrictedprinters="%s"' % string.join(printer_list, ' ')
+				listener.setuid (0)
+				try:
+					univention.config_registry.handler_set( [ keyval.encode() ] )
+				finally:
+					listener.unsetuid ()
+
+			#Deletions done via lpadmin
 			lpadmin(['-x', old['cn'][0]])
 			if old['univentionPrinterQuotaSupport'][0] == "1":
 				if printer_is_group:
@@ -136,6 +150,7 @@ def handler(dn, new, old):
 				pkprinters(['--delete', old['cn'][0]])
 			need_to_reload_samba = 1
 
+		#Deletions done via editing the Samba config
 		if old.has_key('univentionPrinterSambaName') and old['univentionPrinterSambaName']:
 			filename = '/etc/samba/printers.conf.d/%s' % old['univentionPrinterSambaName'][0]
 			listener.setuid(0)
@@ -154,6 +169,30 @@ def handler(dn, new, old):
 			 listener.unsetuid()
 
 	if filter_match(new):
+		#Modifications done via UCR-Variables
+		printer_name = new['cn'][0]
+		printer_list = listener.baseConfig.get('cups/restrictedprinters', '').split()
+		printer_is_restricted = printer_name in printer_list
+		restrict_printer = ((len (new.get('univentionPrinterACLUsers', [])) + len(new.get('univentionPrinterACLGroups', []))) > 0) and not (new['univentionPrinterACLtype'][0] == 'allow all')
+
+		update_restricted_printers = False
+		if printer_is_restricted and not restrict_printer:
+			printer_list.remove (printer_name)
+			update_restricted_printers = True
+		elif not printer_is_restricted and restrict_printer:
+			printer_list.append (printer_name)
+			update_restricted_printers = True
+
+		if update_restricted_printers:
+			keyval = 'cups/restrictedprinters=%s' % string.join (printer_list, ' ')
+			listener.setuid (0)
+			try:
+				univention.config_registry.handler_set( [ keyval.encode() ] )
+			finally:
+				listener.unsetuid ()
+			need_to_reload_cups=1
+
+		#Modifications done via lpadmin
 		description=""
 		page_price=0
 		job_price=0
@@ -256,6 +295,7 @@ def handler(dn, new, old):
 			lpadmin(args)
 			need_to_reload_samba = 1
 
+			#Modifications done via editing Samba config
 			printername = new['cn'][0]
 			if new.has_key('univentionPrinterSambaName') and new['univentionPrinterSambaName']:
 				printername = new['univentionPrinterSambaName'][0]
@@ -307,14 +347,19 @@ def handler(dn, new, old):
 				finally:
 					listener.unsetuid()
 
+		if need_to_reload_cups == 1:
+			reload_daemon ('cups', 'cups-printers: ')
 
 		if need_to_reload_samba == 1:
-			samba_script='/etc/init.d/samba'
-			if os.path.exists(samba_script):
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "cups-printers: samba reload" )
-				listener.run(samba_script, ['samba','reload'], uid=0)
-			else:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "cups-printers: no samba to reload found" )
+			reload_daemon ('samba', 'cups-printers: ')
+
+def reload_daemon(daemon, prefix):
+	script = os.path.join ('/etc/init.d', daemon)
+	if os.path.exists(script):
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "%s %s reload" % (prefix, daemon) )
+		listener.run(script, [daemon,'reload'], uid=0)
+	else:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "%s no %s to reload found" % (prefix, daemon) )
 
 def initialize():
 	if not os.path.exists('/etc/samba/printers.conf.d'):

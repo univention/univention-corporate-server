@@ -39,3 +39,9 @@ Description[de]=Cups-Log-Verbosität (none, emerg, alert, crit, error, warn, not
 Description[en]=Cups-Log-Verbosity (none, emerg, alert, crit, error, warn, notice, info, debug, debug2)
 Type=str
 Categories=service-cups
+
+[cups/restrictedprinters]
+Description[de]=Cups-Drucker mit Zugriffsbeschränkung
+Description[en]=Cups-Printers with restricted access
+Type=str
+Categories=service-cups
