@@ -219,7 +219,13 @@ fi
 
 echo -e "\033[60Gdone"
 
-common_name=`univention-ssh $DCPWD "$DCNAME 'openssl x509 -noout -in ""/etc/univention/ssl/$DCNAME/cert.pem"" -subject -nameopt multiline'" | grep commonName | sed s/.*\ // | tr -d '\r\n'`
+cert_name=`univention-ssh $DCPWD "$DCNAME 'ls ""/etc/univention/ssl/$DCNAME/cert.pem""'" | sed s/.*\ // | tr -d '\r\n'`
+
+if [ "$cert_name" != "/etc/univention/ssl/$DCNAME/cert.pem" ]; then
+	failed_message "Could not find the DC host certificate in /etc/univention/ssl/"$DCNAME"/cert.pem on the host. Maybe you specified an invalid dcname?"
+fi
+
+common_name=`univention-ssh $DCPWD "$DCNAME 'openssl x509 -noout -in ""$cert_name"" -subject -nameopt multiline'" | grep commonName | sed s/.*\ // | tr -d '\r\n'`
 
 if [ "$common_name" != "$DCNAME" ]; then
 	failed_message "The specified dcname ($DCNAME) doesn't match the common Name in the host certificate ($common_name)"

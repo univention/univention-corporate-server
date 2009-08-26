@@ -1,3 +1,9 @@
+univention-join (2.0.8-1) unstable; urgency=low
+
+  * add error condition for inability to find dc-hostcertificate in univention-join (Bug #9650)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Wed, 26 Aug 2009 13:40:13 +0200
+
 univention-join (2.0.7-1) unstable; urgency=low
 
   * explain "skipped" output to avoid even more confusion (Bug #15082)
