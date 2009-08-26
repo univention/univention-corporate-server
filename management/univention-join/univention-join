@@ -227,6 +227,10 @@ fi
 
 common_name=`univention-ssh $DCPWD "$DCNAME 'openssl x509 -noout -in ""$cert_name"" -subject -nameopt multiline'" | grep commonName | sed s/.*\ // | tr -d '\r\n'`
 
+if [ -z "$common_name" ]; then
+	failed_message "Unable to extract common Name from DC host certificate in /etc/univention/ssl/"$DCNAME"/cert.pem on the host. Maybe the file is corrupted?"
+fi
+
 if [ "$common_name" != "$DCNAME" ]; then
 	failed_message "The specified dcname ($DCNAME) doesn't match the common Name in the host certificate ($common_name)"
 fi

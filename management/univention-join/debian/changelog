@@ -1,3 +1,9 @@
+univention-join (2.0.9-1) unstable; urgency=low
+
+  * add yet another error condition for inability to extract commonName from certificate file (Bug #9650)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Wed, 26 Aug 2009 13:58:42 +0200
+
 univention-join (2.0.8-1) unstable; urgency=low
 
   * add error condition for inability to find dc-hostcertificate in univention-join (Bug #9650)
