@@ -1,3 +1,9 @@
+univention-join (2.0.10-1) unstable; urgency=low
+
+  * implement qa wishes, include more checks in joinscript-lib (Bug #14873)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Thu, 27 Aug 2009 13:35:47 +0200
+
 univention-join (2.0.9-1) unstable; urgency=low
 
   * add yet another error condition for inability to extract commonName from certificate file (Bug #9650)
