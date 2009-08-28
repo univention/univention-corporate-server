@@ -1,3 +1,9 @@
+univention-config-registry (5.0.20-1) unstable; urgency=low
+
+  * make behaviour of ConfigRegistry.__iter__ more useful (Bug: #14199)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Fri, 28 Aug 2009 14:24:28 +0200
+
 univention-config-registry (5.0.19-1) unstable; urgency=low
 
   * implement __contains__ and __iter__ for ConfigRegistry (Bug: #14199)

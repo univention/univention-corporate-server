@@ -141,10 +141,9 @@ class ConfigRegistry( dict ):
 		return False
 
 	def iterkeys ( self ):
-		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP,
-					 ConfigRegistry.NORMAL, ConfigRegistry.CUSTOM ):
-			for key in self._registry[ reg ]:
-				yield key
+		merge = self._merge()
+		for key in merge:
+			yield key
 
 	__iter__ = iterkeys
 
