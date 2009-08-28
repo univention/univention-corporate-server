@@ -47,6 +47,7 @@ cache_version_max = 1
 cache_version_text = 'univention-config cache, version'
 cache_version_notice = '%s %s\n' % (cache_version_text, cache_version)
 cache_version_re = re.compile('^%s (P<version>[0-9]+)$' % cache_version_text)
+shell_valid_chars = string.ascii_letters + string.digits + '_'
 
 warning_text='''Warning: This file is auto-generated and might be overwritten by
          univention-config-registry.
@@ -915,16 +916,20 @@ def replaceUmlaut(line):
 		    'ß': 'ss', }
 	return replaceDict(line, umlauts)
 
-def shellEscape(line):
-	escapes = { '/': '_',
-		    '-': '_',
-		    '@':'_',
-		    '.':'_',
-		    '*':'\*',
-		    ' ': '_', }
-	return replaceDict(line, escapes)
+def keyShellEscape(line):
+	if not line:
+		raise Exception ('got empty line')
+	new_line = []
+	if line[0] in string.digits:
+		new_line.append ('_')
+	for letter in line:
+		if letter in shell_valid_chars:
+			new_line.append (letter)
+		else:
+			new_line.append ('_')
+	return ''.join (new_line)
 
-def valueEscape(line):
+def valueShellEscape(line):
 	escapes = { '*':'"*"',
 		    '?':'"?"',
 		    #'"': '"""',
@@ -1067,9 +1072,7 @@ def filter_shell( args, text ):
 		except ValueError:
 			var = line
 			value = ''
-		key = shellEscape( var )
-		if validateKey( key ):
-			out.append( '%s="%s"' % ( key, valueEscape( value ) ) )
+		out.append( '%s="%s"' % ( keyShellEscape( var ), valueShellEscape( value ) ) )
 	return out
 
 def filter_keys_only( args, text ):
