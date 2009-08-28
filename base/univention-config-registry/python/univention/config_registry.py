@@ -865,12 +865,13 @@ def handler_unset( args, opts = {} ):
 
 	changed = {}
 	for arg in args:
-		changed[arg] = ( reg[arg], '' )
 		if reg.has_key( arg, write_registry_only = True ):
+			oldvalue = reg[arg]
+			print 'Unsetting '+arg
 			del reg[arg]
+			changed[arg] = ( oldvalue, '' )
 		else:
-			print "The config registry variable to be unset does not exist."
-			return None
+			print "Warning: The config registry variable '%s' does not exist" % arg
 	reg.save()
 	reg.unlock()
 	c( changed.keys(), ( reg, changed ) )

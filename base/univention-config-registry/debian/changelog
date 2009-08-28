@@ -1,3 +1,9 @@
+univention-config-registry (5.0.21-1) unstable; urgency=low
+
+  * make ucr unset continue after some variable didn't exist (Bug: #15140)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Fri, 28 Aug 2009 15:41:33 +0200
+
 univention-config-registry (5.0.20-1) unstable; urgency=low
 
   * make behaviour of ConfigRegistry.__iter__ more useful (Bug: #14199)
