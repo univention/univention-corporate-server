@@ -133,6 +133,21 @@ class ConfigRegistry( dict ):
 	def __setitem__( self, key, value ):
 		self._registry[ self._write_registry ][ key ] = value
 
+	def __contains__( self, key ):
+		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP,
+					 ConfigRegistry.NORMAL, ConfigRegistry.CUSTOM ):
+			if key in self._registry[ reg ]:
+				return True
+		return False
+
+	def iterkeys ( self ):
+		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP,
+					 ConfigRegistry.NORMAL, ConfigRegistry.CUSTOM ):
+			for key in self._registry[ reg ]:
+				yield key
+
+	__iter__ = iterkeys
+
 	def get( self, key, default = '' ):
 		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL ):
 			if self._registry[ reg ].has_key( key ):
