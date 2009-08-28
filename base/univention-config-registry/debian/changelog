@@ -1,3 +1,9 @@
+univention-config-registry (5.0.22-1) unstable; urgency=low
+
+  * make ConfigRegistry.get() return None if key doesn't exist (Bug: #14200)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Fri, 28 Aug 2009 15:54:27 +0200
+
 univention-config-registry (5.0.21-1) unstable; urgency=low
 
   * make ucr unset continue after some variable didn't exist (Bug: #15140)

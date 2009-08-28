@@ -147,7 +147,7 @@ class ConfigRegistry( dict ):
 
 	__iter__ = iterkeys
 
-	def get( self, key, default = '' ):
+	def get( self, key, default = None ):
 		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL ):
 			if self._registry[ reg ].has_key( key ):
 				return self._registry[ reg ][ key ]
