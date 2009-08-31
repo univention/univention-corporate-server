@@ -1,3 +1,9 @@
+univention-config-registry (5.0.28-1) unstable; urgency=low
+
+  * register variable server/role with /etc/issue (Bug: #10331)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Mon, 31 Aug 2009 15:38:34 +0200
+
 univention-config-registry (5.0.27-1) unstable; urgency=low
 
   * fix error in last commit, and replace non-encodeable characters

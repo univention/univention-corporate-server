@@ -158,6 +158,7 @@ Variables: version/patchlevel
 Variables: version/security-patchlevel
 Variables: interfaces/eth.*/address
 Variables: interfaces/eth.*/type
+Variables: server/role
 
 Type: file
 File: etc/issue.net
