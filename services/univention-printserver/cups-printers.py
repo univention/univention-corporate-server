@@ -173,7 +173,7 @@ def handler(dn, new, old):
 		printer_name = new['cn'][0]
 		printer_list = listener.baseConfig.get('cups/restrictedprinters', '').split()
 		printer_is_restricted = printer_name in printer_list
-		restrict_printer = ((len (new.get('univentionPrinterACLUsers', [])) + len(new.get('univentionPrinterACLGroups', []))) > 0) and not (new['univentionPrinterACLtype'][0] == 'allow all')
+		restrict_printer = (new.get('univentionPrinterACLUsers', []) or new.get('univentionPrinterACLGroups', [])) and not (new['univentionPrinterACLtype'][0] == 'allow all')
 
 		update_restricted_printers = False
 		if printer_is_restricted and not restrict_printer:

@@ -8,12 +8,7 @@ Variables: cups/filedevice
 Variables: cups/location/base
 Variables: cups/location/admin
 Variables: cups/debug/level
+Variables: cups/restrictedprinters
 
 Type: file
 File: etc/pam.d/cupsys
-
-Type: file
-File: etc/cups/restrictedprinters.conf
-Variables: cups/restrictedprinters
-Variables: hostname
-Variables: domainname
