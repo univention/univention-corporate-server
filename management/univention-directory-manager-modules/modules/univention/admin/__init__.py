@@ -231,6 +231,10 @@ def ucr_overwrite_module_layout( module ):
 	Overwrite the tab layout
 	'''
 	univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "layout overwrite" )
+	# there are modules without a layout definition
+	if not hasattr( module, 'layout' ):
+		return
+
 	new_layout = []
 	for tab in module.layout[ : ]:
 		desc = tab.short_description
