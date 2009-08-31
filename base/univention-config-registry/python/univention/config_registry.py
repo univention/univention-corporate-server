@@ -35,7 +35,7 @@ import pwd, grp
 variable_pattern = re.compile('@%@([^@]+)@%@')
 variable_token = re.compile('@%@')
 execute_token = re.compile('@!@')
-warning_pattern = re.compile('BCWARNING=(.+)')
+warning_pattern = re.compile('(UCRWARNING|BCWARNING|UCRWARNING_ASCII)=(.+)')
 file_dir = '/etc/univention/templates/files'
 script_dir = '/etc/univention/templates/scripts'
 module_dir = '/etc/univention/templates/modules'
@@ -61,14 +61,18 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
 
 sys.path.insert(0, '')
 
-def warning_string(prefix='# ', width=80, srcfiles=[]):
+def warning_string(prefix='# ', width=80, srcfiles=[], enforce_ascii=False):
 	res = []
 
 	for line in warning_text.split('\n'):
+		if ascii:
+			line = replaceUmlaut(line).encode ('ascii')
 		res.append(prefix+line)
 	res.append(prefix)
 
 	for srcfile in srcfiles:
+		if ascii:
+			srcfile = srcfile.encode ('ascii')
 		res.append(prefix+'\t%s' % srcfile)
 	res.append(prefix)
 
@@ -313,11 +317,17 @@ def filter(template, dir, srcfiles=[], opts = {}):
 
 			if dir.has_key(name):
 				value = dir[name]
-			elif warning_pattern.match(name):
-				prefix = warning_pattern.findall(name)[0]
-				value = warning_string(prefix, srcfiles=srcfiles)
 			else:
-				value = ''
+				match = warning_pattern.match(name)
+				if match:
+					mode = match.group(1)
+					prefix = match.group(2)
+					if mode == "UCRWARNING_ASCII":
+						value = warning_string(match.group(2), srcfiles=srcfiles, enforce_ascii=True)
+					else:
+						value = warning_string(match.group(2), srcfiles=srcfiles)
+				else:
+					value = ''
 
 			if type(value) == types.ListType or type(value) == types.TupleType:
 				value = value[0]

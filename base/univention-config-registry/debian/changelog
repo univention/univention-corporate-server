@@ -1,3 +1,9 @@
+univention-config-registry (5.0.26-1) unstable; urgency=low
+
+  * add macros UCRWARNING and UCRWARNING_ASCII (Bug: #14511)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Mon, 31 Aug 2009 14:06:58 +0200
+
 univention-config-registry (5.0.25-1) unstable; urgency=low
 
   * add missing options to syntax description (Bug: #10065)
