@@ -1,3 +1,10 @@
+univention-config-registry (5.0.27-1) unstable; urgency=low
+
+  * fix error in last commit, and replace non-encodeable characters
+    instead of aborting (Bug: #14511)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Mon, 31 Aug 2009 14:45:43 +0200
+
 univention-config-registry (5.0.26-1) unstable; urgency=low
 
   * add macros UCRWARNING and UCRWARNING_ASCII (Bug: #14511)

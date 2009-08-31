@@ -65,14 +65,14 @@ def warning_string(prefix='# ', width=80, srcfiles=[], enforce_ascii=False):
 	res = []
 
 	for line in warning_text.split('\n'):
-		if ascii:
-			line = replaceUmlaut(line).encode ('ascii')
+		if enforce_ascii:
+			line = replaceUmlaut(line).encode ('ascii', 'replace')
 		res.append(prefix+line)
 	res.append(prefix)
 
 	for srcfile in srcfiles:
-		if ascii:
-			srcfile = srcfile.encode ('ascii')
+		if enforce_ascii:
+			srcfile = srcfile.encode ('ascii', 'replace')
 		res.append(prefix+'\t%s' % srcfile)
 	res.append(prefix)
 
