@@ -1,3 +1,9 @@
+univention-pam (3.0.1-1) unstable; urgency=low
+
+  * fix error in pam.conf.d-generation (Bug #15265)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Mon, 31 Aug 2009 15:16:56 +0200
+
 univention-pam (3.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
