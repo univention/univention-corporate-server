@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+HOOK_SCRIPTS := $(wildcard usr/lib/univention-system-setup/appliance-hooks.d/[0-9]*)
+
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
@@ -74,6 +76,9 @@ install: build
 	install -m 700 usr/lib/univention-system-setup/scripts/basis/18root_password ${D}/usr/lib/univention-system-setup/scripts/basis/
 	install -m 700 usr/lib/univention-system-setup/scripts/security/10security ${D}/usr/lib/univention-system-setup/scripts/security/
 	install -m 700 usr/lib/univention-system-setup/scripts/software/10software ${D}/usr/lib/univention-system-setup/scripts/software/
+	install -m 700 $(wildcard usr/lib/univention-system-setup/scripts/ssl/[0-9]*) ${D}/usr/lib/univention-system-setup/scripts/ssl/
+
+	install -m 700 $(HOOK_SCRIPTS) ${D}-appliance/usr/lib/univention-system-setup/appliance-hooks.d/
 	dh_install
 
 binary-arch: build install
@@ -84,7 +89,8 @@ binary-indep: build install
 	dh_installdocs
 	dh_installexamples
 	dh_installmenu
-	dh_installinit --no-start -u"defaults 70"
+	dh_installinit -punivention-system-setup-boot --no-start -u"defaults 70"
+	dh_installinit -punivention-system-setup-appliance --no-start -u"defaults 75"
 	dh_installcron
 	dh_installman
 	dh_installinfo

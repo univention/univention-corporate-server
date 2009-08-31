@@ -278,6 +278,12 @@ class mods:
 			'locale/default':		'locale_default',
 			'locale':				'locales',
 			'locale/keymap':		'keymap',
+			'ssl/email':			'ssl_email',
+			'ssl/country':			'ssl_country',
+			'ssl/organization':		'ssl_organization',
+			'ssl/organizationalunit':	'ssl_organizationalunit',
+			'ssl/state':			'ssl_state',
+			'ssl/locality':			'ssl_locality',
 		}
 		for i in range(0,4):
 			mapping['interfaces/eth%d/type' % (i)]='eth%d_type' % (i)
@@ -662,6 +668,7 @@ name_mapping={  'timezone':			'04_timezone',
 				'basis':			'11_basis',
 				'security':			'50_security',
 				'net':				'20_net',
+				'ssl':				'30_ssl',
 				'software':			'60_software' }
 
 if cmdline.has_key('modules'):

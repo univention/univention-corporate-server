@@ -29,6 +29,16 @@ Description: starting univention-system-setup on next boot
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
+Package: univention-system-setup-appliance
+Architecture: all
+Depends: univention-system-setup-boot
+Description: perform initial configuration of appliance editions
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
 Package: univention-setup
 Architecture: any
 Depends: univention-setup
