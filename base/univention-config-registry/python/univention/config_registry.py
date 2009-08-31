@@ -282,12 +282,9 @@ class _ConfigRegistry( dict ):
 			return ''
 
 	def removeInvalidChars (self, seq):
-		new_string = []
-		for letter in seq:
-			if not letter in invalid_value_chars:
-				new_string.append (letter)
-
-		return ''.join (new_string)
+		for letter in invalid_value_chars:
+			seq = seq.replace(letter,'')
+		return seq
 
 	def __str__(self):
 		return '\n'.join(['%s: %s' % (key, self.removeInvalidChars (val)) for key, val in self.items()])
