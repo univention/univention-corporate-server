@@ -1127,7 +1127,7 @@ class soundModule(select):
 		( 'snd-korg1212', 'korg1212' ),
 		( 'snd-serial-u16550', 'MIDI serial u16550' ),
 		( 'snd-miro', 'Miro miroSOUND PCM1 pro, PCM12, PCM20 Radio' ),
-		( 'pss', 'Module for PSS sound cards (based on AD1848, ADSP-2115 and ESC614). This module includes control of output amplifier and synth volume of the Beethoven ADSP-16 card (this may work with other PSS cards).' ),
+		( 'pss', 'Module for PSS sound cards (based on AD1848, ADSP-2115 and ESC614).' ),
 		( 'snd-mtpav', 'MOTU MidiTimePiece AV multiport MIDI' ),
 		( 'snd-mpu401', 'MPU-401 UART' ),
 		( 'snd-nm256', 'NeoMagic NM256AV/ZX' ),

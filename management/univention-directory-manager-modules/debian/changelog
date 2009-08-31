@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.24-1) unstable; urgency=low
+
+  * cutting off a very long sound driver description; (Bug #15176)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Aug 2009 16:35:03 +0200
+
 univention-directory-manager-modules (5.0.23-1) unstable; urgency=low
 
   * check if the module has a layout definition before trying to overwrite
