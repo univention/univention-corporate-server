@@ -1,3 +1,9 @@
+univention-config-registry (5.0.25-1) unstable; urgency=low
+
+  * add missing options to syntax description (Bug: #10065)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Mon, 31 Aug 2009 10:44:01 +0200
+
 univention-config-registry (5.0.24-1) unstable; urgency=low
 
   * improve performance of invalid-value-char removal (Bug: #14565)

@@ -1030,7 +1030,7 @@ Options:
 	print only the keys
 
 Actions:
-  set [--forced] <key>=<value> [... <key>=<value>]:
+  set [--forced|--schedule|--ldap-policy] <key>=<value> [... <key>=<value>]:
 	set one or more keys to specified values; if a key is non-existent
 	in the configuration registry it will be created
 
@@ -1038,7 +1038,7 @@ Actions:
 	retrieve the value of the specified key from the configuration
 	database
 
-  unset [--forced] <key> [... <key>]:
+  unset [--forced|--schedule|--ldap-policy] <key> [... <key>]:
 	remove one or more keys (and its associated values) from
 	configuration database
 
