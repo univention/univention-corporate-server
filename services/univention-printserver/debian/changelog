@@ -1,3 +1,9 @@
+univention-printserver (3.0.13-1) unstable; urgency=low
+
+  * register variables hostname and domainname for cupsd.conf (Bug #15273)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Mon, 31 Aug 2009 15:33:35 +0200
+
 univention-printserver (3.0.12-1) unstable; urgency=low
 
   * merge restrictedprinters.conf in cupsd.conf (Bug #15273)

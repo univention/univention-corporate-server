@@ -9,6 +9,8 @@ Variables: cups/location/base
 Variables: cups/location/admin
 Variables: cups/debug/level
 Variables: cups/restrictedprinters
+Variables: hostname
+Variables: domainname
 
 Type: file
 File: etc/pam.d/cupsys
