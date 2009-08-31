@@ -1,3 +1,9 @@
+univention-config-registry (5.0.23-1) unstable; urgency=low
+
+  * forbid "\r" and "\n" for keys, remove them from values (Bug: #14565)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Fri, 28 Aug 2009 17:46:52 +0200
+
 univention-config-registry (5.0.22-1) unstable; urgency=low
 
   * make ConfigRegistry.get() return None if key doesn't exist (Bug: #14200)

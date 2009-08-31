@@ -47,7 +47,10 @@ cache_version_max = 1
 cache_version_text = 'univention-config cache, version'
 cache_version_notice = '%s %s\n' % (cache_version_text, cache_version)
 cache_version_re = re.compile('^%s (P<version>[0-9]+)$' % cache_version_text)
-shell_valid_chars = string.ascii_letters + string.digits + '_'
+
+invalid_key_chars = re.compile ('[\\r\\n\!\"\§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\:\<\>\\\]')
+invalid_value_chars = '\r\n'
+shell_valid_key_chars = string.ascii_letters + string.digits + '_'
 
 warning_text='''Warning: This file is auto-generated and might be overwritten by
          univention-config-registry.
@@ -278,8 +281,16 @@ class _ConfigRegistry( dict ):
 		except KeyError:
 			return ''
 
+	def removeInvalidChars (self, seq):
+		new_string = []
+		for letter in seq:
+			if not letter in invalid_value_chars:
+				new_string.append (letter)
+
+		return ''.join (new_string)
+
 	def __str__(self):
-		return '\n'.join(['%s: %s' % (key, val) for key, val in self.items()])
+		return '\n'.join(['%s: %s' % (key, self.removeInvalidChars (val)) for key, val in self.items()])
 
 # old class name
 baseConfig = ConfigRegistry
@@ -938,7 +949,7 @@ def keyShellEscape(line):
 	if line[0] in string.digits:
 		new_line.append ('_')
 	for letter in line:
-		if letter in shell_valid_chars:
+		if letter in shell_valid_key_chars:
 			new_line.append (letter)
 		else:
 			new_line.append ('_')
@@ -960,8 +971,7 @@ def validateKey(k):
 		return 0
 
 	if len(k) > 0:
-		regex = re.compile('[\!\"\§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\:\<\>\\\]');
-		match = regex.search(k);
+		match = invalid_key_chars.search(k);
 
 		if not match:
 			return 1
