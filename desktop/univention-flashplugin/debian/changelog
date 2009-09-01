@@ -1,3 +1,11 @@
+univention-flashplugin (3.0.0-3) unstable; urgency=low
+
+  * Remove old version of install_flash_player_9.tar.gz. If a local copy
+    is still present, the Plugin installation is done from the local copy
+    which prevents to put the security update into effect (Bug #15322)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  1 Sep 2009 09:18:29 +0200
+
 univention-flashplugin (3.0.0-2) unstable; urgency=low
 
   * Bump version to trigger a re-download of the Flash plugin,

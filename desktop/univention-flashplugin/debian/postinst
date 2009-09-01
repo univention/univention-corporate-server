@@ -50,6 +50,14 @@ if [ -n $old_path ]; then
     fi
 fi
 
+# Remove old version of install_flash_player_9.tar.gz. If a local copy
+# is still present, the Plugin installation is done from the local copy
+# which presents to put the security update into effect
+if [ -e /var/cache/flashplugin-nonfree/install_flash_player_9.tar.gz ]; then
+    echo "Removing old downloaded copy of install_flash_player_9.tar.gz"
+    rm /var/cache/flashplugin-nonfree/install_flash_player_9.tar.gz
+fi
+
 update-flashplugin || echo "Warning: flash-update failed, run update-flashplugin manually"
 
 exit 0
