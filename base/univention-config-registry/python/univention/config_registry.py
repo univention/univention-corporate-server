@@ -1016,6 +1016,34 @@ def handler_get( args, opts = {} ):
 
 	print b.get( args[ 0 ], '' )
 
+def get_variable_info_string( key, value, variable_info ):
+	value_string = None
+	if not value and not variable_info:
+		value_string = '<unknown>'
+	elif not value:
+		value_string = '<empty>'
+	else:
+		value_string = '"%s"' % value
+
+	info = []
+	info.append ( '%s: %s' % (key, value_string) )
+
+	if variable_info:
+		info.append ( ' ' + variable_info['description'] )
+		info.append ( ' Categories: ' + variable_info['categories'] )
+
+	return '\n'.join (info)
+
+def handler_info( args, opts = {} ):
+	reg = ConfigRegistry ()
+	reg.load ()
+	#Import located here, because on module level, a circular import would be created
+	import config_registry_info
+	info = config_registry_info.ConfigRegistryInfo ( install_mode = False )
+
+	for arg in args:
+		print ( get_variable_info_string (arg, reg.get (arg, None), info.get_variable (arg)) )
+
 def handler_help( args, opts = {} ):
 	print '''
 univention-config-registry: base configuration for UCS
@@ -1060,6 +1088,9 @@ Actions:
 	displays all key/value pairs matching the regular expression
 	when the option --value is given the value must match the regular expression
 	otherwise the key is checked
+
+  info <key> [... <key>]:
+	display verbose information for the specified variable(s)
 
   shell [key]:
 	convert key/value pair into shell compatible format, e.g.
@@ -1121,10 +1152,8 @@ class Output:
 	def __init__(self):
 		self.text=[]
 	def write(self, line):
-		s=string.split(line,'\n')
-		for l in s:
-			if l:
-				self.text.append(l)
+		if line.strip ():
+			self.text.append (line)
 
 	def writelines(self, lines):
 		for l in lines:
@@ -1145,6 +1174,7 @@ def main(args):
 			'filter': (handler_filter, 0),
 			'search': (handler_search, 1),
 			'get': (handler_get, 1),
+			'info': (handler_info, 1),
 			}
 		# action options: each of these options perform an action
 		opt_actions = {
@@ -1156,7 +1186,7 @@ def main(args):
 		opt_filters = {
 			# id : ( name, function, state, ( valid actions ) )
 			0  : [ 'keys-only', filter_keys_only, False, ( 'dump', 'search' ) ],
-			10 : [ 'sort', filter_sort, False, ( 'dump', 'search' ) ],
+			10 : [ 'sort', filter_sort, False, ( 'dump', 'search', 'info' ) ],
 			99 : [ 'shell', filter_shell, False, ( 'dump', 'search', 'shell' ) ],
 			}
 		opt_commands = {
@@ -1213,7 +1243,7 @@ def main(args):
 			args = tmp
 
 		# set 'sort' option by default for dump and search
-		if action in [ 'dump', 'search' ]:
+		if action in [ 'dump', 'search', 'info' ]:
 			opt_filters[ 10 ][ 2 ] = True
 
 		# if a filter option is set: verify that a valid command is given

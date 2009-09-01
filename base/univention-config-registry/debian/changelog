@@ -1,3 +1,9 @@
+univention-config-registry (5.0.29-1) unstable; urgency=low
+
+  * add info-action (Bug: #15026)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue,  1 Sep 2009 15:20:06 +0200
+
 univention-config-registry (5.0.28-1) unstable; urgency=low
 
   * register variable server/role with /etc/issue (Bug: #10331)
