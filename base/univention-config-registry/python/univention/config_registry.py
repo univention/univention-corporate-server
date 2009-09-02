@@ -992,22 +992,61 @@ def handler_filter( args, opts = {} ):
 	sys.stdout.write(filter(sys.stdin.read(), b, opts = opts))
 
 def handler_search( args, opts = {} ):
+	category = opts.get ( 'category', None )
+	brief = opts.get ( 'brief', False )
+	search_keys = opts.get ( 'key', False )
+	search_values = opts.get ( 'value', False )
+	search_all = opts.get ( 'all', False )
+	if (search_keys and search_values) or (search_values and search_all) or (search_keys and search_all):
+		sys.stderr.write( 'E: at most one out of [--key|--value|--all] may be set\n' )
+		sys.exit( 1 )
+	if not search_keys and not search_values and not search_all:
+		search_keys = True
+
+	regex = []
+	if not args:
+		regex = [ re.compile ('') ]
+	else:
+		for arg in args:
+			try:
+				regex.append ( re.compile ( arg ) )
+			except re.error:
+				sys.stderr.write ( 'E: invalid regular expression: %s\n' % arg )
+				sys.exit ( 1 )
+
+	#Import located here, because on module level, a circular import would be created
+	import config_registry_info as cri
+	cri.set_language ( 'en' )
+	info = cri.ConfigRegistryInfo ( install_mode = False )
+
+	if category and not info.get_category ( category ):
+		sys.stderr.write ( 'E: unknown category: "%s"\n' % category )
+		sys.exit ( 1 )
+
 	b = ConfigRegistry()
 	b.load()
-	keys = True
-	if opts.get( 'value', False ):
-		keys = False
-	regex = []
-	for arg in args:
-		try:
-			regex.append( re.compile( arg ) )
-		except re.error:
-			sys.stderr.write( 'E: invalid regular expression: %s\n' % arg )
-			sys.exit( 1 )
+
+	all_vars = {}
+	for key, var in info.get_variables (category).items ():
+		all_vars [ key ] = ( None, var )
 	for key, value in b.items():
+		var_tuple = all_vars.get ( key )
+		if var_tuple:
+			all_vars [ key ] = ( value, var_tuple[1] )
+		elif not category:
+			all_vars [ key ] = ( value, None )
+
+	for key, var_tuple in all_vars.items():
 		for reg in regex:
-			if ( keys and reg.search( key ) ) or ( not keys and reg.search( value ) ):
-				print '%s: %s' % ( key, value )
+			if \
+				( search_keys and reg.search ( key ) ) or \
+				( search_values and var_tuple[0] and reg.search ( var_tuple[0] ) ) or \
+				( search_all and ( \
+				  ( reg.search ( key ) ) or \
+				  ( var_tuple[0] and reg.search ( var_tuple[0] ) ) or \
+				  ( var_tuple[1] and reg.search ( var_tuple[1].get ( 'description', '' ) ) ) ) \
+				):
+				print get_variable_info_string ( key, var_tuple[0], var_tuple[1], brief )
 				break
 
 def handler_get( args, opts = {} ):
@@ -1102,10 +1141,15 @@ Actions:
 	display all key/value pairs which are stored in the
 	configuration database
 
-  search [--key|--value] <regex> [... <regex>]:
-	displays all key/value pairs matching the regular expression
-	when the option --value is given the value must match the regular expression
-	otherwise the key is checked
+  search [--key|--value|--all] [--category <category>] [--brief] [... <regex>]:
+	displays all key/value pairs and their descriptions that match at
+	least one of the given regular expressions
+	--key: only search the keys (default)
+	--value: only search the values
+	--all: search keys, values and descriptions
+	--category: limit search to variables of <category>
+	--brief: don\'t print descriptions (if any)
+	no <regex> given: display all variables
 
   info <key> [... <key>]:
 	display verbose information for the specified variable(s)
@@ -1190,7 +1234,7 @@ def main(args):
 			'randpw': (handler_randpw, 0),
 			'shell': (None, 0),	# for compatibility only
 			'filter': (handler_filter, 0),
-			'search': (handler_search, 1),
+			'search': (handler_search, 0),
 			'get': (handler_get, 1),
 			'info': (handler_info, 1),
 			}
@@ -1211,7 +1255,8 @@ def main(args):
 		opt_commands = {
 			'set' : { 'forced' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
 			'unset' : { 'forced' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
-			'search' : { 'key' : (BOOL, True), 'value' : (BOOL, False) },
+			'search' : { 'key' : (BOOL, False), 'value' : (BOOL, False), 'all' : (BOOL, False), \
+						 'brief' : (BOOL, False), 'category' : (STRING, None) },
 			'filter' : { 'encode-utf8' : (BOOL, False) }
 			}
 		# close your eyes ...
