@@ -1063,17 +1063,18 @@ class UnknownKeyException ( Exception ):
 
 def get_variable_info_string( key, value, variable_info, brief=False ):
 	value_string = None
-	if not value and not variable_info:
+	if value == None and not variable_info:
 		raise UnknownKeyException ( 'W: unknown key: "%s"' % key )
-	elif not value:
+	elif value == None:
 		value_string = '<empty>'
 	else:
 		value_string = '%s' % value
 
 	key_value = '%s: %s' % (key, value_string)
 
+	retval = None
 	if brief or not variable_info:
-		return key_value
+		retval = key_value
 	else:
 		info = [ key_value ]
 #		info.append ( ' ' + variable_info.get ( 'description', 'no description available' ) )
@@ -1085,7 +1086,12 @@ def get_variable_info_string( key, value, variable_info, brief=False ):
 		info.append ( ' ' + description )
 
 		info.append ( ' Categories: ' + variable_info.get ( 'categories', 'none' ) )
-		return '\n'.join (info) + '\n'
+		retval = '\n'.join (info)
+
+	if brief:
+		return retval
+	else:
+		return retval + '\n'
 
 def handler_info( args, opts = {} ):
 	reg = ConfigRegistry ()

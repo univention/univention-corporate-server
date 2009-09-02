@@ -1,3 +1,10 @@
+univention-config-registry (5.0.33-1) unstable; urgency=low
+
+  * fix backtrace on empty-string-valued variables and add
+    new-line after variables without description as well (Bug: #15026)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Wed,  2 Sep 2009 15:35:57 +0200
+
 univention-config-registry (5.0.32-1) unstable; urgency=low
 
   * enhance search command (Bug: #15026)
