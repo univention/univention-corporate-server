@@ -1158,7 +1158,7 @@ Actions:
 	--value: only search the values
 	--all: search keys, values and descriptions
 	--category: limit search to variables of <category>
-	--brief: don\'t print descriptions (if any)
+	--brief: don\'t print descriptions (can be enabled by default via ucr/output/brief)
 	no <regex> given: display all variables
 
   info <key> [... <key>]:
