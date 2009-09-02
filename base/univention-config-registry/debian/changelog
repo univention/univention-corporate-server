@@ -1,3 +1,9 @@
+univention-config-registry (5.0.31-1) unstable; urgency=low
+
+  * add possibility to specify valued options (Bug: #15026)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Wed,  2 Sep 2009 14:23:52 +0200
+
 univention-config-registry (5.0.30-1) unstable; urgency=low
 
   * make info print warning in case of unknown key,

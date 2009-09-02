@@ -1207,11 +1207,12 @@ def main(args):
 			10 : [ 'sort', filter_sort, False, ( 'dump', 'search', 'info' ) ],
 			99 : [ 'shell', filter_shell, False, ( 'dump', 'search', 'shell' ) ],
 			}
+		BOOL, STRING = range ( 2 )
 		opt_commands = {
-			'set' : { 'forced' : False, 'ldap-policy' : False, 'schedule' : False },
-			'unset' : { 'forced' : False, 'ldap-policy' : False, 'schedule' : False },
-			'search' : { 'key' : True, 'value' : False },
-			'filter' : { 'encode-utf8' : False }
+			'set' : { 'forced' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
+			'unset' : { 'forced' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
+			'search' : { 'key' : (BOOL, True), 'value' : (BOOL, False) },
+			'filter' : { 'encode-utf8' : (BOOL, False) }
 			}
 		# close your eyes ...
 		if not args: args.append( '--help' )
@@ -1276,15 +1277,32 @@ def main(args):
 
 		# check command options
 		cmd_opts = opt_commands.get( action, {} )
+		skip_next_arg = False
 		for arg in copy.copy( args ):
+			if skip_next_arg:
+				skip_next_arg = False
+				args.pop( 0 )
+				continue
 			if not arg.startswith( '--' ): break
-			if arg[ 2: ] in cmd_opts.keys():
-				cmd_opts[ arg[ 2 : ] ] = True
+			cmd_opt = arg[ 2: ]
+			if cmd_opt in cmd_opts.keys():
+				cmd_opt_tuple = cmd_opts[ cmd_opt ]
+				if cmd_opt_tuple[0] == BOOL:
+					cmd_opts[ cmd_opt ] = (BOOL, True)
+				else: #STRING
+					if len (args) < 2:
+						sys.stderr.write ( 'E: Option %s for command %s expects an argument\n' % (arg, action) )
+						sys.exit ( 1 )
+					cmd_opts[ cmd_opt ] = (STRING, args[ 1 ])
+					skip_next_arg = True
 			else:
 				opt_actions[ 'help' ][ 1 ] = True
 				print 'invalid option %s for command %s' % ( arg, action )
 				sys.exit( 1 )
 			args.pop( 0 )
+
+		for cmd_opt, opt_tuple in copy.copy ( cmd_opts ).items ():
+			cmd_opts[ cmd_opt ] = opt_tuple[ 1 ]
 
 		# action!
 		if action in handlers.keys():
