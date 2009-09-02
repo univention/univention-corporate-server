@@ -1016,33 +1016,51 @@ def handler_get( args, opts = {} ):
 
 	print b.get( args[ 0 ], '' )
 
-def get_variable_info_string( key, value, variable_info ):
+class UnknownKeyException ( Exception ):
+	def __init__ (self, value):
+		self.value = value
+	def __str__ (self):
+		return repr (self.value)
+
+def get_variable_info_string( key, value, variable_info, brief=False ):
 	value_string = None
 	if not value and not variable_info:
-		value_string = '<unknown>'
+		raise UnknownKeyException ( 'W: unknown key: "%s"' % key )
 	elif not value:
 		value_string = '<empty>'
 	else:
-		value_string = '"%s"' % value
+		value_string = '%s' % value
 
-	info = []
-	info.append ( '%s: %s' % (key, value_string) )
+	key_value = '%s: %s' % (key, value_string)
 
-	if variable_info:
-		info.append ( ' ' + variable_info['description'] )
-		info.append ( ' Categories: ' + variable_info['categories'] )
+	if brief or not variable_info:
+		return key_value
+	else:
+		info = [ key_value ]
+#		info.append ( ' ' + variable_info.get ( 'description', 'no description available' ) )
+# https://forge.univention.org/bugzilla/show_bug.cgi?id=15556
+# Workaround:
+		description = variable_info.get ( 'description' )
+		if not description or not description.strip ():
+			description = 'no description available'
+		info.append ( ' ' + description )
 
-	return '\n'.join (info)
+		info.append ( ' Categories: ' + variable_info.get ( 'categories', 'none' ) )
+		return '\n'.join (info) + '\n'
 
 def handler_info( args, opts = {} ):
 	reg = ConfigRegistry ()
 	reg.load ()
 	#Import located here, because on module level, a circular import would be created
-	import config_registry_info
-	info = config_registry_info.ConfigRegistryInfo ( install_mode = False )
+	import config_registry_info as cri
+	cri.set_language ( 'en' )
+	info = cri.ConfigRegistryInfo ( install_mode = False )
 
 	for arg in args:
-		print ( get_variable_info_string (arg, reg.get (arg, None), info.get_variable (arg)) )
+		try:
+			print get_variable_info_string (arg, reg.get (arg, None), info.get_variable (arg))
+		except UnknownKeyException, e:
+			sys.stderr.write ( e.value + '\n' )
 
 def handler_help( args, opts = {} ):
 	print '''
