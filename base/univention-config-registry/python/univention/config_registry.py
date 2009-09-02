@@ -1027,6 +1027,9 @@ def handler_search( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
 
+	if not brief and b.get ('ucr/output/brief', 'no') == 'yes':
+		brief = True
+
 	all_vars = {}
 	for key, var in info.get_variables (category).items ():
 		all_vars [ key ] = ( None, var )

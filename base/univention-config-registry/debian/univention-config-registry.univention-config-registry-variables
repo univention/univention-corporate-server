@@ -388,6 +388,12 @@ Description[en]=The third NTP server
 Type=str
 Categories=system-network
 
+[ucr/output/brief]
+Description[de]=UCR aktiviert für das Kommando search standardmäßig die Option --brief (yes, no)
+Description[en]=UCR activates the option --brief of the search-command by default (yes, no)
+Type=str
+Categories=system-base
+
 [version/patchlevel]
 Description[de]=Patchlevel der UCS Version
 Description[en]=Patchlevel of the UCS version
