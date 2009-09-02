@@ -897,7 +897,8 @@ def handler_unset( args, opts = {} ):
 def handler_dump( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
-	print b
+	for line in str ( b ).split ( '\n' ):
+		print line
 
 def handler_update( args, opts = {} ):
 	c = configHandlers()
@@ -1303,6 +1304,8 @@ def main(args):
 			action = 'search'
 			# activate shell option
 			opt_filters[ 99 ][ 2 ] = True
+			# switch to old, brief output
+			opt_commands[ 'search' ][ 'brief' ] = (BOOL, True)
 			# modify arguments: each argument must be a complete key and not just part of it
 			tmp = []
 			if not args:
