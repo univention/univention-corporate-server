@@ -1,0 +1,69 @@
+#!/bin/bash
+#
+# Univention AD Connector
+#  join script
+#
+# Copyright (C) 2009 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+JSNAME="univention-management-console-network"
+JSFILE="/usr/lib/univention-install/.index.txt"
+VERSION="0"
+
+touch "${JSFILE}"
+if grep -qs "${JSNAME} v${VERSION} successful" "${JSFILE}"
+then
+	exit 1
+fi
+
+eval $( univention-config-registry shell ldap/base )
+
+# create operations
+univention-directory-manager settings/console_operation create $@ --ignore_exists \
+	--position cn="operations,cn=console,cn=univention,$ldap_base" \
+	--set name="network" \
+	--set description="Configure networking" \
+	--append operation="network/*"
+
+# create acls
+univention-directory-manager settings/console_acl create $@ --ignore_exists \
+	--position cn="acls,cn=console,cn=univention,$ldap_base" \
+	--set name="network-all" \
+	--set category="Networking" \
+	--set ldapbase="$ldap_base" \
+	--set command="network/*" \
+	--set description="All Networking Operations"
+
+# default policies
+univention-directory-manager policies/console_access modify $@ --ignore_exists \
+	--dn cn="default-admin,cn=console,cn=policies,$ldap_base" \
+	--append allow="cn=network-all,cn=acls,cn=console,cn=univention,$ldap_base"
+
+if ! grep -qs "${JSNAME} v${VERSION} successful" "${JSFILE}"
+then
+	echo "${JSNAME} v${VERSION} successful" >> "${JSFILE}"
+fi
+
+exit 0

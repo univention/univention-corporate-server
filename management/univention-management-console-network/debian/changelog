@@ -1,0 +1,5 @@
+univention-management-console-network (0.0.0-1) unstable; urgency=low
+
+  * Inital release
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed,  2 Sep 2009 10:46:29 +0200

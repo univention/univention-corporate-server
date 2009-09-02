@@ -1,0 +1,15 @@
+Source: univention-management-console-network
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, python2.4, python-all-dev, python-central, univention-config-dev
+XS-Python-Version: all
+
+Package: univention-management-console-network
+Architecture: all
+Depends: python-univention, python-univention-license
+Pre-Depends: univention-config-registry | univention-baseconfig
+Description: UMC - Module to modify the network settings
+ This package contains the Univention Management Console
+ module to modify the network settings.
