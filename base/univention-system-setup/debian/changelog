@@ -1,6 +1,13 @@
+univention-system-setup (3.0.10-1) unstable; urgency=low
+
+  * add dependency to univention-installer-modules >= 4.0.28 for
+    univention-system-setup-appliance (Bug #15534)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  2 Sep 2009 15:46:11 +0200
+
 univention-system-setup (3.0.9-1) unstable; urgency=low
 
-  * fixed typo in 10_secrets (#15534)
+  * fixed typo in 10_secrets (Bug #15534)
 
  -- Andreas Büsching <buesching@univention.de>  Wed,  2 Sep 2009 14:53:02 +0200
 

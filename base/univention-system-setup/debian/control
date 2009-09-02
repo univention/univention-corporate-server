@@ -31,7 +31,7 @@ Description: starting univention-system-setup on next boot
 
 Package: univention-system-setup-appliance
 Architecture: all
-Depends: univention-system-setup-boot
+Depends: univention-system-setup-boot, univention-installer-modules (>= 4.0.28)
 Description: perform initial configuration of appliance editions
  .
  It is part of Univention Corporate Server (UCS), an
