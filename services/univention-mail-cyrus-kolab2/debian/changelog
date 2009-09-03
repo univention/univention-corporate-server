@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (2.0.4-1) unstable; urgency=low
+
+  * update the saslauthd configuration for the new upstream package. Bug
+    #15461
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  3 Sep 2009 10:26:15 +0200
+
 univention-mail-cyrus-kolab2 (2.0.3-1) unstable; urgency=low
 
   * slight adaption of usage-output of univention-cyrus-mkdir (Bug #15313)

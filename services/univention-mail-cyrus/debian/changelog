@@ -1,3 +1,10 @@
+univention-mail-cyrus (2.0.3-1) unstable; urgency=low
+
+  * update the saslauthd configuration for the new upstream package. Bug
+    #15461
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  3 Sep 2009 10:26:42 +0200
+
 univention-mail-cyrus (2.0.2-1) unstable; urgency=low
 
   * have every user automatically get a Ham-folder (Bug #15313)
