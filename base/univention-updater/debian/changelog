@@ -1,3 +1,9 @@
+univention-updater (5.0.9-1) unstable; urgency=low
+
+  * add simple way to add custom actions before and after every update (Bug: #14900)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Thu,  3 Sep 2009 11:35:41 +0200
+
 univention-updater (5.0.8-1) unstable; urgency=low
 
   * use utf8 in the ucr variable definitions otherwise we got an UMC

@@ -394,10 +394,12 @@ def main():
 	vv=baseConfig['version/version']
 	vp=baseConfig['version/patchlevel']
 
+	lastversion='%s-%s' % (vv,vp)
+	nextversion=None
+
 	if updateto:
-		actual='%s-%s' % (vv,vp)
-		if actual == updateto:
-			dprint('System is up to date (UCS %s-%s)' % (vv,vp), [stdout,sys.stdout])
+		if lastversion == updateto:
+			dprint('System is up to date (UCS %s)' % lastversion, [stdout,sys.stdout])
 			fp_debug.close()
 			raise UpToDateNoError(reboot)
 		updateto_args = [ '--updateto', updateto ]
@@ -529,7 +531,7 @@ def main():
 		if os.path.exists(os.path.join(scriptPath, 'preup.sh')):
 			dprint('Execute %s' % os.path.join(scriptPath, 'preup.sh'))
 			os.chmod(os.path.join(scriptPath, 'preup.sh'), 0744)
-			resultCode=os.system('%s | tee -a /var/log/univention/updater.log 2>&1' % os.path.join(scriptPath, 'preup.sh'))
+			resultCode=os.system('%s %s %s | tee -a /var/log/univention/updater.log 2>&1' % (os.path.join(scriptPath, 'preup.sh'), lastversion, nextversion))
 			if resultCode != 0:
 				dprint('Failed to execute preup.sh', [sys.stdout,stdout])
 				raise UpdateError
@@ -565,7 +567,7 @@ def main():
 		if os.path.exists(os.path.join(scriptPath, 'postup.sh')):
 			dprint('Execute %s' % os.path.join(scriptPath, 'postup.sh'))
 			os.chmod(os.path.join(scriptPath, 'postup.sh'), 0744)
-			resultCode=os.system('%s | tee -a /var/log/univention/updater.log 2>&1' % os.path.join(scriptPath, 'postup.sh'))
+			resultCode=os.system('%s %s %s | tee -a /var/log/univention/updater.log 2>&1' % (os.path.join(scriptPath, 'postup.sh'), lastversion, nextversion))
 			if resultCode != 0:
 				dprint('Failed to execute postup.sh', [sys.stdout,stdout])
 				raise UpdateError

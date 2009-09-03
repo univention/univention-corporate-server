@@ -1,10 +1,12 @@
 #!/bin/sh
 
+UPDATER_LOG="/var/log/univention/updater.log"
+UPDATE_LAST_VERSION="$1"
+UPDATE_NEXT_VERSION="$2"
+
 echo "Running preup.sh script"
 
-
-
-eval $(univention-config-registry shell) >>/var/log/univention/updater.log 2>&1
+eval $(univention-config-registry shell) >>"$UPDATER_LOG" 2>&1
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
@@ -25,7 +27,23 @@ if [ "$TERM" = "xterm" ]; then
 	fi
 fi
 
-
+if [ ! -z "$update_custom_preup" ]; then
+	echo -n "Running custom preupdate script"
+	if [ -f "$update_custom_preup" ]; then
+		if [ -x "$update_custom_preup" ]; then
+			echo "..."$update_custom_preup""
+			if "$update_custom_preup" "$UPDATE_LAST_VERSION" "$UPDATE_NEXT_VERSION" | awk '{print "... "$0}' 2>&1; then
+				echo "done."
+			else
+				echo "failed."
+			fi
+		else
+			echo "..."$update_custom_preup"...not executable"
+		fi
+	else
+		echo "..."$update_custom_preup"...not found"
+	fi
+fi
 
 check_space(){
 	partition=$1
@@ -60,11 +78,11 @@ else
 fi
 
 
-echo "Checking for the package status" | tee -a /var/log/univention/updater.log
-dpkg -l 2>&1  | grep "  " | grep -v "^|" | grep "^[a-z]*[A-Z]" >>/var/log/univention/updater.log 2>&1
+echo "Checking for the package status" | tee -a "$UPDATER_LOG"
+dpkg -l 2>&1  | grep "  " | grep -v "^|" | grep "^[a-z]*[A-Z]" >>"$UPDATER_LOG" 2>&1
 if [ $? = 0 ]; then
-	echo "ERROR: The package state on this system is inconsistent." | tee -a /var/log/univention/updater.log
-	echo "       Please run 'dpkg --configure -a' manually" | tee -a /var/log/univention/updater.log
+	echo "ERROR: The package state on this system is inconsistent." | tee -a "$UPDATER_LOG"
+	echo "       Please run 'dpkg --configure -a' manually" | tee -a "$UPDATER_LOG"
 	killall univention-updater
 	exit 1
 fi

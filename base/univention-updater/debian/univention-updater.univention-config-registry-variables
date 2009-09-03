@@ -63,3 +63,15 @@ Description[de]=Das Release Update per UMC wird nach der Aktualisierung auf die 
 Description[en]=The release update via UMC will stop after the update to the next version
 Type=boolean
 Categories=service-software-management
+
+[update/custom/preup]
+Description[de]=Pfad zu einem ausführbaren Shell-Skript, welches vor jedem Update ausgeführt wird
+Description[en]=Path to an executable shell-script which is executed prior to every update
+Type=str
+Categories=service-software-management
+
+[update/custom/postup]
+Description[de]=Pfad zu einem ausführbaren Shell-Skript, welches nach jedem Update ausgeführt wird
+Description[en]=Path to an executable shell-script which is executed after every update
+Type=str
+Categories=service-software-management
