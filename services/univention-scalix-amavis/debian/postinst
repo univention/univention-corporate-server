@@ -36,15 +36,31 @@ eval `univention-baseconfig shell`
 dpkg-statoverride --remove /var/lib/amavis || true
 dpkg-statoverride --update --add amavis amavis 0750 /var/lib/amavis
 
-# enable milter support within sendmail
-univention-baseconfig set mail/sendmail/milter?yes
+if [ -n "$2" ] && dpkg --compare-versions "$2" lt "1.0.1-1"; then
+	# disable milter support within sendmail
+	univention-baseconfig unset mail/sendmail/milter
+fi
 
 # enable spamassassin support
 univention-baseconfig set mail/antivir/spam?yes
 
-# enable smtpfilter support in scalix
+# enable smtpmilter support in scalix, variable still is scalix/smtpfilter
 univention-baseconfig set scalix/smtpfilter?yes
-/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/s/sys/smtpd.cfg
+
+if [ "$1" = "configure" ] && ( [ -z "$2" ] || dpkg --compare-versions "$2" lt "1.0.1-1" ); then
+	# commit template enabling SMTPMILTER and Submission port
+	/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/s/sys/smtpd.cfg
+
+	# setup SMTPS in univention-stunnel to provide a more standard way for
+	# internal mail clients to send mail via the Scalix "Submission" port (587),
+	# bypassing the Scalix antispam SMTPMILTER call to Amavis/Spamassassin.
+	# this is recommended for mails comming from the corporate internal net.
+	univention-config-registry set scalix/smtps?yes
+
+	# disable virus scanning (clamav) via Amavis, Scalix does this internally
+	# by calling omvscan.map from the Scalix service router
+	univention-config-registry set mail/antivir/scanner='none'
+fi
 
 # restart scalix smtp daemon
 /opt/scalix/bin/omoff -d0 smtpd && /opt/scalix/bin/omon smtpd
