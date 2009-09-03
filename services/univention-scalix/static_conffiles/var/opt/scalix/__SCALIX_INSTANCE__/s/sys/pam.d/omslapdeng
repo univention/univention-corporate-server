@@ -59,7 +59,7 @@ auth     required om_auth nullok
 # to either Kerberos or LDAP then we can extend scheme 2 for combined
 # authentication:
 #
-# auth  required om_krb5 user_unknown=ignore
+# auth required om_krb5 user_unknown=ignore
 # auth required om_ldap user_unknown=ignore
 # auth optional om_auth nullok use_first_pass
 

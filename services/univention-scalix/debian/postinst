@@ -43,7 +43,7 @@ createLogfile () {
 
 createLogfile /var/log/univention/scalix-sync.log "root:adm" 640
 
-scalix_version=11.4.3
+scalix_version=11.4.5
 
 /usr/sbin/univention-baseconfig set scalix/version="$scalix_version"
 /usr/sbin/univention-baseconfig set scalix/pop3s?yes
@@ -170,6 +170,15 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	# change hardcoded %LDAPPORT%=389 to 3890 and read %DBPASSWD% directly from /etc/scalix.secret
 	# and replace Scalix __Variables__ by univention config-registry variables
 	/usr/share/univention-scalix/univention-scalix-conffile
+
+	### Scalix virus-protection framework
+	## Scanning is initiated by the service router (also scans internal e-mail)
+	## by calling a virus scanning mapper script (omvscan.map) if
+	# 1. add clamav user to group scalix as recommended by Scalix Setup and Configuration Guide (the service router runs as the user scalix and the virus scanner must be able to access a scalix owned file):
+	adduser clamav scalix || true
+	# 2. A virus-scanning rule set ~scalix/rules/ALL-ROUTES.VIR is written above
+	# 3. activate the virus scanning mapper script
+	cp /opt/scalix/examples/general/omvscan.map $base/s/rules
 fi
 
 if [ -n "$2" ] && dpkg --compare-versions "$2" lt-nl "0.5-6"; then
@@ -192,7 +201,6 @@ if dpkg --compare-versions "$2" lt 1.0.8-1; then
 		cp $base/s/sys/Osmtpd.cfg $base/s/sys/smtpd.cfg
 	fi
 fi
-
 
 # stop all services
 /etc/init.d/scalix stop
@@ -230,6 +238,29 @@ rm -Rf /var/opt/scalix/$INSTANCE/tomcat/webapps/*
 
 sed -i "s|^ubermanager.version=.*|ubermanager.version=$scalix_version|" /var/opt/scalix/$INSTANCE/caa/scalix.res/config/ubermanager.properties
 sed -i "s|^res.version=.*|res.version=$scalix_version|" /var/opt/scalix/$INSTANCE/caa/scalix.res/config/ubermanager.properties
+
+if [ -n "$2" ] && dpkg --compare-versions "$2" lt "3.0.1-1"; then
+	# recommendation from 11.4.5 changelog: empty IMAP caches
+	# OMDATADIR="$(omrealpath '~/')"
+	if [ -n "$OMDATADIR" ]; then
+		cd $OMDATADIR && find user* -name imap-cache -exec rm -rf {} \;
+	fi
+
+	# commit the new wireless.properties template for Scalix Active Sync
+	/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/wireless/wireless.properties
+
+	### Scalix virus-protection framework
+	## Scanning is initiated by the service router (also scans internal e-mail)
+	## by calling a virus scanning mapper script (omvscan.map) if
+	# 1. add clamav user to group scalix as recommended by Scalix Setup and Configuration Guide (the service router runs as the user scalix and the virus scanner must be able to access a scalix owned file):
+	adduser clamav scalix || true
+	# 2. write a virus-scanning rule set:
+	## VIRUS-FOUND: Causes the service router to test each message for the presence of viruses.
+	## VIRUS-UNCLEANED: like VIRUS-FOUND, and if needed, remove the infected attachments.
+	/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/s/rules/ALL-ROUTES.VIR
+	# 3. activate the virus scanning mapper script
+	cp /opt/scalix/examples/general/omvscan.map $base/s/rules
+fi
 
 /etc/init.d/scalix start
 /etc/init.d/scalix-tomcat restart

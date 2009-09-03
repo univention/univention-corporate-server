@@ -1,3 +1,21 @@
+univention-scalix (3.0.1-1) unstable; urgency=low
+
+  * update for scalix_version=11.4.5 (Bug #15357)
+  * empty IMAP caches on upgrade as recommended by 11.4.5 release notes
+  * configure SMTPMILTER in smtpd.cfg for amavis-milter (Bug #15392)
+  * activate Submission port in smtpd.cfg allowing internal bypass of antispam
+  * new scalix/smtps variable for optional SMTPS tunnel to the Submission port
+  * add clamav user to group scalix
+  * provide omvscan.map from examples/general
+  * activate omvscan by commiting ~scalix/rules/ALL-ROUTES.VIR
+  * exclude Scalix distribution lists and text attachments from omvscan
+  * commit new UCR template for wireless.properties on upgrade (Bug #15394)
+  * depend on scalix-wireless
+  * conflict on univention-kolab2-framework and univention-kolab2-webclient
+    (Bug #10389)
+
+ -- Arvid Requate <requate@univention.de>  Wed,  2 Sep 2009 17:39:43 +0000
+
 univention-scalix (3.0.0-4) unstable; urgency=low
 
   * Version bump (for Bug #14133)
