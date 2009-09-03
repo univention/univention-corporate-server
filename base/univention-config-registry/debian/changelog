@@ -1,3 +1,10 @@
+univention-config-registry (5.0.37-1) unstable; urgency=low
+
+  * don't add the hostname to the localhost (127.0.0.1) line. Bug #12130
+    and Bug #15461
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  3 Sep 2009 12:01:42 +0200
+
 univention-config-registry (5.0.36-1) unstable; urgency=low
 
   * add hint for ucr/output/brief to help output (Bug: #15026)

@@ -8,15 +8,9 @@
 # 	/etc/univention/templates/files/etc/hosts.d/00-base
 #
 
-@!@
-if configRegistry.has_key('interfaces/eth0/type') and configRegistry['interfaces/eth0/type'] == 'dhcp' and configRegistry.has_key('hostname'):
-		if configRegistry.has_key('domainname'):
-			print '127.0.0.1	%s.%s %s localhost'%(configRegistry['hostname'],configRegistry['domainname'],configRegistry['hostname'])
-		else:
-			print '127.0.0.1	localhost %s'%(configRegistry['hostname'])
-else:
-	print '127.0.0.1	localhost'
+127.0.0.1	localhost
 
+@!@
 for i in range(0,4):
 	if configRegistry['interfaces/eth%s/address' % i]:
 		name = configRegistry.get('interfaces/eth%s/hosts' % (i), '%s.%s %s' % (configRegistry['hostname'],configRegistry['domainname'],configRegistry['hostname']))
