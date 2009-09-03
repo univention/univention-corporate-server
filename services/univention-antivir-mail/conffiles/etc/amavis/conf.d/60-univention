@@ -1284,7 +1284,7 @@ $sa_spam_modifies_subj = 0; # may be a ref to a lookup table, default is true
 @av_scanners = (
 
 @!@
-if baseConfig.has_key('mail/antivir/scanner') and baseConfig['mail/antivir/scanner']:
+if baseConfig.has_key('mail/antivir/scanner') and baseConfig['mail/antivir/scanner'] not in ['', 'none']:
 	scanner=baseConfig['mail/antivir/scanner'].split(' ')
 	
 	if 'sophie' in scanner:
@@ -1533,7 +1533,7 @@ if baseConfig.has_key('mail/antivir/scanner') and baseConfig['mail/antivir/scann
 
 @av_scanners_backup = (
 @!@
-if baseConfig.has_key('mail/antivir/scanner') and baseConfig['mail/antivir/scanner']:
+if baseConfig.has_key('mail/antivir/scanner') and baseConfig['mail/antivir/scanner'] not in ['', 'none']:
 	scanner=baseConfig['mail/antivir/scanner'].split(' ')
 
 	if 'clamscan' in scanner:

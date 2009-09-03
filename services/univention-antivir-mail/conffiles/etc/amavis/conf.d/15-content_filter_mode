@@ -9,7 +9,7 @@ use strict;
 #
 
 @!@
-if baseConfig.has_key('mail/antivir/scanner') and baseConfig['mail/antivir/scanner']:
+if baseConfig.has_key('mail/antivir/scanner') and baseConfig['mail/antivir/scanner'] not in ['', 'none']:
 	print '@bypass_virus_checks_maps = ('
 	print '   \%bypass_virus_checks, \@bypass_virus_checks_acl, \$bypass_virus_checks_re);'
 else:
