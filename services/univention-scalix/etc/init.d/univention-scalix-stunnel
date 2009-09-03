@@ -71,6 +71,12 @@ d_start() {
 	if [ "$scalix_imaps" = "yes" ] ; then
 		start_stunnel 993 143
 	fi
+	if [ "$scalix_smtps" = "yes" ] ; then
+		# Following Scalix recommendation SMTPS is directed to Submission port
+		# to optionally bypass the Scalix SMTP Relay which would run Amavis/SA.
+		# This is recommended for mails comming from the corporate internal net.
+		start_stunnel 465 587
+	fi
 }
 
 d_stop() {
