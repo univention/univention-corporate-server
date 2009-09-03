@@ -1,3 +1,9 @@
+univention-config-registry (5.0.38-1) unstable; urgency=low
+
+  * respect empty strings when setting variables with ? (Bug: #15564)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Thu,  3 Sep 2009 13:46:31 +0200
+
 univention-config-registry (5.0.37-1) unstable; urgency=low
 
   * don't add the hostname to the localhost (127.0.0.1) line. Bug #12130
