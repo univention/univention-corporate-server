@@ -1,3 +1,13 @@
+univention-scalix-amavis (2.0.1-1) unstable; urgency=low
+
+  * ucr unset mail/sendmail/milter on update, Scalix SMTP Router now offers
+    an SMTPMILTER interface (Bug #15392)
+  * ucr set scalix/smtps?yes on update
+  * ucr set mail/antivir/scanner='none' on update, the Scalix service router now
+    also scans internally via omvscan.map
+
+ -- Arvid Requate <requate@univention.de>  Wed,  2 Sep 2009 17:59:05 +0000
+
 univention-scalix-amavis (2.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
