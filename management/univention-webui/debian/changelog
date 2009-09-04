@@ -1,3 +1,10 @@
+univention-webui (3.0.8-1) unstable; urgency=low
+
+  * fixed a typo which was built in during the PHP code improvement. Bug
+    #8871
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  4 Sep 2009 06:40:07 +0200
+
 univention-webui (3.0.7-1) unstable; urgency=low
 
   * use dojo date widget for properties with syntax date (Bug #12039)

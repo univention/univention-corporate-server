@@ -1549,7 +1549,7 @@ class dynamic_longtable extends webui_translator
 # Debug-message
 			# $str .= "<h2> Content pane Nr. ".$stackNumber.", shows from element ".$displayedrows." to ".($displayedrows+$visiblerows)."</h2>\n";
       
-			$str .= '<table $attrib_str  summary="">';
+			$str .= '<table '.$attrib_str.'  summary="">';
 					       
 			$rowsinthispane = 0;
 			$checkedrows = 0;
