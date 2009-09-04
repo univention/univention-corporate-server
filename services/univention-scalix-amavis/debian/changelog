@@ -1,3 +1,10 @@
+univention-scalix-amavis (2.0.1-2) unstable; urgency=low
+
+  * remove UCR module sendmail-milter.py (Bug #15392)
+  * move dependency on univention-antivir-mail to univention-scalix
+
+ -- Arvid Requate <requate@univention.de>  Fri,  4 Sep 2009 07:11:00 +0000
+
 univention-scalix-amavis (2.0.1-1) unstable; urgency=low
 
   * ucr unset mail/sendmail/milter on update, Scalix SMTP Router now offers
