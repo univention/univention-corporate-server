@@ -994,6 +994,7 @@ def handler_filter( args, opts = {} ):
 
 def handler_search( args, opts = {} ):
 	category = opts.get ( 'category', None )
+	non_empty = opts.get ( 'non-empty', False )
 	brief = opts.get ( 'brief', False )
 	search_keys = opts.get ( 'key', False )
 	search_values = opts.get ( 'value', False )
@@ -1050,7 +1051,7 @@ def handler_search( args, opts = {} ):
 				  ( var_tuple[0] and reg.search ( var_tuple[0] ) ) or \
 				  ( var_tuple[1] and reg.search ( var_tuple[1].get ( 'description', '' ) ) ) ) \
 				):
-				print get_variable_info_string ( key, var_tuple[0], var_tuple[1], brief )
+				print get_variable_info_string ( key, var_tuple[0], var_tuple[1], brief, non_empty )
 				break
 
 def handler_get( args, opts = {} ):
@@ -1065,10 +1066,12 @@ class UnknownKeyException ( Exception ):
 	def __str__ (self):
 		return repr (self.value)
 
-def get_variable_info_string( key, value, variable_info, brief=False ):
+def get_variable_info_string( key, value, variable_info, brief=False, non_empty=False ):
 	value_string = None
 	if value == None and not variable_info:
 		raise UnknownKeyException ( 'W: unknown key: "%s"' % key )
+	elif value == None and non_empty:
+		return None
 	elif value == None:
 		value_string = '<empty>'
 	else:
@@ -1151,7 +1154,7 @@ Actions:
 	display all key/value pairs which are stored in the
 	configuration database
 
-  search [--key|--value|--all] [--category <category>] [--brief] [... <regex>]:
+  search [--key|--value|--all] [--category <category>] [--brief] [--non-empty] [... <regex>]:
 	displays all key/value pairs and their descriptions that match at
 	least one of the given regular expressions
 	--key: only search the keys (default)
@@ -1159,6 +1162,7 @@ Actions:
 	--all: search keys, values and descriptions
 	--category: limit search to variables of <category>
 	--brief: don\'t print descriptions (can be enabled by default via ucr/output/brief)
+	--non-empty: only search in non-empty variables
 	no <regex> given: display all variables
 
   info <key> [... <key>]:
@@ -1224,7 +1228,7 @@ class Output:
 	def __init__(self):
 		self.text=[]
 	def write(self, line):
-		if line.strip ():
+		if line and line.strip ():
 			self.text.append (line)
 
 	def writelines(self, lines):
@@ -1266,7 +1270,7 @@ def main(args):
 			'set' : { 'forced' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
 			'unset' : { 'forced' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
 			'search' : { 'key' : (BOOL, False), 'value' : (BOOL, False), 'all' : (BOOL, False), \
-						 'brief' : (BOOL, False), 'category' : (STRING, None) },
+						 'brief' : (BOOL, False), 'category' : (STRING, None), 'non-empty' : (BOOL, False) },
 			'filter' : { 'encode-utf8' : (BOOL, False) }
 			}
 		# close your eyes ...
@@ -1309,6 +1313,8 @@ def main(args):
 			opt_filters[ 99 ][ 2 ] = True
 			# switch to old, brief output
 			opt_commands[ 'search' ][ 'brief' ] = (BOOL, True)
+			# only include non-empty variables
+			opt_commands[ 'search' ][ 'non-empty' ] = (BOOL, True)
 			# modify arguments: each argument must be a complete key and not just part of it
 			tmp = []
 			if not args:

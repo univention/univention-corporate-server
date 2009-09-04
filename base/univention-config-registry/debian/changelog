@@ -1,3 +1,10 @@
+univention-config-registry (5.0.39-1) unstable; urgency=low
+
+  * add option to suppress empty variables in search and force
+    it for shell (Bug: #15026)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Fri,  4 Sep 2009 10:25:07 +0200
+
 univention-config-registry (5.0.38-1) unstable; urgency=low
 
   * respect empty strings when setting variables with ? (Bug: #15564)
