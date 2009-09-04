@@ -45,15 +45,16 @@ createLogfile /var/log/univention/scalix-sync.log "root:adm" 640
 
 scalix_version=11.4.5
 
-/usr/sbin/univention-baseconfig set scalix/version="$scalix_version"
-/usr/sbin/univention-baseconfig set scalix/pop3s?yes
-/usr/sbin/univention-baseconfig set scalix/imaps?yes
-/usr/sbin/univention-baseconfig set mail/sendmail/nocanonify?true
-/usr/sbin/univention-baseconfig set mail/sendmail/masqueradeas?__DISABLED__
+univention-config-registry set scalix/version="$scalix_version" \
+                               scalix/pop3s?yes \
+                               scalix/imaps?yes \
+                               mail/sendmail/nocanonify?true \
+                               mail/sendmail/masqueradeas?__DISABLED__ \
+                               scalix/antivir?yes
 
 #DEBHELPER#
 
-eval $(univention-baseconfig shell)
+eval $(univention-config-registry shell)
 
 # Determine Scalix mailnode
 echo
@@ -76,9 +77,7 @@ if [ -z "$MAILNODE" ]; then
 	export MAILNODE=$hostname
 fi
 
-univention-baseconfig set scalix/mailnode=$MAILNODE
-# mail/sendmail/domain is deprecated (Bug #10371), use_cw_file is used instead
-# univention-baseconfig set mail/sendmail/domain='$m'
+univention-config-registry set scalix/mailnode=$MAILNODE
 
 echo
 
@@ -92,10 +91,10 @@ base=/var/opt/scalix/$INSTANCE
 # We need de_DE.UTF-8@euro:UTF-8 and de_DE@euro:ISO-8859-15
 
 if [ "${locale/de_DE.UTF-8@euro:UTF-8//}" = "$locale" ]; then
-	univention-baseconfig set locale="$locale de_DE.UTF-8@euro:UTF-8"
+	univention-config-registry set locale="$locale de_DE.UTF-8@euro:UTF-8"
 fi
 if [ "${locale/de_DE@euro:ISO-8859-15//}" = "$locale" ]; then
-	univention-baseconfig set locale="$locale de_DE@euro:ISO-8859-15"
+	univention-config-registry set locale="$locale de_DE@euro:ISO-8859-15"
 fi
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
@@ -171,14 +170,16 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	# and replace Scalix __Variables__ by univention config-registry variables
 	/usr/share/univention-scalix/univention-scalix-conffile
 
-	### Scalix virus-protection framework
-	## Scanning is initiated by the service router (also scans internal e-mail)
-	## by calling a virus scanning mapper script (omvscan.map) if
-	# 1. add clamav user to group scalix as recommended by Scalix Setup and Configuration Guide (the service router runs as the user scalix and the virus scanner must be able to access a scalix owned file):
-	adduser clamav scalix || true
-	# 2. A virus-scanning rule set ~scalix/rules/ALL-ROUTES.VIR is written above
-	# 3. activate the virus scanning mapper script
-	cp /opt/scalix/examples/general/omvscan.map $base/s/rules
+	if [ "$scalix_antivir" = 'yes' -o "$scalix_antivir" = 'true']; then
+		### Scalix virus-protection framework
+		## Scanning is run by the service router (also scans internal e-mail)
+		## by calling a virus scanning mapper script (omvscan.map) if
+		# 1. add clamav user to group scalix as recommended by Scalix Setup and Configuration Guide (the service router runs as the user scalix and the virus scanner must be able to access a scalix owned file):
+		adduser clamav scalix || true
+		# 2. virus-scanning rules ~scalix/rules/ALL-ROUTES.VIR are written above
+		# 3. activate the virus scanning mapper script
+		cp /opt/scalix/examples/general/omvscan.map $base/s/rules
+	fi
 fi
 
 if [ -n "$2" ] && dpkg --compare-versions "$2" lt-nl "0.5-6"; then
@@ -249,17 +250,19 @@ if [ -n "$2" ] && dpkg --compare-versions "$2" lt "3.0.1-1"; then
 	# commit the new wireless.properties template for Scalix Active Sync
 	/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/wireless/wireless.properties
 
-	### Scalix virus-protection framework
-	## Scanning is initiated by the service router (also scans internal e-mail)
-	## by calling a virus scanning mapper script (omvscan.map) if
-	# 1. add clamav user to group scalix as recommended by Scalix Setup and Configuration Guide (the service router runs as the user scalix and the virus scanner must be able to access a scalix owned file):
-	adduser clamav scalix || true
-	# 2. write a virus-scanning rule set:
-	## VIRUS-FOUND: Causes the service router to test each message for the presence of viruses.
-	## VIRUS-UNCLEANED: like VIRUS-FOUND, and if needed, remove the infected attachments.
-	/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/s/rules/ALL-ROUTES.VIR
-	# 3. activate the virus scanning mapper script
-	cp /opt/scalix/examples/general/omvscan.map $base/s/rules
+	if [ "$scalix_antivir" = 'yes' -o "$scalix_antivir" = 'true']; then
+		### Scalix virus-protection framework
+		## Scanning is run by the service router (also scans internal e-mail)
+		## by calling a virus scanning mapper script (omvscan.map) if
+		# 1. add clamav user to group scalix as recommended by Scalix Setup and Configuration Guide (the service router runs as the user scalix and the virus scanner must be able to access a scalix owned file):
+		adduser clamav scalix || true
+		# 2. write a virus-scanning rule set:
+		## VIRUS-FOUND: Causes the service router to test each message for the presence of viruses.
+		## VIRUS-UNCLEANED: like VIRUS-FOUND, and if needed, remove the infected attachments.
+		/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/s/rules/ALL-ROUTES.VIR
+		# 3. activate the virus scanning mapper script
+		cp /opt/scalix/examples/general/omvscan.map $base/s/rules
+	fi
 fi
 
 /etc/init.d/scalix start

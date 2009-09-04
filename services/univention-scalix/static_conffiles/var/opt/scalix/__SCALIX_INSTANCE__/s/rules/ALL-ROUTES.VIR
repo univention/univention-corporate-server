@@ -1,2 +1,5 @@
-VIRUS-UNCLEANED=1 ACTION=REJECT
-VIRUS-UNCLEANED=0 VIRUS-FOUND=1 ACTION=ALLOW NOTIFY="A virus was found in your message. The email was sent to the recipient with the affected attachment removed. We recommend that you install or update your virus protection software and scan your computer for viruses."
+@!@
+if configRegistry.has_key('scalix/antivir') and configRegistry['scalix/antivir'].lower() in ['yes', 'true']:
+	print '''VIRUS-UNCLEANED=1 ACTION=REJECT
+VIRUS-UNCLEANED=0 VIRUS-FOUND=1 ACTION=ALLOW NOTIFY="A virus was found in your message. The email was sent to the recipient with the affected attachment removed. We recommend that you install or update your virus protection software and scan your computer for viruses."'''
+@!@
