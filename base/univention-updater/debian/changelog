@@ -1,3 +1,9 @@
+univention-updater (5.0.10-1) unstable; urgency=low
+
+  * log timestamp before starting actual update (Bug: #14900)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Fri,  4 Sep 2009 09:26:26 +0200
+
 univention-updater (5.0.9-1) unstable; urgency=low
 
   * add simple way to add custom actions before and after every update (Bug: #14900)

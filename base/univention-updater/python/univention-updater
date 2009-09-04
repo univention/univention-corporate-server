@@ -41,6 +41,7 @@ import shutil
 import subprocess
 import traceback
 import socket
+import datetime
 
 import univention_baseconfig
 
@@ -524,6 +525,8 @@ def main():
 		# Download the pre and postup scripts
 		scriptPath = tempdir
 		download_sh_files(updater, '%s/%s/maintained/%s-%s/all' % (updater.repository_prefix, next_vv, next_vv, next_vp), tempdir)
+
+	dprint('**** Starting actual update at %s' % datetime.datetime.now ().ctime ())
 
 	# Call the preup.sh
 	if scriptPath:
