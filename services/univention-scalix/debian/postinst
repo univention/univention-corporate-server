@@ -176,6 +176,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 		## by calling a virus scanning mapper script (omvscan.map) if
 		# 1. add clamav user to group scalix as recommended by Scalix Setup and Configuration Guide (the service router runs as the user scalix and the virus scanner must be able to access a scalix owned file):
 		adduser clamav scalix || true
+		/etc/init.d/clamav-daemon restart
 		# 2. virus-scanning rules ~scalix/rules/ALL-ROUTES.VIR are written above
 		# 3. activate the virus scanning mapper script
 		cp /opt/scalix/examples/general/omvscan.map $base/s/rules
@@ -256,6 +257,7 @@ if [ -n "$2" ] && dpkg --compare-versions "$2" lt "3.0.1-1"; then
 		## by calling a virus scanning mapper script (omvscan.map) if
 		# 1. add clamav user to group scalix as recommended by Scalix Setup and Configuration Guide (the service router runs as the user scalix and the virus scanner must be able to access a scalix owned file):
 		adduser clamav scalix || true
+		/etc/init.d/clamav-daemon restart
 		# 2. write a virus-scanning rule set:
 		## VIRUS-FOUND: Causes the service router to test each message for the presence of viruses.
 		## VIRUS-UNCLEANED: like VIRUS-FOUND, and if needed, remove the infected attachments.
