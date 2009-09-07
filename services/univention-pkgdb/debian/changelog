@@ -1,3 +1,9 @@
+univention-pkgdb (3.0.1-3) unstable; urgency=low
+
+  * check for postgresql-8.3 and postgresql-7.4 (Bug #12754)
+
+ -- Arvid Requate <requate@univention.de>  Mon,  7 Sep 2009 08:55:23 +0000
+
 univention-pkgdb (3.0.1-2) unstable; urgency=low
 
   * add support for postgresql-8.3 (Bug #12754)
