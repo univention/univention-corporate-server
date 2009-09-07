@@ -1,3 +1,10 @@
+univention-directory-manager (7.0.19-1) unstable; urgency=low
+
+  * use the same width for the imap folder acl drop down fields. Bug
+    #10079
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  7 Sep 2009 16:40:09 +0200
+
 univention-directory-manager (7.0.18-1) unstable; urgency=low
 
   * show a warning message if the web browser is not supported. Bug

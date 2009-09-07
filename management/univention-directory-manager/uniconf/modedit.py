@@ -1987,7 +1987,7 @@ class modedit(unimodule.unimodule):
 							for key in keys:
 								id_choicelist.append(id_choicelist_sorted[key])
 
-							lst_user = question_select(property.short_description,{"width":"250"},{'choicelist':id_choicelist,'helptext':property.long_description})
+							lst_user = question_select(property.short_description,{},{'choicelist':id_choicelist,'helptext':property.long_description})
 							self.sharedFolderACLUserList[property.syntax.name]=lst_user
 						else: # normal field
 							self.userinfo_append(_("%s: Too many entries for selectbox")%property.short_description)
