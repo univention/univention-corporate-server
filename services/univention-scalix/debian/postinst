@@ -250,7 +250,7 @@ if [ -n "$2" ] && dpkg --compare-versions "$2" lt "3.0.1-1"; then
 	# commit the new wireless.properties template for Scalix Active Sync
 	/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/wireless/wireless.properties
 
-	if [ "$scalix_antivir" = 'yes' -o "$scalix_antivir" = 'true']; then
+	if [ "$scalix_antivir" = 'yes' -o "$scalix_antivir" = 'true' ]; then
 		### Scalix virus-protection framework
 		## Scanning is run by the service router (also scans internal e-mail)
 		## by calling a virus scanning mapper script (omvscan.map) if
@@ -263,6 +263,11 @@ if [ -n "$2" ] && dpkg --compare-versions "$2" lt "3.0.1-1"; then
 		# 3. activate the virus scanning mapper script
 		cp /opt/scalix/examples/general/omvscan.map $base/s/rules
 	fi
+
+	# commit the templates adjusted for 11.4.5:
+	for template in webmail/swa.properties caa/scalix.res/config/ubermanager.properties platform/platform.properties res/config/res.properties sis/sis.properties; do
+		/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/$template
+	done
 fi
 
 /etc/init.d/scalix start
