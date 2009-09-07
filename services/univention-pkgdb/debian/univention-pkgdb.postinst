@@ -47,7 +47,7 @@ then
   	su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-2.0.2"
   fi
 
-  /etc/init.d/postgresql-7.4 reload
+  /etc/init.d/postgresql-8.3 reload
 fi
 
 if [ -z "$2" ]; then

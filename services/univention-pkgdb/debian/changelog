@@ -1,3 +1,9 @@
+univention-pkgdb (3.0.1-2) unstable; urgency=low
+
+  * add support for postgresql-8.3 (Bug #12754)
+
+ -- Arvid Requate <requate@univention.de>  Mon,  7 Sep 2009 07:32:33 +0000
+
 univention-pkgdb (3.0.1-1) unstable; urgency=low
 
   * provide new UCR category service-pkgdb (Bug #13505)

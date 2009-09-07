@@ -8,7 +8,7 @@ XS-Python-Version: 2.4
 
 Package: univention-pkgdb
 Architecture: all
-Pre-Depends: univention-postgresql (>> 0.3.9 )
+Pre-Depends: univention-postgresql (>= 2.0.1-5)
 Depends: univention-config-registry, postgresql-client, univention-pkgdb-tools 
 XB-Python-Version: ${python:Versions}
 Description: UCS - PkgDB
