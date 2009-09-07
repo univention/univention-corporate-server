@@ -1,3 +1,10 @@
+univention-webui (3.0.9-1) unstable; urgency=low
+
+  * show a warning message if the web browser is not supported. Bug
+    #12278
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  7 Sep 2009 15:45:29 +0200
+
 univention-webui (3.0.8-1) unstable; urgency=low
 
   * fixed a typo which was built in during the PHP code improvement. Bug

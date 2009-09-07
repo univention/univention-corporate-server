@@ -112,6 +112,18 @@ class modrelogin(unimodule.unimodule):
 								</h1>
 								<p>%s</p>
 								""") % (description_caption, description1)]})
+		unsupportedbrowser = None
+		if self.req and self.req.meta and self.req.meta.has_key ('Unsupportedbrowser') \
+				and self.req.meta['Unsupportedbrowser'] == '1':
+					description_caption = _('Unsupported web browser')
+					description1 = _('The Univention Directory Manager (UDM) has not been tested with your web browser. You should use Firefox since version 3.x or Microsoft Internet Explorer since version 6.0.')
+					unsupportedbrowser = htmltext ('login_messagebox', {}, \
+							{'htmltext': [_("""
+								<h1 style='text-align:center; margin-top:0; top:0; font-weight:bold;'>
+								<img style='float:none;' src='/icon/warning.png' />&nbsp;%s
+								</h1>
+								<p>%s</p>
+								""") % (description_caption, description1)]})
 		# input fields:
 		self.usernamein=question_text(_("Username"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your username.")})
 		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("cancel login procedure")})
@@ -127,6 +139,8 @@ class modrelogin(unimodule.unimodule):
 
 		if sessioninvalid:
 			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]}), tablecol("",{"colspan":"2","rowspan":'5','type':'login_layout_session_timeout'},{"obs":[sessioninvalid]})]}))
+		elif unsupportedbrowser:
+			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]}), tablecol("",{"colspan":"2","rowspan":'5','type':'login_layout_session_timeout'},{"obs":[unsupportedbrowser]})]}))
 		else:
 			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]})]}))
 		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2", 'type':'login_layout'},{"obs":[self.passwdin]})]}))

@@ -59,6 +59,7 @@ include ("includes/language.inc");	# i18n-Klasse
 include ("includes/container.inc");	# Container-Klasse
 include ("includes/parser.inc");	# Parser-Klasse
 include ("includes/translator.inc");	# Übersetzungs-Klasse
+include ("includes/browser.inc");	# Übersetzungs-Klasse
 
 $usedtextdomain = textdomain ( 'univention-webui' );
 
@@ -112,6 +113,9 @@ if(!isset($logout))	{
 // send a notification when the session was caught by the timeout
 		if ($sessioninvalid == '1') {
 			fwrite($pipe, "Sessioninvalid: 1\n");
+		}
+		if (!isBrowserSupported() ) {
+			fwrite($pipe, "Unsupportedbrowser: 1\n");
 		}
 		fwrite($pipe, "SessionId: ".$config->session_id."\n");
 		fwrite($pipe, "Number: -1\n\n\0");

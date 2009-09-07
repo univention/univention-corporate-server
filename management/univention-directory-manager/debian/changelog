@@ -1,3 +1,10 @@
+univention-directory-manager (7.0.18-1) unstable; urgency=low
+
+  * show a warning message if the web browser is not supported. Bug
+    #12278
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  7 Sep 2009 15:44:39 +0200
+
 univention-directory-manager (7.0.17-1) unstable; urgency=low
 
   * config registry policies were not able to have a = in the value. Bug #15069
