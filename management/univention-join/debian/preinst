@@ -53,4 +53,8 @@ if [ -e /usr/share/univention-join/.joined ]; then
     fi
 fi
 
+if [ ! -d /var/univention-join ]; then
+    mkdir -p /var/univention-join/
+fi
+
 exit 0

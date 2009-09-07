@@ -1,3 +1,12 @@
+univention-join (2.0.10-2) unstable; urgency=low
+
+  * The transition code was only executed if /usr/lib/univention-install/.index.txt
+    existed, which isn't the case on a non-master, which isn't joined yet. In that
+    case /usr/lib/univention-install/.index.txt /var/univention-join/ wasn't
+    created. (Bug #14846)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  7 Sep 2009 13:20:50 +0200
+
 univention-join (2.0.10-1) unstable; urgency=low
 
   * implement qa wishes, include more checks in joinscript-lib (Bug #14873)
