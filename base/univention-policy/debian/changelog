@@ -1,3 +1,10 @@
+univention-policy (3.0.1-1) unstable; urgency=low
+
+  * use explicit automake 1.4 otherwise the UCS 2.3 build on amd64 will
+    fail. Bug #15577
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  7 Sep 2009 08:22:22 +0200
+
 univention-policy (3.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3

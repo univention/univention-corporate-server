@@ -1,3 +1,10 @@
+univention-config-registry (5.0.40-1) unstable; urgency=low
+
+  * use explicit automake 1.4 otherwise the UCS 2.3 build on amd64 will
+    fail. Bug #15577
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  7 Sep 2009 08:21:18 +0200
+
 univention-config-registry (5.0.39-1) unstable; urgency=low
 
   * add option to suppress empty variables in search and force

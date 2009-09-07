@@ -1,3 +1,10 @@
+univention-debug (3.0.2-1) unstable; urgency=low
+
+  * use explicit automake 1.4 otherwise the UCS 2.3 build on amd64 will
+    fail. Bug #15577
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  7 Sep 2009 08:21:34 +0200
+
 univention-debug (3.0.1-0) unstable; urgency=low
 
   * only build the python 2.4 package. Bug #14709

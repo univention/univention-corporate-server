@@ -45,9 +45,9 @@ manpages-stamp:
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	aclocal
+	aclocal-1.4
 	autoconf
-	automake -a
+	automake-1,4 -a
 	./configure --prefix=/usr
 	touch configure-stamp
 
