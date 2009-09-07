@@ -1,3 +1,10 @@
+univention-scalix (3.0.1-3) unstable; urgency=low
+
+  * commit updated UCR templates for 11.4.5 also on package upgrade (Bug #15357)
+  * reset res.env.lang to en_US.UTF-8 to avoid possible problems with om* tools
+
+ -- Arvid Requate <requate@univention.de>  Mon,  7 Sep 2009 15:58:12 +0000
+
 univention-scalix (3.0.1-2) unstable; urgency=low
 
   * add dependency on univention-antivir-mail (Bug #15392)
