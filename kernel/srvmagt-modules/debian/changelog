@@ -1,3 +1,9 @@
+srvmagt-modules (5.0.0-1) unstable; urgency=low
+
+  * Port to 2.6.30 (Bug #15057)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  8 Sep 2009 17:11:25 +0200
+
 srvmagt-modules (5.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
