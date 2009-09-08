@@ -1,3 +1,9 @@
+univention-debug (3.0.2-2) unstable; urgency=low
+
+  * set the build dependency to python 2.4. Bug #14709
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Sep 2009 08:21:27 +0200
+
 univention-debug (3.0.2-1) unstable; urgency=low
 
   * use explicit automake 1.4 otherwise the UCS 2.3 build on amd64 will
