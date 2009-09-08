@@ -133,22 +133,22 @@ class object(content):
 
 	def layout(self):
 		self.elements.append(textline(_('Country code'),self.minY,self.minX+2)) #2
-		self.elements.append(input( self.all_results[ 'ssl_country' ],self.minY,self.minX+20,30)) #3
+		self.elements.append(input( self.all_results.get( 'ssl_country' , '' ),self.minY,self.minX+20,30)) #3
 
 		self.elements.append(textline(_('Country'),self.minY+2,self.minX+2)) #4
-		self.elements.append(input( self.all_results[ 'ssl_state' ],self.minY+2,self.minX+20,30)) #5
+		self.elements.append(input( self.all_results.get( 'ssl_state', '' ),self.minY+2,self.minX+20,30)) #5
 
 		self.elements.append(textline(_('Location'),self.minY+4,self.minX+2)) #6
-		self.elements.append(input( self.all_results[ 'ssl_locality' ],self.minY+4,self.minX+20,30)) #7
+		self.elements.append(input( self.all_results.get( 'ssl_locality', '' ),self.minY+4,self.minX+20,30)) #7
 
 		self.elements.append(textline(_('Organisation'),self.minY+6,self.minX+2)) #8
-		self.elements.append(input( self.all_results[ 'ssl_organization' ],self.minY+6,self.minX+20,30)) #9
+		self.elements.append(input( self.all_results.get( 'ssl_organization', '' ),self.minY+6,self.minX+20,30)) #9
 
 		self.elements.append(textline(_('Business unit'),self.minY+8,self.minX+2)) #10
-		self.elements.append(input( self.all_results[ 'ssl_organizationalunit' ],self.minY+8,self.minX+20,30)) #11
+		self.elements.append(input( self.all_results.get( 'ssl_organizationalunit', '' ),self.minY+8,self.minX+20,30)) #11
 
 		self.elements.append(textline(_('E-Mail address'),self.minY+10,self.minX+2)) #12
-		if self.all_results.has_key('domainname') and not 'ssl_email' in self.all_results:
+		if self.all_results.has_key('domainname') and self.all_results.get( 'ssl_email', '' ) == '':
 			self.elements.append(input('ssl@%s'%self.all_results['domainname'],self.minY+10,self.minX+20,30)) #13
 		else:
 			self.elements.append(input(self.all_results[ 'ssl_email' ],self.minY+10,self.minX+20,30)) #13
