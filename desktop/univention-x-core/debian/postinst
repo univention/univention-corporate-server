@@ -116,12 +116,8 @@ if [ -n "$univentionXKeyboardLayout" ]; then
 	univention-baseconfig unset univentionXKeyboardLayout
 fi
 
-# activate auto-detection on installation but not on update
-if [ "$1" = "configure" -a -z "$2" ]; then
-	univention-config-registry set xorg/autodetect=yes
-else
-	univention-config-registry set xorg/autodetect?no
-fi
+# deactivate auto-detection by default
+univention-config-registry set xorg/autodetect?no
 
 univention-baseconfig set	xorg/device/driver?$(eval getXModul) \
 							xorg/resolution?1024x768 \

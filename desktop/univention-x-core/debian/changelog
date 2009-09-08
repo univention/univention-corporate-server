@@ -1,3 +1,9 @@
+univention-x-core (3.0.5-1) unstable; urgency=low
+
+  * do not activate X.org auto-detection by default (Bug #9132)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  8 Sep 2009 15:05:10 +0200
+
 univention-x-core (3.0.4-1) unstable; urgency=low
 
   * add mapping for UCR variable xorg/autodetect. Bug #9132
