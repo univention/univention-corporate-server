@@ -1,0 +1,25 @@
+--- opt/scalix/install/OM-UNIX.inst.scalix 17:56:57.000000000 +0200
++++ opt/scalix/install/OM-UNIX.inst	2009-09-08 17:55:34.000000000 +0200
+@@ -148,13 +148,16 @@
+ 	else
+ 		if [ -f $OMDATA/sys/$FILE ]
+ 		then
+-			mv $OMDATA/sys/$FILE $OMDATA/sys/O$FILE
+-# MSG:	file has been replaced
+-			omgetmsg -c mc_110 1 241 $OMDATA/sys/$FILE $OMDATA/sys/O$FILE
++			cp $OMDATA/release.sys/$FILE $OMDATA/sys/${FILE}.dpkg-dist
++			# MSG:	file has been replaced
++		#	omgetmsg -c mc_110 1 241 $OMDATA/sys/$FILE $OMDATA/sys/O$FILE
++		#	mv $OMDATA/sys/$FILE $OMDATA/sys/O$FILE
++		else
++			# the file doesn't exists
++			cp $OMDATA/release.sys/$FILE $OMDATA/sys/$FILE
++			chown scalix $OMDATA/sys/$FILE
++			chgrp scalix $OMDATA/sys/$FILE
+ 		fi
+-		cp $OMDATA/release.sys/$FILE $OMDATA/sys/$FILE
+-		chown scalix $OMDATA/sys/$FILE
+-		chgrp scalix $OMDATA/sys/$FILE
+ 	fi
+ done
+ 
