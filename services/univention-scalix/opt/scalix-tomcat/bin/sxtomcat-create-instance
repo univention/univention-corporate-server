@@ -83,8 +83,8 @@ ssl_has_ok_config() {
     #1 = true, 0 = false
     ret=1
     if [ -z "$SXTOMCAT_CERTFILE" ] || \
-       [ -z "$SXTOMCAT_KEYFILE" ]; then
-       #It is OK if SXTOMCAT_CIPHERSUITE is empty, as it has a default setting
+       [ -z "$SXTOMCAT_KEYFILE" ] || \
+       [ -z "$SXTOMCAT_CIPHERSUITE" ]; then
        #It is OK if SXTOMCAT_SSLPROTOCOL is empty, as it has a default setting
        ret=0
     fi
@@ -107,11 +107,6 @@ create_instance_config() {
     ssl_proto_string=""
     if [ ! -z "$SXTOMCAT_SSLPROTOCOL" ]; then
         ssl_proto_string="SSLProtocol ${SXTOMCAT_SSLPROTOCOL}"
-    fi
-
-    ssl_ciphersuite_string=""
-    if [ ! -z "$SXTOMCAT_CIPHERSUITE" ]; then
-        ssl_ciphersuite_string="SSLCipherSuite ${SXTOMCAT_CIPHERSUITE}"
     fi
 
     # AJP:

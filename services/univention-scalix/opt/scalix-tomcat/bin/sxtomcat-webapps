@@ -20,7 +20,7 @@ instdir=$(/opt/scalix-tomcat/bin/sxtomcat-get-inst-dir $instance)
 instappsdir="$instdir/conf/Catalina/localhost"
 connectordir="/etc/opt/scalix-tomcat/connector"
 
-configdirs="caa mobile platform res sis webmail"
+configdirs="caa mobile platform res sis webmail wireless"
 
 if [ ! -d "$instdir" ] ; then
     echo "Error: instance $instance doesn't exist" >&2
@@ -85,14 +85,54 @@ add_webapp_connector() {
     instance="$1"
     app="$2"
     tomcathost=$(determine_instance_host $instance)
+    app_conf_file=app-$instance.$app.conf
+    if [ $app == "wireless" ]
+    then
+        target=Microsoft-Server-ActiveSync
+    else
+        target=$app
+    fi
 
     # AJP:
-    echo "ProxyPass /${app} ajp://${tomcathost}:8009/${app}" \
-        >$connectordir/ajp/app-$instance.$app.conf
+    ajp_conf_file=$connectordir/ajp/$app_conf_file
+    rm -f $ajp_conf_file
+    # For the platform only, proxy caldav requests via http rather than ajp
+    # order is important for ProxyPass - the more specific should go first
+    if [ $app == "api" ]
+    then
+        echo "ProxyPass /${app}/dav http://${tomcathost}:8080/${app}/dav" \
+            >>$ajp_conf_file
+    fi
+
+    echo "ProxyPass /${target}  ajp://${tomcathost}:8009/${app}" \
+         >>$ajp_conf_file
+
+    if [ $app == "wireless" ]
+    then
+        echo "ProxyPassReverseCookiePath /${app} /${target}" \
+            >>$ajp_conf_file
+    fi
 
     # JK:
+    jk_conf_file=$connectordir/jk/$app_conf_file
+    rm -f $jk_conf_file
+
+    # wireless requires special handling due to the URL prefix rewrite (Bug 17894)
+    if [ $app == "wireless" ]
+    then
+        echo 'RewriteEngine On' >>$jk_conf_file
+        echo 'RewriteRule ^/Microsoft-Server-ActiveSync(.*)$ /wireless$1 [PT]' >>$jk_conf_file
+    fi
+
     echo "JkMount /${app}* ${instance}" \
-        >$connectordir/jk/app-$instance.$app.conf
+        >>$jk_conf_file
+
+    # api needs a second identical ProxyPass directive in the jk file
+    if [ $app == "api" ]
+    then
+        echo "ProxyPass /${app}/dav http://${tomcathost}:8080/${app}/dav" \
+            >>$jk_conf_file
+    fi
 }
 
 add_webapps() {

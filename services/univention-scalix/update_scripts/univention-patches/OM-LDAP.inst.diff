@@ -1,0 +1,31 @@
+--- opt/scalix/install/OM-LDAP.inst.scalix 17:56:57.000000000 +0200
++++ opt/scalix/install/OM-LDAP.inst	2009-09-08 17:55:28.000000000 +0200
+@@ -134,15 +134,22 @@
+ 		# The file in place is the same as the new version.
+ 		# Don't do the copy so we don't lose the OLD version if there is one.
+ 	else
++		##################################################################
++		# changed by Univention GmbH, because we don't want to overwrite
++		# the customer settings
++		#
+ 		if [ -f $OMDATA/sys/$FILE ]
+ 		then
+-			mv $OMDATA/sys/$FILE $OMDATA/sys/O$FILE
+-			# MSG:	file has been replaced
+-			omgetmsg -c mc_110 1 241 $OMDATA/sys/$FILE $OMDATA/sys/O$FILE
++		 	cp $OMDATA/sys/$FILE $OMDATA/sys/${FILE}.dpkg-dist
++		# 	# MSG:	file has been replaced
++		# 	omgetmsg -c mc_110 1 241 $OMDATA/sys/$FILE $OMDATA/sys/O$FILE
++		else
++			# the file doesn't exists
++			cp $OMDATA/release.sys/$FILE $OMDATA/sys/$FILE
++			chown scalix $OMDATA/sys/$FILE
++			chgrp scalix $OMDATA/sys/$FILE
+ 		fi
+-		cp $OMDATA/release.sys/$FILE $OMDATA/sys/$FILE
+-		chown scalix $OMDATA/sys/$FILE
+-		chgrp scalix $OMDATA/sys/$FILE
++		##################################################################
+ 	fi
+ done
+ 
