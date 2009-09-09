@@ -116,8 +116,9 @@ class ConfigRegistryInfo( object ):
 
 	def load_categories( self ):
 		path = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.CATEGORIES )
-		for filename in os.listdir( path ):
-			self.read_categories( os.path.join( path, filename ) )
+		if os.path.exists ( path ):
+			for filename in os.listdir( path ):
+				self.read_categories( os.path.join( path, filename ) )
 
 	def check_patterns( self ):
 		# in install mode
@@ -208,20 +209,21 @@ class ConfigRegistryInfo( object ):
 
 	def __load_variables( self, registered_only = True ):
 		path = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES )
-		for entry in os.listdir( path ):
-			cfgfile = os.path.join( path, entry )
-			if os.path.isfile( cfgfile ) and cfgfile[-len(ConfigRegistryInfo.FILE_SUFFIX):] == ConfigRegistryInfo.FILE_SUFFIX and entry != ConfigRegistryInfo.CUSTOMIZED:
-				self.read_variables( cfgfile )
-		self.check_patterns()
-		if not registered_only:
-			for key, value in self.__configRegistry.items():
-				if self.variables.has_key( key ):
-					continue
-				var = Variable( registered = False )
-				var.value = value
-				self.variables[ key ] = var
-		# read customized infos afterwards to override existing entries
-		self.read_customized()
+		if os.path.exists ( path ):
+			for entry in os.listdir( path ):
+				cfgfile = os.path.join( path, entry )
+				if os.path.isfile( cfgfile ) and cfgfile[-len(ConfigRegistryInfo.FILE_SUFFIX):] == ConfigRegistryInfo.FILE_SUFFIX and entry != ConfigRegistryInfo.CUSTOMIZED:
+					self.read_variables( cfgfile )
+			self.check_patterns()
+			if not registered_only:
+				for key, value in self.__configRegistry.items():
+					if self.variables.has_key( key ):
+						continue
+					var = Variable( registered = False )
+					var.value = value
+					self.variables[ key ] = var
+			# read customized infos afterwards to override existing entries
+			self.read_customized()
 
 	def get_categories( self ):
 		'''returns a list of category names'''

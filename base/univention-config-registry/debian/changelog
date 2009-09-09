@@ -1,3 +1,9 @@
+univention-config-registry (5.0.41-1) unstable; urgency=low
+
+  * Check whether variable- and category-info directories exist (Bug: #15026)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Wed,  9 Sep 2009 09:29:35 +0200
+
 univention-config-registry (5.0.40-1) unstable; urgency=low
 
   * use explicit automake 1.4 otherwise the UCS 2.3 build on amd64 will
