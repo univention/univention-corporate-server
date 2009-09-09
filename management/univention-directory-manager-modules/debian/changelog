@@ -1,3 +1,11 @@
+univention-directory-manager-modules (5.0.25-1) unstable; urgency=low
+
+  * support rewriting the modules property attributes (for all modules)
+    (Bug #15419)
+  * support for modifying the syntax of a module property (Bug #15417)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  9 Sep 2009 15:47:54 +0200
+
 univention-directory-manager-modules (5.0.24-1) unstable; urgency=low
 
   * cutting off a very long sound driver description; (Bug #15176)

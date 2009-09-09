@@ -173,10 +173,6 @@ property_descriptions={
 		)
 }
 
-# overwrite properties by UCR variables
-ucr_properties = ['dontsearch']
-univention.admin.ucr_overwrite_properties (module, ucr_properties, property_descriptions)
-
 layout=[
 	univention.admin.tab(_('General'),_('Basic settings'),[
 		[univention.admin.field("name"), univention.admin.field("description")],

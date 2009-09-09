@@ -38,26 +38,39 @@ baseConfig.load()
 
 __path__.append("handlers")
 
-def ucr_overwrite_properties (module, ucr_properties, property_descriptions):
+def ucr_overwrite_properties( module ):
 	"""
 	Overwrite properties in property_descriptions by UCR variables
 	"""
-	if module and ucr_properties and property_descriptions:
-		for k, v in property_descriptions.iteritems ():
-			for p in ucr_properties:
-				p_v = baseConfig.get ('directory/manager/web/modules/%s/properties/%s/%s' % (module, k, p), None)
-				if p_v != None:
-					if hasattr (v, p):
-						try:
-							setattr (v, p, type (getattr (v, p)) (p_v))
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, \
-									"properties: applied directory/manager/web/modules/%s/properties/%s/%s='%s'" % (module, k, p, p_v))
-						except ValueError:
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, \
-									"properties: unable to apply directory/manager/web/modules/%s/properties/%s/%s='%s'" % (module, k, p, p_v))
+	prop_obj = property()
+	ucr_prefix = 'directory/manager/web/modules/%s/properties/' % module.module
+	if not module:
+		return
+	
+	for var in baseConfig.keys():
+		if not var.startswith( ucr_prefix ):
+			continue
+		try: 
+			prop, attr = var[ len( ucr_prefix ) : ].split( '/', 1 )
+			# ingore internal attributes
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: found variable: %s' % var )
+			if attr.startswith( '__' ):
+				continue
+			if prop in module.property_descriptions:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: found property' )
+				if hasattr( module.property_descriptions[ prop ], attr ):
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: set property attribute %s to %s' % ( attr, baseConfig[ var ] ) )
+					if attr in ( 'syntax', ):
+						syntax = getattr( univention.admin.syntax, baseConfig[ var ] )
+						setattr( module.property_descriptions[ prop ], attr, syntax() )
 					else:
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, \
-								"properties: no property found for directory/manager/web/modules/%s/properties/%s/%s='%s'" % (module, k, p, p_v))
+						setattr( module.property_descriptions[ prop ], attr, type( getattr( module.property_descriptions[ prop ], attr ) ) ( baseConfig[ var ] ) )
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: get property attribute: %s' % getattr( module.property_descriptions[ prop ], attr ) )
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: get property attribute (type): %s' % type( getattr( module.property_descriptions[ prop ], attr ) ) )
+		except Exception, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ucr_overwrite_properties: failed to set property attribute: %s' % str( e ) )
+			continue
+
 class property:
 	def __init__(self, short_description='', long_description='', syntax=None, module_search=None, multivalue=0, one_only=0, parent=None, options=[], license=[], required=0, may_change=1, identifies=0, unique=0, default=None, dontsearch=0, show_in_lists=0, editable=1, configObjectPosition=None,configAttributeName=None):
 		self.short_description=short_description

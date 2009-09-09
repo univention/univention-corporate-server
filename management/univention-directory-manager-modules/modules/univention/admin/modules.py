@@ -84,6 +84,9 @@ def init(lo, position, module, template_object=None):
 		module.property_descriptions=copy.deepcopy(module.default_property_descriptions)
 		#univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: reset default descriptions')
 
+	# overwrite property descriptions
+	univention.admin.ucr_overwrite_properties( module )
+
 	# get defaults from template
 	if template_object:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: got template object %s' % template_object)
