@@ -13,6 +13,7 @@ check_and_install ()
 }
 
 echo "Running postup.sh script"
+echo "$(date)"
 
 # remove old cache file
 rm -f /var/cache/univention-config/cache
@@ -65,19 +66,19 @@ if [ ! -z "$update_custom_postup" ]; then
 	echo -n "Running custom postupdate script"
 	if [ -f "$update_custom_postup" ]; then
 		if [ -x "$update_custom_postup" ]; then
-			echo "..."$update_custom_postup""
-			if "$update_custom_postup" "$UPDATE_LAST_VERSION" "$UPDATE_NEXT_VERSION" | awk '{print "... "$0}' 2>&1; then
-				echo "done."
-			else
-				echo "failed."
-			fi
+			echo " $update_custom_postup"
+			"$update_custom_postup" "$UPDATE_LAST_VERSION" "$UPDATE_NEXT_VERSION" 2>&1
+			echo "$update_custom_postup exited with exitcode: $?"
 		else
-			echo "..."$update_custom_postup"...not executable"
+			echo " $update_custom_postup is not executable"
 		fi
 	else
-		echo "..."$update_custom_postup"...not found"
+		echo " $update_custom_postup not found"
 	fi
 fi
+
+echo "Finished running postup.sh script"
+echo "$(date)"
 
 exit 0
 

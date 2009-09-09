@@ -5,6 +5,7 @@ UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
 
 echo "Running preup.sh script"
+echo "$(date)"
 
 eval $(univention-config-registry shell) >>"$UPDATER_LOG" 2>&1
 
@@ -31,17 +32,14 @@ if [ ! -z "$update_custom_preup" ]; then
 	echo -n "Running custom preupdate script"
 	if [ -f "$update_custom_preup" ]; then
 		if [ -x "$update_custom_preup" ]; then
-			echo "..."$update_custom_preup""
-			if "$update_custom_preup" "$UPDATE_LAST_VERSION" "$UPDATE_NEXT_VERSION" | awk '{print "... "$0}' 2>&1; then
-				echo "done."
-			else
-				echo "failed."
-			fi
+			echo " $update_custom_preup"
+			"$update_custom_preup" "$UPDATE_LAST_VERSION" "$UPDATE_NEXT_VERSION" 2>&1
+			echo "$update_custom_preup exited with exitcode: $?"
 		else
-			echo "..."$update_custom_preup"...not executable"
+			echo " $update_custom_preup is not executable"
 		fi
 	else
-		echo "..."$update_custom_preup"...not found"
+		echo " $update_custom_preup not found"
 	fi
 fi
 
@@ -97,5 +95,8 @@ if [ -e /usr/sbin/apache2 ]; then
 	dpkg-statoverride --add root root 0644 /usr/sbin/apache2 >/dev/null 2>&1
 	chmod -x /usr/sbin/apache2
 fi
+
+echo "Finished running preup.sh script"
+echo "$(date)"
 
 exit 0

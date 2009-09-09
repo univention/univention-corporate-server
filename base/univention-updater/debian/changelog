@@ -1,3 +1,9 @@
+univention-updater (5.0.11-1) unstable; urgency=low
+
+  * log more timestamps, custom (pre|post)up-scripts output changes (Bug: #14900)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Wed,  9 Sep 2009 10:33:35 +0200
+
 univention-updater (5.0.10-1) unstable; urgency=low
 
   * log timestamp before starting actual update (Bug: #14900)
