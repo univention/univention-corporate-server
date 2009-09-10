@@ -125,6 +125,15 @@ fi
 
 dpkg-statoverride --force --update --add www-data adm 755 /var/log/horde
 
+pkg_installed(){
+        PKGNAME="$1";
+        if dpkg -l $PKGNAME 2>/dev/null| grep $PKGNAME | grep -q ^ii; then
+                return 0;       # true
+        else
+                return 1;
+        fi
+}
+
 #DEBHELPER#
 
 # restart services
@@ -132,8 +141,14 @@ if [ -x /etc/init.d/postgresql ]; then
 	/etc/init.d/postgresql restart
 fi
 
-if [ -x /etc/init.d/postgresql-7.4 ]; then
-	/etc/init.d/postgresql-7.4 restart
+if pkg_installed postgresql-8.3; then
+	if [ -x /etc/init.d/postgresql-8.3 ] ; then
+		/etc/init.d/postgresql-8.3 restart
+	fi
+elif pkg_installed postgresql-7.4 ; then
+	if [ -x /etc/init.d/postgresql-7.4 ]; then
+		/etc/init.d/postgresql-7.4 restart
+	fi
 fi
 
 if [ -x /etc/init.d/cyrus22 ]; then
