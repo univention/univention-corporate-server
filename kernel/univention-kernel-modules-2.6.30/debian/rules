@@ -53,6 +53,8 @@ install:
 	dh_clean -k
 	dh_installdirs
 
+# vmware-kernel-source and vmware-server-kernel-source have been deactivated
+
 	for m in avm-capi-fcpci-modules drbd8; do \
 		for i in $$(ls -d /usr/src/linux-headers-* | grep -v "\-common" ); do \
 			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
@@ -62,8 +64,9 @@ install:
 		done \
 	done
 
+# vmware-kernel-source and vmware-server-kernel-source have been deactivated
 	# don't build the vmware serverview modules for the xen kernel
-	for m in srvmagt-modules vmware-kernel-source vmware-server-kernel-source; do \
+	for m in srvmagt-modules ; do \
 		for i in $$(ls -d /usr/src/linux-headers-* | grep -v "\-common" | grep -v "xen"); do \
 			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
 			m-a -t -l $$kversion prepare; \
