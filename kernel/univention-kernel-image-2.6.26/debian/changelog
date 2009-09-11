@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.26 (4.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 2.3 (Bug #15580)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 11 Sep 2009 14:37:05 +0200
+
 univention-kernel-image-2.6.26 (3.0.5-6) unstable; urgency=low
 
   * Update to latest kernel build (Bug #15580)
