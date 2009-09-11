@@ -1,3 +1,10 @@
+univention-scalix (4.0.1-6) unstable; urgency=low
+
+  * add Replaces on univention-kolab2-framework and univention-kolab2-webclient
+    (Bug #10389)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 11 Sep 2009 10:27:57 +0200
+
 univention-scalix (4.0.1-5) unstable; urgency=low
 
   * scripts diverted in preinst are updated to 11.4.5 as well (Bug #15357)
