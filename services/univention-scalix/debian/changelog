@@ -1,3 +1,10 @@
+univention-scalix (4.0.1-7) unstable; urgency=low
+
+  * workaround for Bug #12388 (Bug #10389)
+  * avoid trailing blank line in ~scalix/rules/ALL-ROUTES.VIR (Bug #15392)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 11 Sep 2009 14:55:09 +0200
+
 univention-scalix (4.0.1-6) unstable; urgency=low
 
   * add Replaces on univention-kolab2-framework and univention-kolab2-webclient
