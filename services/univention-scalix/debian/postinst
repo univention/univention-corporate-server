@@ -170,7 +170,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	# and replace Scalix __Variables__ by univention config-registry variables
 	/usr/share/univention-scalix/univention-scalix-conffile
 
-	if [ "$scalix_antivir" = 'yes' -o "$scalix_antivir" = 'true']; then
+	if [ "$scalix_antivir" = 'yes' -o "$scalix_antivir" = 'true' ]; then
 		### Scalix virus-protection framework
 		## Scanning is run by the service router (also scans internal e-mail)
 		## by calling a virus scanning mapper script (omvscan.map) if
@@ -271,6 +271,8 @@ if [ -n "$2" ] && dpkg --compare-versions "$2" lt "3.0.1-1"; then
 		/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/$template
 	done
 fi
+
+a2dissite kolab2-freebusy || true # workaround for Bug #12388
 
 /etc/init.d/scalix start
 /etc/init.d/scalix-tomcat restart
