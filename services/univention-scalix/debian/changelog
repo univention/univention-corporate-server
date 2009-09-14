@@ -1,3 +1,9 @@
+univention-scalix (4.0.1-9) unstable; urgency=low
+
+  * revert modification of Conflicts and Replaces fields (Bug #10389)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 14 Sep 2009 19:06:48 +0200
+
 univention-scalix (4.0.1-8) unstable; urgency=low
 
   * improved workaround for Bug #12388 (Bug #10389)
