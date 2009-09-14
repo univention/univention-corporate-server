@@ -272,7 +272,8 @@ if [ -n "$2" ] && dpkg --compare-versions "$2" lt "3.0.1-1"; then
 	done
 fi
 
-a2dissite kolab2-freebusy || true # workaround for Bug #12388
+# workaround for Bug #12388 : remove orphaned link
+find -L /etc/apache2/sites-enabled -name kolab2-freebusy -lname /etc/apache2/sites-available/kolab2-freebusy | xargs rm -f
 
 /etc/init.d/scalix start
 /etc/init.d/scalix-tomcat restart
