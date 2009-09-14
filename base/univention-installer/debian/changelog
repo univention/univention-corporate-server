@@ -1,3 +1,15 @@
+univention-installer (5.0.13-2) unstable; urgency=low
+
+  * update nameservers and gateway with values obtained via DHCP (Bug #12130)
+  * timout of DHCP query after 45 seconds
+  * jump to Ok-Button if DHCP query was successfull
+  * updated translations
+  * improved handling of DHCP failures
+  * dhclient-script-wrapper avoids changing the current interface configuration
+  * set printk console_loglevel to zero to silence ifconfig messages from kernel
+
+ -- Arvid Requate <requate@univention.de>  Mon, 14 Sep 2009 18:49:39 +0200
+
 univention-installer (5.0.13-1) unstable; urgency=low
 
   * ensure that a suggestion for the e-mail address is added if it is not

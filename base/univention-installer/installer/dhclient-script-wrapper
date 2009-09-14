@@ -34,14 +34,21 @@ case "$reason" in
 		# configured as required in order to send packets prior to
 		# receiving an actual address. - dhclient-script(8)
 		
-		if [ -n "$alias_ip_address" ]; then
-			# Bring down alias interface. Its routes will disappear too.
-			ifconfig $interface:0- inet 0
-		fi
-		ifconfig $interface inet 0 up
+		#if [ -n "$alias_ip_address" ]; then
+		#	# Bring down alias interface. Its routes will disappear too.
+		#	ifconfig $interface:0- inet 0
+		#fi
+
+		# silence the kernel printk
+		PRINTK=`cat /proc/sys/kernel/printk`
+		echo "0" >/proc/sys/kernel/printk
+
+		# basic interface setup if it is not already up
+		ifconfig eth0 | grep -w UP || ifconfig $interface inet 0 up
 		
 		# We need to give the kernel some time to get the interface up.
 		sleep 1
+		# echo "$PRINTK" >/proc/sys/kernel/printk
 		;;
     BOUND|RENEW|REBIND|REBOOT)
 		set -- $new_routers
@@ -67,7 +74,5 @@ domainname: $new_domain_name
 
         ;;
 esac
-
-[ -x /sbin/dhclient-script ] && /sbin/dhclient-script
 
 exit 0

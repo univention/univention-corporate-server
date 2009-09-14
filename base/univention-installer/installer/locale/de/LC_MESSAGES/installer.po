@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-18 15:58+0200\n"
+"POT-Creation-Date: 2009-09-14 18:47+0200\n"
 "PO-Revision-Date: 2009-03-09 17:07+0100\n"
 "Last-Translator: END.PY TRANSLATIONS MUESSEN IN UTF-8 KODIERT SEIN, DER REST "
 "IN LATIN-1 <EMAIL@ADDRESS>\n"
@@ -122,8 +122,8 @@ msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 #: installer/main.py:268 installer/main.py:299 installer/objects.py:1722
 #: installer/modules/03_hardware.py:258 installer/modules/03_hardware.py:292
 #: installer/modules/04_profile.py:54 installer/modules/12_partition.py:4167
-#: installer/modules/12_partition.py:4183 installer/modules/20_net.py:701
-#: installer/modules/20_net.py:953
+#: installer/modules/12_partition.py:4183 installer/modules/20_net.py:716
+#: installer/modules/20_net.py:1005
 #: ../univention-system-setup/usr/sbin/univention-system-setup:143
 #: ../univention-system-setup/usr/sbin/univention-system-setup:170
 #: ../univention-system-setup/usr/sbin/univention-system-setup:189
@@ -777,8 +777,8 @@ msgstr "Weitere zu ladende Module:"
 #: installer/modules/12_partition.py:3643
 #: installer/modules/12_partition.py:3690
 #: installer/modules/12_partition.py:3942
-#: installer/modules/12_partition.py:3981 installer/modules/20_net.py:700
-#: installer/modules/20_net.py:954
+#: installer/modules/12_partition.py:3981 installer/modules/20_net.py:715
+#: installer/modules/20_net.py:1006
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -840,7 +840,7 @@ msgstr "Suche CD-ROM-Laufwerk"
 #: installer/modules/12_partition.py:1976
 #: installer/modules/12_partition.py:3211
 #: installer/modules/12_partition.py:3216
-#: installer/modules/12_partition.py:3220 installer/modules/20_net.py:854
+#: installer/modules/12_partition.py:3220 installer/modules/20_net.py:869
 #: installer/modules/60_software.py:80
 msgid "Please wait ..."
 msgstr "Bitte warten ..."
@@ -862,7 +862,7 @@ msgid "Check devices for UCS CD:"
 msgstr "Suche nach UCS-Medium"
 
 #: installer/modules/03_hardware.py:149 installer/modules/03_hardware.py:155
-#: installer/modules/03_hardware.py:157 installer/modules/20_net.py:405
+#: installer/modules/03_hardware.py:157 installer/modules/20_net.py:418
 msgid "F2-Add"
 msgstr "F2-Neu"
 
@@ -1503,8 +1503,8 @@ msgstr "Möchten Sie LVM2 verwenden?"
 msgid " Partitioning dialog "
 msgstr "Partitionierung"
 
-#: installer/modules/12_partition.py:2065 installer/modules/20_net.py:797
-#: installer/modules/20_net.py:799
+#: installer/modules/12_partition.py:2065 installer/modules/20_net.py:812
+#: installer/modules/20_net.py:814
 msgid "Device"
 msgstr "Gerät"
 
@@ -1559,11 +1559,11 @@ msgstr "LVM-Medien-Gruppe"
 msgid "F2-Create"
 msgstr "F2-Erstellen"
 
-#: installer/modules/12_partition.py:2208 installer/modules/20_net.py:406
+#: installer/modules/12_partition.py:2208 installer/modules/20_net.py:419
 msgid "F3-Edit"
 msgstr "F3-Editieren"
 
-#: installer/modules/12_partition.py:2209 installer/modules/20_net.py:407
+#: installer/modules/12_partition.py:2209 installer/modules/20_net.py:420
 msgid "F4-Delete"
 msgstr "F4-Löschen"
 
@@ -1946,7 +1946,7 @@ msgstr "Wählen Sie aus, wo der Bootloader installiert wird:"
 msgid "Master boot record"
 msgstr "Master Boot Record"
 
-#: installer/modules/15_bootloader.py:69 installer/modules/20_net.py:685
+#: installer/modules/15_bootloader.py:69 installer/modules/20_net.py:700
 msgid "Device:"
 msgstr "Gerät:"
 
@@ -1972,102 +1972,102 @@ msgstr ""
 msgid "Boot loader"
 msgstr "Bootloader"
 
-#: installer/modules/20_net.py:179 installer/modules/20_net.py:527
+#: installer/modules/20_net.py:192 installer/modules/20_net.py:542
 msgid "Following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
-#: installer/modules/20_net.py:183 installer/modules/20_net.py:410
-#: installer/modules/20_net.py:530 installer/modules/95_overview.py:94
+#: installer/modules/20_net.py:196 installer/modules/20_net.py:427
+#: installer/modules/20_net.py:545 installer/modules/95_overview.py:94
 msgid "Gateway"
 msgstr "Gateway"
 
-#: installer/modules/20_net.py:188 installer/modules/20_net.py:417
-#: installer/modules/20_net.py:506 installer/modules/20_net.py:533
+#: installer/modules/20_net.py:201 installer/modules/20_net.py:435
+#: installer/modules/20_net.py:521 installer/modules/20_net.py:548
 msgid "Name server"
 msgstr "Nameserver"
 
-#: installer/modules/20_net.py:193 installer/modules/20_net.py:425
-#: installer/modules/20_net.py:513 installer/modules/20_net.py:536
+#: installer/modules/20_net.py:206 installer/modules/20_net.py:440
+#: installer/modules/20_net.py:528 installer/modules/20_net.py:551
 msgid "DNS Forwarder"
 msgstr "DNS-Forwarder"
 
-#: installer/modules/20_net.py:202 installer/modules/20_net.py:542
+#: installer/modules/20_net.py:215 installer/modules/20_net.py:557
 msgid "Proxy, example http://10.201.1.1:8080"
 msgstr "Proxy, z.B. http://10.201.1.1:8080"
 
-#: installer/modules/20_net.py:232
+#: installer/modules/20_net.py:245
 msgid "You have to add one or more Network interfaces."
 msgstr "Sie müssen ein oder mehrere Netzwerk Interfaces angeben "
 
-#: installer/modules/20_net.py:253 installer/modules/20_net.py:254
-#: installer/modules/20_net.py:273 installer/modules/20_net.py:274
-#: installer/modules/20_net.py:365 installer/modules/20_net.py:386
+#: installer/modules/20_net.py:266 installer/modules/20_net.py:267
+#: installer/modules/20_net.py:286 installer/modules/20_net.py:287
+#: installer/modules/20_net.py:378 installer/modules/20_net.py:399
 msgid "New Virtual Device"
 msgstr "Neues virtuelles Interface"
 
-#: installer/modules/20_net.py:259 installer/modules/20_net.py:261
-#: installer/modules/20_net.py:689
+#: installer/modules/20_net.py:272 installer/modules/20_net.py:274
+#: installer/modules/20_net.py:704
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
-#: installer/modules/20_net.py:276 installer/modules/20_net.py:277
-#: installer/modules/20_net.py:362 installer/modules/20_net.py:384
+#: installer/modules/20_net.py:289 installer/modules/20_net.py:290
+#: installer/modules/20_net.py:375 installer/modules/20_net.py:397
 msgid "New Device"
 msgstr "Neues Interface"
 
-#: installer/modules/20_net.py:401
+#: installer/modules/20_net.py:414
 msgid "Device        IP               Netmask"
 msgstr "Interface     IP               Netzmaske"
 
-#: installer/modules/20_net.py:422 installer/modules/20_net.py:430
+#: installer/modules/20_net.py:437 installer/modules/20_net.py:445
 msgid "More"
 msgstr "Mehr"
 
-#: installer/modules/20_net.py:433
+#: installer/modules/20_net.py:448
 msgid "HTTP proxy"
 msgstr "HTTP-Proxy"
 
-#: installer/modules/20_net.py:448
+#: installer/modules/20_net.py:463
 msgid "Currently no network card could be detected. Depending on"
 msgstr "Es konnte zum aktuellen Zeitpunkt keine Netzwerkkarte gefunden"
 
-#: installer/modules/20_net.py:449
+#: installer/modules/20_net.py:464
 msgid "the selected services and system role an operative network"
 msgstr "werden. Abhängig von den ausgewählten Diensten und der"
 
-#: installer/modules/20_net.py:450
+#: installer/modules/20_net.py:465
 msgid "card is required to successfully complete the installation."
 msgstr "Systemrolle kann es zu Fehlern bei der Installation kommen."
 
-#: installer/modules/20_net.py:451
+#: installer/modules/20_net.py:466
 msgid "Please check the network card of the computer."
 msgstr "Prüfen Sie die Netzwerkkarte dieses Systems. Falls eine"
 
-#: installer/modules/20_net.py:452
+#: installer/modules/20_net.py:467
 msgid "If a network card is installed, try to load additional"
 msgstr "Netzwerkkarte installiert ist, sollte versucht werden,"
 
-#: installer/modules/20_net.py:453
+#: installer/modules/20_net.py:468
 msgid "kernel modules at the beginning of the installation."
 msgstr "Kerneltreiber zu Beginn der Installation nachzuladen."
 
-#: installer/modules/20_net.py:454
+#: installer/modules/20_net.py:469
 msgid "If the installation will be continued without operative"
 msgstr "Wird die Installation ohne funktionierende Netzwerkkarte"
 
-#: installer/modules/20_net.py:455
+#: installer/modules/20_net.py:470
 msgid "network card, a virtual dummy network card will be loaded"
 msgstr "fortgesetzt, wird automatisch eine virtuelle Netzwerkkarte"
 
-#: installer/modules/20_net.py:456
+#: installer/modules/20_net.py:471
 msgid "automatically to complete installation."
 msgstr "geladen, um die Installation erfolgreich beenden zu können."
 
-#: installer/modules/20_net.py:545
+#: installer/modules/20_net.py:560
 msgid "You have to add one or more network interfaces."
 msgstr "Sie müssen ein oder mehrere Netzwerk-Interfaces angeben."
 
-#: installer/modules/20_net.py:549
+#: installer/modules/20_net.py:564
 msgid ""
 "Network \n"
 " \n"
@@ -2147,69 +2147,74 @@ msgstr ""
 " Geben Sie die Transportadresse (IP-Adresse:Port) an, um einen HTTP-Proxy zu "
 "nutzen. z.B: http://192.168.1.123:3128"
 
-#: installer/modules/20_net.py:552
+#: installer/modules/20_net.py:567
 msgid "Network"
 msgstr "Netzwerk"
 
-#: installer/modules/20_net.py:692
+#: installer/modules/20_net.py:707
 msgid "IP address:"
 msgstr "IP-Adresse:"
 
-#: installer/modules/20_net.py:695 installer/modules/20_net.py:854
-#, fuzzy
+#: installer/modules/20_net.py:710 installer/modules/20_net.py:869
 msgid "DHCP Query"
 msgstr "DHCP Anfrage"
 
-#: installer/modules/20_net.py:697
+#: installer/modules/20_net.py:712
 msgid "Netmask:"
 msgstr "Netzmaske:"
 
-#: installer/modules/20_net.py:770
+#: installer/modules/20_net.py:785
 msgid " Interface configuration"
 msgstr " Interface Konfiguration"
 
-#: installer/modules/20_net.py:790 installer/modules/20_net.py:979
+#: installer/modules/20_net.py:805 installer/modules/20_net.py:1031
 #: installer/modules/30_ssl.py:63 installer/modules/30_ssl.py:165
 #: installer/modules/31_join.py:49 installer/modules/31_join.py:136
 msgid "The following value is missing: "
 msgstr "Der folgende Wert fehlt:"
 
-#: installer/modules/20_net.py:791 installer/modules/20_net.py:980
+#: installer/modules/20_net.py:806 installer/modules/20_net.py:1032
 msgid "The following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
-#: installer/modules/20_net.py:806 installer/modules/20_net.py:808
-#: installer/modules/20_net.py:823
+#: installer/modules/20_net.py:821 installer/modules/20_net.py:823
+#: installer/modules/20_net.py:838
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: installer/modules/20_net.py:811 installer/modules/20_net.py:813
 #: installer/modules/20_net.py:826 installer/modules/20_net.py:828
+#: installer/modules/20_net.py:841 installer/modules/20_net.py:843
 msgid "Netmask"
 msgstr "Netzmaske"
 
-#: installer/modules/20_net.py:821
+#: installer/modules/20_net.py:836
 msgid ""
 "For a server role an IP address must be determined at this point, please "
-"press F5 or deselect the DHCP option"
+"press F5 or deselect the DHCP option."
 msgstr ""
+"Für Serversysteme muss an dieser Stelle eine IP-Adresse festgelegt werden, "
+"bitte F5 drücken oder DHCP-Option abwählen."
 
-#: installer/modules/20_net.py:928
+#: installer/modules/20_net.py:874
+msgid "No DHCP answer, please check DHCP server and network connectivity."
+msgstr "Keine DHCP-Antwort, bitte DHCP-Server und Netzwerkverbindung überprüfen."
+
+#: installer/modules/20_net.py:980
 #, python-format
 msgid "1. %s"
 msgstr "1. %s"
 
-#: installer/modules/20_net.py:937
+#: installer/modules/20_net.py:989
 #, python-format
 msgid "2. %s"
 msgstr "2. %s"
 
-#: installer/modules/20_net.py:945
+#: installer/modules/20_net.py:997
 #, python-format
 msgid "3. %s"
 msgstr "3. %s"
 
-#: installer/modules/20_net.py:961
+#: installer/modules/20_net.py:1013
 #, python-format
 msgid " More %ss"
 msgstr "Weitere %s"

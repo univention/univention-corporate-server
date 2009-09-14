@@ -38,7 +38,7 @@ import objects, re, string, curses
 from objects import *
 from local import _
 import inspect
-import os, subprocess
+import os, subprocess, threading
 
 class object(content):
 
@@ -65,32 +65,44 @@ class object(content):
 		line = info[1]
 		content.debug(self, 'NETWORK:%d: %s' % (line,txt))
 
-##	Uncomment this to prevent the ESC-Key close a window that has a sub or warning window
-#
-#	def kill_subwin(self):
-#		#self.debug('kill_subwin(net module)')
-#		#Defined to prevent subwin from killing
+##	Overloading this method  prevents the ESC-Key to close a window that has a sub or warning window
+	def kill_subwin(self):
 #		if hasattr(self.sub, 'sub'):
 #			self.sub.sub.exit()
-#		elif hasattr(self.sub, 'warn'):
-#			delattr(self.sub,'warn')
-#			self.draw()
-#		else:
-#			self.sub.exit()
+		if hasattr(self.sub, 'warn'):
+			delattr(self.sub,'warn')
+			self.draw()
+		else:
+			self.sub.exit()
 
-	def dhclient(self, interface):
+	def dhclient(self, interface, timeout=None):
 		self.debug('DHCP broadcast on %s' % interface)
 		tempfilename='/tmp/dhclient%s.out' % os.getpid()
 		open(tempfilename, 'w').close()	# touch the file in case dhclient does not receive a propper answer
 		cmd='/sbin/dhclient -1 -lf /tmp/dhclient.leases -sf /lib/univention-installer/dhclient-script-wrapper -e dhclientscript_outputfile="%s" %s' % (tempfilename, interface)
 		p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-		self.debug('DHCP output: %s' % p.stderr.read())
+
+		# read from stderr until timeout, following recipe of subprocess.communicate()
+		def _readerthread(fh, stringbufferlist):
+			stringbufferlist.append(fh.read())
+
+		stderr = []
+		stderr_thread = threading.Thread(target=_readerthread,
+										args=(p.stderr, stderr))
+		stderr_thread.setDaemon(True)
+		stderr_thread.start()
+		stderr_thread.join(timeout)
+		if stderr:
+			stderr=stderr[0]
+		# note: despite '-1' dhclient never seems to terminate
 		os.kill(p.pid, 15)
+
+		self.debug('DHCP output: %s' % stderr)
 		file = open(tempfilename)
 		dhcp_dict={}
 		for line in file.readlines():
 			key, value = line.strip().split(':', 1)
-			dhcp_dict[key]=value.strip()
+			dhcp_dict[key]=value.lstrip()
 		self.debug('DHCP answer: %s' % dhcp_dict)
 		file.close()
 		os.unlink(tempfilename)
@@ -408,18 +420,20 @@ class object(content):
 		self.elements.append(button(_('F4-Delete'),self.minY+6,self.minX+(self.width)-4,align="right"))#6
 
 		# - Gateway
-		self.elements.append(textline(_('Gateway'),self.minY+10,self.minX+2)) #7
 		if not self.container.has_key('Gateway'):
-			self.elements.append(input('',self.minY+10,self.minX+20,MAXIP+8)) #8
+			gateway_str=''
 		else:
-			self.elements.append(input('%s'%self.container['Gateway'][0],self.minY+10,self.minX+20,MAXIP+8)) #8
+			gateway_str='%s' % self.container['Gateway'][0]
+		self.add_elem('netobject.TXT_GATEWAY', textline(_('Gateway'),self.minY+10,self.minX+2)) #7
+		self.add_elem('netobject.INPUT_GATEWAY', input(gateway_str,self.minY+10,self.minX+20,MAXIP+8)) #8
 
 		# - Nameserver
-		self.elements.append(textline(_('Name server'),self.minY+12,self.minX+2)) #9
 		if not self.container.has_key('Nameserver'):
-			self.elements.append(input('',self.minY+12,self.minX+20,MAXIP+8)) #10
+			nameserver1_str=''
 		else:
-			self.elements.append(input('%s'%self.container['Nameserver'][0],self.minY+12,self.minX+20,MAXIP+8)) #10
+			nameserver1_str='%s' % self.container['Nameserver'][0]
+		self.add_elem('netobject.TXT_NAMESERVER1', textline(_('Name server'),self.minY+12,self.minX+2)) #9
+		self.add_elem('netobject.INPUT_NAMESERVER1', input(nameserver1_str,self.minY+12,self.minX+20,MAXIP+8)) #10
 		self.elements.append(button(_('More'),self.minY+12,self.minX+(self.width)-4,align="right")) #11
 
 		# - DNS Forwarder
@@ -819,7 +833,7 @@ class object(content):
 					netmask_str=self.get_elem('edit.INPUT_NETMASK').result().strip()
 					#IP
 					if ip_str == '':
-						return _('For a server role an IP address must be determined at this point, please press F5 or deselect the DHCP option')
+						return _('For a server role an IP address must be determined at this point, please press F5 or deselect the DHCP option.')
 					elif not self.parent.is_ip(ip_str.strip('\n')):
 						return invalid+_('IP address')
 					#Netmask
@@ -854,8 +868,19 @@ class object(content):
 			elif ( key in [ 10, 32 ] and self.elem_exists('edit.BUTTON_DHCLIENT') and self.get_elem('edit.BUTTON_DHCLIENT').usable() and self.get_elem('edit.BUTTON_DHCLIENT').get_status() ) or key == 269: # F5
 				self.act = self.dhclient_active(self,_('DHCP Query'),_('Please wait ...'),name='act')
 				self.act.draw()
-				self.parent.draw()
-				self.draw()
+				if not self.dhcpanswer:
+					self.parent.draw()
+					self.draw()
+					self.warn=warning(_('No DHCP answer, please check DHCP server and network connectivity.'),self.pos_y+25,self.pos_x+90)
+					self.warn.draw()
+				else:
+					input_ip=self.get_elem('edit.INPUT_IP')
+					if input_ip.result():
+						input_ip.set_off()
+						self.get_elem('edit.BUTTON_OK').set_on()	# set the focus highlight
+						self.current=self.get_elem_id('edit.BUTTON_OK')	# set the tab cursor
+					self.parent.draw()
+					self.draw()
 			elif key in [ 10, 32 ] and self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').usable() and self.get_elem('edit.CHECKBOX_DHCP').active: #Space in Checkbox
 				dhcp_checkbox=self.get_elem('edit.CHECKBOX_DHCP')
 				self.elements[self.current].key_event(32)	# send the event to the widget
@@ -904,22 +929,46 @@ class object(content):
 
 			def function(self):
 				interface=self.parent.get_elem('edit.INPUT_INTERFACE').result().strip()
-				dhcp_dict=self.parent.parent.dhclient(interface)
-				ip_input=self.parent.get_elem('edit.INPUT_IP')
-				ip_input.text=dhcp_dict.get('address') or ''
-				ip_input.set_cursor(len(ip_input.text))
-				ip_input.paste_text()
-				ip_input.draw()
-				netmask_input=self.parent.get_elem('edit.INPUT_NETMASK')
-				netmask_input.text=dhcp_dict.get('netmask') or ''
-				netmask_input.set_cursor(len(netmask_input.text))
-				netmask_input.paste_text()
-				netmask_input.draw()
-				#self.parent.container['Gateway']=dhcp_dict.get('gateway') or ''
-				#self.parent.container['Nameserver']=dhcp_dict.get('nameserver_1'] or ''
-				#self.parent.dns['nameserver_2']=dhcp_dict.get('nameserver_2'] or ''
-				#self.parent.dns['nameserver_3']=dhcp_dict.get('nameserver_3'] or ''
-				self.stop()
+				dhcp_dict=self.parent.parent.dhclient(interface, 45)
+				ip_str=dhcp_dict.get('address') or ''
+				if not ip_str:
+					self.parent.dhcpanswer=False
+				else:
+					self.parent.dhcpanswer=True
+					ip_input=self.parent.get_elem('edit.INPUT_IP')
+					ip_input.text=dhcp_dict.get('address') or ''
+					ip_input.set_cursor(len(ip_input.text))
+					ip_input.paste_text()
+					ip_input.draw()
+					netmask_input=self.parent.get_elem('edit.INPUT_NETMASK')
+					netmask_input.text=dhcp_dict.get('netmask') or ''
+					netmask_input.set_cursor(len(netmask_input.text))
+					netmask_input.paste_text()
+					netmask_input.draw()
+					#gateway_str=self.get_elem('netobject.INPUT_GATEWAY').result().strip()
+					#if not gateway_str:
+					gateway_str=dhcp_dict.get('gateway') or ''
+					if gateway_str:
+						gateway_input=self.parent.get_elem('netobject.INPUT_GATEWAY')
+						gateway_input.text=gateway_str
+						gateway_input.set_cursor(len(gateway_input.text))
+						gateway_input.paste_text()
+						gateway_input.draw()
+					#nameserver1_str=self.get_elem('netobject.INPUT_NAMESERVER1').result().strip()
+					#if not nameserver1_str:
+					nameserver1_str=dhcp_dict.get('nameserver_1') or ''
+					if nameserver1_str:
+						nameserver1_input=self.parent.parent.get_elem('netobject.INPUT_NAMESERVER1')
+						nameserver1_input.text=nameserver1_str
+						nameserver1_input.set_cursor(len(nameserver1_input.text))
+						nameserver1_input.paste_text()
+						nameserver1_input.draw()
+					nameserver2_str=dhcp_dict.get('nameserver_2') or ''
+					if nameserver2_str:
+						self.parent.parent.dns['nameserver_2']=nameserver2_str
+					nameserver3_str=dhcp_dict.get('nameserver_3') or ''
+					if nameserver3_str:
+						self.parent.parent.dns['nameserver_3']=nameserver3_str
 
 	class more(subwin):
 		def __init__(self,parent,pos_y,pos_x,width,heigh,type):
