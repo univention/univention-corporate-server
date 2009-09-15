@@ -50,6 +50,11 @@ class object(content):
 		else:
 			self.already_redraw=0
 
+		if self.cmdline.has_key('edition') and self.cmdline['edition'] == 'oxae':
+			self.ask_forwarder=False
+		else:
+			self.ask_forwarder=True
+
 		self.interfaces=[]
 
 		#For more nameservers and dns-forwarders
@@ -318,8 +323,11 @@ class object(content):
 		self.debug('Redrawing Main Window')
 		self.container['Gateway']=[self.elements[8].result().strip()]
 		self.container['Nameserver']=[self.elements[10].result().strip()]
-		self.container['DNS-Forwarder']=[self.elements[13].result().strip()]
-		self.container['proxy_http']=[self.elements[16].result().strip()]
+		if self.ask_forwarder:
+			self.container['DNS-Forwarder']=[self.elements[13].result().strip()]
+			self.container['proxy_http']=[self.elements[16].result().strip()]
+		else:
+			self.container['proxy_http']=[self.elements[13].result().strip()]
 		self.container['current']=self.current
 		if self.already_redraw:
 			self.already_redraw=1
@@ -436,13 +444,14 @@ class object(content):
 		self.add_elem('netobject.INPUT_NAMESERVER1', input(nameserver1_str,self.minY+12,self.minX+20,MAXIP+8)) #10
 		self.elements.append(button(_('More'),self.minY+12,self.minX+(self.width)-4,align="right")) #11
 
-		# - DNS Forwarder
-		self.elements.append(textline(_('DNS Forwarder'),self.minY+14,self.minX+2)) #12
-		if not self.container.has_key('DNS-Forwarder'):
-			self.elements.append(input('',self.minY+14,self.minX+20,MAXIP+8)) #13
-		else:
-			self.elements.append(input('%s'%self.container['DNS-Forwarder'][0],self.minY+14,self.minX+20,MAXIP+8)) #13
-		self.elements.append(button(_('More'),self.minY+14,self.minX+(self.width)-4,align="right")) #14
+		if self.ask_forwarder:
+			# - DNS Forwarder
+			self.elements.append(textline(_('DNS Forwarder'),self.minY+14,self.minX+2)) #12
+			if not self.container.has_key('DNS-Forwarder'):
+				self.elements.append(input('',self.minY+14,self.minX+20,MAXIP+8)) #13
+			else:
+				self.elements.append(input('%s'%self.container['DNS-Forwarder'][0],self.minY+14,self.minX+20,MAXIP+8)) #13
+			self.elements.append(button(_('More'),self.minY+14,self.minX+(self.width)-4,align="right")) #14
 
 		# - Proxy
 		self.elements.append(textline(_('HTTP proxy'),self.minY+16,self.minX+2)) #15
@@ -546,11 +555,16 @@ class object(content):
 		if not self.elements[10].result().strip() == '':
 			if not self.is_ip(self.elements[10].result()):
 				return invalid+_("Name server")
-		if not self.elements[13].result().strip() == '':
-			if not self.is_ip(self.elements[13].result()):
-				return invalid+_("DNS Forwarder")
-		if self.elements[16]:
-			proxy = self.elements[16].result().strip()
+		if self.ask_forwarder:
+			if not self.elements[13].result().strip() == '':
+				if not self.is_ip(self.elements[13].result()):
+					return invalid+_("DNS Forwarder")
+			proxy_position = 16
+		else:
+			proxy_position = 13
+	
+		if self.elements[proxy_position]:
+			proxy = self.elements[proxy_position].result().strip()
 			self.debug('PROXY=%s' % proxy)
 			if proxy and not proxy.startswith('http://') and not proxy.startswith('https://'):
 				self.debug('INVALID PROXY!')
@@ -604,12 +618,17 @@ class object(content):
 			result['nameserver_1']='%s' %self.elements[10].result().strip()
 		else:
 			result['nameserver_1']=''
-		if self.elements[13].result().strip():
-			result['dns_forwarder_1']='%s' %self.elements[13].result().strip()
+		if self.ask_forwarder:
+			if self.elements[13].result().strip():
+				result['dns_forwarder_1']='%s' %self.elements[13].result().strip()
+			else:
+				result['dns_forwarder_1']=''
+
+			proxy = self.elements[16].result().strip()
 		else:
 			result['dns_forwarder_1']=''
+			proxy = self.elements[13].result().strip()
 
-		proxy = self.elements[16].result().strip()
 		result['proxy_http']=''
 		if proxy and  proxy != 'http://' and proxy != 'https://':
 			result['proxy_http']='%s' % proxy

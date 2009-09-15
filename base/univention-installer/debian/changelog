@@ -1,3 +1,10 @@
+univention-installer (5.0.14-1) unstable; urgency=low
+
+  * don't ask for the DNS forwarder on an OXAE system. UCS Bug #13685
+    OX Bug http://bugs.open-xchange.com/cgi-bin/bugzilla/show_bug.cgi?id=12797
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 15 Sep 2009 14:12:30 +0200
+
 univention-installer (5.0.13-3) unstable; urgency=low
 
   * delete new at the end of installer/filesystem (Bug: #14417)
