@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-14 18:47+0200\n"
+"POT-Creation-Date: 2009-09-15 12:33+0200\n"
 "PO-Revision-Date: 2009-03-09 17:07+0100\n"
 "Last-Translator: END.PY TRANSLATIONS MUESSEN IN UTF-8 KODIERT SEIN, DER REST "
 "IN LATIN-1 <EMAIL@ADDRESS>\n"
@@ -100,7 +100,6 @@ msgstr ""
 
 #: installer/main.py:230
 #: ../univention-system-setup/usr/sbin/univention-system-setup:112
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:112
 msgid ""
 "This error message is shown when an unexpected error occures during the "
 "installation process. The best way is to reboot the computer and retry the "
@@ -115,7 +114,6 @@ msgstr ""
 
 #: installer/main.py:249
 #: ../univention-system-setup/usr/sbin/univention-system-setup:131
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:131
 msgid "A Python Exception has occured!"
 msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 
@@ -128,12 +126,7 @@ msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 #: ../univention-system-setup/usr/sbin/univention-system-setup:170
 #: ../univention-system-setup/usr/sbin/univention-system-setup:189
 #: ../univention-system-setup/usr/sbin/univention-system-setup:209
-#: ../univention-system-setup/usr/sbin/univention-system-setup:538
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:143
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:170
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:189
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:209
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:555
+#: ../univention-system-setup/usr/sbin/univention-system-setup:544
 msgid "Ok"
 msgstr "Ok"
 
@@ -1323,6 +1316,18 @@ msgstr ""
 msgid "Partitioning"
 msgstr "Partitionierung"
 
+#: installer/modules/12_partition.py:75
+msgid "This is a highly experimental filesystem"
+msgstr "Dies ist ein experimentelles Dateisystem"
+
+#: installer/modules/12_partition.py:75
+msgid "and should not be used in productive"
+msgstr "und sollte nicht in produktiven"
+
+#: installer/modules/12_partition.py:75
+msgid "environments."
+msgstr "Umgebungen eingesetzt werden."
+
 #: installer/modules/12_partition.py:214
 msgid "Reading LVM config"
 msgstr "Suche LVM-Geräte"
@@ -2197,7 +2202,8 @@ msgstr ""
 
 #: installer/modules/20_net.py:874
 msgid "No DHCP answer, please check DHCP server and network connectivity."
-msgstr "Keine DHCP-Antwort, bitte DHCP-Server und Netzwerkverbindung überprüfen."
+msgstr ""
+"Keine DHCP-Antwort, bitte DHCP-Server und Netzwerkverbindung überprüfen."
 
 #: installer/modules/20_net.py:980
 #, python-format
@@ -2509,146 +2515,109 @@ msgid "Overview"
 msgstr "Überblick"
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:92
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:92
 msgid "Press F8 to exit or any key to continue."
 msgstr "Drücken Sie zum Verlassen F8 oder eine beliebige Taste zum Fortfahren."
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:162
 #: ../univention-system-setup/usr/sbin/univention-system-setup:186
 #: ../univention-system-setup/usr/sbin/univention-system-setup:205
-#: ../univention-system-setup/usr/sbin/univention-system-setup:349
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:162
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:186
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:205
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:360
+#: ../univention-system-setup/usr/sbin/univention-system-setup:355
 msgid " Univention Corporate Server - Setup Tools"
 msgstr " Univention Corporate Server - Setup Tools"
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:163
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:163
 msgid "Univention Setup has been configured to be run on system start."
 msgstr "Univention Setup wurde zum Start nach dem Booten eingerichtet."
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:164
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:164
 msgid "It allows you to configure system settings."
 msgstr "Es ermöglicht die Konfiguration von Systemeinstellungen"
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:165
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:165
 msgid "Currently supported are configuration of the time zone, keyboard"
 msgstr "Zur Zeit wird die Konfiguration von Zeitzonen, Tastaturlayouts"
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:166
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:166
 msgid "layout, language support, the default language, host/LDAP names,"
 msgstr "Sprachen, der Standardsprache, Recher- und LDAP-Namen, Netzwerk-"
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:167
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:167
 msgid "network settings and installed software."
 msgstr "einstellungen und installierter Software unterstützt."
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:168
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:168
 msgid "Not all setup modules are enabled in system startup mode."
 msgstr "Im Systemstart-Modus sind nicht alle Module verfügbar."
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:169
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:169
 msgid "The full selection is available through univention-system-setup-all."
 msgstr "Die komplette Auswahl erreichen Sie mit univention-system-setup-all."
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:187
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:187
 msgid "The LDAP server could not be contacted. You need to join the"
 msgstr "Der LDAP-Server ist nicht erreichbar. Das System muss zu"
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:188
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:188
 msgid "system into the domain with univention-join at a later point."
 msgstr "einem späteren Zeitpunkt mit univention-join beitreten."
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:206
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:206
 msgid "You are running Univention System Setup on another system role"
 msgstr "Sie führen Univention System Setup auf einer anderen Systemrolle als"
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:207
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:207
 msgid "than a domaincontroller master or a basesystem."
 msgstr "einem Domaincontroller Master oder einem Basissystem aus."
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:208
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:208
 msgid "Afterwards the system should be re-joined."
 msgstr "Anschließend soll das System neu gejoint werden"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:354
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:365
+#: ../univention-system-setup/usr/sbin/univention-system-setup:360
 msgid " F1-Help | F12-Accept changes | F8-Exit"
 msgstr " F1-Hilfe | F12-Übernehmen | F8-Abbruch"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:356
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:367
+#: ../univention-system-setup/usr/sbin/univention-system-setup:362
 msgid " F1-Help | F12-Next | F8-Exit"
 msgstr " F1-Hilfe | F12-Weiter | F8-Abbruch"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:359
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:370
+#: ../univention-system-setup/usr/sbin/univention-system-setup:365
 msgid " F1-Help | F11-Back | F12-Accept changes | F8-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Übernehmen | Strg+c-Abbruch"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:361
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:372
+#: ../univention-system-setup/usr/sbin/univention-system-setup:367
 msgid " F1-Help | F11-Back | F12-Next | F8-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Weiter | F8-Abbruch"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:533
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:550
+#: ../univention-system-setup/usr/sbin/univention-system-setup:539
 msgid "LDAP Username"
 msgstr "LDAP-Benutzername"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:535
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:552
+#: ../univention-system-setup/usr/sbin/univention-system-setup:541
 msgid "LDAP Password"
 msgstr "LDAP-Passwort"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:539
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:556
+#: ../univention-system-setup/usr/sbin/univention-system-setup:545
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:845
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:862
+#: ../univention-system-setup/usr/sbin/univention-system-setup:852
 msgid "Updating configuration "
 msgstr "Aktualisiere Konfiguration"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:845
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:862
+#: ../univention-system-setup/usr/sbin/univention-system-setup:852
 #, python-format
 msgid "Updating %s configuration"
 msgstr "Aktualisiere %s Konfiguration"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:856
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:873
+#: ../univention-system-setup/usr/sbin/univention-system-setup:863
 msgid "Processing postrun scripts "
 msgstr "Verarbeite postrun-Skripte"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:856
-#: ../univention-system-setup/usr/sbin/univention-system-setup.tmp:873
+#: ../univention-system-setup/usr/sbin/univention-system-setup:863
 #, python-format
 msgid "Processing %s "
 msgstr "Verarbeite %s"
-
-#~ msgid "This is a highly experimental filesystem"
-#~ msgstr "Dies ist ein experimentelles Dateisystem"
-
-#~ msgid "and should not be used in productive"
-#~ msgstr "und sollte nicht in produktiven"
-
-#~ msgid "environments."
-#~ msgstr "Umgebungen eingesetzt werden."
 
 #~ msgid "Static"
 #~ msgstr "Statisch"

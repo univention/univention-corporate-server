@@ -72,7 +72,7 @@ PARTTYPE_LVM_VG_FREE = 102
 
 # file systems
 EXPERIMENTAL_FSTYPES = ['btrfs']
-EXPERIMENTAL_FSTYPES_MSG = ['This is a highly experimental filesystem','and should not be used in productive','environments.']
+EXPERIMENTAL_FSTYPES_MSG = [_('This is a highly experimental filesystem'),_('and should not be used in productive'),_('environments.')]
 ALLOWED_BOOT_FSTYPES = ['xfs','ext2','ext3']
 ALLOWED_ROOT_FSTYPES = ['xfs','ext2','ext3','ext4','btrfs']
 
@@ -3388,7 +3388,7 @@ class object(content):
 							# check experimental filesystems
 							msg = [_("Filesystem %s:") % fstype]
 							for i in EXPERIMENTAL_FSTYPES_MSG:
-								msg.append(_(i))
+								msg.append(i)
 							if fstype in EXPERIMENTAL_FSTYPES and not hasattr(self,"expFStype"):
 								self.sub = msg_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
 									callback=self.ignore_experimental_fstype, msglist=msg)
@@ -3448,7 +3448,7 @@ class object(content):
 							# check experimental filesystems
 							msg = [_("Filesystem %s:") % fstype]
 							for i in EXPERIMENTAL_FSTYPES_MSG:
-								msg.append(_(i))
+								msg.append(i)
 							if fstype in EXPERIMENTAL_FSTYPES and not hasattr(self,"expFStype"):
 								self.sub = msg_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
 									callback=self.ignore_experimental_fstype, msglist=msg)
@@ -3804,7 +3804,7 @@ class object(content):
 							# check experimental filesystems
 							msg = [_("Filesystem %s:") % fstype]
 							for i in EXPERIMENTAL_FSTYPES_MSG:
-								msg.append(_(i))
+								msg.append(i)
 							if fstype in EXPERIMENTAL_FSTYPES and not hasattr(self,"expFStype"):
 								self.sub = msg_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
 									callback=self.ignore_experimental_fstype, msglist=msg)
@@ -3845,7 +3845,7 @@ class object(content):
 							# check experimental filesystems
 							msg = [_("Filesystem %s:") % fstype]
 							for i in EXPERIMENTAL_FSTYPES_MSG:
-								msg.append(_(i))
+								msg.append(i)
 							if fstype in EXPERIMENTAL_FSTYPES and not hasattr(self,"expFStype"):
 								self.sub = msg_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
 									callback=self.ignore_experimental_fstype, msglist=msg)
