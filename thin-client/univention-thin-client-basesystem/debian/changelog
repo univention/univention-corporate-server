@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (6.0.1-2) unstable; urgency=low
+
+  * Bootstrap the packages from UCS 2.3 (Ticket#: 2009072410000149)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 15 Sep 2009 17:13:59 +0200
+
 univention-thin-client-basesystem (6.0.1-1) unstable; urgency=low
 
   * set hashbang to python2.4 (Bug #14709)
