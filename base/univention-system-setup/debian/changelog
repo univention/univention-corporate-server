@@ -1,3 +1,11 @@
+univention-system-setup (3.0.12-1) unstable; urgency=low
+
+  * evaluate UCR variable univention-ox-directory-integration/oxae
+    directly after parsing the commandline options. Otherwise it is to
+    late for the installer modules (Bug #13836)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 15 Sep 2009 13:45:24 +0200
+
 univention-system-setup (3.0.11-1) unstable; urgency=low
 
   * need to restart nscd otherwise authentication for some services fails

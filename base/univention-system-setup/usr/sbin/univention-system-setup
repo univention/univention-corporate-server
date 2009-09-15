@@ -71,7 +71,12 @@ if len(sys.argv) > 1:
 		elif opt == '--lang':
 			cmdline['lang']=val
 
+baseConfig=univention_baseconfig.baseConfig()
+baseConfig.load()
 
+univention_ox_integration_oxae=baseConfig.get('univention-ox-directory-integration/oxae', 'false')
+if univention_ox_integration_oxae.lower() in ['true', 'yes', '1']:
+	cmdline['edition']='oxae'
 
 # check for architecture and save the architecture in the cmdline dictonary
 f=os.popen('/bin/uname -m')
@@ -296,13 +301,6 @@ class mods:
 				mapping['interfaces/eth%d_%d/broadcast' % (i,j)]='eth%d_%d_broadcast' % (i,j)
 				mapping['interfaces/eth%d_%d/netmask' % (i,j)]='eth%d_%d_netmask' % (i,j)
 				mapping['interfaces/eth%d_%d/network' % (i,j)]='eth%d_%d_network' % (i,j)
-
-		baseConfig=univention_baseconfig.baseConfig()
-		baseConfig.load()
-
-		univention_ox_integration_oxae=baseConfig.get('univention-ox-directory-integration/oxae', 'false')
-		if univention_ox_integration_oxae.lower() in ['true', 'yes', '1']:
-			cmdline['edition']='oxae'
 
 		self.mapping_reverse={}
 		for k in mapping.keys():
