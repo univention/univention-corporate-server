@@ -1,3 +1,9 @@
+univention-join (2.0.11-1) unstable; urgency=low
+
+  * small readability tweaks and parsing changes in joinscript-lib (Bug #14873)
+
+ -- Daniel Hofmann <dhofmann@univention.de>  Tue, 15 Sep 2009 11:53:25 +0200
+
 univention-join (2.0.10-4) unstable; urgency=low
 
   * Symlinks are needed in more code branches (Bug #14846)

@@ -46,7 +46,7 @@ JS_PACKAGE="$(echo ${JS_SCRIPT_FULLNAME%.inst} | sed 's/.*\///' | sed 's/^[0-9]\
 #Returns 0 if any version of the script has been previously executed, 1 otherwise
 function joinscript_check_any_version_executed () {
 	touch "$JS_STATUSFILE"
-	if $(grep -qs -e "$JS_PACKAGE v[0-9]\+ successful" "$JS_STATUSFILE"); then
+	if grep -qs -E "^$JS_PACKAGE v[0-9]+ successful" "$JS_STATUSFILE"; then
 		return 0
 	else
 		return 1
@@ -65,7 +65,7 @@ function joinscript_check_specific_version_executed () {
 	fi
 
 	touch "$JS_STATUSFILE"
-	if $(grep -qs "$JS_PACKAGE v$version successful" "$JS_STATUSFILE"); then
+	if grep -qs "^$JS_PACKAGE v$version successful" "$JS_STATUSFILE"; then
 		return 0
 	else
 		return 1
@@ -120,9 +120,9 @@ function joinscript_get_last_executed_version () {
 		return 0
 	fi
 
-	JS_LAST_EXECUTED_VERSION=$(grep -e "$JS_PACKAGE v[0-9]\+ successful" "$JS_STATUSFILE" \
-		| sed s/"^$JS_PACKAGE v"// \
-		| sed s/" successful$"// \
+	JS_LAST_EXECUTED_VERSION=$(grep -E "^$JS_PACKAGE v[0-9]+ successful" "$JS_STATUSFILE" \
+		| sed "s/^$JS_PACKAGE v//" \
+		| sed "s/ successful.*$//" \
 		| sort -n \
 		| tail -n 1)
 
