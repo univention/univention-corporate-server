@@ -1,3 +1,10 @@
+univention-directory-manager-modules (5.0.26-2) unstable; urgency=low
+
+  * set directory/manager/web/modules/users/user/properties/homePostalAddress/syntax=postalAddress
+    for new installations (Bug: #15217)
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 Sep 2009 13:13:55 +0200
+
 univention-directory-manager-modules (5.0.26-1) unstable; urgency=low
 
   * new syntax/mapping for homePostalAddress if
