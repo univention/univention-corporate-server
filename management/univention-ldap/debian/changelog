@@ -1,3 +1,9 @@
+univention-ldap (5.0.4-2) unstable; urgency=low
+
+  * birthday attribute for "univentionPerson" objclass (Bug: #15119) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 Sep 2009 14:28:24 +0200
+
 univention-ldap (5.0.4-1) unstable; urgency=low
 
   * add univentionXAutoDetect to object class

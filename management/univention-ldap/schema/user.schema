@@ -41,11 +41,18 @@ attributetype ( 1.3.6.1.4.1.10176.15 NAME 'univentionAssignedPrinter'
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
+attributetype ( 1.3.6.1.4.1.10176.99 NAME 'univentionBirthday'
+	DESC 'Birthday'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+
 objectclass ( 1.3.6.1.4.1.10176.8 NAME 'univentionPerson'
 	DESC 'Additional univention-vars for Person/Account'
 	SUP top AUXILIARY
 	MAY ( quotablocksoft $ quotablockhard $ quotafilesoft $ quotafilehard $
-	      temporary $ virtual)
+	      temporary $ virtual $ univentionBirthday)
 	)
 
 objectclass ( 1.3.6.1.4.1.10176.9 NAME 'univentionGroup'
