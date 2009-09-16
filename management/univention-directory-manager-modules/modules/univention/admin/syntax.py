@@ -681,6 +681,12 @@ class dnsSRVName(complex):
 	subsyntaxes=[(_('Service'), string), (_('Protocol'), ipProtocol)]
 	all_required=1
 
+class postalAddress(complex):
+	name='postalAddress'
+	delimiter = ', '
+	subsyntaxes=[(_('Street'), string), (_('Postal code'), string), (_('City'), string)]
+	all_required=1
+
 class dnsSRVLocation(complex):
 	name='dnsSRVLocation'
 	subsyntaxes=[(_('Priority'), integer), (_('Weight'), integer), (_('Port'), integer), (_('Server'), dnsName)]

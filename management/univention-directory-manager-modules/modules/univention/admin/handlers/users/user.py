@@ -1321,6 +1321,22 @@ def load_certificate(user_certificate):
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'value=%s' % value)
 	return value
 
+def mapHomePostalAddress(old):
+	new=[]
+	for i in old:
+		new.append(string.join(i, '$' ))
+	return new
+
+def unmapHomePostalAddress(old):
+	new=[]
+	for i in old:
+		if '$' in i:
+			new.append(i.split('$'))
+		else:
+			new.append([i, " ", " "])
+
+	return new
+
 mapping=univention.admin.mapping.mapping()
 mapping.register('title', 'title', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
@@ -1402,6 +1418,14 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		global mapping
 		global property_descriptions
 		global default_property_descriptions
+
+		# homePostalAddress backward compatibility
+		# change mapping only if new syntax is used (via ucr)
+		if property_descriptions.get("homePostalAddress", False):
+			if hasattr(property_descriptions['homePostalAddress'], "syntax"):
+				if hasattr(property_descriptions['homePostalAddress'].syntax, "name"):
+					if property_descriptions['homePostalAddress'].syntax.name == "postalAddress":
+						mapping.register('homePostalAddress', 'homePostalAddress', mapHomePostalAddress, unmapHomePostalAddress)
 
 		self.co=co
 		self.lo=lo

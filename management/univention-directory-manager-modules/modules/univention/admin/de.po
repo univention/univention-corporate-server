@@ -403,6 +403,18 @@ msgstr "Server"
 msgid "Not a valid time format"
 msgstr "Keine gültige Zeitangabe"
 
+#: syntax.py:696
+msgid "Street"
+msgstr "Straße"
+
+#: syntax.py:696
+msgid "Postal code"
+msgstr "Postleitzahl"
+
+#: syntax.py:696
+msgid "City"
+msgstr "Stadt"
+
 #: syntax.py:709
 msgid "Not a valid time interval"
 msgstr "Kein gültiges Zeitintervall"
