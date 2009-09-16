@@ -76,8 +76,21 @@ if [ $recreate = "yes" ]; then
 	init
 	(
 		cd /etc/univention/ssl.orig
-		for fqdn in *.$domainname; do
-			host=$(basename $fqdn .$domainname)
+		for fqdn in *; do
+			# just check directories for certificates
+			if [ ! -d "$fqdn" ]; then
+                continue
+            fi
+			# ignore ucsCA and directory not containing a dot
+            if [ "$fqdn" = "ucsCA" ] || ! echo "$fqdn" | grep '\.' &>/dev/null; then
+                continue
+            fi
+			# if there is no certificate, ignore it
+			if [ ! -e "$fqdn/cert.pem" ]; then
+				continue
+			fi
+			# get the hostname
+            host=$(echo $fqdn | sed 's/\([^.]*\)\..*/\1/')
 			univention-certificate new -name $fqdn
 			ln -sf /etc/univention/ssl/$fqdn /etc/univention/ssl/$host
 		done

@@ -1,3 +1,10 @@
+univention-system-setup (3.0.13-1) unstable; urgency=low
+
+  * if the DNS domain has been changed the detection of the host
+    certificates that need to be generated has failed. (Bug #15535)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 16 Sep 2009 12:00:36 +0200
+
 univention-system-setup (3.0.12-1) unstable; urgency=low
 
   * evaluate UCR variable univention-ox-directory-integration/oxae
