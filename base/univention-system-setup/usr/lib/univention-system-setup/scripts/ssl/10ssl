@@ -54,6 +54,11 @@ for var in "locality" "organization" "country" "state" "organizationalunit" "ema
 done
 
 if [ $recreate = "yes" ]; then
+	# remove old backup
+	if [ -d /etc/univention/ssl.orig ]; then
+		rm -rf /etc/univention/ssl.orig
+	fi
+
 	# backup old SSL certificates
 	mv /etc/univention/ssl /etc/univention/ssl.orig
 
@@ -92,7 +97,7 @@ if [ $recreate = "yes" ]; then
 			# get the hostname
             host=$(echo $fqdn | sed 's/\([^.]*\)\..*/\1/')
 			univention-certificate new -name $fqdn
-			ln -sf /etc/univention/ssl/$fqdn /etc/univention/ssl/$host
+			ln -sf /etc/univention/ssl/$host.$domainname /etc/univention/ssl/$host
 		done
 	)
 
