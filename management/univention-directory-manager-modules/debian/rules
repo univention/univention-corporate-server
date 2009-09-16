@@ -121,6 +121,10 @@ install-ext-%:
 	install -m644 modules/univention/admincli/__init__.py debian/python-univention-directory-manager-cli/usr/lib/python$*/site-packages/univention/admincli/__init__.py
 	dh_install
 
+	univention-install-config-registry
+	univention-install-config-registry-info
+	univention-install-service-info
+
 binary-arch: build install
 
 binary-indep: build install

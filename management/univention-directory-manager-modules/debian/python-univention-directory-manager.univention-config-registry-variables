@@ -1,0 +1,5 @@
+[directory/manager/web/modules/users/user/properties/homePostalAddress/syntax]
+Description[de]=UDM Syntax der privaten Adresse homePostalAddress (z.B. "postalAddress" für erweiterte Syntax)
+Description[en]=UDM syntax of the private address homePostalAddress (e.g. "postalAddress" for extended syntax)
+Type=str
+Categories=management-udm
