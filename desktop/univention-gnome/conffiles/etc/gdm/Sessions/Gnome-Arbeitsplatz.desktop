@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Gnome-Arbeitsplatz
+Comment=Gnome Arbeitsplatz
+Exec=/etc/gdm/Sessions/Gnome-Arbeitsplatz
+Icon=
+Type=Application
+
