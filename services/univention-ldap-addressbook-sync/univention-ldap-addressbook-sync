@@ -37,7 +37,7 @@ import imaplib
 import email.MIMEMultipart
 import email.MIMEText
 import email.Charset
-import cPickle, os, sys, fcntl, time
+import cPickle, os, sys, fcntl, time, re
 
 import univention.debug as ud
 import univention.config_registry as ucr
@@ -316,6 +316,7 @@ class Synchronisation( object ):
 		# user contact
 		ud.debug( ud.ADMIN, ud.INFO, 'IMAP: add object: %s' % str( new ) )
 		if 'inetOrgPerson' in obj_classes:
+			homeAddress = new.get( 'homePostalAddress', False)
 			addresses = copy.deepcopy( new.get( 'mail', [] ) )
 			displayName = self.__map_displayname( new, self.display_user )
 			contact.name_given_name = new.get( 'givenName', '' )
@@ -331,6 +332,18 @@ class Synchronisation( object ):
 			contact.business_street = new.get( 'street', '' )
 			contact.business_locality = new.get( 'l', '' )
 			contact.job_title = new.get( 'title', '' )
+			if 'univentionPerson' in obj_classes:
+				# bd -> yyyy-mm-dd
+				bd = new.get( 'univentionBirthday', '' )
+				if re.match("^\d\d\d\d-\d\d-\d\d$", bd):
+					contact.birthday = bd
+			if homeAddress:
+				if len(homeAddress) > 0:
+					addr = homeAddress[0].split('$')
+					if len(addr) > 2:
+						contact.home_street = addr[0]
+						contact.home_postal_code = addr[1]
+						contact.home_locality = addr[2]
 		elif 'univentionGroup' in obj_classes:
 			displayName = self.__map_displayname( new, self.display_group )
 			contact.name_given_name = new.get( 'cn', '' )
