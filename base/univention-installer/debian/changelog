@@ -1,3 +1,9 @@
+univention-installer (5.0.15-) unstable; urgency=low
+
+  * ext4 is experimental (Bug: #14417)
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Sep 2009 12:44:22 +0200
+
 univention-installer (5.0.14-1) unstable; urgency=low
 
   * don't ask for the DNS forwarder on an OXAE system. UCS Bug #13685
@@ -7,7 +13,7 @@ univention-installer (5.0.14-1) unstable; urgency=low
 
 univention-installer (5.0.13-3) unstable; urgency=low
 
-  * delete new at the end of installer/filesystem (Bug: #14417)
+  * delete newline at the end of installer/filesystem (Bug: #14417)
 
  -- Felix Botner <botner@univention.de>  Tue, 15 Sep 2009 12:39:28 +0200
 

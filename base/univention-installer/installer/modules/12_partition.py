@@ -71,8 +71,7 @@ PARTTYPE_LVM_LV = 101
 PARTTYPE_LVM_VG_FREE = 102
 
 # file systems
-EXPERIMENTAL_FSTYPES = ['btrfs']
-EXPERIMENTAL_FSTYPES_MSG = [_('This is a highly experimental filesystem'),_('and should not be used in productive'),_('environments.')]
+EXPERIMENTAL_FSTYPES = ['btrfs', 'ext4']
 ALLOWED_BOOT_FSTYPES = ['xfs','ext2','ext3']
 ALLOWED_ROOT_FSTYPES = ['xfs','ext2','ext3','ext4','btrfs']
 
@@ -3387,6 +3386,7 @@ class object(content):
 							fstype=self.get_elem('SEL_fstype').result()[0]
 							# check experimental filesystems
 							msg = [_("Filesystem %s:") % fstype]
+							EXPERIMENTAL_FSTYPES_MSG = [_('This is a highly experimental filesystem'),_('and should not be used in productive'),_('environments.')]
 							for i in EXPERIMENTAL_FSTYPES_MSG:
 								msg.append(i)
 							if fstype in EXPERIMENTAL_FSTYPES and not hasattr(self,"expFStype"):
@@ -3447,6 +3447,7 @@ class object(content):
 							flag=[]
 							# check experimental filesystems
 							msg = [_("Filesystem %s:") % fstype]
+							EXPERIMENTAL_FSTYPES_MSG = [_('This is a highly experimental filesystem'),_('and should not be used in productive'),_('environments.')]
 							for i in EXPERIMENTAL_FSTYPES_MSG:
 								msg.append(i)
 							if fstype in EXPERIMENTAL_FSTYPES and not hasattr(self,"expFStype"):
@@ -3803,6 +3804,7 @@ class object(content):
 
 							# check experimental filesystems
 							msg = [_("Filesystem %s:") % fstype]
+							EXPERIMENTAL_FSTYPES_MSG = [_('This is a highly experimental filesystem'),_('and should not be used in productive'),_('environments.')]
 							for i in EXPERIMENTAL_FSTYPES_MSG:
 								msg.append(i)
 							if fstype in EXPERIMENTAL_FSTYPES and not hasattr(self,"expFStype"):
@@ -3844,6 +3846,7 @@ class object(content):
 
 							# check experimental filesystems
 							msg = [_("Filesystem %s:") % fstype]
+							EXPERIMENTAL_FSTYPES_MSG = [_('This is a highly experimental filesystem'),_('and should not be used in productive'),_('environments.')]
 							for i in EXPERIMENTAL_FSTYPES_MSG:
 								msg.append(i)
 							if fstype in EXPERIMENTAL_FSTYPES and not hasattr(self,"expFStype"):
