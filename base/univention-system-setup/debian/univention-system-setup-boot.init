@@ -37,7 +37,10 @@ case "$1" in
 		log_action_msg "Starting univention-system setup tools"
 		if [ -n "$system_setup_boot_start" ] && [ "$system_setup_boot_start" = "yes" ] || [ "$system_setup_boot_start" = "true" ]; then
 			if [ -n "$system_setup_boot_modules" ]; then
-				univention-system-setup --modules=`echo $system_setup_boot_modules | sed -e 's| |,|g'`
+				if echo $system_setup_boot_modules | grep -q "keyboard"; then
+					univention-system-setup --modules=keyboard
+				fi
+				univention-system-setup --modules=`echo $system_setup_boot_modules | sed -e 's| |,|g' | sed 's/keyboard//;s/,,/,/;s/^,//;s/,$//'`
 				univention-config-registry set system/setup/boot/start=false
 				exit 0
 			fi
