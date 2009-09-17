@@ -437,6 +437,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'birthday' : univention.admin.property(
+			short_description=_('Birthday'),
+			long_description=_('Date of birth'),
+			syntax=univention.admin.syntax.iso8601Date,
+			multivalue=0,
+			options=['person'],
+			required=0,
+			may_change=1,
+			identifies=0
+	),
 	'unixhome': univention.admin.property(
 			short_description=_('Unix home directory'),
 			long_description='',
@@ -1068,7 +1078,7 @@ layout=[
 	]),
 	univention.admin.tab(_('Contact'),_('Contact information'),[
 		[univention.admin.field("e-mail"), univention.admin.field("phone")],
-		[univention.admin.field("street"), univention.admin.field("filler")],
+		[univention.admin.field("street"), univention.admin.field("birthday")],
 		[univention.admin.field("postcode"), univention.admin.field("city")],
 	]),
 	univention.admin.tab(_('Organisation'),_('Organisational information'),[
@@ -1369,6 +1379,7 @@ mapping.register('scriptpath', 'sambaLogonScript', None, univention.admin.mappin
 mapping.register('profilepath', 'sambaProfilePath', None, univention.admin.mapping.ListToString)
 mapping.register('homedrive', 'sambaHomeDrive', None, univention.admin.mapping.ListToString)
 mapping.register('gecos', 'gecos', None, univention.admin.mapping.ListToString)
+mapping.register('birthday', 'univentionBirthday', None, univention.admin.mapping.ListToString)
 
 mapping.register('kolabHomeServer', 'kolabHomeServer', None, univention.admin.mapping.ListToString)
 mapping.register('kolabForwardActive', 'univentionKolabForwardActive',  None, univention.admin.mapping.ListToString)
@@ -2482,6 +2493,11 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				except univention.admin.uexceptions.noLock:
 					self.cancel()
 					raise univention.admin.uexceptions.mailAddressUsed
+
+		if self.hasChanged('birthday'):
+			if self['birthday']:
+				if not 'univentionPerson' in self.oldattr.get('objectClass', []):
+					ml.insert(0, ('objectClass', self.oldattr.get('objectClass', []), self.oldattr.get('objectClass', []) + ['univentionPerson']))
 		if self.hasChanged('homeShare') or self.hasChanged('homeSharePath'):
 			if self['homeShare']:
 				share_mod = univention.admin.modules.get('shares/share')

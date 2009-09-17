@@ -641,6 +641,15 @@ msgstr "Der DN der Freigabe ist nicht zulässig."
 msgid "Given DN is no share."
 msgstr "Der angegebene DN ist keine Freigabe."
 
+#:user.py:111
+msgid "Birthday"
+msgstr "Geburtsdatum"
+
+#:user.py:111
+msgid "Date of birth"
+msgstr "Geburtsdatum"
+
+
 #~ msgid "Home Share Path"
 #~ msgstr "Pfad der Heimatverzeichnisfreigabe"
 
