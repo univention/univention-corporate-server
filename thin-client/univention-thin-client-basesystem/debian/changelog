@@ -1,3 +1,10 @@
+univention-thin-client-basesystem (6.0.2-1) unstable; urgency=low
+
+  * exclude some more packages for debootstrap. This is needed for UCS
+    2.3. Bug #15674
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Sep 2009 08:37:01 +0200
+
 univention-thin-client-basesystem (6.0.1-2) unstable; urgency=low
 
   * Bootstrap the packages from UCS 2.3 (Ticket#: 2009072410000149)
