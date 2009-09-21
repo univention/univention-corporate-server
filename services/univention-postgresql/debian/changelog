@@ -1,3 +1,10 @@
+univention-postgresql (2.0.1-6) unstable; urgency=low
+
+  * starting with 8.0 pg_createcluster does not create the symlink pgdata
+    any longer but sets data_directory instead. Template adjusted (Bug #12754)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Sep 2009 12:14:47 +0200
+
 univention-postgresql (2.0.1-5) unstable; urgency=low
 
   * fix UCR variable info file syntax (Bug #12754)
