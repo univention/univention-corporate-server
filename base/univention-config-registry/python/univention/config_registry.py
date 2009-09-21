@@ -250,12 +250,23 @@ class _ConfigRegistry( dict ):
 				exception_occured()
 
 	def __save_file(self, filename):
+		tmpnewfn = "%s.tmpnew" % filename
 		try:
-			fp = open(filename, 'w')
-
+			# open temporary file for writing
+			fp = open(tmpnewfn, 'w')
+			# write data to file
 			fp.write('# univention_ base.conf\n\n')
 			fp.write(self.__str__())
+			# flush (meta)data
+			fp.flush()
+			os.fsync(fp.fileno())
+			# close fd
+			fp.close()
 
+			# rename file and flush (meta)data
+			os.rename(tmpnewfn, filename)
+			fp = open(filename, 'a')
+			os.fsync(fp.fileno())
 			fp.close()
 		except IOError, (errno, strerror):
 			# errno 13: Permission denied
@@ -263,11 +274,6 @@ class _ConfigRegistry( dict ):
 			# suppress certain errors
 			if not errno in [ 13 ]:
 				raise
-
-		try:
-			os.system('/bin/sync > /dev/null 2>&1')
-		except:
-			pass
 
 	def save(self):
 		for filename in (self.backup_file, self.file):

@@ -1,3 +1,10 @@
+univention-config-registry (5.0.42-1) unstable; urgency=low
+
+  * Do not call sync when setting UCR variables. Instead call fsync()
+    after writing data to tmp file and after renaming tmp file. (Bug: #14207)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 21 Sep 2009 17:13:38 +0200
+
 univention-config-registry (5.0.41-1) unstable; urgency=low
 
   * Check whether variable- and category-info directories exist (Bug: #15026)
