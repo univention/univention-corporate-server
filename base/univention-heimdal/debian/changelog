@@ -1,3 +1,14 @@
+univention-heimdal (3.0.5-1) unstable; urgency=low
+
+  * added new UCR variables to configure default encryption types and
+    default key types (Ticket #2009011310000206):
+    - kerberos/kadmin/default/keys
+    - kerberos/defaults/enctypes/tgs
+    - kerberos/defaults/enctypes/tkt
+    - kerberos/defaults/enctypes/permitted
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 12 Feb 2009 15:04:32 +0100
+
 univention-heimdal (3.0.4-1) unstable; urgency=low
 
   * add v4-realm if kerberos/realm is set (Bug: #13423)

@@ -6,6 +6,10 @@ Variables: ldap/server/addition
 Variables: kerberos/kdc
 Variables: kerberos/adminserver
 Variables: kerberos/v4tickets
+Variables: kerberos/kadmin/default/keys
+Variables: kerberos/defaults/enctypes/tgs
+Variables: kerberos/defaults/enctypes/tkt
+Variables: kerberos/defaults/enctypes/permitted
 
 Type: file
 File: etc/heimdal-kdc/kdc.conf
