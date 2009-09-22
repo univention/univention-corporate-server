@@ -16,3 +16,8 @@ Description[en]=Kerberos realm of the domain
 Type=str
 Categories=service-heimdal
 
+[kerberos/v4tickets]
+Description[de]=Aktiviere Kerberos v4 Tickets
+Description[en]=Activate kerberos v4 tickets
+Type=str
+Categories=System

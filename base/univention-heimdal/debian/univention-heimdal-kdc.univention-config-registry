@@ -4,6 +4,7 @@ Variables: kerberos/realm
 Variables: ldap/server/name
 Variables: kerberos/kdc
 Variables: kerberos/adminserver
+Variables: kerberos/v4tickets
 
 Type: file
 File: etc/heimdal-kdc/kdc.conf

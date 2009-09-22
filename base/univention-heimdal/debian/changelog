@@ -1,3 +1,10 @@
+univention-heimdal (3.0.2-1) unstable; urgency=low
+
+  * readded the baseconfig variable kerberos/v4tickets. The variable was
+    removed with Bug #8878. Ticket #2009011310000206
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 18 Jan 2009 09:18:53 +0100
+
 univention-heimdal (3.0.1-1) unstable; urgency=low
 
   * provide UCR category service-heimdal (Bug #13505)
