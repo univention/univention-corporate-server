@@ -17,6 +17,7 @@ File: etc/heimdal-kdc/kdc.conf
 Variables: kerberos/enable/kerberos4
 Variables: kerberos/enable/524
 Variables: kerberos/enable/kaserver
+Variables: kerberos/password/quality/check
 
 Type: file
 File: etc/heimdal-kdc/kadmind.acl
@@ -26,3 +27,10 @@ File: etc/init.d/heimdal-kdc
 
 Type: file
 File: etc/logrotate.d/heimdal-kdc
+
+Type: file
+File: usr/share/univention-heimdal/check_cracklib.py
+Mode: 755
+Owner: root
+Group: root
+Variables: kerberos/password/quality/.*
