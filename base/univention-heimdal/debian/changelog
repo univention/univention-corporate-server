@@ -1,3 +1,15 @@
+univention-heimdal (3.0.7-1) unstable; urgency=low
+
+  * fixed UCR info file
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 12 Feb 2009 15:16:40 +0100
+
+univention-heimdal (3.0.6-1) unstable; urgency=low
+
+  * added new UCR variable: kerberos/afscell (Ticket #2009011310000206)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 12 Feb 2009 16:57:07 +0100
+
 univention-heimdal (3.0.5-1) unstable; urgency=low
 
   * added new UCR variables to configure default encryption types and

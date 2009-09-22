@@ -10,6 +10,7 @@ Variables: kerberos/kadmin/default/keys
 Variables: kerberos/defaults/enctypes/tgs
 Variables: kerberos/defaults/enctypes/tkt
 Variables: kerberos/defaults/enctypes/permitted
+Variables: kerberos/afscell
 
 Type: file
 File: etc/heimdal-kdc/kdc.conf
