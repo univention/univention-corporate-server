@@ -1,3 +1,9 @@
+univention-ldap (5.0.5-1) unstable; urgency=low
+
+  * added automountInformation to ldap/index/sub and ldap/index/pres (Bug: #9321)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 22 Sep 2009 15:06:19 +0200
+
 univention-ldap (5.0.4-2) unstable; urgency=low
 
   * birthday attribute for "univentionPerson" objclass (Bug: #15119) 
