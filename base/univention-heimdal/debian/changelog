@@ -1,3 +1,9 @@
+univention-heimdal (3.0.4-1) unstable; urgency=low
+
+  * add v4-realm if kerberos/realm is set (Bug: #13423)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 29 Jan 2009 16:42:19 +0100
+
 univention-heimdal (3.0.3-1) unstable; urgency=low
 
   * added kerberos/enable/kerberos4, kerberos/enable/524 and
