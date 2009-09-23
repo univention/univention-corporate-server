@@ -84,7 +84,7 @@ property_descriptions={
 			multivalue=0,
 			options=[],
 			required=1,
-			may_change=0,
+			may_change=1,
 			identifies=1
 		),
 	'printablename': univention.admin.property(
