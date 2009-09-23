@@ -23,16 +23,16 @@
 /* Needed for the custom drawing functions */
 #include <usplash_backend.h>
 
-#define BACKGROUND 0
-#define PROGRESSBAR_BACKGROUND 25
-#define PROGRESSBAR_FOREGROUND 15
-#define TEXT_BACKGROUND 25
-#define TEXT_FOREGROUND 3
-#define TEXT_SUCCESS 185
-#define TEXT_FAILURE 111
+#define BACKGROUND 254
+#define PROGRESSBAR_BACKGROUND 255
+#define PROGRESSBAR_FOREGROUND 255
+#define TEXT_BACKGROUND 254
+#define TEXT_FOREGROUND 23
+#define TEXT_SUCCESS 86
+#define TEXT_FAILURE 0
 
-#define PROGRESSBAR_WIDTH 350
-#define PROGRESSBAR_HEIGHT 8
+#define PROGRESSBAR_WIDTH 218
+#define PROGRESSBAR_HEIGHT 25
 
 extern struct usplash_pixmap pixmap_silent_splash_640x480, pixmap_silent_splash_800x600, pixmap_silent_splash_1024x768, pixmap_silent_splash_1280x1024, pixmap_silent_splash_1600x1200;
 extern struct usplash_pixmap pixmap_throbber_back;
@@ -76,11 +76,11 @@ struct usplash_theme usplash_theme = {
   	.progressbar_width  = PROGRESSBAR_WIDTH,
   	.progressbar_height = PROGRESSBAR_HEIGHT,
 
-	/* Text box position and size in pixels */
-  	.text_x      = 640/2 - PROGRESSBAR_WIDTH/2,
-  	.text_y      = 480/3*2 + PROGRESSBAR_HEIGHT + 10,
-  	.text_width  = PROGRESSBAR_WIDTH,
-  	.text_height = 100,
+        /* Text box position and size in pixels */
+        .text_x      = 640/4,
+        .text_y      = 480/10*8.5,
+        .text_width  = 640/2,
+        .text_height = 480/10*1.3,
 
 	/* Text details */
   	.line_height  = 15,
@@ -121,11 +121,11 @@ struct usplash_theme usplash_theme_800_600 = {
   	.progressbar_width  = PROGRESSBAR_WIDTH,
   	.progressbar_height = PROGRESSBAR_HEIGHT,
 
-	/* Text box position and size in pixels */
-  	.text_x      = 800/2 - PROGRESSBAR_WIDTH/2,
-  	.text_y      = 600/3 *2 + PROGRESSBAR_HEIGHT + 10,
-  	.text_width  = PROGRESSBAR_WIDTH,
-  	.text_height = 100,
+        /* Text box position and size in pixels */
+        .text_x      = 800/4,
+        .text_y      = 600/10*8.5,
+        .text_width  = 800/2,
+        .text_height = 600/10*1.3,
 
 	/* Text details */
   	.line_height  = 15,
@@ -163,11 +163,11 @@ struct usplash_theme usplash_theme_1024_768 = {
   	.progressbar_width  = PROGRESSBAR_WIDTH,
   	.progressbar_height = PROGRESSBAR_HEIGHT,
 
-	/* Text box position and size in pixels */
-  	.text_x      = 1024/2 - PROGRESSBAR_WIDTH/2,
-  	.text_y      = 768/3 * 2 + PROGRESSBAR_HEIGHT + 10,
-  	.text_width  = PROGRESSBAR_WIDTH,
-  	.text_height = 100,
+        /* Text box position and size in pixels */
+        .text_x      = 1024/4,
+        .text_y      = 768/10*8.5,
+        .text_width  = 1024/2,
+        .text_height = 768/10*1.3,
 
 	/* Text details */
   	.line_height  = 15,
@@ -183,7 +183,7 @@ struct usplash_theme usplash_theme_1024_768 = {
 
 struct usplash_theme usplash_theme_1280_1024 = {
 	.version = THEME_VERSION,
-    .next = NULL,
+    .next = &usplash_theme_1600_1200,
     .ratio = USPLASH_4_3,
 
 	/* Background and font */
@@ -205,11 +205,11 @@ struct usplash_theme usplash_theme_1280_1024 = {
   	.progressbar_width  = PROGRESSBAR_WIDTH,
   	.progressbar_height = PROGRESSBAR_HEIGHT,
 
-	/* Text box position and size in pixels */
-  	.text_x      = 1240/2 - PROGRESSBAR_WIDTH/2,
-  	.text_y      = 1024/3 *2 + PROGRESSBAR_HEIGHT + 10,
-  	.text_width  = PROGRESSBAR_WIDTH,
-  	.text_height = 100,
+        /* Text box position and size in pixels */
+        .text_x      = 1280/4,
+        .text_y      = 1024/10*8.5,
+        .text_width  = 1280/2,
+        .text_height = 1024/10*1.3,
 
 	/* Text details */
   	.line_height  = 15,
@@ -222,6 +222,49 @@ struct usplash_theme usplash_theme_1280_1024 = {
     .draw_progressbar = t_draw_progressbar,
     .animate_step = t_animate_step,
 };
+
+struct usplash_theme usplash_theme_1600_1200 = {
+	.version = THEME_VERSION,
+    .next = NULL,
+    .ratio = USPLASH_4_3,
+
+	/* Background and font */
+	.pixmap = &pixmap_silent_splash_1600x1200,
+	.font   = &font_helvB10,
+
+	/* Palette indexes */
+	.background             = BACKGROUND,
+  	.progressbar_background = PROGRESSBAR_BACKGROUND,
+  	.progressbar_foreground = PROGRESSBAR_FOREGROUND,
+	.text_background        = TEXT_BACKGROUND,
+	.text_foreground        = TEXT_FOREGROUND,
+	.text_success           = TEXT_SUCCESS,
+	.text_failure           = TEXT_FAILURE,
+
+	/* Progress bar position and size in pixels */
+  	.progressbar_x      = 1600/2 - PROGRESSBAR_WIDTH/2,
+  	.progressbar_y      = 1200/3*2,
+  	.progressbar_width  = PROGRESSBAR_WIDTH,
+  	.progressbar_height = PROGRESSBAR_HEIGHT,
+
+        /* Text box position and size in pixels */
+        .text_x      = 1600/4,
+        .text_y      = 1200/10*8.5,
+        .text_width  = 1600/2,
+        .text_height = 1200/10*1.3,
+
+	/* Text details */
+  	.line_height  = 15,
+  	.line_length  = 32,
+  	.status_width = 35,
+
+    /* Functions */
+    .init = t_init,
+    .clear_progressbar = t_clear_progressbar,
+    .draw_progressbar = t_draw_progressbar,
+    .animate_step = t_animate_step,
+};
+
 void t_init(struct usplash_theme *theme) {
     int x, y;
     usplash_getdimensions(&x, &y);
@@ -249,9 +292,9 @@ void t_draw_progressbar(struct usplash_theme *theme, int percentage) {
 void t_animate_step(struct usplash_theme* theme, int pulsating) {
 
     static int pulsate_step = 0;
-    static int pulse_width = 28;
+    static int pulse_width = 60;
     static int step_width = 2;
-    static int num_steps = (PROGRESSBAR_WIDTH - 28 - 2)/2;
+    static int num_steps = (PROGRESSBAR_WIDTH - 60 - 2)/2;
     int x1;
 
     if (pulsating) {

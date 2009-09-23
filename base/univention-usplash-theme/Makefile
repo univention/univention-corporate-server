@@ -18,8 +18,8 @@ theme.so: silent-splash-640x480.png.c.o silent-splash-800x600.png.c.o silent-spl
 #cmap.gif:
 #	convert +dither originals/cmap.png cmap.gif
 
-%.png.c: %.png cmap.gif
-	convert $< +dither -map cmap.gif gif:- | convert gif:- $<
+%.png.c: %.png
+	#convert $< +dither -map cmap.gif gif:- | convert gif:- $<
 	pngtousplash $< > $@
 
 %.png:
