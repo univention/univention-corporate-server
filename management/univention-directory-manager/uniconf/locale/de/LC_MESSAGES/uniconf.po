@@ -1597,6 +1597,22 @@ msgstr ""
 "Sie verwenden die \"Free for personal use\"-Edition. Weitere Informationen "
 "finden Sie auf der Über-Seite"
 
+#: modedit.py:111
+msgid "picture file too big (max. %s byte)"
+msgstr "Bilddatei zu groß (max. %s Byte)"
+
+#: modedit.py:111
+msgid "JPEG photo"
+msgstr "JPEG Foto"
+
+#: modedit.py:111
+msgid "Display JPEG photo"
+msgstr "JPEG Foto anzeigen"
+
+#: modedit.py:111
+msgid "Delete JPEG photo"
+msgstr "JPEG Foto löschen"
+
 #~ msgid "select attribute"
 #~ msgstr "Wählen Sie ein Attribut aus."
 

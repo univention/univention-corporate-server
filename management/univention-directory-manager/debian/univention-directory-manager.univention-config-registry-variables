@@ -57,3 +57,9 @@ Description[de]=Aktivierung automatischer Tests zur Erkennung von zyklischen Gru
 Description[en]=Enables automatic check for circular group dependency checks in Univention Directory Manager (default: yes)
 Type=str
 Categories=Management
+
+[directory/manager/jpegphoto/maxsize]
+Description[de]=Maximale Größe des Bildes in Byte für das Univention Directory Manager jpegPhoto Attribut (default: None)
+Description[en]=Max picture size in byte for the Univention Directory Manager jpegPhoto attribute (default: None)
+Type=str
+Categories=Management

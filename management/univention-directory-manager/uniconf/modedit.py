@@ -43,7 +43,7 @@ import univention.admin.uexceptions
 import univention.config_registry
 
 import string, ldap, copy, types, codecs, traceback
-import base64, tempfile, re, operator
+import base64, tempfile, re, operator, os
 
 from M2Crypto import X509
 
@@ -1648,6 +1648,74 @@ class modedit(unimodule.unimodule):
 							]}))
 
 						self.pinput[name]=host_select
+
+					elif property.syntax.name == "jpegPhoto":
+						fileinput_rows=[]
+						if name:
+							self.jpegBrowse = question_file('', {} , {"helptext":_("Select a file")})
+							self.jpegLoadBtn = button(_("Load file"),{'icon':'/style/ok.gif'},{"helptext":_("Upload selected file")})
+							head_text = _('JPEG photo')
+
+							if value:
+								tmp = tempfile.mkstemp('.jpg.tmp', 'univention-admin', '/tmp/webui')
+								fh=open(tmp[1],'w')
+								fh.write(string.join(value, ''))
+								fh.close()
+								link_vars='mime-type=image/jpeg&tmpFile=%s' % tmp[1]
+								link_text=_('Display JPEG photo')
+								linktext='<a href="file.php?%s" target="_blank">%s</a>' % (link_vars,link_text)
+								self.jpegDeleteBtn = button(_("Delete JPEG photo"),{'icon':'/style/cancel.gif'},{"helptext":_("Delete JPEG photo")})
+
+
+								
+						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":\
+										[tablerow("",{},{"obs":[\
+													tablecol('',{'type':'description'}, {'obs': [\
+														#description
+														htmltext("",{},{'htmltext':[head_text]})
+													]}),\
+												]}),\
+										tablerow("",{},{"obs":[\
+													tablecol('',{}, {'obs': [\
+														#upload field
+														self.jpegBrowse\
+													]}),\
+												]}),\
+										tablerow("",{},{"obs":[\
+													tablecol('',{}, {'obs': [\
+														# needed freespace
+														htmltext("",{},{'htmltext':['&nbsp;']})
+													]})\
+												]}),
+										tablerow("",{},{"obs":[\
+													tablecol('',{}, {'obs': [\
+														#upload button
+														self.jpegLoadBtn\
+													]}),\
+												]})]\
+										})]}))
+						if value:
+							cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":\
+											[tablerow("",{},{"obs":[\
+														tablecol('',{}, {'obs': [\
+															# import link
+															htmltext('',{},{'htmltext':[linktext]})\
+														]}),\
+													]}),\
+											tablerow("",{},{"obs":[\
+														tablecol('',{}, {'obs': [\
+															# needed freespace
+															htmltext("",{},{'htmltext':['&nbsp;']})
+														]})\
+													]}),
+											tablerow("",{},{"obs":[\
+														tablecol('',{}, {'obs': [\
+															#delete button
+															self.jpegDeleteBtn\
+														]}),\
+													]})]\
+											})]}))
+
 
 
 					elif property.syntax.name == "binaryfile":
@@ -4611,6 +4679,30 @@ class modedit(unimodule.unimodule):
 				self.save.put('advanced_tabs', '1')
 			else:
 				self.save.put('advanced_tabs', '0')
+
+		# read uploaded jpeg file...
+		if hasattr(self,'jpegLoadBtn') and self.jpegLoadBtn.pressed():
+			self.object=self.save.get("edit_object")
+			if not self.object:
+				return
+			if self.jpegBrowse.get_input():
+				# check file size
+				maxJpegSize = ucr.get("directory/manager/jpegphoto/maxsize", None)
+				size = os.path.getsize(self.jpegBrowse.get_input())
+				if maxJpegSize and (int(size) > int(maxJpegSize)):
+					raise univention.admin.uexceptions.valueInvalidSyntax, _('picture file too big (max. %s byte)') % int(maxJpegSize)
+				else:
+					jpegFile = open(self.jpegBrowse.get_input())
+					jpegContent = jpegFile.read()
+					self.object['jpegPhoto'] = jpegContent
+					jpegFile.close()
+
+		# delete jpeg photo
+		if hasattr(self,'jpegDeleteBtn') and self.jpegDeleteBtn.pressed():
+			self.object=self.save.get("edit_object")
+			if not self.object:
+				return
+			self.object['jpegPhoto'] = ""
 
 		# read uploaded file...
 		if hasattr(self,'certLoadBtn') and self.certLoadBtn.pressed():
