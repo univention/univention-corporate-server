@@ -1,3 +1,9 @@
+univention-python (4.0.2-1) unstable; urgency=low
+
+  * delete jpegPhoto with "None" as old value, because jpegphoto has no matching rule (Bug: #15171)
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Sep 2009 13:52:12 +0200
+
 univention-python (4.0.1-2) unstable; urgency=low
 
   * switched to python2.4 (Bug: #14709)

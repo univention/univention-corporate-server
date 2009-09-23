@@ -427,6 +427,8 @@ class access:
 						if oldvalue[i] in pagerTelephoneNumber:
 							pagerTelephoneNumber.remove(oldvalue[i])
 					val=pagerTelephoneNumber
+				if key == "jpegPhoto":
+					val=None
 				else:
 					val=oldvalue
 			else:
