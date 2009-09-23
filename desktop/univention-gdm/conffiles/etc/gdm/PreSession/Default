@@ -8,11 +8,7 @@
 #
 #       /etc/univention/templates/files/etc/gdm/PreSession/Default
 
-for filename in /etc/gdm/PreSession/scripts/*; do
-	if [ -f $filename -a -x $filename -a ! $filename = "Default" ]; then
-		. "$filename"
-	fi
-done
+run-parts /etc/gdm/PreSession/scripts/
 
 # copy'n'paste from the old Default script
 PATH="/usr/bin:$PATH:/bin:/usr/bin"

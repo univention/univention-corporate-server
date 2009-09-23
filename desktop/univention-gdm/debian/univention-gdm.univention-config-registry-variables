@@ -40,11 +40,23 @@ Description[en]=Directory with descriptions of available sessions
 Type=str
 Categories=system-desktop
 
+[gdm/session/default]
+Description[de]=Standard-GDM-Sitzungsskript
+Description[en]=Default GDM session script
+Type=str
+Categories=Desktop
+
 [gdm/theme/dir]
 Description[de]=Pfad zum GDM-Theme Verzeichnis
-Description[en]=Pah to the GDM theme directory
+Description[en]=Path to the GDM theme directory
 Type=str
 Categories=system-desktop
+
+[gdm/xdmcp]
+Description[de]=Aktiviert Unterstützung für das XDMCP-Login-Protokoll
+Description[en]=Activates support for the XDMCP login protocol
+Type=str
+Categories=Desktop
 
 [univentionAutoStartScript]
 Description[de]=Aktiviere automatischen Login

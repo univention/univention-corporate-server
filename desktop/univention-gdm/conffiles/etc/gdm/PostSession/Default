@@ -8,11 +8,7 @@
 #
 #       /etc/univention/templates/files/etc/gdm/PostSession/Default
 
-for filename in /etc/gdm/PostSession/scripts/*; do
-	if [ -f $filename -a -x $filename -a ! $filename = "Default" ]; then
-		. "$filename"
-	fi
-done
+run-parts /etc/gdm/PostSession/scripts/
 
 # copy'n'paste from the old Default script
 PATH="/usr/bin:$PATH:/bin:/usr/bin"

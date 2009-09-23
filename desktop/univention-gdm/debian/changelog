@@ -1,3 +1,21 @@
+univention-gdm (5.0.3-1) unstable; urgency=low
+  
+  [ Moritz Muehlenhoff ]
+  * Add a new Univention Configuration Registry variable, which makes XDMCP
+    configurable. By default is is disabled and the login button in the GDM
+    "Actions" menu is omitted (Bug #15441)
+  * Fix handling of session pre session and post session scripts by replacing the
+    self-written mechanism with run-parts. The old approach simply sourced the
+    shell script file, which leads to aborts if any of the scripts fails (Bug
+    #15296)
+  * Add a new UCR variable gdm/session/default, which can be used to configure
+    the default GDM session script (Bug #15103)
+
+  [ Stefan Gohmann ]
+  * Merge these customer extensions back to UCS
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Sep 2009 11:34:56 +0200
+
 univention-gdm (5.0.2-1) unstable; urgency=low
 
   * add init script to set the auto-detected resolution for the GDM theme
