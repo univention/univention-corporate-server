@@ -1,3 +1,15 @@
+univention-thin-client-flash (3.1.1-1) unstable; urgency=low
+
+  [ Moritz Muehlenhoff ]
+  * Discard thin-client-archive, which saves a lot of disk space
+    since the debs contained within are already compressed
+    Bug #15329
+
+  [ Stefan Gohmann ]
+  * Merge these customer extensions back to UCS
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Sep 2009 13:43:12 +0200
+
 univention-thin-client-flash (3.0.0-2) unstable; urgency=low
 
   * set hashbang to python2.4 (Bug #14709)

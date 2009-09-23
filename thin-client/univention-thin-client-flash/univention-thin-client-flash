@@ -4,7 +4,7 @@
 # Univention Thin Client Basesystem
 #  creates directories and files in ramdisk of thin client basesystem
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -61,7 +61,7 @@ class FlashBuilder( object ):
 	def build( self, image ):
 		url = os.path.join( FlashBuilder.URL_PREFIX, image )
 		print "create new flash image '%s' ..." % image,
-		res = os.system( 'mksquashfs %s %s -e %s/*' % ( self._prefix, url + '.tmp', os.path.join( self._prefix, 'ramdisk' ) ) )
+		res = os.system( 'mksquashfs %s %s -e %s -e %s/*' % ( self._prefix, url + '.tmp', os.path.join( self._prefix, 'thin-client-archive' ), os.path.join( self._prefix, 'ramdisk' ) ) )
 		if res == 0:
 			print 'done'
 			if os.path.exists( url ):
