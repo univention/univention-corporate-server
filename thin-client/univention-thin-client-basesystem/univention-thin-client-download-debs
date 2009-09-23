@@ -49,7 +49,7 @@ mkdir -p $destination/partial
 mv /etc/resolv.conf resolv.conf.BAK
 echo "nameserver  192.168.0.3">/etc/resolv.conf
 apt-get update
-apt-get install --yes --force-yes --reinstall -d -o APT::Architecture=i386 -o Dir::Cache::archives=$destination -o APT::Cache=$destination $package
+apt-get install --yes --force-yes --reinstall --no-install-recommends -d -o APT::Architecture=i386 -o Dir::Cache::archives=$destination -o APT::Cache=$destination $package
 rm -Rf $destination/partial $destination/lock
 mv resolv.conf.BAK /etc/resolv.conf
 

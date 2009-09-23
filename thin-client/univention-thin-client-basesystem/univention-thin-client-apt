@@ -81,6 +81,7 @@ class UC_APT( object ):
 			'-o Dir::State::Status=%s' % os.path.join( self.prefix, 'var/lib/dpkg/status' ),
 			'-o APT::Architecture=%s' % self.options.arch,
 			'-o Debug::NoLocking=True', # required if called by another apt-get process
+			'--no-install-recommends',
 			)
 
 		return 'apt-get update %s && apt-get %s %s' % (' '.join( opts ), ' '.join( opts ), ' '.join( self.arguments ) )

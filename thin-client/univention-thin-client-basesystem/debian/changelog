@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (6.0.5-1) unstable; urgency=low
+
+  * don't install the recommend packages by default. Bug #15709
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Sep 2009 14:47:28 +0200
+
 univention-thin-client-basesystem (6.0.4-1) unstable; urgency=low
 
   * added modutils to the bootstrap exclude list. Bug #15674
