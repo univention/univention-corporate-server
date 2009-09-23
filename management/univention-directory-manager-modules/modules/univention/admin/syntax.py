@@ -224,6 +224,15 @@ class binaryfile(file):
 		else:
 			return ''
 
+class jpegPhoto(file):
+	name='jpegPhoto'
+	def tostring(self, text):
+		if text and text[0]:
+			encoded=base64.encodestring(text[0])
+			return encoded
+		else:
+			return ''
+
 class integer(simple):
 	name='integer'
 	min_length=1

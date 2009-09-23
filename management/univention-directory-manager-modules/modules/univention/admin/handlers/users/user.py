@@ -831,6 +831,17 @@ property_descriptions={
 			options=['groupware'],
 			identifies=0
 		),
+	'jpegPhoto': univention.admin.property(
+			short_description=_("jpeg photo"),
+			long_description=_( 'Public key infrastructure - user certificate ' ),
+			syntax=univention.admin.syntax.jpegPhoto,
+			multivalue=0,
+			required=0,
+			dontsearch=1,
+			may_change=1,
+			options=['person'],
+			identifies=0
+	),
 	'userCertificate': univention.admin.property(
 			short_description=_("PKI user certificate"),
 			long_description=_( 'Public key infrastructure - user certificate ' ),
@@ -1062,9 +1073,10 @@ layout=[
 	univention.admin.tab(_('General'),_('Basic settings'),[
 		[univention.admin.field("username"), univention.admin.field("description",width=300)],
 		[univention.admin.field("password"),
-		 [univention.admin.field("overridePWHistory"), univention.admin.field("overridePWLength")]],
+		[univention.admin.field("overridePWHistory"), univention.admin.field("overridePWLength")]],
 		[univention.admin.field("firstname"), univention.admin.field("lastname")],
 		[univention.admin.field("title"), univention.admin.field("organisation")],
+		[univention.admin.field("jpegPhoto")],
 	]),
 	univention.admin.tab(_('User account'),_('Account settings'),[
 		[univention.admin.field("userexpiry"), univention.admin.field("passwordexpiry")],
@@ -1399,6 +1411,7 @@ mapping.register('kolabVacationNoReactDomain', 'univentionKolabVacationNoReactDo
 mapping.register('kolabDisableSieve', 'univentionKolabDisableSieve', None, univention.admin.mapping.ListToString)
 mapping.register('kolabInvitationPolicy', 'kolabInvitationPolicy')
 mapping.register('userCertificate', 'userCertificate;binary')
+mapping.register('jpegPhoto', 'jpegPhoto')
 
 class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 	module=module
