@@ -1,3 +1,9 @@
+univention-thin-client-flash (3.1.1-2) unstable; urgency=low
+
+  * fixed some typos in the package description. Bug #15329
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Sep 2009 13:52:18 +0200
+
 univention-thin-client-flash (3.1.1-1) unstable; urgency=low
 
   [ Moritz Muehlenhoff ]
