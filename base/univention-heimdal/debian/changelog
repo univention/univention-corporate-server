@@ -1,3 +1,9 @@
+univention-heimdal (3.0.10-1) unstable; urgency=low
+
+  * kdc.conf template update (Bug: #1430)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 17 Feb 2009 13:46:52 +0100
+
 univention-heimdal (3.0.9-1) unstable; urgency=low
 
   * added missing check_cracklib.py (Bug: #1430)
