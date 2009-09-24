@@ -1,3 +1,9 @@
+univention-config-registry (5.0.43-1) unstable; urgency=low
+
+  * implement a locking mechanism for base.conf and friends. Bug #15518
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 27 Aug 2009 14:22:32 +0200
+
 univention-config-registry (5.0.42-1) unstable; urgency=low
 
   * Do not call sync when setting UCR variables. Instead call fsync()

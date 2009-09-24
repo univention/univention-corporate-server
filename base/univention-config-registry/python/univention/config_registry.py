@@ -30,6 +30,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os, sys, re, string, cPickle, types, copy, subprocess
+import fcntl
 import pwd, grp
 
 variable_pattern = re.compile('@%@([^@]+)@%@')
@@ -125,10 +126,10 @@ class ConfigRegistry( dict ):
 		self._registry[ self._write_registry ].save()
 
 	def lock( self ):
-		pass
+		self._registry[ self._write_registry ].lock()
 
 	def unlock( self ):
-		pass
+		self._registry[ self._write_registry ].unlock()
 
 	def __delitem__( self, key ):
 		if self._registry[ self._write_registry ].has_key( key ):
@@ -203,6 +204,7 @@ class _ConfigRegistry( dict ):
 			self.file = '/etc/univention/base.conf'
 		self.__create_base_conf()
 		self.backup_file = self.file + '.bak'
+		self.lock_filename = self.file + '.lock'
 
 	def load(self):
 		self.clear()
@@ -250,10 +252,9 @@ class _ConfigRegistry( dict ):
 				exception_occured()
 
 	def __save_file(self, filename):
-		tmpnewfn = "%s.tmpnew" % filename
 		try:
 			# open temporary file for writing
-			fp = open(tmpnewfn, 'w')
+			fp = open(filename, 'w')
 			# write data to file
 			fp.write('# univention_ base.conf\n\n')
 			fp.write(self.__str__())
@@ -261,12 +262,6 @@ class _ConfigRegistry( dict ):
 			fp.flush()
 			os.fsync(fp.fileno())
 			# close fd
-			fp.close()
-
-			# rename file and flush (meta)data
-			os.rename(tmpnewfn, filename)
-			fp = open(filename, 'a')
-			os.fsync(fp.fileno())
 			fp.close()
 		except IOError, (errno, strerror):
 			# errno 13: Permission denied
@@ -280,10 +275,11 @@ class _ConfigRegistry( dict ):
 			self.__save_file(filename)
 
 	def lock(self):
-		pass
+		self.lock_file = open(self.lock_filename, "a+")
+		fcntl.flock(self.lock_file.fileno(), fcntl.LOCK_EX)
 
 	def unlock(self):
-		pass
+		self.lock_file.close()
 
 	def __getitem__(self, key):
 		try:
@@ -836,39 +832,42 @@ def handler_set( args, opts = {} ):
 		reg = ConfigRegistry()
 
 	reg.lock()
-	reg.load()
+	try:
+		reg.load()
 
-	changed = {}
-	for arg in args:
-		sep_set = arg.find('=') # set
-		sep_def = arg.find('?') # set if not already set
-		if sep_set == -1 and sep_def == -1:
-			continue
-		else:
-			if sep_set > 0 and sep_def == -1:
-				sep = sep_set
-			elif sep_def > 0 and sep_set == -1:
-				sep = sep_def
+		changed = {}
+		for arg in args:
+			sep_set = arg.find('=') # set
+			sep_def = arg.find('?') # set if not already set
+			if sep_set == -1 and sep_def == -1:
+				continue
 			else:
-				sep = min(sep_set, sep_def)
-		key = arg[0:sep]
-		value = arg[sep+1:]
-		old = reg[key]
-		if (reg[key] == None or sep == sep_set) and validateKey(key):
-			if reg.has_key( key, write_registry_only = True ):
-				print 'Setting '+key
+				if sep_set > 0 and sep_def == -1:
+					sep = sep_set
+				elif sep_def > 0 and sep_set == -1:
+					sep = sep_def
+				else:
+					sep = min(sep_set, sep_def)
+			key = arg[0:sep]
+			value = arg[sep+1:]
+			old = reg[key]
+			if (reg[key] == None or sep == sep_set) and validateKey(key):
+				if reg.has_key( key, write_registry_only = True ):
+					print 'Setting '+key
+				else:
+					print 'Create '+key
+				reg[key] = value
+				changed[key] = (old, value)
 			else:
-				print 'Create '+key
-			reg[key] = value
-			changed[key] = (old, value)
-		else:
-			if old != None:
-				print 'Not updating '+key
-			else:
-				print 'Not setting '+key
+				if old != None:
+					print 'Not updating '+key
+				else:
+					print 'Not setting '+key
 
-	reg.save()
-	reg.unlock()
+		reg.save()
+	finally:
+		reg.unlock()
+
 	c( changed.keys(), ( reg, changed ) )
 
 def handler_unset( args, opts = {} ):
@@ -882,22 +881,24 @@ def handler_unset( args, opts = {} ):
 	else:
 		reg = ConfigRegistry()
 	reg.lock()
-	reg.load()
+	try:
+		reg.load()
 
-	c = configHandlers()
-	c.load()
+		c = configHandlers()
+		c.load()
 
-	changed = {}
-	for arg in args:
-		if reg.has_key( arg, write_registry_only = True ):
-			oldvalue = reg[arg]
-			print 'Unsetting '+arg
-			del reg[arg]
-			changed[arg] = ( oldvalue, '' )
-		else:
-			print "Warning: The config registry variable '%s' does not exist" % arg
-	reg.save()
-	reg.unlock()
+		changed = {}
+		for arg in args:
+			if reg.has_key( arg, write_registry_only = True ):
+				oldvalue = reg[arg]
+				print 'Unsetting '+arg
+				del reg[arg]
+				changed[arg] = ( oldvalue, '' )
+			else:
+				print "Warning: The config registry variable '%s' does not exist" % arg
+		reg.save()
+	finally:
+		reg.unlock()
 	c( changed.keys(), ( reg, changed ) )
 
 def handler_dump( args, opts = {} ):
