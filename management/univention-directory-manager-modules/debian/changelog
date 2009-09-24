@@ -1,3 +1,10 @@
+univention-directory-manager-modules (5.0.30-1) unstable; urgency=low
+
+  * the attribute description of the module settings/console_acls is now
+    mandatory (Bug #14671)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 24 Sep 2009 16:21:16 +0200
+
 univention-directory-manager-modules (5.0.29-1) unstable; urgency=low
 
   * jpegPhoto support (Bug: #14471) 

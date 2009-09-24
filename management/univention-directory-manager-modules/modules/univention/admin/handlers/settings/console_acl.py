@@ -67,7 +67,7 @@ property_descriptions={
 			multivalue=0,
 			options=[],
 			dontsearch=1,
-			required=0,
+			required=1,
 			may_change=1,
 			identifies=0,
 		),
