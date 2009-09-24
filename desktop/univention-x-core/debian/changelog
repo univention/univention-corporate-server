@@ -1,3 +1,11 @@
+univention-x-core (3.0.6-1) unstable; urgency=low
+
+  * added a dependency to the openchrome driver. Per default the
+    openchrome driver will be installed during the xserver-xorg-video-
+    all dependency but not in anyway. Bug #14775
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Sep 2009 06:17:56 +0200
+
 univention-x-core (3.0.5-1) unstable; urgency=low
 
   * do not activate X.org auto-detection by default (Bug #9132)
