@@ -36,12 +36,13 @@
 #joinscript_save_current_version
 #--------------------------------------------------------------------
 
-JS_SCRIPT_FULLNAME="$(readlink -f "$0")"
 JS_STATUSFILE="/var/univention-join/status"
 
+JS_RUNNING_FILENAME="$0"
+JS_SCRIPT_FULLNAME=
+JS_PACKAGE=
 #The Value 0 means, that the script has never been executed.
 JS_LAST_EXECUTED_VERSION=
-JS_PACKAGE="$(echo ${JS_SCRIPT_FULLNAME%.inst} | sed 's/.*\///' | sed 's/^[0-9]\+//')"
 
 #Returns 0 if any version of the script has been previously executed, 1 otherwise
 function joinscript_check_any_version_executed () {
@@ -127,7 +128,7 @@ function joinscript_get_last_executed_version () {
 		| tail -n 1)
 
 	if ! joinscript_is_version "$JS_LAST_EXECUTED_VERSION"; then
-		joinscript_abort "Error determining last executed version"
+		return 1
 	fi
 
 	return 0
@@ -135,17 +136,18 @@ function joinscript_get_last_executed_version () {
 
 function joinscript_check_joinstatus () {
 	if [ ! -f "/usr/share/univention-join/.joined" ]; then
-		joinscript_abort "The server has not joined yet"
+		return 1
 	fi
+
+	return 0
 }
 
 function joinscript_check_already_executed () {
 	if joinscript_check_specific_version_executed "$VERSION"; then
-		# This is the special case, where it would be nicer to have a different
-		# exit-code, but exit-code 1 is still returned in order not to break
-		# compatibility with join-scripts, that don't use this lib yet.
-		exit 1
+		return 0
 	fi
+
+	return 1
 }
 
 function joinscript_is_version () {
@@ -166,16 +168,62 @@ function joinscript_abort () {
 	exit 1
 }
 
+function joinscript_get_package_name () {
+	if [ ! -f "$JS_SCRIPT_FULLNAME" ]; then
+		return 1
+	fi
+
+	JS_PACKAGE="$(echo ${JS_SCRIPT_FULLNAME%.inst} | sed 's/.*\///' | sed 's/^[0-9]\+//')"
+	if [ -z "$JS_PACKAGE" ]; then
+		return 1
+	fi
+
+	return 0
+}
+
+function joinscript_extern_init () {
+	JS_SCRIPT_FULLNAME="$1"
+
+	if ! joinscript_get_package_name; then
+		return 1
+	fi
+
+	VERSION="$(grep -E "^VERSION=[1-9][0-9]*$" "$JS_SCRIPT_FULLNAME" | sed "s/^VERSION=\([1-9][0-9]*\)$/\1/")"
+
+	if ! joinscript_is_version "$VERSION"; then
+		return 1
+	fi
+
+	if ! joinscript_get_last_executed_version; then
+		return 1
+	fi
+
+	return 0
+}
+
 function joinscript_init () {
+	JS_SCRIPT_FULLNAME="$(readlink -f "$JS_RUNNING_FILENAME")"
+
+	if ! joinscript_get_package_name; then
+		joinscript_abort "Unable to determine package name from file \"$JS_SCRIPT_FULLNAME\""
+	fi
+
 	if ! joinscript_is_version "$VERSION"; then
 		joinscript_abort "The variable VERSION must be set to an integer value greater than zero before calling joinscript_init"
 	fi
 
-	if [ -z "$JS_PACKAGE" ]; then
-		joinscript_abort "Unable to determine package name"
+	if ! joinscript_check_joinstatus; then
+		joinscript_abort "The server has not joined yet"
 	fi
 
-	joinscript_check_joinstatus
-	joinscript_check_already_executed
-	joinscript_get_last_executed_version
+	if joinscript_check_already_executed; then
+		# This is the special case, where it would be nicer to have a different
+		# exit-code, but exit-code 1 is still returned in order not to break
+		# compatibility with join-scripts, that don't use this lib yet.
+		exit 1
+	fi
+
+	if ! joinscript_get_last_executed_version; then
+		joinscript_abort "Error determining last executed version"
+	fi
 }

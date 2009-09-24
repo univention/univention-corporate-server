@@ -1,3 +1,9 @@
+univention-join (2.0.12-1) unstable; urgency=low
+
+  * add possibility to use joinscripthelper.lib by external scripts (Bug: #15082)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Thu, 24 Sep 2009 13:43:06 +0200
+
 univention-join (2.0.11-1) unstable; urgency=low
 
   * small readability tweaks and parsing changes in joinscript-lib (Bug #14873)

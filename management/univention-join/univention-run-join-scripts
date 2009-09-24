@@ -27,6 +27,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+. /usr/share/univention-join/joinscripthelper.lib
+
 export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
 
 eval `univention-config-registry shell`
@@ -146,6 +148,18 @@ if test -e "/usr/lib/univention-install/"; then
 	for i in /usr/lib/univention-install/*.inst; do
 		echo -n "Running `basename $i` "
 		echo "RUNNING `basename $i` " >>/var/log/univention/join.log
+
+		if ! joinscript_extern_init "$i"; then
+			echo -e "\033[60Gskipped (invalid joinscript)"
+			echo "EXITCODE=invalid_joinscript" >>/var/log/univention/join.log 2>&1
+			continue
+		fi
+		if joinscript_check_already_executed; then
+			echo -e "\033[60Gskipped (already executed)"
+			echo "EXITCODE=already_executed" >>/var/log/univention/join.log 2>&1
+			continue
+		fi
+
 		if [ ! "$server_role" = "domaincontroller_master" -a ! "$server_role" = "domaincontroller_backup" ] ; then
 			$i --binddn $binddn --bindpwd `cat $DCPWD` >>/var/log/univention/join.log 2>&1
 		else
@@ -154,7 +168,7 @@ if test -e "/usr/lib/univention-install/"; then
 		RET=$?
 		echo "EXITCODE=$RET" >>/var/log/univention/join.log 2>&1
 		if [ $RET != 0 ]; then
-			echo -e "\033[60Gskipped (already executed)"
+			echo -e "\033[60Gfailed (exitcode: $RET)"
 		else
 			echo -e "\033[60Gdone"
 		fi
