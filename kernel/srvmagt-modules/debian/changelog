@@ -1,3 +1,9 @@
+srvmagt-modules (5.0.1-1) unstable; urgency=low
+
+  * smp_call_function needs 4 arguments (Bug: #15696)
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 Sep 2009 15:51:48 +0200
+
 srvmagt-modules (5.0.0-1) unstable; urgency=low
 
   * Port to 2.6.30 (Bug #15057)
