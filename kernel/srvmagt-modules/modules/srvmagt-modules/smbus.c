@@ -4047,7 +4047,7 @@ static void smbus_do_GetCpuError(CpuErrorInfo *pCpuErrInfo)
                 smbus_ReadCpuErrorInfo((CpuErrorInfo *)pCpuErrInfo);
         } else {
                 /* smp_call_function(smbus_GetCpuError_callback, (void *)pCpuErrInfo, 1); */
-                smp_call_function(smbus_ReadCpuInfo_callback, (void *)pentry, 1, 1);
+                smp_call_function(smbus_ReadCpuInfo_callback, (void *)pCpuErrInfo, 1, 1);
         }
         PREEMPT_ENABLE;
         return;
