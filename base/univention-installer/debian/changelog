@@ -1,3 +1,9 @@
+univention-installer (5.0.16-2) unstable; urgency=low
+
+  * check forceascii kernel option (Bug: #15474)
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Sep 2009 10:50:09 +0200
+
 univention-installer (5.0.16-1) unstable; urgency=low
 
   * updated software menu (Bug: #14418)
