@@ -1,3 +1,9 @@
+univention-system-setup (3.0.15-3) unstable; urgency=low
+
+  * set security profile for system role basesystem too (Bug: #10108)
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Sep 2009 14:27:57 +0200
+
 univention-system-setup (3.0.15-2) unstable; urgency=low
 
   * fixed typo in scripts/security/10security (Bug: #13733)
