@@ -1,3 +1,9 @@
+univention-config-registry (5.0.44-1) unstable; urgency=low
+
+  * fix wrong behaviour introduced in r11973 (Bug: #15026)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Fri, 25 Sep 2009 13:45:39 +0200
+
 univention-config-registry (5.0.43-1) unstable; urgency=low
 
   * implement a locking mechanism for base.conf and friends. Bug #15518

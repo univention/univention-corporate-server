@@ -1058,7 +1058,7 @@ def handler_search( args, opts = {} ):
 				  ( var_tuple[0] and reg.search ( var_tuple[0] ) ) or \
 				  ( var_tuple[1] and reg.search ( var_tuple[1].get ( 'description', '' ) ) ) ) \
 				):
-				print get_variable_info_string ( key, var_tuple[0], var_tuple[1], brief, non_empty )
+				print_variable_info_string ( key, var_tuple[0], var_tuple[1], brief, non_empty )
 				break
 
 def handler_get( args, opts = {} ):
@@ -1073,12 +1073,12 @@ class UnknownKeyException ( Exception ):
 	def __str__ (self):
 		return repr (self.value)
 
-def get_variable_info_string( key, value, variable_info, brief=False, non_empty=False ):
+def print_variable_info_string( key, value, variable_info, brief=False, non_empty=False ):
 	value_string = None
 	if value == None and not variable_info:
 		raise UnknownKeyException ( 'W: unknown key: "%s"' % key )
 	elif value == None and non_empty:
-		return None
+		return
 	elif value == None:
 		value_string = '<empty>'
 	else:
@@ -1086,9 +1086,9 @@ def get_variable_info_string( key, value, variable_info, brief=False, non_empty=
 
 	key_value = '%s: %s' % (key, value_string)
 
-	retval = None
+	info_string = None
 	if brief or not variable_info:
-		retval = key_value
+		info_string = key_value
 	else:
 		info = [ key_value ]
 #		info.append ( ' ' + variable_info.get ( 'description', 'no description available' ) )
@@ -1100,12 +1100,12 @@ def get_variable_info_string( key, value, variable_info, brief=False, non_empty=
 		info.append ( ' ' + description )
 
 		info.append ( ' Categories: ' + variable_info.get ( 'categories', 'none' ) )
-		retval = '\n'.join (info)
+		info_string = '\n'.join (info)
 
 	if brief:
-		return retval
+		print info_string
 	else:
-		return retval + '\n'
+		print info_string + '\n'
 
 def handler_info( args, opts = {} ):
 	reg = ConfigRegistry ()
@@ -1117,7 +1117,7 @@ def handler_info( args, opts = {} ):
 
 	for arg in args:
 		try:
-			print get_variable_info_string (arg, reg.get (arg, None), info.get_variable (arg))
+			print_variable_info_string (arg, reg.get (arg, None), info.get_variable (arg))
 		except UnknownKeyException, e:
 			sys.stderr.write ( e.value + '\n' )
 
