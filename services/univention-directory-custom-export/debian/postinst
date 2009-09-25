@@ -3,7 +3,7 @@
 # Univention Directory Custom Export
 #  postinst script for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004 - 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,7 +32,5 @@
 
 listener_pid=`pidof univention-directory-listener`
 if [ -n "$listener_pid" ]; then
-	runsvctrl d /etc/runit/univention-directory-listener
-	sleep 2
-	runsvctrl u /etc/runit/univention-directory-listener
+	/etc/init.d/univention-directory-listener restart
 fi
