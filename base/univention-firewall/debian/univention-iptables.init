@@ -45,6 +45,7 @@ case "$1" in
 	stop)
 		log_daemon_msg "Stopping Univention iptables configuration:"
 		iptables -F 
+		iptables -F -t nat
 		log_end_msg 0
 		;;
 	restart)

@@ -12,3 +12,4 @@
 
 # Flush 
 /sbin/iptables -F
+/sbin/iptables -F -t nat

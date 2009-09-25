@@ -1,3 +1,9 @@
+univention-firewall (2.0.1-1) unstable; urgency=low
+
+  * flush the nat table (Bug: #10106)
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Sep 2009 10:35:49 +0200
+
 univention-firewall (2.0.0-1) unstable; urgency=low
 
   * Make the init script LSB-compliant (Bug #14421)
