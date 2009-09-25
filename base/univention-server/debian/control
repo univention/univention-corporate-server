@@ -88,7 +88,7 @@ Description: UCS - Managed Client
 Package: univention-basesystem
 Architecture: all
 Pre-Depends: univention-config-registry (>=0.06), univention-pam
-Depends: univention-updater, univention-lilo | univention-grub, univention-archive-key, univention-network-manager
+Depends: univention-updater, univention-lilo | univention-grub, univention-archive-key, univention-network-manager, univention-firewall
 Description: UCS - Basesytem
  This is a Meta-package, that sets up a UCS Basesystem
  .
