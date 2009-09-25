@@ -1,6 +1,6 @@
-#! /bin/sh -e
+#!/bin/sh
 #
-# Univention Nagios Server
+# Univention Nagios Client
 #  join script
 #
 # Copyright (C) 2007-2009 Univention GmbH
@@ -29,17 +29,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 VERSION=2
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
 
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
-
-touch /usr/lib/univention-install/.index.txt
-
-test -n "`grep "univention-nagios-client v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
-
-eval `univention-baseconfig shell`
+eval $(univention-config-registry shell)
 
 # One of the configuration variables, allowed_hosts, uses ldap/master as a default
 # Since ldap/master is only set during the join process we force a commit on the nrpe.cfg
@@ -49,48 +42,75 @@ univention-config-registry commit /etc/nagios/nrpe.cfg
 # only register host to ldap if nagios/client/autoregister is not "no"
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
 
-        # Enable Nagios for this host
-        # Managed clients are still called "fatclient" in Config Registry
-        if [ "$server_role" = "fatclient" ] ; then
-           univention-directory-manager computers/managedclient modify $@ --dn ${ldap_hostdn} --append-option="nagios"
-        else
-           univention-directory-manager computers/${server_role} modify $@ --dn ${ldap_hostdn} --append-option="nagios"
-        fi
-
-	# create default services
-	univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_PING,cn=nagios,$ldap_base"
-	univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_DISK_ROOT,cn=nagios,$ldap_base"
-	univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_DNS,cn=nagios,$ldap_base"
-	univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_NTP,cn=nagios,$ldap_base"
-	univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_SMTP,cn=nagios,$ldap_base"
-	univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_REPLICATION,cn=nagios,$ldap_base"
-	univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_NSCD,cn=nagios,$ldap_base"
-
-	# add ssl check only on role "domaincontroler_master/backup"
-	if [ "$server_role" = "domaincontroller_master" -o \
-         "$server_role" = "domaincontroller_backup" ] ; then
-		univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_SSL,cn=nagios,$ldap_base"
-		univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_KPASSWDD,cn=nagios,$ldap_base"
+	if ! ldapsearch -xLLL -s base -b "cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
+		echo "Cannot find container cn=nagios,$ldap_base (ldapsearch error $?)"
+		echo "Please check if univention-nagios-server is installed on a system in UCS domain."
+		exit 0
 	fi
 
-	# add ldap check only on role "domaincontroler_*"
-	if [ "$server_role" = "domaincontroller_master" -o \
+    # Enable Nagios for this host
+    # Managed clients are still called "fatclient" in Config Registry
+    if [ "$server_role" = "fatclient" ] ; then
+        univention-directory-manager computers/managedclient modify $@ --dn ${ldap_hostdn} --append-option="nagios"
+    else
+        univention-directory-manager computers/${server_role} modify $@ --dn ${ldap_hostdn} --append-option="nagios"
+    fi
+
+    # append host to default services
+    for dn in "cn=UNIVENTION_PING,cn=nagios,$ldap_base" \
+              "cn=UNIVENTION_DISK_ROOT,cn=nagios,$ldap_base" \
+              "cn=UNIVENTION_DNS,cn=nagios,$ldap_base" \
+              "cn=UNIVENTION_NTP,cn=nagios,$ldap_base" \
+              "cn=UNIVENTION_SMTP,cn=nagios,$ldap_base" \
+              "cn=UNIVENTION_REPLICATION,cn=nagios,$ldap_base" \
+              "cn=UNIVENTION_NSCD,cn=nagios,$ldap_base" ; do
+		if ldapsearch -xLLL -b "$dn" dn 2>/dev/null >/dev/null ; then
+			univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "$dn"
+		else
+			echo "Skipping $dn (code $?)"
+		fi
+	done
+
+    # add ssl check only on role "domaincontroler_master/backup"
+    if [ "$server_role" = "domaincontroller_master" -o \
+         "$server_role" = "domaincontroller_backup" ] ; then
+		for dn in "cn=UNIVENTION_SSL,cn=nagios,$ldap_base" \
+				  "cn=UNIVENTION_KPASSWDD,cn=nagios,$ldap_base" ; do
+			if ldapsearch -xLLL -b "$dn" dn 2>/dev/null >/dev/null ; then
+				univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "$dn"
+			else
+				echo "Skipping $dn (code $?)"
+			fi
+		done
+    fi
+
+    # add ldap check only on role "domaincontroler_*"
+    if [ "$server_role" = "domaincontroller_master" -o \
          "$server_role" = "domaincontroller_backup" -o \
          "$server_role" = "domaincontroller_slave" ] ; then
-		univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_LDAP,cn=nagios,$ldap_base"
-	fi
+		dn="cn=UNIVENTION_LDAP,cn=nagios,$ldap_base"
+		if ldapsearch -xLLL -b "$dn" dn 2>/dev/null >/dev/null ; then
+			univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "$dn"
+		else
+			echo "Skipping $dn (code $?)"
+		fi
+    fi
 
-	# add joinstatus check only on role "domaincontroler_*, memberserver and managedclients"
-	if [ "$server_role" = "domaincontroller_master" -o \
+    # add joinstatus check only on role "domaincontroler_*, memberserver and managedclients"
+    if [ "$server_role" = "domaincontroller_master" -o \
          "$server_role" = "domaincontroller_backup" -o \
          "$server_role" = "domaincontroller_slave" -o \
          "$server_role" = "memberserver" -o \
          "$server_role" = "fatclient" ] ; then
-		univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_JOINSTATUS,cn=nagios,$ldap_base"
-	fi
+		dn="cn=UNIVENTION_JOINSTATUS,cn=nagios,$ldap_base"
+		if ldapsearch -xLLL -b "$dn" dn 2>/dev/null >/dev/null ; then
+			univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "$dn"
+		else
+			echo "Skipping $dn (code $?)"
+		fi
+    fi
 fi
 
-test -n "`grep "univention-nagios-client v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-nagios-client v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
-
+joinscript_save_current_version
 
 exit 0

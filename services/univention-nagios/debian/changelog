@@ -1,4 +1,11 @@
-univention-nagios (3.0.11-2) unstable; urgency=low
+univention-nagios (3.0.13-1) unstable; urgency=low
+
+  * do not try to register host to nagios services if no nagios service is
+    available (e.g. univention-nagios-server is nowhere installed) (Bug: 9267)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 24 Sep 2009 17:18:51 +0200
+
+univention-nagios (3.0.12-1) unstable; urgency=low
 
   * remove non-numerical characters from version string when 
   	parsing join script (Bug: #15310)

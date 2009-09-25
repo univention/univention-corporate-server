@@ -1,4 +1,4 @@
-#! /bin/sh -e
+#!/bin/sh -e
 #
 # Univention Nagios Server
 #  join script
@@ -29,8 +29,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 VERSION=3
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
 
-eval `univention-baseconfig shell`
+eval $(univention-config-registry shell)
 
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
@@ -139,7 +141,7 @@ univention-directory-manager policies/console_access modify $@ --ignore_exists \
 	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
 
 
-test -n "`grep "univention-nagios-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-nagios-server v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+joinscript_save_current_version
 
 
 exit 0
