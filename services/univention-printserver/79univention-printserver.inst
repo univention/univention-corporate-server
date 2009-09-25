@@ -1055,7 +1055,9 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 	--append printmodel="\"hpijs/HP/hp-business_inkjet_2300-ps.ppd.gz\" \"HP Business Inkjet 2300 PS v3010.107 Postscript (recommended)\"" \
 	--append printmodel="\"hpijs/HP/HP-PhotoSmart_8100_Series-hpijs.ppd\" \"HP Photosmart 8100 Series Foomatic/hpijs, hpijs 2.8.12.26 - HPLIP 2.8.12\"" \
 	--append printmodel="\"hpijs/HP/HP_LaserJet_3200-ps.ppd.gz\" \"HP LaserJet 3200 Postscript (recommended)\"" \
-	--append printmodel="\"hpijs/HP/HP-Color_LaserJet_8500-hpijs-pcl3.ppd\" \"HP Color LaserJet 8500 Foomatic/hpijs, hpijs 2.8.12.26 - HPLIP 2.8.12\"" \
+	--append printmodel="\"hpijs/HP/HP-Color_LaserJet_8500-hpijs-pcl3.ppd\" \"HP Color LaserJet 8500 Foomatic/hpijs, hpijs 2.8.12.26 - HPLIP 2.8.12\"" 
+
+univention-admin settings/printermodel modify $@ --ignore_exists --dn "cn=HP,cn=cups,cn=univention,$ldap_base" \
 	--append printmodel="\"hpijs/HP/HP_Color_LaserJet_3000-ps.ppd.gz\" \"HP Color LaserJet 3000 Postscript (recommended)\"" \
 	--append printmodel="\"hpijs/HP/HP_LaserJet_3050-ps.ppd.gz\" \"HP LaserJet 3050 Postscript (recommended)\"" \
 	--append printmodel="\"hpijs/HP/hp-laserjet_9050_mfp-ps.ppd\" \"HP LaserJet 9040 9050 MFP Postscript (recommended)\"" \
