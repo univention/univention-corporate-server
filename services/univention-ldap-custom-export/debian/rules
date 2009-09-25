@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Univention LDAP Custom Export
+# Univention Directory Custom Export
 #  rules file for the debian package
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-package=univention-ldap-custom-export
+package=univention-directory-custom-export
 
 build: build-stamp
 
@@ -49,7 +49,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m 755 custom_export.py debian/tmp/usr/lib/univention-ldap-listener/system
+	install -m 755 custom_export.py debian/tmp/usr/lib/univention-directory-listener/system
 
 	dh_install
 

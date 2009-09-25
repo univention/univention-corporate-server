@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention LDAP Custom Export
+# Univention Directory Custom Export
 #  postinst script for the debian package
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
@@ -30,9 +30,9 @@
 
 #DEBHELPER#
 
-listener_pid=`pidof univention-ldap-listener`
+listener_pid=`pidof univention-directory-listener`
 if [ -n "$listener_pid" ]; then
-	runsvctrl d /etc/runit/univention-ldap-listener
+	runsvctrl d /etc/runit/univention-directory-listener
 	sleep 2
-	runsvctrl u /etc/runit/univention-ldap-listener
+	runsvctrl u /etc/runit/univention-directory-listener
 fi

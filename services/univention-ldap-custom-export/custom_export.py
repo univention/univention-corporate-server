@@ -1,5 +1,5 @@
 #
-# Univention LDAP Custom Export
+# Univention Directory Custom Export
 #  listener module: write LDAP changes to a file
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
