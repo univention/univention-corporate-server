@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.21-1) unstable; urgency=low
+
+  * optimized policy search in modedit.py (Bug: #14861)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 25 Sep 2009 14:53:11 +0200
+
 univention-directory-manager (7.0.20-1) unstable; urgency=low
 
   * jpegPhoto support (Bug: #14471)

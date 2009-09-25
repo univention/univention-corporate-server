@@ -579,7 +579,7 @@ class modedit(unimodule.unimodule):
 				self.save.put('edit_object', self.object)
 
 				# policy select box
-				pathlist=[]
+				policydnlist=[]
 
 				# receive path info from 'cn=directory,cn=univention,<current domain>' object
 				pathResult = self.lo.get('cn=directory,cn=univention,'+self.position.getDomain())
@@ -589,23 +589,12 @@ class modedit(unimodule.unimodule):
 				if pathResult.has_key(infoattr) and pathResult[infoattr]:
 					for i in pathResult[infoattr]:
 						try:
-							self.lo.searchDn(base=i, scope='base')
-							pathlist.append(i)
+							for policydn, policyattr in self.lo.search(base=i, scope="domain"):
+								if univention.admin.modules.recognize(current_module, policydn, policyattr):
+									if not policydn in policydnlist: # if containers and their subcontainers are in i we get results twice
+										policydnlist.append(policydn)
 						except:
 							pass
-
-				policydnlist=[]
-				for i in pathlist:
-					try:
-						policydns=self.lo.searchDn(base=i, scope="domain")
-						for policydn in policydns:
-							if univention.admin.modules.recognize(current_module, policydn, self.lo.get(policydn)):
-								if not policydn in policydnlist: # if containers and their subcontainers are in pathlist we get results twice
-									policydnlist.append(policydn)
-							else:
-								pass
-					except:
-						pass
 
 				displaypolicydnlist=[]
 				if policydnlist:
