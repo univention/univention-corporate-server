@@ -312,6 +312,10 @@ class access:
 		except ldap.INAPPROPRIATE_MATCHING, msg:
 			raise univention.admin.uexceptions.insufficientInformation, msg[0]['desc']
 		except ldap.LDAPError, msg:
+			# workaround for bug 14827 ==> msg tuple seems to be empty
+			if not msg:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'uldap.searchDn: ldapError occured: msg=' % str(msg))
+				raise univention.admin.uexceptions.ldapError, str(msg)
 			raise univention.admin.uexceptions.ldapError, msg[0]['desc']
 
 	def getPolicies(self, dn, policies=[], attrs={}, result={}, fixedattrs={}):
