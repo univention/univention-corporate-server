@@ -63,6 +63,11 @@ if [ ! -d /var/lib/cups/certs ]; then
 	mkdir -p /var/lib/cups/certs
 fi
 
+# cups looks for ppds in /usr/share/cups/model
+res=$(dpkg-divert --list --quiet /usr/share/cups/model) && if [ -z "$res" ]; then dpkg-divert --quiet --divert /usr/share/cups/model.debian --add /usr/share/cups/model; fi
+if [ ! -L /usr/share/cups/model ]; then
+	ln -s /usr/share/ppd /usr/share/cups/model
+fi
 
 if [ "$1" = "configure" ]; then
 	if test -f /etc/init.d/univention-directory-listener
