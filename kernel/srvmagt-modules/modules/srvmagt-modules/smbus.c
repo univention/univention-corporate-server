@@ -18,6 +18,11 @@
 				#define	KERNEL2616		 1
 			#endif		// KERNEL2616
 		#endif	// LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,16)
+                #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
+                        #ifndef         KERNEL2630
+                                #define KERNEL2630               1
+                        #endif          // KERNEL2630
+                #endif  // LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
 	#else
 		// Since, we do not support kernle versions less than 2.4.00, so
 		// we assume here kernel version 2.4.xx
@@ -3764,8 +3769,11 @@ static void smbus_do_ReadCpuInfo(CpuInfo *pentry)
                 }
                 pentry->ApicBaseMsr = smbus_ReadMsr(0x01B);
         } else {
-                /* smp_call_function(smbus_ReadCpuInfo_callback, (void *)pentry, 1); */
-                smp_call_function(smbus_ReadCpuInfo_callback, (void *)pentry, 1, 1); 
+#ifdef  KERNEL2630
+                smp_call_function(smbus_ReadCpuInfo_callback, (void *)pentry, 1);
+#else
+                smp_call_function(smbus_ReadCpuInfo_callback, (void *)pentry, 1, 1);
+#endif
         }
         PREEMPT_ENABLE;
         return;
@@ -3796,8 +3804,11 @@ static void smbus_do_ReadCpuInfo_IA64(CpuInfo *pentry)
                 pentry->SparseCpuNr = sparse;
                 smbus_CpuId_IA64(&pentry->IA64Data);
         } else {
-                /* smp_call_function(smbus_ReadCpuInfo_callback_IA64, (void *)pentry, 1); */
-                smp_call_function(smbus_ReadCpuInfo_callback, (void *)pentry, 1, 1);
+#ifdef  KERNEL2630
+                smp_call_function(smbus_ReadCpuInfo_callback_IA64, (void *)pentry, 1);
+#else
+                smp_call_function(smbus_ReadCpuInfo_callback_IA64, (void *)pentry, 1, 1);
+#endif
         }
         PREEMPT_ENABLE;
         return;
@@ -3826,8 +3837,11 @@ static void smbus_do_ReadApicId(CpuInfo *pentry)
         {
                 pentry->ApicId = (BYTE)(readl(pentry->ApicVirtualAddress) >> 24);
         } else {
-                /* smp_call_function(smbus_ReadApicId_callback, (void *)pentry, 1); */
-                smp_call_function(smbus_ReadCpuInfo_callback, (void *)pentry, 1, 1);
+#ifdef  KERNEL2630
+                smp_call_function(smbus_ReadApicId_callback, (void *)pentry, 1);
+#else
+                smp_call_function(smbus_ReadApicId_callback, (void *)pentry, 1, 1);
+#endif
         }
         PREEMPT_ENABLE;
         return;
@@ -4046,8 +4060,11 @@ static void smbus_do_GetCpuError(CpuErrorInfo *pCpuErrInfo)
         {
                 smbus_ReadCpuErrorInfo((CpuErrorInfo *)pCpuErrInfo);
         } else {
-                /* smp_call_function(smbus_GetCpuError_callback, (void *)pCpuErrInfo, 1); */
-                smp_call_function(smbus_ReadCpuInfo_callback, (void *)pCpuErrInfo, 1, 1);
+#ifdef  KERNEL2630
+                smp_call_function(smbus_GetCpuError_callback, (void *)pCpuErrInfo, 1);
+#else
+                smp_call_function(smbus_GetCpuError_callback, (void *)pCpuErrInfo, 1, 1);
+#endif
         }
         PREEMPT_ENABLE;
         return;
