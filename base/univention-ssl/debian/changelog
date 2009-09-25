@@ -1,3 +1,9 @@
+univention-ssl (4.0.1-2) unstable; urgency=low
+
+  * ssl/default/days is now 1825 by default (Bug: #13686)
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Sep 2009 14:46:12 +0200
+
 univention-ssl (4.0.1-1) unstable; urgency=low
 
   * provide new UCR category system-ssl (Bug #13505)
