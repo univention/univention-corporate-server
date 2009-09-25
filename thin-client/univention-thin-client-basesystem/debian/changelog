@@ -1,3 +1,10 @@
+univention-thin-client-basesystem (6.0.6-1) unstable; urgency=low
+
+  * create lock files in the ramdisk for the new UCR locking feature.
+    Bug #15518
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 27 Aug 2009 14:41:04 +0200
+
 univention-thin-client-basesystem (6.0.5-1) unstable; urgency=low
 
   * don't install the recommend packages by default. Bug #15709
