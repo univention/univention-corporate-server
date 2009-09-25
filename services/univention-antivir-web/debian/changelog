@@ -1,3 +1,10 @@
+univention-antivir-web (3.0.3-1) unstable; urgency=low
+
+  * add support for filter groups defined by ip addresses and networks
+    (Bug #15739)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 25 Sep 2009 21:32:05 +0200
+
 univention-antivir-web (3.0.2-1) unstable; urgency=low
 
   * merged with customer scope: provied enhanced configuration options for

@@ -8,6 +8,8 @@ Variables: web/antivir/scanner
 Variables: dansguardian/loglevel
 Variables: dansguardian/language
 Variables: dansguardian/groups
+Variables: dansguardian/virusscanner
+Variables: dansguardian/auth/ip
 Variables: hostname
 Variables: domainname
 
@@ -30,6 +32,10 @@ Variables: squid/.*scan.*
 Type: file
 File: etc/dansguardian/lists/filtergroupslist
 Variables: dansguardian/groups/.*/members
+
+Type: file
+File: etc/dansguardian/lists/authplugins/ipgroups
+Variables: dansguardian/groups/.*/addresses
 
 Type: module
 Module: dansguardian-filtergroups.py
