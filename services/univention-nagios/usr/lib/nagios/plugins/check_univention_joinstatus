@@ -131,7 +131,7 @@ fi
 
 CNT=0
 for i in /usr/lib/univention-install/*.inst ; do
-	VERSION=$(grep "VERSION=" $i | head -n1 | sed -e 's|VERSION=||')
+	VERSION=$(egrep "^VERSION=" $i | head -n1 | sed -e 's|VERSION=||' | tr -d -c "[0-9]")
 	SERVICE=$(basename $i .inst | cut -b3-)
 	grep -q "$SERVICE v$VERSION successful" /usr/lib/univention-install/.index.txt
 	if [ ! "$?" = "0" ] ; then
