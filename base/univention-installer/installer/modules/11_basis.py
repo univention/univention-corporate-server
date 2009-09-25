@@ -199,11 +199,11 @@ class object(content):
 				if focus:
 					self.move_focus( 5 )
 				return _("Please enter a valid domain name in lowercase.")
-		if len(hostname.strip()+domainname.strip()) >= 64:
+		if len(hostname.strip()+domainname.strip()) >= 63:
 			if not self.ignore('hostname') and not self.ignore('domainname'):
 				if focus:
 					self.move_focus( 3 )
-				return _('The length of host and domain name is greater then 64.')
+				return _('The length of host and domain name is greater than 63 characters.')
 		if hostname.strip() == domainname.strip().split('.')[0]:
 			if not self.ignore('hostname') and not self.ignore('domainname'):
 				if focus:

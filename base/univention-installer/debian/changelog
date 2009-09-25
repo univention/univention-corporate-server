@@ -1,3 +1,9 @@
+univention-installer (5.0.18-1) unstable; urgency=low
+
+  * maximum FQDN length is 63 characters (Bug: #11686)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 25 Sep 2009 16:53:28 +0200
+
 univention-installer (5.0.17-1) unstable; urgency=low
 
   * set security profile for system role basesystem too (Bug: #10108)

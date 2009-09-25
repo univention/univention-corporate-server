@@ -1407,7 +1407,7 @@ class simpleComputer( simpleLdap ):
 		if len(self['ip']) > 0 and len(self['dnsEntryZoneForward']) > 0:
 			for zone in self['dnsEntryZoneForward']:
 				zoneName = univention.admin.uldap.explodeDn(zone, 1)[0]
-				if len(zoneName) + len(self['name']) > 62:
+				if len(zoneName) + len(self['name']) >= 63:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: length of Common Name is too long: %d' % (len(zoneName) + len(self['name']) + 1))
 					raise univention.admin.uexceptions.commonNameTooLong
 
