@@ -271,7 +271,7 @@ class UniventionUpdater:
 		elif self.net_path_exists( '%d.%d/maintained/%d.%d-0/' % ( version.major, version.minor + 1, version.major, version.minor + 1 ) ): #check for x.y-(z+1)
 			return '%d.%d-0' % ( version.major, version.minor + 1 )
 		elif self.net_path_exists('%d.0/maintained/%d.0-0/' % ( version.major + 1, version.major + 1 ) ): #check for x.y-(z+1)
-			return '%d.0-0' % version.major + 1
+			return '%d.0-0' % ( version.major + 1 )
 
 		return None
 
