@@ -1,3 +1,10 @@
+univention-antivir-web (3.0.2-1) unstable; urgency=low
+
+  * merged with customer scope: provied enhanced configuration options for
+    dansguardian und squid; Bug #13850
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 25 Sep 2009 20:55:19 +0200
+
 univention-antivir-web (3.0.1-2) unstable; urgency=low
 
   * moved UCR category service-webproxy to univention-squid (Bug #13505)

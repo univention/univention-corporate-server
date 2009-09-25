@@ -54,7 +54,7 @@ case "$1" in
         fi
 
         $CONFREG set squid/virusscan?yes
-        $CONFREG set squid/contentscan?no
+        $CONFREG set squid/contentscan?yes
 
 	/etc/init.d/squid restart
 	eval $($CONFREG shell squid/virusscan squid/contentscan)
@@ -79,5 +79,31 @@ case "$1" in
         exit 1
     ;;
 esac
+
+/etc/init.d/univention-directory-listener crestart
+
+# default group for web access
+$CONFREG set dansguardian/groups?www-access
+
+# activate clamav virus scanner by default, if not already set
+$CONFREG set dansguardian/virusscanner?clamav
+
+# rewrite old UCR variables
+if [ "$1" = "configure" -a -n "$2" ]; then
+	if dpkg --compare-versions "$2" le "2.0.1-7"; then
+		eval $($CONFREG shell squid/contentscan/bannedextensions squid/contentscan/bannedclientips squid/contentscan/bannedmimetypes squid/contentscan/bannedsites squid/contentscan/bannedurls squid/contentscan/whitelist/ip squid/contentscan/whitelist/user squid/virusscan/whitelist/extensions squid/virusscan/whitelist/mimetypes squid/virusscan/whitelist/sites squid/virusscan/whitelist/urls)
+		$CONFREG set "dansguardian/groups/www-access/banned/extensions?$squid_contentscan_bannedextensions" \
+			"dansguardian/groups/www-access/banned/ipaddresses?$squid_contentscan_bannedclientips" \
+			"dansguardian/groups/www-access/banned/mimetypes?$squid_contentscan_bannedmimetypes" \
+			"dansguardian/groups/www-access/banned/sites?$squid_contentscan_bannedsites" \
+			"dansguardian/groups/www-access/banned/urls?$squid_contentscan_bannedurls" \
+			"dansguardian/groups/www-access/exception/ipaddresses?$squid_contentscan_whitelist_ip" \
+			"dansguardian/groups/www-access/exception/users?$squid_contentscan_whitelist_user" \
+			"dansguardian/groups/www-access/exception/extensions?$squid_contentscan_whitelist_extensions" \
+			"dansguardian/groups/www-access/exception/mimetypes?$squid_contentscan_whitelist_mimetypes" \
+			"dansguardian/groups/www-access/exception/sites?$squid_contentscan_whitelist_sites" \
+			"dansguardian/groups/www-access/exception/urls?$squid_contentscan_whitelist_urls"
+	fi
+fi
 
 exit 0

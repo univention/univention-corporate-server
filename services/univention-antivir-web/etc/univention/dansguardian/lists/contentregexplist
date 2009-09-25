@@ -1,3 +1,5 @@
+@%@BCWARNING=#@%@
+
 #Content modifying Regular Expressions
 #
 # The format is: "extended regular expression"->"replacement straight string"

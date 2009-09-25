@@ -2,53 +2,37 @@ Type: file
 File: etc/dansguardian/dansguardian.conf
 Variables: squid/virusscan
 Variables: squid/virusscan/notifyemail
+Variables: squid/httpport
+Variables: squid/.*auth
+Variables: web/antivir/scanner
+Variables: dansguardian/loglevel
+Variables: dansguardian/language
+Variables: dansguardian/groups
 Variables: hostname
 Variables: domainname
 
 Type: file
-File: etc/dansguardian/dansguardianf1.conf
-Variables: squid/virusscan
-
-Type: file
-File: etc/dansguardian/bannedextensionlist
+File: etc/dansguardian/lists/contentscanners/exceptionvirusextensionlist
 Variables: squid/.*scan.*
 
 Type: file
-File: etc/dansguardian/bannediplist
+File: etc/dansguardian/lists/contentscanners/exceptionvirusmimetypelist
 Variables: squid/.*scan.*
 
 Type: file
-File: etc/dansguardian/bannedmimetypelist
+File: etc/dansguardian/lists/contentscanners/exceptionvirussitelist
 Variables: squid/.*scan.*
 
 Type: file
-File: etc/dansguardian/bannedsitelist
+File: etc/dansguardian/lists/contentscanners/exceptionvirusurllist
 Variables: squid/.*scan.*
 
 Type: file
-File: etc/dansguardian/bannedurllist
-Variables: squid/.*scan.*
+File: etc/dansguardian/lists/filtergroupslist
+Variables: dansguardian/groups/.*/members
 
-Type: file
-File: etc/dansguardian/exceptioniplist
-Variables: squid/.*scan.*
-
-Type: file
-File: etc/dansguardian/exceptionuserlist
-Variables: squid/.*scan.*
-
-Type: file
-File: etc/dansguardian/exceptionvirusextensionlist
-Variables: squid/.*scan.*
-
-Type: file
-File: etc/dansguardian/exceptionvirusmimetypelist
-Variables: squid/.*scan.*
-
-Type: file
-File: etc/dansguardian/exceptionvirussitelist
-Variables: squid/.*scan.*
-
-Type: file
-File: etc/dansguardian/exceptionvirusurllist
-Variables: squid/.*scan.*
+Type: module
+Module: dansguardian-filtergroups.py
+Variables: squid/contentscan
+Variables: dansguardian/groups
+Variables: dansguardian/groups/.*/contentscanner/.*list

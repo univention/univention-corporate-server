@@ -1,8 +1,10 @@
+@%@BCWARNING=#@%@
+
 # DANSGUARDIAN weightedphraselist INSTRUCTIONS FOR USE
 #
 # Examples:
 #
-# <slut><10>			
+# <slut><10>
 # - Adds 10 to the count against the string 'slut'.   ie. sluts, slut!, abslutxyz.
 #
 # < slut ><10>
@@ -22,10 +24,10 @@
 # Extra weighted-list files to include
 # .Include</etc/dansguardian/weightedphraselist.topic>
 #
-# Help by contributing customised lists and/or new keyword lists. 
+# Help by contributing customised lists and/or new keyword lists.
 # Email: phrasemaster@dansguardian.org
 #
-# NOTE: New lists are commented out as ALPHA or BETA depending on how much the 
+# NOTE: New lists are commented out as ALPHA or BETA depending on how much the
 # lists have been tested.
 # ALPHA - Brand new - no testing has been done
 # BETA - Relatively new - tested in at least one location
@@ -79,7 +81,7 @@
 
 #Webmail
 #.Include</etc/dansguardian/phraselists/webmail/weighted> #ALPHA#
-#Note that if you enable the webmail weighted list you should also disable 
+#Note that if you enable the webmail weighted list you should also disable
 #the exception_email list in the exceptionphraselist file.
 
 #Productivity

@@ -3,7 +3,7 @@
 # Univention AntiVir Web
 #  rules file for the univention-antivir-web debian package
 #
-# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007 Univention GmbH
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,12 +30,8 @@
 
 #export DH_VERBOSE=1
 
-ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -g
-endif
-ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
-	INSTALL_PROGRAM += -s
-endif
+TEMPLATES=$(shell find etc/ -name '*list' -o -name '*.conf')
+PACKAGE=univention-antivir-web
 
 configure: configure-stamp
 configure-stamp:
@@ -44,7 +40,7 @@ configure-stamp:
 	touch configure-stamp
 
 
-build: build-stamp
+build: build-stamp install-templates
 
 build-stamp: configure-stamp
 	dh_testdir
@@ -58,12 +54,19 @@ clean:
 
 	dh_clean
 
+install-templates:
+	@for i in $(TEMPLATES); do \
+		o=debian/$(PACKAGE)/$$i; \
+		install -d "`dirname $$o`"; \
+		install -m640 $$i $$o; \
+	done
+
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k
 	dh_installdirs
 
+	install -m 755 dansguardian-filtergroups.py debian/${PACKAGE}/usr/lib/univention-directory-listener/system/
 	univention-install-config-registry
 
 binary-indep: build install
@@ -72,7 +75,6 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-	dh_installcron
 	dh_strip
 	dh_fixperms
 	dh_installdeb
@@ -82,4 +84,4 @@ binary-arch: build install
 	dh_builddeb
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+.PHONY: build clean binary-indep binary-arch binary install configure install-templates

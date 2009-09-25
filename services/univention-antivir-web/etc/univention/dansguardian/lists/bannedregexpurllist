@@ -1,3 +1,5 @@
+@%@BCWARNING=#@%@
+
 #Banned URLs based on Regular Expressions
 #
 # E.g. 'sex' would block sex.com and middlesex.com etc
@@ -38,3 +40,12 @@
 
 #AGRESSIVE blocking of all URLs containing proxy - WARNING - this may overblock!!
 #(proxy)
+
+@!@
+if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+	group = configRegistry.get( 'dansguardian/current/group' )
+	prefix = 'dansguardian/groups/%s/banned/regexp/urls/' % group
+	for key in configRegistry.keys():
+		if key.startswith( prefix ):
+			print configRegistry[ key ]
+@!@

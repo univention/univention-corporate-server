@@ -1,3 +1,5 @@
+@%@BCWARNING=#@%@
+
 #Sites in exception list
 #Don't bother with the www. or
 #the http://
@@ -15,3 +17,11 @@
 # dansguardian.org
 # windowsupdate.microsoft.com
 # windowsupdate.com
+
+@!@
+if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+	group = configRegistry.get( 'dansguardian/current/group' )
+	exception = configRegistry.get( 'dansguardian/groups/%s/exception/sites' % group, '' )
+	for entry in exception.split( ' ' ):
+		print entry
+@!@

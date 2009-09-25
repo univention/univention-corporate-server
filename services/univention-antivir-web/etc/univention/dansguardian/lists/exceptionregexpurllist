@@ -1,0 +1,18 @@
+@%@BCWARNING=#@%@
+
+#Exception URLs based on Regular Expressions
+#
+# E.g. 'news' would unblock news.bbc.com etc
+
+# Example
+#news
+
+
+@!@
+if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+	group = configRegistry.get( 'dansguardian/current/group' )
+	prefix = 'dansguardian/groups/%s/exception/regexp/urls/' % group
+	for key in configRegistry.keys():
+		if key.startswith( prefix ):
+			print configRegistry[ key ]
+@!@

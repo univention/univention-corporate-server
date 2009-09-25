@@ -1,12 +1,4 @@
-# Warning: This file is auto-generated and might be overwritten by
-#          univention-baseconfig.
-#          Please edit the following file instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-baseconfig
-#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
-#
-#       /etc/univention/templates/files/etc/dansguardian/bannedsitelist
-#
+@%@BCWARNING=#@%@
 
 #domains in banned list
 #Don't bother with the www. or the http://
@@ -101,8 +93,8 @@
 
 @!@
 if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
-        if not baseConfig.get('squid/contentscan/bannedsites', '') == '':
-                # custom list of banned sites
-                for site in baseConfig['squid/contentscan/bannedsites'].split(" "):
-                        print site
+	group = configRegistry.get( 'dansguardian/current/group' )
+	banned = configRegistry.get( 'dansguardian/groups/%s/banned/sites' % group, '' )
+	for entry in banned.split( ' ' ):
+		print entry
 @!@
