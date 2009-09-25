@@ -1,0 +1,24 @@
+univention-ldap-custom-export (0.4) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  1 Dec 2006 08:52:33 +0100
+
+univention-ldap-custom-export (0.3) unstable; urgency=low
+
+  * rebuild
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 30 Nov 2005 16:24:37 +0100
+
+univention-ldap-custom-export (0.2) unstable; urgency=low
+
+  * Switched to python 2.4 (support for older releases has been dropped)
+
+ -- Alexander Reelsen <reelsen@univention.de>  Mon, 19 Sep 2005 13:17:28 +0200
+
+univention-ldap-custom-export (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 11 Sep 2003 16:31:24 +0200
+
