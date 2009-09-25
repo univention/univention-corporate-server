@@ -1,3 +1,9 @@
+univention-printserver (3.0.14-4) unstable; urgency=low
+
+  * check existens of printermodel in ldap before deleting (Bug: #15467)
+
+ -- Felix Botner <botner@univention.de>  Fri, 25 Sep 2009 11:16:08 +0200
+
 univention-printserver (3.0.14-3) unstable; urgency=low
 
   * udm create command too long, split it up into multiple (modify) commands (Bug: #15467)

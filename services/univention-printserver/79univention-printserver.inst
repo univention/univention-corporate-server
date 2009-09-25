@@ -123,7 +123,10 @@ if [ $JS_LAST_EXECUTED_VERSION -le 4 ]; then
 		backupfile=/var/backups/ldap-hp-ppds-`date +"%d-%m-%y-%H-%M-%S"`
 		ldapsearch -x 'objectclass=univentionPrinterModels' >  $backupfile
 		for i in $manuf; do
-			univention-admin settings/printermodel remove $@ --dn "cn=$i,cn=cups,cn=univention,$ldap_base"
+			ldapsearch -x "(&(objectclass=univentionPrinterModels)(cn=$i))" dn | grep dn: >/dev/null
+			if [ $? -eq 0 ]; then
+				univention-admin settings/printermodel remove $@ --dn "cn=$i,cn=cups,cn=univention,$ldap_base"
+			fi
 		done
 	fi
 fi
@@ -3883,6 +3886,6 @@ univention-admin policies/console_access create $@ --ignore_exists \
 	--set name=cups-admin --append allow=cn=cups-all,cn=acls,cn=console,cn=univention,$ldap_base
 
 
-test -n "`grep "univention-printserver v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-printserver v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+joinscript_save_current_version
 
 exit 0
