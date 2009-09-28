@@ -1,3 +1,9 @@
+univention-mail-cyrus (2.0.3-2) unstable; urgency=low
+
+  * added @%@BCWARNING=# @%@ to config template (Bug: #15116)
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Sep 2009 15:38:11 +0200
+
 univention-mail-cyrus (2.0.3-1) unstable; urgency=low
 
   * update the saslauthd configuration for the new upstream package. Bug
