@@ -1,3 +1,10 @@
+univention-config-registry (5.0.45-1) unstable; urgency=low
+
+  * remove script univention-sysinfo; a new version is provided with the
+    package univention-system-info (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Sep 2009 09:31:26 +0200
+
 univention-config-registry (5.0.44-1) unstable; urgency=low
 
   * fix wrong behaviour introduced in r11973 (Bug: #15026)

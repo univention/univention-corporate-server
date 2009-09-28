@@ -82,10 +82,6 @@ install-ext-%:
 	install -m 755 scripts/ldapsearch-decode64 debian/univention-config/usr/bin
 	install -m 755 scripts/univention-keyboardmapping debian/univention-config/usr/bin
 
-	cat scripts/univention-sysinfo | sed -e "s/@%@package_version@%@/${version}/;s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-sysinfo_tmp
-	install -m 755 univention-sysinfo_tmp debian/univention-config/usr/bin/univention-sysinfo
-	rm univention-sysinfo_tmp*
-
 	cat python/univention/config_registry.py | sed -e "s/@%@package_version@%@/${version}/;s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention/config_registry.py_tmp
 
 	install -d debian/python-univention-config-registry/usr/lib/python$*/site-packages/univention/
