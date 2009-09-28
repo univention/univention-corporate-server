@@ -84,6 +84,8 @@ esac
 
 # default group for web access
 $CONFREG set dansguardian/groups?www-access
+# use system groups for filter groups
+$CONFREG set dansguardian/groups/system?yes
 
 # activate clamav virus scanner by default, if not already set
 $CONFREG set dansguardian/virusscanner?clamav

@@ -1,3 +1,9 @@
+univention-antivir-web (3.0.4-1) unstable; urgency=low
+
+  * activate usage of system groups by default (Bug #15484)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Sep 2009 09:14:56 +0200
+
 univention-antivir-web (3.0.3-1) unstable; urgency=low
 
   * add support for filter groups defined by ip addresses and networks

@@ -30,10 +30,6 @@ File: etc/dansguardian/lists/contentscanners/exceptionvirusurllist
 Variables: squid/.*scan.*
 
 Type: file
-File: etc/dansguardian/lists/filtergroupslist
-Variables: dansguardian/groups/.*/members
-
-Type: file
 File: etc/dansguardian/lists/authplugins/ipgroups
 Variables: dansguardian/groups/.*/addresses
 
