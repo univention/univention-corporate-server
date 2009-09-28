@@ -1,3 +1,10 @@
+univention-config-registry (5.0.46-1) unstable; urgency=low
+
+  * don't remove the default route if /etc/network/interfaces was
+    commited and no gateway is set. Bug #15730
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Sep 2009 20:55:52 +0200
+
 univention-config-registry (5.0.45-2) unstable; urgency=low
 
   * added dependency to bach-completion (Bug: #15733)
