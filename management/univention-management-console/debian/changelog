@@ -1,3 +1,9 @@
+univention-management-console (2.0.19-1) unstable; urgency=low
+
+  * fixed incorrect translation (Bug 15747)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 28 Sep 2009 14:39:12 +0200
+
 univention-management-console (2.0.18-1) unstable; urgency=low
 
   * attributes "onmouseover" and "onmouseout" can now be set for 
