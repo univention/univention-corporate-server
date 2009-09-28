@@ -1,3 +1,10 @@
+univention-management-console (2.0.16-1) unstable; urgency=low
+
+  * add a fix that ensures that a valid startup page is selected. If not
+    debug information is printed to logfile (Bug #10330)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 28 Sep 2009 11:39:47 +0200
+
 univention-management-console (2.0.15-1) unstable; urgency=low
 
   * Actually kill the process in kill_process (Bug #14310)

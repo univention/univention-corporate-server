@@ -150,6 +150,17 @@ class Module( base.Page ):
 # 				row = uniparts.tablerow( '', {}, { 'obs' : [ col ]})
 # 				rows.append( row )
 # 				return rows
+
+			# workaround for bug #10330
+			if self.__startups[ self.selected ] == None:
+				ud.debug(ud.ADMIN, ud.ERROR, 'Module.layout: A: workaround for bug 10330 triggered: (self.selected=%s)  (self.__startups=%s)' % (self.selected, str(self.__startups)) )
+				for i in xrange(len(self.__startups)):
+					if not self.__startups[ i ] == None:
+						self.selected = i
+						break
+				else:
+					ud.debug(ud.ADMIN, ud.ERROR, 'Module.layout: A: self.selected points to None-startup: all other startups are None too!' )
+
 			# re-create error message
 			if self.__startups[ self.selected ].error_active():
 				ud.debug(ud.ADMIN, ud.INFO, 'Module.layout: error active' )
@@ -214,10 +225,16 @@ class Module( base.Page ):
 					self.__layout = error_dialog
 				else:
 					cmd = self.__startups[ self.selected ]
-					# the selected page is not available anymore -> select the next available page
+					# the selected page is not available anymore -> select the any available page
 					if cmd == None:
-						while self.selected >= 0 and not self.__startups[ self.selected ]:
-							self.selected -= 1
+						ud.debug(ud.ADMIN, ud.ERROR, 'Module.layout: B: workaround for bug 10330 triggered: (self.selected=%s)  (self.__startups=%s)' % (self.selected, str(self.__startups)) )
+						for i in xrange(len(self.__startups)):
+							if not self.__startups[ i ] == None:
+								self.selected = i
+								break
+						else:
+							ud.debug(ud.ADMIN, ud.ERROR, 'Module.layout: B: self.selected points to None-startup: all other startups are None too!' )
+
 						cmd = self.__startups[ self.selected ]
 					last_resp = responses[ -1 ]
 					# if there is no dialog 
@@ -301,7 +318,7 @@ class Module( base.Page ):
 		# safety check
 		if cmd == None:
 			# cmd to be selected is None ==> UMC would crash if we continue here, so let's choose another valid startup if available
-			ud.debug( ud.ADMIN, ud.WARN, 'Module.__change_to_selected: selected item is None (self.selected=%s) (self.__startups=%s)' % (self.selected, str(self.__startups)))
+			ud.debug( ud.ADMIN, ud.ERROR, 'Module.__change_to_selected: triggered workaround for bug 10330: selected item is None (self.selected=%s) (self.__startups=%s)' % (self.selected, str(self.__startups)))
 			for x in self.__startups:
 				if not x == None:
 					cmd = x
