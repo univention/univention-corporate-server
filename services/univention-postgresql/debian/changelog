@@ -1,3 +1,9 @@
+univention-postgresql (2.0.1-7) unstable; urgency=low
+
+  * added @%@BCWARNING=# @%@ to config template (Bug: #15117)
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Sep 2009 15:51:23 +0200
+
 univention-postgresql (2.0.1-6) unstable; urgency=low
 
   * starting with 8.0 pg_createcluster does not create the symlink pgdata
