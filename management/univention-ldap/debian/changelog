@@ -1,3 +1,10 @@
+univention-ldap (5.0.6-1) unstable; urgency=low
+
+  * changed syntax of attribute dhcpHWAddress to "DirectoryString" and
+    added substring matching ability (Bug: #15211)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 28 Sep 2009 11:05:22 +0200
+
 univention-ldap (5.0.5-1) unstable; urgency=low
 
   * added automountInformation to ldap/index/sub and ldap/index/pres (Bug: #9321)
