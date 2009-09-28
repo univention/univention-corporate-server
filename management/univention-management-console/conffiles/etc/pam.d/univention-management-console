@@ -9,8 +9,11 @@
 #
 
 auth     sufficient                         pam_unix.so
-auth     [success=done new_authtok_reqd=ok          user_unknown=ignore          service_err=die authinfo_unavail=die          default=die]                         pam_krb5.so use_first_pass
-auth     [success=done new_authtok_reqd=ok          user_unknown=die          service_err=die authinfo_unavail=die          default=die]                         pam_ldap.so use_first_pass
+@!@
+methods = configRegistry.get('auth/user/methods','').split(' ')
+if 'krb5' in methods:
+	print 'auth     [success=done new_authtok_reqd=ok          user_unknown=ignore       service_err=die authinfo_unavail=die          default=die]                         pam_krb5.so use_first_pass'
+@!@auth     [success=done new_authtok_reqd=ok          user_unknown=die          service_err=die authinfo_unavail=die          default=die]                         pam_ldap.so use_first_pass
 
 # cache password (on successful authentification)
 auth     [success=done new_authtok_reqd=ok          ignore=ignore default=bad]         pam_passwdcache.so try_first_pass insert max_user=3
@@ -20,7 +23,10 @@ auth     required                           pam_passwdcache.so try_first_pass de
 auth     required                         pam_passwdcache.so try_first_pass
 
 account  sufficient             pam_unix.so
-account  sufficient             pam_krb5.so
-account  required               pam_ldap.so
+@!@
+methods = configRegistry.get('auth/user/methods','').split(' ')
+if 'krb5' in methods:
+	print 'account  sufficient             pam_krb5.so'
+@!@account  required               pam_ldap.so
 
 session    required   pam_unix.so

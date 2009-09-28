@@ -1,5 +1,6 @@
 Type: file
 File: etc/pam.d/univention-management-console
+Variables: auth/user/methods
 
 Type: file
 File: etc/runit/univention-management-console-server/run
