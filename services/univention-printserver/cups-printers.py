@@ -143,7 +143,7 @@ def handler(dn, new, old):
 
 			#Deletions done via lpadmin
 			lpadmin(['-x', old['cn'][0]])
-			if old['univentionPrinterQuotaSupport'][0] == "1":
+			if old.has_key('univentionPrinterQuotaSupport') and old['univentionPrinterQuotaSupport'][0] == "1":
 				if printer_is_group:
 					for member in old['univentionPrinterGroupMember']:
 						pkprinters(['--groups', old['cn'][0], '--remove', member])
@@ -238,17 +238,17 @@ def handler(dn, new, old):
 			else: # Create new group
 				add=new['univentionPrinterGroupMember']
 
-			if new['univentionPrinterQuotaSupport'][0] == "1":
+			if new.has_key('univentionPrinterQuotaSupport') and new['univentionPrinterQuotaSupport'][0] == "1":
 				pkprinters(["--add","-D","\"%s\""%description.replace(' ','\ '),"--charge","%s,%s"%(page_price,job_price), new['cn'][0]])
 				for member in new['univentionPrinterGroupMember']:
 					pkprinters([ "--groups",new['cn'][0],member])
-			elif new['univentionPrinterQuotaSupport'][0] == "0" and old:
+			elif new.has_key('univentionPrinterQuotaSupport') and new['univentionPrinterQuotaSupport'][0] == "0" and old:
 				for member in old['univentionPrinterGroupMember']:
 					pkprinters(['--groups', old['cn'][0], '--remove', member])
 
 			for add_member in add: # Add Members
 				args+=['-p', add_member, '-c', new['cn'][0]]
-				if new['univentionPrinterQuotaSupport'][0] == "1":
+				if new.has_key('univentionPrinterQuotaSupport') and new['univentionPrinterQuotaSupport'][0] == "1":
 					pkprinters([ "--groups",new['cn'][0],add_member])
 			if old: # Remove Members
 				for rem_member in rem:
@@ -263,7 +263,7 @@ def handler(dn, new, old):
 			args.append(new['cn'][0])
 			for a in changes:
 				if a == 'univentionPrinterQuotaSupport':
-					if new['univentionPrinterQuotaSupport'][0]=='1':
+					if new.has_key('univentionPrinterQuotaSupport') and new['univentionPrinterQuotaSupport'][0]=='1':
 						pkprinters(["--add","-D","\"%s\""%description,"--charge","%s,%s"%(page_price,job_price), new['cn'][0]])
 
 				if a == 'univentionPrinterURI':

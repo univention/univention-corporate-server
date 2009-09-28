@@ -1,3 +1,9 @@
+univention-printserver (3.0.14-6) unstable; urgency=low
+
+  * test existens of hash key "univentionPrinterQuotaSupport" (Bug: #14858)
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Sep 2009 15:15:05 +0200
+
 univention-printserver (3.0.14-5) unstable; urgency=low
 
   * create link from usr/share/cups/model to usr/share/ppd (Bug: #15735)
