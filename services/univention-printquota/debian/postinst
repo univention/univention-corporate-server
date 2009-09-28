@@ -42,7 +42,7 @@ chmod -R g+rw /etc/pykota
 dpkg-statoverride --update --add root root 700 /usr/share/pykota/cupspykota >/dev/null || true
 
 adduser lp pykota
-/etc/init.d/cupsys restart
+/etc/init.d/cups restart
 
 univention-baseconfig set pykota/policy/debug?1
 

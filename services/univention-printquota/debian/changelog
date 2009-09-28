@@ -1,3 +1,9 @@
+univention-printquota (2.0.1-2) unstable; urgency=low
+
+  * postinst should restart cups not cupsys (Bug: #15746)
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Sep 2009 15:59:19 +0200
+
 univention-printquota (2.0.1-1) unstable; urgency=low
 
   * add a comment, why join-script should be kept and correct wrong exit-code (Bug #13218)
