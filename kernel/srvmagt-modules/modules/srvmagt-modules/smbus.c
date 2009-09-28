@@ -60,7 +60,11 @@
 		#include <asm/ioctl32.h>
 	#endif	// defined(__x86_64__) && !defined(KERNEL2616)
 	#include <linux/spinlock.h>
-	#include <linux/semaphore.h>
+	#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,19)
+		#include <linux/semaphore.h>
+	#else
+		#include <asm/semaphore.h>
+	#endif // INUX_VERSION_CODE >= KERNEL_VERSION(2,6,19)
 	#include <linux/mc146818rtc.h>
 	#include <linux/smp.h>
 	// -------------------------------------------------------------------------
