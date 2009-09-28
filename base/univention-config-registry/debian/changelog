@@ -1,3 +1,9 @@
+univention-config-registry (5.0.45-2) unstable; urgency=low
+
+  * added dependency to bach-completion (Bug: #15733)
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Sep 2009 16:27:41 +0200
+
 univention-config-registry (5.0.45-1) unstable; urgency=low
 
   * remove script univention-sysinfo; a new version is provided with the
