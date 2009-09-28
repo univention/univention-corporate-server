@@ -1,3 +1,9 @@
+univention-management-console (2.0.17-1) unstable; urgency=low
+
+  * fixed traceback when listing join scripts (Bug #13972)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 28 Sep 2009 13:19:07 +0200
+
 univention-management-console (2.0.16-1) unstable; urgency=low
 
   * add a fix that ensures that a valid startup page is selected. If not

@@ -52,8 +52,10 @@ def _read_script( script ):
 		if line.startswith( 'VERSION' ):
 			v = line.split( '=', 1 )
 			if len( v ) == 2:
-				script.current_version = v[ 1 ].strip()
-				break
+				curversion = v[ 1 ].strip(' \r\n\t\'"')
+				if curversion.isdigit():
+					script.current_version = curversion
+					break
 	fd.close()
 
 def _read_index( scripts ):
