@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.18 (3.0.1-6) unstable; urgency=low
+
+  * Update kernel image (Bug #14286)
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Sep 2009 09:10:20 +0200
+
 univention-kernel-image-2.6.18 (3.0.1-5) unstable; urgency=low
 
   * Update kernel image (Bug #12365)
