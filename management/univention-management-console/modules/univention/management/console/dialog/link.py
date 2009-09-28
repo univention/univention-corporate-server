@@ -31,8 +31,8 @@
 import base
 
 class Link( base.Text ):
-	def __init__( self, description = '', link = '', icon = None, icon_and_text = False ):
-		base.Text.__init__( self, description )
+	def __init__( self, description = '', link = '', icon = None, icon_and_text = False, attributes = {} ):
+		base.Text.__init__( self, description, attributes )
 		self._link = link
 		self._icon = icon
 		self._icon_and_text = icon_and_text

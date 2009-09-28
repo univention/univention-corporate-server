@@ -70,16 +70,29 @@ mapper.add( umcd.Image, icon_map )
 mapper.add( umcd.ImageURL, icon_map )
 
 def link_map( storage, umcp_part ):
+	try:
+		attrs = utils.layout_attrs( storage, umcp_part )
+	except:
+		attrs = {}
 	attributes = utils.attributes( umcp_part )
+
+	attrstr = ''
+	for key in ['onmouseover', 'onmouseout']:
+		if attributes.has_key(key):
+			attrstr += ' %s="%s"' % (key, attributes[key])
+
 	html =  ' <table class="button"><tr>\n'
 	if umcp_part.get_icon():
-		html += '<td class="button_icon"><a href="%s" target="_blank" class="nounderline"><img class="button_icon" src="%s" alt="%s"></a></td>\n' % ( umcp_part.get_link(),
-																																				  umc_tools.image_get( umcp_part.get_icon(), umc_tools.SIZE_MEDIUM ),
-																																				  umcp_part.get_text() )
+		html += '<td class="button_icon"><a href="%s" target="_blank" class="nounderline"><img class="button_icon" src="%s" alt="%s" %s></a></td>\n' % ( umcp_part.get_link(),
+																																						 umc_tools.image_get( umcp_part.get_icon(), umc_tools.SIZE_MEDIUM ),
+																																						 umcp_part.get_text(),
+																																						 attrstr)
 	if not umcp_part.get_icon() or umcp_part.show_icon_and_text():
-		html += '<td class="button_link"><a href="%s" target="_blank" class="nounderline"><span class="content">%s</span></a></td>\n' % ( umcp_part.get_link(),
-																																	  umcp_part )
+		html += '<td class="button_link"><a href="%s" target="_blank" class="nounderline" %s><span class="content">%s</span></a></td>\n' % ( umcp_part.get_link(),
+																																			 attrstr,
+																																			 umcp_part )
 	html += '</tr></table>\n'
+
 	text = htmltext( '', attributes, { 'htmltext' : [ html ] } )
 	storage[ umcp_part.id() ] = ( text, umcp_part )
 

@@ -1,3 +1,10 @@
+univention-management-console (2.0.18-1) unstable; urgency=low
+
+  * attributes "onmouseover" and "onmouseout" can now be set for 
+    umcd.Link (Bug: #14085)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 02 Apr 2009 16:56:03 +0200
+
 univention-management-console (2.0.17-1) unstable; urgency=low
 
   * fixed traceback when listing join scripts (Bug #13972)
