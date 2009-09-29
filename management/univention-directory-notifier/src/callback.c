@@ -109,7 +109,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 
 	if(nread == 0)
 	{
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "%d failed, got 0 close connection to listener ", fd);
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "%d failed, got 0 close connection to listener ", fd);
 		close(fd);
 		FD_CLR(fd, &readfds);
 		remove(fd);

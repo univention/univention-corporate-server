@@ -1,3 +1,9 @@
+univention-directory-notifier (4.0.0-2) unstable; urgency=low
+
+  * less verbose debug messages (Bug: #13226)
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Sep 2009 11:08:36 +0200
+
 univention-directory-notifier (4.0.0-1) unstable; urgency=low
 
   * Make init script LSB-compliant (Bug #14421)
