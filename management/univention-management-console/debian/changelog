@@ -1,3 +1,9 @@
+univention-management-console (2.0.22-1) unstable; urgency=low
+
+  * added safety check to prevent tracebacks (Bug 14930)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 29 Sep 2009 16:33:20 +0200
+
 univention-management-console (2.0.21-2) unstable; urgency=low
 
   * added memory/swap/sessions section to mrtg view (Bug: #15191)

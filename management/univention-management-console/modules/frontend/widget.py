@@ -133,12 +133,16 @@ class Notebook( object ):
 
 			del self.pages[ self.closedModule ]
 			self.selected = self.notebook.getselected()
+			if self.selected == None:
+				self.selected = 0
 			if self.closedModule <= self.selected and self.selected > 0:
 				self.selected -= 1
 			self.pages[ self.selected ].focused()
 		else:
 			if self.selected != self.notebook.getselected():
 				self.selected = self.notebook.getselected()
+				if self.selected == None:
+					self.selected = 0
 				self.pages[ self.selected ].focused()
 			else:
 				self.pages[ self.selected ].apply()
