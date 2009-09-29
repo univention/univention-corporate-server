@@ -73,41 +73,58 @@ for i in $(ls $wwwdir/uds_*.log 2>/dev/null); do
 	mv $i $new
 done
 
-# Arbeitsspeicher 
+# memory
 freemem=$(more /proc/meminfo | grep ^MemFree: | awk {'print $2'})
 buffers=$(more /proc/meminfo | grep ^Buffers: | awk {'print $2'})
 cached=$(more /proc/meminfo | grep ^Cached: | awk {'print $2'})
 memtotal=$(more /proc/meminfo | grep ^MemTotal: | awk {'print $2'})
-swaptotal=$(more /proc/meminfo | grep ^SwapTotal: | awk {'print $2'})
-swapfree=$(more /proc/meminfo | grep ^SwapFree: | awk {'print $2'})
 free=$(($buffers + $cached + $freemem))
 memused=$(($memtotal - $free))
-swapused=$(($swaptotal - $swapfree))
-
 prctmem=$((100 * $memused / $memtotal))
-prctswap=$((100 * $swapused / $swaptotal)) 
-
 mrtgname="ucs_2mem"
 echo "WorkDir: $wwwdir" > $mrtg_config
 echo "Language: german" >> $mrtg_config
 echo "Interval: 15" >> $mrtg_config
-echo "Target[$mrtgname]: \`echo -e \"$prctmem\n$prctswap\nunused\nunused\"\`" >> $mrtg_config
+echo "Target[$mrtgname]: \`echo -e \"$prctmem\n0\nunused\nunused\"\`" >> $mrtg_config
 echo "Options[$mrtgname]: growright,gauge,nobanner,noborder,nolegend,noinfo" >> $mrtg_config
 echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
 echo "MaxBytes[$mrtgname]: 100" >> $mrtg_config
 echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
 echo "Title[$mrtgname]: " >> $mrtg_config
-echo "Ylegend[$mrtgname]: Speicherlast %" >> $mrtg_config
+echo "Ylegend[$mrtgname]: Last in %" >> $mrtg_config
 echo "LegendI[$mrtgname]: Last&nbsp;" >> $mrtg_config
-echo "Legend1[$mrtgname]: Memory" >> $mrtg_config
-echo "Legend2[$mrtgname]: Swap" >> $mrtg_config
 echo "ShortLegend[$mrtgname]: Last" >> $mrtg_config
-echo "Colours[$mrtgname]: blau#6666ff,red#00FF00,unused#000000,unused#000000" >> $mrtg_config
+echo "Colours[$mrtgname]: blau#6666ff,unused#000000,unused#000000,unused#000000" >> $mrtg_config
 echo "Background[$mrtgname]: #ffffff" >> $mrtg_config
 echo "PageTop[$mrtgname]: <H1>Speicherauslastung</H1>" >> $mrtg_config
 mrtg "$mrtg_config" 2>/dev/null
 rm -f $mrtg_config $wwwdir/ucs_*.htm*
-echo "Auslastung: Speicher $prctmem% Swap $prctswap%" >$wwwdir/$mrtgname.txt
+echo "Auslastung: Speicher $prctmem%" >$wwwdir/$mrtgname.txt
+
+# swap
+swaptotal=$(more /proc/meminfo | grep ^SwapTotal: | awk {'print $2'})
+swapfree=$(more /proc/meminfo | grep ^SwapFree: | awk {'print $2'})
+swapused=$(($swaptotal - $swapfree))
+prctswap=$((100 * $swapused / $swaptotal)) 
+mrtgname="ucs_3swap"
+echo "WorkDir: $wwwdir" > $mrtg_config
+echo "Language: german" >> $mrtg_config
+echo "Interval: 15" >> $mrtg_config
+echo "Target[$mrtgname]: \`echo -e \"$prctswap\n0\nunused\nunused\"\`" >> $mrtg_config
+echo "Options[$mrtgname]: growright,gauge,nobanner,noborder,nolegend,noinfo" >> $mrtg_config
+echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
+echo "MaxBytes[$mrtgname]: 100" >> $mrtg_config
+echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
+echo "Title[$mrtgname]: " >> $mrtg_config
+echo "Ylegend[$mrtgname]: Last in %" >> $mrtg_config
+echo "LegendI[$mrtgname]: Last&nbsp;" >> $mrtg_config
+echo "ShortLegend[$mrtgname]: Last" >> $mrtg_config
+echo "Colours[$mrtgname]: blau#6666ff,unused#000000,unused#000000,unused#000000" >> $mrtg_config
+echo "Background[$mrtgname]: #ffffff" >> $mrtg_config
+echo "PageTop[$mrtgname]: <H1>Swapauslastung</H1>" >> $mrtg_config
+mrtg "$mrtg_config" 2>/dev/null
+rm -f $mrtg_config $wwwdir/ucs_*.htm*
+echo "Auslastung: Swap $prctswap%" >$wwwdir/$mrtgname.txt
 
 # Prozessorlast der letzten 15 Minuten prüfen
 loadavg="`echo \`cat /proc/loadavg |awk '{print $3}'\`*100 | bc | cut -f1 -d"."`"
