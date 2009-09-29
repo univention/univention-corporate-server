@@ -1,3 +1,9 @@
+univention-ssl (4.0.2-1) unstable; urgency=low
+
+  * always test ssl link (hostname -> fqdn) (Bug: #15214)
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Sep 2009 17:44:16 +0200
+
 univention-ssl (4.0.1-2) unstable; urgency=low
 
   * ssl/default/days is now 1825 by default (Bug: #13686)

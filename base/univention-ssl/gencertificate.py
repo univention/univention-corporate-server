@@ -125,6 +125,11 @@ def create_certificate(name, serverUidNumber, domainname):
 	certpath=os.path.join(ssldir,name+'.'+domainname)
 	if os.path.exists(certpath):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Certificate for host %s.%s already exists' % (name,domainname))
+		if not os.path.islink("%s/%s" % (ssldir,name)):
+			p = os.popen('ln -sf %s/%s.%s %s/%s' % (ssldir,name,domainname,ssldir,name) )
+			p.close
+                return
+
 		return
 
 	try:
