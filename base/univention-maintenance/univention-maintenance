@@ -86,7 +86,7 @@ echo "WorkDir: $wwwdir" > $mrtg_config
 echo "Language: german" >> $mrtg_config
 echo "Interval: 15" >> $mrtg_config
 echo "Target[$mrtgname]: \`echo -e \"$prctmem\n0\nunused\nunused\"\`" >> $mrtg_config
-echo "Options[$mrtgname]: growright,gauge,nobanner,noborder,nolegend,noinfo" >> $mrtg_config
+echo "Options[$mrtgname]: growright,noo,gauge,nobanner,noborder,nolegend,noinfo" >> $mrtg_config
 echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
 echo "MaxBytes[$mrtgname]: 100" >> $mrtg_config
 echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
@@ -111,7 +111,7 @@ echo "WorkDir: $wwwdir" > $mrtg_config
 echo "Language: german" >> $mrtg_config
 echo "Interval: 15" >> $mrtg_config
 echo "Target[$mrtgname]: \`echo -e \"$prctswap\n0\nunused\nunused\"\`" >> $mrtg_config
-echo "Options[$mrtgname]: growright,gauge,nobanner,noborder,nolegend,noinfo" >> $mrtg_config
+echo "Options[$mrtgname]: growright,noo,gauge,nobanner,noborder,nolegend,noinfo" >> $mrtg_config
 echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
 echo "MaxBytes[$mrtgname]: 100" >> $mrtg_config
 echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
