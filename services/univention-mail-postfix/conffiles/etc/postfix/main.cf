@@ -121,6 +121,7 @@ ldapaddressout_server_host = @%@ldap/server/name@%@
 ldapaddressout_search_base = @%@ldap/base@%@
 ldapaddressout_query_filter = (mailPrimaryAddress=%s)
 ldapaddressout_result_attribute = mailPrimaryAddress
+ldapaddressout_search_timeout = @%@mail/postfix/ldap/timeout@%@
 canonical_maps = ldap:ldapaddressout, hash:/etc/postfix/canonical
 
 alias_maps = hash:/etc/aliases
@@ -130,6 +131,7 @@ ldapvirtual_server_host = @%@ldap/server/name@%@
 ldapvirtual_search_base = @%@ldap/base@%@
 ldapvirtual_query_filter = (mailAlternativeAddress=%s)
 ldapvirtual_result_attribute = mailPrimaryAddress
+ldapvirtual_search_timeout = @%@mail/postfix/ldap/timeout@%@
 
 @!@
 if baseConfig.has_key('postfix/zarafa') and baseConfig['postfix/zarafa'].lower() in ['true', 'yes']:
@@ -141,6 +143,7 @@ ldapgroups_result_attribute = mailPrimaryAddress
 ldapgroups_special_result_attribute = uniqueMember
 ldapgroups_scope = sub
 ldapgroups_version = 3
+ldapgroups_search_timeout = %(mail/postfix/ldap/timeout)s
 '''
 	print zarafa_ldapgroups_definition % baseConfig
 	print 'virtual_maps = ldap:ldapvirtual, ldap:ldapgroups, hash:/etc/postfix/virtual'
@@ -162,6 +165,7 @@ accounts_server_host = @%@ldap/server/name@%@
 accounts_search_base = @%@ldap/base@%@
 accounts_query_filter = (|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s))
 accounts_result_attribute = mailPrimaryAddress
+accounts_search_timeout = @%@mail/postfix/ldap/timeout@%@
 local_recipient_maps = ldap:accounts
 
 
