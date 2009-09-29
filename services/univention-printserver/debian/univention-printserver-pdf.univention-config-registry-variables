@@ -1,11 +1,11 @@
 [cups/cups-pdf/directory]
-Description[de]=Verzeichnis für PDF Pseudo Drucker
+Description[de]=Verzeichnis fÃ¼r PDF Pseudo Drucker
 Description[en]=Output directory for pdf pseudo printer
 Type=str
 Categories=Printing
 
 [cups/cups-pdf/directory]
-Description[de]=Verzeichnis für PDF Pseudo Drucker (anonymous)
+Description[de]=Verzeichnis fÃ¼r PDF Pseudo Drucker (anonymous)
 Description[en]=Output directory for pdf pseudo printer (anonymous)
 Type=str
 Categories=Printing

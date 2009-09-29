@@ -1,3 +1,9 @@
+univention-printserver (3.0.15-1) unstable; urgency=low
+
+  * converted UCR variable descriptions to UTF-8 (Bug #14296)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 29 Sep 2009 13:29:09 +0200
+
 univention-printserver (3.0.14-6) unstable; urgency=low
 
   * test existens of hash key "univentionPrinterQuotaSupport" (Bug: #14858)
