@@ -3,7 +3,7 @@
 # Univention Mail Postfix
 #  preinst script for the debian package
 #
-# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -40,3 +40,5 @@ createLogfile /var/log/mail.err root:root 644
 createLogfile /var/log/mail.info root:adm 640
 createLogfile /var/log/mail.log root:adm 640
 createLogfile /var/log/mail.warn root:root 644
+
+exit 0

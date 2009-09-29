@@ -29,6 +29,7 @@ Variables: mail/maps/canonical/recipient/enable
 Variables: mail/maps/canonical/recipient/classes
 Variables: mail/postfix/softbounce
 Variables: mail/postfix/dnslookups
+Variables: mail/postfix/ldap/timeout
 
 Type: subfile
 Multifile: etc/postfix/main.cf
