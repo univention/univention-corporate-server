@@ -410,7 +410,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		admin_replace_ip "policies/thinclient" "univentionAuthServer" "authServer"
 		admin_replace_ip "policies/thinclient" "univentionDesktopServer" "linuxTerminalServer"
 		admin_replace_ip "policies/ldapserver" "univentionLDAPServer" "ldapServer"
-		admin_replace_ip "policies/dhcp_boot" "univentionDhcpBootServer" "boot_server"
+		admin_replace_ip "policies/dhcp_boot" "univentionDhcpBootServer" "boot_server" "1"
 		admin_replace_ip "policies/dhcp_dns" "univentionDhcpDomainNameServers" "domain_name_servers"
 		admin_replace_ip "policies/dhcp_netbios" "univentionDhcpNetbiosNameServers" "netbios_name_servers"
 		admin_replace_ip "policies/dhcp_routing" "univentionDhcpRouters" "routers"
