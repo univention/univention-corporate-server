@@ -50,3 +50,45 @@ class Web( object ):
 			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
 		res.dialog = lst
 		self.revamped( object.id(), res )
+
+	def _web_mrtg_view_session( self, object, res ):
+		text = { 'day' : _( 'Day' ),
+				 'week' : _( 'Week' ),
+				 'month' : _( 'Month' ),
+				 'year' : _( 'Year' ) }
+		lst = []
+		for key, img in res.dialog:
+			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
+
+		if not lst:
+			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
+		res.dialog = lst
+		self.revamped( object.id(), res )
+
+	def _web_mrtg_view_memory( self, object, res ):
+		text = { 'day' : _( 'Day' ),
+				 'week' : _( 'Week' ),
+				 'month' : _( 'Month' ),
+				 'year' : _( 'Year' ) }
+		lst = []
+		for key, img in res.dialog:
+			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
+
+		if not lst:
+			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
+		res.dialog = lst
+		self.revamped( object.id(), res )
+
+	def _web_mrtg_view_swap( self, object, res ):
+		text = { 'day' : _( 'Day' ),
+				 'week' : _( 'Week' ),
+				 'month' : _( 'Month' ),
+				 'year' : _( 'Year' ) }
+		lst = []
+		for key, img in res.dialog:
+			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
+
+		if not lst:
+			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
+		res.dialog = lst
+		self.revamped( object.id(), res )

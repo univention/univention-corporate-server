@@ -1,3 +1,9 @@
+univention-management-console (2.0.21-2) unstable; urgency=low
+
+  * added memory/swap/sessions section to mrtg view (Bug: #15191)
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Sep 2009 14:55:35 +0200
+
 univention-management-console (2.0.21-1) unstable; urgency=low
 
   * prevent traceback if UCR category information is not present (Bug 11996)

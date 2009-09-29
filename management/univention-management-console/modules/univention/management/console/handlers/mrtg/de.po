@@ -44,5 +44,18 @@ msgid "Load statistics"
 msgstr "Auslastungsstatistik"
 
 #: __init__.py:48
-msgid "System load statistics"
-msgstr "System Auslastungsstatistik"
+msgid "System statistics"
+msgstr "System Statistiken"
+
+#: __init__.py:48
+msgid "Memory statistics"
+msgstr "Speicherstatistik"
+
+#: __init__.py:48
+msgid "Swap statistics"
+msgstr "Swapstatisktik"
+
+#: __init__.py:48
+msgid "Sessions statistics"
+msgstr "Sessionstatistik"
+

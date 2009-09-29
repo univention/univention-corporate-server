@@ -44,8 +44,8 @@ _ = umc.Translation( 'univention.management.console.handlers.mrtg' ).translate
 
 name = 'mrtg'
 icon = 'mrtg/module'
-short_description = _( 'Load statistics' )
-long_description = _( 'System load statistics' )
+short_description = _( 'System statistics' )
+long_description = _( 'System statistics' )
 categories = [ 'all', 'system' ]
 
 command_description = {
@@ -55,19 +55,40 @@ command_description = {
 		values = {},
 		startup = True,
 	),
+	'mrtg/session' : umch.command(
+		short_description = _( 'Sessions statistics' ),
+		method = 'mrtg_view_session',
+		values = {},
+		startup = True,
+	),
+	'mrtg/memory' : umch.command(
+		short_description = _( 'Memory statistics' ),
+		method = 'mrtg_view_memory',
+		values = {},
+		startup = True,
+	),
+	'mrtg/swap' : umch.command(
+		short_description = _( 'Swap statistics' ),
+		method = 'mrtg_view_swap',
+		values = {},
+		startup = True,
+	),
+
+
 }
 
 class handler( umch.simpleHandler, _revamp.Web ):
 	def __init__( self ):
 		global command_description
 		umch.simpleHandler.__init__( self, command_description )
+		self.path = '/var/www/statistik'
 
 	def mrtg_view( self, object ):
-		path = '/var/www/statistik'
-		images = ( ( 'day', 'uds_0load-day.png' ),
-				   ( 'week', 'uds_0load-week.png' ),
-				   ( 'month', 'uds_0load-month.png' ),
-				   ( 'year', 'uds_0load-year.png' ) )
+		path = self.path
+		images = ( ( 'day', 'ucs_0load-day.png' ),
+				   ( 'week', 'ucs_0load-week.png' ),
+				   ( 'month', 'ucs_0load-month.png' ),
+				   ( 'year', 'ucs_0load-year.png' ) )
 
 		result = []
 		for key, img in images:
@@ -76,3 +97,51 @@ class handler( umch.simpleHandler, _revamp.Web ):
 				result.append( ( key, img ) )
 
 		self.finished( object.id(), result )
+
+	def mrtg_view_session( self, object ):
+		path = self.path
+		images = ( ( 'day', 'ucs_1sessions-day.png' ),
+				   ( 'week', 'ucs_1sessions-week.png' ),
+				   ( 'month', 'ucs_1sessions-month.png' ),
+				   ( 'year', 'ucs_1sessions-year.png' ) )
+
+		result = []
+		for key, img in images:
+			filename = os.path.join( path, img )
+			if os.path.exists( filename ):
+				result.append( ( key, img ) )
+
+		self.finished( object.id(), result )
+
+	def mrtg_view_memory( self, object ):
+		path = self.path
+		images = ( ( 'day', 'ucs_2mem-day.png' ),
+				   ( 'week', 'ucs_2mem-week.png' ),
+				   ( 'month', 'ucs_2mem-month.png' ),
+				   ( 'year', 'ucs_2mem-year.png' ) )
+
+		result = []
+		for key, img in images:
+			filename = os.path.join( path, img )
+			if os.path.exists( filename ):
+				result.append( ( key, img ) )
+
+		self.finished( object.id(), result )
+
+	def mrtg_view_swap( self, object ):
+		path = self.path
+		images = ( ( 'day', 'ucs_3swap-day.png' ),
+				   ( 'week', 'ucs_3swap-week.png' ),
+				   ( 'month', 'ucs_3swap-month.png' ),
+				   ( 'year', 'ucs_3swap-year.png' ) )
+
+		result = []
+		for key, img in images:
+			filename = os.path.join( path, img )
+			if os.path.exists( filename ):
+				result.append( ( key, img ) )
+
+		self.finished( object.id(), result )
+
+
+
