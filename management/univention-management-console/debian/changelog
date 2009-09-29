@@ -1,3 +1,9 @@
+univention-management-console (2.0.21-1) unstable; urgency=low
+
+  * prevent traceback if UCR category information is not present (Bug 11996)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 29 Sep 2009 13:09:24 +0200
+
 univention-management-console (2.0.20-1) unstable; urgency=low
 
   * remove krb5 modules from UMC pam stack if krb5 is not set in

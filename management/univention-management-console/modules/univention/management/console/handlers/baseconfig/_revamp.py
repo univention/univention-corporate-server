@@ -168,7 +168,10 @@ class Web( object ):
 				info.load_categories()
 				for cat in cats.split( ',' ):
 					cat_info = info.get_category( cat )
-					default.append( ( string.lower( cat ), cat_info[ 'name' ] ) )
+					if cat_info:
+						default.append( ( string.lower( cat ), cat_info[ 'name' ] ) )
+					else:
+						default.append( ( string.lower( cat ), '' ) )
 			category = umcd.make( self[ 'baseconfig/set' ][ 'categories' ], fields = fields,
 								  default = default )
 		else:
