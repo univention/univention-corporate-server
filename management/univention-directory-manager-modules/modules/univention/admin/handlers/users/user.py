@@ -2173,6 +2173,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				ocs=self.oldattr.get('objectClass', [])
 				if 'pkiUser' in ocs:
 					ml.insert(0, ('objectClass', 'pkiUser', ''))
+					for attr in ['userCertificate;binary']:
+						ml=self._remove_attr(ml,attr)
 			# ldap_pwd option add / remove
 			if 'ldap_pwd' in self.options and not 'ldap_pwd' in self.old_options:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'added ldap_pwd option')
