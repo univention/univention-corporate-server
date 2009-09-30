@@ -1,3 +1,9 @@
+univention-installer (5.0.18-2) unstable; urgency=low
+
+  * preselect Samba by default on an OXAE system (Bug: #13838)
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Sep 2009 09:46:13 +0200
+
 univention-installer (5.0.18-1) unstable; urgency=low
 
   * maximum FQDN length is 63 characters (Bug: #11686)

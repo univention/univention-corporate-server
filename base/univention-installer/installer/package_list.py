@@ -183,7 +183,7 @@ PackageList=[
 					'Packages': ['univention-samba', 'samba', 'cupsys', 'cupsys-bsd', 'cupsys-client', 'cupsys-driver-gimpprint', 'foomatic-db-gimp-print', 'foomatic-db-hpijs', 'foomatic-filters-ppds'],
 					'Edition': [ 'oxae' ],
 					'Architecture': [ 'x86', 'powerpc' ],
-					'Active': [],
+					'Active': ['domaincontroller_master'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem'],
 					'Description': _("Samba Services"),
 				},
