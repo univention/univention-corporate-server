@@ -30,6 +30,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import univention.management.console as umc
+import univention.management.console.tools as umct
 import univention.management.console.dialog as umcd
 import univention.management.console.protocol as umcp
 
@@ -50,19 +51,16 @@ class Commands( object ):
 			self.finished( object.id(), [] )
 			return
 
-		# TODO: this code blocks the module server. With UCS 2.3 the new run_process method should be used
 		cmd = '/usr/bin/lpstat -o %s' % object.options[ 'printer' ]
-		lpstat_o = subprocess.Popen( cmd, stdout = subprocess.PIPE, shell = True )
-		lpstat_o.wait()
-		lpstat_o_stdout = lpstat_o.stdout.readlines()
+		processresult = umct.run_process( cmd, timeout = 10, shell = True, output = True )
+		lpstat_o_stdout = processresult['stdout'].readlines()
 		lpstat_o_stdout = tools.parse_lpstat_o( lpstat_o_stdout )
-		
+
 		cmd = '/usr/bin/lpstat -l -p %s' % object.options[ 'printer' ]
-		lpstat = subprocess.Popen( cmd, stdout = subprocess.PIPE, shell = True )
-		lpstat.wait()
-		buffer = lpstat.stdout.readlines()
+		processresult = umct.run_process( cmd, timeout = 10, shell = True, output = True )
+		buffer = processresult['stdout'].readlines()
 		self.finished( object.id(), ( lpstat_o_stdout, tools.parse_lpstat_l( buffer ) ) )
-		return 
+		return
 
 	def cups_printer_enable( self, object ):
 		cmd = '/usr/bin/univention-cups-enable %s' % ' '.join( object.options[ 'printers' ] )

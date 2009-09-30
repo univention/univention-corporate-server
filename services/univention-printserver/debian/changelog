@@ -1,3 +1,9 @@
+univention-printserver (3.0.18-1) unstable; urgency=low
+
+  * UMC module: switched to new run_process command (Bug 15330)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 30 Sep 2009 17:25:05 +0200
+
 univention-printserver (3.0.17-1) unstable; urgency=low
 
   * modified the way to retrieve the printer status information; this
