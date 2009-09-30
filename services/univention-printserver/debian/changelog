@@ -1,3 +1,9 @@
+univention-printserver (3.0.16-1) unstable; urgency=low
+
+  * cancel print jobs using the host account instead of root (Bug 15330)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 11 Aug 2009 12:01:41 +0200
+
 univention-printserver (3.0.15-1) unstable; urgency=low
 
   * converted UCR variable descriptions to UTF-8 (Bug #14296)
