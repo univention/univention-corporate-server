@@ -428,4 +428,14 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.11-1; 
 	fi
 fi
 
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.7-1; then
+	eval `univention-config-registry shell server/role ldap/base`
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		univention-admin container/cn create --ignore_exists \
+			--set name=config-registry \
+			--set policyPath=1 \
+			--position=cn=policies,$ldap_base
+	fi
+fi
+
 exit 0

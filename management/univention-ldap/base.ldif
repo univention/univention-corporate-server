@@ -110,6 +110,7 @@ univentionPolicyObject: cn=scope,cn=dhcp,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=statements,cn=dhcp,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=sound,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=thinclient,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=config-registry,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=default-settings,cn=thinclient,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=xfree,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=mail,cn=policies,@%@ldap/base@%@
@@ -415,6 +416,10 @@ cn: statements
 dn: cn=sound,cn=policies,@%@ldap/base@%@
 objectClass: organizationalRole
 cn: sound
+
+dn: cn=config-registry,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: config-registry
 
 dn: cn=thinclient,cn=policies,@%@ldap/base@%@
 objectClass: organizationalRole
