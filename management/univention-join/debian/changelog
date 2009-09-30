@@ -1,3 +1,9 @@
+univention-join (2.0.13-2) unstable; urgency=low
+
+  * get hostname from ucr rather than from HOSTNAME shell var (Bug: #13404)
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Sep 2009 12:15:10 +0200
+
 univention-join (2.0.13-1) unstable; urgency=low
 
   * chmod ldap-backup.secret to 640 (Bug: #15557) 

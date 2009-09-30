@@ -91,7 +91,7 @@ failed_message () {
 download_host_certificate () {
 	echo -n "Download host certificate "
 	HOSTPWD="/etc/machine.secret"
-	HOSTACCOUNT="$HOSTNAME\$"
+	HOSTACCOUNT="$hostname\$"
 	univention-scp $HOSTPWD "-r $HOSTACCOUNT@$DCNAME:/etc/univention/ssl/$hostname /etc/univention/ssl/" >>/var/log/univention/join.log 2>&1
 	univention-scp $HOSTPWD "-r $HOSTACCOUNT@$DCNAME:/etc/univention/ssl/$hostname.$domainname /etc/univention/ssl/" >>/var/log/univention/join.log 2>&1
 	while [ ! -d "/etc/univention/ssl/$hostname" ] &&  [ ! -d "/etc/univention/ssl/$hostname.$domainname" ]; do
