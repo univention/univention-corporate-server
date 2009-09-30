@@ -270,7 +270,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 		
 	service_stop nscd samba cupsys
 
-	for device in "$to_change"; do
+	for device in $to_change; do
 		device=`echo "$device" | sed -e 's|^ *||'`
 		if [ -z "$device" ]; then continue; fi
 		new_ip=$(get_profile_var "interfaces/$device/address")
