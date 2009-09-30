@@ -40,6 +40,8 @@ import notifier.popen
 import tools
 import pykota
 
+import subprocess
+
 _ = umc.Translation( 'univention.management.console.handlers.cups' ).translate
 
 class Commands( object ):
@@ -48,25 +50,19 @@ class Commands( object ):
 			self.finished( object.id(), [] )
 			return
 
+		# TODO: this code blocks the module server. With UCS 2.3 the new run_process method should be used
 		cmd = '/usr/bin/lpstat -o %s' % object.options[ 'printer' ]
-		ud.debug( ud.ADMIN, ud.INFO, 'CUPS.show: command: %s' % cmd )
-		proc = notifier.popen.Shell( cmd, stdout = True )
-		cb = notifier.Callback( self._cups_printer_show_return, object )
-		proc.signal_connect( 'finished', cb )
-		proc.start()
-
-	def _cups_printer_show_return( self, pid, status, buffer, object ):
-		lpstat_o = tools.parse_lpstat_o( buffer )
-
+		lpstat_o = subprocess.Popen( cmd, stdout = subprocess.PIPE, shell = True )
+		lpstat_o.wait()
+		lpstat_o_stdout = lpstat_o.stdout.readlines()
+		lpstat_o_stdout = tools.parse_lpstat_o( lpstat_o_stdout )
+		
 		cmd = '/usr/bin/lpstat -l -p %s' % object.options[ 'printer' ]
-		proc = notifier.popen.Shell( cmd, stdout = True )
-		cb = notifier.Callback( self._cups_printer_show_return2, object, lpstat_o )
-		proc.signal_connect( 'finished', cb )
-		proc.start()
-
-	def _cups_printer_show_return2( self, pid, status, buffer, object, lpstat_o ):
-		lpstat_l = tools.parse_lpstat_l( buffer )
-		self.finished( object.id(), ( lpstat_o, lpstat_l ) )
+		lpstat = subprocess.Popen( cmd, stdout = subprocess.PIPE, shell = True )
+		lpstat.wait()
+		buffer = lpstat.stdout.readlines()
+		self.finished( object.id(), ( lpstat_o_stdout, tools.parse_lpstat_l( buffer ) ) )
+		return 
 
 	def cups_printer_enable( self, object ):
 		cmd = '/usr/bin/univention-cups-enable %s' % ' '.join( object.options[ 'printers' ] )

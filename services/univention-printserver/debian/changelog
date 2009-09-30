@@ -1,3 +1,10 @@
+univention-printserver (3.0.17-1) unstable; urgency=low
+
+  * modified the way to retrieve the printer status information; this
+    method should be more reliable (Bug 15330)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 24 Aug 2009 18:25:01 +0200
+
 univention-printserver (3.0.16-1) unstable; urgency=low
 
   * cancel print jobs using the host account instead of root (Bug 15330)
