@@ -1,3 +1,9 @@
+univention-directory-reports (2.0.2-2) unstable; urgency=low
+
+  * saver use of string function in admin.py (Bug: #12569)
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Sep 2009 17:31:07 +0200
+
 univention-directory-reports (2.0.2-1) unstable; urgency=low
 
   * if loading a policy module fails, it will be ignored (Bug #11131)

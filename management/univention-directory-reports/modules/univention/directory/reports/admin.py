@@ -126,14 +126,24 @@ class AdminConnection( object ):
 
 	def format_property( self, props, key, value ):
 		prop = props.get( key, None )
+
+		def texClean (string):
+			return string.replace('\\', '$\\backslash$')
+
 		if not prop:
 			return ( key, value )
 		else:
 			if isinstance( value, ( list, tuple ) ):
+				result = []
 				for v in value:
-					v = v.replace( '\\', '$\\backslash$' )
+					if type(v) == type([]) or type(v) == type(()):
+						for i in v:
+							result.append(texClean(str(i)))
+					else:
+						result.append(texClean(str(v)))
+				value = result
 			elif value:
-				value = value.replace( '\\', '$\\backslash$' )
+				value = texClean(value)
 			filter = filter_get( prop.syntax )
 			if filter:
 				return filter( prop, key, value )

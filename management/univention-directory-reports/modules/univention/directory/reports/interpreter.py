@@ -161,7 +161,7 @@ class Interpreter( object ):
 						if token.attrs.has_key( 'default' ):
 							token.value = token.attrs[ 'default' ]
 						else:
-							tolen.value = ''
+							token.value = ''
 					else:
 						sep = token.attrs.get( 'separator', ', ' )
 						token.value = sep.join( value )
