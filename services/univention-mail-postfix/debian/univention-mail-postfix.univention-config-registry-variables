@@ -88,3 +88,9 @@ Description[en]=E-Mail addresses tp except from masquerading
 Type=str
 Categories=service-mail
 
+[mail/postfix/ldap/timeout]
+Description[de]=Timeout für LDAP-Abfragen in Sekunden (Default: 15)
+Description[en]=Timeout for ldap requests given in seconds (default: 15)
+Type=str
+Categories=service-mail
+

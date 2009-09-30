@@ -20,6 +20,7 @@ Variables: postfix/mailbox_transport
 Variables: postfix/masquerade/domains
 Variables: postfix/masquerade/exceptions
 Variables: postfix/zarafa
+Variables: mail/postfix/ldap/timeout
 
 Type: file
 File: etc/postfix/master.cf
