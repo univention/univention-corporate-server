@@ -83,7 +83,7 @@ mail=mail.strip()
 if baseConfig.has_key('mail/cyrus/version') and baseConfig['mail/cyrus/version'] == '2.2':
 	#cyrus 22
 	domainpart=mail.split('@')[1]
-	userpart=mail.split('@')[0]
+	userpart=mail.split('@')[0].replace( '.', '^' )
 	path='/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], domainpart, userpart[0], userpart)
 else:
 	#cyrus21
