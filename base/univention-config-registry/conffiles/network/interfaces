@@ -27,11 +27,14 @@ def check_gateway (ip, netmask, gateway):
 
 
 gateway=False
+configExists=False
 for i in range(0,4):
+	configExists=False
 	if configRegistry.has_key('interfaces/eth%s/type' % i) and configRegistry['interfaces/eth%s/type' % i] == 'dhcp':
 		if configRegistry.get('interfaces/eth%s/networkmanager' % i, 'yes' ).lower() in ( 'no', 'false', '0' ):
 			print 'auto eth%s' % i
 			print 'iface eth%s inet dhcp' % i
+			configExists=True
 	elif  configRegistry['interfaces/eth%s/address' % i]:
 		print 'auto eth%s' % i
 		print 'iface eth%s inet static' % i
@@ -46,6 +49,7 @@ for i in range(0,4):
 			if check_gateway(configRegistry['interfaces/eth%s/address' % i].split('.'), configRegistry['interfaces/eth%s/netmask' % i].split('.'), configRegistry['gateway'].split('.')):
 				print 'gateway '+configRegistry['gateway']
 				gateway=True
+		configExists=True
 
 	for j in range(0,4):
 		if configRegistry.has_key('interfaces/eth%s_%s/type' % (i,j)) and configRegistry['interfaces/eth%s_%s/type' % (i,j) ] == 'dhcp':
@@ -67,12 +71,13 @@ for i in range(0,4):
 					print 'gateway '+configRegistry['gateway']
 					gateway=True
 
-	for key,value in configRegistry.items():
-		if key.startswith('interfaces/eth%s/route/' % i):
-			if value.startswith('host ') or value.startswith('net '):
-				print 'up route add -%s dev eth%d' % (value, i)
+	if configExists:
+		for key,value in configRegistry.items():
+			if key.startswith('interfaces/eth%s/route/' % i):
+				if value.startswith('host ') or value.startswith('net '):
+					print 'up route add -%s dev eth%d' % (value, i)
 
-	for key,value in configRegistry.items():
-		if key.startswith('interfaces/eth%s/options/' % i):
-			print value
+		for key,value in configRegistry.items():
+			if key.startswith('interfaces/eth%s/options/' % i):
+				print value
 @!@

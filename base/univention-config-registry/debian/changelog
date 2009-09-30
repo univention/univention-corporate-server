@@ -1,3 +1,10 @@
+univention-config-registry (5.0.46-2) unstable; urgency=low
+
+  * set interface options/route in network/interfaces only if the
+    interface is correctly configured (Bug: #9614)
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Sep 2009 11:03:21 +0200
+
 univention-config-registry (5.0.46-1) unstable; urgency=low
 
   * don't remove the default route if /etc/network/interfaces was
