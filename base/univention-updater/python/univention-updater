@@ -399,7 +399,7 @@ def main():
 	nextversion=None
 
 	if updateto:
-		if lastversion == updateto:
+		if UCS_Version(updateto) <= UCS_Version(lastversion):
 			dprint('System is up to date (UCS %s)' % lastversion, [stdout,sys.stdout])
 			fp_debug.close()
 			raise UpToDateNoError(reboot)

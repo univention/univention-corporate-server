@@ -1,3 +1,9 @@
+univention-updater (5.0.13-1) unstable; urgency=low
+
+  * fixed handling of --updateto argument (Bug: #15457)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 01 Oct 2009 17:41:24 +0200
+
 univention-updater (5.0.12-1) unstable; urgency=low
 
   * fixed typo causing traceback (Bug: #15690)
