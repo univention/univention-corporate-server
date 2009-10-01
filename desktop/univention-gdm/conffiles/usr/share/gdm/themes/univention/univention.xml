@@ -7,168 +7,285 @@
 <!DOCTYPE greeter SYSTEM "greeter.dtd">
 <greeter>
 @!@
-availableres = ['640x480','800x600','1024x768','1280x1024','1600x1200']
+pos = {}
 
-if baseConfig.has_key('xorg/resolution') and baseConfig['xorg/resolution'] in availableres:
-	resolution = baseConfig['xorg/resolution']
-	print '\t<item type="pixmap">'
-	print '\t\t<normal file="' + resolution + '_start_1.jpg"/>'
-	print '\t\t<pos x="0" y="0" width="100%" height="100%"/>'
-	print '\t</item>'
-else:
-	resolution = False
-	print '\t<item type="pixmap">'
-	print '\t\t<normal file="1600x1200_start_1.jpg"/>'
-	print '\t\t<pos x="0" y="0" width="100%" height="100%"/>'
-	print '</item>'
+pos["640x480"] = {}
+pos["640x480"]["fontscale"] = 25
+pos["640x480"]["login_x"] = 187
+pos["640x480"]["login_y"] = 248
+pos["640x480"]["loginpw_x"] = 284
+pos["640x480"]["loginpw_y"] = 245
+pos["640x480"]["login_w"] = 169
+pos["640x480"]["login_h"] = 19
+pos["640x480"]["loginPad_x"] = 2
+pos["640x480"]["loginPad_y"] = 2
+pos["640x480"]["loginPad_w"] = -4
+pos["640x480"]["loginPad_h"] = -4
+pos["640x480"]["button_y"] = 280
+pos["640x480"]["button_gap"] = 7
+pos["640x480"]["button_w"] = 80
+pos["640x480"]["button_h"] = 19
 
-xresolution=baseConfig.get('xorg/resolution', '1600x1200').split('x')[0]
-yresolution=baseConfig.get('xorg/resolution', '1600x1200').split('x')[1]
-if int(xresolution) < 1024:
-	font='monospace 12'
-else:
-	font='monospace 12 bold'
-if int(xresolution) == 640:
-	left_space=310
-elif int(xresolution) == 800:
-	left_space=386
-elif int(xresolution) == 1024:
-	left_space=490
-elif int(xresolution) == '1280':
-	left_space=630
-elif int(xresolution) == '1600':
-	left_space=785
-else:
-	# 1600/785 = 2.038
-	left_space=int(xresolution)/float(2.038)
+pos["800x600"] = {}
+pos["800x600"]["fontscale"] = 20
+pos["800x600"]["login_x"] = 246
+pos["800x600"]["login_y"] = 316
+pos["800x600"]["loginpw_x"] = 351
+pos["800x600"]["loginpw_y"] = 313
+pos["800x600"]["login_w"] = 203
+pos["800x600"]["login_h"] = 23
+pos["800x600"]["loginPad_x"] = 3
+pos["800x600"]["loginPad_y"] = 3
+pos["800x600"]["loginPad_w"] = -6
+pos["800x600"]["loginPad_h"] = -6
+pos["800x600"]["button_y"] = 353
+pos["800x600"]["button_gap"] = 8
+pos["800x600"]["button_w"] = 95
+pos["800x600"]["button_h"] = 23
 
-left_space-=5 #5 pixel padding
-if int(yresolution) == 480:
-	space_white_bar=190
-elif int(yresolution) == 600:
-	space_white_bar=250
-else:
-	space_white_bar=290
+pos["1024x768"] = {}
+pos["1024x768"]["fontscale"] = 25
+pos["1024x768"]["login_x"] = 331
+pos["1024x768"]["login_y"] = 419
+pos["1024x768"]["loginpw_x"] = 460
+pos["1024x768"]["loginpw_y"] = 414
+pos["1024x768"]["login_w"] = 235
+pos["1024x768"]["login_h"] = 27
+pos["1024x768"]["loginPad_x"] = 4
+pos["1024x768"]["loginPad_y"] = 4
+pos["1024x768"]["loginPad_w"] = -8
+pos["1024x768"]["loginPad_h"] = -8
+pos["1024x768"]["button_y"] = 462
+pos["1024x768"]["button_gap"] = 10
+pos["1024x768"]["button_w"] = 110
+pos["1024x768"]["button_h"] = 27
 
-print '\t<item type="rect">'
-print '\t\t<normal color="#FFFFFF" alpha="1.0"/>'
-print '\t\t<pos anchor="nw" x="0" y="%d" width="100%%" height="100"/>' % (int(yresolution)-space_white_bar)
+pos["1280x1024"] = {}
+pos["1280x1024"]["fontscale"] = 55
+pos["1280x1024"]["login_x"] = 414
+pos["1280x1024"]["login_y"] = 552
+pos["1280x1024"]["loginpw_x"] = 568
+pos["1280x1024"]["loginpw_y"] = 545
+pos["1280x1024"]["login_w"] = 300
+pos["1280x1024"]["login_h"] = 34
+pos["1280x1024"]["loginPad_x"] = 4
+pos["1280x1024"]["loginPad_y"] = 4
+pos["1280x1024"]["loginPad_w"] = -8
+pos["1280x1024"]["loginPad_h"] = -8
+pos["1280x1024"]["button_y"] = 607
+pos["1280x1024"]["button_gap"] = 13
+pos["1280x1024"]["button_w"] = 141
+pos["1280x1024"]["button_h"] = 34
+
+pos["1600x1200"] = {}
+pos["1600x1200"]["fontscale"] = 60
+pos["1600x1200"]["login_x"] = 543
+pos["1600x1200"]["login_y"] = 657
+pos["1600x1200"]["loginpw_x"] = 718
+pos["1600x1200"]["loginpw_y"] = 646
+pos["1600x1200"]["login_w"] = 340
+pos["1600x1200"]["login_h"] = 39
+pos["1600x1200"]["loginPad_x"] = 4
+pos["1600x1200"]["loginPad_y"] = 4
+pos["1600x1200"]["loginPad_w"] = -8
+pos["1600x1200"]["loginPad_h"] = -8
+pos["1600x1200"]["button_y"] = 716
+pos["1600x1200"]["button_gap"] = 15
+pos["1600x1200"]["button_w"] = 159
+pos["1600x1200"]["button_h"] = 39
+
+pos["1680x1050"] = {}
+pos["1680x1050"]["fontscale"] = 60
+pos["1680x1050"]["login_x"] = 582
+pos["1680x1050"]["login_y"] = 546
+pos["1680x1050"]["loginpw_x"] = 763
+pos["1680x1050"]["loginpw_y"] = 535
+pos["1680x1050"]["login_w"] = 340
+pos["1680x1050"]["login_h"] = 39
+pos["1680x1050"]["loginPad_x"] = 4
+pos["1680x1050"]["loginPad_y"] = 4
+pos["1680x1050"]["loginPad_w"] = -8
+pos["1680x1050"]["loginPad_h"] = -8
+pos["1680x1050"]["button_y"] = 605
+pos["1680x1050"]["button_gap"] = 15
+pos["1680x1050"]["button_w"] = 159
+pos["1680x1050"]["button_h"] = 39
+
+res = baseConfig.get("xorg/resolution", "1024x768")
+
+if not res in pos:
+	res = "1024x768"
+
+system = language = autostart = False
+if baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
+	system = True
+if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true':
+	language = True
+if baseConfig.get( 'univentionAutoStartScript', False ):
+	autostart = True
+
+maxX = "1024"
+maxY = "768"
+for xy in pos.keys():
+
+	maxX, maxY = xy.split("x")
+	maxX = int(maxX)
+	maxY = int(maxY)
+
+	if language and not system:
+		pos[xy]["session_x"] = (maxX / 2) - ((pos[xy]["button_w"] * 2 + pos[xy]["button_gap"]) / 2)
+		pos[xy]["language_x"] = pos[xy]["session_x"] + pos[xy]["button_gap"] + pos[xy]["button_w"]
+	elif not language and system:
+		pos[xy]["session_x"] = (maxX / 2) - ((pos[xy]["button_w"] * 2 + pos[xy]["button_gap"]) / 2)
+		pos[xy]["system_x"] = pos[xy]["session_x"] + pos[xy]["button_gap"] + pos[xy]["button_w"]
+	elif language and system:
+		pos[xy]["session_x"] = (maxX / 2) - ((pos[xy]["button_w"] * 3 + pos[xy]["button_gap"] * 2) / 2) 
+		pos[xy]["system_x"] = pos[xy]["session_x"] + pos[xy]["button_gap"] + pos[xy]["button_w"]
+		pos[xy]["language_x"] = pos[xy]["system_x"] + pos[xy]["button_gap"] + pos[xy]["button_w"]
+	else:
+		pos[xy]["session_x"] = (maxX / 2) - (pos[xy]["button_w"] /2)
+
+	if maxX > 1000:
+		pos[xy]["font"] = "monospace 12 bold"
+	else:
+		pos[xy]["font"] = "monospace 12"
+
+	pos[xy]["session_y"] = pos[xy]["button_y"]
+	pos[xy]["system_y"] = pos[xy]["button_y"]
+	pos[xy]["language_y"] = pos[xy]["button_y"]
+	pos[xy]["session_w"] = pos[xy]["button_w"]
+	pos[xy]["system_w"] = pos[xy]["button_w"]
+	pos[xy]["language_w"] = pos[xy]["button_w"]
+	pos[xy]["session_h"] = pos[xy]["button_h"]
+	pos[xy]["system_h"] = pos[xy]["button_h"]
+	pos[xy]["language_h"] = pos[xy]["button_h"]
+
+	pos[xy]["pamEntry_x"] = maxX / 2
+	pos[xy]["pamEntry_y"] = pos[xy]["button_y"] + pos[xy]["button_h"] + pos[xy]["button_gap"] * 3
+
+	if maxX < 1200:
+		pos[xy]["pamEntry_width"] = maxX / 4 * 3
+	else:
+		pos[xy]["pamEntry_width"] = maxX / 2
+
+	pos[xy]["capslock_x"] = maxX / 2
+	pos[xy]["capslock_y"] = pos[xy]["pamEntry_y"] + pos[xy]["button_gap"] * 4 
+
+	pos[xy]["autostart_x"] = maxX / 2
+	pos[xy]["autostart_y"] = pos[xy]["capslock_y"] + pos[xy]["button_gap"] * 3
+
+print '\t<item type="pixmap">'
+print '\t\t<normal file="%s_start_1.jpg"/>' % res
+print '\t\t<pos x="0" y="0" width="100%" height="100%"/>'
 print '\t</item>'
+print ''
+print '\t<!-- caps-lock-warning -->'
 print '\t<item type="rect" id="caps-lock-warning">'
-print '\t\t<normal color="#FFFFFF" alpha="0.5"/>'
-print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % (left_space, (int(yresolution)-space_white_bar+70))
-print '\t\t<box orientation="vertical" xpadding="5" ypadding="5" spacing="0">'
+print '\t\t<pos x="%(capslock_x)s" y="%(capslock_y)s" width="box" height="box"/>' % pos[res]
+print '\t\t<box orientation="vertical">'
 print '\t\t\t<item type="label">'
-print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
-print '\t\t\t\t<pos x="50%" anchor="n"/>'
+print '\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t<pos anchor="center"/>'
 print '\t\t\t\t<stock type="caps-lock-warning"/>'
 print '\t\t\t</item>'
 print '\t\t</box>'
 print '\t</item>'
 print ''
+print '\t<!-- login -->'
 print '\t<item type="rect">'
-print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % (left_space, (int(yresolution)-space_white_bar+5))
-print '\t\t<box orientation="vertical" width="200" xpadding="5" ypadding="5" spacing="5">'
+print '\t\t<pos x="%(login_x)s" y="%(login_y)s" width="box" height="%(login_h)s"/>' % pos[res]
+print '\t\t<box orientation="horizontal">'
 print '\t\t\t<item type="label" id="pam-prompt">'
-print '\t\t\t\t<pos anchor="nw" width="200"/>'
-print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
-print '\t\t\t\t<!-- Stock label for: Username: -->'
+print '\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
 print '\t\t\t\t<stock type="username-label"/>'
-print '\t\t\t</item>'
-print '\t\t\t<item type="rect">'
-print '\t\t\t\t<normal color="#000000"/>'
-print '\t\t\t\t<pos anchor="nw" height="34" width="200"/>'
-print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
-print '\t\t\t\t<fixed>'
-print '\t\t\t\t\t<item type="entry" id="user-pw-entry">'
-print '\t\t\t\t\t\t<normal color="#000000" font="%s"/>' % font.replace(' bold', '')
-print '\t\t\t\t\t\t<pos anchor="nw" x="1" y="1" height="-2" width="-2"/>'
-print '\t\t\t\t\t</item>'
-print '\t\t\t\t</fixed>'
+print '\t\t\t\t<pos anchor="nw" />'
 print '\t\t\t</item>'
 print '\t\t</box>'
 print '\t</item>'
+print '\t<item type="pixmap">'
+print '\t\t<normal file="pw.png" />'
+print '\t\t<pos x="%(loginpw_x)s" y="%(loginpw_y)s" width="%(login_w)s" height="%(login_h)s"/>' % pos[res]
+print '\t\t<fixed>'
+print '\t\t\t<item type="entry" id="user-pw-entry">'
+print '\t\t\t\t<normal color="#000000" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t<pos anchor="nw" x="%(loginPad_x)s" y="%(loginPad_y)s" height="%(loginPad_h)s" width="%(loginPad_w)s"/>' % pos[res]
+print '\t\t\t</item>'
+print '\t\t</fixed>'
+print '\t</item>'
+print ''
+print '\t<!-- pam error -->'
 print '\t<item type="rect">'
-print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % ((left_space+5), (int(yresolution)-space_white_bar+110))
-print '\t\t<box orientation="vertical" min-width="350" >'
+print '\t\t<pos x="%(pamEntry_x)s" y="%(pamEntry_y)s" width="box" height="box"/>' % pos[res]
+print '\t\t<box orientation="vertical" min-width="%(pamEntry_width)s" >' % pos[res]
 print '\t\t\t<item type="label" id="pam-error">'
-print '\t\t\t\t<normal color="#FFFFFF" font="%s"/>' % font
+print '\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t<pos anchor="center" />'
 print '\t\t\t\t<text></text>'
 print '\t\t\t</item>'
 print '\t\t</box>'
 print '\t</item>'
 print ''
-print '\t<item type="rect" id="session_button" button="true">'
-if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true' and baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
-	print '\t\t<pos anchor="nw" x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-space_white_bar+10))
-elif (not baseConfig.has_key('gdm/menu/language') or  baseConfig['gdm/menu/language'] != 'true') and (not baseConfig.has_key('gdm/menu/system') or baseConfig['gdm/menu/system'] != 'true'):
-	print '\t\t<pos x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-space_white_bar+70))
-else:
-	print '\t\t<pos x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-space_white_bar+30))
-print '\t\t<box orientation="horizontal" spacing="10" xpadding="10">'
+print '\t<!-- session -->'
+print '\t<item type="pixmap" id="session_button" button="true">'
+print '\t<normal file="action.png"/>'
+print '\t\t<prelight file="action-prelight.png"/>'
+print '\t\t<pos anchor="nw" x="%(session_x)s" y="%(session_y)s" width="%(session_w)s" height="%(session_h)s"/>' % pos[res]
+print '\t\t<box orientation="vertical">'
 print '\t\t\t<item type="label">'
-print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
-print '\t\t\t\t<prelight color="#dd1144" font="%s"/>' % font
-print '\t\t\t\t<active color="#cc0033" font="%s"/>' % font
-print '\t\t\t\t<pos y="50%" anchor="w"/>'
-print "\t\t\t\t<!-- Stock label for: _Session -->"
+print '\t\t\t\t<pos anchor="n" x="50%%" y="%(fontscale)s%%"/>' % pos[res]
+print '\t\t\t\t<normal color="#000000" font="%(font)s"/>' % pos[res]
 print '\t\t\t\t<stock type="session"/>'
 print '\t\t\t</item>'
-print ''
-print '\tt</box>'
+print '\t\t</box>'
 print '\t</item>'
-print '		'
 print ''
 
-if baseConfig.get( 'univentionAutoStartScript', False ):
-	print '\t<item type="rect">'
-	print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % (left_space, ((int(yresolution)-space_white_bar+100)))
-	print '\t\t<box orientation="vertical" xpadding="5" ypadding="5" spacing="0">'
-	print ''
-	print '\t\t<item type="label" id="timed-label">'
-	print '\t\t\t<normal color="#FFFFFF" font="%s"/>' % font
-	print '\t\t\t<pos anchor="nw"/>'
-	print '\t\t\t<!-- Stock label for: User %s will login in %d seconds -->'
-	print '\t\t\t<stock type="timed-label"/>'
-	print '\t\t</item>'
-	print '\t\t</box>'
-	print '\t</item>'
-
-
-if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true':
- 	print '\t<item type="rect" id="language_button" button="true">'
-	if not baseConfig.has_key('gdm/menu/system') or  baseConfig['gdm/menu/system'] != 'true':
-		print '\t\t<pos x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-space_white_bar+70))
-	else:
-		print '\t\t<pos x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-space_white_bar+30))
- 	print '\t\t <box orientation="horizontal" spacing="10" xpadding="10">'
- 	print '\t\t\t<item type="label">'
- 	print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
- 	print '\t\t\t\t<prelight color="#dd1144" font="%s"/>' % font
- 	print '\t\t\t\t<active color="#cc0033" font="%s"/>' % font
- 	print '\t\t\t\t<pos y="50%" anchor="w"/>'
- 	print '\t\t\t\t<!-- Stock label for: _Language -->'
- 	print '\t\t\t\t<stock type="language"/>'
- 	print '\t\t\t</item>'
-  	print '\t\t</box>'
-  	print '\t</item>'
-
-if baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
-	print '\t<item type="rect" id="system_button" button="true">'
-	print '\t\t<pos anchor="nw" x="90%%" y="%s" width="100%%" height="1" ypadding="5" />' % ((int(yresolution)-space_white_bar+70))
-	print '\t\t<box orientation="horizontal" spacing="10" xpadding="10">'
-
+if system:
+	print '\t<!-- system -->'
+	print '\t<item type="pixmap" id="system_button" button="true">'
+	print '\t\t<normal file="action.png"/>'
+	print '\t\t<prelight file="action-prelight.png"/>'
+	print '\t\t<pos anchor="nw" x="%(system_x)s" y="%(system_y)s" width="%(system_w)s" height="%(system_h)s"/>' % pos[res]
+	print '\t\t<box orientation="vertical">'
 	print '\t\t\t<item type="label">'
-	print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
-	print '\t\t\t\t<prelight color="#dd1144" font="%s"/>' % font
-	print '\t\t\t\t<active color="#cc0033" font="%s"/>' % font
-	print '\t\t\t\t<pos y="50%" anchor="w"/>'
-	print '\t\t\t\t<!-- Stock label for: _System -->'
+	print '\t\t\t\t<pos anchor="n" x="50%%" y="%(fontscale)s%%"/>' % pos[res]
+	print '\t\t\t\t<normal color="#000000" font="%(font)s"/>' % pos[res]
 	print '\t\t\t\t<stock type="system"/>'
 	print '\t\t\t</item>'
-
 	print '\t\t</box>'
 	print '\t</item>'
+	print ''
+
+if language:
+	print '\t<!-- language -->'
+	print '\t<item type="pixmap" id="language_button" button="true">'
+	print '\t\t<normal file="action.png"/>'
+	print '\t\t<prelight file="action-prelight.png"/>'
+	print '\t\t<pos anchor="nw" x="%(language_x)s" y="%(language_y)s" width="%(language_w)s" height="%(language_h)s"/>' % pos[res]
+	print '\t\t<box orientation="vertical">'
+	print '\t\t\t<item type="label">'
+	print '\t\t\t\t<pos anchor="n" x="50%%" y="%(fontscale)s%%"/>' % pos[res]
+	print '\t\t\t\t<normal color="#000000" font="%(font)s"/>' % pos[res]
+	print '\t\t\t\t<stock type="language"/>'
+	print '\t\t\t</item>'
+	print '\t\t</box>'
+	print '\t</item>'
+	print ''
+
+if autostart:
+	print '\t<!-- autostart -->'
+	print '\t<item type="rect">'
+	print '\t\t<pos x="%(autostart_x)s" y="%(autostart_y)s" width="box" height="box"/>' % pos[res]
+	print '\t\t<box orientation="vertical">' % pos[res]
+	print '\t\t\t<item type="label" id="timed-label">'
+	print '\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
+	print '\t\t\t\t<pos anchor="center"/>'
+	print '\t\t\t\t<!-- Stock label for: User %s will login in %d seconds -->'
+	print '\t\t\t\t<stock type="timed-label"/>'
+	print '\t\t\t</item>'
+	print '\t\t</box>'
+	print '\t</item>'
+	print ''
 @!@
 
 </greeter>
