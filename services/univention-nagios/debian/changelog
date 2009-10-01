@@ -1,3 +1,9 @@
+univention-nagios (3.0.14-1) unstable; urgency=low
+
+  * make umc-module being installed to the correct place (Bug: #15770)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Thu,  1 Oct 2009 11:35:04 +0200
+
 univention-nagios (3.0.13-1) unstable; urgency=low
 
   * do not try to register host to nagios services if no nagios service is
