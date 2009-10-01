@@ -1,3 +1,9 @@
+univention-printserver (3.0.20-1) unstable; urgency=low
+
+  * install UMC module to correct path (Bug 15769)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 01 Oct 2009 11:15:58 +0200
+
 univention-printserver (3.0.19-1) unstable; urgency=low
 
   * UMC module: fixed bug when no printers have been shown (Bug 15330)
