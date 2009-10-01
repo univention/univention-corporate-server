@@ -1,0 +1,5 @@
+[nscd/listengroup]
+Description[de]="nscd -i group bei Gruppenänderungen"
+Description[en]="nscd -i group at group changes"
+Type=str
+Categories=System

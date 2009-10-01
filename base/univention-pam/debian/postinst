@@ -35,11 +35,12 @@ univention-config-registry set \
 	nscd/passwd/positive_time_to_live?600 \
 	nscd/group/positive_time_to_live?3600 \
 	nscd/hosts/positive_time_to_live?3600 \
+	nscd/listengroup?"false" \
 	auth/user/methods?"krb5 ldap unix" \
 	auth/user/services?"chfn chsh kde kscreensaver kcheckpass rsh ssh su sudo passwd cron" \
 	auth/admin/methods?"krb5 ldap unix" \
 	auth/admin/services?"ftp gdm login other ppp rlogin screen"
-
+	
 # remove old non-multifile template
 if [ -e /etc/univention/templates/files/etc/pam.d/common-auth ]; then
     rm /etc/univention/templates/files/etc/pam.d/common-auth
@@ -56,7 +57,9 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.2-1; t
 		echo "done"
 	fi
 fi
-
+if [ "$1" = configure -a -z "$2" ]; then
+	univention-config-registry set nscd/listengroup="true"
+fi
 
 #DEBHELPER#
 

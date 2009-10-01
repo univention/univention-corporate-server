@@ -1,3 +1,9 @@
+univention-pam (3.0.1-2) unstable; urgency=low
+
+  * added nscd.py Bug #2174
+
+ -- Tim Petersen <petersen@univention.de>  Thu,  1 Oct 2009 14:15:50 +0200
+
 univention-pam (3.0.1-1) unstable; urgency=low
 
   * fix error in pam.conf.d-generation (Bug #15265)
