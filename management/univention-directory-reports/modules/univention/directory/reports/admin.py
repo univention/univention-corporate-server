@@ -39,6 +39,7 @@ import univention_baseconfig as ub
 
 import univention.debug as ud
 
+import re
 from locales import *
 from filter import *
 
@@ -127,8 +128,23 @@ class AdminConnection( object ):
 	def format_property( self, props, key, value ):
 		prop = props.get( key, None )
 
-		def texClean (string):
-			return string.replace('\\', '$\\backslash$')
+		def texClean(string):
+			string = string.replace('€', "EUR")
+			string = string.replace('"', "''")
+			string = string.replace('\\', '$\\backslash$')
+			for c in '&%#_{}':
+				string = string.replace(c, '\\%s' % c)
+			string = string.replace('~', '\\textasciitilde{}')
+			string = string.replace('^', '\\^{\,}')
+
+			# following regular expression replaces $ with \$ if and only if
+			# - no leading $\backslash exists and    ==> prevents replacement of the second $ character
+			# - it does not match $\backslash$       ==> prevents replacement of the first $ character
+			string = re.sub(r'(?<![$]\\backslash)(?![$]\\backslash[$])[$]', '\\$', string)
+
+			string = string.replace('°', '$^{\\circ}$')
+
+			return string
 
 		if not prop:
 			return ( key, value )
