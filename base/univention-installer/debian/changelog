@@ -1,3 +1,9 @@
+univention-installer (5.0.19-1) unstable; urgency=low
+
+  * add --brief option to ucr-command because of change in ucr-behaviour (Bug: #15026)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Thu,  1 Oct 2009 09:37:08 +0200
+
 univention-installer (5.0.18-2) unstable; urgency=low
 
   * preselect Samba by default on an OXAE system (Bug: #13838)
