@@ -34,7 +34,7 @@ import univention.management.console.dialog as umcd
 import univention.management.console.protocol as umcp
 import univention.management.console.tools as umct
 
-_ = umc.Translation( 'univention.management.console.wizards.mail' ).translate
+_ = umc.Translation( 'univention.management.console.wizards.nagios' ).translate
 
 class Web( object ):
 	def _web_nagios_show( self, object, res ):
