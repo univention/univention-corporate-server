@@ -1,3 +1,9 @@
+univention-printserver (3.0.19-1) unstable; urgency=low
+
+  * UMC module: fixed bug when no printers have been shown (Bug 15330)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 01 Oct 2009 11:13:59 +0200
+
 univention-printserver (3.0.18-1) unstable; urgency=low
 
   * UMC module: switched to new run_process command (Bug 15330)

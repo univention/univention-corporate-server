@@ -52,13 +52,17 @@ class Commands( object ):
 			return
 
 		cmd = '/usr/bin/lpstat -o %s' % object.options[ 'printer' ]
-		processresult = umct.run_process( cmd, timeout = 10, shell = True, output = True )
+		ud.debug( ud.ADMIN, ud.INFO, 'CUPS.show: command: %s' % cmd )
+		processresult = umct.run_process( cmd, timeout = 10000, shell = True, output = True )
 		lpstat_o_stdout = processresult['stdout'].readlines()
+		ud.debug( ud.ADMIN, ud.INFO, 'CUPS.show: lpstat_o_stdout: %s' % lpstat_o_stdout )
 		lpstat_o_stdout = tools.parse_lpstat_o( lpstat_o_stdout )
 
 		cmd = '/usr/bin/lpstat -l -p %s' % object.options[ 'printer' ]
-		processresult = umct.run_process( cmd, timeout = 10, shell = True, output = True )
+		ud.debug( ud.ADMIN, ud.INFO, 'CUPS.show: command: %s' % cmd )
+		processresult = umct.run_process( cmd, timeout = 10000, shell = True, output = True )
 		buffer = processresult['stdout'].readlines()
+		ud.debug( ud.ADMIN, ud.INFO, 'CUPS.show: lpstat: %s' % buffer )
 		self.finished( object.id(), ( lpstat_o_stdout, tools.parse_lpstat_l( buffer ) ) )
 		return
 

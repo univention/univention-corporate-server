@@ -139,25 +139,22 @@ class handler( umch.simpleHandler, _revamp.Web, _printer.Commands,
 		_job.Commands.__init__( self )
 
 	def cups_list( self, object ):
-		proc = notifier.popen.RunIt( '/usr/bin/lpstat -l -p', stdout = True )
-		cb = notifier.Callback( self._cups_list_return, object )
-		proc.signal_connect( 'finished', cb )
-		proc.start()
+		presult = umct.run_process( '/usr/bin/lpstat -l -p', timeout = 10000, shell = True, output = True )
+		buffer = presult['stdout'].readlines()
+		ud.debug( ud.ADMIN, ud.INFO, 'CUPS.list: buffer1: %s' % buffer )
 
-	def _cups_list_return( self, pid, status, buffer, object ):
 		filter = object.options.get( 'filter', '*' )
 		key = object.options.get( 'key', 'printer' )
 		printers = tools.parse_lpstat_l( buffer, filter, key )
 
-		proc = notifier.popen.RunIt( '/usr/bin/lpstat -v', stdout = True )
-		cb = notifier.Callback( self._cups_list_return2, object, filter, key, printers )
-		proc.signal_connect( 'finished', cb )
-		proc.start()
+		presult = umct.run_process( '/usr/bin/lpstat -v', timeout = 10000, shell = True, output = True )
+		buffer = presult['stdout'].readlines()
+		ud.debug( ud.ADMIN, ud.INFO, 'CUPS.list: buffer2: %s' % buffer )
+
+		printers = tools.parse_lpstat_v( buffer, printers )
+		self.finished( object.id(), ( filter, key, printers ) )
 
 # root@master30:/usr/share/univention-management-console/www# lpstat -v
 # device for fooprn: cupspykota:parallel:/dev/lp0
 # device for tintenkleckser: parallel:/dev/lp0
 
-	def _cups_list_return2( self, pid, status, buffer, object, filter, key, printers ):
-		printers = tools.parse_lpstat_v( buffer, printers )
-		self.finished( object.id(), ( filter, key, printers ) )
