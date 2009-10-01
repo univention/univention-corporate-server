@@ -349,7 +349,7 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 
 		# change ip in baseconfig
 		# change other values in baseconfig, for example ldap/server/ip
-		univention-config-registry search --value "^$old_ip$" | sed -e 's|: .*||' | grep -v "interfaces/$device/address" | while read baseconfig_name; do
+		univention-config-registry search --brief --value "^$old_ip$" | sed -e 's|: .*||' | grep -v "interfaces/$device/address" | while read baseconfig_name; do
 			univention-config-registry set "$baseconfig_name"="$new_ip"
 		done
 
