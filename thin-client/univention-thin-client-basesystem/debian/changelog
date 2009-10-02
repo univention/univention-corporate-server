@@ -1,3 +1,10 @@
+univention-thin-client-basesystem (6.0.9-1) unstable; urgency=low
+
+  * create /var/lib/dbus during the Thin Client boot to make dbus happy.
+    Bug #15781
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  2 Oct 2009 13:18:26 +0200
+
 univention-thin-client-basesystem (6.0.8-2) unstable; urgency=low
 
   * be sure portmap is started when nfs-common will be startet. Bug
