@@ -39,3 +39,5 @@ rm -rf /usr/share/man
 adduser --system --home /var/tmp/autostart --shell "/bin/bash" --gecos "AutoStart" --disabled-password autostart 
 
 #DEBHELPER#
+
+exit 0

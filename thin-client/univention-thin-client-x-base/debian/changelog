@@ -1,3 +1,13 @@
+univention-thin-client-x-base (4.0.1-1) unstable; urgency=low
+
+  * cleanup the init script, support spaces in the host dn and remove
+    set -e. Bug #14611
+  * added the system menu for the GDM, so a normal user can shutdown the
+    Thin Client. Bug #4537
+  * don't call univention_policy_result for a second time. Bug #15447
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  1 Oct 2009 21:31:19 +0200
+
 univention-thin-client-x-base (4.0.0-1) unstable; urgency=low
 
   * Make init scripts LSB-compliant (Bug #14421)

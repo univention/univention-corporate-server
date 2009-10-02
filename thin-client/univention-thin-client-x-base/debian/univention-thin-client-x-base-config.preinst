@@ -34,3 +34,5 @@ test "$1" = "install" && dpkg-divert --package univention-thin-client-x-base-con
 test "$1" = "install" && dpkg-divert --package univention-thin-client-x-base-config --rename --divert /etc/pam.d/gdm.debian --add "/etc/pam.d/gdm" || true
 
 #DEBHELPER#
+
+exit 0
