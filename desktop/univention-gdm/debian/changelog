@@ -1,3 +1,10 @@
+univention-gdm (5.0.4-1) unstable; urgency=low
+
+  * use xorg/keyboard/options/XkbLayout for the RDP keyboard mapping.
+    Bug #13926
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  2 Oct 2009 06:16:58 +0200
+
 univention-gdm (5.0.3-2) unstable; urgency=low
 
   * new gdm theme (Bug: #15778)

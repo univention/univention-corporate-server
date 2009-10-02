@@ -30,7 +30,7 @@
 
 eval `/usr/sbin/univention-baseconfig shell`
 
-rdpKeyboard=`univention-keyboardmapping --xtordp $univentionXKeyboardLayout`
+rdpKeyboard=`univention-keyboardmapping --xtordp $xorg_keyboard_options_XkbLayout`
 
 while true
 do
