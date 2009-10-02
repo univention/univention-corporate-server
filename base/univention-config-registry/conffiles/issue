@@ -32,7 +32,10 @@ elif baseConfig['server/role'] =='memberserver':
 else:
 	menutitle="Univention Corporate Server"
 
-print  '%s %s-%s-%s' % (menutitle, baseConfig['version/version'], baseConfig['version/patchlevel'], baseConfig['version/security-patchlevel'])
+if baseConfig.has_key('version/version'):
+	print  '%s %s-%s-%s' % (menutitle, baseConfig['version/version'], baseConfig['version/patchlevel'], baseConfig['version/security-patchlevel'])
+else:
+	print 'Univeniton Thin Client'
 
 if serversystem:
 	for device in ['eth0', 'eth1', 'eth2', 'eth3']:
