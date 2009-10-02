@@ -136,7 +136,85 @@ class UniventionMirror( UniventionUpdater ):
 			for script in ( 'preup.sh', 'postup.sh' ):
 				self.copy_script( script, path, os.path.join( self.repository_path, 'mirror', path[ 1 : ] ) )
 
+	def list_local_repositories( self, start = None, end = None, maintained = True, unmaintained = False ):
+		'''
+		This function returns a sorted list of local (un)maintained repositories.
+		Arguments: start: smallest version that shall be returned (type: UCS_Version)
+				   end:   largest version that shall be returned (type: UCS_Version)
+				   maintained:   True if list shall contain maintained repositories
+				   unmaintained: True if list shall contain unmaintained repositories
+		Returns: a list of ( directory, UCS_Version, is_maintained ) tuples.
+		'''
+		result = []
+		repobase = os.path.join( self.repository_path, 'mirror')
+		RErepo = re.compile('^%s/(\d+[.]\d)/(maintained|unmaintained)/(\d+[.]\d+-\d+)$' % repobase )
+		for dirname, subdirs, files in os.walk(repobase):
+			match = RErepo.match(dirname)
+			if match:
+				if not maintained and match.group(2) == 'maintained':
+					continue
+				if not unmaintained and match.group(2) == 'unmaintained':
+					continue
+
+				version = UCS_Version( match.group(3) )
+				# do not compare start with None by "!=" or "=="
+				if not start is None and version < start:
+					continue
+				# do not compare end with None by "!=" or "=="
+				if not end is None and end < version:
+					continue
+
+				result.append( ( dirname, version, match.group(2) == 'maintained' ) )
+
+		result.sort(lambda x,y: cmp(x[1], y[1]))
+
+		return result
+
+	def update_dists_files( self ):
+		last_version = None
+		last_dirname = None
+		repobase = os.path.join( self.repository_path, 'mirror')
+
+		# iterate over all local repositories
+		for dirname, version, is_maintained in self.list_local_repositories( start=self.version_start, end=self.version_end, unmaintained = False ):
+			if version.patchlevel == 0:
+				archlist = ( 'i386', 'amd64' )
+				for arch in archlist:
+					# create dists directory if missing
+					d = os.path.join( dirname, 'dists/univention/main/binary-%s' % arch )
+					if not os.path.exists( d ):
+						os.makedirs( d, 0755 )
+
+					# truncate dists packages file
+					fn = os.path.join( d, 'Packages' )
+					open(fn,'w').truncate(0)
+
+					# fetch all downloaded repository packages files and ...
+					for cur_packages in ( os.path.join( dirname, 'all/Packages' ), os.path.join( dirname, arch, 'Packages' ) ):
+						# ...if it exists....
+						if os.path.exists( cur_packages ):
+							# ... convert that file and append it to new dists packages file
+							subprocess.call( 'sed -re "s|^Filename: %s/|Filename: |" < %s >> %s' % (version, cur_packages, fn ), shell=True )
+
+					# append existing Packages file of previous versions
+					if not last_version is None: # do not compare last_version with None by "!=" or "=="
+						# do not append Packages from other major versions
+						if last_version.major == version.major:
+							# get last three items of pathname and build prefix
+							prefix = '../../../%s' % os.path.join( *( last_dirname.split('/')[-3:]) )
+							subprocess.call( 'sed -re "s|^Filename: %s/|Filename: %s/%s/|" < %s/dists/univention/main/binary-%s/Packages >> %s' % (
+								arch, prefix, arch, last_dirname, arch, fn ), shell=True )
+
+					# create compressed copy of dists packages files
+					subprocess.call( 'gzip < %s > %s.gz' % (fn, fn), shell=True )
+
+				# remember last version and directory name
+				last_version = version
+				last_dirname = dirname
+
+
 	def run( self ):
 		'''starts the mirror process'''
 		self.mirror_repositories()
 		self.mirror_update_scripts()
+		self.update_dists_files()

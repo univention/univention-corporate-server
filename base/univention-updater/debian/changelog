@@ -1,3 +1,14 @@
+univention-updater (5.0.14-1) unstable; urgency=low
+
+  * disabled download of dists repository part (Bug: #15505)
+  * fixed bug in UCR template mirror.list
+  * fixed call-by-reference bug in print_version_repositories() and
+    print_security_repositories()
+  * recreate dists packages file after mirror attempt
+  * added dependency to gzip and sed
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 02 Oct 2009 16:23:25 +0200
+
 univention-updater (5.0.13-1) unstable; urgency=low
 
   * fixed handling of --updateto argument (Bug: #15457)

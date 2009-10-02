@@ -33,6 +33,7 @@ import univention.debug as ud
 
 import re
 import os
+import copy
 import httplib, base64, string
 import socket
 import subprocess
@@ -352,9 +353,11 @@ class UniventionUpdater:
 		if not self.online_repository:
 			return repos
 
+		start = copy.deepcopy(start)
 		if not start:
 			start = UCS_Version( ( self.version_major, 0, 0 ) )
 
+		end = copy.deepcopy(end)
 		if not end:
 			end = UCS_Version( ( self.version_major, self.version_minor, self.patchlevel ) )
 
@@ -432,9 +435,11 @@ class UniventionUpdater:
 		if not self.online_repository:
 			return repos
 
+		start = copy.deepcopy(start)
 		if not start:
 			start = UCS_Version( ( self.version_major, self.version_minor, 0 ) )
 
+		end = copy.deepcopy(end)
 		if not end:
 			end = UCS_Version( ( self.version_major, self.version_minor, 0 ) )
 
