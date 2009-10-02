@@ -1076,7 +1076,6 @@ layout=[
 		[univention.admin.field("overridePWHistory"), univention.admin.field("overridePWLength")]],
 		[univention.admin.field("firstname"), univention.admin.field("lastname")],
 		[univention.admin.field("title"), univention.admin.field("organisation")],
-		[univention.admin.field("jpegPhoto")],
 	]),
 	univention.admin.tab(_('User account'),_('Account settings'),[
 		[univention.admin.field("userexpiry"), univention.admin.field("passwordexpiry")],
@@ -1092,6 +1091,7 @@ layout=[
 		[univention.admin.field("e-mail"), univention.admin.field("phone")],
 		[univention.admin.field("street"), univention.admin.field("birthday")],
 		[univention.admin.field("postcode"), univention.admin.field("city")],
+		[univention.admin.field("jpegPhoto")],
 	]),
 	univention.admin.tab(_('Organisation'),_('Organisational information'),[
 		[univention.admin.field("employeeNumber")],
