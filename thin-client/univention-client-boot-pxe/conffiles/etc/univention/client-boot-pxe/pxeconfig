@@ -12,11 +12,24 @@
 PROMPT 0
 DEFAULT linux
 IPAPPEND 1
-APPEND root=/dev/nfs nfsroot=@%@pxe/nfsroot@%@:/var/lib/univention-client-root DNSSERVER=@%@pxe/nameserver@%@ vt.default_utf8=0 vga=@%@pxe/vga@%@ splash=silent initrd=initrd.splash@!@
-options=''
+@!@
+line = 'root=/dev/nfs '
+line += 'nfsroot=%s:/var/lib/univention-client-root ' % baseConfig['pxe/nameserver']
+line += 'DNSSERVER=%s ' % baseConfig['pxe/nameserver']
+line += 'vt.default_utf8=0 '
+line += 'vga=%s ' % baseConfig['pxe/vga']
+if baseConfig.get('pxe/initrd', "True").lower() in ['yes', 'true', '1']:
+	line += 'splash=silent initrd=initrd.splash '
 if baseConfig.get('pxe/quiet', "False").lower() in ['yes', 'true', '1']:
-	options += " quiet"
-print options
+	line += 'quiet '
+if 'pxe/ldapserver' in baseConfig.keys():
+	line += 'ldapServer=%s ' % baseConfig['pxe/ldapserver']
+if 'pxe/ldapport' in baseConfig.keys():
+	line += 'ldapPort=%s ' % baseConfig['pxe/ldapport']
+if 'pxe/append' in baseConfig.keys():
+	line += '%s ' % baseConfig['pxe/append']
+
+print 'APPEND %s' % line
 @!@
 LABEL linux
   KERNEL linux

@@ -2,6 +2,9 @@ Type: file
 File: etc/univention/client-boot-pxe/pxeconfig
 Variables: pxe/vga
 Variables: pxe/quiet
+Variables: pxe/nameserver
+Variables: pxe/ldapserver
+Variables: pxe/ldapport
 
 Type: module
 Module: clientbootpxe.py

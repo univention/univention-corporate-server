@@ -1,3 +1,10 @@
+univention-client-boot-pxe (4.0.0-1) unstable; urgency=low
+
+  * added some more pxe parameter for the boot, for example ldapServer.
+    Bug #15551
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  1 Oct 2009 21:51:31 +0200
+
 univention-client-boot-pxe (4.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
