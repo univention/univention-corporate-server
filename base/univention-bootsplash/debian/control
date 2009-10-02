@@ -9,7 +9,6 @@ Package: univention-bootsplash
 Architecture: all
 Pre-Depends: univention-config-registry
 Depends: usplash, univention-usplash-theme
-Conflicts: bootsplash
 Description: UCS - bootsplash
  Univention Bootsplash manages splashimages on bootup.
  .
