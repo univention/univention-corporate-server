@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention Thin Client SSH Daemon
 #  postinst script for the debian package
@@ -30,7 +30,11 @@
 
 #DEBHELPER#
 
-update-rc.d thin-client-ssh start 19 2 .
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.1; then
+	update-rc.d -f thin-client-ssh remove start
+fi
+
+update-rc.d thin-client-ssh start 15 2 .
 
 if [ -f /etc/ssh/ssh_host_dsa_key ]; then
 	mv /etc/ssh/ssh_host_dsa_key /etc/ssh/ssh_host_dsa_key.server
