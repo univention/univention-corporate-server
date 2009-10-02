@@ -30,57 +30,67 @@
 echo -n "Setting up Thin Client LDAP configuration ... "
 
 eval $(univention-baseconfig shell hostname domainname nameserver1 interfaces/eth0/address interfaces/eth0/netmask interfaces/eth0/network)
-# searching ldap server for this subnet
-res=$(/usr/bin/dns-lookup _ldap._tcp.$domainname srv | \
-	while read priority weight ldap_port_tmp ldap_server_tmp; do
-		ldapIP=`host $ldap_server_tmp | awk '{print $4}'`
-		if [ "$ldapIP" != "3(NXDOMAIN)" -a "$ldapIP" != "found" ]; then
-			for ((i=1; i<5; i++)); do
-				if [ "`echo $interfaces_eth0_address | cut -d '.' -f $i`" == "`echo $ldapIP | cut -d '.' -f $i`" ]; then
-					continue
-				else
-					if [ "$(echo $interfaces_eth0_netmask | cut -d '.' -f $i)" == "255" ]; then
-						break
-					else
-						ldapServer=$ldap_server_tmp
-						break
-					fi
-				fi
-			done
-			if [ -n "$ldapServer" ]; then
-				ping -c 1 $ldapServer &>/dev/null
-				if [ "$?" -eq 0 ]; then
-					echo "$ldapServer $ldap_port_tmp"
-					break;
-				else
-					ldapServer=""
-				fi
-			fi
-		fi
-	done)
-
-if [ -z "$ldapServer" ]
-then
-	echo "No LDAP-Server server in local subnet found" >>/dev/tty8 2>&1
-
-	#if nothing found take the first we can ping
+ldapServer=$(cat /proc/cmdline | grep ldapServer | sed -e 's|.*ldapServer=||;s| .*||')
+if [ -n "$ldapServer" ]; then
+	ldapPort=$(cat /proc/cmdline | grep ldapPort | sed -e 's|.*ldapPort=||;s| .*||')
+	if [ -z "$ldapPort" ]; then
+		ldapPort=389
+	fi
+else
+	# searching ldap server for this subnet
 	res=$(/usr/bin/dns-lookup _ldap._tcp.$domainname srv | \
-		while read priority weight ldap_port ldap_server; do
-			ldapIP=`host $ldap_server | awk '{print $4}'`
-			if [ -n "$ldap_server" ]; then
-				ping -c 1 $ldap_server &>/dev/null
-				if [ "$?" -eq 0 ]; then
-					echo "$ldap_server $ldap_port"
-					break;
-				else
-					ldap_server=""
+		while read priority weight ldap_port_tmp ldap_server_tmp; do
+			ldapIP=`host $ldap_server_tmp | awk '{print $4}'`
+			if [ "$ldapIP" != "3(NXDOMAIN)" -a "$ldapIP" != "found" ]; then
+				for ((i=1; i<5; i++)); do
+					if [ "`echo $interfaces_eth0_address | cut -d '.' -f $i`" == "`echo $ldapIP | cut -d '.' -f $i`" ]; then
+						continue
+					else
+						if [ "$(echo $interfaces_eth0_netmask | cut -d '.' -f $i)" == "255" ]; then
+							break
+						else
+							ldapServer=$ldap_server_tmp
+							break
+						fi
+					fi
+				done
+				if [ -n "$ldapServer" ]; then
+					ping -c 1 $ldapServer &>/dev/null
+					if [ "$?" -eq 0 ]; then
+						echo "$ldapServer $ldap_port_tmp"
+						break;
+					else
+						ldapServer=""
+					fi
 				fi
 			fi
 		done)
+
+	if [ -z "$ldapServer" ]
+	then
+		echo "No LDAP-Server server in local subnet found" >>/dev/tty8 2>&1
+
+		#if nothing found take the first we can ping
+		res=$(/usr/bin/dns-lookup _ldap._tcp.$domainname srv | \
+			while read priority weight ldap_port ldap_server; do
+				ldapIP=`host $ldap_server | awk '{print $4}'`
+				if [ -n "$ldap_server" ]; then
+					ping -c 1 $ldap_server &>/dev/null
+					if [ "$?" -eq 0 ]; then
+						echo "$ldap_server $ldap_port"
+						break;
+					else
+						ldap_server=""
+					fi
+				fi
+			done)
+	fi
+
+	ldapServer=`echo $res | awk '{ print $1 }'`
+	ldapPort=`echo $res | awk '{ print $2 }'`
+
 fi
 
-ldapServer=`echo $res | awk '{ print $1 }'`
-ldapPort=`echo $res | awk '{ print $2 }'`
 if [ -z "$ldapServer" -o -z "$ldapPort" ]; then
 	echo "failed"
 	echo "error: LDAP server and/or port missing"
@@ -102,6 +112,6 @@ fi
 mac_address=$(ip link show eth0 | grep link/ether | sed 's/.*link\/ether \([0-9a-f:]*\) .*/\1/')
 hostdn=$(ldapsearch -x -h $ldapServer -p $ldapPort -b $ldapBase "(&(macAddress=${mac_address})(objectClass=univentionThinClient))" -LLL dn | ldapsearch-wrapper | grep "^dn:" | sed -e 's/dn: //g')
 
-univention-baseconfig set ldap/server/name=$ldapServer ldap/port=$ldapPort ldap/base=$ldapBase ldap/hostdn=$hostdn ldap/mydn=$hostdn nsswitch/ldap=yes >>/dev/tty8 2>&1
+univention-baseconfig set ldap/server/name=$ldapServer ldap/port=$ldapPort ldap/base=$ldapBase ldap/hostdn="$hostdn" ldap/mydn="$hostdn" nsswitch/ldap=yes >>/dev/tty8 2>&1
 
 echo "done"

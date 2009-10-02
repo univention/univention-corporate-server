@@ -1,3 +1,12 @@
+univention-thin-client-basesystem (6.0.7-1) unstable; urgency=low
+
+  * support spaces in the ldap hostdn. Bug #14611
+  * cleanup the init script, remove set -e. Bug #14305
+  * evaluate ldapServer and ldapPort as /proc/cmdline arguments. Bug
+    #15551
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  1 Oct 2009 21:56:55 +0200
+
 univention-thin-client-basesystem (6.0.6-1) unstable; urgency=low
 
   * create lock files in the ramdisk for the new UCR locking feature.

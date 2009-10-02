@@ -30,7 +30,6 @@
 preparePythonEnvironment ()
 {
 	mkdir -p /var/lib/python-support/python2.4/
-	update-python-modules -i /usr/share/python-support/python-dns
 }
 
 echo -n "Setting up Thin Client filesystem: "

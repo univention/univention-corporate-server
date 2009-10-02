@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention Client Basesystem
 #  init script: setting up a thin client
@@ -34,7 +34,7 @@ eval $(univention-baseconfig shell ldap/server/name ldap/hostdn)
 policy_file=$(mktemp)
 policy_file_result=$(mktemp)
 
-univention_policy_result -h $ldap_server_name -s $ldap_hostdn | sed 's|fixedAttributes=[^ ]*||;s|"||g' >$policy_file
+univention_policy_result -h $ldap_server_name -s "$ldap_hostdn" | sed 's|fixedAttributes=[^ ]*||;s|"||g' >$policy_file
 cat $policy_file | while read line; do
 
 	# split the line a=b in a and b
@@ -94,12 +94,14 @@ if [ -n "$authserver" ]; then
 	registry_vals="$registry_vals univentionAuthServer=$authserver"
 fi
 
-# set kerberos realm
-realm=`/usr/bin/dns-lookup _kerberos.$domainname txt | head -1`
-if [ -z "$realm" ]; then
-	echo "WARNING: Kerberos realm TXT record not found. Check the DNS for the TXT record _kerberos.$domainname"
-else
-	registry_vals="$registry_vals kerberos/realm=$realm"
+if [ -z "$kerberos_realm" ]; then
+	# set kerberos realm
+	realm=`/usr/bin/dns-lookup _kerberos.$domainname txt | head -1`
+	if [ -z "$realm" ]; then
+		echo "WARNING: Kerberos realm TXT record not found. Check the DNS for the TXT record _kerberos.$domainname"
+	else
+		registry_vals="$registry_vals kerberos/realm=$realm"
+	fi
 fi
 
 univention-baseconfig set $registry_vals >>/dev/tty8 2>&1
