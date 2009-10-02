@@ -30,5 +30,5 @@
 
 #DEBHELPER#
 
-#univention-thin-client-apt install univention-thin-client-bootsplash-config univention-usplash-theme usplash
-#univention-thin-client-ramdisk -f /etc/usplash.conf
+univention-thin-client-apt install univention-thin-client-bootsplash-config univention-usplash-theme usplash
+univention-thin-client-ramdisk -f /etc/usplash.conf
