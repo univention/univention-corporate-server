@@ -31,7 +31,7 @@
 #DEBHELPER#
 
 # background image
-BGI=/usr/share/wallpapers/ucs-background-1280x1024.png
+BGI=/usr/share/wallpapers/univention-gnome-background.png
 if [ -L "/etc/alternatives/desktop-background" ]; then
 	update-alternatives --remove desktop-background $BGI
 	update-alternatives --auto desktop-background

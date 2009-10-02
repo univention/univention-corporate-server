@@ -52,7 +52,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 	univention-install-baseconfig
-	install -m 0644 background/ucs-background-1280x1024.png debian/univention-gnome-session/usr/share/images/desktop-base/
+	install -m 0644 background/univention-gnome-background.png debian/univention-gnome-session/usr/share/wallpapers/
 	install -m 0755 session/GNOME.Shutdown debian/univention-gnome-session/usr/share/univention-client-login
 	install -m 0755 session/GNOME.Session debian/univention-gnome-session/etc/univention
 

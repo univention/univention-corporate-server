@@ -30,7 +30,4 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 On Univention and Debian systems, the complete text of the GNU General Public
 License, version 2, can be found in /usr/share/common-licenses/GPL-2.
 
-=============================================================================
 
-The following files are excluded from the GPL license:
- - univention-background.png

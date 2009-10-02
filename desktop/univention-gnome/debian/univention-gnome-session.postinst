@@ -34,7 +34,7 @@
 univention-config-registry set gdm/session/default?Gnome-Arbeitsplatz
 
 # background image
-BGI=/usr/share/wallpapers/ucs-background-1280x1024.png
+BGI=/usr/share/wallpapers/univention-gnome-background.png
 if [ -L "/etc/alternatives/desktop-background" ]; then
 	update-alternatives --install /usr/share/images/desktop-base/desktop-background desktop-background $BGI 1 
 	update-alternatives --set desktop-background $BGI
