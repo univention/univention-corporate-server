@@ -1,3 +1,10 @@
+univention-thin-client-x-base (4.0.3-1) unstable; urgency=low
+
+  * remove the old serial mouse devices and the hsync and vrefresh
+    default values from the init script. Bug #15784
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  2 Oct 2009 11:06:01 +0200
+
 univention-thin-client-x-base (4.0.2-1) unstable; urgency=low
 
   * start the gdm before starting the the sshd. Bug #15781
