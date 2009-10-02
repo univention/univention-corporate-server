@@ -34,9 +34,16 @@
 #define PROGRESSBAR_WIDTH 218
 #define PROGRESSBAR_HEIGHT 25
 
-extern struct usplash_pixmap pixmap_silent_splash_640x480, pixmap_silent_splash_800x600, pixmap_silent_splash_1024x768, pixmap_silent_splash_1280x1024, pixmap_silent_splash_1600x1200;
-extern struct usplash_pixmap pixmap_throbber_back;
-extern struct usplash_pixmap pixmap_throbber_fore;
+extern struct usplash_pixmap pixmap_silent_splash_640x480, pixmap_silent_splash_800x600;
+extern struct usplash_pixmap pixmap_silent_splash_1024x768, pixmap_silent_splash_1280x1024, pixmap_silent_splash_1600x1200;
+
+extern struct usplash_pixmap pixmap_throbber_back_640x480, pixmap_throbber_back_800x600;
+extern struct usplash_pixmap pixmap_throbber_back_1024x768, pixmap_throbber_back_1280x1024, pixmap_throbber_back_1600x1200;
+
+extern struct usplash_pixmap pixmap_throbber_fore_640x480, pixmap_throbber_fore_800x600;
+extern struct usplash_pixmap pixmap_throbber_fore_1024x768, pixmap_throbber_fore_1280x1024, pixmap_throbber_fore_1600x1200;
+
+
 extern struct usplash_font font_helvB10;
 
 void t_init(struct usplash_theme* theme);
@@ -71,10 +78,10 @@ struct usplash_theme usplash_theme = {
 	.text_failure           = TEXT_FAILURE,
 
 	/* Progress bar position and size in pixels */
-  	.progressbar_x      = 640/2 - PROGRESSBAR_WIDTH/2,
-  	.progressbar_y      = 480/3*2,
-  	.progressbar_width  = PROGRESSBAR_WIDTH,
-  	.progressbar_height = PROGRESSBAR_HEIGHT,
+  	.progressbar_x      = 284,
+  	.progressbar_y      = 245,
+  	.progressbar_width  = 169,
+  	.progressbar_height = 19,
 
         /* Text box position and size in pixels */
         .text_x      = 640/4,
@@ -116,10 +123,10 @@ struct usplash_theme usplash_theme_800_600 = {
 	.text_failure           = TEXT_FAILURE,
 
 	/* Progress bar position and size in pixels */
-  	.progressbar_x      = 800/2 - PROGRESSBAR_WIDTH/2,
-  	.progressbar_y      = 600/3 *2,
-  	.progressbar_width  = PROGRESSBAR_WIDTH,
-  	.progressbar_height = PROGRESSBAR_HEIGHT,
+  	.progressbar_x      = 351,
+  	.progressbar_y      = 313,
+  	.progressbar_width  = 203,
+  	.progressbar_height = 23,
 
         /* Text box position and size in pixels */
         .text_x      = 800/4,
@@ -158,10 +165,10 @@ struct usplash_theme usplash_theme_1024_768 = {
 	.text_failure           = TEXT_FAILURE,
 
 	/* Progress bar position and size in pixels */
-  	.progressbar_x      = 1024/2 - PROGRESSBAR_WIDTH/2,
-  	.progressbar_y      = 768/3 * 2,
-  	.progressbar_width  = PROGRESSBAR_WIDTH,
-  	.progressbar_height = PROGRESSBAR_HEIGHT,
+  	.progressbar_x      = 460,
+  	.progressbar_y      = 414,
+  	.progressbar_width  = 235,
+  	.progressbar_height = 27,
 
         /* Text box position and size in pixels */
         .text_x      = 1024/4,
@@ -200,10 +207,10 @@ struct usplash_theme usplash_theme_1280_1024 = {
 	.text_failure           = TEXT_FAILURE,
 
 	/* Progress bar position and size in pixels */
-  	.progressbar_x      = 1280/2 - PROGRESSBAR_WIDTH/2,
-  	.progressbar_y      = 1024/3*2,
-  	.progressbar_width  = PROGRESSBAR_WIDTH,
-  	.progressbar_height = PROGRESSBAR_HEIGHT,
+  	.progressbar_x      = 568,
+  	.progressbar_y      = 545,
+  	.progressbar_width  = 300,
+  	.progressbar_height = 34,
 
         /* Text box position and size in pixels */
         .text_x      = 1280/4,
@@ -225,8 +232,8 @@ struct usplash_theme usplash_theme_1280_1024 = {
 
 struct usplash_theme usplash_theme_1600_1200 = {
 	.version = THEME_VERSION,
-    .next = NULL,
-    .ratio = USPLASH_4_3,
+        .next = NULL,
+        .ratio = USPLASH_4_3,
 
 	/* Background and font */
 	.pixmap = &pixmap_silent_splash_1600x1200,
@@ -242,10 +249,10 @@ struct usplash_theme usplash_theme_1600_1200 = {
 	.text_failure           = TEXT_FAILURE,
 
 	/* Progress bar position and size in pixels */
-  	.progressbar_x      = 1600/2 - PROGRESSBAR_WIDTH/2,
-  	.progressbar_y      = 1200/3*2,
-  	.progressbar_width  = PROGRESSBAR_WIDTH,
-  	.progressbar_height = PROGRESSBAR_HEIGHT,
+  	.progressbar_x      = 718,
+  	.progressbar_y      = 646,
+  	.progressbar_width  = 340,
+  	.progressbar_height = 39,
 
         /* Text box position and size in pixels */
         .text_x      = 1600/4,
@@ -277,6 +284,37 @@ void t_clear_progressbar(struct usplash_theme *theme) {
 }
 
 void t_draw_progressbar(struct usplash_theme *theme, int percentage) {
+
+    struct usplash_pixmap pixmap_throbber_back;
+    struct usplash_pixmap pixmap_throbber_fore;
+    int x, y;
+    usplash_getdimensions(&x, &y);
+
+    if (x == 640) {
+        pixmap_throbber_back = pixmap_throbber_back_640x480;
+        pixmap_throbber_fore = pixmap_throbber_fore_640x480;
+    }
+    else if (x == 800) {
+        pixmap_throbber_back = pixmap_throbber_back_800x600;
+        pixmap_throbber_fore = pixmap_throbber_fore_800x600;
+    }
+    else if (x == 1024) {
+        pixmap_throbber_back = pixmap_throbber_back_1024x768;
+        pixmap_throbber_fore = pixmap_throbber_fore_1024x768;
+    }
+    else if (x == 1280) {
+        pixmap_throbber_back = pixmap_throbber_back_1280x1024;
+        pixmap_throbber_fore = pixmap_throbber_fore_1280x1024;
+    }
+    else if (x == 1600) {
+        pixmap_throbber_back = pixmap_throbber_back_1600x1200;
+        pixmap_throbber_fore = pixmap_throbber_fore_1600x1200;
+    }
+    else {
+        pixmap_throbber_back = pixmap_throbber_back_1024x768;
+        pixmap_throbber_fore = pixmap_throbber_fore_1024x768;
+    }
+
     int w = (pixmap_throbber_back.width * percentage / 100);
     usplash_put(theme->progressbar_x, theme->progressbar_y, &pixmap_throbber_back);
     if(percentage == 0)
@@ -291,10 +329,41 @@ void t_draw_progressbar(struct usplash_theme *theme, int percentage) {
 
 void t_animate_step(struct usplash_theme* theme, int pulsating) {
 
+    struct usplash_pixmap pixmap_throbber_back;
+    struct usplash_pixmap pixmap_throbber_fore;
+    int progressbar_width = theme->progressbar_width;
+    int x, y;
+    usplash_getdimensions(&x, &y);
+
+    if (x == 640) {
+        pixmap_throbber_back = pixmap_throbber_back_640x480;
+        pixmap_throbber_fore = pixmap_throbber_fore_640x480;
+    }
+    else if (x == 800) {
+        pixmap_throbber_back = pixmap_throbber_back_800x600;
+        pixmap_throbber_fore = pixmap_throbber_fore_800x600;
+    }
+    else if (x == 1024) {
+        pixmap_throbber_back = pixmap_throbber_back_1024x768;
+        pixmap_throbber_fore = pixmap_throbber_fore_1024x768;
+    }
+    else if (x == 1280) {
+        pixmap_throbber_back = pixmap_throbber_back_1280x1024;
+        pixmap_throbber_fore = pixmap_throbber_fore_1280x1024;
+    }
+    else if (x == 1600) {
+        pixmap_throbber_back = pixmap_throbber_back_1600x1200;
+        pixmap_throbber_fore = pixmap_throbber_fore_1600x1200;
+    }
+    else {
+        pixmap_throbber_back = pixmap_throbber_back_1024x768;
+        pixmap_throbber_fore = pixmap_throbber_fore_1024x768;
+    }
+
     static int pulsate_step = 0;
     static int pulse_width = 60;
     static int step_width = 2;
-    static int num_steps = (PROGRESSBAR_WIDTH - 60 - 2)/2;
+    int num_steps = (progressbar_width - 60 - 2)/2;
     int x1;
 
     if (pulsating) {
@@ -303,7 +372,7 @@ void t_animate_step(struct usplash_theme* theme, int pulsating) {
         if(pulsate_step < num_steps/2+1)
 	        x1 = 2 * step_width * pulsate_step;
         else
-	        x1 = PROGRESSBAR_WIDTH - pulse_width - 2 * step_width * (pulsate_step - num_steps/2+1);
+	        x1 = progressbar_width - pulse_width - 2 * step_width * (pulsate_step - num_steps/2+1);
 
         usplash_put_part(theme->progressbar_x + x1, theme->progressbar_y, pulse_width,
                          pixmap_throbber_fore.height, &pixmap_throbber_fore, x1, 0);
@@ -311,3 +380,4 @@ void t_animate_step(struct usplash_theme* theme, int pulsating) {
         pulsate_step = (pulsate_step + 1) % num_steps;
     }
 }
+

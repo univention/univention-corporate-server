@@ -1,3 +1,9 @@
+univention-usplash-theme (1.0.2-2) unstable; urgency=low
+
+  * new progressbar position (Bug: #14524)
+
+ -- Felix Botner <botner@univention.de>  Fri,  2 Oct 2009 09:35:53 +0200
+
 univention-usplash-theme (1.0.2-1) unstable; urgency=low
 
   * transparent "throbber forground" background (Bug: #14524)
