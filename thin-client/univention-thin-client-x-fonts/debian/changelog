@@ -1,3 +1,9 @@
+univention-thin-client-x-fonts (3.0.1-1) unstable; urgency=low
+
+  * include the lsb init functions. Bug #14421
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  2 Oct 2009 08:22:09 +0200
+
 univention-thin-client-x-fonts (3.0.0-1) unstable; urgency=low
 
   * Make init scripts LSB-compliant (Bug #14421)
