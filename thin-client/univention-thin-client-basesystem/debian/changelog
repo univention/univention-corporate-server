@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (6.0.10-1) unstable; urgency=low
+
+  * make init scripts LSB-compliant. Bug #14421
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  2 Oct 2009 16:12:02 +0200
+
 univention-thin-client-basesystem (6.0.9-1) unstable; urgency=low
 
   * create /var/lib/dbus during the Thin Client boot to make dbus happy.

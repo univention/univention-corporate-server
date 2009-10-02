@@ -27,7 +27,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
-echo -n "Setting up Thin Client policy configuration ... "
+. /lib/lsb/init-functions
+
+log_action_msg "Setting up Thin Client policy configuration"
 
 eval $(univention-baseconfig shell ldap/server/name ldap/hostdn)
 
@@ -125,4 +127,4 @@ if [ -n "$thinclient_debug" ]; then
 	univention-baseconfig dump | grep univention > /dev/tty9
 fi
 
-echo "done"
+log_action_end_msg 0

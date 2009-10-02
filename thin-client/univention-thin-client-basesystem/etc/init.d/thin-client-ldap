@@ -27,7 +27,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
-echo -n "Setting up Thin Client LDAP configuration ... "
+. /lib/lsb/init-functions
+
+log_action_msg "Setting up Thin Client LDAP configuration"
 
 eval $(univention-baseconfig shell hostname domainname nameserver1 interfaces/eth0/address interfaces/eth0/netmask interfaces/eth0/network)
 ldapServer=$(cat /proc/cmdline | grep ldapServer | sed -e 's|.*ldapServer=||;s| .*||')
@@ -114,4 +116,4 @@ hostdn=$(ldapsearch -x -h $ldapServer -p $ldapPort -b $ldapBase "(&(macAddress=$
 
 univention-baseconfig set ldap/server/name=$ldapServer ldap/port=$ldapPort ldap/base=$ldapBase ldap/hostdn="$hostdn" ldap/mydn="$hostdn" nsswitch/ldap=yes >>/dev/tty8 2>&1
 
-echo "done"
+log_action_end_msg 0

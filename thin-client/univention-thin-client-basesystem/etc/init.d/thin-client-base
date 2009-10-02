@@ -27,12 +27,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
+. /lib/lsb/init-functions
+
 preparePythonEnvironment ()
 {
 	mkdir -p /var/lib/python-support/python2.4/
 }
 
-echo -n "Setting up Thin Client filesystem: "
+log_action_msg "Setting up Thin Client filesystem"
 
 dmesg -n 1
 
@@ -65,8 +67,8 @@ mkdir -p /var/cache/univention-config
 # install template directories
 cd /
 find etc/univention/templates/files -type d | while read d; do
-	n=${d#etc/univention/templates/files}
-	mkdir -p "$ramdisk$n"
+n=${d#etc/univention/templates/files}
+mkdir -p "$ramdisk$n"
 done
 
 preparePythonEnvironment
@@ -96,4 +98,4 @@ touch /var/log/dmesg
 # -> thin-client-policies
 ### start policy result
 
-echo "done."
+log_action_end_msg 0

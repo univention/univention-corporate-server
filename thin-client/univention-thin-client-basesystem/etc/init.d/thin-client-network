@@ -27,7 +27,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
-echo -n "Setting up Thin Client network configuration "
+. /lib/lsb/init-functions
+
+log_action_msg "Setting up Thin Client network configuration"
 
 ramdisk="/ramdisk"
 
@@ -115,4 +117,5 @@ univention-baseconfig set hostname="$hostname" domainname="$domainname" \
 	nameserver1="$nameserver" interfaces/eth0/address="$myip" \
 	interfaces/eth0/netmask="$subnetmask" interfaces/eth0/network="$network"  >>/dev/tty8 2>&1
 
-echo "done"
+log_action_end_msg 0
+
