@@ -32,6 +32,9 @@ chmod 755 /etc/init.d/thin-client-x-base
 
 update-rc.d thin-client-x-base start 75 S .
 
+update-rc.d -f gdm remove start   
+update-rc.d gdm start 14 2 .
+
 # remove all man pages (not required on thin client)
 rm -rf /usr/share/man
 
