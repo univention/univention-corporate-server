@@ -227,7 +227,7 @@ chmod 755 "/sbin/start-stop-daemon"
 	update-rc.d thin-client-ldap start 45 S .
 	update-rc.d thin-client-policies start 50 S .
 
-	ln -sf /etc/init.d/portmap /etc/rc2.d/S80portmap
+	ln -sf /etc/init.d/portmap /etc/rc2.d/S19portmap
 
 	mv "/sbin/start-stop-daemon.REAL" "/sbin/start-stop-daemon"
 	# set keyboard to German
