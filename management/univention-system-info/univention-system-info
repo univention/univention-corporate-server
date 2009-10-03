@@ -1,0 +1,203 @@
+#!/bin/bash
+#
+# Univention System Info
+#  collects informations about the hardware
+#
+# Copyright (C) 2009 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+TEMPDIR=$(mktemp -d)
+PROCFILES="cpuinfo devices dma filesystems interrupts meminfo partitions version scsi/scsi mounts"
+PROGRAMS="lspci__-v lsmod dmidecode"
+
+manufacturer=
+model=
+comment=
+ticket=
+umc=
+
+collect_from_procfile() {
+	if [ -e /proc/$1 ]
+		then
+		[ -z "$umc" ] && echo -n ": $1"
+		filename=`echo $1 | sed -e 's|/|_|g'`
+		cat "/proc/$1" > "$TEMPDIR/proc/$filename"
+	fi
+}
+
+collect_from_program() {
+	cmd=`echo $1 | sed -e 's/__/ /g'`
+	$cmd > "$TEMPDIR/$1"
+	[ -z "$umc" ] && echo -n ": $cmd"
+}
+
+display_help() {
+	display_header
+	cat <<-EOL
+	Syntax:
+	  $0 [options]
+
+	Options:
+	  -m | --manufacturer:
+	    set value for manufacturer of the system
+
+	  -t | --typ:
+	    set typ/model of the system
+
+	  -c | --comment:
+	    set a descriptive comment
+
+	  -s | --support:
+	    set a support ticket number
+
+	  -u | --umc:
+	    produces a better parsable output
+
+	  -h | --help:
+	    print this usage message and exit program
+
+	  --version
+	    print version information and exit program
+
+	Description:
+	  $0 collects some hardware-related informations
+	  about your system, e.g. CPU, memory and filesystems.
+
+	Known-Bugs:
+	  -None-
+
+	EOL
+	exit 0
+}
+
+display_header() {
+	echo "univention-sysinfo: collect information about your system"
+	echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
+	echo ""
+}
+
+display_version() {
+	echo "$0 @%@package_version@%@"
+	exit 0
+}
+
+while getopts "hvm:t:c:f:s:u" OPTION; do
+	case $OPTION in
+		v|-version)
+			display_version
+			;;
+		m|-manufacturer)
+			manufacturer=$OPTARG
+			;;
+		t|-type)
+			type=$OPTARG
+			;;
+		c|-comment)
+			comment=$OPTARG
+			;;
+		s|-support)
+			support=$OPTARG
+			;;
+		f|-file)
+			file=$OPTARG
+			;;
+		u|-umc)
+			umc=yes
+			;;
+		*)
+			display_help
+			;;
+	esac
+done
+
+if [ -z "$manufacturer" -o -z "$type" ]; then
+	echo "error: manufacturer and type/model of the system must be provided"
+	display_help
+	exit 1
+fi
+
+mkdir $TEMPDIR/proc > /dev/null 2>&1
+if [ -n "$umc" ]; then
+	echo "Temp: $TEMPDIR"
+else
+	echo " Collect system information:"
+fi
+
+[ -z "$umc" ] && echo -n " /proc ... "
+for proc in $PROCFILES; do
+  collect_from_procfile $proc
+done
+if [ -z "$umc" ]; then
+	echo "done"
+
+	echo -n " program ... "
+fi
+for prog in $PROGRAMS; do	
+  collect_from_program $prog
+done
+[ -z "$umc" ] && echo ""
+
+echo " Manufacturer: "$manufacturer > $TEMPDIR/info
+echo " Model       : "$type >> $TEMPDIR/info
+echo " Comment     : "$comment >> $TEMPDIR/info
+echo " Ticket No   : "$support >> $TEMPDIR/info
+
+# find unique ID for the computer
+uuid=$(dmidecode -s system-uuid)
+if [ -z "$uuid" ]; then
+	# fallback 1
+	if [ -f /sys/hypervisor/uuid -a $(cat /sys/hypervisor/uuid) != "00000000-0000-0000-0000-000000000000" ]; then
+		uuid=$(cat /sys/hypervisor/uuid)
+	else
+		# fallback 2
+		uuid=$(ip -o -f link addr show up | grep -v lo: | head -n 1 | sed 's|.*link/ether \([0-9a-f:]*\) .*|\1|;s|:|-|g')
+	fi
+fi
+
+
+cd /tmp
+mv $TEMPDIR $uuid
+if [ -n "$file" ]; then
+	tar czf $file $uuid > /dev/null 2>&1
+	archive=$file
+else
+	tar czf $uuid.tar.gz $uuid > /dev/null 2>&1
+	archive=/tmp/$uuid.tar.gz
+fi
+rm -rf $uuid
+
+if [ -z "$umc" ]; then
+	echo ""
+	echo "Collection of system-information finished."
+	echo "Archive: $archive"
+else
+	mv $archive /var/www/univention-management-console/system-info/
+	echo "archive:"$(basename $archive)
+	echo "cpu:"$(grep -m 1 "^model name" /proc/cpuinfo | sed 's/model name[ \t] *: //')
+	echo "num_cpu:"$(grep -c "^processor" /proc/cpuinfo)
+	echo "mem:"$(grep "^MemTotal:" /proc/meminfo | sed 's/MemTotal:[ \t]*//')
+	echo "net_dev:"$(lspci | egrep " (Network|Ethernet) controller: " | sed 's/.* \(Network\|Ethernet\) controller: //')
+	echo "gfx_dev:"$(lspci | grep " VGA compatible controller: " | sed 's/.* VGA compatible controller: //')
+fi

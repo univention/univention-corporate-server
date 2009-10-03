@@ -1,0 +1,65 @@
+#!/bin/sh
+#
+# Univention Configuration Registry
+#  preinst file
+#
+# Copyright (C) 2004-2009 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+if [ "$1" = "configure" -a -n "$2" ]; then
+	if dpkg --compare-versions "$2" lt 1.28;  then
+		rm -f /var/run/lilo.d/
+	fi
+	if dpkg --compare-versions "$2" lt 1.4;  then
+		boot_device=`cat /etc/lilo.conf  | grep boot=  | sed -e "s|boot=||"`
+		root_device=`cat /etc/lilo.conf  | grep root=  | sed -e "s|root=||"`
+		if [ -n "$boot_device" ]; then
+			univention-config-registry set lilo/boot?$boot_device
+		fi
+		if [ -n "$root_device" ]; then
+			univention-config-registry set lilo/root?$root_device
+		fi
+
+		modules=`cat /etc/modules | while read line; do l=\`echo $line | sed -e "s|#.*||"\`; if [ -z "$l" ]; then continue; fi; echo "$l;"; done`
+		if [ -n "$modules" ]; then
+			univention-config-registry set kernel/modules="$modules"
+		fi
+	fi
+
+fi
+
+dpkg-divert --rename --quiet --divert /etc/motd.debian --add /etc/motd
+
+#DEBHELPER#
+
+#be sure the /etc/kernel-img.conf exists
+if [ ! -e /etc/kernel-img.conf ]; then
+	echo "do_initrd = yes" >>/etc/kernel-img.conf
+	echo "do_bootfloppy = no" >>/etc/kernel-img.conf
+	echo "silent_loader = yes" >>/etc/kernel-img.conf
+	echo "clobber_modules = yes" >>/etc/kernel-img.conf
+fi
+
+exit 0

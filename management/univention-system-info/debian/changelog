@@ -1,0 +1,7 @@
+univention-system-info (0.0.1-1) unstable; urgency=low
+
+  * Initial release: containa new univention-system-info script, a UMC
+    module and a package contaiing a CGI script to reading files via HTTP
+    POST (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 29 Sep 2009 11:33:10 +0200
