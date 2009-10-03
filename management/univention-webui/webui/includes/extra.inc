@@ -527,10 +527,28 @@ class button extends extra{
 			}
 			else //i.e. search result
 		    {
-				$str .= '<table class="button"><tr><td class="button_icon">'.$inp.$img;
-				if(trim($this->basket['text']) != '')
-					$str .= '</td><td class="button_link">'.$link.'</td><td>&nbsp;';
-				$str .= '</td></tr>
+				if (isset($this->attribute['class'])) {
+					$class = $this->attribute['class'];
+				} else {
+					$class = "button";
+				}
+							
+				$str .= '<table class="'.$class.'"><tr>';
+
+				$icon_col = '<td class="button_icon">'.$inp.$img.'</td>';
+				$text_col = '<td class="button_link">'.$link.'</td>';
+				
+				$btn_row = '';
+				if (isset($this->attribute['icon_side']) && $this->attribute['icon_side'] == 'right') {
+					if(trim($this->basket['text']) != '')
+						$btn_row = $text_col;
+					$btn_row .= $icon_col;
+				} else {
+					$btn_row = $icon_col;
+					if(trim($this->basket['text']) != '')
+						$btn_row .= $text_col;
+				}
+				$str .= $btn_row.'</tr>
 </table>';
 		    }
 
@@ -1845,6 +1863,8 @@ class col extends webui_translator
 			$attrib_str .= ' rowspan="'.$this->attribute['rowspan'].'"';
 		if(isset($this->attribute['align']))
 			$attrib_str .= ' align="'.$this->attribute['align'].'"';
+		if(isset($this->attribute['valign']))
+			$attrib_str .= ' valign="'.$this->attribute['valign'].'"';
 		if(isset($this->attribute['nofill']))
 			$attrib_str .= ' width="1" ';
 		$all=$this->conti_ref->show_all();

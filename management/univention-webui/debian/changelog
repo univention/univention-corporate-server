@@ -1,3 +1,10 @@
+univention-webui (3.0.10-1) unstable; urgency=low
+
+  * support vertical alignment of table columns
+  * button may now of the icon on the right side of the text (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Sat,  3 Oct 2009 18:12:52 +0200
+
 univention-webui (3.0.9-1) unstable; urgency=low
 
   * show a warning message if the web browser is not supported. Bug
