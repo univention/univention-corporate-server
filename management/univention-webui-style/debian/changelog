@@ -1,3 +1,10 @@
+univention-webui-style (4.0.2-1) unstable; urgency=low
+
+  * add two styles for buttons aligned to the left or that are centered
+    (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Sat,  3 Oct 2009 18:14:43 +0200
+
 univention-webui-style (4.0.1-1) unstable; urgency=low
 
   * set a darker background for read-only fields. Bug #13209

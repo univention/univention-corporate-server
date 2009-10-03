@@ -204,6 +204,14 @@ table.button{
 float:left;
 }
 
+table.button_right{
+float:right;
+}
+
+table.button_center{
+float:center;
+}
+
 table.multi{
 border-spacing:0px !important;
 border-collapse:collapse;
