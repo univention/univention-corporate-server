@@ -140,6 +140,11 @@ class Frame( Element, list ):
 	def get_title( self ):
 		return self.__title
 
+class Cell( Element ):
+	def __init__( self, item = '', attributes = {} ):
+		Element.__init__( self, attributes )
+		self.item = item
+
 class Row( Element, list ):
 	def __init__( self, sequence = [], attributes = {} ):
 		Element.__init__( self, attributes )
@@ -210,4 +215,4 @@ def _str_list( lst ):
 		text += '%s,' % unicode( i )
 	return text[ : -1 ] + ' ]'
 
-ListTypes = ( type( Frame() ), type( List() ), type( Row() ) )
+ListTypes = ( type( Frame() ), type( List() ), type( Row() ), type( Cell() ) )

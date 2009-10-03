@@ -167,6 +167,9 @@ class Processor( signals.Provider ):
 		for process in self.__processes.values():
 			del process
 
+	def get_module_name( self, command ):
+		return self.__manager.search_command( command )
+		
 	def request( self, msg ):
 
 		if msg.command == 'EXIT':

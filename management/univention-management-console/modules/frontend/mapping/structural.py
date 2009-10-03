@@ -49,6 +49,9 @@ def rows_map( storage, umcp_part ):
 			for item in elem:
 				part.append( storage.to_uniparts( item ) )
 				args.update( utils.layout_attrs( storage, item ) )
+		elif isinstance( elem, umcd.Cell ):
+			part.append( storage.to_uniparts( elem.item ) )
+			args.update( utils.layout_attrs( storage, elem ) )
 		else:
 			part.append( storage.to_uniparts( elem ) )
 			args = utils.layout_attrs( storage, elem )

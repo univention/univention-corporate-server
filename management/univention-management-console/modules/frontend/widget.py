@@ -90,6 +90,12 @@ class Notebook( object ):
 		objects = []
 		pages = []
 		page_layout = self.pages[ self.selected ].layout()
+		# this might happen if the module wants to exit (status code 250; see protocol spec)
+		# in that case we return to the overview
+		if not page_layout:
+			del self.pages[ self.selected ]
+			self.selected = 0
+			page_layout = self.pages[ self.selected ].layout()
 		for i in range( 0, len( self.pages ) ):
 			pages.append( self.pages[ i ].title( selected = ( i == self.selected ) ) )
 

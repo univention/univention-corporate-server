@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-10 10:08+0200\n"
+"POT-Creation-Date: 2009-09-29 14:58+0200\n"
 "PO-Revision-Date: 2008-06-16 13:46+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,39 +15,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: button.py:74 helper.py:70
+#: button.py:76 helper.py:70
 msgid "Search"
 msgstr "Suchen"
 
-#: button.py:79
+#: button.py:82
 msgid "Set"
 msgstr "Setzen"
 
-#: button.py:83
+#: button.py:86
+msgid "Previous"
+msgstr "Zurück"
+
+#: button.py:90
+msgid "Next"
+msgstr "Weiter"
+
+#: button.py:94
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: button.py:116
-msgid "Invert selection"
-msgstr "Auswahl umkehren"
-
-#: button.py:118
-msgid "Select all"
-msgstr "Alle auswählen"
-
-#: button.py:140
+#: button.py:185
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: button.py:146
+#: button.py:191
 msgid "Close"
 msgstr "Schließen"
 
-#: button.py:152 helper.py:51
+#: button.py:197 helper.py:51
 msgid "Ok"
 msgstr "OK"
 
-#: button.py:158
+#: button.py:203 button.py:210
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -70,3 +70,9 @@ msgstr "Nein"
 #: helper.py:92
 msgid "Results per page"
 msgstr "Ergebnisse pro Seite"
+
+#~ msgid "Invert selection"
+#~ msgstr "Auswahl umkehren"
+
+#~ msgid "Select all"
+#~ msgstr "Alle auswählen"

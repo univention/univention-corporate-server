@@ -260,10 +260,11 @@ class simpleHandler( signals.Provider ):
 
 			if report:
 				res.report = report
-			if success:
-				res.status( 200 )
-			else:
-				res.status( 600 )
+			if not res.status():
+				if success:
+					res.status( 200 )
+				else:
+					res.status( 600 )
 
 			ret =  self._exec_if( '_%s' % self.__interface, method, ( object, res ) )
 			if ret == None:

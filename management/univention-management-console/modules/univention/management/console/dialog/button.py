@@ -33,7 +33,6 @@ import base
 import image
 
 import univention.management.console.locales as locales
-import univention.debug as ud
 
 _ = locales.Translation( 'univention.management.console.dialog' ).translate
 
@@ -61,14 +60,15 @@ class Button( base.Text, image.Image ):
 	"""Represents a button of any kind. The argument actions contains a
 	list of Action objects that defines the UMCP commands
 	to execute when the button is presssed."""
-	def __init__( self, label = '', tag = None, actions = [], attributes = {}, close_dialog = True, helptext = None ):
+	def __init__( self, label = '', tag = None, actions = [], attributes = {}, close_dialog = True, helptext = None, icon_right = False ):
 		base.Text.__init__( self, label, attributes )
-		image.Image.__init__( self, tag )
+		image.Image.__init__( self, tag, attributes = attributes )
 		if not isinstance( actions, ( list, tuple ) ):
 			self.actions = [ actions ]
 		else:
 			self.actions = actions
 		self.close_dialog = close_dialog
+		self.icon_right = icon_right
 		if helptext:
 			self.helptext = helptext
 
@@ -80,6 +80,14 @@ class SearchButton( Button ):
 class SetButton( Button ):
 	def __init__( self, actions = [], attributes = {}, close_dialog = True ):
 		Button.__init__( self, _( 'Set' ), 'actions/ok', actions = actions, attributes = attributes, close_dialog = close_dialog )
+
+class PrevButton( Button ):
+	def __init__( self, actions = [], attributes = {}, close_dialog = True ):
+		Button.__init__( self, _( 'Previous' ), 'actions/prev', actions = actions, attributes = attributes, close_dialog = close_dialog )
+
+class NextButton( Button ):
+	def __init__( self, actions = [], attributes = {}, close_dialog = True ):
+		Button.__init__( self, _( 'Next' ), 'actions/next', actions = actions, attributes = attributes, close_dialog = close_dialog, icon_right = True )
 
 class AddButton( Button ):
 	def __init__( self, actions = [], attributes = {}, close_dialog = True ):
@@ -207,5 +215,5 @@ combination with confirmation dialogs)"""
 ButtonTypes = ( type( Button() ), type( SelectionButton() ), type( ChoiceButton() ),
 				type( CancelButton() ), type( CloseButton() ),
 				type( ErrorButton() ), type( ResetButton() ), type( ReturnButton() ), type( SearchButton() ),
-				type( SetButton() ), type( AddButton() ),
+				type( SetButton() ), type( AddButton() ), type( NextButton() ), type( PrevButton() ),
 				type( FilteringSelectButton() ), type( ComboboxButton() ) )

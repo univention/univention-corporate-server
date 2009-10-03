@@ -171,6 +171,12 @@ class MagicBucket( object ):
 			notifier.socket_add( state.socket, self._do_send, notifier.IO_WRITE )
 			state.resend_queue.append( data )
 
+		# module process wants to exit
+		if msg.status() == 250:
+			module_name = state.processor.get_module_name( msg.arguments[ 0 ] )
+			if module_name:
+				state.processor._purge_child( module_name )
+
 class Server( signals.Provider ):
 	def __verify_cert_cb( self, conn, cert, errnum, depth, ok ):
 		ud.debug( ud.ADMIN, ud.INFO, '__verify_cert_cb: Got certificate: %s' % cert.get_subject() )

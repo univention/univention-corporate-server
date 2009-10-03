@@ -70,7 +70,7 @@ class IButtonMap( object ):
 						value = umcp.default
 					else:
 						value = new_value
-						if not utils.check_syntax( umcp, value ):
+						if req.verify_options and not utils.check_syntax( umcp, value ):
 							raise umc.SyntaxError( umcp )
 					if req.options.has_key( umcp.option ) and \
 						   isinstance( req.options[ umcp.option ], list ):
@@ -122,6 +122,11 @@ class ButtonMap( IButtonMap, mapper.IMapper ):
 		if umcp_part.get_tag():
 			icon = umcp_part.get_image()
 			attributes.update( { 'icon' : icon } )
+		if umcp_part.icon_right:
+			attributes.update( { 'icon_side' : 'right' } )
+		else:
+			attributes.update( { 'icon_side' : 'left' } )
+		
 		but = button( unicode( umcp_part ), attributes, { 'helptext' : unicode( umcp_part ) } )
 		storage[ umcp_part.id() ] = ( but, umcp_part )
 
@@ -135,6 +140,8 @@ class ButtonMap( IButtonMap, mapper.IMapper ):
 
 mapper.add( umcd.Button, ButtonMap() )
 mapper.add( umcd.SetButton, ButtonMap() )
+mapper.add( umcd.PrevButton, ButtonMap() )
+mapper.add( umcd.NextButton, ButtonMap() )
 mapper.add( umcd.AddButton, ButtonMap() )
 mapper.add( umcd.SearchButton, ButtonMap() )
 
@@ -153,7 +160,6 @@ class SelectionButtonMap( IButtonMap, mapper.IMapper ):
 			choices.append( { 'name' : key, 'description' : descr } )
 
 		attributes = utils.attributes( umcp_part )
-		#ud.debug( ud.ADMIN, ud.INFO, 'ATTRIBUTES: %s' % attributes )
 		if not 'width' in attributes:
 			attributes.update( { 'width' : '200' } )
 		selection = question_select( _( 'Selected objects ...' ),
@@ -236,7 +242,6 @@ class ChoiceButtonMap( IButtonMap, mapper.IMapper ):
 				choices.append( { 'name': data['name'], 'description': data['description'] } )
 
 		attributes = utils.attributes( umcp_part )
-		ud.debug( ud.ADMIN, ud.INFO, 'ATTRIBUTES: %s' % attributes )
 		if not 'width' in attributes:
 			attributes.update( { 'width' : '120' } )
 		selection = question_select( umcp_part.get_text(),
@@ -331,7 +336,6 @@ class FilteringSelectButtonMap( IButtonMap, mapper.IMapper ):
 				choices.append( { 'name': data['name'], 'description': data['description'] } )
 
 		attributes = utils.attributes( umcp_part )
-		ud.debug( ud.ADMIN, ud.INFO, 'ATTRIBUTES: %s' % attributes )
 		if not 'width' in attributes:
 			attributes.update( { 'width' : '120' } )
 		selection = question_dojo_select( umcp_part.get_text(),
@@ -400,7 +404,6 @@ class ComboboxButtonMap( IButtonMap, mapper.IMapper ):
 				choices.append( { 'name': data['name'], 'description': data['description'] } )
 
 		attributes = utils.attributes( umcp_part )
-		ud.debug( ud.ADMIN, ud.INFO, 'ATTRIBUTES: %s' % attributes )
 		if not 'width' in attributes:
 			attributes.update( { 'width' : '120' } )
 		selection = question_dojo_comboselect( umcp_part.get_text(),

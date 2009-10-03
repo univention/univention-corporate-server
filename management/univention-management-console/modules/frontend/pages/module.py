@@ -202,7 +202,10 @@ class Module( base.Page ):
 			error_dialog = None
 			exception = False
 			for response in responses:
-				if response.status() != 200:
+				# module asks for shutdown; notebook widget knows what to do in that case
+				if response.status() == 250:
+					return None
+				elif response.status() != 200:
 					reports.append( response.report )
 					if response.status() == 500:
 						exception = True

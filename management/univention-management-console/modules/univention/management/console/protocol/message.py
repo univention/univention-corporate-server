@@ -50,7 +50,7 @@ class Message( object ):
 
 	def __init__( self, type = REQUEST, command = '', data = None,
 				  arguments = [], options = {}, hosts = [], dialog = None,
-				  module = None, incomplete = False, report = '' ):
+				  module = None, incomplete = False, report = '', verify_options = True ):
 		""" """
 		self._id = None
 		self._length = 0
@@ -59,6 +59,7 @@ class Message( object ):
 		self.hosts = hosts
 		self.arguments = arguments
 		self.options = options
+		self.verify_options = verify_options
 		self.dialog = dialog
 		self.module = module
 		self.incomplete = incomplete
@@ -74,6 +75,7 @@ class Message( object ):
 			type = 'REQUEST'
 		if self.options:
 			self.body[ '_options' ] = self.options
+			self.body[ '_verify_options' ] = self.verify_options
 		if self.hosts:
 			self.body[ '_hosts' ] = self.hosts
 		if self.dialog:
@@ -174,6 +176,8 @@ class Message( object ):
 			self.hosts = self.body[ '_hosts' ]
 		if self.body.has_key( '_options' ):
 			self.options = self.body[ '_options' ]
+		if self.body.has_key( '_verify_options' ):
+			self.verify_options = self.body[ '_verify_options' ]
 		if self.body.has_key( '_incomplete' ):
 			self.incomplete = self.body[ '_incomplete' ]
 		else:
@@ -201,12 +205,12 @@ class Request( Message ):
 	"""This class describes a request from the console frontend to the
 	console daemon"""
 
-	def __init__( self, command, args = [], opts = {}, hosts = None, incomplete = False ):
+	def __init__( self, command, args = [], opts = {}, hosts = None, incomplete = False, verify_options = True ):
 		if not command_is_known( command ):
 			raise UnknownCommandError( "'%s' is not a valid UMCP command" % command )
 		Message.__init__( self, Message.REQUEST, command, arguments = args,
 						  options = opts, hosts = hosts,
-						  incomplete = incomplete )
+						  incomplete = incomplete, verify_options = verify_options )
 		self._create_id()
 
 class Command( Request ):

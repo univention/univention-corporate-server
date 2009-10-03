@@ -1,3 +1,17 @@
+univention-management-console (2.0.23-1) unstable; urgency=low
+
+  * support UMCP status code 250: module asks for shutdown
+  * Button: normally all values are verified before a command is
+    issued. This can be deactivated now with the option verifiy_options =
+    False
+  * Button: with the new option icon_right = True the icon can be moved to
+    the right side of the text
+  * add new Buttons for previous and next actions used by wizards
+  * add support for adding attributes to table cells
+  * updated german translation (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Sat,  3 Oct 2009 18:21:51 +0200
+
 univention-management-console (2.0.22-1) unstable; urgency=low
 
   * added safety check to prevent tracebacks (Bug 14930)

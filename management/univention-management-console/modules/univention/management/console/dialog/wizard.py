@@ -50,6 +50,6 @@ class Wizard( base.Element ):
 
 	def setup( self ):
 		self._image[ 'width' ] = '100'
-		return base.Frame( [ base.List( content = [ [ self._image, self._content ] ] ) ], self._title )
+		return base.Frame( [ base.List( content = [ [ base.Cell( self._image, { 'valign' : 'top' } ), self._content ] ] ) ], self._title )
 
 WizardTypes = ( type( Wizard() ), )
