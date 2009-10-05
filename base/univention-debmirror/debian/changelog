@@ -1,3 +1,9 @@
+univention-debmirror (3.0.0-1) unstable; urgency=low
+
+  * edit 77univention-debmirror.inst Bug #13891
+
+ -- Tim Petersen <petersen@univention.de>  Mon,  5 Oct 2009 10:24:40 +0200
+
 univention-debmirror (3.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
