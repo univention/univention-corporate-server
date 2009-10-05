@@ -180,7 +180,7 @@ PackageList=[
 				},
 				{
 					'Name': _('Samba'),
-					'Packages': ['univention-samba', 'samba', 'cupsys', 'cupsys-bsd', 'cupsys-client', 'cupsys-driver-gimpprint', 'foomatic-db-gimp-print', 'foomatic-db-hpijs', 'foomatic-filters-ppds'],
+					'Packages': ['univention-samba', 'samba', 'cups', 'cups-bsd', 'cups-client', 'cups-driver-gutenprint', 'foomatic-db-gutenprint', 'foomatic-db-hpijs', 'foomatic-filters-ppds'],
 					'Edition': [ 'oxae' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master'],
@@ -207,7 +207,7 @@ PackageList=[
 				},
 				{
 					'Name': _('Print server'),
-					'Packages': ['univention-printserver', 'cupsys'],
+					'Packages': ['univention-printserver', 'cups'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],

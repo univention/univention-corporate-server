@@ -1,3 +1,9 @@
+univention-installer (5.0.20-1) unstable; urgency=low
+
+  * modified cups package names (Bug: #15731)
+
+ -- Felix Botner <botner@univention.de>  Mon,  5 Oct 2009 14:02:46 +0200
+
 univention-installer (5.0.19-1) unstable; urgency=low
 
   * add --brief option to ucr-command because of change in ucr-behaviour (Bug: #15026)
