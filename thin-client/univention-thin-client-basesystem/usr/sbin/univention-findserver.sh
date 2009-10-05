@@ -30,7 +30,7 @@
 
 eval `/usr/sbin/univention-baseconfig shell ldap/mydn`
 min_load=999999
-for server in `univention_policy_result -s $ldap_mydn | grep univentionDesktopServer | sed -e 's/univentionDesktopServer=//g' | sed -e 's|"||g'`; do
+for server in `univention_policy_result -s "$ldap_mydn" | grep univentionDesktopServer | sed -e 's/univentionDesktopServer=//g' | sed -e 's|"||g'`; do
     this_load=`lynx -dump -nolist $server/cgi-bin/univention-showload.cgi 2>/dev/null | grep "LOAD:" | sed -e 's/LOAD://g'`
     test "$this_load" -lt "$min_load" 2>/dev/null && {
 	min_load=$this_load
