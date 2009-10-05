@@ -69,6 +69,10 @@ bootsplash_start() {
 	                xres=800
 	                yres=600
 	        fi
+	        if [ "$vga" = "796" -o "$vga" = "797" -o "$vga" = "798" -o "$vga" = "799" ]; then
+	                xres=1600
+	                yres=1200
+	        fi
 	fi
 	
 	echo "xres=$xres" > /etc/usplash.conf

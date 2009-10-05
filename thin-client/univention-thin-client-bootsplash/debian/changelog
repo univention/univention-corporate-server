@@ -1,3 +1,9 @@
+univention-thin-client-bootsplash (0.0.1-4) unstable; urgency=low
+
+  * more boot resolutions (Bug: #14309) 
+
+ -- Felix Botner <botner@univention.de>  Mon,  5 Oct 2009 08:52:51 +0200
+
 univention-thin-client-bootsplash (0.0.1-3) unstable; urgency=low
 
   * new bootsplash pictures (Bug: #14309)
