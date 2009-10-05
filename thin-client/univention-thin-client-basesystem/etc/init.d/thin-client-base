@@ -56,7 +56,7 @@ done
 chmod 1777 "$ramdisk/tmp"
 chmod 1777 "$ramdisk/var/tmp"
 
-for file in "/etc/network/ifstate" "/etc/network/interfaces" "/etc/udev/rules.d/z25_persistent-net.rules" "/modules.dep" "/etc/modules";
+for file in "/etc/network/ifstate" "/etc/network/interfaces" "/etc/udev/rules.d/z25_persistent-net.rules" "/etc/udev/rules.d/z70_persistent-net.rules" "/etc/udev/rules.d/70-persistent-net.rules" "/modules.dep" "/etc/modules";
   do
   touch "$ramdisk$file"
 done

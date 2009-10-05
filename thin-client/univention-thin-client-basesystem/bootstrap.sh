@@ -34,7 +34,7 @@ mirror=http://192.168.0.10/build2/ucs_2.3-0/
 export packages="univention-config-registry python-support python-univention libnss-ldap libpam-ldap nfs-common heimdal-clients openssh-client python2.4 bind9-host pam-runasroot ntpdate ntp less univention-automount dhcp-client libpam-heimdal heimdal-clients univention-policy-tools libunivention-policy0 libldap2 ldap-utils python-dns kudzu-2.6 lynx locales univention-home-mounter rdate netcat univention-automount univention-bootsplash univention-kde-setdirs console-data univention-client-session gawk iproute  whiptail dialog file libmagic1 libidl0"
 export exclude="lilo,pcmcia-cs,base-config,exim,mailx,at,logrotate,cpio,ipchains,dhcp-client,manpages,modconf,mbr,man-db,makedev,telnet,libdb4.0,info,diff,syslinux,libpcre3-udeb,udev-udeb,libc6-udeb,rsyslog,modutils"
 export remove_packages="apt-utils"
-export disable_init="bootmisc.sh hostname.sh cron atd samba mountall.sh checkroot.sh hwclock.sh hwclockfirst.sh kudzu winbind console-screen.sh"
+export disable_init="bootmisc.sh hostname.sh cron atd samba mountall.sh checkroot.sh nfs-common hwclock.sh hwclockfirst.sh kudzu winbind console-screen.sh"
 export remove_files="etc/pam.d/chsh etc/pam.d/passwd usr/doc usr/games usr/share/man usr/share/man-db usr/share/info usr/share/doc usr/share/doc-base usr/share/apps usr/share/common_licenses usr/share/dict usr/share/calendar"
 
 case "$1" in
@@ -182,6 +182,7 @@ chmod 755 "/sbin/start-stop-daemon"
 	if test -e /etc/network/run; then rm -rf /etc/network/run; fi
 	ln -fs /ramdisk/etc/network/run /etc/network/run
 	ln -fs /ramdisk/etc/udev/rules.d/z70_persistent-net.rules /etc/udev/rules.d/z70_persistent-net.rules
+	ln -fs /ramdisk/etc/udev/rules.d/70-persistent-net.rules /etc/udev/rules.d/70-persistent-net.rules
 	ln -fs /ramdisk/etc/udev/rules.d/z25_persistent-cd.rules /etc/udev/rules.d/z25_persistent-cd.rules
 
 	rm -f /etc/univention/disable_baseconfig
@@ -227,7 +228,9 @@ chmod 755 "/sbin/start-stop-daemon"
 	update-rc.d thin-client-ldap start 45 S .
 	update-rc.d thin-client-policies start 50 S .
 
-	ln -sf /etc/init.d/portmap /etc/rc2.d/S19portmap
+	update-rc.d nfs-common start 54 S .
+
+	ln -sf /etc/init.d/portmap /etc/rcS.d/S53portmap
 
 	mv "/sbin/start-stop-daemon.REAL" "/sbin/start-stop-daemon"
 	# set keyboard to German

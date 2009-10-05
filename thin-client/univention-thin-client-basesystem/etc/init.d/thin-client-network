@@ -36,7 +36,7 @@ ramdisk="/ramdisk"
 FLAGNFSBOOT=$(grep -c "root=/dev/nfs" /proc/cmdline)
 if [ "$FLAGNFSBOOT" = "0" ] ; then
 	# FLASH BOOT
-	echo -n "(Flash Card) ... "
+	echo "(Flash Card) ... "  >>/dev/tty8 2>&1
 	mkdir -p /var/lib/dhcp
 	dhclient -e >>/dev/tty8 2>&1
 	if [ ! "$?" = "0" ] ; then
@@ -77,7 +77,7 @@ if [ "$FLAGNFSBOOT" = "0" ] ; then
 
 else
 	# NFS BOOT
-	echo -n "(NFS) ... "
+	echo "(NFS) ... " >>/dev/tty8 2>&1
 	ipcmd=$(grep ip /proc/cmdline | sed -e 's/.*ip=//g')
 	nameserver=$(grep DNSSERVER /proc/cmdline | sed -e 's/.*DNSSERVER=//g' | awk '{print $1}' )
 	myip=$(echo $ipcmd | awk -F ':' '{print $1}')

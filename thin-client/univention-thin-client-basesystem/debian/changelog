@@ -1,3 +1,11 @@
+univention-thin-client-basesystem (6.0.12-1) unstable; urgency=low
+
+  * start portmap before starting nfs-common and start the portmap after
+    the portmap init script is written, that means start portmap after
+    thin-client-policies. Bug #15781
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 Oct 2009 07:00:25 +0200
+
 univention-thin-client-basesystem (6.0.11-1) unstable; urgency=low
 
   * the udev rules file has been changed during the lenny update. Bug
