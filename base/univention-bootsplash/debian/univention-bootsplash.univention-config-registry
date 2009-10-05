@@ -3,3 +3,7 @@ File: etc/usplash.conf
 Postinst: bootsplash.py
 Variables: bootsplash/.*
 Variables: grub/vga
+
+
+Type: file
+File: etc/default/bootsplash
