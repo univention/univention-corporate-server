@@ -56,6 +56,10 @@ translate_vga = {
 	793 : "1280x1024",
 	794 : "1280x1024",
 	795 : "1280x1024",
+	796 : "1600x1200",
+	797 : "1600x1200",
+	798 : "1600x1200",
+	799 : "1600x1200",
 }
 res = translate_vga.get(int(vga), "1024x768")
 bootsplashConfig = bootsplashConfig + res + ".cfg"
