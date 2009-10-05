@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (6.0.14-1) unstable; urgency=low
+
+  * more ldap host dn spaces support. Bug #14611
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 Oct 2009 08:54:20 +0200
+
 univention-thin-client-basesystem (6.0.13-1) unstable; urgency=low
 
   * Now univention-findserver.sh supports spaces in the ldap host dn.

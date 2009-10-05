@@ -57,7 +57,7 @@ done
 univention-baseconfig set $(cat $policy_file_result) >/dev/tty8 2>&1
 
 # interpret configuration registry policies
-/usr/lib/univention-directory-policy/univention-policy-update-config-registry --setall $myDN >>/dev/tty8 2>&1
+/usr/lib/univention-directory-policy/univention-policy-update-config-registry --setall "$myDN" >>/dev/tty8 2>&1
 
 eval $(univention-baseconfig shell)
 
