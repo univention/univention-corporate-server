@@ -1,3 +1,9 @@
+univention-printserver (3.0.20-2) unstable; urgency=low
+
+  * modified cups package names (Bug: #15731)
+
+ -- Felix Botner <botner@univention.de>  Mon,  5 Oct 2009 10:46:45 +0200
+
 univention-printserver (3.0.20-1) unstable; urgency=low
 
   * install UMC module to correct path (Bug 15769)
