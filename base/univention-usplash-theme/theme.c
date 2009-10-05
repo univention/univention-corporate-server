@@ -78,7 +78,7 @@ struct usplash_theme usplash_theme = {
 	.text_failure           = TEXT_FAILURE,
 
 	/* Progress bar position and size in pixels */
-  	.progressbar_x      = 284,
+  	.progressbar_x      = 236,
   	.progressbar_y      = 245,
   	.progressbar_width  = 169,
   	.progressbar_height = 19,
@@ -123,7 +123,7 @@ struct usplash_theme usplash_theme_800_600 = {
 	.text_failure           = TEXT_FAILURE,
 
 	/* Progress bar position and size in pixels */
-  	.progressbar_x      = 351,
+  	.progressbar_x      = 298,
   	.progressbar_y      = 313,
   	.progressbar_width  = 203,
   	.progressbar_height = 23,
@@ -165,7 +165,7 @@ struct usplash_theme usplash_theme_1024_768 = {
 	.text_failure           = TEXT_FAILURE,
 
 	/* Progress bar position and size in pixels */
-  	.progressbar_x      = 460,
+  	.progressbar_x      = 394,
   	.progressbar_y      = 414,
   	.progressbar_width  = 235,
   	.progressbar_height = 27,
@@ -207,7 +207,7 @@ struct usplash_theme usplash_theme_1280_1024 = {
 	.text_failure           = TEXT_FAILURE,
 
 	/* Progress bar position and size in pixels */
-  	.progressbar_x      = 568,
+  	.progressbar_x      = 490,
   	.progressbar_y      = 545,
   	.progressbar_width  = 300,
   	.progressbar_height = 34,
@@ -249,7 +249,7 @@ struct usplash_theme usplash_theme_1600_1200 = {
 	.text_failure           = TEXT_FAILURE,
 
 	/* Progress bar position and size in pixels */
-  	.progressbar_x      = 718,
+  	.progressbar_x      = 630,
   	.progressbar_y      = 646,
   	.progressbar_width  = 340,
   	.progressbar_height = 39,
