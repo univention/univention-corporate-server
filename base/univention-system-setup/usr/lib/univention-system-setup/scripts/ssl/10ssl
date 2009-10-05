@@ -47,7 +47,7 @@ for var in "locality" "organization" "country" "state" "organizationalunit" "ema
 	old="ssl_$var"
 	new="new_ssl_$var"
 
-	if [ "${!old}" != "${!new}" ]; then
+	if [ -n "${!new}" -a "${!old}" != "${!new}" ]; then
 		recreate="yes"
 		break
 	fi
