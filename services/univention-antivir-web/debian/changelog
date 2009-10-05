@@ -1,3 +1,9 @@
+univention-antivir-web (3.0.5-1) unstable; urgency=low
+
+  * add support for several virus scanners (Bug #13675)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  5 Oct 2009 15:14:19 +0200
+
 univention-antivir-web (3.0.4-1) unstable; urgency=low
 
   * activate usage of system groups by default (Bug #15484)
