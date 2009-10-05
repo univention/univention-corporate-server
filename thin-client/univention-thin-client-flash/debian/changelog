@@ -1,3 +1,10 @@
+univention-thin-client-flash (3.1.1-3) unstable; urgency=low
+
+  * don't update or install the flash image if the UCR variable
+    thinclient/update/flash is empty. Bug #14704
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 Oct 2009 07:15:48 +0200
+
 univention-thin-client-flash (3.1.1-2) unstable; urgency=low
 
   * fixed some typos in the package description. Bug #15329

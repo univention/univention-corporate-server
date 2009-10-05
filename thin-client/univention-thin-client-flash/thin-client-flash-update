@@ -38,8 +38,10 @@ fi
 
 eval $(univention-baseconfig shell thinclient/flash/update thinclient/flash/update/url thinclient/flash/update/image univentionDesktopServer interfaces/eth0/address hostname domainname)
 
-if [ -n "$thinclient_flash_update" -a "$thinclient_flash_update" = "no" ]; then
-	echo "disabled"
+if [ -z "$thinclient_flash_update" ] || [ -n "$thinclient_flash_update" -a "$thinclient_flash_update" = "no" ]; then
+	echo "The UCR variable thinclient/flash/update is not set or is set to no."
+	echo "If you want to use the flash update, please activate a UCR policy"
+	echo "with thinclient/update/flash=yes for this Thin Client."
 	exit 0
 fi
 

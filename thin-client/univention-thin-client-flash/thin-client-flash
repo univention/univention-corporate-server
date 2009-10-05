@@ -27,7 +27,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
-echo -n "Setting up Thin Client base system on flash ... "
+. /lib/lsb/init-functions
+
+log_action_msg "Setting up Thin Client base system on flash"
 
 FLAGNFSBOOT=$(grep -c "root=/dev/nfs" /proc/cmdline)
 if [ "$FLAGNFSBOOT" != "0" ] ; then
@@ -39,4 +41,4 @@ fi
 DISK=$(sed 's;.* root=\(/dev/[a-z]*\).*;\1;' < /proc/cmdline)
 mount ${DISK}1 /config >/dev/null 2>&1
 
-echo "done"
+log_action_end_msg 0
