@@ -1,3 +1,10 @@
+univention-thin-client-ssh (3.0.2-1) unstable; urgency=low
+
+  * copy the ssh keys directly into the ramdisk and not over the link.
+    Bug #15781
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 Oct 2009 07:06:26 +0200
+
 univention-thin-client-ssh (3.0.1-2) unstable; urgency=low
 
   * start the thin-client-ssh init script before starting the ssh

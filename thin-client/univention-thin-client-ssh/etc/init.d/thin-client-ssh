@@ -36,10 +36,10 @@ eval $(univention-config-registry shell thinclient/sshd/generate_key)
 if [ "$thinclient_sshd_generate_key" = "yes" ]; then
 	ssh-keygen -q -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa >/dev/tty8 2>&1
 else
-	cp /etc/ssh/ssh_host_rsa_key.server /etc/ssh/ssh_host_rsa_key
-	cp /etc/ssh/ssh_host_rsa_key.pub.server /etc/ssh/ssh_host_rsa_key.pub
-	cp /etc/ssh/ssh_host_dsa_key.server /etc/ssh/ssh_host_dsa_key
-	cp /etc/ssh/ssh_host_dsa_key.pub.server /etc/ssh/ssh_host_dsa_key.pub
+	cp /etc/ssh/ssh_host_rsa_key.server /ramdisk/etc/ssh/ssh_host_rsa_key
+	cp /etc/ssh/ssh_host_rsa_key.pub.server /ramdisk/etc/ssh/ssh_host_rsa_key.pub
+	cp /etc/ssh/ssh_host_dsa_key.server /ramdisk/etc/ssh/ssh_host_dsa_key
+	cp /etc/ssh/ssh_host_dsa_key.pub.server /ramdisk/etc/ssh/ssh_host_dsa_key.pub
 fi
 
 univention-config-registry set "sshd/port?22" "sshd/permitroot?yes" "sshd/xforwarding?no" \
