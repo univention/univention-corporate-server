@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.34-6) unstable; urgency=low
+
+  * translation files updated (Bug #15017)
+
+ -- Arvid Requate <requate@univention.de>  Tue,  6 Oct 2009 15:03:35 +0200
+
 univention-directory-manager-modules (5.0.34-5) unstable; urgency=low
 
   * fix cleanup of dnsAlias entries (Bug #15581)
@@ -6,7 +12,7 @@ univention-directory-manager-modules (5.0.34-5) unstable; urgency=low
 
 univention-directory-manager-modules (5.0.34-4) unstable; urgency=low
 
-  * added dnsAlias property also to macos.py (for Ticket #2009052810000065)
+  * added dnsAlias property also to macos.py (Bug #15017)
   * removed mapping of dnsAlias in computers/*.py modules
   * fixed lookup logic in managedclient
   * improved lookup_alias_filter return values
@@ -18,7 +24,7 @@ univention-directory-manager-modules (5.0.34-4) unstable; urgency=low
 univention-directory-manager-modules (5.0.34-3) unstable; urgency=low
 
   * adjusted lookup_alias_filter to return a single search filter to avoid
-    duplicate matches (for Ticket #2009052810000065)
+    duplicate matches (Bug #15017)
 
  -- Arvid Requate <requate@univention.de>  Tue, 30 Jun 2009 13:13:31 +0200
 
@@ -29,14 +35,14 @@ univention-directory-manager-modules (5.0.34-2) unstable; urgency=low
   * in case property "dnsAlias" is part of the search filter call
     lookup_alias_filter in computers/*.py
   * lookup_alias_filter in dns/alias resolves "dnsAlias" search filters
-    into corresponding cn= search filters (Ticket #2009052810000065)
+    into corresponding cn= search filters (Bug #15017)
 
  -- Arvid Requate <requate@univention.de>  Tue, 30 Jun 2009 09:53:04 +0200
 
 univention-directory-manager-modules (5.0.34-1) unstable; urgency=low
 
   * DNS Alias edit via multiselect on DNS tab of a host object
-  * host object lookup via DNS Alias (for Ticket #2009052810000065)
+  * host object lookup via DNS Alias (Bug #15017)
 
  -- Arvid Requate <requate@univention.de>  Fri, 26 Jun 2009 20:45:34 +0200
 
