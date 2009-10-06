@@ -74,6 +74,16 @@ property_descriptions={
 			may_change=1,
 			identifies=1
 		),
+	'dnsAlias': univention.admin.property(
+			short_description=_('DNS alias'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'description': univention.admin.property(
 			short_description=_('Description'),
 			long_description='',
@@ -144,7 +154,14 @@ class object(univention.admin.handlers.simpleLdap):
 	
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
-	return univention.admin.handlers.computers.macos.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.thinclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.managedclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.mobileclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.windows.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.domaincontroller_master.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.domaincontroller_backup.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.domaincontroller_slave.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.memberserver.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.ipmanagedclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.trustaccount.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+	res=[]
+	if str(filter_s).find('(dnsAlias=') != -1:
+		filter_s=univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
+		if filter_s:
+			res+=lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+	else:
+		return univention.admin.handlers.computers.macos.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.thinclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.managedclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.mobileclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.windows.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.domaincontroller_master.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.domaincontroller_backup.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.domaincontroller_slave.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.memberserver.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.ipmanagedclient.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.computers.trustaccount.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+	return res
 
 def identify(dn, attr, canonical=0):
 	pass

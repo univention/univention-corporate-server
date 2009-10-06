@@ -33,6 +33,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
+import re
 
 translation=univention.admin.localization.translation('univention.admin.handlers.dns')
 _=translation.translate
@@ -171,3 +172,30 @@ def identify(dn, attr, canonical=0):
 		'*' in attr.get('CNAMERecord', []) and\
 		not '*' in attr.get('ARecord', [])
 
+def lookup_alias_filter(lo, filter_s):
+	_re=re.compile('(.*)\(dnsAlias=([^=,]+)\)(.*)')
+	match=_re.match(str(filter_s))
+	filterlist=[]
+	if match:
+		filter_p=univention.admin.filter.parse('name=%s' % match.group(2))
+		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)	# map property to ldap attribute
+		alias_filter=univention.admin.filter.conjunction('&', [		# from dns/alias.lookup
+			univention.admin.filter.expression('objectClass', 'dNSZone'),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')]),
+			univention.admin.filter.expression('CNAMERecord', '*')
+			])
+		alias_filter.expressions.append(filter_p)
+		alias_filter_s = unicode(alias_filter)
+		alias_base = unicode(lo.base)					# std dns container might be a better choice
+		for dn, attrs in lo.search(base=alias_base, scope='sub', filter=alias_filter_s, attr=['cNAMERecord']):
+			cname=attrs['cNAMERecord'][0]
+			cn_filter='(cn=%s)' % cname.split('.', 1)[0]
+			if cn_filter not in filterlist:
+				filterlist.append(cn_filter)
+		if len(filterlist) > 0:
+			return match.group(1) + '(|' + string.join(filterlist,'') + ')' + match.group(3)
+		else:
+			return ''
+	else:
+		return filter_s

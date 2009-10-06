@@ -978,6 +978,7 @@ class simpleComputer( simpleLdap ):
 		self.network_object = False
 		self.old_network = 'None'
 		self.__saved_dhcp_entry = None
+		self[ 'dnsAlias' ] = [ ]	# defined here to avoid pseudo non-None value of [''] in modwizard search
 
 	# HELPER
 	def __ip_from_ptr( self, zoneName, relativeDomainName ):
@@ -1024,6 +1025,7 @@ class simpleComputer( simpleLdap ):
 		self[ 'dnsEntryZoneReverse' ] = [ ]
 		self[ 'dhcpEntryZone' ] = [ ]
 		self[ 'groups' ] = [ ]
+		self[ 'dnsEntryZoneAlias' ] = [ ]
 
 		# search forward zone and insert into the object
 		if self [ 'name' ]:
@@ -1077,6 +1079,30 @@ class simpleComputer( simpleLdap ):
 						self[ 'dnsEntryZoneReverse' ] = [ ]
 						raise univention.admin.uexceptions.insufficientInformation, msg
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dnsEntryZoneReverse: %s' % self[ 'dnsEntryZoneReverse' ] )
+
+			if zoneNames:
+				for zoneName in zoneNames:
+					searchFilter = '(&(objectClass=dNSZone)(|(cNAMERecord=%s)(cNAMERecord=%s.%s.)))' % ( self[ 'name' ], self[ 'name' ], zoneName[ 0 ] )
+					try:
+						results = self.lo.search( base = tmppos.getBase( ),scope = 'domain', attr = [ 'relativeDomainName', 'cNAMERecord', 'zoneName' ], filter = searchFilter, unique = 0 )
+						for dn, attr in results:
+							dnsAlias = attr[ 'relativeDomainName' ][0]
+							self[ 'dnsAlias' ].append(dnsAlias)
+							poscomponents = univention.admin.uldap.explodeDn( dn,0 )
+							poscomponents.pop( 0 )
+							dnsAliasZoneContainer = string.join( poscomponents,',' )
+							if attr[ 'cNAMERecord' ][0] == self[ 'name' ]:
+								dnsForwardZone = attr[ 'zoneName' ][0]
+							else:
+								dnsForwardZone = zoneName[0]
+
+							entry = '%s %s %s' % ( dnsForwardZone, dnsAliasZoneContainer, dnsAlias )
+							if not entry in self[ 'dnsEntryZoneAlias' ]:
+								self[ 'dnsEntryZoneAlias' ].append( entry )
+					except univention.admin.uexceptions.insufficientInformation, msg:
+						self[ 'dnsEntryZoneAlias' ] = [ ]
+						raise univention.admin.uexceptions.insufficientInformation, msg
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dnsEntryZoneAlias: %s' % self[ 'dnsEntryZoneAlias' ] )
 
 			if self[ 'mac' ]:
 
@@ -1196,6 +1222,14 @@ class simpleComputer( simpleLdap ):
 				object.open( )
 				object[ 'ptr_record' ] = object[ 'ptr_record' ].replace( old_name, new_name )
 				object.modify( )
+		for entry in self[ 'dnsentryzonealias' ]:
+			dnsforwardzone, dnsaliaszonecontainer, alias = self.__split_dns_alias_line( entry )
+			results = self.lo.searchdn( base = dnsaliaszonecontainer, scope = 'domain', filter = 'relativedomainname=%s' % alias, unique = 0 )
+			for result in results:
+				object = univention.admin.objects.get( univention.admin.modules.get( 'dns/alias' ), self.co, self.lo, position = self.position, dn = result )
+				object.open( )
+				object[ 'cname' ] = '%s.%s.' % (new_name, dnsForwardZone)
+				object.modify( )
 
 	def __rename_dhcp_object( self, position = None, old_name = None, new_name = None ):
 		module = univention.admin.modules.get( 'dhcp/host' )
@@ -1287,6 +1321,15 @@ class simpleComputer( simpleLdap ):
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Split entry [%s] into zone [%s] and ip [%s]' % (entry, entry, None))
 			return ( entry, None )
 
+	def __split_dns_alias_line( self, entry ):
+
+		entry_parts = entry.split( ' ' )
+		dnsForwardZone = entry_parts[ 0 ]
+		dnsAliasZoneContainer = string.join(entry_parts[ 1:-1 ], ',')
+		alias = entry_parts[ -1 ]
+
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Split entry [%s] into dnsForwardZone [%s], dnsAliasZoneContainer [%s] and alias [%s]' % (entry, dnsForwardZone, dnsAliasZoneContainer, alias))
+		return ( dnsForwardZone, dnsAliasZoneContainer, alias )
 
 	def __remove_dns_reverse_object( self, name, dnsEntryZoneReverse , ip ):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dns reverse object: dnsEntryZoneReverse="%s", name="%s", ip="%s"' % ( dnsEntryZoneReverse, name, ip ) )
@@ -1470,6 +1513,70 @@ class simpleComputer( simpleLdap ):
 		pass
 
 
+	def __add_dns_alias_object( self, name, dnsForwardZone, dnsAliasZoneContainer, alias ):
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'add a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % ( name, dnsForwardZone, dnsAliasZoneContainer, alias ) )
+		if name and dnsForwardZone and dnsAliasZoneContainer and alias:
+			results = self.lo.search( base = dnsAliasZoneContainer, scope = 'domain', attr = [ 'cNAMERecord' ], filter = 'relativeDomainName=%s' % ( alias ), unique = 0 )
+			if not results:
+				self.lo.add( 'relativeDomainName=%s,%s'% ( alias, dnsAliasZoneContainer ), [\
+									( 'objectClass', [ 'top', 'dNSZone' ]),\
+									( 'zoneName', univention.admin.uldap.explodeDn( dnsAliasZoneContainer, 1 )[ 0 ]),\
+									( 'cNAMERecord', [ "%s.%s." % (name, dnsForwardZone) ]),\
+									( 'relativeDomainName', [ alias ])])
+
+				# TODO: check if dnsAliasZoneContainer really is a forwardZone, maybe it is a container under a zone
+				zone = univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, dnsAliasZoneContainer )
+				zone.open()
+				zone.modify()
+			else:
+				# thow exeption, cNAMERecord is single value
+				raise univention.admin.uexceptions.dnsAliasAlreadyUsed, _('DNS alias is already in use.')
+		pass
+
+	def __remove_dns_alias_object( self, name, dnsForwardZone, dnsAliasZoneContainer, alias = None ):
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'remove a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % ( name, dnsForwardZone, dnsAliasZoneContainer, alias ) )
+		if name:
+			if alias:
+				if dnsAliasZoneContainer:
+					self.lo.delete( 'relativeDomainName=%s,%s'% ( alias, dnsAliasZoneContainer ) )
+					zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, dnsAliasZoneContainer )
+					zone.open( )
+					zone.modify( )
+				elif dnsForwardZone:
+					tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
+					base = tmppos.getBase( )
+					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'search base="%s"' % base )
+					results = self.lo.search( base = base, scope = 'domain', attr = [ 'zoneName' ], filter = '(&(objectClass=dNSZone)(relativeDomainName=%s)(cNAMERecord=%s.%s.))' % ( alias, name, dnsForwardZone ), unique = 0, required = 0 )
+					for dn, attr in results:
+						# remove the object
+						self.lo.delete( dn )
+						# and update the SOA version number for the zone
+						results = self.lo.searchDn( base = tmppos.getBase( ), scope = 'domain', filter = '(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))' % attr[ 'zoneName' ][0], unique = 0 )
+						for zoneDn in results:
+							zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zoneDn )
+							zone.open( )
+							zone.modify( )
+					else:
+						# could thow some exeption
+						pass
+			else:
+				if dnsForwardZone:
+					tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
+					base = tmppos.getBase( )
+					univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'search base="%s"' % base )
+					results = self.lo.search( base = base, scope = 'domain', attr = [ 'zoneName' ], filter = '(&(objectClass=dNSZone)(&(cNAMERecord=%s)(cNAMERecord=%s.%s.))' % ( name, name, dnsForwardZone ), unique = 0, required = 0 )
+					for dn, attr in results:
+						# remove the object
+						self.lo.delete( dn )
+						# and update the SOA version number for the zone
+						results = self.lo.searchDn( base = tmppos.getBase( ), scope = 'domain', filter = '(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=@))' % attr[ 'zoneName' ][0], unique = 0 )
+						for zoneDn in results:
+							zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zoneDn )
+							zone.open( )
+							zone.modify( )
+				else: # not enough info to remove alias entries
+					pass
+
 	def _ldap_post_modify( self ):
 
 		if len ( self[ 'mac' ] ) > 1 or len( self[ 'ip' ] ) > 1:
@@ -1523,6 +1630,22 @@ class simpleComputer( simpleLdap ):
 				self.__add_dns_reverse_object( self[ 'name' ], dn, ip )
 
 
+		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'remove' ]:
+			dnsForwardZone, dnsAliasZoneContainer, alias = self.__split_dns_alias_line( entry )
+			if not alias:
+				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
+			else:
+				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
+
+		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'add' ]:
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns alias object "%s"' % entry )
+			dnsForwardZone, dnsAliasZoneContainer, alias = self.__split_dns_alias_line( entry )
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dnsForwardZone [%s], dnsAliasZoneContainer [%s] and alias [%s]' % (dnsForwardZone, dnsAliasZoneContainer, alias))
+			if not alias:
+				self.__add_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
+			else:
+				self.__add_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
+
 		for entry in self.__changes[ 'mac' ][ 'remove' ]:
 			self.__remove_from_dhcp_object(  mac = entry )
 
@@ -1546,7 +1669,7 @@ class simpleComputer( simpleLdap ):
 					self.__remove_dns_forward_object( self[ 'name' ], None, entry )
 			else:
 				self.__remove_dns_forward_object( self[ 'name' ], None, entry )
-			 	self.__remove_from_dhcp_object(  ip = entry )
+				self.__remove_from_dhcp_object(  ip = entry )
 
 			self.__remove_dns_reverse_object( self[ 'name' ], None, entry )
 
@@ -1582,6 +1705,7 @@ class simpleComputer( simpleLdap ):
 		self.__changes =  {	'mac': {'remove': [ ], 'add': [ ]}, 'ip': {'remove': [ ], 'add': [ ]}, 'name': None,
 							'dnsEntryZoneForward': { 'remove': [ ], 'add': [ ] },
 							'dnsEntryZoneReverse': { 'remove': [ ], 'add': [ ] },
+							'dnsEntryZoneAlias': { 'remove': [ ], 'add': [ ] },
 							'dhcpEntryZone': { 'remove': [ ], 'add': [ ] } }
 		ml = [ ]
 		if self.hasChanged( 'mac' ):
@@ -1664,6 +1788,20 @@ class simpleComputer( simpleLdap ):
 			for entry in self.info[ 'dnsEntryZoneReverse' ]:
 				if not self.oldinfo.has_key( 'dnsEntryZoneReverse' ) or not entry in self.oldinfo[ 'dnsEntryZoneReverse' ]:
 					self.__changes[ 'dnsEntryZoneReverse' ][ 'add' ].append( entry )
+
+		if self.hasChanged( 'dnsEntryZoneAlias' ):
+			if self.oldinfo.has_key( 'dnsEntryZoneAlias' ):
+				for entry in self.oldinfo[ 'dnsEntryZoneAlias' ]:
+					if not entry in self.info[ 'dnsEntryZoneAlias' ]:
+						self.__changes[ 'dnsEntryZoneAlias' ][ 'remove' ].append( entry )
+			for entry in self.info[ 'dnsEntryZoneAlias' ]:
+				#check if line is valid
+				dnsForwardZone, dnsAliasZoneContainer, alias = self.__split_dns_alias_line( entry )
+				if dnsForwardZone and dnsAliasZoneContainer and alias:
+					if not self.oldinfo.has_key( 'dnsEntryZoneAlias' ) or not entry in self.oldinfo[ 'dnsEntryZoneAlias' ]:
+						self.__changes[ 'dnsEntryZoneAlias' ][ 'add' ].append( entry )
+				else:
+					raise univention.admin.uexceptions.invalidDNSAliasEntry, _('The DNS alias entry for this host should contain the zone name, the alias zone container DN and the alias.')
 
 		if len ( self[ 'mac' ] ) < 2 and len( self[ 'ip' ] ) < 2:
 			self.__multiip = False
@@ -1774,6 +1912,21 @@ class simpleComputer( simpleLdap ):
 				for entry in self.__changes[ 'ip' ][ 'add' ]:
 					if len( self[ 'mac' ] ) > 0:
 						self.__modify_dhcp_object( dn, self[ 'name' ], mac = self[ 'mac' ][ 0 ], ip = entry )
+
+		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'remove' ]:
+			dnsForwardZone, dnsAliasZoneContainer, alias = self.__split_dns_alias_line( entry )
+			if not alias:
+				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
+			else:
+				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
+		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'add' ]:
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns alias object "%s"' % entry )
+			dnsForwardZone, dnsAliasZoneContainer, alias = self.__split_dns_alias_line( entry )
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dnsForwardZone [%s], dnsAliasZoneContainer [%s] and alias [%s]' % (dnsForwardZone, dnsAliasZoneContainer, alias))
+			if not alias:
+				self.__add_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
+			else:
+				self.__add_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
 
 		self.update_groups()
 
@@ -1890,6 +2043,14 @@ class simpleComputer( simpleLdap ):
 					self.__remove_from_dhcp_object( dn, self[ 'name' ],  None, mac )
 				except Exception,e:
 					self.exceptions.append([_('DHCP'), _('delete'), e])
+
+		if self['dnsEntryZoneAlias']:
+			for entry in self['dnsEntryZoneAlias']:
+				dnsForwardZone, dnsAliasZoneContainer, alias = self.__split_dns_alias_line( entry )
+				try:
+					self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
+				except Exception,e:
+					self.exceptions.append([_('DNS Alias'), _('delete'), e])
 
 	def __setitem__(self, key, value):
 		raise_after = None

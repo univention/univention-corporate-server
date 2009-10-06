@@ -162,6 +162,27 @@ property_descriptions={
 			dontsearch=1,
 			identifies=0
 		),
+	'dnsEntryZoneAlias': univention.admin.property(
+			short_description=_('DNS alias entry'),
+			long_description='',
+			syntax=univention.admin.syntax.dnsEntryAlias,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			dontsearch=1,
+			identifies=0
+		),
+	'dnsAlias': univention.admin.property(
+			short_description=_('DNS alias'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'dhcpEntryZone': univention.admin.property(
 			short_description=_('DHCP service'),
 			long_description='',
@@ -287,7 +308,8 @@ layout=[
 		], advanced = True),
 	univention.admin.tab(_('DNS'),_('DNS Forward and Reverse Lookup Zone'),[
 			[univention.admin.field("dnsEntryZoneForward")],
-			[univention.admin.field("dnsEntryZoneReverse")]
+			[univention.admin.field("dnsEntryZoneReverse")],
+			[univention.admin.field("dnsEntryZoneAlias")]
 		]),
 	univention.admin.tab(_('DHCP'),_('DHCP'),[
 			[univention.admin.field("dhcpEntryZone")]
@@ -576,19 +598,24 @@ def rewrite(filter, mapping):
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'univentionHost'),
-		univention.admin.filter.expression('objectClass', 'univentionMemberServer'),
-		])
-
-	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
 	res=[]
-	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn))
+	if str(filter_s).find('(dnsAlias=') != -1:
+		filter_s=univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
+		if filter_s:
+			res+=lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+	else:
+		filter=univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'univentionHost'),
+			univention.admin.filter.expression('objectClass', 'univentionMemberServer'),
+			])
+
+		if filter_s:
+			filter_p=univention.admin.filter.parse(filter_s)
+			univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
+			filter.expressions.append(filter_p)
+
+		for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
+			res.append(object(co, lo, None, dn))
 	return res
 
 def identify(dn, attr, canonical=0):

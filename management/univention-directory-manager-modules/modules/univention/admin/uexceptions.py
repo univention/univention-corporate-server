@@ -89,8 +89,14 @@ class prohibitedUsername(base):
 class ipAlreadyUsed(base):
 	message=_('IP address is already in use.')
 
+class dnsAliasAlreadyUsed(base):
+	message=_('DNS alias is already in use.')
+
 class invalidDhcpEntry(base):
 	message=_('The DHCP entry for this host should contain the zone DN, the IP address and the MAC address.')
+
+class invalidDNSAliasEntry(base):
+	message=_('The DNS alias entry for this host should contain the zone name, the alias zone container DN and the alias.')
 
 class nextFreeIp(base):
 	message=_('Next IP address not found.')

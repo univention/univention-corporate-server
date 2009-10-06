@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-11 09:03+0100\n"
+"POT-Creation-Date: 2009-06-29 21:04+0200\n"
 "PO-Revision-Date: 2005-10-18 13:52+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,40 +15,44 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: __init__.py:171
+#: __init__.py:173
 #, python-format
 msgid "key=%s old=%s new=%s"
 msgstr "Attribut=%s alter Wert=%s neuer Wert=%s"
 
-#: __init__.py:174
+#: __init__.py:176
 #, python-format
 msgid "The property %s is required"
 msgstr "Die Eigenschaft %s wird benötigt."
 
-#: __init__.py:314
+#: __init__.py:316
 msgid "Moving not possible: old and new DN are identical."
 msgstr "Verschieben ist nicht möglich: alter und neuer DN sind identisch."
 
-#: __init__.py:316
+#: __init__.py:318
 msgid "Move into one's own sub container is not allowed."
 msgstr "Verschieben in einen Container innerhalb des zu verschiebenden Objektes nicht erlaubt."
 
-#: __init__.py:322
+#: __init__.py:324
 msgid "Destination object can't have sub objects."
 msgstr "Zielobjekt kann keine Unterobjekte haben."
 
-#: __init__.py:349 __init__.py:387
+#: __init__.py:351
 #, python-format
 msgid "Unable to move object %s (%s) in sub tree, trying to revert changes."
 msgstr ""
 "Das Object %s (%s) im Teilbaum kann nicht verschoben werden, Versuche den "
 "Ausgangzustand wiederherzustellen"
 
-#: __init__.py:1133
+#: __init__.py:1346
 msgid "Reverse zone and IP address are incompatible."
 msgstr "Reverse Zone und IP-Adresse sind inkompatibel."
 
-#: __init__.py:1428
+#: __init__.py:1506
+msgid "DNS alias is already in use."
+msgstr "DNS Alias ist bereits verwendet."
+
+#: __init__.py:1774
 msgid ""
 "The DHCP entry for this host should contain the zone DN, the IP address and "
 "the MAC address."
@@ -56,28 +60,40 @@ msgstr ""
 "Der DHCP-Eintrag für diesen Rechner sollte die Zonen LDAP-DN, die IP- und "
 "MAC-Adresse enthalten."
 
-#: __init__.py:1636
+#: __init__.py:1806
+msgid ""
+"The DNS alias entry for this host should contain the zone name, the alias "
+"zone container DN and the alias."
+msgstr ""
+"der DNS Alias Eintrag für diesen Rechner sollte den Zonennamen, die LDAP-DN des Alias Zonencontainers und "
+"den Alias Namen enthalten."
+
+#: __init__.py:2031
 msgid "DNS forward zone"
 msgstr "DNS Forward Zone"
 
 # __init__.py:chen"024
-#: __init__.py:1636 __init__.py:1644 __init__.py:1652
+#: __init__.py:2031 __init__.py:2039 __init__.py:2047 __init__.py:2055
 msgid "delete"
 msgstr "Löschen"
 
-#: __init__.py:1644
+#: __init__.py:2039
 msgid "DNS reverse zone"
 msgstr "DNS Reverse Zone"
 
-#: __init__.py:1652
+#: __init__.py:2047
 msgid "DHCP"
 msgstr "DHCP"
 
-#: __init__.py:1812
+#: __init__.py:2055
+msgid "DNS Alias"
+msgstr "DNS Alias"
+
+#: __init__.py:2216
 msgid "Referencing objects"
 msgstr "Referenzierende Objekte"
 
-#: __init__.py:1813
+#: __init__.py:2217
 msgid "Objects referencing this policy object"
 msgstr "Objekte, die dieses Richtlinien-Objekt referenzieren"
 

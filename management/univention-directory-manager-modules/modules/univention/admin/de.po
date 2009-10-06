@@ -542,6 +542,15 @@ msgid "DHCP Entry"
 msgstr "DHCP-Eintrag"
 
 #: syntax.py:1207
+msgid "DNS Entry Alias"
+msgstr "Alias DNS-Eintrag"
+
+#: syntax.py:1199
+#, python-format
+msgid "Entry does not have dnsEntryAlias Syntax: %s"
+msgstr "Eintrag hat nicht dnsEntryAlias Syntax: %s"
+
+#: syntax.py:1204
 msgid "Share"
 msgstr "Freigabe"
 
@@ -855,6 +864,10 @@ msgid "IP address is already in use."
 msgstr "Die IP-Adresse wird bereits verwendet."
 
 #: uexceptions.py:93
+msgid "DNS alias is already in use."
+msgstr "Das DNS-Alias wird bereits verwendet."
+
+#: uexceptions.py:96
 msgid ""
 "The DHCP entry for this host should contain the zone DN, the IP address and "
 "the MAC address."
@@ -862,85 +875,93 @@ msgstr ""
 "Der DHCP-Eintrag für diesen Rechner sollte den Zonen-DN, die IP-und die MAC-"
 "Adresse enthalten."
 
-#: uexceptions.py:96
+#: uexceptions.py:99
+msgid ""
+"The DNS alias entry for this host should contain the zone name, the alias "
+"zone container DN and the alias."
+msgstr ""
+"Der DNS Alias Eintrag für diesen Rechner sollte den Zonennamen, die LDAP-DN des Alias Zonencontainers und "
+"den Alias Namen enthalten."
+
+#: uexceptions.py:102
 msgid "Next IP address not found."
 msgstr "Die nächste IP-Adresse wurde nicht gefunden."
 
-#: uexceptions.py:99
+#: uexceptions.py:105
 msgid "The given IP address is not within the range of the selected network"
 msgstr "Die angegebene IP ist nicht im Bereich des zugeordneten Netzwerks."
 
-#: uexceptions.py:102
+#: uexceptions.py:108
 msgid "The MAC address is already in use."
 msgstr "Die MAC-Adresse wird bereits verwendet."
 
-#: uexceptions.py:105
+#: uexceptions.py:111
 msgid "The mail address is already in use."
 msgstr "Die Mail-Adresse wird bereits verwendet."
 
-#: uexceptions.py:108
+#: uexceptions.py:114
 msgid "DHCP server name already used: "
 msgstr "Der DHCP-Servername wird bereits verwendet."
 
-#: uexceptions.py:111
+#: uexceptions.py:117
 msgid "Default Kolab home server does not exist"
 msgstr "Der Standard Kolab Home Server existiert nicht."
 
-#: uexceptions.py:114
+#: uexceptions.py:120
 msgid "Default primary group does not exist"
 msgstr "Die primäre Standardgruppe existiert nicht."
 
-#: uexceptions.py:117
+#: uexceptions.py:123
 msgid "This is a primary group"
 msgstr "Das ist eine primäre Gruppe."
 
-#: uexceptions.py:123
+#: uexceptions.py:129
 msgid "The requested group not be found."
 msgstr "Die angeforderte Gruppe wurde nicht gefunden."
 
-#: uexceptions.py:126
+#: uexceptions.py:132
 msgid "The DHCP entry was not found."
 msgstr "Der DHCP-Eintrag wurde nicht gefunden."
 
-#: uexceptions.py:129
+#: uexceptions.py:135
 msgid "The DNS entry was not found"
 msgstr "Der DNS-Eintrag wurde nicht gefunden."
 
-#: uexceptions.py:132
+#: uexceptions.py:138
 msgid ""
 "The FQDN of this object is too long, it must have less than 64 characters."
 msgstr ""
 "Der FQDN dieses Objekts ist zu lang, er darf nicht mehr als 64 Zeichen haben."
 
-#: uexceptions.py:135
+#: uexceptions.py:141
 msgid "Not all needed information was entered."
 msgstr "Nicht alle benötigten Informationen wurden angegeben."
 
-#: uexceptions.py:138
+#: uexceptions.py:144
 msgid "Cannot overwrite a fixed attribute."
 msgstr "Kann kein unveränderliches Attribut überschreiben."
 
-#: uexceptions.py:141
+#: uexceptions.py:147
 msgid "Dynamic BOOTP leases are not compatible with failover."
 msgstr "Dynamic BOOTP ist nicht kompatibel mit Failover."
 
-#: uexceptions.py:144
+#: uexceptions.py:150
 msgid "No license found."
 msgstr "Es wurde keine Lizenz gefunden."
 
-#: uexceptions.py:147
+#: uexceptions.py:153
 msgid "The license is invalid."
 msgstr "Die Lizenz ist ungültig."
 
-#: uexceptions.py:150
+#: uexceptions.py:156
 msgid "The license is expired."
 msgstr "Die Lizenz ist abgelaufen."
 
-#: uexceptions.py:153
+#: uexceptions.py:159
 msgid "The license is invalid for the current base DN."
 msgstr "Die Lizenz ist ungültig für den aktuellen Basis-DN."
 
-#: uexceptions.py:156
+#: uexceptions.py:162
 msgid ""
 "The license check is disabled. Your are using the GPL version without any "
 "support or maintenance by Univention."
@@ -948,107 +969,107 @@ msgstr ""
 "Die Lizenzüberprüfung ist deaktiviert. Sie verwenden die GPL Version ohne "
 "die Support oder Maintenance Unterstüzung von Univention."
 
-#: uexceptions.py:158
+#: uexceptions.py:164
 msgid "Free for personal use edition."
 msgstr ""
 
-#: uexceptions.py:161
+#: uexceptions.py:167
 msgid "Too many user accounts"
 msgstr "Zu viele Benutzerkonten"
 
-#: uexceptions.py:163
+#: uexceptions.py:169
 msgid "Too many client accounts"
 msgstr "Zu viele Client Konten"
 
-#: uexceptions.py:165
+#: uexceptions.py:171
 msgid "Too many desktop accounts"
 msgstr "Zu viele Desktop Konten"
 
-#: uexceptions.py:167
+#: uexceptions.py:173
 msgid "Too many groupware accounts"
 msgstr "Zu viele Groupware Konten"
 
-#: uexceptions.py:169
+#: uexceptions.py:175
 msgid "During this session add and modify are disabled"
 msgstr "Während dieser Sitzung sind Hinzufügen und Bearbeiten nicht verfügbar."
 
-#: uexceptions.py:172
+#: uexceptions.py:178
 msgid "Password has been used before. Please choose a different one."
 msgstr "Das Passwort wurde bereits verwendet. Bitte wählen Sie ein anderes."
 
-#: uexceptions.py:175
+#: uexceptions.py:181
 msgid "The password is to short, at least 8 character!"
 msgstr "Das Passwort ist zu kurz, mindestens 8 Zeichen sind erforderlich."
 
-#: uexceptions.py:178
+#: uexceptions.py:184
 msgid "Network and IP range are incompatible."
 msgstr "Netzwerk und IP-Adressbereich passen nicht zusammen."
 
-#: uexceptions.py:181
+#: uexceptions.py:187
 msgid "The IP range contains its network address. That is not permitted!"
 msgstr ""
 "Der IP-Adressbereich beinhaltet seine Netzwerk Adresse. Das ist nicht "
 "zulässig!"
 
-#: uexceptions.py:184
+#: uexceptions.py:190
 msgid "The IP range contains its broadcast address. That is not permitted!"
 msgstr ""
 "Der IP-Adressbereich beinhaltet die Broadcast-Adresse. Das ist nicht "
 "zulässig!"
 
-#: uexceptions.py:187
+#: uexceptions.py:193
 msgid "Overlapping IP ranges"
 msgstr "Überschneidung in den IP-Adressbereichen"
 
-#: uexceptions.py:190
+#: uexceptions.py:196
 msgid "Invalid combination of options."
 msgstr "Unzulässige Zusammenstellung von Optionen."
 
-#: uexceptions.py:193
+#: uexceptions.py:199
 msgid "Password policy error: "
 msgstr "Fehler in der Passwort-Richtlinie: "
 
-#: uexceptions.py:196
+#: uexceptions.py:202
 msgid "This operation is not allowed on this object."
 msgstr "Die Operation ist für dieses Objekt nicht erlaubt."
 
-#: uexceptions.py:199
+#: uexceptions.py:205
 msgid "Empty printer groups are not possible."
 msgstr "Leere Druckergruppen sind nicht möglich."
 
-#: uexceptions.py:202
+#: uexceptions.py:208
 msgid ""
 "Printer groups with quota support can only have members with quota support."
 msgstr ""
 "Einer Druckergruppen mitUnterstützung für Quota können als Mitglieder nur "
 "Drucker mit Quota haben."
 
-#: uexceptions.py:205
+#: uexceptions.py:211
 msgid "Only printer objects can be members of a printer group."
 msgstr "Nur Drucker-Objekte können Mitglied in einer Druckergruppe sein."
 
-#: uexceptions.py:208
+#: uexceptions.py:214
 msgid "Only existing groups are allowed."
 msgstr "Nur existierende Gruppen sind erlaubt."
 
-#: uexceptions.py:211
+#: uexceptions.py:217
 msgid "Only existing users are allowed."
 msgstr "Nur existierende Benutzer sind erlaubt."
 
-#: uexceptions.py:214
+#: uexceptions.py:220
 #, python-format
 msgid "Invalid syntax in default value. Check these templates: %s."
 msgstr "Falsche Syntax bei Standardwert. Zu prüfende Vorlagen: %s."
 
-#: uexceptions.py:219
+#: uexceptions.py:225
 msgid "Timeperiod Object still in use!"
 msgstr "Nagios-Zeitraum-Objekt wird noch genutzt!"
 
-#: uexceptions.py:222
+#: uexceptions.py:228
 msgid "IP address entry required to assign nagios services!"
 msgstr "Zum Zuweisen von Nagios-Diensten wird eine IP-Adresse benötigt!"
 
-#: uexceptions.py:225
+#: uexceptions.py:231
 msgid "DNS Forward Zone entry required to assign nagios services!"
 msgstr ""
 "Zum Zuweisen von Nagios-Diensten wird ein Eintrag in der DNS Forward Zone "

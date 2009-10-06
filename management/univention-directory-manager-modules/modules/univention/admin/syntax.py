@@ -1295,6 +1295,22 @@ class dhcpEntryNetwork(ldapDnOrNone):
 	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
 	description=_('DHCP Entry')
 
+class dnsEntryAlias(ldapDnOrNone):
+	name='dnsEntryAlias'
+	searchFilter='(&(objectClass=dnsZone)(relativeDomainName=@)'
+	description=_('DNS Entry Alias')
+	# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
+	hostname='[a-zA-Z][a-zA-Z0-9-_]+'
+	domainname=hostname + '(?:\.' + hostname + ')*'
+	ava='[^=,]+=[^=,]+'
+	ldapDn=ava + '(?:,' + ava + ')*'
+	_re = re.compile('^' + domainname + ' ' + ldapDn + ' ' + hostname + '$')
+
+	def parse(self, text):
+		if self._re.match(text) != None:
+			return text
+		raise univention.admin.uexceptions.valueError,_("Entry does not have dnsEntryAlias Syntax: %s" % text)
+
 class share(ldapDnOrNone):
 	name='share'
 	searchFilter='(objectClass=univentionShare)'
