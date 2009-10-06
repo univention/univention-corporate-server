@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.33-1) unstable; urgency=low
+
+  * compare objectClass of extended attributes case-insensitive (Bug #15586)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue,  6 Oct 2009 10:00:12 +0200
+
 univention-directory-manager-modules (5.0.32-3) unstable; urgency=low
 
   * moved jpegphoto to contact tab (Bug: #14471)

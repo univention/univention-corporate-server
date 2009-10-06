@@ -742,7 +742,7 @@ class simpleLdap(base):
 				# exception is syntax==boolean ==> remove attribute and object class if value==0
 				if self.info.get(prop.name) and not (prop.syntax == 'boolean' and self.info.get(prop.name) == '0'):
 
-					if prop.objClass in self.oldattr.get('objectClass', []):
+					if prop.objClass.lower() in map(lambda x:x.lower(), self.oldattr.get('objectClass', [])):
 						continue
 					if seen.get(prop.objClass):
 						continue
