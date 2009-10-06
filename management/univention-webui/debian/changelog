@@ -1,3 +1,10 @@
+univention-webui (3.0.12-1) unstable; urgency=low
+
+  * removed disturbing whitespace at the bottom php files -
+    header() does not work if data is already sent to browser (Bug 15334)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 06 Oct 2009 15:17:32 +0200
+
 univention-webui (3.0.11-1) unstable; urgency=low
 
   * fixed typo in "session_id" argument

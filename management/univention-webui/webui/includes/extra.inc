@@ -2112,5 +2112,4 @@ class question_select_old extends extra_multi{
 	}
 }
 
-?>	
-			
+?>

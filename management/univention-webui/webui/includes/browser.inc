@@ -43,4 +43,3 @@ function isBrowserSupported()
 	return false;
 }
 ?>
-
