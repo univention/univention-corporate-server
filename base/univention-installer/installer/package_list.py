@@ -78,6 +78,7 @@ PackageList=[
 					'Name': _('Univention AD Connector'),
 					'Packages': ['univention-ad-connector'],
 					'Architecture': [ 'x86', 'powerpc' ],
+					'EditionDisable': [ 'oxae' ],
 					'Active': [ ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Description': _('Sync users and groups with Active Directory'),
@@ -160,6 +161,15 @@ PackageList=[
 	'Description': _("Additional Services"),
 	'Packages':
 			[
+				{
+					'Name': _('Univention AD Connector'),
+					'Packages': ['univention-ad-connector'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Edition': [ 'oxae' ],
+					'Active': [ ],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
+					'Description': _('Sync users and groups with Active Directory'),
+				},
 				{
 					'Name': _('Bacula (Backup)'),
 					'Packages': ['bacula'],
