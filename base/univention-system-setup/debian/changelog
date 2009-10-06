@@ -1,3 +1,9 @@
+univention-system-setup (3.0.18-1) unstable; urgency=low
+
+  * fixed "edition" detection (Bug: #15802)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 06 Oct 2009 18:18:19 +0200
+
 univention-system-setup (3.0.17-1) unstable; urgency=low
 
   * 10ssl: the skript did not detect correctly that there were no

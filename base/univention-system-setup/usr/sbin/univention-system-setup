@@ -76,7 +76,9 @@ baseConfig.load()
 
 univention_ox_integration_oxae=baseConfig.get('univention-ox-directory-integration/oxae', 'false')
 if univention_ox_integration_oxae.lower() in ['true', 'yes', '1']:
-	cmdline['edition']='oxae'
+	cmdline['edition']=['oxae']
+else:
+	cmdline['edition']=['scalix','ugs']
 
 # check for architecture and save the architecture in the cmdline dictonary
 f=os.popen('/bin/uname -m')
