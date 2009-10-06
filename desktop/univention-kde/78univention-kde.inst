@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 # Install script version
-VERSION=2
+VERSION=3
 
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
@@ -47,7 +47,8 @@ univention-admin settings/default modify $@ --dn "cn=default,cn=univention,$ldap
 				--append defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.restricted" \
 				--append defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.lockeddown" \
 				--append defaultKdeProfiles="/usr/share/univention-kde-profiles/ucs-green" \
-				--append defaultKdeProfiles="/usr/share/univention-kde-profiles/ucs-green21"
+				--append defaultKdeProfiles="/usr/share/univention-kde-profiles/ucs-green21" \
+				--append defaultKdeProfiles="/usr/share/univention-kde-profiles/ucs-23"
 
 univention-admin policies/desktop create $@ --ignore_exists --position cn=desktop,cn=policies,$ldap_base \
 								--set name="KDE lockeddown Deutsch" \
@@ -57,39 +58,44 @@ univention-admin policies/desktop create $@ --ignore_exists --position cn=deskto
 								--set name="KDE restricted Deutsch" \
 								--set profile="/usr/share/univention-kde-profiles/kde.restricted"
 
-univention-admin policies/desktop  create $@ --ignore_exists --position cn=desktop,cn=policies,$ldap_base\
+univention-admin policies/desktop  create $@ --ignore_exists --position cn=desktop,cn=policies,$ldap_base \
 								--set name="UCS green" \
 								--set profile="/usr/share/univention-kde-profiles/ucs-green"
 
-univention-admin policies/desktop  create $@ --ignore_exists --position cn=desktop,cn=policies,$ldap_base\
+univention-admin policies/desktop  create $@ --ignore_exists --position cn=desktop,cn=policies,$ldap_base \
 								--set name="UCS green 2.1" \
 								--set profile="/usr/share/univention-kde-profiles/ucs-green21"
 
-## <KDE Menu 2.1>
+univention-admin policies/desktop  create $@ --ignore_exists --position cn=desktop,cn=policies,$ldap_base \
+								--set name="UCS 2.3" \
+								--set profile="/usr/share/univention-kde-profiles/ucs-23"
+
+
+## <KDE Menu 2.3>
 # make the profile selectable in UDM
 univention-directory-manager settings/default modify $@ --dn "cn=default,cn=univention,$ldap_base" \
-	--append defaultKdeProfiles="/usr/share/univention-kde-profiles/ucs-kde-menu21"
+	--append defaultKdeProfiles="/usr/share/univention-kde-profiles/ucs-23-kde-menu"
 
 # register as new desktop policy
 univention-directory-manager policies/desktop  create $@ --ignore_exists \
 	--position cn=desktop,cn=policies,$ldap_base\
-	--set name="UCS KDE Menu 2.1" --set language="de_DE@euro" \
-	--set profile="/usr/share/univention-kde-profiles/ucs-kde-menu21"
+	--set name="UCS 2.3 KDE Menu" --set language="de_DE@euro" \
+	--set profile="/usr/share/univention-kde-profiles/ucs-23-kde-menu"
 
-# attatch it to the UCS green 2.1 policy
+# attatch it to the UCS 2.3 policy
 if [ "$kde_menu_keep" != 'true' ]; then
 	univention-admin policies/desktop modify $@ \
-		--dn "cn=UCS green 2.1,cn=desktop,cn=policies,$ldap_base" \
-		--append profile="/usr/share/univention-kde-profiles/ucs-kde-menu21"
+		--dn "cn=UCS 2.3,cn=desktop,cn=policies,$ldap_base" \
+		--append profile="/usr/share/univention-kde-profiles/ucs-23-kde-menu"
 fi
 ## </KDE Menu 2.1>
 
 # check for the default policy
-test -n "`grep "univention-kde v2 successful" /usr/lib/univention-install/.index.txt`" 
+test -n "`grep "univention-kde v3 successful" /usr/lib/univention-install/.index.txt`" 
 if [ "$?" = 1 ]; then
 	res=$(univention_policy_result -s "$ldap_base" | grep univentionDesktopProfile)
 	if [ -z "$res" ]; then
-		univention-admin container/dc modify $@ --dn "$ldap_base" --policy-reference "cn=UCS green 2.1,cn=desktop,cn=policies,$ldap_base"
+		univention-admin container/dc modify $@ --dn "$ldap_base" --policy-reference "cn=UCS 2.3,cn=desktop,cn=policies,$ldap_base"
 	fi
 fi
 	

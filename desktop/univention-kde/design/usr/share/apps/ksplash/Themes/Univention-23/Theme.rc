@@ -1,0 +1,18 @@
+[KSplash Theme: Univention-23]
+Name = Splash Screen 23
+Description = Univention Corporate Desktop
+Version = 1.0
+Author = Univention GmbH <packages@univention.de>
+
+# Theme behaviour settings.
+Engine = Default
+
+# Should icons blink ala KDE, or not?
+Icons Flashing = false
+
+# Show progress bar?
+Always Show Progress = true
+
+# Status text colour
+Label Foreground = #FFFFFF
+

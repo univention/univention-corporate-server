@@ -1,0 +1,182 @@
+<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN" "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+<Menu>
+  <Name>Univention KDE Menu</Name>
+  <Menu>
+    <Name>Univention Office</Name>
+    <Directory>kde-office.directory</Directory>
+    <Exclude>
+      <All/>
+    </Exclude>
+    <Include>
+      <Filename>kde-Kontact.desktop</Filename>
+      <Filename>evolution.desktop</Filename>
+      <Filename>ooo-writer.desktop</Filename>
+      <Filename>ooo-calc.desktop</Filename>
+      <Filename>ooo-impress.desktop</Filename>
+      <Filename>ooo-math.desktop</Filename>
+      <Filename>ooo-base.desktop</Filename>
+      <Filename>AdobeReader.desktop</Filename>
+      <Filename>kde-kdict.desktop</Filename>
+      <Filename>kde-kcalc.desktop</Filename>
+      <Category>Univention Office</Category>
+    </Include>
+    <Layout>
+      <Filename>kde-Kontact.desktop</Filename>
+      <Filename>evolution.desktop</Filename>
+      <Filename>ooo-writer.desktop</Filename>
+      <Filename>ooo-calc.desktop</Filename>
+      <Filename>ooo-impress.desktop</Filename>
+      <Filename>ooo-math.desktop</Filename>
+      <Filename>ooo-base.desktop</Filename>
+      <Filename>AdobeReader.desktop</Filename>
+      <Filename>kde-kdict.desktop</Filename>
+      <Filename>kde-kcalc.desktop</Filename>
+    </Layout>
+  </Menu>
+  <Menu>
+    <Name>Univention Desktop</Name>
+    <Directory>kde-utilities-desktop.directory</Directory>
+    <Exclude>
+      <All/>
+    </Exclude>
+    <Include>
+      <Filename>kde-krfb.desktop</Filename>
+      <Filename>kde-krdc.desktop</Filename>
+      <Filename>nxclient.desktop</Filename>
+      <Filename>kde-knetattach.desktop</Filename>
+      <Filename>kde-klipper.desktop</Filename>
+      <Filename>kde-kappfinder.desktop</Filename>
+      <Filename>kde-kmenuedit.desktop</Filename>
+      <Filename>kde-kfontview.desktop</Filename>
+      <Filename>kde-kcmkicker.desktop</Filename>
+      <Category>Univention Desktop</Category>
+    </Include>
+    <Layout>
+      <Filename>kde-krfb.desktop</Filename>
+      <Filename>kde-krdc.desktop</Filename>
+      <Filename>kde-knetattach.desktop</Filename>
+      <Filename>gdmphotosetup.desktop</Filename>
+      <Filename>kde-kfontview.desktop</Filename>
+      <Filename>kde-klipper.desktop</Filename>
+      <Filename>kde-kmenuedit.desktop</Filename>
+      <Filename>kde-kcmkicker.desktop</Filename>
+    </Layout>
+  </Menu>
+  <Menu>
+    <Name>Univention Utilities</Name>
+    <Directory>kde-utilities.directory</Directory>
+    <Menu>
+      <Name>Univention Utilities Peripherals</Name>
+      <Directory>kde-utilities-peripherals.directory</Directory>
+      <Exclude>
+        <All/>
+      </Exclude>
+      <Include>
+        <Filename>kde-kpalmdoc.desktop</Filename>
+        <Filename>kde-kpilot.desktop</Filename>
+        <Filename>kde-kdeprintfax.desktop</Filename>
+        <Category>Univention Utilities Peripherals</Category>
+      </Include>
+      <Layout>
+        <Filename>kde-kdeprintfax.desktop</Filename>
+        <Filename>kde-kpilot.desktop</Filename>
+        <Filename>kde-kpalmdoc.desktop</Filename>
+      </Layout>
+    </Menu>
+    <Exclude>
+      <All/>
+    </Exclude>
+    <Include>
+      <Filename>kde-konsole.desktop</Filename>
+      <Filename>kde-kjobviewer.desktop</Filename>
+      <Filename>kde-kwrite.desktop</Filename>
+      <Filename>kde-kate.desktop</Filename>
+      <Filename>kde-ark.desktop</Filename>
+      <Category>Univention Utilities</Category>
+    </Include>
+    <Layout>
+      <Filename>kde-konsole.desktop</Filename>
+      <Filename>kde-kjobviewer.desktop</Filename>
+      <Filename>kde-kwrite.desktop</Filename>
+      <Filename>kde-kate.desktop</Filename>
+      <Filename>kde-ark.desktop</Filename>
+      <Menuname>Univention Utilities Peripherals</Menuname>
+    </Layout>
+  </Menu>
+  <Menu>
+    <Name>Univention Graphics</Name>
+     <Directory>kde-graphics.directory</Directory>
+    <Exclude>
+      <All/>
+    </Exclude>
+    <Include>
+      <Filename>The GIMP.desktop</Filename>
+      <Filename>inkscape.desktop</Filename>
+      <Filename>ooo-draw.desktop</Filename>
+      <Filename>kde-kuickshow.desktop</Filename>
+      <Filename>kde-ksnapshot.desktop</Filename>
+      <Filename>mplayer.desktop</Filename>
+      <Category>Univention Graphics</Category>
+    </Include>
+    <Layout>
+      <Filename>The GIMP.desktop</Filename>
+      <Filename>inkscape.desktop</Filename>
+      <Filename>ooo-draw.desktop</Filename>
+      <Filename>kde-kuickshow.desktop</Filename>
+      <Filename>kde-ksnapshot.desktop</Filename>
+      <Filename>mplayer.desktop</Filename>
+    </Layout>
+  </Menu>
+  <Menu>
+    <Name>Univention Internet</Name>
+     <Directory>kde-internet.directory</Directory>
+    <Exclude>
+      <All/>
+    </Exclude>
+    <Include>
+      <Filename>firefox.desktop</Filename>
+      <Filename>kde-konqbrowser.desktop</Filename>
+      <Filename>kde-knewsticker-standalone.desktop</Filename>
+      <Filename>kde-KNode.desktop</Filename>
+      <Filename>kde-akregator.desktop</Filename>
+      <Filename>kde-ksirc.desktop</Filename>
+      <Filename>kde-kget.desktop</Filename>
+      <Category>Univention Internet</Category>
+    </Include>
+    <Layout>
+      <Filename>firefox.desktop</Filename>
+      <Filename>kde-konqbrowser.desktop</Filename>
+      <Filename>kde-knewsticker-standalone.desktop</Filename>
+      <Filename>kde-akregator.desktop</Filename>
+      <Filename>kde-KNode.desktop</Filename>
+      <Filename>kde-kopete.desktop</Filename>
+      <Filename>kde-ksirc.desktop</Filename>
+      <Filename>kde-kget.desktop</Filename>
+    </Layout>
+  </Menu>
+  <Exclude>
+     <All/>
+  </Exclude>
+  <Include>
+    <Filename>kde-KControl.desktop</Filename>
+    <Filename>kde-Help.desktop</Filename>
+    <Category>Univention KDE Menu</Category>
+  </Include>
+  <Layout>
+    <Menuname>Univention Office</Menuname>
+    <Menuname>Univention Desktop</Menuname>
+    <Menuname>Univention Internet</Menuname>
+    <Menuname>Univention Utilities</Menuname>
+    <Menuname>Univention Graphics</Menuname>
+    <Filename>kde-KControl.desktop</Filename>
+    <Filename>kde-Help.desktop</Filename>
+  </Layout>
+  <!-- Finally gather all remainig applications in a hidden menu, so they are known to KDE -->
+  <Menu>
+    <Name>.hidden</Name>
+    <OnlyUnallocated/>
+    <Include>
+      <All/>
+    </Include>
+  </Menu>
+</Menu>

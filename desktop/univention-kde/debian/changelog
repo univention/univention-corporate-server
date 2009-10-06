@@ -1,3 +1,9 @@
+univention-kde (4.0.1-1) unstable; urgency=low
+
+  * new kde theme for UCS 2.3 (Bug: #15824)
+
+ -- Felix Botner <botner@univention.de>  Tue,  6 Oct 2009 12:52:12 +0200
+
 univention-kde (4.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3

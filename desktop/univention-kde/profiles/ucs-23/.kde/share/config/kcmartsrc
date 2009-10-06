@@ -1,0 +1,14 @@
+[Arts]
+AddOptions=
+Arguments=\s-F 10 -S 4096 -n -s 60 -m artsmessage -c drkonqi -l 3 -f
+AudioIO=
+AutoSuspend=true
+Bits=0
+DeviceName=
+FullDuplex=false
+Latency=250
+NetworkTransparent=true
+SamplingRate=0
+StartRealtime=true
+StartServer=false
+SuspendTime=60
