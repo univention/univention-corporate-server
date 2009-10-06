@@ -1,4 +1,4 @@
-Copyright 2002,2003,2004,2005,2006,2007 by
+Copyright 2002-2009 by
 
 Univention GmbH
 http://www.univention.de/
@@ -38,7 +38,11 @@ unattended-4.6.zip and the files
 conffiles/var/lib/univention-windows-installer/install/bin/mapznrun.bat
 and 
 conffiles/var/lib/univention-windows-installer/install/bin/mapynrun.bat.
-These packages are released unter the GPL.
+These packages are released under the GPL.
+
+This program contains the linux kernel in the files "bzImage" and "initrd".
+The linux kernel is released under the GNU General Public License version 2.
+The source code can be obtained from http://kernel.org/
 
 ###### The text below is copied from freedos/doc/wcd/copying.dj :
 

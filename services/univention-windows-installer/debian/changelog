@@ -1,3 +1,9 @@
+univention-windows-installer (3.0.0-3) unstable; urgency=low
+
+  * update debian/copyright to include linux (Bug #14825)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue,  6 Oct 2009 11:20:37 +0200
+
 univention-windows-installer (3.0.0-2) unstable; urgency=low
 
   * fixed detection of shared libraries (Bug: #14667)
