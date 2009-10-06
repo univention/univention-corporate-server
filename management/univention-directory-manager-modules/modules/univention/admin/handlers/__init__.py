@@ -1633,6 +1633,7 @@ class simpleComputer( simpleLdap ):
 		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'remove' ]:
 			dnsForwardZone, dnsAliasZoneContainer, alias = self.__split_dns_alias_line( entry )
 			if not alias:
+				# nonfunctional code since self[ 'alias' ] should be self[ 'dnsAlias' ], but ths case does not seem to occur
 				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
 			else:
 				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
@@ -1916,6 +1917,7 @@ class simpleComputer( simpleLdap ):
 		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'remove' ]:
 			dnsForwardZone, dnsAliasZoneContainer, alias = self.__split_dns_alias_line( entry )
 			if not alias:
+				# nonfunctional code since self[ 'alias' ] should be self[ 'dnsAlias' ], but ths case does not seem to occur
 				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
 			else:
 				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
@@ -2048,7 +2050,7 @@ class simpleComputer( simpleLdap ):
 			for entry in self['dnsEntryZoneAlias']:
 				dnsForwardZone, dnsAliasZoneContainer, alias = self.__split_dns_alias_line( entry )
 				try:
-					self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
+					self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
 				except Exception,e:
 					self.exceptions.append([_('DNS Alias'), _('delete'), e])
 
