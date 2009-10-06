@@ -1,3 +1,10 @@
+univention-webui (3.0.11-1) unstable; urgency=low
+
+  * fixed typo in "session_id" argument
+  * fixed "over-optimized" php code (Bug 8871)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 06 Oct 2009 11:45:27 +0200
+
 univention-webui (3.0.10-1) unstable; urgency=low
 
   * support vertical alignment of table columns

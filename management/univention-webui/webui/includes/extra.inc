@@ -327,7 +327,7 @@ class question_file extends extra{
 		if($this->js && isset($this->basket["update"])) $str .= 'onChange="sendForm('.$this->update_byteindex.') "';
 		if($this->warn) $str .= ' class="file_warn"';
 		else $str .= ' class="file" ';
-		$str .= ' type="file" $access name="userfile"></input>';
+		$str .= ' type="file" '.$access.' name="userfile"></input>';
 		if(isset($this->basket['update'])) $str .= $this->basket['update'];
 		$str .= '</td></tr>
 </table>';
@@ -405,7 +405,7 @@ class question_secure extends extra{
 			$str .= 'type="password"';
 		else
 			$str .= 'type="password" dojoType="dijit.form.TextBox"';
-		$str .= ' $access name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';
+		$str .= ' '.$access.' name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';
 		if (isset($this->basket['update'])) 
 			$str .= $this->basket['update'];
 		$str .= '</td></tr>
@@ -595,7 +595,7 @@ class button extends extra{
 					$icon_str = '/icon/close_tab_inactive.gif';
 				}
 				$cssclass .= 'closeableend'; // closebuttons are always the last in a closable categoryitem
-				$img_str = '<img src="'.$icon_str.'" class="img$cssclass">';
+				$img_str = '<img src="'.$icon_str.'" class="img'.$cssclass.'">';
 				$str .= '<a class="'.$cssclass.'" onClick="sendForm('.$this->byteindex.')" title="X">'.$img_str.'</a>
 <input type="hidden" id="'.$this->byteindex.'" name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';
 			}
@@ -695,7 +695,7 @@ class update_button extends extra{
 class link extends extra{
 	function show(){
 		$class=$this->modus;
-	  	if(stristr($this->basket['dest'],'uniconf_modul')) $this->basket['dest'] .= '&sesion_id=$session_id';
+	  	if(stristr($this->basket['dest'],'uniconf_modul')) $this->basket['dest'] .= '&session_id='.$session_id;
 		$str .= '<a class="'.$class.'"  tabindex="'.$this->tabindex.'" href="'.$this->basket['dest'].'">&nbsp;'.$this->basket['text'].'</a>';
 	  	return $str;
 	}
@@ -716,7 +716,7 @@ class question_select extends extra_multi{
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		$str .= '</td></tr>
 <tr><td>
-<select dojoType="dijit.form.FilteringSelect" autocomplete="true" $access title="'.$this->basket['helptext'].'" tabindex="'.$this->tabindex.'"';
+<select dojoType="dijit.form.FilteringSelect" autocomplete="true" '.$access.' title="'.$this->basket['helptext'].'" tabindex="'.$this->tabindex.'"';
     
 		if($this->warn) 
 			$str .= ' class="select_warn" ';
@@ -841,7 +841,7 @@ class language_dojo_select extends extra_multi{
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		$str .= '</td></tr>
 <tr><td>
-<select dojoType="dijit.form.FilteringSelect" autocomplete="true" $access title="'.$this->basket['helptext'].'" tabindex="'.$this->tabindex.'"';
+<select dojoType="dijit.form.FilteringSelect" autocomplete="true" '.$access.' title="'.$this->basket['helptext'].'" tabindex="'.$this->tabindex.'"';
 
 		if($this->warn) 
 			$str .= ' class="select_warn" ';
