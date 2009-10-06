@@ -649,6 +649,22 @@ class modedit(unimodule.unimodule):
 						return cmp(dict1,dict2)
 				return compare_dicts
 
+			def split_dns_alias_line( entry ):
+				entry_parts = entry.split( ' ' )
+				dnsForwardZone = entry_parts[ 0 ]
+				alias = entry_parts[ -1 ]
+				if is_alias ( alias ):
+					dnsAliasZoneContainer = string.join( entry_parts[ 1:-1 ], ' ')
+					dnsAliasZoneName = ldap.explode_rdn(dnsAliasZoneContainer,1)[0]
+					return ( dnsForwardZone, dnsAliasZoneName, alias )
+				else:
+					if current_object.info.has_key( 'alias' ) and len( current_object[ 'alias' ] ) == 1:
+						dnsAliasZoneContainer = string.join( entry_parts[ 1: ], ' ')
+						dnsAliasZoneName = ldap.explode_rdn( dnsAliasZoneContainer, 1 )[ 0 ]
+						return ( dnsForwardZone, dnsAliasZoneName, current_object[ 'alias' ][ 0 ] )
+				return ( None, None, None )
+
+
 			def split_dns_line( entry ):
 				ip = entry.split( ' ' )[ -1 ]
 				if is_ip ( ip ):
@@ -700,6 +716,13 @@ class modedit(unimodule.unimodule):
 			def is_ip( ip ):
 				_re = re.compile( '^[ 0-9 ]+\.[ 0-9 ]+\.[ 0-9 ]+\.[ 0-9 ]+$' )
 				if _re.match ( ip ):
+					return True
+				return False
+
+			def is_alias( alias ):
+				# hostname based upon RFC 952: <let>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
+				_re = re.compile("(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$")
+				if _re.match ( alias ):
 					return True
 				return False
 
@@ -1044,6 +1067,213 @@ class modedit(unimodule.unimodule):
 										tablecol('',{'rowspan':'2'}, {'obs': [\
 											#input field
 											self.xinput[name][1],\
+											self.minput[name][0],\
+										]}),\
+										tablecol('',{}, {'obs': [\
+											# needed freespace
+											htmltext("",{},{'htmltext':['&nbsp;']})
+										]})\
+									]}))
+							minput_rows.append(tablerow("",{},{"obs":[\
+										tablecol('',{'type':'multi_add_top'}, {'obs': [\
+											#add button
+											self.minput[name][1]\
+										]})\
+									]}))
+							minput_rows.append(tablerow("",{},{"obs":[\
+										tablerow("",{},{"obs":[\
+											tablecol('',{'rowspan':'3'}, {'obs': [\
+												#mselect list
+												self.minput[name][2]\
+											]}),\
+											tablecol('',{'type':'multi_remove'}, {'obs': [\
+												#up button
+												self.minput[name][4]\
+											]})\
+										]}),\
+										tablerow("",{},{"obs":[\
+											tablecol('',{'type':'multi_remove'}, {'obs': [\
+												#remove button
+												self.minput[name][3]\
+											]})\
+										]}),\
+										tablerow("",{},{"obs":[\
+											tablecol('',{'type':'multi_remove_img'}, {'obs': [\
+												#down button
+												self.minput[name][5]\
+											]})\
+										]})\
+									]}))
+						else:
+							minput_rows.append(tablerow("",{},{"obs":[\
+										tablecol('',{}, {'obs': [\
+										]}),\
+										tablecol('',{}, {'obs': [\
+										]})\
+									]}))
+						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":minput_rows})]}))
+
+					elif property.syntax.name == 'dnsEntryAlias':
+						dns_entry_choicelist = []
+						dns_alias_zone_choicelist = []
+
+						self.minput[name]=[]
+						self.xinput[name]=[]
+						self.zinput[name]=[]
+						minput_rows=[]
+
+						dns_zone_atts=copy.deepcopy(attributes)
+						alias_zone_atts=copy.deepcopy(attributes)
+						alias_atts=copy.deepcopy(attributes)
+
+						mvaluelist=[]
+						i=0
+
+						if name:
+							# prepare dropdown of dnsEntryZoneForward registerd with the host object
+							if self.save.get('x_choice_value_of_%s'%name,'') == '':
+								self.save.put('x_choice_value_of_%s'%name, 'None' )
+
+							if current_object.info.has_key( 'dnsEntryZoneForward' ):
+								groups=[]
+								for entry in current_object[ 'dnsEntryZoneForward' ]:
+									groups.append(string.join( entry.split( ' ' )[ :-1 ], ' ' ))
+									#dns_entry_choicelist.append( { 'name': zone_name, 'description': zone_name } )
+
+								tmppos=univention.admin.uldap.position(position.getDomain())
+
+								oldlevel=''
+								item=0
+								found = False
+								i = 0
+								for group in groups:
+									tmppos.setDn(group)
+									(displaypos,displaydepth)=tmppos.getPrintable_depth()
+									if not unicode(displaydepth) == oldlevel:
+										item+=1
+									oldlevel=unicode(displaydepth)
+									zone_name=ldap.explode_rdn( group, 1 )[ 0 ]
+									dns_entry_choicelist.append({'item':item,"level":unicode(displaydepth),"name":zone_name,"description":displaypos})
+									i = i + 1
+									if self.save.get('x_choice_value_of_%s'%name) == zone_name:
+										dns_entry_choicelist[-1]['selected']='1'
+										found = True
+								if not found:
+									if i > 0:
+										self.save.put('x_choice_value_of_%s'%name, dns_entry_choicelist[0][ 'name' ])
+
+								dns_entry_choicelist.sort(compare_dicts_by_two_attr('item','description'))
+
+							update_choices=button('lmanusel',{},{'helptext':_('Select the DNS Forward Zone')})
+							self.xinput[name].append(update_choices)
+							label=current_module.property_descriptions['dnsEntryZoneForward'].short_description
+							self.xinput[name].append(question_select(label,dns_zone_atts,
+																{'choicelist':dns_entry_choicelist,'helptext':_('Select the DNS Forward Zone object'),
+																'button':update_choices}))
+
+							# next prepare dropdown of all existing dnsEntryZoneForward possbile to put the DNS alias into
+							domainPos=univention.admin.uldap.position(position.getDomain())
+							dnsZone=self.lo.searchDn('(&(objectClass=dnsZone)(relativeDomainName=@)(!(zoneName=*.in-addr.arpa)))', base=domainPos.getBase(), scope='domain')
+
+							if self.save.get('z_choice_value_of_%s'%name,'') == '':
+								self.save.put('z_choice_value_of_%s'%name, 'None' )
+
+							if dnsZone:
+								groups=dnsZone
+								groups+=self.lo.searchDn(base=dnsZone[0],filter='(!(objectClass=dnsZone))')
+
+								tmppos=univention.admin.uldap.position(position.getDomain())
+
+
+								oldlevel=''
+								item=0
+								found = False
+								i = 0
+								for group in groups:
+									tmppos.setDn(group)
+									(displaypos,displaydepth)=tmppos.getPrintable_depth()
+									if not unicode(displaydepth) == oldlevel:
+										item+=1
+									oldlevel=unicode(displaydepth)
+									dns_alias_zone_choicelist.append({'item':item,"level":unicode(displaydepth),"name":group,"description":displaypos})
+									i = i + 1
+									if self.save.get('z_choice_value_of_%s'%name) == group:
+										dns_alias_zone_choicelist[-1]['selected']='1'
+										found = True
+								if not found:
+									if i > 0:
+										self.save.put('z_choice_value_of_%s'%name, dns_alias_zone_choicelist[0][ 'name' ])
+
+								dns_alias_zone_choicelist.sort(compare_dicts_by_two_attr('item','description'))
+
+							update_choices=button('lmanusel',{},{'helptext':_('Select the DNS Alias Zone')})
+							self.zinput[name].append(update_choices)
+							self.zinput[name].append(question_select(property.short_description,alias_zone_atts,
+																{'choicelist':dns_alias_zone_choicelist,'helptext':_('Select the DNS Alias Zone object'),
+																'button':update_choices}))
+
+							if value:
+								i = 0
+								for v in value:
+									vstr =  syntax.tostring(v)
+
+									univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "mvaluelist: %s" % ( vstr ) )
+									#univention-directory-manager.zoneName=univention.test,cn=dns,dc=univention,dc=test.&nbsp;&nbsp;&nbsp;univention.test</option>
+									#zoneName=univention.test,cn=dns,dc=univention,dc=test&nbsp;&nbsp;&nbsp;univention.test</option>
+
+									zone_name, alias_zone_name, alias = split_dns_alias_line( vstr )
+									if zone_name and alias_zone_name and alias:
+										mvaluelist.append({'name': unicode(i), 'description': '%s.%s.&nbsp;&nbsp;&nbsp;%s' % ( alias, zone_name, alias_zone_name ) } )
+										i+=1
+									elif zone_name and alias_zone_name:	# FIXME: Does this case occurr?
+										mvaluelist.append({'name': unicode(i), 'description': '%s&nbsp;&nbsp;&nbsp;%s' % ( zone_name, alias_zone_name ) } )
+										i+=1
+									elif zone_name:
+										mvaluelist.append({'name': unicode(i), 'description': '%s' % ( zone_name ) } )
+										i+=1
+									else:
+										univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'dnsEntryAlias: failed to decode the line: "%s"' % vstr )
+
+							atts=copy.deepcopy(attributes)
+							b_atts=copy.deepcopy(attributes)
+							b2_atts=copy.deepcopy(attributes)
+							#dns_zone_atts=copy.deepcopy(attributes)
+							#alias_zone_atts=copy.deepcopy(attributes)
+							#alias_atts=copy.deepcopy(attributes)
+
+							width='400' # FIXME
+							if not dns_zone_atts.get('width'):
+								dns_zone_atts['width']=width
+
+							if not alias_zone_atts.get('width'):
+								alias_zone_atts['width']=width
+
+							if not alias_atts.get('width'):
+								alias_atts['width']=width
+
+							if not atts.get('width'):
+								atts['width']=width
+
+							self.minput[name].append(question_text(_("Alias"),alias_atts,{"helptext":_("DNS alias"), 'usertext':''}))
+							# [1]: add button
+							self.minput[name].append(get_addbutton(b_atts,_("Add %s") % name))
+							# [2]: mselect list widget
+							self.minput[name].append(question_mselect(_("Entries:"),atts,{"helptext":_("Current entries for '%s'") % name,"choicelist":mvaluelist}))
+							# [3]: remove button
+							self.minput[name].append(get_removebutton(b_atts,_("Remove selected '%s' entrie(s) from list") % name))
+
+							# move buttons:
+							# [4]: up button [ ^ ]
+							self.minput[name].append(get_upbutton(b2_atts,_("Move upwards")))
+							# [5]: down button [ v ]
+							self.minput[name].append(get_downbutton(b2_atts,_("Move downwards")))
+
+							# put the widgets/buttons from minput[name] into a table
+							minput_rows.append(tablerow("",{},{"obs":[\
+										tablecol('',{'rowspan':'2'}, {'obs': [\
+											#input field
+											self.xinput[name][1],\
+											self.zinput[name][1],\
 											self.minput[name][0],\
 										]}),\
 										tablecol('',{}, {'obs': [\
@@ -5151,6 +5381,21 @@ class modedit(unimodule.unimodule):
 						current_object[key]=cpnew
 						new = cpnew
 					except univention.admin.uexceptions.valueError, e:
+						invalid[key]=new
+			elif key == 'dnsEntryZoneAlias':
+				if mitem[1].pressed():
+					cpnew = copy.deepcopy( new )
+					if mitem[0].get_input() and self.save.get( 'x_choice_value_of_%s' % key ) and self.save.get( 'z_choice_value_of_%s' % key ):
+						if self.save.get( 'x_choice_value_of_%s' % key ) + " " + self.save.get( 'z_choice_value_of_%s' % key ) + " " + mitem[0].get_input() not in cpnew:
+							cpnew.append( self.save.get( 'x_choice_value_of_%s' % key )+ " " + self.save.get( 'z_choice_value_of_%s' % key ) + " " + mitem[0].get_input()  )
+					elif not multiedit or key in overwrite_fields:
+						invalid[key]=new
+					try:
+						current_object[key]=cpnew
+						new = cpnew
+					except univention.admin.uexceptions.valueError, e:
+						#import traceback
+						#univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "modedit: %s, %s" % ( e, traceback.format_exc() ))
 						invalid[key]=new
 			else:
 				if mitem[1].pressed():

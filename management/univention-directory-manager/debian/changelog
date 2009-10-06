@@ -1,3 +1,28 @@
+univention-directory-manager (7.0.22-4) unstable; urgency=low
+
+  * fix the label for the DNS Forward Zone dropdown (Bug #15017)
+
+ -- Arvid Requate <requate@univention.de>  Mon,  6 Jul 2009 12:30:48 +0200
+
+univention-directory-manager (7.0.22-3) unstable; urgency=low
+
+  * updated translation file (Bug #15017)
+
+ -- Arvid Requate <requate@univention.de>  Fri,  3 Jul 2009 17:52:12 +0200
+
+univention-directory-manager (7.0.22-2) unstable; urgency=low
+
+  * adjusted dnsEntryAlias syntax for DNSEntryZoneAlias property (Bug #15017)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 30 Jun 2009 09:53:04 +0200
+
+univention-directory-manager (7.0.22-1) unstable; urgency=low
+
+  * DNS Alias edit via multiselect on DNS tab of a host object
+  * host object lookup via DNS Alias (Bug #15017)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 26 Jun 2009 20:45:34 +0200
+
 univention-directory-manager (7.0.21-1) unstable; urgency=low
 
   * optimized policy search in modedit.py (Bug: #14861)
