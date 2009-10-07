@@ -10,11 +10,11 @@
     <Include>
       <Filename>kde-Kontact.desktop</Filename>
       <Filename>evolution.desktop</Filename>
-      <Filename>ooo-writer.desktop</Filename>
-      <Filename>ooo-calc.desktop</Filename>
-      <Filename>ooo-impress.desktop</Filename>
-      <Filename>ooo-math.desktop</Filename>
-      <Filename>ooo-base.desktop</Filename>
+      <Filename>openoffice.org-writer.desktop</Filename>
+      <Filename>openoffice.org-calc.desktop</Filename>
+      <Filename>openoffice.org-impress.desktop</Filename>
+      <Filename>openoffice.org-math.desktop</Filename>
+      <Filename>openoffice.org-base.desktop</Filename>
       <Filename>AdobeReader.desktop</Filename>
       <Filename>kde-kdict.desktop</Filename>
       <Filename>kde-kcalc.desktop</Filename>
@@ -23,11 +23,11 @@
     <Layout>
       <Filename>kde-Kontact.desktop</Filename>
       <Filename>evolution.desktop</Filename>
-      <Filename>ooo-writer.desktop</Filename>
-      <Filename>ooo-calc.desktop</Filename>
-      <Filename>ooo-impress.desktop</Filename>
-      <Filename>ooo-math.desktop</Filename>
-      <Filename>ooo-base.desktop</Filename>
+      <Filename>openoffice.org-writer.desktop</Filename>
+      <Filename>openoffice.org-calc.desktop</Filename>
+      <Filename>openoffice.org-impress.desktop</Filename>
+      <Filename>openoffice.org-math.desktop</Filename>
+      <Filename>openoffice.org-base.desktop</Filename>
       <Filename>AdobeReader.desktop</Filename>
       <Filename>kde-kdict.desktop</Filename>
       <Filename>kde-kcalc.desktop</Filename>
@@ -112,7 +112,7 @@
     <Include>
       <Filename>The GIMP.desktop</Filename>
       <Filename>inkscape.desktop</Filename>
-      <Filename>ooo-draw.desktop</Filename>
+      <Filename>openoffice.org-draw.desktop</Filename>
       <Filename>kde-kuickshow.desktop</Filename>
       <Filename>kde-ksnapshot.desktop</Filename>
       <Filename>mplayer.desktop</Filename>
@@ -121,7 +121,7 @@
     <Layout>
       <Filename>The GIMP.desktop</Filename>
       <Filename>inkscape.desktop</Filename>
-      <Filename>ooo-draw.desktop</Filename>
+      <Filename>openoffice.org-draw.desktop</Filename>
       <Filename>kde-kuickshow.desktop</Filename>
       <Filename>kde-ksnapshot.desktop</Filename>
       <Filename>mplayer.desktop</Filename>
