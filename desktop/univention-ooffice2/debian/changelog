@@ -1,3 +1,9 @@
+univention-ooffice2 (3.0.0-4) unstable; urgency=low
+
+  * use "-nologo" oo option if oo is already running (Bug: #11195)
+
+ -- Felix Botner <botner@univention.de>  Wed,  7 Oct 2009 16:37:09 +0200
+
 univention-ooffice2 (3.0.0-3) unstable; urgency=low
 
   * create link to new oo desktop file for old menu profiles (Bug: #14425)

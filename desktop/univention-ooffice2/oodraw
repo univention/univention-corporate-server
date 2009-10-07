@@ -13,5 +13,5 @@ if [ -x /usr/lib/openoffice/program/ooqstart ]; then
 	export OOO_EXTRA_ARG='-draw'
 	/usr/lib/openoffice/program/ooqstart  "$@"
 else
-	/usr/lib/openoffice/program/soffice -draw "$@"
+	/usr/lib/openoffice/program/soffice $extra_oo_ucs_opts -draw "$@"
 fi

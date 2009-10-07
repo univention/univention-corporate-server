@@ -13,5 +13,5 @@ if [ -x /usr/lib/openoffice/program/ooqstart ]; then
 	export OOO_EXTRA_ARG='-web'
 	/usr/lib/openoffice/program/ooqstart  "$@"
 else
-	/usr/lib/openoffice/program/soffice -web "$@"
+	/usr/lib/openoffice/program/soffice -web $extra_oo_ucs_opts "$@"
 fi

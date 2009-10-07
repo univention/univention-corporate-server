@@ -13,5 +13,5 @@ if [ -x /usr/lib/openoffice/program/ooqstart ]; then
 	export OOO_EXTRA_ARG=''
 	/usr/lib/openoffice/program/ooqstart slot:5500 "$@"
 else
-	/usr/lib/openoffice/program/soffice slot:5500 "$@"
+	/usr/lib/openoffice/program/soffice $extra_oo_ucs_opts slot:5500 "$@"
 fi
