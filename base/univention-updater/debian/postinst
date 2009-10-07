@@ -114,7 +114,7 @@ if [ -n "$update_server" -a "$update_server" != "http://download.univention.de" 
 elif host univention-repository.$domainname &> /dev/null; then
 	univention-config-registry set repository/online/server?"univention-repository.$domainname"
 else
-	univention-config-registry set repository/online/server?"apt.univention.de"
+	univention-config-registry set repository/online/server?"forge.univention.de"
 fi
 
 # unset old variables

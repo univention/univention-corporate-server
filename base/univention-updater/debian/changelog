@@ -1,3 +1,10 @@
+univention-updater (5.0.14-2) unstable; urgency=low
+
+  * for beta-release default repository has been changed to
+    forge.univention.de (Bug: #15836)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 07 Oct 2009 11:24:12 +0200
+
 univention-updater (5.0.14-1) unstable; urgency=low
 
   * disabled download of dists repository part (Bug: #15505)
