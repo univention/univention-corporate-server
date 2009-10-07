@@ -41,4 +41,11 @@ if [ -x /usr/bin/fc-cache ] && [ -e /etc/fonts/fonts.conf ]; then
 	fc-cache -fvs || true
 fi
 
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.0-2; then
+        if [ -e /usr/lib/openoffice/program/oosplash.bin.real ]; then
+                dpkg-divert --package univention-ooffice2 --remove --divert \
+                /usr/lib/openoffice/program/oosplash.bin.real /usr/lib/openoffice/program/oosplash.bin
+        fi
+fi
+
 exit 0
