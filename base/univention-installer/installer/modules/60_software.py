@@ -119,6 +119,11 @@ class object(content):
 						else:
 							active = True
 
+						if active:
+							for ed in package_list.PackageList[i]['Packages'][j].get('EditionDisable',[]):
+								if ed in self.parent.cmdline.get('edition',[]):
+									active = False
+
 						if not active:
 							failed.append(package_list.PackageList[i]['Packages'][j]['Name'])
 
