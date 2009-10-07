@@ -1,3 +1,10 @@
+univention-webui (3.0.13-1) unstable; urgency=low
+
+  * implemented userDN and groupDN in dojo as question_mmselect. Bug
+    #13035
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  7 Oct 2009 22:19:44 +0200
+
 univention-webui (3.0.12-1) unstable; urgency=low
 
   * removed disturbing whitespace at the bottom php files -

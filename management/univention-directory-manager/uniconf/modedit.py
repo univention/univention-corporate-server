@@ -4307,7 +4307,7 @@ class modedit(unimodule.unimodule):
 								groups=[]
 						is_in={}
 
-						cur_group_choicelist=[]
+						group_choicelist=[]
 						sort_temp = {}
 
 						for group in value: # value may have ''-element, would crash python in the dictionary
@@ -4319,9 +4319,8 @@ class modedit(unimodule.unimodule):
 						sort_keys = [(x.lower(),x) for x in sort_temp.keys()] # tupe of lower case key and keys for case insensitive sort
 						sort_keys.sort()
 						for unused,key in sort_keys:
-							cur_group_choicelist.append({'name': key, 'description': sort_temp[key]})
+							group_choicelist.append({'name': key, 'description': sort_temp[key], 'activated': '1'})
 
-						new_group_choicelist=[]
 						sort_temp = {}
 						for group in groups:
 							if not group.dn:
@@ -4348,7 +4347,7 @@ class modedit(unimodule.unimodule):
 						sort_keys = [ ( x.lower(), x ) for x in sort_temp.keys() ]
 						sort_keys.sort()
 						for unused,key in sort_keys:
-							new_group_choicelist.append( { 'name': key, 'description': sort_temp[ key ] } )
+							group_choicelist.append( { 'name': key, 'description': sort_temp[ key ], 'activated': '0' } )
 
 						atts=copy.deepcopy(attributes)
 						#search_type=self.save.get('browse_search_type')
@@ -4373,7 +4372,7 @@ class modedit(unimodule.unimodule):
 						if search_property_name not in  ('*',"_"):
 							if search_property_name:
 								search_property=search_module.property_descriptions[search_property_name]
-							self.search_input=question_property('',{},{'property': search_property, 'value': membership_search_value, 'search': '1', 'lo': self.lo})
+							self.search_input=question_property('',atts,{'property': search_property, 'value': membership_search_value, 'search': '1', 'lo': self.lo})
 						if search_property_name=="*":
 							search_value='*'
 
@@ -4391,14 +4390,11 @@ class modedit(unimodule.unimodule):
 						self.search_button=button(_('show'),{'icon':'/style/ok.gif'},{'helptext':_('show')})
 
 						searchcols.append(tablecol('',{},{'obs':[search_property_select]}))
-						searchcols.append(tablecol('',{},{'obs':[search_input]}))
-						searchcols.append(tablecol('',{'type':'tab_layout_bottom'},{'obs':[self.search_button]}))
+						searchcols.append(tablecol('',{'type':'search_property'},{'obs':[search_input]}))
+						searchcols.append(tablecol('',{'type':'tab_layout_bottom_space'},{'obs':[self.search_button]}))
 
 						atts['height']='150'
-						group_new_box=question_mselect(_('All'),atts,{'choicelist':new_group_choicelist,'helptext':_('choose objects to add')})
-						group_cur_box=question_mselect(_('Current'),atts,{'choicelist':cur_group_choicelist,'helptext':_('choose objects to remove')})
-						group_add_button=get_rightbutton(attributes,_("Add"))
-						group_remove_button=get_leftbutton(attributes,_("Remove"))
+						group_box=question_mmselect(_('All'),atts,{'caption-left': _('Search results'), 'caption-right': _('Selected objects'), 'choicelist':group_choicelist,'helptext':_('choose objects to add')})
 
 						# |------------------------------------------|
 						# |             |          |                 |
@@ -4412,30 +4408,7 @@ class modedit(unimodule.unimodule):
 								tablecol("",{},
 										 {"obs":[table("",{'type':'multi'},{"obs":[tablerow("",{},{"obs":searchcols})]})]}
 								 )]}),
-							tablerow("",{},{"obs":[
-								tablecol("",{},{"obs":[table("",{'type':'multi'},{"obs":[\
-									tablerow("",{'type':'multi_top'},{"obs":[
-										tablecol('',{'rowspan':'3'},{'obs': [group_new_box]}),
-										tablecol('',{'type':'multi_spacer'}, {'obs': [\
-											# needed freespace
-											# htmltext("",{},{'htmltext':['&nbsp;']})
-											htmltext("",{},{'htmltext':['&nbsp;']})
-											]}),\
-										tablecol('',{'rowspan':'3'},{'obs': [group_cur_box]})
-									]}),
-									tablerow("",{'type':'leftright_top'},{"obs":[
-										tablecol('',{'type':'leftright_top'}, {'obs': [\
-											#add button
-											group_add_button\
-										]})\
-									]}),\
-									tablerow("",{'type':'leftright_bottom'},{"obs":[
-										tablecol('',{'type':'leftright_bottom'}, {'obs': [\
-											#remove button
-											group_remove_button\
-										]})\
-									]})\
-								]})]})\
+							tablerow("",{},{"obs":[ group_box
 							]})\
 						]
 
@@ -4446,7 +4419,7 @@ class modedit(unimodule.unimodule):
 							]}))
 						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":tableobs})]}))
 
-						self.ginput[name]=(group_new_box, group_cur_box, group_add_button, group_remove_button,self.search_button,search_property_select,self.search_property_button,search_input)
+						self.ginput[name]=(group_box, self.search_button,search_property_select,self.search_property_button,search_input)
 
 					elif property.syntax.name == "sambaLogonHours":
 						choices_possible=[]
@@ -5515,30 +5488,26 @@ class modedit(unimodule.unimodule):
 			if not key:
 				continue
 			new=current_object[key]
-			# group_add_button
-			if mitem[2].pressed():
-				for value in mitem[0].getselected():
-					if new and new[0]:
-						new.append(value)
-					else:
-						new=[value]
-			# group_remove_button
-			elif mitem[3].pressed():
-				for value in mitem[1].getselected():
-					new.remove(value)
-			# search_property_select
-			elif mitem[6].pressed():
-				self.save.put("membership_search_property"+key,mitem[5].get_input())
+
+			if mitem[3].pressed():
+				self.save.put("membership_search_property"+key,mitem[2].get_input())
 				self.save.put("membership_search_ok"+key,None)
 				self.save.put("membership_search_result"+key,None)
-			elif mitem[4].pressed():
+			elif mitem[1].pressed():
 				try:
-					self.save.put("membership_search_value"+key,mitem[7].get_input())
+					self.save.put("membership_search_value"+key,mitem[4].get_input())
 					if self.save.get("membership_search_property"+key)=="_":
 						self.save.put("membership_search_result"+key,None)
 				except:
 					self.save.put("membership_search_value"+key,None)
 				self.save.put("membership_search_ok"+key,1)	
+			for value in mitem[0].getselected():
+				if not value in new:
+					if new and new[0]:
+						new.append(value)
+					else:
+						new=[value]
+					
 			try:
 				current_object[key]=new
 			except univention.admin.uexceptions.valueError, e:

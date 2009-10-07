@@ -1,3 +1,10 @@
+univention-webui-style (4.0.3-1) unstable; urgency=low
+
+  * added the dojo switchbutton to the css and align the search
+    porperties. Bug #13035
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  7 Oct 2009 21:27:10 +0200
+
 univention-webui-style (4.0.2-1) unstable; urgency=low
 
   * add two styles for buttons aligned to the left or that are centered

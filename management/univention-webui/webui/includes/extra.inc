@@ -1002,6 +1002,145 @@ class question_mselect extends extra_multi{
 	}
 }
 
+/*
+ 
+ * |------------------------------------------|
+ * |             |          |                 |
+ * |             |----------|                 |
+ * |  list       |    >     |      list       |
+ * |             |----------|                 |
+ * |             |    <     |                 |
+ * |------------------------------------------|
+ */
+
+class question_mmselect extends extra_multi{
+	function show(){
+		if (isset($this->attribute['passive'])) 
+			$access = 'disabled';
+
+		# the left side and the Dojo code
+		$str .= '<tr ><td ><!-- start table of type multi--><table  class="multi"  summary=""><tr class="multi_top"><td  rowspan="3"><script type="text/javascript">dojo.require("dijit.form.MultiSelect");
+dojo.addOnLoad(function(){
+	dojo.query("select").forEach(function(n){
+		if(!dijit.byNode(n)){
+			var multiselect = new dijit.form.MultiSelect({ },n);
+		}
+	});
+
+	/* catch the sendForm event and select all values in the right selectbox */
+	var submitform = document.getElementById( "form" );
+	dojo.connect(submitform, "onsubmit",function(evt) {
+		selectBox=dijit.byId("usrinput[multiple#'.$this->tabindex.'][]");
+		/* FIXME: the setValue call ist not correct but it was the easiest way ;) */
+		selectBox.setValue(1);
+		selectBox.invertSelection();
+		dojo.stopEvent(e);
+	});
+
+	dojo.query("button.dojo_switchbutton").connect("onclick",function(e) {
+		switch(e.target.id.toString()){
+			case "left-'.$this->tabindex.'" : dijit.byId("usrinput[multiple#'.$this->tabindex.'][]").addSelected(dijit.byId("field1-'.$this->tabindex.'")); break;
+			case "right-'.$this->tabindex.'" : dijit.byId("field1-'.$this->tabindex.'").addSelected(dijit.byId("usrinput[multiple#'.$this->tabindex.'][]")); break;
+		}
+		dojo.stopEvent(e);
+	});
+});
+';
+		$str .= '</script>';
+		$str .= '<table border="0" cellspacing="0" cellpadding="0">';
+		$str .= '<tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['caption-left'];
+		if ($this->warn) {
+			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
+		}
+		$str .= '</td></tr><tr><td> <select '.$access.' title="'.$this->basket['helptext'].'" id="field1-'.$this->tabindex.'" tabindex="'.$this->tabindex.'"';
+		if ($this->warn) 
+			$str .= ' class="mselect_warn" ';
+		else 
+			$str .= ' class="mselect" ';
+
+		if ($this->attribute['width'] || $this->attribute['height'])
+	    {
+			$str .= 'style=" ';
+			if ($this->attribute['width']) 
+				$str .= 'width:'.($this->attribute['width']).'px; ';
+			if ($this->attribute['height']) 
+				$str .= 'height:'.($this->attribute['height']).'px';
+			$str .= '" ';
+	    }
+		$str .= " dojoType=\"dijit.form.MultiSelect\"";
+		$str .= 'name="field1-'.$this->tabindex.'" multiple size="5">';
+		if ($this->basket['choice'])	    
+			foreach($this->basket['choice'] as $key=>$val)
+			{
+				if($this->basket['choice'][$key]['activated'] == '1') {
+					continue;
+				}
+				if (trim($this->basket['var'][$key]['content'])!='') 
+					$is='selected';
+				$str .= '<option value="'.$this->basket['var'][$key]['byteindex'].'" '.$is.'>';
+				$str .= $this->basket['choice'][$key]['description'];
+				$str .= '</option>';
+				$is = '';
+			}
+		$str .='</select>
+</td></tr></table>';
+		
+		# the right side
+		$str .= '</td><td  class="multi_spacer">';
+		$str .= '<div>&nbsp;</div>';
+		$str .= '</td><td  rowspan="3"><script type="text/javascript">dojo.require("dijit.form.MultiSelect");</script>';
+		$str .= '<table border="0" cellspacing="0" cellpadding="0">';
+		$str .= '<tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['caption-right'];
+		if ($this->warn) {
+			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
+		}
+		$str .= '</td></tr><tr><td>
+<select '.$access.' title="'.$this->basket['helptext'].'" id="usrinput[multiple#'.$this->tabindex.'][]" tabindex="'.$this->tabindex.'"';
+		if ($this->warn) 
+			$str .= ' class="mselect_warn" ';
+		else 
+			$str .= ' class="mselect" ';
+		if ($this->attribute['width'] || $this->attribute['height'])
+	    {
+			$str .= 'style=" ';
+			if ($this->attribute['width']) 
+				$str .= 'width:'.($this->attribute['width']).'px; ';
+			if ($this->attribute['height']) 
+				$str .= 'height:'.($this->attribute['height']).'px';
+			$str .= '" ';
+	    }
+		$str .= " dojoType=\"dijit.form.MultiSelect\"";
+		$str .= 'name="usrinput[multiple#'.$this->tabindex.'][]" multiple size="5">';
+		if ($this->basket['choice'])	    
+			foreach($this->basket['choice'] as $key=>$val)
+			{
+				if($this->basket['choice'][$key]['activated'] == 'ascii-null-escape') {
+					continue;
+				}
+				if (trim($this->basket['var'][$key]['content'])!='') 
+					$is='selected';
+				$str .= '<option value="'.$this->basket['var'][$key]['byteindex'].'" '.$is.'>';
+				$str .= $this->basket['choice'][$key]['description'];
+				$str .= '</option>';
+				$is = '';
+			}
+		$str .='</select>
+</td></tr></table>';
+		$str .= '</td></tr><tr class="leftright_top"><td  class="leftright_top"><table class="button"><tr><td class="button_icon">
+<button id="left-'.$this->tabindex.'" class="dojo_switchbutton" border="0" title="Add"><img src="/style/right.gif" /></button>
+</td></tr>';
+		$str .= '</table></td></tr><tr class="leftright_bottom"><td  class="leftright_bottom"><table class="button"><tr><td class="button_icon">
+<button id="right-'.$this->tabindex.'" class="dojo_switchbutton" border="0" title="Remove"><img src="/style/left.gif" /></button>
+</td></tr>';
+		$str .= '</table></td></tr></table>';
+
+		if (isset($this->basket['update'])) 
+			$str .= $this->basket['update'];
+	  
+		return $str;
+	}
+}
+
 # FIXME: nowhere used? dijit-forms are not tested...
 class question_choice extends extra_multi{
 	function show(){
@@ -1398,6 +1537,7 @@ class question_group{
 				case 'question_text': $this->member = new question_text($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_ltext': $this->member = new question_ltext($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_mselect': $this->member = new question_mselect($tag, $this->conti_ref, $this->config, $attribute);return;
+				case 'question_mmselect': $this->member = new question_mmselect($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_select': $this->member = new question_select($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_dojo_select': $this->member = new question_dojo_select($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'language_dojo_select': $this->member = new language_dojo_select($tag, $this->conti_ref, $this->config, $attribute);return;

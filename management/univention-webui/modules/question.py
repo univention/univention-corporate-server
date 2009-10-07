@@ -208,6 +208,82 @@ class question_mselect(question_select):
 						selected.append(selection["name"])
 		return selected
 
+class question_mmselect(question_select):
+	def mytype(self):
+		return "question_mmselect"
+
+	def myinit(self):
+		question.myinit(self)
+		self.choicelist=self.args["choicelist"]
+		self.caption_left=self.args["caption-left"]
+		self.caption_right=self.args["caption-right"]
+		x=0
+		for entry in self.choicelist:
+			if entry["name"]=='0':
+				self.choicelist[x]["name"]="ascii-null-escape"
+			if entry.get("selected")=='0':
+				self.choicelist[x]["selected"]="ascii-null-escape"
+			if entry.get("activated")=='0':
+				self.choicelist[x]["activated"]="ascii-null-escape"
+		if self.args.has_key("button"):
+			self.subobjs.append(self.args["button"])
+	def myxvars(self):
+		v={}
+		for c in self.args.get("choicelist",[]):
+			if c.get("name")=='0':
+				c["name"]="ascii-null-escape"
+			if c.get("selected")=='0':
+				c["selected"]="ascii-null-escape"
+			if c.get("activated")=='0':
+				c["activated"]="ascii-null-escape"
+			if c.get("name",None):
+				v[c["name"]]=c.get("selected",None)
+		return v
+
+	def myxmlrepr(self,xmlob,node):
+		xmlob=question.myxmlrepr(self,xmlob,node)
+		for choice in self.choicelist:
+			xmlob=self.reprchoice(xmlob,choice,node)
+		caption_left_tag=xmlob.createElement("caption-left")
+		node.appendChild(caption_left_tag)
+		captin_left_text=xmlob.createTextNode(self.caption_left)
+		caption_left_tag.appendChild(captin_left_text)
+
+		caption_right_tag=xmlob.createElement("caption-right")
+		node.appendChild(caption_right_tag)
+		captin_right_text=xmlob.createTextNode(self.caption_right)
+		caption_right_tag.appendChild(captin_right_text)
+
+		return xmlob
+	def reprchoice(self,xmlob,choice,node):
+		choicetag=xmlob.createElement("choice")
+		node.appendChild(choicetag)
+		nametag=xmlob.createElement("name")
+		choicetag.appendChild(nametag)
+		nametexttag=xmlob.createTextNode(choice["name"])
+		nametag.appendChild(nametexttag)
+		descriptiontag=xmlob.createElement("description")
+		choicetag.appendChild(descriptiontag)
+		descriptiontexttag=xmlob.createTextNode(choice["description"])
+		descriptiontag.appendChild(descriptiontexttag)
+		activatedtag=xmlob.createElement("activated")
+		choicetag.appendChild(activatedtag)
+		activatedtexttag=xmlob.createTextNode(choice["activated"])
+		activatedtag.appendChild(activatedtexttag)
+
+		if choice.has_key("level"): # is an attr of choice
+			choicetag.setAttribute("level",choice["level"])
+
+		return xmlob
+	def getselected(self):
+		selected=[]
+		for selection in self.choicelist:
+			if self.xvars.get(unicode(selection["name"])):
+				if selection["name"]=="ascii-null-escape":
+					selected.append("0")
+				else:
+					selected.append(selection["name"])
+		return selected
 
 class question_file(question_text):
 
