@@ -1,3 +1,9 @@
+univention-ooffice2 (3.0.0-1) unstable; urgency=low
+
+  * do not divert oosplash.bin otherwise oo refuses to start (Bug: #11195)
+
+ -- Felix Botner <botner@univention.de>  Wed,  7 Oct 2009 12:02:31 +0200
+
 univention-ooffice2 (3.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
