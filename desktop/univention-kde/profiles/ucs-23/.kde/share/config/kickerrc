@@ -55,9 +55,9 @@ FreeSpace2=0
 StorageId=kde-Kontact.desktop
 
 [ServiceButton_4]
-DesktopFile=$HOME/.kde/share/apps/kicker/ooo-writer.desktop
+DesktopFile=$HOME/.kde/share/apps/kicker/openoffice.org-writer.desktop
 FreeSpace2=0
-StorageId=ooo-writer.desktop
+StorageId=openoffice.org-writer.desktop
 
 [buttons]
 EnableIconZoom=true
