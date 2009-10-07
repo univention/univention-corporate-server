@@ -138,6 +138,13 @@ if [ -z "$manufacturer" -o -z "$type" ]; then
 	exit 1
 fi
 
+[ -z "$umc" ] && echo -n " Update PCI ID list: "
+if update-pciids > /dev/null 2>&1; then
+	[ -z "$umc" ] && echo "done"
+else
+	[ -z "$umc" ] && echo "warning: PCI ID list couldn't be updated"
+fi
+
 mkdir $TEMPDIR/proc > /dev/null 2>&1
 if [ -n "$umc" ]; then
 	echo "Temp: $TEMPDIR"

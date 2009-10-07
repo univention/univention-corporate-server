@@ -1,3 +1,9 @@
+univention-system-info (0.1.1-1) unstable; urgency=low
+
+  * call update-pciids before calling lspci (Bug: #15466)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Wed,  7 Oct 2009 15:05:41 +0200
+
 univention-system-info (0.1.0-1) unstable; urgency=low
 
   * system-info-upload: send a mail to umc/sysinfo/upload/address of a new
