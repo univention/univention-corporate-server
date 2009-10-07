@@ -111,6 +111,24 @@ pos["1680x1050"]["button_gap"] = 15
 pos["1680x1050"]["button_w"] = 159
 pos["1680x1050"]["button_h"] = 39
 
+pos["1920x1080"] = {}
+pos["1920x1080"]["fontscale"] = 60
+pos["1920x1080"]["login_x"] = 699
+pos["1920x1080"]["login_y"] = 584
+pos["1920x1080"]["loginpw_x"] = 880
+pos["1920x1080"]["loginpw_y"] = 573
+pos["1920x1080"]["login_w"] = 340
+pos["1920x1080"]["login_h"] = 39
+pos["1920x1080"]["loginPad_x"] = 4
+pos["1920x1080"]["loginPad_y"] = 4
+pos["1920x1080"]["loginPad_w"] = -8
+pos["1920x1080"]["loginPad_h"] = -8
+pos["1920x1080"]["button_y"] = 644
+pos["1920x1080"]["button_gap"] = 15
+pos["1920x1080"]["button_w"] = 159
+pos["1920x1080"]["button_h"] = 39
+
+
 res = baseConfig.get("xorg/resolution", "1024x768")
 
 if not res in pos:
