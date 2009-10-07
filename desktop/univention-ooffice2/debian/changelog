@@ -1,6 +1,12 @@
+univention-ooffice2 (3.0.0-3) unstable; urgency=low
+
+  * create link to new oo desktop file for old menu profiles (Bug: #14425)
+
+ -- Felix Botner <botner@univention.de>  Wed,  7 Oct 2009 13:37:02 +0200
+
 univention-ooffice2 (3.0.0-2) unstable; urgency=low
 
-  * revoke old divert (Bug: #11195)
+  * revoke old oosplash.bin divert (Bug: #11195)
 
  -- Felix Botner <botner@univention.de>  Wed,  7 Oct 2009 12:43:32 +0200
 

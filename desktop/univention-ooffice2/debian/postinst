@@ -48,4 +48,14 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.0-2; t
         fi
 fi
 
+
+# link desktop files for old kde profiles
+for i in writer calc impress math base draw; do
+	new="/usr/share/applications/openoffice.org-$i.desktop"
+	old="/usr/share/applications/ooo-$i.desktop"
+	if [ -e "$new" -a ! -e "$old" ]; then
+		ln -s $new $old
+	fi
+done
+
 exit 0
