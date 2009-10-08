@@ -1,3 +1,9 @@
+univention-installer (5.0.22-2) unstable; urgency=low
+
+  * added default cdrom device (Bug: #15879)
+
+ -- Felix Botner <botner@univention.de>  Thu,  8 Oct 2009 11:09:38 +0200
+
 univention-installer (5.0.22-1) unstable; urgency=low
 
   * disable packages if EditionDisable is set (Bug: #15802)
