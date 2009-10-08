@@ -1,3 +1,13 @@
+univention-postgresql (2.0.1-8) unstable; urgency=low
+
+  * avoid special lc_* locale settings in 8.3 template (Bug: #15117)
+  * set datestyle instead according to the 7.4 template
+  * set the work_mem according to the 7.4 setting of sort_mem
+  * set log_connections and dynamic_library_path like in 7.4
+  * include pid in log_line_prefix and comment out default port
+
+ -- Arvid Requate <requate@univention.de>  Thu,  8 Oct 2009 17:55:50 +0200
+
 univention-postgresql (2.0.1-7) unstable; urgency=low
 
   * added @%@BCWARNING=# @%@ to config template (Bug: #15117)
