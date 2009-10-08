@@ -1,3 +1,10 @@
+univention-webui (3.0.14-1) unstable; urgency=low
+
+  * more css issues for the dojo switchbutton. Needed for IE 8. Bug
+    #13035
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Oct 2009 07:40:43 +0200
+
 univention-webui (3.0.13-1) unstable; urgency=low
 
   * implemented userDN and groupDN in dojo as question_mmselect. Bug

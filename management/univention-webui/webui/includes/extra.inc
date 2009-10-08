@@ -1126,10 +1126,10 @@ dojo.addOnLoad(function(){
 			}
 		$str .='</select>
 </td></tr></table>';
-		$str .= '</td></tr><tr class="leftright_top"><td  class="leftright_top"><table class="button"><tr><td class="button_icon">
+		$str .= '</td></tr><tr class="leftright_top"><td  class="leftright_top_fixed"><table class="button"><tr><td class="button_icon">
 <button id="left-'.$this->tabindex.'" class="dojo_switchbutton" border="0" title="Add"><img src="/style/right.gif" /></button>
 </td></tr>';
-		$str .= '</table></td></tr><tr class="leftright_bottom"><td  class="leftright_bottom"><table class="button"><tr><td class="button_icon">
+		$str .= '</table></td></tr><tr class="leftright_bottom"><td  class="leftright_bottom_fixed"><table class="button"><tr><td class="button_icon">
 <button id="right-'.$this->tabindex.'" class="dojo_switchbutton" border="0" title="Remove"><img src="/style/left.gif" /></button>
 </td></tr>';
 		$str .= '</table></td></tr></table>';
