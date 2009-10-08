@@ -30,7 +30,7 @@
 
 JSNAME="univention-management-console-system-info"
 JSFILE="/usr/lib/univention-install/.index.txt"
-VERSION="0"
+VERSION=0
 
 touch "${JSFILE}"
 if grep -qs "${JSNAME} v${VERSION} successful" "${JSFILE}"

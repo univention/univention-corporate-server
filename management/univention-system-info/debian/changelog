@@ -1,3 +1,9 @@
+univention-system-info (0.1.3-1) unstable; urgency=low
+
+  * define VERSION af join script without double quotes (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  8 Oct 2009 16:15:11 +0200
+
 univention-system-info (0.1.2-1) unstable; urgency=low
 
   * fixed path for system-info tar archives (Bug #8969)
