@@ -1,3 +1,9 @@
+univention-system-info (0.1.2-1) unstable; urgency=low
+
+  * fixed path for system-info tar archives (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  8 Oct 2009 13:10:37 +0200
+
 univention-system-info (0.1.1-1) unstable; urgency=low
 
   * call update-pciids before calling lspci (Bug: #15466)
