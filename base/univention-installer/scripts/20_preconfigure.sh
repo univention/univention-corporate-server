@@ -83,7 +83,7 @@ fi
 
 #create parport devices
 cd /dev
-./MAKEDEV parport
+/sbin/MAKEDEV parport
 cd -
 
 export DEBIAN_FRONTEND=noninteractive
