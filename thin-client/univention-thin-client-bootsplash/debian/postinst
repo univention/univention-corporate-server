@@ -32,3 +32,6 @@
 
 univention-thin-client-apt install univention-thin-client-bootsplash-config univention-usplash-theme usplash
 univention-thin-client-ramdisk -f /etc/usplash.conf
+
+# create thin-client bootsplash initrd
+/etc/univention/templates/scripts/thin-client-bootsplash.py
