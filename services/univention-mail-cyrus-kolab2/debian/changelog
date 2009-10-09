@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (2.0.6-2) unstable; urgency=low
+
+  * added @%@BCWARNING=# @%@ to config template (Bug: #15116) 
+
+ -- Felix Botner <botner@univention.de>  Fri,  9 Oct 2009 16:34:03 +0200
+
 univention-mail-cyrus-kolab2 (2.0.6-1) unstable; urgency=low
 
   * fixed wrong behaviour of univention-cyrus-set-quota if user's mail
