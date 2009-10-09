@@ -87,6 +87,7 @@ else
 	  mounted=1
 	}
 
+	# this works for kernel < 2.6.30
 	# get info
 	i=0
 	dir="${sysfsmtpt}/bus/usb/drivers/usb-storage"
@@ -103,4 +104,14 @@ else
 	  i=$(($i + 1))
 	done
 
+	# this is for kernel >= 2.6.30
+	i=0
+	dir="${sysfsmtpt}/bus/usb/drivers/usb-storage"
+	for s in `/bin/ls -d ${dir}/*:*/host*/target*:*:*/*:*:*:*/block/* 2>/dev/null`; do
+		device=$(echo $s | awk -F / {'print $NF'})
+		vendor=$(cat $s/device/vendor)
+		media=$(cat $s/device/type)
+		echo $i "$vendor" "$media" "$device"
+		i=$(($i + 1))
+	done
 fi

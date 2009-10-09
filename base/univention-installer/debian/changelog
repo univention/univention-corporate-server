@@ -1,3 +1,9 @@
+univention-installer (5.0.22-5) unstable; urgency=low
+
+  * new usb-storage detection in kernel 2.6.30  (Bug: #15921) 
+
+ -- Felix Botner <botner@univention.de>  Fri,  9 Oct 2009 16:28:52 +0200
+
 univention-installer (5.0.22-4) unstable; urgency=low
 
   * Increased default /boot size to circa 200MB. Bug #15339
