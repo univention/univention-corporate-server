@@ -1,3 +1,15 @@
+univention-system-info (0.1.4-1) unstable; urgency=low
+
+  * set write access for www-data to upload directory
+  * add UCS version information to archive
+  * download link to archive is now relative without the server name
+  * do not UUID on XEN instance for unique identifier; instead the MAC
+    address is used.
+  * system-info-upload.py: the sender of the mail can now be set via a UCR
+    variable (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  9 Oct 2009 10:55:29 +0200
+
 univention-system-info (0.1.3-1) unstable; urgency=low
 
   * define VERSION af join script without double quotes (Bug #8969)

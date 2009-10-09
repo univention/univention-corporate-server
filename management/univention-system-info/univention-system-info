@@ -30,7 +30,7 @@
 
 TEMPDIR=$(mktemp -d)
 PROCFILES="cpuinfo devices dma filesystems interrupts meminfo partitions version scsi/scsi mounts"
-PROGRAMS="lspci__-v lsmod dmidecode"
+PROGRAMS="lspci__-v lsmod dmidecode univention-config-registry__search__--brief__version/version__version/patchlevel__version/security-patchlevel"
 
 manufacturer=
 model=
@@ -49,7 +49,8 @@ collect_from_procfile() {
 
 collect_from_program() {
 	cmd=`echo $1 | sed -e 's/__/ /g'`
-	$cmd > "$TEMPDIR/$1"
+	tmpfile=`echo $1 | sed -e 's/__.*//'`
+	$cmd > "$TEMPDIR/$tmpfile"
 	[ -z "$umc" ] && echo -n ": $cmd"
 }
 
@@ -94,12 +95,12 @@ display_help() {
 
 display_header() {
 	echo "univention-sysinfo: collect information about your system"
-	echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
+	echo "copyright (c) 2001-2009 Univention GmbH, Germany"
 	echo ""
 }
 
 display_version() {
-	echo "$0 @%@package_version@%@"
+	echo "$0 0.1.4-1"
 	exit 0
 }
 
@@ -175,14 +176,13 @@ echo " Ticket No   : "$support >> $TEMPDIR/info
 uuid=$(dmidecode -s system-uuid)
 if [ -z "$uuid" ]; then
 	# fallback 1
-	if [ -f /sys/hypervisor/uuid -a $(cat /sys/hypervisor/uuid) != "00000000-0000-0000-0000-000000000000" ]; then
+	if [ -f /sys/hypervisor/uuid -a $(cat /sys/hypervisor/uuid) != "00000000-0000-0000-0000-000000000000" -a $(cat /sys/hypervisor/type) != "xen" ]; then
 		uuid=$(cat /sys/hypervisor/uuid)
 	else
 		# fallback 2
-		uuid=$(ip -o -f link addr show up | grep -v lo: | head -n 1 | sed 's|.*link/ether \([0-9a-f:]*\) .*|\1|;s|:|-|g')
+		uuid=$(ip -o -f link addr show up | grep -v lo: | head -n 1 | sed 's|.*link/ether \([0-9a-f:]*\) .*|\1|;s|:|-|g' | md5sum)
 	fi
 fi
-
 
 cd /tmp
 mv $TEMPDIR $uuid

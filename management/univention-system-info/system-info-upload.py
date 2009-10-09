@@ -83,8 +83,8 @@ A new Univention system info archive has been uploaded.
 Archive: %s
 ''' % os.path.join( path, filename ) )
 	msg[ 'Subject' ] = 'Univention System Info Upload'
-	sender = 'root'
-	recipient = configRegistry.get( 'umc/sysinfo/upload/address', sender )
+	sender = configRegistry.get( 'umc/sysinfo/upload/sender', 'root' )
+	recipient = configRegistry.get( 'umc/sysinfo/upload/recipient', sender )
 	
 	msg[ 'From' ] = sender
 	msg[ 'To' ] = recipient

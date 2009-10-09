@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention System Info
-#  postinst file
+#  postrm file
 #
 # Copyright (C) 2009 Univention GmbH
 #
@@ -28,12 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-univention-config-registry set umc/sysinfo/upload/path?/var/www/univention-system-info-upload/archives/
-univention-config-registry set umc/sysinfo/upload/size?2000000
-univention-config-registry set umc/sysinfo/upload/recipient?feedback@univention.de
-univention-config-registry set umc/sysinfo/upload/sender?root
-
-dpkg-statoverride --add --force --update www-data www-data 0750 /usr/share/univention-management-console/system-info/ || true
+dpkg-statoverride --remove /usr/share/univention-management-console/system-info/ || true
 
 #DEBHELPER#
 

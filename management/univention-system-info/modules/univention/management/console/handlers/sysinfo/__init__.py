@@ -206,7 +206,7 @@ class handler( umch.simpleHandler ):
 
 		for item in inputs:
 			if type( item ) == umcd.Link:
-				item.set_link( 'http://%s/univention-management-console/system-info/%s' % ( umc.registry.get( 'hostname' ), object.options[ 'archive' ] ) )
+				item.set_link( '/univention-management-console/system-info/%s' % object.options[ 'archive' ] )
 			elif item.option in object.options:
 				item.default = object.options[ item.option ]
 		return wiz.setup()
