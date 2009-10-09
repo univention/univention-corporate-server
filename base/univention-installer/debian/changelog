@@ -1,3 +1,9 @@
+univention-installer (5.0.22-4) unstable; urgency=low
+
+  * Increased default /boot size to circa 200MB. Bug #15339
+
+ -- Andre Fenske <fenske@univention.de>  Fri,  9 Oct 2009 14:03:05 +0200
+
 univention-installer (5.0.22-3) unstable; urgency=low
 
   * Fixed MAKEDEV call. Bug #15843
