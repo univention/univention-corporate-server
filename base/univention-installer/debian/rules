@@ -153,7 +153,12 @@ install: build
 	install -m 644 profiles/UGS ${D}/profiles/
 
 	install -m 644 boot/grub/menu.lst ${D}/boot/grub/menu.lst
+	install -m 644 boot/grub/menu-kernel.lst ${D}/boot/grub/menu-kernel.lst
+	install -m 644 boot/grub/menu-kernel.template ${D}/boot/grub/menu-kernel.template
+	install -m 644 boot/grub/menu-kernel-version.template ${D}/boot/grub/menu-kernel-version.template
 	install -m 644 boot/grub/menu-recover.lst ${D}/boot/grub/menu-recover.lst
+	install -m 644 boot/grub/menu-recover.template ${D}/boot/grub/menu-recover.template
+	install -m 644 boot/grub/menu-recover-version.template ${D}/boot/grub/menu-recover-version.template
 	install -m 644 boot/grub/uniboot.xpm.gz ${D}/boot/grub/uniboot.xpm.gz
 
 	dh_install
