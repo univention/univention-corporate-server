@@ -1,3 +1,9 @@
+univention-thin-client-x-base (4.0.4-1) unstable; urgency=low
+
+  * do not start the gdm too early. Bug #15781
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Oct 2009 10:04:14 +0200
+
 univention-thin-client-x-base (4.0.3-1) unstable; urgency=low
 
   * remove the old serial mouse devices and the hsync and vrefresh
