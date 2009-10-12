@@ -1,3 +1,10 @@
+univention-thin-client-x-base (4.0.5-1) unstable; urgency=low
+
+  * set the x-flag for etc/gdm/PostSession/scripts/090_univention-user-
+    info.sh otherwise run-parts won't execute it. Bug #15296
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Oct 2009 11:26:24 +0200
+
 univention-thin-client-x-base (4.0.4-1) unstable; urgency=low
 
   * do not start the gdm too early. Bug #15781

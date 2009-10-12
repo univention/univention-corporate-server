@@ -6,6 +6,7 @@ File: etc/gdm/PostLogin/scripts/010_univention-user-info.sh
 
 Type: file
 File: etc/gdm/PostSession/scripts/090_univention-user-info.sh
+Mode: 755
 
 Type: file
 File: etc/gdm/PostLogin/scripts/020_univention-wait4session.sh
