@@ -127,13 +127,15 @@ EOF
 fi
 
 nameserver=$(cat /proc/cmdline | grep DNSSERVER | sed -e 's/.*DNSSERVER=//g' | awk '{print $1;}')
+ldapserver=$(cat /proc/cmdline | grep ldapServer | sed -e 's/.*ldapServer=//g' | awk '{print "ldapServer="$1;}')
+ldapport=$(cat /proc/cmdline | grep ldapPort | sed -e 's/.*ldapPort=//g' | awk '{print "ldapPort="$1;}')
 
 if [ "$version" -lt "$new_version" ]; then
 	echo "verbose" > /proc/splash
     echo "	newer version available. Updating filesystem:"
     echo
     # ramdisk_blocksize=4096 is needed for cramfs
-    echo "default linux initrd=initrd.splash root=$rootpart DNSSERVER=$nameserver vga=785 splash=silent" > /mnt/extlinux.conf
+    echo "default linux initrd=initrd.splash root=$rootpart DNSSERVER=$nameserver vga=785 splash=silent $ldapserver $ldapport" > /mnt/extlinux.conf
 
 	# store current network configuration
 	echo "FLASH_HOSTNAME=$hostname" > /mnt/network.conf
