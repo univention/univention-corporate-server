@@ -1,3 +1,10 @@
+univention-thin-client-basesystem (6.0.15-1) unstable; urgency=low
+
+  * use ldap_hostdn instead of myDN for the thin client hostdn. Bug
+    #15781
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Oct 2009 20:42:03 +0200
+
 univention-thin-client-basesystem (6.0.14-1) unstable; urgency=low
 
   * more ldap host dn spaces support. Bug #14611
