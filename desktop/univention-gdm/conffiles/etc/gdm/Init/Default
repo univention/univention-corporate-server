@@ -1,7 +1,7 @@
 #!/bin/sh
 @%@BCWARNING=#@%@
 
-run-parts --regex '^[0-9]*[a-zA-Z_-]*(.sh)*$' /etc/gdm/Init/scripts/
+run-parts --regex '^[0-9]*[a-zA-Z0-9_-]*(.sh)*$' /etc/gdm/Init/scripts/
 
 PATH=/usr/bin/X11:/usr/X11R6/bin:/opt/X11R6/bin:$PATH
 OLD_IFS=$IFS

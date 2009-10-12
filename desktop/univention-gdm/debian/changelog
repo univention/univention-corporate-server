@@ -1,3 +1,9 @@
+univention-gdm (5.0.7-1) unstable; urgency=low
+
+  * fixed the run-parts regex. Bug #15296
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Oct 2009 11:27:44 +0200
+
 univention-gdm (5.0.6-1) unstable; urgency=low
 
   * Also use the run-parts mechanism for PostLogin and Init and added a
