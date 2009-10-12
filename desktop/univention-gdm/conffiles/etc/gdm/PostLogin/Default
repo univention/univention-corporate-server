@@ -8,8 +8,5 @@
 #
 #       /etc/univention/templates/files/etc/gdm/PostLogin/Default
 
-for filename in /etc/gdm/PostLogin/scripts/*; do
-	if [ -f $filename -a -x $filename -a ! $filename = "Default" ]; then
-		. "$filename"
-	fi
-done
+run-parts --regex '^[0-9]*[a-zA-Z_-]*(.sh)*$' /etc/gdm/PostLogin/scripts/
+
