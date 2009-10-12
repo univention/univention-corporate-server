@@ -1,5 +1,5 @@
-default 0
-timeout 60
+default 1
+#timeout 60
 splashimage (cd)/boot/grub/uniboot.xpm.gz
 
 #Change foreground and background of grubs font
@@ -8,4 +8,7 @@ background = 000000
 
 #or change colors like this
 #color cyan/blue white/blue
+
+title <-- back
+configfile (cd)/boot/grub/menu.lst
 

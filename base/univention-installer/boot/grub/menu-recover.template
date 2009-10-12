@@ -1,0 +1,4 @@
+title Boot from first harddisk partition
+rootnoverify (hd0)
+chainloader +1
+

@@ -1,0 +1,3 @@
+title Univention Installer Kernel @%@KERNEL@%@
+configfile (cd)/boot/grub/menu-@%@KERNEL@%@.lst
+

@@ -1,0 +1,4 @@
+title UCS Recover Kernel @%@KERNEL@%@
+kernel (cd)/boot/linux-@%@KERNEL@%@ root=/dev/ram ro ramdisk_size=65536 flavor=linux recover
+initrd (cd)/boot/linux-recover-@%@KERNEL@%@.bin
+

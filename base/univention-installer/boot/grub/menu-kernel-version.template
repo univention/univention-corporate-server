@@ -1,0 +1,37 @@
+default 1
+#timeout 60
+splashimage (cd)/boot/grub/uniboot.xpm.gz
+
+#Change foreground and background of grubs font
+foreground = FFFFFF
+background = 000000
+
+#or change colors like this
+#color cyan/blue white/blue
+
+title <-- back
+configfile (cd)/boot/grub/menu-kernel.lst
+
+title Univention Installer
+kernel (cd)/boot/linux-@%@KERNEL@%@ root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux text
+initrd (cd)/boot/linux-@%@KERNEL@%@.bin
+
+title Univention Installer
+kernel (cd)/boot/linux-@%@KERNEL@%@ root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux text
+initrd (cd)/boot/linux-@%@KERNEL@%@.bin
+
+title Univention Installer Software RAID (expert mode)
+kernel (cd)/boot/linux-@%@KERNEL@%@ root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux text expert_partition
+initrd (cd)/boot/linux-@%@KERNEL@%@.bin
+
+title Univention Installer Profil 
+kernel (cd)/boot/linux-@%@KERNEL@%@ root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux profile
+initrd (cd)/boot/linux-@%@KERNEL@%@.bin
+
+title Univention Installer Profil USB
+kernel (cd)/boot/linux-@%@KERNEL@%@ root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux profile usb
+initrd (cd)/boot/linux-@%@KERNEL@%@.bin
+
+title Univention Installer Profil Floppy
+kernel (cd)/boot/linux-@%@KERNEL@%@ root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux profile floppy
+initrd (cd)/boot/linux-@%@KERNEL@%@.bin

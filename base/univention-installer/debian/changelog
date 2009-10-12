@@ -1,3 +1,9 @@
+univention-installer (5.0.23-1) unstable; urgency=low
+
+  * added new grub (sub)menu structure (Bug: #15900)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 12 Oct 2009 14:32:01 +0200
+
 univention-installer (5.0.22-6) unstable; urgency=low
 
   * always preselect /dev/scd0 and /dev/scd1 if not already found (Bug: #10246)
