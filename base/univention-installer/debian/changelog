@@ -1,3 +1,9 @@
+univention-installer (5.0.22-6) unstable; urgency=low
+
+  * always preselect /dev/scd0 and /dev/scd1 if not already found (Bug: #10246)
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Oct 2009 12:26:39 +0200
+
 univention-installer (5.0.22-5) unstable; urgency=low
 
   * new usb-storage detection in kernel 2.6.30  (Bug: #15921) 

@@ -346,9 +346,13 @@ class object(content):
 						cdrom_devices.append('iseries/vcdb')
 						cdrom_devices.append('iseries/vcdc')
 						cdrom_devices.append('iseries/vcdd')
-				if len(cdrom_devices) < 1:
-					# default cdrom
-					cdrom_devices.append('scd0')
+				
+				# defauls
+				defaults = ["scd0", "scd1"]
+				for i in defaults:
+					if not i in cdrom_devices:
+						cdrom_devices.append(i)
+
 				self.parent.container['cdrom_devices']=cdrom_devices
 			elif self.action == 'cdrom-test' or self.action == 'cdrom-test-profile':
 
