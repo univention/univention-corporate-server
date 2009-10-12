@@ -1,3 +1,10 @@
+univention-updater (5.0.14-3) unstable; urgency=low
+
+  * beta-release is done: reverting last change: default repository is now
+    apt.univention.de (Bug: #15836)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 12 Oct 2009 10:43:58 +0200
+
 univention-updater (5.0.14-2) unstable; urgency=low
 
   * for beta-release default repository has been changed to
