@@ -13,6 +13,12 @@ Variables: gdm/menu/language
 Variables: xorg/resolution
 
 Type: file
+File: etc/gdm/Init/Default
+
+Type: file
+File: etc/gdm/Init/scripts/00_resolution
+
+Type: file
 File: etc/gdm/PostLogin/Default
 
 Type: file

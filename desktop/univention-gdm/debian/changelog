@@ -1,3 +1,10 @@
+univention-gdm (5.0.7-2) unstable; urgency=low
+
+  * add gdm init script to set the UCR variable xorg/resolution to the
+    current X.org resolution (Bug #9132)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 13 Oct 2009 15:32:13 +0200
+
 univention-gdm (5.0.7-1) unstable; urgency=low
 
   * fixed the run-parts regex. Bug #15296
