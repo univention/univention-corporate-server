@@ -34,7 +34,7 @@ set -e
 
 case "$1" in
     configure)
-    	
+
 	CONFREG=univention-config-registry
 
 	if dpkg --compare-versions "$2" lt-nl "2.0.0-1"; then
@@ -45,13 +45,17 @@ case "$1" in
 		[ $proxy_force ] && $CONFREG set squid/transparentproxy=$proxy_force
 		[ $proxy_parent_host ] && $CONFREG set squid/parent/host=$proxy_parent_host
 		[ $proxy_parent_port ] && $CONFREG set squid/parent/port=$proxy_parent_port
-	
+
 		# remove unneeded config file
 		rm -f /etc/squid.conf
 	fi
-			
+
+	# the proxy user needs to be in the group winbindd_priv to be able to access winbind
+	adduser proxy winbindd_priv
+
 	$CONFREG set squid/transparentproxy?false
 	$CONFREG set squid/ldapauth?no
+	$CONFREG set squid/cache?yes
 
 	/etc/init.d/squid stop
 	/etc/init.d/squid start
@@ -69,5 +73,3 @@ case "$1" in
 esac
 
 exit 0
-
-
