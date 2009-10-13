@@ -1164,11 +1164,11 @@ class modedit(unimodule.unimodule):
 
 								dns_entry_choicelist.sort(compare_dicts_by_two_attr('item','description'))
 
-							update_choices=button('lmanusel',{},{'helptext':_('Select the DNS Forward Zone')})
+							update_choices=button('lmanusel',{},{'helptext':_('Select the DNS zone of the existing DNS entry')})
 							self.xinput[name].append(update_choices)
-							label=current_module.property_descriptions['dnsEntryZoneForward'].short_description
+							label=_('Zone of existing DNS entry')
 							self.xinput[name].append(question_select(label,dns_zone_atts,
-																{'choicelist':dns_entry_choicelist,'helptext':_('Select the DNS Forward Zone object'),
+																{'choicelist':dns_entry_choicelist,'helptext':_('Select the DNS zone of the existing DNS entry'),
 																'button':update_choices}))
 
 							# next prepare dropdown of all existing dnsEntryZoneForward possbile to put the DNS alias into
@@ -1206,10 +1206,10 @@ class modedit(unimodule.unimodule):
 
 								dns_alias_zone_choicelist.sort(compare_dicts_by_two_attr('item','description'))
 
-							update_choices=button('lmanusel',{},{'helptext':_('Select the DNS Alias Zone')})
+							update_choices=button('lmanusel',{},{'helptext':_('Select the DNS zone for the DNS alias')})
 							self.zinput[name].append(update_choices)
 							self.zinput[name].append(question_select(property.short_description,alias_zone_atts,
-																{'choicelist':dns_alias_zone_choicelist,'helptext':_('Select the DNS Alias Zone object'),
+																{'choicelist':dns_alias_zone_choicelist,'helptext':_('Select the DNS zone for the DNS alias'),
 																'button':update_choices}))
 
 							if value:
@@ -1237,22 +1237,19 @@ class modedit(unimodule.unimodule):
 							atts=copy.deepcopy(attributes)
 							b_atts=copy.deepcopy(attributes)
 							b2_atts=copy.deepcopy(attributes)
-							#dns_zone_atts=copy.deepcopy(attributes)
-							#alias_zone_atts=copy.deepcopy(attributes)
-							#alias_atts=copy.deepcopy(attributes)
 
-							width='400' # FIXME
-							if not dns_zone_atts.get('width'):
-								dns_zone_atts['width']=width
+							#width='400' # FIXME
+							#if not dns_zone_atts.get('width'):
+							#	dns_zone_atts['width']=width
 
-							if not alias_zone_atts.get('width'):
-								alias_zone_atts['width']=width
+							#if not alias_zone_atts.get('width'):
+							#	alias_zone_atts['width']=width
 
-							if not alias_atts.get('width'):
-								alias_atts['width']=width
+							#if not alias_atts.get('width'):
+							#	alias_atts['width']=width
 
-							if not atts.get('width'):
-								atts['width']=width
+							#if not atts.get('width'):
+							#	atts['width']=width
 
 							self.minput[name].append(question_text(_("Alias"),alias_atts,{"helptext":_("DNS alias"), 'usertext':''}))
 							# [1]: add button
@@ -1272,9 +1269,9 @@ class modedit(unimodule.unimodule):
 							minput_rows.append(tablerow("",{},{"obs":[\
 										tablecol('',{'rowspan':'2'}, {'obs': [\
 											#input field
-											self.xinput[name][1],\
-											self.zinput[name][1],\
 											self.minput[name][0],\
+											self.zinput[name][1],\
+											self.xinput[name][1],\
 										]}),\
 										tablecol('',{}, {'obs': [\
 											# needed freespace
