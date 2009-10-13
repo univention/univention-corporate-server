@@ -1,0 +1,5 @@
+#!/bin/sh
+
+if [ -e /usr/keymaps/us.kmap ]; then
+	loadkeys < /usr/keymaps/us.kmap
+fi
