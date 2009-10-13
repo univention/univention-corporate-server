@@ -3,7 +3,7 @@ univention-squid (3.0.2-1) unstable; urgency=low
   * support for deactivating the cache
   * support for BASIC, LDAP and NTLM authentication (Bug #15887)
 
- -- Andreas Büsching <buesching@univention.de> Tue, 13 Oct 2009 10:41:22 +0200
+ -- Andreas Büsching <buesching@univention.de>  Tue, 13 Oct 2009 10:41:22 +0200
 
 univention-squid (3.0.1-1) unstable; urgency=low
 
