@@ -1,3 +1,9 @@
+univention-ssl (4.0.2-2) unstable; urgency=low
+
+  * upgraded DEFAULT_DAYS in make-certificates.sh to 1825 (Bug: #13686)
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Oct 2009 16:40:08 +0200
+
 univention-ssl (4.0.2-1) unstable; urgency=low
 
   * always test ssl link (hostname -> fqdn) (Bug: #15214)

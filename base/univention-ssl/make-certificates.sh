@@ -36,7 +36,7 @@ SSL_BASE=/etc/univention/ssl
 CA=ucsCA
 DEFAULT_DAYS=$(/usr/sbin/univention-baseconfig get ssl/default/days)
 if [ -z "$DEFAULT_DAYS" ]; then
-	DEFAULT_DAYS=730
+	DEFAULT_DAYS=1825
 fi
 DEFAULT_MD=$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)
 if [ -z "$DEFAULT_DAYS" ]; then
