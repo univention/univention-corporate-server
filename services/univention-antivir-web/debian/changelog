@@ -1,3 +1,10 @@
+univention-antivir-web (3.0.6-1) unstable; urgency=low
+
+  * renamed a few UCR variables: functionality has moved from squid to
+    dansguardian (Bug #15887)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 13 Oct 2009 10:56:30 +0200
+
 univention-antivir-web (3.0.5-1) unstable; urgency=low
 
   * add support for several virus scanners (Bug #13675)

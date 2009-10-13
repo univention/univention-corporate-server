@@ -1,70 +1,70 @@
-[squid/virusscan/notifyemail]
+[dansguardian/virus/notifyemail]
 Description[de]=Benachrichtigungsadresse bei von squid gefundenen Viren
 Description[en]=
 Type=str
 Categories=service-webproxy
 
-[squid/contentscan/bannedextensions]
+[dansguardian/groups/.*/banned/extensions]
 Description[de]=Geblockte Dateiendungen in squid
 Description[en]=
 Type=str
 Categories=service-webproxy
 
-[squid/contentscan/bannedclientips]
+[dansguardian/groups/.*/banned/ipaddresses]
 Description[de]=Rechneradressen, denen der Zugriff auf squid verboten wird
 Description[en]=
 Type=str
 Categories=service-webproxy
 
-[squid/contentscan/bannedmimetypes]
+[dansguardian/groups/.*/banned/mimetypes]
 Description[de]=Geblockte MIME-Types in squid
 Description[en]=
 Type=str
 Categories=service-webproxy
 
-[squid/contentscan/bannedsites]
+[dansguardian/groups/.*/banned/sites]
 Description[de]=In squid geblockte Webseiten
 Description[en]=
 Type=str
 Categories=service-webproxy
 
-[squid/contentscan/bannedurls]
+[dansguardian/groups/.*/banned/urls]
 Description[de]=In squid geblockte URLs
 Description[en]=
 Type=str
 Categories=service-webproxy
 
-[squid/contentscan/whitelist/ip]
+[dansguardian/groups/.*/exception/ipaddresses]
 Description[de]=Rechneradressen, deren Zugriffe nicht durch squid gefiltert werden
 Description[en]=
 Type=str
 Categories=service-webproxy
 
-[squid/contentscan/whitelist/user]
+[dansguardian/groups/.*/exception/user]
 Description[de]=Benutzernamen, deren Zugriffe nicht durch squid gefiltert werden
 Description[en]=
 Type=str
 Categories=service-webproxy
 
-[squid/virusscan/whitelist/extension]
+[dansguardian/groups/.*/exception/extension]
 Description[de]=Dateiendungen, die nicht von squid auf Viren geprüft werden
 Description[en]=
 Type=str
 Categories=service-webproxy
 
-[squid/virusscan/whitelist/mimetypes]
+[dansguardian/groups/.*/exception/mimetypes]
 Description[de]=MIME-Types, die nicht von squid auf Viren geprüft werden
 Description[en]=
 Type=str
 Categories=service-webproxy
 
-[squid/virusscan/whitelist/sites]
+[dansguardian/groups/.*/exception/sites]
 Description[de]=Webseiten, bei denen squid nicht auf Viren prüft
 Description[en]=
 Type=str
 Categories=service-webproxy
 
-[squid/virusscan/whitelist/urls]
+[dansguardian/groups/.*/exception/urls]
 Description[de]=URLs, bei denen squid nicht auf URLs prüft
 Description[en]=
 Type=str

@@ -14,7 +14,7 @@
 
 @!@
 if baseConfig.get('squid/virusscan', 'no').lower() in [ 'yes', 'true' ]:
-        if not baseConfig.get('squid/virusscan/whitelist/extensions', '') == '':
-                for extension in baseConfig['squid/virusscan/whitelist/extensions'].split(" "):
+        if not baseConfig.get('dansguardian/virus/exception/extensions', '') == '':
+                for extension in baseConfig['dansguardian/virus/exception/extensions'].split(" "):
                         print extension
 @!@

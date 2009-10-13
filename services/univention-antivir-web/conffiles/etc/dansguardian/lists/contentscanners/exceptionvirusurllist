@@ -26,8 +26,8 @@
 
 @!@
 if baseConfig.get('squid/virusscan', 'no').lower() in [ 'yes', 'true' ]:
-        if not baseConfig.get('squid/virusscan/whitelist/urls', '') == '':
-                for url in baseConfig['squid/virusscan/whitelist/urls'].split(" "):
+        if not baseConfig.get('dansguardian/virus/exception/urls', '') == '':
+                for url in baseConfig['dansguardian/virus/exception/urls'].split(" "):
                         print url
 @!@
 

@@ -93,7 +93,7 @@ $CONFREG set dansguardian/virusscanner?clamav
 # rewrite old UCR variables
 if [ "$1" = "configure" -a -n "$2" ]; then
 	if dpkg --compare-versions "$2" le "2.0.1-7"; then
-		eval $($CONFREG shell squid/contentscan/bannedextensions squid/contentscan/bannedclientips squid/contentscan/bannedmimetypes squid/contentscan/bannedsites squid/contentscan/bannedurls squid/contentscan/whitelist/ip squid/contentscan/whitelist/user squid/virusscan/whitelist/extensions squid/virusscan/whitelist/mimetypes squid/virusscan/whitelist/sites squid/virusscan/whitelist/urls)
+		eval $($CONFREG shell squid/contentscan/bannedextensions squid/contentscan/bannedclientips squid/contentscan/bannedmimetypes squid/contentscan/bannedsites squid/contentscan/bannedurls squid/contentscan/whitelist/ip squid/contentscan/whitelist/user squid/virusscan/whitelist/extensions squid/virusscan/whitelist/mimetypes squid/virusscan/whitelist/sites squid/virusscan/whitelist/urls squid/virusscan/notifymail)
 		$CONFREG set "dansguardian/groups/www-access/banned/extensions?$squid_contentscan_bannedextensions" \
 			"dansguardian/groups/www-access/banned/ipaddresses?$squid_contentscan_bannedclientips" \
 			"dansguardian/groups/www-access/banned/mimetypes?$squid_contentscan_bannedmimetypes" \
@@ -104,7 +104,12 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 			"dansguardian/groups/www-access/exception/extensions?$squid_contentscan_whitelist_extensions" \
 			"dansguardian/groups/www-access/exception/mimetypes?$squid_contentscan_whitelist_mimetypes" \
 			"dansguardian/groups/www-access/exception/sites?$squid_contentscan_whitelist_sites" \
-			"dansguardian/groups/www-access/exception/urls?$squid_contentscan_whitelist_urls"
+			"dansguardian/groups/www-access/exception/urls?$squid_contentscan_whitelist_urls" \
+			"dansguardian/virus/exception/urls?$squid_virusscan_whitelist_urls" \
+			"dansguardian/virus/exception/extensions?$squid_virusscan_whitelist_extensions" \
+			"dansguardian/virus/exception/sites?$squid_virusscan_whitelist_sites" \
+			"dansguardian/virus/exception/mimetypes?$squid_virusscan_whitelist_mimetypes" \
+			"dansguardian/virus/notifyemail?$squid_virusscan_whitelist_mimetypes"
 	fi
 fi
 

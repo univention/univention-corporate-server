@@ -1,7 +1,7 @@
 Type: file
 File: etc/dansguardian/dansguardian.conf
 Variables: squid/virusscan
-Variables: squid/virusscan/notifyemail
+Variables: dansguardian/virus/notifyemail
 Variables: squid/httpport
 Variables: squid/.*auth
 Variables: web/antivir/scanner
@@ -15,19 +15,23 @@ Variables: domainname
 
 Type: file
 File: etc/dansguardian/lists/contentscanners/exceptionvirusextensionlist
-Variables: squid/.*scan.*
+Variables: squid/virusscan
+Variables: dansguardian/.*scan.*
 
 Type: file
 File: etc/dansguardian/lists/contentscanners/exceptionvirusmimetypelist
-Variables: squid/.*scan.*
+Variables: squid/virusscan
+Variables: dansguardian/.*scan.*
 
 Type: file
 File: etc/dansguardian/lists/contentscanners/exceptionvirussitelist
-Variables: squid/.*scan.*
+Variables: squid/virusscan
+Variables: dansguardian/.*scan.*
 
 Type: file
 File: etc/dansguardian/lists/contentscanners/exceptionvirusurllist
-Variables: squid/.*scan.*
+Variables: squid/virusscan
+Variables: dansguardian/.*scan.*
 
 Type: file
 File: etc/dansguardian/lists/authplugins/ipgroups
