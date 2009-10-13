@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.26-1) unstable; urgency=low
+
+  * show hostname in DNS alias multiselect (Bug #15017)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Oct 2009 11:04:40 +0200
+
 univention-directory-manager (7.0.25-1) unstable; urgency=low
 
   * remove superordinate search type after selecting new search path (Bug: #14145 )

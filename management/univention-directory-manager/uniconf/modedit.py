@@ -1213,6 +1213,7 @@ class modedit(unimodule.unimodule):
 																'button':update_choices}))
 
 							if value:
+								canonical_name=current_object[ 'name' ]
 								i = 0
 								for v in value:
 									vstr =  syntax.tostring(v)
@@ -1223,13 +1224,13 @@ class modedit(unimodule.unimodule):
 
 									zone_name, alias_zone_name, alias = split_dns_alias_line( vstr )
 									if zone_name and alias_zone_name and alias:
-										mvaluelist.append({'name': unicode(i), 'description': '%s.%s.&nbsp;&nbsp;&nbsp;%s' % ( alias, zone_name, alias_zone_name ) } )
+										mvaluelist.append({'name': unicode(i), 'description': '%s.%s.&nbsp;&nbsp;&nbsp;%s.%s.' % ( alias, zone_name, canonical_name, alias_zone_name ) } )
 										i+=1
 									elif zone_name and alias_zone_name:	# FIXME: Does this case occurr?
-										mvaluelist.append({'name': unicode(i), 'description': '%s&nbsp;&nbsp;&nbsp;%s' % ( zone_name, alias_zone_name ) } )
+										mvaluelist.append({'name': unicode(i), 'description': '%s&nbsp;&nbsp;&nbsp;%s.%s.' % ( zone_name, canonical_name, alias_zone_name ) } )
 										i+=1
 									elif zone_name:
-										mvaluelist.append({'name': unicode(i), 'description': '%s' % ( zone_name ) } )
+										mvaluelist.append({'name': unicode(i), 'description': '%s.%s.' % ( canonical_name, zone_name ) } )
 										i+=1
 									else:
 										univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'dnsEntryAlias: failed to decode the line: "%s"' % vstr )
