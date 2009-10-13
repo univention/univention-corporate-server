@@ -1588,6 +1588,7 @@ class modwizard(unimodule.unimodule):
 			# preserve the search value on selecting another path
 			self.save.put('wizard_search_value', self.search_input.get_input ())
 			self.save.put('wizard_superordinate', None)
+			self.save.put('wizard_search_type', None)
 			self.save.put('wizard_search_result', None)
 			self.save.put('wizard_selected_dns', {})
 			return

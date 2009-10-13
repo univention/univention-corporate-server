@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.25-1) unstable; urgency=low
+
+  * remove superordinate search type after selecting new search path (Bug: #14145 )
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Oct 2009 10:45:24 +0200
+
 univention-directory-manager (7.0.24-1) unstable; urgency=low
 
   * change layout of DNS alias multiselect (Bug #15017)
