@@ -124,7 +124,7 @@ property_descriptions={
 			identifies=0
 		),
 	'dnsEntryZoneAlias': univention.admin.property(
-			short_description=_('DNS alias entry'),
+			short_description=_('Zone for DNS alias'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsEntryAlias,
 			multivalue=1,

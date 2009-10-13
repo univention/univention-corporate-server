@@ -141,8 +141,8 @@ msgstr "Reverse Zone für DNS-Eintrag"
 #: domaincontroller_slave.py:166 ipmanagedclient.py:128 macos.py:137
 #: managedclient.py:146 memberserver.py:166 mobileclient.py:146
 #: thinclient.py:127 windows.py:135
-msgid "DNS alias entry"
-msgstr "Zone für DNS Alias Eintrag"
+msgid "Zone for DNS alias"
+msgstr "Zone für DNS Alias"
 
 #: domaincontroller_backup.py:187 domaincontroller_master.py:187
 #: domaincontroller_slave.py:187 ipmanagedclient.py:149 macos.py:158
