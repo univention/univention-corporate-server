@@ -1,3 +1,9 @@
+univention-installer (5.0.24-1) unstable; urgency=low
+
+  * fixed double entry in grub submenu (Bug: #15900)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 13 Oct 2009 09:18:35 +0200
+
 univention-installer (5.0.23-2) unstable; urgency=low
 
   * install new grub (sub)menu files (Bug: #15900)
