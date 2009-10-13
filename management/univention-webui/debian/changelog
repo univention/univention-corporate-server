@@ -1,3 +1,11 @@
+univention-webui (3.0.15-1) unstable; urgency=low
+
+  * catch a runtime exception in the finish function. This exception will
+    cause if the dictonary (self.save) is modified during the dump for
+    exapmle through a diffrent thread. Bug #13639
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Oct 2009 06:50:19 +0200
+
 univention-webui (3.0.14-1) unstable; urgency=low
 
   * more css issues for the dojo switchbutton. Needed for IE 8. Bug

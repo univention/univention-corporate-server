@@ -447,5 +447,8 @@ class session:
 		# the saver history will get infinitively long; we should
 		# only support a limited amount of steps
 		if number >= 0:
-			self.saver_history[number]=cPickle.dumps(self.save)
-			self.previous_number=number
+			try:
+				self.saver_history[number]=cPickle.dumps(self.save)
+				self.previous_number=number
+			except RuntimeError:
+				pass
