@@ -30,6 +30,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+LOCKFILE=/tmp/.univention_check_connection
+# create lock file
+if ! lockfile-create --retry 0 $LOCKFILE; then
+	exit 0
+fi
+
+
 export PATH=$PATH:/sbin:/usr/sbin
 
 eval `/usr/sbin/univention-baseconfig shell`
@@ -79,3 +86,6 @@ else
 	fi
 
 fi
+
+# remove lock file
+lockfile-remove $LOCKFILE

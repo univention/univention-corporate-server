@@ -1,3 +1,9 @@
+univention-server (5.0.5-1) unstable; urgency=low
+
+  * ensure that check_connection is just called once at a time; loop detection (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 13 Oct 2009 17:45:52 +0200
+
 univention-server (5.0.4-3) unstable; urgency=low
 
   * add time entry to etc/inetd.conf (Bug: #15782) 
