@@ -32,8 +32,7 @@ Description: Transition package
 
 Package: univention-config
 Architecture: all
-Pre-Depends: python-univention-config-registry
-Depends: python-univention, pciutils
+Depends: python-univention, pciutils, python-univention-config-registry
 Description: UCS - configuration manager
  This package contains the univention-config configuration
  manager, primarily used by the UCS base configuration.
