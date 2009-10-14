@@ -1,3 +1,9 @@
+univention-antivir-web (3.0.7-1) unstable; urgency=low
+
+  * fixed hashbash of dansguardian-filtergroups.py (Bug: #14709)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 14 Oct 2009 17:05:24 +0200
+
 univention-antivir-web (3.0.6-1) unstable; urgency=low
 
   * renamed a few UCR variables: functionality has moved from squid to

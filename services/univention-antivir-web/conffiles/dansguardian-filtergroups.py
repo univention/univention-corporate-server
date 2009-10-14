@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.4
 #
 # Univention AntiVir Web
 #  Univention Configuration Registry Module to write filter group configuration
