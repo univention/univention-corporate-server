@@ -80,7 +80,7 @@ rm -Rf /var/lib/univention-ldap/ldap/*
 
 univention-config-registry set ldap/base="$new_ldap_base"
 
-for var in $(univention-config-registry search --value $oldbn | cut -f 1 -d ":"); do
+for var in $(univention-config-registry search --brief --value $oldbn | cut -f 1 -d ":"); do
 	# the ldap/base is already set
 	if [ "$var" = "ldap/base" ]; then
 		continue
