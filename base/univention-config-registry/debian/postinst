@@ -220,4 +220,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.6.11-6; 
 	fi
 fi
 
+# set UCR value for package python-univention (Bug: #15971)
+univention-config-registry set ldap/binaryattributes?"krb5Key,userCertificate;binary"
+
 exit 0

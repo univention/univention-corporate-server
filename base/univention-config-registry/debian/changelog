@@ -1,3 +1,9 @@
+univention-config-registry (5.0.48-2) unstable; urgency=low
+
+  * set UCR value for package python-univention (Bug: #15971)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 14 Oct 2009 15:14:02 +0200
+
 univention-config-registry (5.0.47-1) unstable; urgency=low
 
   * only show the UCS version in the issue file if the version ist set.
