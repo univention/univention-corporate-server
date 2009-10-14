@@ -1,3 +1,9 @@
+univention-config-registry (5.0.49-2) unstable; urgency=low
+
+  * changed predependency to simple dependency (Bug: #15971)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 14 Oct 2009 16:11:56 +0200
+
 univention-config-registry (5.0.49-1) unstable; urgency=low
 
   * register variable server/role with /etc/issue.net (Bug: #10331)
