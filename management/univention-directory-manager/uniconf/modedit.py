@@ -575,9 +575,6 @@ class modedit(unimodule.unimodule):
 					except:
 						pass
 
-				current_object=self.object.loadPolicyObject(univention.admin.modules.name(current_module), reset=reset)
-				self.save.put('edit_object', self.object)
-
 				# policy select box
 				policydnlist=[]
 
@@ -595,6 +592,15 @@ class modedit(unimodule.unimodule):
 										policydnlist.append(policydn)
 						except:
 							pass
+
+				# build all property descriptions for the registry module
+				if univention.admin.modules.name(current_module) == 'policies/registry':
+					for policyDn in policydnlist:
+						univention.admin.objects.get(current_module, co, self.lo, self.position, policyDn)
+
+				current_object=self.object.loadPolicyObject(univention.admin.modules.name(current_module), reset=reset)
+				self.save.put('edit_object', self.object)
+
 
 				displaypolicydnlist=[]
 				if policydnlist:
@@ -3405,6 +3411,19 @@ class modedit(unimodule.unimodule):
 									]}))
 						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":minput_rows})]}))
 
+					elif property.syntax.name == 'configRegistryKey':
+						new_key = self.save.get( 'new_registry_key_%s' % (name))
+						if value or new_key:
+							self.input[name]=question_property('',attributes,{'property': property, 'field': field, 'value': value, 'name': name, 'lo': self.lo})
+
+							# xml objects must be placed into a colum before they can be inserted into a tablerow
+							cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [\
+								self.input[name]\
+							]}))
+						else:
+							# don't display an empty value
+							continue
+						
 					elif property.syntax.name == 'configRegistry':
 
 						self.registryinput={}
@@ -3412,60 +3431,22 @@ class modedit(unimodule.unimodule):
 						key_names=[]
 						atts=copy.deepcopy(attributes)
 
+						self.registryinput['new_value']=question_text(_('Name of the new Configuration Registry variable' ),atts,{"helptext":_('Add a new Configuration Registry variable' ) })
+						self.registryinput['new_button']=get_addbutton(atts,_('Add the new Configuration Registry variable'))
 
-						if current_module == module:
-							if value:
-								for v in value:
-									key_names.append('%s' % v.split('=')[0])
-								key_names.sort()
+						registryinput_rows.append(tablerow("",{},{"obs":[\
+									tablecol('',{}, {'obs': [\
+										self.registryinput['new_value']\
+									]}),\
+									tablecol('',{}, {'obs': [\
+										self.registryinput['new_button']\
+									]})\
+							]}))
 
-								found=False
-								for key_name in key_names:
-									for v in value:
-										if v.startswith('%s=' % key_name):
-											found=True
-											break
+						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":registryinput_rows})]}))
 
-									if found:
-
-										self.registryinput[v]=question_text( _('Variable: %s') % key_name, atts,{"helptext": _('Config Registry value for %s') % key_name, 'usertext': '%s' % string.join(v.split('=', 1)[1:])})
-
-										registryinput_rows.append(tablerow("",{},{"obs":[\
-													tablecol('',{}, {'obs': [\
-														self.registryinput[v]\
-													]})\
-												]}))
-										registryinput_rows.append(tablerow("",{},{"obs":[\
-													tablecol('',{}, {'obs': [\
-														# needed freespace
-														htmltext("",{},{'htmltext':['&nbsp;']})
-													]})\
-												]}))
-
-							self.registryinput['new_value']=question_text(_('Name of the new Config Registry variable' ),atts,{"helptext":_('Add a new Config Registry variable' ) })
-							self.registryinput['new_button']=get_addbutton(atts,_('Add the new Config Registry variable'))
-
-							if value:
-								registryinput_rows.append(tablerow("",{},{"obs":[\
-											tablecol('',{}, {'obs': [\
-												# needed freespace
-												htmltext("",{},{'htmltext':['&nbsp;']})
-											]})\
-										]}))
-							registryinput_rows.append(tablerow("",{},{"obs":[\
-										tablecol('',{}, {'obs': [\
-											self.registryinput['new_value']\
-										]}),\
-										tablecol('',{}, {'obs': [\
-											self.registryinput['new_button']\
-										]})\
-								]}))
-
-							cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":registryinput_rows})]}))
-
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'registry: append to col')
-							# xml objects must be placed into a colum before they can be inserted into a tablerow
-							# cols.append(tablecol('',{'type':'tab_layout'}, {'obs': inputs}))
+						# xml objects must be placed into a colum before they can be inserted into a tablerow
+						# cols.append(tablecol('',{'type':'tab_layout'}, {'obs': inputs}))
 
 
 					elif property.syntax.name == 'listAttributes':
@@ -5288,19 +5269,12 @@ class modedit(unimodule.unimodule):
 					n_button=True
 			elif key == 'new_value':
 				n_value=registryitem.get_input()
-			else:
-				pos=0
-				for v in current_object['registry']:
-					if v.startswith('%s=' % key.split('=')[0]):
-						current_object['registry'][pos]='%s=%s' %(key.split('=')[0],registryitem.get_input())
-					pos=pos+1
 
 			if n_value and n_button:
-
-				new=current_object['registry']
-				new.append( '%s=' % n_value )
-
-				current_object['registry']=new
+				# Normally we don't display empty keys but if this key was just added
+				# an exclusion might be a good idea
+				self.save.put( 'new_registry_key_%s' % (n_value), '1')
+				current_object.append_registry(n_value, '')
 				n_value=None
 				n_button=False
 

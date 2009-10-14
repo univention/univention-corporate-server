@@ -418,6 +418,7 @@ def doit(arglist):
 	customattribute_remove=[]
 	policy_reference=[]
 	policy_dereference=[]
+	registryKeys=[]
 	for opt, val in opts:
 		if opt == '--position':
 			position_dn = _2utf8( val )
@@ -594,7 +595,13 @@ def doit(arglist):
 						was_set=1
 
 			if not was_set:
-				out.append("WARNING: No attribute with name '%s' in this module, value not set."%name)
+				if univention.admin.modules.name(module) == 'policies/registry':
+					if not name in registryKeys:
+						registryKeys.append(name)
+					input[name]=value
+					was_set=1
+				else:
+					out.append("WARNING: No attribute with name '%s' in this module, value not set."%name)
 		elif opt == '--append':
 			pos=val.find('=')
 			name=val[:pos]
@@ -715,11 +722,15 @@ def doit(arglist):
 
 			if parsed_options:
 				object.options=parsed_options
-			object.open()
-			if hasattr(object,'open_warning') and object.open_warning:
-				out.append('WARNING:%s'%object.open_warning)
-			exists=0
-			try:
+			if univention.admin.modules.name(module) == 'policies/registry':
+				for registryKey in registryKeys:
+					object.append_registry(registryKey, '')
+				
+			object.open()      	
+			if hasattr(object,'	open_warning') and object.open_warning:
+				out.append('WAR	NING:%s'%object.open_warning)
+			exists=0           	
+			try:               	
 				out.extend(object_input(module, object, input, append=append))
 			except univention.admin.uexceptions.nextFreeIp:
 				if not ignore_exists:
@@ -891,6 +902,9 @@ def doit(arglist):
 
 		else: # modify
 
+			if univention.admin.modules.name(module) == 'policies/registry':
+				for registryKey in registryKeys:
+					object.append_registry(registryKey, '')
 
 			if (len(input)+len(append)+len(remove)+len(parsed_append_options)+len(parsed_options))>0:
 				if parsed_options:

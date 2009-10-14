@@ -51,8 +51,8 @@ policy_apply_to=["computers/domaincontroller_master", "computers/domaincontrolle
 policy_position_dn_prefix="cn=registry"
 usewizard=1
 childs=0
-short_description=_('Policy: Config Registry')
-policy_short_description=_('Config Registry settings')
+short_description=_('Policy: Configuration Registry')
+policy_short_description=_('Configuration Registry settings')
 long_description=''
 options={
 }
@@ -68,7 +68,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'registry': univention.admin.property(
-			short_description=_('Config Registry'),
+			short_description=_('Configuration Registry'),
 			long_description='',
 			syntax=univention.admin.syntax.configRegistry,
 			multivalue=1,
@@ -129,7 +129,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Config Registry settings'), [
+	univention.admin.tab(_('General'),_('Configuration Registry settings'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_normalmode=1) ],
 		[univention.admin.field('registry'), univention.admin.field('filler')],
 	]),
@@ -169,34 +169,29 @@ class object(univention.admin.handlers.simplePolicy):
 			for key in self.oldattr.keys():
 				if key.startswith('univentionRegistry;entry-hex-'):
 					key_name=key.split('univentionRegistry;entry-hex-')[1].decode('hex')
-					self['registry'].append('%s=%s' % (key_name, self.oldattr[key][0].strip()))
+					self.append_registry(key_name, self.oldattr[key][0].strip())
+
 		self.save()
 
-	def _ldap_modlist(self):
-		ml=univention.admin.handlers.simplePolicy._ldap_modlist(self)
-		if self.hasChanged('registry'):
-			old_keys = []
-			new_keys = []
-			if self.info.has_key('registry'):
-				for line in self.info['registry']:
-					new_keys.append(line.split('=')[0])
-			if self.oldinfo.has_key('registry'):
-				for line in self.oldinfo['registry']:
-					old_keys.append(line.split('=')[0])
-			for k in old_keys:
-				if not k in new_keys:
-					ml.append( ('univentionRegistry;entry-hex-%s' % k.encode('hex'), self.oldattr.get('univentionRegistry;entry-hex-%s' % k.encode('hex'), ''), ''))
-			for k in new_keys:
-				for line in self.info['registry']:
-					if line.startswith('%s=' % k ):
-						value=string.join(line.split('=', 1)[1:])
-						if value == "None":
-							ml.append( ('univentionRegistry;entry-hex-%s' % k.encode('hex'), self.oldattr.get('univentionRegistry;entry-hex-%s' % k.encode('hex'), ''), None ) )
-						else:
-							ml.append( ('univentionRegistry;entry-hex-%s' % k.encode('hex'), self.oldattr.get('univentionRegistry;entry-hex-%s' % k.encode('hex'), ''), value ) )
-						break
-		return ml
-
+	def append_registry(self, key, value):
+		if not property_descriptions.has_key(key):
+			property_descriptions[key] =  univention.admin.property(
+				short_description=key,
+				long_description='',
+				# we use a different syntax, because the key shouldn't be
+				# shown if the value is empty. Otherwise we might get a lot of
+				# keys during an UDM session.
+				syntax=univention.admin.syntax.configRegistryKey,
+				multivalue=0,
+				options=[],
+				required=0,
+				may_change=1,
+				identifies=0,
+			)
+			layout[0].fields.append([univention.admin.field(key)])
+			mapping.register(key, 'univentionRegistry;entry-hex-%s' % key.encode('hex'), None, univention.admin.mapping.ListToString)
+			self.oldinfo[key] = ''
+		self.info[key] = value
 
 	def exists(self):
 		return self._exists

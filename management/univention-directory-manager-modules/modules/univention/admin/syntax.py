@@ -2109,6 +2109,11 @@ class configRegistry(simple):
 	def parse(self, text):
 		return text
 
+class configRegistryKey(simple):
+	name='configRegistryKey'
+	def parse(self, text):
+		return text
+
 
 class LDAP_Search( select ):
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'

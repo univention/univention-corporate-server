@@ -1,3 +1,10 @@
+univention-directory-manager-modules (5.0.35-9) unstable; urgency=low
+
+  * make the direct modification of Configuration Registry polcies (UCR)
+    possible. Bug #14423
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Oct 2009 21:24:25 +0200
+
 univention-directory-manager-modules (5.0.34-7) unstable; urgency=low
 
   * change labels of DNS alias multiselect (Bug #15017)

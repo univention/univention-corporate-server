@@ -1,3 +1,10 @@
+univention-directory-manager (7.0.26-2) unstable; urgency=low
+
+  * make the direct modification of Configuration Registry polcies (UCR)
+    possible. Bug #14423
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Oct 2009 21:30:45 +0200
+
 univention-directory-manager (7.0.26-1) unstable; urgency=low
 
   * show hostname in DNS alias multiselect (Bug #15017)
