@@ -3,7 +3,7 @@
 # Univention Python
 #  postinst script for the debian package
 #
-# Copyright (C) 2002, 2003, 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2002-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,5 +30,4 @@
 
 #DEBHELPER#
 
-univention-baseconfig set ldap/binaryattributes?"krb5Key,userCertificate;binary"
-
+exit 0

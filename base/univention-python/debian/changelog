@@ -1,3 +1,10 @@
+univention-python (4.0.3-1) unstable; urgency=low
+
+  * removed useless dependencies and moved set command of UCR to
+    univention-config-registry (Bug: #15971)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 14 Oct 2009 15:19:48 +0200
+
 univention-python (4.0.2-1) unstable; urgency=low
 
   * delete jpegPhoto with "None" as old value, because jpegphoto has no matching rule (Bug: #15171)

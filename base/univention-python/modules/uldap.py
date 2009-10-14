@@ -105,7 +105,7 @@ class access:
 		if not decode_ignorelist or decode_ignorelist == []:
 			baseConfig = univention_baseconfig.baseConfig()
 			baseConfig.load()
-			self.decode_ignorelist = baseConfig['ldap/binaryattributes'].split(',')
+			self.decode_ignorelist = baseConfig.get('ldap/binaryattributes', 'krb5Key,userCertificate;binary').split(',')
 		else:
 			self.decode_ignorelist = decode_ignorelist
 
