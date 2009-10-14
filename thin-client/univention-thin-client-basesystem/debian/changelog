@@ -1,3 +1,10 @@
+univention-thin-client-basesystem (6.0.16-1) unstable; urgency=low
+
+  * changed predependency to simple dependency (Bug: #15971)
+    (was Bug: #13593)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 14 Oct 2009 17:34:02 +0200
+
 univention-thin-client-basesystem (6.0.15-1) unstable; urgency=low
 
   * use ldap_hostdn instead of myDN for the thin client hostdn. Bug
