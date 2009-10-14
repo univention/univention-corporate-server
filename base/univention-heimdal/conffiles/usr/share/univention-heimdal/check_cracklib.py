@@ -1,6 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
-@%@BCWARNING=# @%@
+@%@UCRWARNING=# @%@
 
 import cracklib
 import sys
