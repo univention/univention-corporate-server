@@ -165,6 +165,7 @@ File: etc/issue.net
 Variables: version/version
 Variables: version/patchlevel
 Variables: version/security-patchlevel
+Variables: server/role
 
 Type: file
 File: etc/bash.bashrc
