@@ -1,9 +1,15 @@
+univention-system-info (0.1.5-1) unstable; urgency=low
+
+  * use /bin/sh instead of /bin/bash in join script (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 14 Oct 2009 16:33:11 +0200
+
 univention-system-info (0.1.4-1) unstable; urgency=low
 
   * set write access for www-data to upload directory
   * add UCS version information to archive
   * download link to archive is now relative without the server name
-  * do not UUID on XEN instance for unique identifier; instead the MAC
+  * do not use UUID on XEN instances for unique identifier; instead the MAC
     address is used.
   * system-info-upload.py: the sender of the mail can now be set via a UCR
     variable (Bug #8969)
