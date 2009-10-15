@@ -33,3 +33,5 @@
 univention-thin-client-apt install univention-thin-client-sound-config
 
 univention-thin-client-ramdisk -f /etc/udev/rules.d/040_univention-thin-client-sound.rules
+
+exit 0

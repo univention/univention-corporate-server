@@ -1,3 +1,10 @@
+univention-thin-client-sound (3.0.0-2) unstable; urgency=low
+
+  * changed predependency to simple dependency (Bug: #15971)
+  * added "exit 0" calls to postinst files
+  
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 15 Oct 2009 09:34:50 +0200
+
 univention-thin-client-sound (3.0.0-1) unstable; urgency=low
 
   * Make init scripts LSB-compliant (Bug #14421)
