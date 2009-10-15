@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (6.0.16-2) unstable; urgency=low
+
+  * fixed dependencies in control file (Bug: #15971)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 15 Oct 2009 08:38:21 +0200
+
 univention-thin-client-basesystem (6.0.16-1) unstable; urgency=low
 
   * changed predependency to simple dependency (Bug: #15971)
