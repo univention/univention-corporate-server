@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.38-1) unstable; urgency=low
+
+  * redesign the organisation tab. Bug #11165
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Oct 2009 15:39:08 +0200
+
 univention-directory-manager-modules (5.0.37-2) unstable; urgency=low
 
   * sort the UCR variables on the Configuration Registry tab. Bug #14423

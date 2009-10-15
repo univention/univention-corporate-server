@@ -1094,11 +1094,9 @@ layout=[
 		[univention.admin.field("jpegPhoto")],
 	]),
 	univention.admin.tab(_('Organisation'),_('Organisational information'),[
-		[univention.admin.field("employeeNumber")],
-		[univention.admin.field("employeeType")],
-		[univention.admin.field("roomNumber")],
-		[univention.admin.field("departmentNumber")],
-		[univention.admin.field("secretary")]
+		[univention.admin.field("employeeNumber"), univention.admin.field("employeeType")],
+		[univention.admin.field("roomNumber"), univention.admin.field("departmentNumber")],
+		[univention.admin.field("secretary", colspan=2)]
 	]),
 	univention.admin.tab(_('Private contact'),_('Private contact information'),[
 		[univention.admin.field("mobileTelephoneNumber"), univention.admin.field("homeTelephoneNumber")],

@@ -1,3 +1,9 @@
+univention-webui-style (4.0.5-1) unstable; urgency=low
+
+  * redesign the organisation tab. Bug #11165
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Oct 2009 15:39:37 +0200
+
 univention-webui-style (4.0.4-1) unstable; urgency=low
 
   * more css issues for the dojo switchbutton. Needed for IE 8. Bug

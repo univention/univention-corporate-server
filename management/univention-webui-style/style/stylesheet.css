@@ -534,12 +534,13 @@ padding:0px 0px 0px 0px;
 td.button_link{
 padding-left:5px;
 }
+td.leftright,
 td.leftright_top,
 td.leftright_top_fixed,
 td.leftright_bottom_fixed,
 td.leftright_bottom{
-padding-left:10px;
-padding-right:10px;
+padding-left:23px;
+padding-right:23px;
 }
 td.multi_add,
 td.multi_add_top,
@@ -587,6 +588,7 @@ td.multi_remove_img{
 text-align:center;
 vertical-align:middle;
 }
+td.leftright,
 td.leftright_top,
 td.leftright_bottom,
 td.leftright_top_fixed,
@@ -735,6 +737,8 @@ td.multi_remove_img{
 width:20px;
 }
 
+tr.leftright,
+tr.leftright_top,
 tr.leftright_top,
 tr.leftright_bottom,
 tr.leftright_top_fixed,
@@ -782,6 +786,10 @@ td.global_menu_right,
 td.menu_left,
 td.menu_right {
 margin:0px;
+}
+
+td.leftright {
+width:32px;
 }
 
 /* background */
@@ -847,13 +855,6 @@ color:#EEEEEE;
 td.overwrite_check{
 text-align:center;
 background-color:#CCCCCC;
-}
-
-/* space between the search porperty objects.
- * See https://forge.univention.org/bugzilla/show_bug.cgi?id=13035
- */
-td.search_property{
-padding-left:50px;
 }
 
 /* ################# Links ################# */

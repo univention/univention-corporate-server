@@ -4329,6 +4329,7 @@ class modedit(unimodule.unimodule):
 							group_choicelist.append( { 'name': key, 'description': sort_temp[ key ], 'activated': '0' } )
 
 						atts=copy.deepcopy(attributes)
+						atts_search_input=copy.deepcopy(attributes)
 						#search_type=self.save.get('browse_search_type')
 						searchcols=[]
 
@@ -4348,10 +4349,11 @@ class modedit(unimodule.unimodule):
 							if i['name']==search_property_name:
 								i['selected']='1'
 
+						atts_search_input['width']='200'
 						if search_property_name not in  ('*',"_"):
 							if search_property_name:
 								search_property=search_module.property_descriptions[search_property_name]
-							self.search_input=question_property('',atts,{'property': search_property, 'value': membership_search_value, 'search': '1', 'lo': self.lo})
+							self.search_input=question_property('',atts_search_input,{'property': search_property, 'value': membership_search_value, 'search': '1', 'lo': self.lo})
 						if search_property_name=="*":
 							search_value='*'
 
@@ -4369,6 +4371,7 @@ class modedit(unimodule.unimodule):
 						self.search_button=button(_('show'),{'icon':'/style/ok.gif'},{'helptext':_('show')})
 
 						searchcols.append(tablecol('',{},{'obs':[search_property_select]}))
+						searchcols.append(tablecol('',{'type':'leftright'},{'obs':[]}))
 						searchcols.append(tablecol('',{'type':'search_property'},{'obs':[search_input]}))
 						searchcols.append(tablecol('',{'type':'tab_layout_bottom_space'},{'obs':[self.search_button]}))
 
