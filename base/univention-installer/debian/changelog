@@ -1,3 +1,9 @@
+univention-installer (5.0.24-4) unstable; urgency=low
+
+  * fixed sdb link (Bug: #13640)
+
+ -- Felix Botner <botner@univention.de>  Thu, 15 Oct 2009 13:03:50 +0200
+
 univention-installer (5.0.24-3) unstable; urgency=low
 
   * fixed translation (Bug: #13683) 

@@ -73,7 +73,7 @@ msgstr ""
 "Zusätzliche Informationen: http://www.univention.de/dokumentation.html"
 
 #: installer/end.py:186
-msgid "Support & Knowledge Base: http://www.sdb.univention.de"
+msgid "Support & Knowledge Base: http://sdb.univention.de"
 msgstr ""
 
 #: installer/end.py:200
