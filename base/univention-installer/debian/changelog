@@ -1,3 +1,11 @@
+univention-installer (5.0.24-5) unstable; urgency=low
+
+  * fix access to netobject.INPUT_GATEWAY (Bug #15963)
+  * reorder widget positions and tab order in net edit
+    (Bug #12130)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Oct 2009 17:05:47 +0200
+
 univention-installer (5.0.24-4) unstable; urgency=low
 
   * fixed sdb link (Bug: #13640)

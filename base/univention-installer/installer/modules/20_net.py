@@ -725,14 +725,14 @@ class object(content):
 
 			self.add_elem('edit.TXT_IP', textline(_('IP address:'), self.pos_y+4, self.pos_x+2))#1
 			self.add_elem('edit.INPUT_IP', input(ip_str, self.pos_y+4, self.pos_x+14, MAXIP))#2
-			if not virtual:
-				self.add_elem('edit.BUTTON_DHCLIENT', button('F5-'+_('DHCP Query'),self.pos_y+4,self.pos_x+(self.width)-4,align='right')) #12
 
 			self.add_elem('edit.TXT_NETMASK', textline(_('Netmask:'), self.pos_y+5, self.pos_x+2))#3
 			self.add_elem('edit.INPUT_NETMASK', input(netmask_str, self.pos_y+5, self.pos_x+14, MAXIP))#4
+			if not virtual:
+				self.add_elem('edit.BUTTON_DHCLIENT', button('F5-'+_('DHCP Query'),self.pos_y+5,self.pos_x+(self.width)-4,align='right')) #12
 
-			self.add_elem('edit.BUTTON_CANCEL', button('ESC-'+_('Cancel'),self.pos_y+7,self.pos_x+4)) #12
 			self.add_elem('edit.BUTTON_OK', button('F12-'+_('Ok'),self.pos_y+7,self.pos_x+(self.width)-4,align='right')) #11
+			self.add_elem('edit.BUTTON_CANCEL', button('ESC-'+_('Cancel'),self.pos_y+7,self.pos_x+4)) #12
 
 			if not dhcp_checkbox_value:
 				self.enable()	# enable the main edit textboxes
@@ -740,7 +740,6 @@ class object(content):
 			else:
 				self.disable()	# disable the main edit textboxes
 				self.current=self.get_elem_id('edit.BUTTON_DHCLIENT')	# set the tab cursor
-
 
 			self.elements[self.current].set_on()		# set the focus highlight
 
@@ -968,7 +967,7 @@ class object(content):
 					#if not gateway_str:
 					gateway_str=dhcp_dict.get('gateway') or ''
 					if gateway_str:
-						gateway_input=self.parent.get_elem('netobject.INPUT_GATEWAY')
+						gateway_input=self.parent.parent.get_elem('netobject.INPUT_GATEWAY')
 						gateway_input.text=gateway_str
 						gateway_input.set_cursor(len(gateway_input.text))
 						gateway_input.paste_text()
