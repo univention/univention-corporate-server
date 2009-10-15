@@ -44,7 +44,6 @@ fp_download_and_unpack() {
 
 		# downloading the plugin
 		echo "Downloading..."
-		rm -f $DOWNLOAD_FILE
 		if [ ! -z $flashplugin_downloadserver ]; then
 		    if [ ! -z $flashplugin_downloadpath ]; then
 			    WGETRC=wgetrc wget $flashplugin_downloadserver$flashplugin_downloadpath
@@ -59,7 +58,6 @@ fp_download_and_unpack() {
 	fi # end if local file
 
         # unpacking the plugin
-	rm -rf $DOWNLOAD_FILE
 	tar xzf $DOWNLOAD_FILE.tar.gz || fp_exit_with_error "cannot unpack plugin"
 }
 
@@ -73,8 +71,7 @@ safe_move() {
 
 fp_download_and_unpack
 
-install -m 644 $DOWNLOAD_FILE/libflashplayer.so $TARGET_DIR
-rm -rf $DOWNLOAD_FILE
+install -m 644 $DOWNLOAD_DIR/libflashplayer.so $TARGET_DIR
 
 safe_move FP9_plugin_beta_101806.tar.gz
 safe_move FP9_plugin_beta_112006.tar.gz
