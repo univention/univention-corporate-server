@@ -1,3 +1,10 @@
+univention-directory-manager (7.0.27-1) unstable; urgency=low
+
+  * don't translate Configuration Registry with
+    Konfigurationsregistrierung. Bug #14423
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Oct 2009 06:25:41 +0200
+
 univention-directory-manager (7.0.26-2) unstable; urgency=low
 
   * make the direct modification of Configuration Registry polcies (UCR)

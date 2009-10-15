@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-14 21:31+0200\n"
-"PO-Revision-Date: 2009-10-07 22:24+0200\n"
+"PO-Revision-Date: 2009-10-15 06:23+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -990,15 +990,15 @@ msgstr "Parameter für das Kommando"
 
 #: modedit.py:3434
 msgid "Name of the new Configuration Registry variable"
-msgstr "Name der neuen Konfigurationsregistrierungseinstellung"
+msgstr "Name der neuen Configuration Registry Variable"
 
 #: modedit.py:3434
 msgid "Add a new Configuration Registry variable"
-msgstr "Eine neue Konfigurationsregistrierungseinstellung hinzufügen"
+msgstr "Eine neue Configuration Registry Variable hinzufügen"
 
 #: modedit.py:3435
 msgid "Add the new Configuration Registry variable"
-msgstr "Die neue Konfigurationsregistrierungseinstellung hinzufügen"
+msgstr "Die neue Configuration Registry Variable hinzufügen"
 
 #: modedit.py:3480 modedit.py:3537 modedit.py:4530
 msgid "DN"
@@ -1183,7 +1183,7 @@ msgstr "Session-Timeout"
 #: modrelogin.py:106
 msgid ""
 "To increase the session timeout log into Univention Management Console, "
-"select the Univention Config Registry module and change the value of "
+"select the Univention Configuration Registry module and change the value of "
 "<code>directory/manager/timeout</code>."
 msgstr ""
 "Um den Session-Timeout zu erhöhen, melden Sie sich an der Univention "

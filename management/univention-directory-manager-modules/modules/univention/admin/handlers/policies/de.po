@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-14 21:37+0200\n"
-"PO-Revision-Date: 2009-08-05 09:43+0200\n"
+"PO-Revision-Date: 2009-10-15 06:27+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1034,15 +1034,15 @@ msgstr "Passwort-Richtlinie"
 
 #: registry.py:54
 msgid "Policy: Configuration Registry"
-msgstr "Richtlinie: Konfigurationsregistrierung"
+msgstr "Richtlinie: Configuration Registry"
 
 #: registry.py:55 registry.py:132
 msgid "Configuration Registry settings"
-msgstr "Konfigurationsregistrieungseinstellungen"
+msgstr "Configuration Registry Einstellungen"
 
 #: registry.py:71
 msgid "Configuration Registry"
-msgstr "Konfigurationsregistrierung"
+msgstr "Configuration Registry"
 
 #: release.py:46
 msgid "Release Version"
