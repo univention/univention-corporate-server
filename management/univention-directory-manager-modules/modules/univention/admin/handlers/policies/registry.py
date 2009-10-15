@@ -193,6 +193,29 @@ class object(univention.admin.handlers.simplePolicy):
 			self.oldinfo[key] = ''
 		self.info[key] = value
 
+	def _ldap_modlist(self):
+		if self.hasChanged('registry'):
+			old_keys = []
+			new_keys = []
+			if self.info.has_key('registry'):
+				for line in self.info['registry']:
+					new_keys.append(line.split('=')[0])
+				if self.oldinfo.has_key('registry'):
+					for line in self.oldinfo['registry']:
+						old_keys.append(line.split('=')[0])
+				for k in old_keys:
+					if not k in new_keys:
+						self.append_registry(k, '')
+				for k in new_keys:
+					for line in self.info['registry']:
+						if line.startswith('%s=' % k ):
+							value=string.join(line.split('=', 1)[1:])
+							self.append_registry(k, value)
+							break
+
+		ml=univention.admin.handlers.simplePolicy._ldap_modlist(self)
+		return ml
+
 	def exists(self):
 		return self._exists
 

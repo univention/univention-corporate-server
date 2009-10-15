@@ -1,5 +1,12 @@
 univention-directory-manager-modules (5.0.36-1) unstable; urgency=low
 
+  * readded the old syntax for the UCR policy module:
+     udm modify --dn <dn> --set registry="pkgdb/scan=no". Bug #14423
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Oct 2009 08:15:56 +0200
+
+univention-directory-manager-modules (5.0.36-1) unstable; urgency=low
+
   * don't translate Configuration Registry with
     Konfigurationsregistrierung. Bug #14423
 
