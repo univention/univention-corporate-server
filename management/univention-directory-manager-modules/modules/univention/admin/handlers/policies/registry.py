@@ -33,7 +33,7 @@ import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import univention.debug
+import univention.debug as ud
 
 translation=univention.admin.localization.translation('univention.admin.handlers.policies')
 _=translation.translate
@@ -189,6 +189,8 @@ class object(univention.admin.handlers.simplePolicy):
 				identifies=0,
 			)
 			layout[0].fields.append([univention.admin.field(key)])
+			layout[0].fields.sort()
+
 			mapping.register(key, 'univentionRegistry;entry-hex-%s' % key.encode('hex'), None, univention.admin.mapping.ListToString)
 			self.oldinfo[key] = ''
 		self.info[key] = value

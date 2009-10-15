@@ -334,6 +334,13 @@ class field:
 		return " univention.admin.field: { short_description: '%s', long_description: '%s', property: '%s', type: '%s', first_only: '%s', hide_in_resultmode: '%s', hide_in_normalmode: '%s', colspan: '%s', width: '%s' }" % (
 			self.short_description, self.long_description, self.property, self.type, self.first_only, self.hide_in_resultmode, self.hide_in_normalmode, self.colspan, self.width )
 
+	def __cmp__(self, other):
+		# at the moment the sort is only needed for layout of the registry module
+		if other.property == 'registry':
+			return 1
+		if self.property == 'registry':
+			return 0
+		return cmp(self.property, other.property)
 
 class policiesGroup:
 	def __init__(self, id, short_description=None, long_description='', members=[]):
