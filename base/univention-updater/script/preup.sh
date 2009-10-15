@@ -5,24 +5,24 @@ UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
 
 echo "Running preup.sh script"
-echo "$(date)"
+date
 
 eval $(univention-config-registry shell) >>"$UPDATER_LOG" 2>&1
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
-	if [ "$update22_ignoressh" != "yes" ]; then
+	if [ "$update23_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or set the Univention Configuration Registry variable \"update22/ignoressh\" to \"yes\" to ignore it."
+		echo "Please log in under the console or set the Univention Configuration Registry variable \"update23/ignoressh\" to \"yes\" to ignore it."
 		killall univention-updater
 		exit 1
 	fi
 fi
 
 if [ "$TERM" = "xterm" ]; then
-	if [ "$update22_ignoreterm" != "yes" ]; then
+	if [ "$update23_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or set the Univention Configuration Registry variable \"update22/ignoreterm\" to \"yes\" to ignore it."
+		echo "Please log in under the console or set the Univention Configuration Registry variable \"update23/ignoreterm\" to \"yes\" to ignore it."
 		killall univention-updater
 		exit 1
 	fi
@@ -54,7 +54,7 @@ check_space(){
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
         echo "         This may interrupt the update and result in an inconsistent system!"
     	echo "         If neccessary you can skip this check by setting the value of the"
-		echo "         baseconfig variable update22/checkfilesystems to \"no\"."
+		echo "         baseconfig variable update23/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
 		echo ""
 		# kill the running univention-updater process
@@ -64,7 +64,7 @@ check_space(){
 }
 
 # check space on filesystems
-if [ "$update22_checkfilesystems" != "no" ]
+if [ ! "$update23_checkfilesystems" = "no" ]
 then
 
 	check_space "/var/cache/apt/archives" "400000" "400 MB"
@@ -72,7 +72,7 @@ then
 	check_space "/" "600000" "600 MB"
 
 else
-    echo "WARNING: skipped disk-usage-test as you requested"
+    echo "WARNING: skipped disk-usage-test as requested"
 fi
 
 
@@ -96,7 +96,26 @@ if [ -e /usr/sbin/apache2 ]; then
 	chmod -x /usr/sbin/apache2
 fi
 
+
+# pre-update univention-thin-client-basesystem to avoid pre-dependency-problems
+echo "Starting preupdate of univention-thin-client-basesystem... (takes some time)"
+$update_commands_install univention-thin-client-basesystem >>"$UPDATER_LOG" 2>&1
+if [ ! $? = 0 ]; then
+	echo "ERROR: pre-update of univention-thin-client-basesystem failed!" | tee -a "$UPDATER_LOG"
+	echo "       Please run 'dpkg --configure -a' manually." | tee -a "$UPDATER_LOG"
+	killall univention-updater
+	exit 1
+fi
+dpkg -l 2>&1  | grep "  " | grep -v "^|" | grep "^[a-z]*[A-Z]" >>"$UPDATER_LOG" 2>&1
+if [ $? = 0 ]; then
+	echo "ERROR: pre-update of univention-thin-client-basesystem failed!" | tee -a "$UPDATER_LOG"
+	echo "       Inconsistent package state detected. Please run 'dpkg --configure -a' manually." | tee -a "$UPDATER_LOG"
+	killall univention-updater
+	exit 1
+fi
+echo "Preupdate of univention-thin-client-basesystem done."
+
 echo "Finished running preup.sh script"
-echo "$(date)"
+date
 
 exit 0
