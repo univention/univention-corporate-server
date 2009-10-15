@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-14 21:37+0200\n"
+"POT-Creation-Date: 2009-10-15 21:56+0200\n"
 "PO-Revision-Date: 2009-10-15 06:27+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1033,16 +1033,20 @@ msgid "Passwords"
 msgstr "Passwort-Richtlinie"
 
 #: registry.py:54
-msgid "Policy: Configuration Registry"
-msgstr "Richtlinie: Configuration Registry"
+msgid "Policy: Univention Configuration Registry"
+msgstr "Richtlinie: Univention Configuration Registry"
 
-#: registry.py:55 registry.py:132
-msgid "Configuration Registry settings"
-msgstr "Configuration Registry Einstellungen"
+#: registry.py:55
+msgid "Univention Configuration Registry"
+msgstr "Univention Configuration Registry"
 
 #: registry.py:71
 msgid "Configuration Registry"
 msgstr "Configuration Registry"
+
+#: registry.py:132
+msgid "These configuration settings will be set on the local UCS system."
+msgstr "Diese Konfigurationseinstellungen werden auf dem lokalen UCS-System gesetzt."
 
 #: release.py:46
 msgid "Release Version"
@@ -1300,6 +1304,9 @@ msgstr "Display-Grösse (mm)"
 #: xfree.py:266
 msgid "RAM on the graphics adapter in kB"
 msgstr "RAM auf der Grafikkarte in kB"
+
+#~ msgid "Configuration Registry settings"
+#~ msgstr "Configuration Registry Einstellungen"
 
 #~ msgid "Soft Limit. If exceeded users can be warned."
 #~ msgstr ""

@@ -51,8 +51,8 @@ policy_apply_to=["computers/domaincontroller_master", "computers/domaincontrolle
 policy_position_dn_prefix="cn=registry"
 usewizard=1
 childs=0
-short_description=_('Policy: Configuration Registry')
-policy_short_description=_('Configuration Registry settings')
+short_description=_('Policy: Univention Configuration Registry')
+policy_short_description=_('Univention Configuration Registry')
 long_description=''
 options={
 }
@@ -129,7 +129,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Configuration Registry settings'), [
+	univention.admin.tab(_('General'),_('These configuration settings will be set on the local UCS system.'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_normalmode=1) ],
 		[univention.admin.field('registry'), univention.admin.field('filler')],
 	]),
