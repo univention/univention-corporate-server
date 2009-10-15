@@ -44,7 +44,7 @@ case "$reason" in
 		echo "0" >/proc/sys/kernel/printk
 
 		# basic interface setup if it is not already up
-		ifconfig eth0 | grep -w UP || ifconfig $interface inet 0 up
+		ifconfig $interface | grep -w UP || ifconfig $interface inet 0 up
 		
 		# We need to give the kernel some time to get the interface up.
 		sleep 1

@@ -1,3 +1,10 @@
+univention-installer (5.0.24-6) unstable; urgency=low
+
+  * fix PREINIT of dhclient-script-wrapper for interfaces other than eth0
+    (Bug #12130)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Oct 2009 18:14:23 +0200
+
 univention-installer (5.0.24-5) unstable; urgency=low
 
   * fix access to netobject.INPUT_GATEWAY (Bug #15963)
