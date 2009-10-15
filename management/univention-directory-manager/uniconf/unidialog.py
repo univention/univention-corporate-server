@@ -64,6 +64,9 @@ class unidialog(unimodule.unimodule):
 
 	def myinit(self):
 		global uniconf_mods
+		self.have_browse = False
+		self.have_about = False
+		self.have_users = False
 
 		position=self.save.get('ldap_position')
 		if not position:
@@ -95,62 +98,8 @@ class unidialog(unimodule.unimodule):
 		if self.mod != None:
 			self.subobjs.append(self.mod)
 
-		# if there's no current module, display welcome dialog
-		if ( self.save.get("uc_module")==None or self.save.get("uc_module")=="none" ) and self.save.get("auth_ok"):
-			if not self.inithandlemessages():
+		self.mbutlist=[]
 
-				header_text = _("Welcome to Univention Directory Manager")
-
-				introduction_text = _("Univention Directory Manager enables you to manage all components of your Univention Corporate Server (UCS) Domain.")
-
-				component_texts = []
-				component_texts.append([_("Wizards"),
-						       _("Common tasks like administration of users, groups, servers, desktops and printers can easily be handled by using the wizards.")])
-				component_texts.append([_("Navigation"),
-						       _("Besides everything you can do with the wizards, the navigation provides you also with an interface for many other settings, including structural extensions like containers, organizational units and connected policies, advanced DNS and DHCP configuration or settings for Univention Directory Manager itself.")])
-				component_texts.append([_("Univention Management Console"),_("The <a target=parent href=/univention-management-console/>Univention Management Console</a> provides the possibilty to configure local settings on every UCS managed machine, e.g. network configuration or local software-installation. A link to the Univention Management Console for a machine can be found at the computer object wizard.")])
-				if self.save.get( 'personal_use' ) == '1':
-					component_texts.append([_("License"),_("You are using the \"Free for personal use\" edition. Find more information on the about page.")])
-				component_texts.append([_("Further Information"),_("For more information about UCS, Univention Directory Manager and other Univention Tools take a look at the documentation or the online-forum on <a target=parent href=http://www.univention.de>www.univention.de</a>.")])
-
-
-
-				self.subobjs.append(table("",
-							  {'type':'content_header'},
-							  {"obs":[(tablerow({},{},{'obs':[tablecol("",{'type':'browse_layout'},{"obs":[]})]}))]})
-						    )
-
-				self.nbook=notebook('', {}, {'buttons': [(header_text, header_text)], 'selected': 0})
-				self.subobjs.append(self.nbook)
-
-				subtables = []
-
-				rows = []
-				# TODO: uncomment the next line to enable the welcome logo
-				#rows.append(tablerow({},{'border':'0'},{'obs':[tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[htmltext('',{'border':'0'},{'htmltext':['<table><tr><td><img src="/icon/welcome_logo.png" /></td></tr><tr><td><b>%s</b></td></tr></table>'% introduction_text]})]})]}))
-				rows.append(tablerow({},{'border':'0'},{'obs':[tablecol({},{'type':'welcome_layout'},{"obs":[htmltext('',{'border':'0'},{'htmltext':[introduction_text]})]})]}))
-				subtables.append(table('',{},{'obs':rows}))
-
-				emptycol = tablecol({},{'type':'welcome_layout'},{"obs":[]})
-				emptycol_span = tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[]})
-
-				rows = []
-				for shorttext, longtext in component_texts:
-					tmp = shorttext
-					if hasattr (shorttext, 'data'):
-						tmp = shorttext.data
-					objects = [[tablecol('',{'type':'welcome_layout', 'rowspan':'2'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':
-						['<table><tr><td><img src="/icon/%s.png" /></td><td class="welcome_icon_text"><strong class="h2">%s</strong></td></tr></table>' % (tmp.lower ().replace (' ', '_'), shorttext)]})]}),
-						   tablecol('',{'type':'height14'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':['&nbsp;']})]})],
-						   [emptycol, tablecol('',{'type':'welcome_layout_text'},{"obs":[htmltext('', {}, {'htmltext':[longtext]})]})],]
-					for obj in objects:
-						rows.append(tablerow({},{'border':'0'},{'obs':obj}))
-
-				subtables.append(table('',{},{'obs':rows}))
-				self.subobjs.append(table('',
-							  {'type':'content_main'},
-							  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'welcome_layout'},{"obs":subtables})]})]})
-						    )
 
 		# display info box with username
 		if good_login:
@@ -175,7 +124,6 @@ class unidialog(unimodule.unimodule):
 		menuheader=text("",{},{"text":[_("Univention Directory Manager")]})
 		menuheaderitem=menuitem("",{},{"item":menuheader})
 		menulist=[]
-		self.mbutlist=[]
 		self.smbutlistlist=[]
 		modlist=[]
 
@@ -245,6 +193,8 @@ class unidialog(unimodule.unimodule):
 							mbut=button(virtmod.name,{'icon':icon_path},{"helptext":virtmod.description})
 
 						self.mbutlist.append([mbut, moduleinfo.id, virtmod.id])
+						if virtmod.id == 'users/user':
+							self.have_users = True
 
 						if virtmod.id == self.save.get('uc_virtualmodule'):
 							for submod in virtmod.submodules:
@@ -279,6 +229,10 @@ class unidialog(unimodule.unimodule):
 					else:
 						mbut=button(moduleinfo.name,{'icon':icon_path},{"helptext":moduleinfo.description})
 					self.mbutlist.append([mbut, moduleinfo.id])
+					if moduleinfo.id == 'browse':
+						self.have_browse = True
+					elif moduleinfo.id == 'about':
+						self.have_about = True
 
 					for submod in moduleinfo.submodules:
 						smbut=button(submod.name,{},{"helptext":submod.description})
@@ -291,6 +245,90 @@ class unidialog(unimodule.unimodule):
 
 				else: # it's a spacer
 					pass
+
+		# if there's no current module, display welcome dialog
+		if ( self.save.get("uc_module")==None or self.save.get("uc_module")=="none" ) and self.save.get("auth_ok"):
+			if not self.inithandlemessages():
+
+				header_text = _("Welcome to Univention Directory Manager")
+
+				introduction_text = _("Univention Directory Manager enables you to manage all components of your Univention Corporate Server (UCS) Domain.")
+
+				component_texts = []
+				# [ Short description, long description, Link, Button ]
+				users_button=None
+				if self.have_users:
+					mbut=button(_('Wizards'),{'icon':'/icon/wizards.png'},{"helptext":_('Wizards')})
+					users_button=(mbut, 'wizard', 'users/user')
+				component_texts.append([_("Wizards"),
+							   _("Common tasks like administration of users, groups, servers, desktops and printers can easily be handled by using the wizards."),
+							   None, users_button])
+				if self.have_browse:
+					mbut=button(_('Navigation'),{'icon':'/icon/browse.png'},{"helptext":_('Navigation')})
+					component_texts.append([_("Navigation"),
+								   _("Besides everything you can do with the wizards, the navigation provides you also with an interface for many other settings, including structural extensions like containers, organizational units and connected policies, advanced DNS and DHCP configuration or settings for Univention Directory Manager itself."),
+								   None, (mbut, 'browse', None)])
+				component_texts.append([_("Univention Management Console"), _("The <a target=parent href=/univention-management-console/>Univention Management Console</a> provides the possibilty to configure local settings on every UCS managed machine, e.g. network configuration or local software-installation. A link to the Univention Management Console for a machine can be found at the computer object wizard."),
+									'/univention-management-console/', None])
+				if self.save.get( 'personal_use' ) == '1' and self.have_about:
+					mbut=button(_('License'),{'icon':'/icon/license.png'},{"helptext":_('License')})
+					component_texts.append([_("License"), _("You are using the \"Free for personal use\" edition. Find more information on the about page."),
+									None, (mbut, 'about', None)])
+				component_texts.append([_("Further Information"), _("For more information about UCS, Univention Directory Manager and other Univention Tools take a look at the documentation or the online-forum on <a target=parent href=http://www.univention.de>www.univention.de</a>."),
+									'http://www.univention.de', None])
+
+
+
+				self.subobjs.append(table("",
+							  {'type':'content_header'},
+							  {"obs":[(tablerow({},{},{'obs':[tablecol("",{'type':'browse_layout'},{"obs":[]})]}))]})
+						    )
+
+				self.nbook=notebook('', {}, {'buttons': [(header_text, header_text)], 'selected': 0})
+				self.subobjs.append(self.nbook)
+
+				subtables = []
+
+				rows = []
+				#  uncomment the next line to enable the welcome logo
+				#rows.append(tablerow({},{'border':'0'},{'obs':[tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[htmltext('',{'border':'0'},{'htmltext':['<table><tr><td><img src="/icon/welcome_logo.png" /></td></tr><tr><td><b>%s</b></td></tr></table>'% introduction_text]})]})]}))
+				rows.append(tablerow({},{'border':'0'},{'obs':[tablecol({},{'type':'welcome_layout'},{"obs":[htmltext('',{'border':'0'},{'htmltext':[introduction_text]})]})]}))
+				subtables.append(table('',{},{'obs':rows}))
+
+				emptycol = tablecol({},{'type':'welcome_layout'},{"obs":[]})
+				emptycol_span = tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[]})
+
+				rows = []
+				for shorttext, longtext, link, button_link in component_texts:
+					tmp = shorttext
+					if hasattr (shorttext, 'data'):
+						tmp = shorttext.data
+					if link:
+						objects = [[tablecol('',{'type':'welcome_layout', 'rowspan':'2'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':
+							['<table><tr><td><img src="/icon/%s.png" /></td><td class="welcome_icon_text"><strong class="h2"><a target=parent href=%s>%s</a></strong></td></tr></table>' % (tmp.lower ().replace (' ', '_'), link, shorttext)]})]}),
+							   tablecol('',{'type':'height14'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':['&nbsp;']})]})],
+							   [emptycol, tablecol('',{'type':'welcome_layout_text'},{"obs":[htmltext('', {}, {'htmltext':[longtext]})]})],]
+					elif button_link:
+						b_but, module_id, virtual_id = button_link
+						self.mbutlist.append([b_but, module_id, virtual_id])
+						#	['<table><tr><td><img src="/icon/%s.png" /></td><td class="welcome_icon_text"><strong class="h2">%s</strong></td></tr></table>' % (tmp.lower ().replace (' ', '_'), shorttext)]
+						objects = [[tablecol('',{'type':'welcome_layout', 'rowspan':'2'},{"obs": [b_but], }),
+								tablecol('',{'type':'height14'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':['&nbsp;']})]})],
+								[emptycol, tablecol('',{'type':'welcome_layout_text'},{"obs":[htmltext('', {}, {'htmltext':[longtext]})]})],]
+					else:
+						objects = [[tablecol('',{'type':'welcome_layout', 'rowspan':'2'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':
+							['<table><tr><td><img src="/icon/%s.png" /></td><td class="welcome_icon_text"><strong class="h2">%s</strong></td></tr></table>' % (tmp.lower ().replace (' ', '_'), shorttext)]})]}),
+							   tablecol('',{'type':'height14'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':['&nbsp;']})]})],
+							   [emptycol, tablecol('',{'type':'welcome_layout_text'},{"obs":[htmltext('', {}, {'htmltext':[longtext]})]})],]
+					for obj in objects:
+						rows.append(tablerow({},{'border':'0'},{'obs':obj}))
+						
+
+				subtables.append(table('',{},{'obs':rows}))
+				self.subobjs.append(table('',
+							  {'type':'content_main'},
+							  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'welcome_layout'},{"obs":subtables})]})]})
+						    )
 
 
 		m=menu("",{},{"items":menulist})

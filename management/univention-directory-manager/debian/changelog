@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.29-1) unstable; urgency=low
+
+  * added links to the UDM login screen. Bug #13185
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Oct 2009 21:34:38 +0200
+
 univention-directory-manager (7.0.28-1) unstable; urgency=low
 
   * redesign the organisation tab. Bug #11165
