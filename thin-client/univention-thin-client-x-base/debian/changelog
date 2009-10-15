@@ -1,3 +1,9 @@
+univention-thin-client-x-base (4.0.5-2) unstable; urgency=low
+
+  * changed predependency to simple dependency (Bug: #15971)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 15 Oct 2009 10:25:12 +0200
+
 univention-thin-client-x-base (4.0.5-1) unstable; urgency=low
 
   * set the x-flag for etc/gdm/PostSession/scripts/090_univention-user-
