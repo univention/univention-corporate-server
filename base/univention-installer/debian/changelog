@@ -1,3 +1,9 @@
+univention-installer (5.0.24-3) unstable; urgency=low
+
+  * fixed translation (Bug: #13683) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 15 Oct 2009 12:44:06 +0200
+
 univention-installer (5.0.24-2) unstable; urgency=low
 
   * load us kmap as default (Bug: #4361)

@@ -2371,7 +2371,7 @@ msgstr "eth0 Netzmaske"
 
 #: installer/modules/95_overview.py:99
 msgid "Nameserver1"
-msgstr "Nameserver"
+msgstr "Nameserver1"
 
 #: installer/modules/95_overview.py:111
 msgid "No package will download files from the internet."
