@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.30-1) unstable; urgency=low
+
+  * also added links to the images on the login screen. Bug #13185
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Oct 2009 07:21:10 +0200
+
 univention-directory-manager (7.0.29-1) unstable; urgency=low
 
   * added links to the UDM login screen. Bug #13185

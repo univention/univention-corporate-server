@@ -305,7 +305,7 @@ class unidialog(unimodule.unimodule):
 						tmp = shorttext.data
 					if link:
 						objects = [[tablecol('',{'type':'welcome_layout', 'rowspan':'2'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':
-							['<table><tr><td><img src="/icon/%s.png" /></td><td class="welcome_icon_text"><strong class="h2"><a target=parent href=%s>%s</a></strong></td></tr></table>' % (tmp.lower ().replace (' ', '_'), link, shorttext)]})]}),
+							['<table><tr><td><a target=parent href=%s><img src="/icon/%s.png" /></a></td><td class="welcome_icon_text"><strong class="h2"><a target=parent href=%s>%s</a></strong></td></tr></table>' % (link, tmp.lower ().replace (' ', '_'), link, shorttext)]})]}),
 							   tablecol('',{'type':'height14'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':['&nbsp;']})]})],
 							   [emptycol, tablecol('',{'type':'welcome_layout_text'},{"obs":[htmltext('', {}, {'htmltext':[longtext]})]})],]
 					elif button_link:
