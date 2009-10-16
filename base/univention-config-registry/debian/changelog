@@ -1,3 +1,9 @@
+univention-config-registry (5.0.49-6) unstable; urgency=low
+
+  * changed dependencies (Bug: #15971)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 16 Oct 2009 17:18:24 +0200
+
 univention-config-registry (5.0.49-5) unstable; urgency=low
 
   * changed dependencies (Bug: #15971)
