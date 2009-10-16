@@ -71,7 +71,7 @@ PARTTYPE_LVM_LV = 101
 PARTTYPE_LVM_VG_FREE = 102
 
 # file systems
-EXPERIMENTAL_FSTYPES = ['btrfs', 'ext4']
+EXPERIMENTAL_FSTYPES = ['btrfs']
 ALLOWED_BOOT_FSTYPES = ['xfs','ext2','ext3']
 ALLOWED_ROOT_FSTYPES = ['xfs','ext2','ext3','ext4','btrfs']
 

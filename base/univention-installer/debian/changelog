@@ -1,3 +1,9 @@
+univention-installer (5.0.24-7) unstable; urgency=low
+
+  * do not mark ext4 as experimental fs (Bug: #14417) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 16 Oct 2009 08:52:42 +0200
+
 univention-installer (5.0.24-6) unstable; urgency=low
 
   * fix PREINIT of dhclient-script-wrapper for interfaces other than eth0
