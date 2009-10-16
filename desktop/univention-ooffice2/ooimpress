@@ -13,5 +13,5 @@ if [ -x /usr/lib/openoffice/program/ooqstart ]; then
 	export OOO_EXTRA_ARG='-impress'
 	/usr/lib/openoffice/program/ooqstart  "$@"
 else
-	/usr/lib/openoffice/program/soffice -impress $extra_oo_ucs_opts "$@"
+	/usr/lib/openoffice/program/soffice -impress "$@"
 fi

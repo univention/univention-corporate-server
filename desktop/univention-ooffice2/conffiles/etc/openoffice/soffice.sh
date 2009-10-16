@@ -20,7 +20,3 @@ export FILE_LOCKING=@%@openoffice/filelocking@%@
 # the setting if OPENGL_SUPPORT has no effect.
 
 export OPENGL_SUPPORT=@%@openoffice/opengl@%@
-
-if [ -e "$HOME/.openoffice.org/3/.lock" ]; then
-	extra_oo_ucs_opts="-nologo"
-fi
