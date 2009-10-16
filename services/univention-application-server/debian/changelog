@@ -1,3 +1,9 @@
+univention-application-server (3.0.0-1) unstable; urgency=low
+
+  * fixed dependency (Bug: #14772) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 16 Oct 2009 09:31:08 +0200
+
 univention-application-server (3.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3

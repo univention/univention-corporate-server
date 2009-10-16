@@ -21,7 +21,7 @@ Description: UCS - application server
 
 Package: univention-desktop-environment
 Architecture: all
-Depends: univention-kde, univention-ooffice2, univention-firefox, univention-java, univention-x-core
+Depends: univention-kde, univention-ooffice2, univention-mozilla-firefox, univention-java, univention-x-core
 Description: UCS - desktop environment
  This meta-packages installs a complete desktop environment.
  .
