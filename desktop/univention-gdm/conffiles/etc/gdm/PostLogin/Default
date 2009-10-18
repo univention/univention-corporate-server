@@ -8,5 +8,7 @@
 #
 #       /etc/univention/templates/files/etc/gdm/PostLogin/Default
 
-run-parts --regex '^[0-9]*[a-zA-Z0-9_-]*(.sh)*$' /etc/gdm/PostLogin/scripts/
+if [ -d /etc/gdm/PostLogin/scripts/ ]; then
+	run-parts --regex '^[0-9]*[a-zA-Z0-9_-]*(.sh)*$' /etc/gdm/PostLogin/scripts/
+fi
 

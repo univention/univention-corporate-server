@@ -1,7 +1,7 @@
 #!/bin/sh
 @%@BCWARNING=#@%@
 
-eval $(univention-config-registry get xorg/autodetect)
+eval $(univention-config-registry shell xorg/autodetect)
 
 if [ -n "$xorg_autodetect" ]; then
 	if [ "$xorg_autodetect" = "yes" -o "$xorg_autodetect" = "1" -o "$xorg_autodetect" = "on" ]; then

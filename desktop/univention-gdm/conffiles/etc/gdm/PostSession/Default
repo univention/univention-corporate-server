@@ -8,7 +8,9 @@
 #
 #       /etc/univention/templates/files/etc/gdm/PostSession/Default
 
-run-parts --regex '^[0-9]*[a-zA-Z0-9_-]*(.sh)*$' /etc/gdm/PostSession/scripts/
+if [ -d /etc/gdm/PostSession/scripts/ ]; then
+	run-parts --regex '^[0-9]*[a-zA-Z0-9_-]*(.sh)*$' /etc/gdm/PostSession/scripts/
+fi
 
 # copy'n'paste from the old Default script
 PATH="/usr/bin:$PATH:/bin:/usr/bin"
