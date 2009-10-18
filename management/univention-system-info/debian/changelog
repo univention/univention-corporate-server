@@ -1,3 +1,9 @@
+univention-system-info (0.1.6-1) unstable; urgency=low
+
+  * use join script helper library (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 18 Oct 2009 16:17:09 +0200
+
 univention-system-info (0.1.5-1) unstable; urgency=low
 
   * use /bin/sh instead of /bin/bash in join script (Bug #8969)
