@@ -18,6 +18,7 @@
 
 # Sanity checks.
 
+. /lib/lsb/init-functions
 
 NAME="nscd"
 DESC="Name Service Cache Daemon"
@@ -83,7 +84,7 @@ status()
 
 case "$1" in
 start)
-	echo -n "Starting $DESC: $NAME"
+	log_daemon_msg "Starting NSCD"
 	start
 	case "$?" in
 		0) echo "." ; exit 0 ;;
@@ -92,7 +93,7 @@ start)
 	esac
 	;;
 stop)
-	echo -n "Stopping $DESC: $NAME"
+	log_daemon_msg "Stopping NSCD"
 	stop
 	case "$?" in
 		0) echo "." ; exit 0 ;;
@@ -101,7 +102,7 @@ stop)
 	esac
 	;;
 restart|force-reload|reload)
-	echo -n "Restarting $DESC: $NAME"
+	log_daemon_msg "Restarting NSCD"
 	stop
 	$DAEMON --invalidate passwd --invalidate group
 	case "$?" in
@@ -114,13 +115,13 @@ restart|force-reload|reload)
 		esac
 		;;
 	*)
-		echo " (failed to stop)."
+		log_daemon_msg " (failed to stop)."
 		exit 1
 		;;
 	esac
 	;;
 status)
-	echo -n "Status of $DESC service: "
+	log_daemon_msg "Status of NSCD"
 	status
 	case "$?" in
 		0) echo "not running." ; exit 1 ;;
