@@ -1,3 +1,9 @@
+univention-webui-style (4.0.9-1) unstable; urgency=low
+
+  * switch the menu color from #FFFFFF to #666666. Bug #15587
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Oct 2009 11:17:56 +0200
+
 univention-webui-style (4.0.8-1) unstable; urgency=low
 
   * changed some wizard alignments. Bug #13160
