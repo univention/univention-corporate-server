@@ -429,7 +429,7 @@ msgstr "Xen Virtualisierung"
 
 #: installer/package_list.py:280
 msgid "Xen hypervisor (2.6.18)"
-msgstr "Xen-Hypervisor"
+msgstr "Xen-Hypervisor (2.6.18)"
 
 #: installer/package_list.py:286 installer/package_list.py:295
 msgid "Xen hypervisor environment to run virtualised hosts."
@@ -437,11 +437,11 @@ msgstr "Xen-Hypervisor für den Betrieb virtualisierter Systeme."
 
 #: installer/package_list.py:289
 msgid "Xen hypervisor (2.6.26)"
-msgstr "Xen-Hypervisor"
+msgstr "Xen-Hypervisor (2.6.26"
 
 #: installer/package_list.py:298
 msgid "Xen kernel images (2.6.18)"
-msgstr "Xen-Kernel-Images"
+msgstr "Xen-Kernel-Images (2.6.18)"
 
 #: installer/package_list.py:303 installer/package_list.py:311
 msgid "Xen kernel images to Xen guests."
@@ -449,7 +449,7 @@ msgstr "Xen-Kernel-Images für Xen-Gastinstanzen."
 
 #: installer/package_list.py:306
 msgid "Xen kernel images (2.6.26)"
-msgstr "Xen-Kernel-Images"
+msgstr "Xen-Kernel-Images (2.6.26)"
 
 #: installer/package_list.py:316 installer/package_list.py:318
 msgid "Administrative tools"

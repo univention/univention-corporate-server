@@ -1,3 +1,9 @@
+univention-installer (5.0.24-8) unstable; urgency=low
+
+  * fixed translation (Bug: #14418)
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Oct 2009 14:12:20 +0200
+
 univention-installer (5.0.24-7) unstable; urgency=low
 
   * do not mark ext4 as experimental fs (Bug: #14417) 
