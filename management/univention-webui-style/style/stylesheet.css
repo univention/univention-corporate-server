@@ -1025,6 +1025,9 @@ height:100px;
 .button_icon{
 border:0px;
 }
+.button_link{
+padding-right: 5px;
+}
 .dojo_switchbutton {
 background: #CCCCCC;
 }

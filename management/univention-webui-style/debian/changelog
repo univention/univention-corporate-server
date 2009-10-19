@@ -1,3 +1,10 @@
+univention-webui-style (4.0.7-1) unstable; urgency=low
+
+  * changed the favicon. Bug #13595
+  * added a little padding after a button link. Bug #16010
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Oct 2009 09:01:04 +0200
+
 univention-webui-style (4.0.6-1) unstable; urgency=low
 
   * set the font and the size for the dojo elements. Bug #15587
