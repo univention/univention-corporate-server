@@ -1,3 +1,9 @@
+univention-installer (5.0.25-1) unstable; urgency=low
+
+  * divert passwd file to avoid DVD build conflict (Bug: #16022)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 19 Oct 2009 16:06:25 +0200
+
 univention-installer (5.0.24-10) unstable; urgency=low
 
   * Some join scripts touch(1) the .index.txt file prior
