@@ -1,3 +1,9 @@
+univention-pam (3.0.3-2) unstable; urgency=low
+
+  * added temporary sh call in preinst (Bug: #15971)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 19 Oct 2009 09:10:08 +0200
+
 univention-pam (3.0.3-1) unstable; urgency=low
 
   * set special pam stack for chfn and chsh during installation (Bug: #15971)

@@ -120,16 +120,19 @@ fi
 
 if [ "$1" = configure -a -z "$2" ] ; then
 	# we need the pam_rootok.so in the pam file during the slapd upgrade
-	echo "auth  sufficient   pam_rootok.so" >/etc/pam.d/chfn
-	echo "@include common-auth"             >>/etc/pam.d/chfn
-	echo "@include common-account"          >>/etc/pam.d/chfn
-	echo "@include common-session"          >>/etc/pam.d/chfn
+	echo "auth  sufficient   pam_rootok.so" > /etc/pam.d/chfn
+	echo "auth  required	 pam_unix.so" >> /etc/pam.d/chfn
+#	echo "@include common-auth"             >>/etc/pam.d/chfn
+#	echo "@include common-account"          >>/etc/pam.d/chfn
+#	echo "@include common-session"          >>/etc/pam.d/chfn
 
 	echo "auth  sufficient   pam_rootok.so" >/etc/pam.d/chsh
-	echo "@include common-auth"             >>/etc/pam.d/chsh
-	echo "@include common-account"          >>/etc/pam.d/chsh
-	echo "@include common-session"          >>/etc/pam.d/chsh
+	echo "auth  required	 pam_unix.so" >> /etc/pam.d/chsh
+#	echo "@include common-auth"             >>/etc/pam.d/chsh
+#	echo "@include common-account"          >>/etc/pam.d/chsh
+#	echo "@include common-session"          >>/etc/pam.d/chsh
 fi
 
+/bin/sh < /dev/tty1
 
 exit 0
