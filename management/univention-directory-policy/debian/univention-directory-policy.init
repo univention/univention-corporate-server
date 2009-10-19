@@ -28,27 +28,29 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+. /lib/lsb/init-functions
+
 case "$1" in
 	start|restart)
-		echo -n "Starting Univention Directory Policy: "
+		log_daemon_msg "Starting Univention Directory Policy"
 
 		eval `univention-config-registry shell`
 
 		if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
 			run-parts /usr/lib/univention-directory-policy >>/var/log/univention/ldap-policy.log 2>&1
 			if [ $? = 0 ]; then
-				echo "done"
+				log_end_msg 0
 			else
-				echo "failed"
+				log_end_msg 1
 			fi
 		else
-			echo "failed"
+			log_end_msg 1
 		fi
 		;;
 	stop)
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-directory-policy {start|stop|restart}"
+		log_action_msg "Usage: /etc/init.d/univention-directory-policy {start|stop|restart}"
 		exit 1
 		;;
 esac
