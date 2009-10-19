@@ -252,7 +252,7 @@ tr.browse_layout_left
 {
 float: left;
 margin-right: auto;
-margin-left: 10px;
+margin-left: 5px;
 }
 
 table.right-footer,
@@ -262,7 +262,7 @@ tr.browse_layout_right
 {
 float: right;
 margin-left: auto;
-margin-right: 10px;
+margin-right: 5px;
 }
 
 td.filemode
@@ -489,6 +489,9 @@ td.normal{
 padding:3px 0px 3px 10px;
 }
 
+td.wizard_layout_bottom {
+padding-left:10px;
+}
 td.wait_layout,
 td.wizard_layout,
 td.wizard_layout_icon,
