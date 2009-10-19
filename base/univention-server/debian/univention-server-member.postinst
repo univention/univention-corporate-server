@@ -42,9 +42,6 @@ univention-baseconfig set bootsplash/theme?memberserver
 if [ "$1" = "configure" -a -z "$2" ]; then
 	update-inetd --add "time            stream  tcp     nowait  root    internal"
 	update-inetd --debug --comment-chars '#' --enable time
-	if [ -e /usr/lib/univention-bootsplash/univention-appendsplash ] ; then
-		/usr/lib/univention-bootsplash/univention-appendsplash
-	fi
 fi
 
 #DEBHELPER#
