@@ -67,6 +67,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	mkdir -p /usr/share/univention-join/
 	touch /var/univention-join/joined
 	touch /var/univention-join/status
+	rm -rf /usr/lib/univention-install/.index.txt
 	ln -s /var/univention-join/joined /usr/share/univention-join/.joined
         ln -s /var/univention-join/status /usr/lib/univention-install/.index.txt
 
