@@ -425,7 +425,7 @@ PackageList=[
 				},
 				{
 					'Name': _('KDE add-ons'),
-					'Packages': ['k3b', 'k3b-i18n', 'cdrdao', 'kdeartwork-misc', 'kdeartwork-emoticons', 'kdeartwork-style', 'kdeartwork-theme-icon', 'kscreensaver', 'kdewallpapers', 'kdeartwork-theme-window', 'kamera', 'kfax', 'kpdf', 'kview', 'kuickshow', 'ksnapshot', 'ark', 'kcalc', 'kgpg', 'kpowersave', 'kwalletmanager', 'kdepim', 'kompose', 'kerry', 'amarok', 'kaffeine', 'kmplayer', 'kdemultimedia', 'mplayer'],
+					'Packages': ['k3b', 'k3b-i18n', 'cdrdao', 'kdeartwork-misc', 'kdeartwork-emoticons', 'kdeartwork-style', 'kdeartwork-theme-icon', 'kscreensaver', 'kdewallpapers', 'kdeartwork-theme-window', 'kamera', 'kfax', 'kpdf', 'kview', 'kuickshow', 'ksnapshot', 'kgpg', 'kpowersave', 'kwalletmanager', 'kdepim', 'kompose', 'kerry', 'amarok', 'kaffeine', 'kmplayer', 'kdemultimedia', 'mplayer'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'EditionDisable': [ 'oxae' ],
