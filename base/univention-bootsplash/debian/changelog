@@ -1,3 +1,9 @@
+univention-bootsplash (2.0.1-5) unstable; urgency=low
+
+  * removed univention-appendsplash (Bug: #14309)
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Oct 2009 13:35:15 +0200
+
 univention-bootsplash (2.0.1-4) unstable; urgency=low
 
   * do not use bootsplash while creating initrd (Bug: #14309)
