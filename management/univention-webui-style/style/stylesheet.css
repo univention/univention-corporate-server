@@ -166,7 +166,7 @@ height:350px;
 */
 
 table.content_header {
-height:60px;
+height:41px;
 }
 
 table.content_header_menuless {
@@ -371,6 +371,7 @@ td.main_content{
 vertical-align:top;
 }
 td.note_layout,
+td.note_layout_text,
 td.description {
 font-size:11px;
 font-style:normal;
@@ -503,6 +504,9 @@ td.login_layout_session_timeout,
 td.note_layout {
 padding:5px 0px 3px 10px;
 }
+td.note_layout_text {
+padding:10px 0px 3px 10px;
+}
 
 td.wizard_layout_icon {
 width: 32px;
@@ -519,6 +523,10 @@ padding:5px 0px 15px 5px;
 
 td.welcome_layout_text {
 padding:0px 0px 15px 0px;
+}
+
+table.quicklink {
+background-color:#FFFFFF;
 }
 
 td.height14 {
@@ -600,6 +608,7 @@ text-align:left;
 vertical-align:middle;
 }
 td.note_layout,
+td.note_layout_text,
 td.content_list{
 vertical-align:middle;
 }
@@ -723,6 +732,7 @@ width:750px
 td.bold,
 td.normal,
 td.note_layout,
+td.note_layout_text,
 td.wait_layout,
 td.about_layout,
 td.welcome_layout,

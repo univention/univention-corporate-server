@@ -1,3 +1,12 @@
+univention-directory-manager (7.0.32-1) unstable; urgency=low
+
+  * add a quicklink menu. Bug #13283
+  * made the default wiazard add submodule configureable via UCR
+    modules, for example: (Bug #16025)
+    directory/manager/web/modules/computers/computer/add/default?computers/windows
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Oct 2009 21:36:40 +0200
+
 univention-directory-manager (7.0.31-1) unstable; urgency=low
 
   * use a diffrent css style for the links on the login screen for a

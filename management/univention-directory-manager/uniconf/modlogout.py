@@ -78,7 +78,7 @@ class modlogout(unimodule.unimodule):
             cabutcol = tablecol("",{'type':'note_layout'},{"obs":[self.cabut]})
 
             row1 = tablerow("",{},
-                            {"obs":[tablecol("",{"colspan":"2",'type':'note_layout'},
+                            {"obs":[tablecol("",{"colspan":"2",'type':'note_layout_text'},
                                              {"obs":[text('',{},{'text':[_("Do you really want to logout?")]})]})]
                              }
                             )

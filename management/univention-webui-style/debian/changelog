@@ -1,3 +1,9 @@
+univention-webui-style (4.0.10-1) unstable; urgency=low
+
+  * add a quicklink menu. Bug #13283
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Oct 2009 21:31:30 +0200
+
 univention-webui-style (4.0.9-1) unstable; urgency=low
 
   * switch the menu color from #FFFFFF to #666666. Bug #15587

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.40-1) unstable; urgency=low
+
+  * add a quicklink menu. Bug #13283
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Oct 2009 21:32:22 +0200
+
 univention-directory-manager-modules (5.0.39-1) unstable; urgency=low
 
   * adapt the UCR registry translation and explanation. Bug #14423

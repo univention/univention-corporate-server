@@ -162,7 +162,8 @@ do
 	 VARIABLES="${VARIABLES} directory/manager/web/modules/${i}/search/default?name"
 done
 if [ -n "${VARIABLES}" ]; then
-	univention-config-registry set ${VARIABLES}
+	univention-config-registry set ${VARIABLES} \
+			directory/manager/web/modules/computers/computer/add/default?"computers/windows"
 fi
 
 univention-config-registry set directory/manager/web/modules/advancedview?"0" \

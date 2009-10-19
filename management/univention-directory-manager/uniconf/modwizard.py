@@ -307,6 +307,8 @@ class modwizard(unimodule.unimodule):
 				childlist.append({"name":univention.admin.modules.name(childmodule), "description":"%s"%univention.admin.modules.short_description(childmodule).split(':',1)[-1]})
 			childlist.sort()
 			child_preselect=self.save.get('wizard_child')
+			if not child_preselect:
+				child_preselect = ucr.get ('directory/manager/web/modules/%s/add/default' % (module.module), None)
 			if child_preselect:
 				for i in childlist:
 					if i['name'] == child_preselect:

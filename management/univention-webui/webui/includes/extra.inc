@@ -1882,6 +1882,9 @@ class table extends webui_translator
 		{
 			$space_bottom='<tr><td class="content_spacer">&nbsp;</td></tr>';
 		}
+		if(isset($this->attribute['align'])) {
+			$attrib_str .= ' align="'.$this->attribute['align'].'"';
+		}
 
 		if($this->attribute['width'])
 		{

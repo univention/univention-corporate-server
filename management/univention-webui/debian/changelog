@@ -1,3 +1,9 @@
+univention-webui (3.0.15-2) unstable; urgency=low
+
+  * add a quicklink menu. Bug #13283
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Oct 2009 21:46:00 +0200
+
 univention-webui (3.0.15-1) unstable; urgency=low
 
   * catch a runtime exception in the finish function. This exception will

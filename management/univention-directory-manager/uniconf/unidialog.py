@@ -64,9 +64,11 @@ class unidialog(unimodule.unimodule):
 
 	def myinit(self):
 		global uniconf_mods
+		self.have_logout = False
 		self.have_browse = False
 		self.have_about = False
 		self.have_users = False
+		self.have_computers = False
 
 		position=self.save.get('ldap_position')
 		if not position:
@@ -195,6 +197,8 @@ class unidialog(unimodule.unimodule):
 						self.mbutlist.append([mbut, moduleinfo.id, virtmod.id])
 						if virtmod.id == 'users/user':
 							self.have_users = True
+						if virtmod.id == 'computers/compuer':
+							self.have_computers = True
 
 						if virtmod.id == self.save.get('uc_virtualmodule'):
 							for submod in virtmod.submodules:
@@ -233,6 +237,8 @@ class unidialog(unimodule.unimodule):
 						self.have_browse = True
 					elif moduleinfo.id == 'about':
 						self.have_about = True
+					elif moduleinfo.id == 'logout':
+						self.have_logout = True
 
 					for submod in moduleinfo.submodules:
 						smbut=button(submod.name,{},{"helptext":submod.description})
@@ -245,6 +251,28 @@ class unidialog(unimodule.unimodule):
 
 				else: # it's a spacer
 					pass
+
+		if self.save.get("auth_ok"):
+			quicklinks=[]
+			user_button=button(_('Add user'),{'icon':'/icon/users/user16.png'},{"helptext":_('Add a new user')})
+			quicklinks.append(tablecol("",{'type':'quicklink'},{"obs":[user_button]}))
+			self.mbutlist.append([user_button, 'wizard', 'users/user', 'add'])
+
+			computer_button=button(_('Add computer'),{'icon':'/icon/computers/computer16.png'},{"helptext":_('Add a new computer')})
+			quicklinks.append(tablecol("",{'type':'quicklink'},{"obs":[computer_button]}))
+			self.mbutlist.append([computer_button, 'wizard', 'computers/computer', 'add'])
+
+			browse_button=button(_('Navigation'),{'icon':'/icon/browse16.png'},{"helptext":_('Navigation')})
+			quicklinks.append(tablecol("",{'type':'quicklink'},{"obs":[browse_button]}))
+			self.mbutlist.append([browse_button, 'browse', None])
+
+			logout_button=button(_('Logout'),{'icon':'/icon/exit16.png'},{"helptext":_('Logout')})
+			quicklinks.append(tablecol("",{'type':'quicklink'},{"obs":[logout_button]}))
+			self.mbutlist.append([logout_button, 'logout', None])
+
+			self.subobjs.insert(1,table("",
+							  {'align': 'right','type':'quicklink'}, {"obs":quicklinks})
+							)
 
 		# if there's no current module, display welcome dialog
 		if ( self.save.get("uc_module")==None or self.save.get("uc_module")=="none" ) and self.save.get("auth_ok"):
@@ -358,9 +386,13 @@ class unidialog(unimodule.unimodule):
 					self.save.put("uc_module",mbut[1])
 					if len(mbut) > 2:
 						self.save.put("uc_virtualmodule",mbut[2])
+						if len(mbut) > 3:
+							self.save.put("uc_submodule",mbut[3])
+						else:
+							self.save.put("uc_submodule",None)
 					else:
 						self.save.put("uc_virtualmodule", None)
-					self.save.put("uc_submodule",None)
+						self.save.put("uc_submodule",None)
 
 		for smbutlist in self.smbutlistlist:
 			for but in smbutlist:
