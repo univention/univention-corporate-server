@@ -9,7 +9,8 @@
 
 RedirectMatch ^/umc(/$|$) /univention-management-console/
 RedirectMatch ^/univention-management-console$ /univention-management-console/
-RedirectMatch ^/univention-management-console/style/(.*) /style/$1
+RewriteEngine On
+RewriteRule ^/univention-management-console/style/(.*) /style/$1 [L]
 
 <Directory /var/www/univention-management-console>
 	Options +ExecCGI
