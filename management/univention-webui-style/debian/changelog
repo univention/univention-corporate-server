@@ -1,3 +1,10 @@
+univention-webui-style (4.0.11-1) unstable; urgency=low
+
+  * moved icons for CSV and PDF reports into correct directory (Bug
+    #13191)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 20 Oct 2009 18:02:55 +0200
+
 univention-webui-style (4.0.10-1) unstable; urgency=low
 
   * add a quicklink menu. Bug #13283
