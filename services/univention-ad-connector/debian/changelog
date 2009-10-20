@@ -1,3 +1,10 @@
+univention-ad-connector (4.1.1-1) unstable; urgency=low
+
+  * if the connection to the LDAP-Server is lost the connector tries to
+    re-establish the connection (Bug #14724)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 20 Oct 2009 16:15:34 +0200
+
 univention-ad-connector (4.1.0-4) unstable; urgency=low
 
   * corrected recreation of mapping in prepare-instance

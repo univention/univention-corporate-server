@@ -252,7 +252,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 				# search for object with this dn in ucs, needed if it lies in a different container
 				ucsdn = ''
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: samaccountname is:%s"%samaccountname)
-				ucsdn_result = connector.lo.search(filter=unicode(u'(&(objectclass=%s)(%s=%s))' % (ocucs, ucsattrib, samaccountname)),
+				ucsdn_result = connector.search_ucs(filter=unicode(u'(&(objectclass=%s)(%s=%s))' % (ocucs, ucsattrib, samaccountname)),
 								   base=connector.lo.base, scope='sub', attr=['objectClass'])
 				if ucsdn_result and len(ucsdn_result) > 0 and ucsdn_result[0] and len(ucsdn_result[0]) > 0:
 					ucsdn = ucsdn_result[0][0]
@@ -956,7 +956,7 @@ class ad(univention.connector.ucs):
 			return
 		
 		ucs_group_id = ldap_object_ucs['gidNumber'][0] # FIXME: fails if group does not exsist
-		ucs_group_ldap = self.lo.search(filter='(&(objectClass=univentionGroup)(gidNumber=%s))' % ucs_group_id) # is empty !?
+		ucs_group_ldap = self.search_ucs(filter='(&(objectClass=univentionGroup)(gidNumber=%s))' % ucs_group_id) # is empty !?
 
 		if ucs_group_ldap == []:
 			ud.debug(ud.LDAP, ud.WARN,
@@ -1062,7 +1062,7 @@ class ad(univention.connector.ucs):
 
 		object_ucs = self._object_mapping(key, object)
 
-		ucs_groups_ldap = self.lo.search(filter='(&(objectClass=univentionGroup)(uniqueMember=%s))' % object_ucs['dn'])
+		ucs_groups_ldap = self.search_ucs(filter='(&(objectClass=univentionGroup)(uniqueMember=%s))' % object_ucs['dn'])
 
 		if ucs_groups_ldap == []:
 			ud.debug(ud.LDAP, ud.INFO,

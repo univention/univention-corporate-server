@@ -241,11 +241,7 @@ class ucs:
 			os.mknod(self.configfile)
 		self.config = configsaver(self.configfile)
 		
-		bindpw=open('/etc/ldap.secret').read()
-		if bindpw[-1] == '\n':
-			bindpw=bindpw[0:-1]
-
-			self.lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseConfig['ldap/base'], binddn='cn=admin,'+baseConfig['ldap/base'], bindpw=bindpw, start_tls=2)
+		self.open_ucs()
 
 		for section in ['DN Mapping UCS','DN Mapping CON','UCS rejected']:
 			if not self.config.has_section(section):
@@ -255,7 +251,27 @@ class ucs:
 
 	def __del__(self):
 		self.close_debug()
-		
+
+	def open_ucs( self ):
+		bindpw=open('/etc/ldap.secret').read()
+		if bindpw[-1] == '\n':
+			bindpw=bindpw[0:-1]
+
+			self.lo=univention.admin.uldap.access(host=self.baseConfig['ldap/master'], base=self.baseConfig['ldap/base'], binddn='cn=admin,'+self.baseConfig['ldap/base'], bindpw=bindpw, start_tls=2)
+
+	def search_ucs( self, filter = '(objectClass=*)', base = '', scope = 'sub', attr = [], unique = 0, required = 0, timeout = -1, sizelimit = 0 ):
+		try:
+			result = self.lo.search( filter = filter, base = base, scope = scope, attr = attr, unique = unique, required = required, timeout = timeout, sizelimit = sizelimit )
+			return result
+		except univention.admin.uexceptions.ldapError, search_exception:
+			ud.debug( ud.LDAP, ud.INFO, 'Lost connection to the LDAP server. Trying to reconnect ...' )
+			try:
+				self.open_ucs()
+			except ldap.SERVER_DOWN, e:
+				ud.debug( ud.LDAP, ud.INFO, 'LDAP-Server seems to be down' )
+				raise search_exception
+					
+				
 	def init_debug(self):
 		_d=ud.function('ldap.init_debug')
 		if self.baseConfig.has_key('%s/debug/function' % self.CONFIGBASENAME):
@@ -750,7 +766,7 @@ class ucs:
 								detected_ca = True
 								old_value = ''
 								if modtype == 'modify':
-									old_value_result = self.lo.search(base=ucs_object.dn, attr=[ldapMapping])
+									old_value_result = self.search_ucs(base=ucs_object.dn, attr=[ldapMapping])
 									if len(old_value_result) >0 and old_value_result[0][1].has_key(ldapMapping):
 										old_value = old_value_result[0][1][ldapMapping]
 										
@@ -830,7 +846,7 @@ class ucs:
 
 			# set extra objectClasses
 			if len(extraOC) > 0:
-				oc = self.lo.search(base = ucs_object.dn, scope='base', attr=['objectClass'])
+				oc = self.search_ucs(base = ucs_object.dn, scope='base', attr=['objectClass'])
 				ud.debug(ud.LDAP, ud.PROCESS, '__modify_custom_attributes: should have extraOC %s, got %s' % (extraOC, oc))
 				noc = []
 				for i in range(len(oc[0][1]['objectClass'])):
@@ -905,7 +921,7 @@ class ucs:
 			ud.debug(ud.LDAP, ud.INFO,"delete object exception: %s"%e)
 			if str(e) == "Operation not allowed on non-leaf": # need to delete subtree
 				ud.debug(ud.LDAP, ud.INFO,"remove object from UCS failed, need to delete subtree")
-				for result in self.lo.search(base=object['dn']):
+				for result in self.search_ucs(base=object['dn']):
 					if compare_lowercase(result[0], object['dn']):
 						continue
 					ud.debug(ud.LDAP, ud.INFO,"delete: %s"% result[0])
