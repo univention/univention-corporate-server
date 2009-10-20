@@ -1,3 +1,13 @@
+univention-dojo (3.0.2-2) unstable; urgency=low
+
+  * gather all dojo.required widgets from container.php in (Bug #14625)
+    the univention profile for a "custom"/"layered" build
+  * add extract script to generate the necessary lines
+  * use profileFile to use univention.profile.js instead of patch
+  * /var/www/dojo is not used, don't ship it
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Oct 2009 11:41:16 +0200
+
 univention-dojo (3.0.2-1) unstable; urgency=low
 
   * update to Dojo 1.3.2. Bug #14086

@@ -62,8 +62,7 @@ install: build-stamp
 	# start the build
 	tar xzf dojo-release-$(DOJO_VERSION)-src.tar.gz
 	cd dojo-release-${DOJO_VERSION}-src/util/buildscripts; \
-	patch -p2 <../../../univention.profile.js.patch; \
-	./build.sh profile=univention action=release releaseDir=${D}${INSTDIR} version=${DOJO_VERSION} releaseName='' localeList="de-de,en-us" optimize=shrinksafe layerOptimize=shrinksafe
+	./build.sh profileFile=../../../univention.profile.js action=release releaseDir=${D}${INSTDIR} version=${DOJO_VERSION} releaseName='' localeList="de-de,en-us" optimize=shrinksafe layerOptimize=shrinksafe
 	# provide link
 
 binary-indep: build install
