@@ -1,3 +1,9 @@
+univention-server-installer (3.0.0-1) unstable; urgency=low
+
+  * fixed installer boot kernel links (Bug: #16019) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Oct 2009 14:20:35 +0200
+
 univention-server-installer (3.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
