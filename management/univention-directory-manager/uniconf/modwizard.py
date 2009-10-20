@@ -343,6 +343,7 @@ class modwizard(unimodule.unimodule):
 		attr={'icon':'/style/ok.gif'}
 		if not pathlist:
 			attr['passive']='1'
+		attr['defaultbutton']='1'
 		self.next_button=button(_('Next'),attr,{'helptext':_('go ahead')})
 		self.cancel_button=button(_('Cancel'),{'icon':'/style/cancel.gif'},{'helptext':_('Cancel')})
 		main_rows.append(
@@ -940,7 +941,7 @@ class modwizard(unimodule.unimodule):
 
 			if tmp_search_property_name == '' and not search_value:
 				search_value = '*'
-			self.search_input=question_property('',{'width':'200'},{'property': search_property, 'value': search_value, 'search': '1', 'lo': self.lo})
+			self.search_input=question_property('',{'width':'200', 'focus': '1'},{'property': search_property, 'value': search_value, 'search': '1', 'lo': self.lo})
 		else:
 			search_value='*'
 			self.search_input=text('',{},{'text':['']})
@@ -962,7 +963,7 @@ class modwizard(unimodule.unimodule):
 
 		self.search_visible=question_text(_('Results per page'), {'width':'100', 'validregex':'\d*', 'invalidmessage':str(_('Please enter a number.'))},
 						  {'usertext': str(visible)})
-		self.search_button=button(_('search'),{'icon':'/style/ok.gif'},{'helptext':_('Display (new) search results')})
+		self.search_button=button(_('search'),{'defaultbutton': '1', 'icon':'/style/ok.gif'},{'helptext':_('Display (new) search results')})
 		self.reset_button=button(_('reset'),{'icon':'/style/cancel.gif'},{'helptext':_("reset search")})
 
 		mods = univention.admin.modules.childModules( search_module )

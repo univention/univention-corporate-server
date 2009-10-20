@@ -213,6 +213,12 @@ class uniconf:
 		if self.atts.has_key("passive"):
 			passivetag=xmlob.createElement("passive")
 			node.appendChild(passivetag)
+		if self.atts.has_key("focus"):
+			focustag=xmlob.createElement("focus")
+			node.appendChild(focustag)
+		if self.atts.has_key("defaultbutton"):
+			defaultbuttontag=xmlob.createElement("defaultbutton")
+			node.appendChild(defaultbuttontag)
 
 		vars=self.xvars.keys()
 		for var in vars:

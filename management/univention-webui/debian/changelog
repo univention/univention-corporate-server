@@ -1,3 +1,10 @@
+univention-webui (3.0.16-1) unstable; urgency=low
+
+  * set the focus to the input values. Bug #13188
+  * improved the default button handling. Bug #13283
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Oct 2009 11:47:13 +0200
+
 univention-webui (3.0.15-2) unstable; urgency=low
 
   * add a quicklink menu. Bug #13283

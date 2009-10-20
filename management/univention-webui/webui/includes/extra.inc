@@ -268,9 +268,19 @@ class question_text extends extra{
 # enable as dijit.TextBox
 			if (!isset($this->attribute['puretext'])) 
 				$str .= ' dojoType="dijit.form.TextBox"';
-		$str .= ' type="text" '.$access.' name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';
+		if (isset($this->attribute['focus'])) {
+			$str .= ' onclick="this.form.submit()" ';
+		}
+		$str .= ' type="text" '.$access.' id="usrinput['.$this->byteindex.']" name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';
 		if (isset($this->basket['update'])) 
 			$str .= $this->basket['update'];
+		if (isset($this->attribute['focus'])) {
+			$str .= '<script type="text/javascript">';
+			$str .= 'dojo.addOnLoad(function(setFocus){';
+			$str .= 'document.getElementById("usrinput['.$this->byteindex.']").focus();';
+			$str .= 'dijit.selectInputText(document.getElementById("usrinput['.$this->byteindex.']")); })';
+			$str .= '</script>';
+		}
 		$str .= '</td></tr>
 </table>';
 		return $str;
@@ -484,6 +494,20 @@ class button extends extra{
 ';
 
 				$inp = '<input type="hidden" id="'.$this->byteindex.'" name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';
+				if(isset($this->attribute['defaultbutton'])){
+					$inp .= '<div style="position:absolute;top:-100px;left:-100px;"><input type="submit" name="usrinput['.$this->byteindex.']" id="defaultbutton"></div>';
+				//if(isset($this->attribute['nodefault'])){
+				$inp .= '<script type="text/javascript">';
+				$inp .= 'dojo.addOnLoad(function(stopReturn){';
+				$inp .= 'submitform = document.getElementById( "form" );';
+				$inp .= 'dojo.connect(submitform, "onkeypress",function(evt) {';
+				$inp .= 'var b = document.getElementById("defaultbutton");';
+				$inp .= 'var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);';
+				$inp .= 'if ((evt.keyCode == 13 && b != null)) {dojo.stopEvent(evt);';
+				$inp .= 'b.click();}})});';
+				$inp .= '</script>';
+				//}
+				}
 			}
 			else
 		    {

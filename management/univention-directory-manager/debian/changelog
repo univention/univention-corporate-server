@@ -1,3 +1,10 @@
+univention-directory-manager (7.0.33-1) unstable; urgency=low
+
+  * set the focus to the input values. Bug #13188
+  * improved the default button handling. Bug #13283
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Oct 2009 11:47:45 +0200
+
 univention-directory-manager (7.0.32-1) unstable; urgency=low
 
   * add a quicklink menu. Bug #13283

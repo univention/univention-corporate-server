@@ -70,11 +70,11 @@ def mywgroup():
 
 def get_okcancelbuttons(self, edit_policy=None):
 	if edit_policy:
-		self.edit_policy_ok=button(_("OK"),{'icon':'/style/ok.gif'},{"helptext":_("ok")})
+		self.edit_policy_ok=button(_("OK"),{'defaultbutton': '1', 'icon':'/style/ok.gif'},{"helptext":_("ok")})
 		self.edit_policy_cancel=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Cancel")})
 		return [self.edit_policy_ok, self.edit_policy_cancel]
 	else:
-		self.okbut=button(_("OK"),{'icon':'/style/ok.gif'},{"helptext":_("ok")})
+		self.okbut=button(_("OK"),{'defaultbutton': '1', 'icon':'/style/ok.gif'},{"helptext":_("ok")})
 		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Cancel")})
 		return [self.okbut, self.cabut]
 

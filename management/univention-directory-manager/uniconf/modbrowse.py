@@ -402,7 +402,7 @@ class modbrowse(unimodule.unimodule):
 				search_value=self.save.get('browse_search_value')
 				if tmp_search_property_name == '' and not search_value:
 					search_value = '*'
-				self.search_input=question_property('',{},{'property': search_property, 'value': search_value, 'search': '1', 'lo': self.lo})
+				self.search_input=question_property('',{'focus': '1'},{'property': search_property, 'value': search_value, 'search': '1', 'lo': self.lo})
 			else:
 				search_value='*'
 				self.search_input=text('',{},{'text':['']})
@@ -416,7 +416,7 @@ class modbrowse(unimodule.unimodule):
 
 		self.search_type_button=button(_('go'),{},{'helptext':_('go')})# TODO helptexs
 		self.search_type_select=question_select(_('type'),{'width':'200'},{"helptext":_('type'),"choicelist":search_types,'button':self.search_type_button})# TODO helptext
-		self.search_button=button(_('show'),{'icon':'/style/ok.gif'},{'helptext':_('show')})# TODO helptext
+		self.search_button=button(_('show'),{'defaultbutton': '1', 'icon':'/style/ok.gif'},{'helptext':_('show')})# TODO helptext
 		self.search_visible=question_text(_('Results per page'), {'width':'100', 'validregex':'\d*', 'invalidmessage':str(_('Please enter a number.'))},
 						  {'usertext': str(visible)})
 
