@@ -1,3 +1,9 @@
+univention-dojo (3.0.3-1) unstable; urgency=low
+
+  * add calendar icon to DateTextBox widget (Bug #12039)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 20 Oct 2009 15:52:04 +0200
+
 univention-dojo (3.0.2-2) unstable; urgency=low
 
   * gather all dojo.required widgets from container.php in (Bug #14625)
