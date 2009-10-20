@@ -377,7 +377,7 @@ The collected information can be transfered to Univention by uploading the data 
 		mail = umcp.SimpleCommand('sysinfo/show', { 'action' : 'mail' } )
 		prev = umcp.SimpleCommand('sysinfo/show', { 'action' : 'prev' } )
 
-		bupload = umcd.Button( _( 'Upload' ), 'actions/upload', umcd.Action( upload, items ), { 'class' : 'button_right' } )
+		bupload = umcd.Button( _( 'Upload' ), 'actions/uploadfile', umcd.Action( upload, items ), { 'class' : 'button_right' } )
 		bmail = umcd.Button( _( 'Send mail (optional)' ), 'actions/mail', umcd.Action( mail, items ), { 'class' : 'button_center' } )
 		bprev = umcd.PrevButton( ( umcd.Action( prev, items ), ) )
 		wiz._content.add_row( [ bprev, umcd.Cell( bmail, { 'align' : 'center' } ), bupload ] )

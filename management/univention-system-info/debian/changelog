@@ -1,3 +1,10 @@
+univention-system-info (0.1.6-2) unstable; urgency=low
+
+  * renamed button upload to uploadfile to avoid collisions with other
+    packages (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 20 Oct 2009 14:52:01 +0200
+
 univention-system-info (0.1.6-1) unstable; urgency=low
 
   * use join script helper library (Bug #8969)
