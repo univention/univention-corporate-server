@@ -1,3 +1,9 @@
+univention-kolab2-webclient (5.0.1-4) unstable; urgency=low
+
+  * added ucr registration for etc/postgresql/8.3/main/pg_hba.conf.d/11-horde_user (Bug: #16016) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Oct 2009 10:44:26 +0200
+
 univention-kolab2-webclient (5.0.1-3) unstable; urgency=low
 
   * include pg_hba.conf.d/11-horde_user template for postgresql-8.3 (Bug #12754)
