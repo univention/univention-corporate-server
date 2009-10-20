@@ -1,3 +1,9 @@
+univention-webui (3.0.17-2) unstable; urgency=low
+
+  * fix typo in question_choice (Bug #16031)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Oct 2009 18:02:19 +0200
+
 univention-webui (3.0.17-1) unstable; urgency=low
 
   * use customized DatetextBox widget unijit.form.DateTextBox (Bug #12039)

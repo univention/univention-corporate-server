@@ -1171,7 +1171,7 @@ class question_choice extends extra_multi{
 		if (isset($this->attribute['passive'])) 
 			$access = 'disabled';
 	  
-		$str .= '<script type="text/javascript">dojo.require("dijit.form.CeckBox");</script>
+		$str .= '<script type="text/javascript">dojo.require("dijit.form.CheckBox");</script>
 <div title="'.$this->basket['helptext'].'" >
 ';
 		if (isset($this->basket['description']) && trim($this->basket['description']) != '')
