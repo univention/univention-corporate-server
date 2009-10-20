@@ -1,3 +1,9 @@
+univention-bind (4.0.2-1) unstable; urgency=low
+
+  * bumped version (Bug: #13505)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 20 Oct 2009 13:18:08 +0200
+
 univention-bind (4.0.1-1) unstable; urgency=low
 
   * provide new UCR category service-bind (Bug #13505)
