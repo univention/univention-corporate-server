@@ -29,7 +29,7 @@
 #DEBHELPER#
 
 # divert passwd file
-test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert /etc/passwd.debian --add /etc/passwd --package univention-installer || true
+test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --package univention-installer --divert /etc/passwd.debian --add /etc/passwd || true
 
 exit 0
 
