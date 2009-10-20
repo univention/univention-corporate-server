@@ -63,3 +63,10 @@ Description[de]=Maximale Größe des Bildes in Byte für das Univention Director
 Description[en]=Max picture size in byte for the Univention Directory Manager jpegPhoto attribute (default: None)
 Type=str
 Categories=Management
+
+[directory/manager/web/modules/computers/computer/add/default]
+Description[de]=Der angegebene Rechnertyp wird beim Hinzufügen eines neuen Rechners vorausgewählt (default: computers/windows)
+Description[en]=The given computer typ will be preselected when a new computer is added (default: computers/windows)
+Type=str
+Categories=management-udm
+
