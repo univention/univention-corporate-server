@@ -1,3 +1,9 @@
+univention-webui (3.0.17-1) unstable; urgency=low
+
+  * use customized DatetextBox widget unijit.form.DateTextBox (Bug #12039)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 19 Oct 2009 10:57:32 +0200
+
 univention-webui (3.0.16-1) unstable; urgency=low
 
   * set the focus to the input values. Bug #13188
