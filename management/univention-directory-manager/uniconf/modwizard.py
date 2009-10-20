@@ -442,15 +442,16 @@ class modwizard(unimodule.unimodule):
 					icon_path = unimodule.selectIconByName( 'csv-report' )
 
 				icon_widget = icon( '', { 'url' : icon_path }, {} )
+				icon_col = tablecol("",{'type':'wizard_layout_icon'},{ "obs":[ icon_widget, ] } )
+				url_col = tablecol("",{'type':'wizard_layout'},{ "obs":[ htmltext( "", {}, { "htmltext" : [ url ] }) ] } )
 				main_rows.append(
 					tablerow( '', {},
 							  { "obs" : [ tablecol( '', { 'type' : 'wizard_layout' },
 													{ 'obs' : [ header( _( "Report was created successfully: %(count)d '%(module)s' objects included" ) % { 'count' : nresults, 'module' : module_descr },
 																		{ "type" : "2" }, {} ) ] } ) ] } ) )
 				main_rows.append(
-					tablerow("",{},{"obs":[
-										   tablecol("",{'type':'wizard_layout'},{ "obs":[ icon_widget, htmltext( "", {}, { "htmltext" : [ url ] }) ] } ) ] } )
-					)
+					tablerow("",{},{"obs":[ table( "",{'type':'content_main'},{"obs": [ tablerow( '', {},
+							  { "obs" : [ icon_col, url_col ] } ) ] } ) ] } ) )
 
 		# main table
 		self.subobjs.append(table("",
