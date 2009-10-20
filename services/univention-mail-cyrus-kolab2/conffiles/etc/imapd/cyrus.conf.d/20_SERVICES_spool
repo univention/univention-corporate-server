@@ -22,19 +22,19 @@ if not (baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyru
        and backend_emailId in baseConfig['mail/cyrus/murder/backends'].split(' ')):
 	print '\t# --- Normal cyrus spool, or Murder backends ---'
 
+	bindprefix = ''
+	if baseConfig.has_key('mail/cyrus/murder/backend/interface') and baseConfig['mail/cyrus/murder/backend/interface'] != '':
+		interface=baseConfig['mail/cyrus/murder/backend/interface']
+		ucrVariable='interfaces/' + interface + '/address'
+		if baseConfig.has_key(ucrVariable) and baseConfig[ucrVariable] != '':
+			bindprefix = "%s:" % baseConfig[ucrVariable]
+
 	if baseConfig.has_key('mail/cyrus/imap') and baseConfig['mail/cyrus/imap'] == 'yes':
 
 		if baseConfig.has_key( 'mail/cyrus/imap/maxchilds' ):
 			maxchild = baseConfig[ 'mail/cyrus/imap/maxchilds' ]
 		else:
 			maxchild = '400'
-
-		bindprefix = ''
-		if baseConfig.has_key('mail/cyrus/murder/backend/interface') and baseConfig['mail/cyrus/murder/backend/interface'] != '':
-			interface=baseConfig['mail/cyrus/murder/backend/interface']
-			ucrVariable='interfaces/' + interface + '/address'
-			if baseConfig.has_key(ucrVariable) and baseConfig[ucrVariable] != '':
-				bindprefix = "%s:" % baseConfig[ucrVariable]
 
 		print '\timap		cmd="/usr/lib/cyrus/bin/imapd -C /etc/imapd/imapd.conf -U 30" listen="%simap" prefork=0 maxchild=%s' % (bindprefix, maxchild)
 		print '\timaps		cmd="/usr/lib/cyrus/bin/imapd -C /etc/imapd/imapd.conf -s -U 30" listen="%simaps" prefork=0 maxchild=%s' % (bindprefix, maxchild)
