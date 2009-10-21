@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-20 21:28+0200\n"
-"PO-Revision-Date: 2009-10-20 21:29+0200\n"
+"PO-Revision-Date: 2009-10-21 08:32+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -311,7 +311,7 @@ msgstr "Pfad zum Heimatverzeichnis unterhalb der Freigabe."
 
 #: user.py:625
 msgid "Allow the authentication only on these windows hosts"
-msgstr "Anmeldung nur an den folgenden Windows Rechnern erlauben"
+msgstr "Anmeldung nur an diesen Windows Rechnern zulassen"
 
 #: user.py:636
 msgid "Samba User Login Times"
