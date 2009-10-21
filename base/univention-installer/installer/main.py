@@ -600,21 +600,12 @@ if max_y == 24:
 # refresh screen
 stdscr.refresh()
 
-def next_screen_profile(view_warning, check_failed=False):
-
-	already_failed = False
-	once_failed = False
-	for i in installer.incompletes:
-		if i == installer.current:
-			already_failed = True
-			if check_failed:
-				once_failed = True
-			break
+def next_screen_profile(view_warning):
 
 	installer.obj[installer.current].put_result(installer.result)
 	installer.obj[installer.current].profile_prerun()
 
-	if installer.obj[installer.current].profile_complete() and not once_failed:
+	if installer.obj[installer.current].profile_complete():
 		result=installer.obj[installer.current].run_profiled()
 		if result:
 			installer.result.update(result)
@@ -635,9 +626,6 @@ def next_screen_profile(view_warning, check_failed=False):
 		return 0
 	else:
 		installer.write_profile(1)
-		if not already_failed:
-			installer.incompletes.append(installer.current)
-
 		if hasattr(installer.obj[installer.current], 'message'):
 			debug('%s' % installer.obj[installer.current].message)
 		if hasattr(installer.obj[installer.current], 'message') and (hasattr(installer.obj[installer.current], 'view_warning') or view_warning):
@@ -657,9 +645,6 @@ def next_screen_profile(view_warning, check_failed=False):
 			installer.left_menu()
 			installer.obj[installer.current].startIt=1
 		installer.draw_all()
-		# reset if already drawn
-		if already_failed:
-			installer.obj[installer.current].layout_reset()
 		return 1
 
 def next_screen():
@@ -682,8 +667,7 @@ def next_screen():
 			return 1
 		return 0
 
-def prev_screen(goback=1):
-	i=goback
+def prev_screen():
 	if installer.current == 0:
 		return 0
 
@@ -692,21 +676,6 @@ def prev_screen(goback=1):
 	if installer.chg_current(-i):
 		return 1
 	return 0
-
-def profile_failed_getlast():
-	back = 0
-	new = 0
-	last = 0
-	for i in installer.incompletes:
-		if i == installer.current:
-			now = i
-			break
-		last = i
-	if last == 0:
-		back = 0
-	else:
-		back = now -last
-	return back
 
 try:
 
@@ -739,10 +708,9 @@ try:
 	installer=mods(modules,max_x,max_y, cmdline=cmdline)
 	installer.draw_all()
 	view_warning=0
-	installer.incompletes = []
 	if cmdline.has_key('profile'):
 			while 1:
-				res=next_screen_profile(view_warning, check_failed=True)
+				res=next_screen_profile(view_warning)
 				view_warning=0
 				if res == 2:
 					break
@@ -750,10 +718,6 @@ try:
 					while 1:
 						debug('waiting 2')
 						c = stdscr.getch()
-						if c == 275: # F11 -> back
-							installer.result_update()
-							back = profile_failed_getlast()
-							prev_screen(goback=back)
 						if c == 276: # F12 -> next
 							installer.obj[installer.current].interactive=True
 							installer.result_update()
@@ -779,10 +743,6 @@ try:
 									view_warning=1
 									debug('again invalid')
 								break
-							elif act == 'prev':
-								installer.result_update()
-								back = profile_failed_getlast()
-								prev_screen(goback=back)
 							elif act == 'tab':
 								installer.tab()
 
