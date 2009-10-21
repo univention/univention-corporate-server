@@ -15,7 +15,8 @@ dependencies = {
 				"dijit.layout.ContentPane",
 				"dijit.layout.StackContainer",
 				"dojo.parser",
-				"unijit.form.DateWidget", // "dojo.cldr.nls.gregorian"
+				"dijit.form.DateTextWidget",
+				"unijit.form.DateTextWidget",
 			]
 		}
 	],
