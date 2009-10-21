@@ -1,3 +1,9 @@
+univention-join (2.0.14-1) unstable; urgency=low
+
+  * make joinscripthelper.lib more tolerant for different forms of VERSION-definitions (Bug: #14873)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Wed, 21 Oct 2009 18:19:53 +0200
+
 univention-join (2.0.13-2) unstable; urgency=low
 
   * get hostname from ucr rather than from HOSTNAME shell var (Bug: #13404)

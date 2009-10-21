@@ -188,7 +188,9 @@ function joinscript_extern_init () {
 		return 1
 	fi
 
-	VERSION="$(grep -E "^VERSION=[1-9][0-9]*$" "$JS_SCRIPT_FULLNAME" | sed "s/^VERSION=\([1-9][0-9]*\)$/\1/")"
+	local version_definition="$(grep -E "^[[:space:]]*VERSION=([1-9][0-9]*|\"[1-9][0-9]*\"|'[1-9][0-9]*')[[:space:]]*$" "$JS_SCRIPT_FULLNAME")"
+	VERSION=
+	eval "$version_definition"
 
 	if ! joinscript_is_version "$VERSION"; then
 		return 1
