@@ -601,16 +601,18 @@ if max_y == 24:
 stdscr.refresh()
 
 def next_screen_profile(view_warning, check_failed=False):
+
+	already_failed = False
+	once_failed = False
+	for i in installer.incompletes:
+		if i == installer.current:
+			already_failed = True
+			if check_failed:
+				once_failed = True
+			break
+
 	installer.obj[installer.current].put_result(installer.result)
 	installer.obj[installer.current].profile_prerun()
-
-	# check if module once failed
-	once_failed = False
-	if check_failed:
-		for i in installer.incompletes:
-			if i == installer.current:
-				once_failed = True
-				break
 
 	if installer.obj[installer.current].profile_complete() and not once_failed:
 		result=installer.obj[installer.current].run_profiled()
@@ -633,11 +635,6 @@ def next_screen_profile(view_warning, check_failed=False):
 		return 0
 	else:
 		installer.write_profile(1)
-		# save failed modules
-		already_failed = False
-		for i in installer.incompletes:
-			if i == installer.current:
-				already_failed = True
 		if not already_failed:
 			installer.incompletes.append(installer.current)
 
@@ -660,6 +657,9 @@ def next_screen_profile(view_warning, check_failed=False):
 			installer.left_menu()
 			installer.obj[installer.current].startIt=1
 		installer.draw_all()
+		# reset if already drawn
+		if already_failed:
+			installer.obj[installer.current].layout_reset()
 		return 1
 
 def next_screen():
