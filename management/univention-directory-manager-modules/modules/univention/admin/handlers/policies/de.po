@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-21 06:11+0200\n"
-"PO-Revision-Date: 2009-10-21 07:17+0200\n"
+"PO-Revision-Date: 2009-10-21 12:09+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1119,7 +1119,7 @@ msgstr "Richtlinie: Benutzer-Quota"
 
 #: share_userquota.py:61
 msgid "User quota"
-msgstr "Druck-Quota"
+msgstr "Benutzer-Quota"
 
 #: share_userquota.py:62
 msgid "Default quota for each user on a share"
