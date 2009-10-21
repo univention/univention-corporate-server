@@ -53,6 +53,8 @@ ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 DEFAULT_SIZELIMIT=1000
 directory_manager_web_ldap_sizelimit = ucr.get('directory/manager/web/ldap/sizelimit', DEFAULT_SIZELIMIT) # maximum number of results searched. This is more than the number of results that can be displayed !
+activate_icons = ucr.get('directory/manager/web/searchresult/showicons', 'true').lower()
+
 # if the definied sizelimit is invalid -> failback to default
 try:
 	max_results = int(directory_manager_web_ldap_sizelimit)
@@ -1185,13 +1187,17 @@ class modwizard(unimodule.unimodule):
 				if not sub_object_module:
 					continue
 
-				icon_path = unimodule.selectIconByName( sub_object_type )
-
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'icon path for %s: %s' % (sub_object_type,icon_path))
+				icon_attribute={}
+				if activate_icons in ['true', 'yes', '1', 'on']:
+					icon_path = unimodule.selectIconByName( sub_object_type )
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'icon path for %s: %s' % (sub_object_type,icon_path))
+					icon_attribute['icon']=icon_path
+				else:
+					icon_attribute['icon']='icon/empty_eeeeee.png'
 
 				name=univention.admin.objects.description(sub_object)
 
-				edit_button=button(name,{'icon':icon_path},{'helptext':_('edit "%s"') % univention.admin.objects.description(sub_object)})
+				edit_button=button(name,icon_attribute,{'helptext':_('edit "%s"') % univention.admin.objects.description(sub_object)})
 				self.editbuts.append((edit_button, sub_object.dn, sub_object_type, univention.admin.objects.arg(sub_object)))
 				cols.append(tablecol("",{'type':'wizard_layout'},{"obs":[edit_button]}))
 
@@ -1290,8 +1296,7 @@ class modwizard(unimodule.unimodule):
 				{'name': "uidummy098", 'description': "---"},
 				{'name': "invert", 'description': _("Invert selection")},
 				{'name': "edit", 'description': _("Edit")},
-				{'name': "delete", 'description': _("Delete")},
-				{'name': "recursive_delete", 'description': _("Delete recursively")},
+				{'name': "recursive_delete", 'description': _("Delete")},
 			],"button":self.selection_commit_button})
 
 			footerCols.append(tablecol("",{'type':'browse_layout_right'},
@@ -1366,6 +1371,7 @@ class modwizard(unimodule.unimodule):
 		self.ignore_buttons=[]
 		self.final_delboxes=[]
 		self.cleanup_delboxes=[]
+		removelist.sort()
 		for i in removelist:
 			cols=[]
 			object_module=univention.admin.modules.get(i[1])
@@ -1406,7 +1412,7 @@ class modwizard(unimodule.unimodule):
 
 			if univention.admin.objects.wantsCleanup(object):
 				removelist_withcleanup.append(i)
-				cleanup_delete=question_bool('',{},{'helptext':_('select %s') % name})
+				cleanup_delete=question_bool('',{},{'usertext': "1", 'helptext':_('select %s') % name})
 				self.cleanup_delboxes.append((cleanup_delete, object.dn, object_type, univention.admin.objects.arg(object)))
 				cols.append(tablecol("",{'type':'wizard_layout'},{"obs":[cleanup_delete]}))
 			else:
@@ -1684,15 +1690,6 @@ class modwizard(unimodule.unimodule):
 			if not self.selection_commit_button.pressed() or invert_selection:
 				pass
 
-			elif self.selection_select.getselected() == "delete":
-				removelist=[]
-				for i, val in selected_dns.items():
-					if val:
-						removelist.append((i[0], i[1], i[2], self.save.get('wizard_superordinate')))
-				if removelist:
-					self.save.put("removelist", removelist)
-				return
-
 			elif self.selection_select.getselected() == "recursive_delete":
 				removelist=[]
 				for i, val in selected_dns.items():
@@ -1743,7 +1740,7 @@ class modwizard(unimodule.unimodule):
 				return
 	def waitmessage(self):
 		if hasattr(self, 'multidelete_status'):
-			return 'Removed %d/%d objects (%d errors).' % (self.multidelete_status[0], self.multidelete_status[1], self.multidelete_status[2])
+			return _('Removed %d/%d objects (%d errors).') % (self.multidelete_status[0], self.multidelete_status[1], self.multidelete_status[2])
 
 	def waitcancel(self):
 		self.cancel = 1

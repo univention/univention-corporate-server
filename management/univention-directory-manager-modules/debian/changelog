@@ -1,3 +1,14 @@
+univention-directory-manager-modules (5.0.41-1) unstable; urgency=low
+
+  * reorganize the deskop setting tab. Bug #9628
+  * adjust the user and group translation. Bug #2359
+  * clear some descriptions in the user module. Bug #4964
+  * removing the objects by default recursive and remove the --recursive
+    from the usage text. Bug #6101
+  * updated some translations. Bug #6210, Bug #6221, Bug #8001
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Oct 2009 06:14:11 +0200
+
 univention-directory-manager-modules (5.0.40-1) unstable; urgency=low
 
   * add a quicklink menu. Bug #13283

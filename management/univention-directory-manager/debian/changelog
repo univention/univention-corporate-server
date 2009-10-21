@@ -1,3 +1,17 @@
+univention-directory-manager (7.0.35-1) unstable; urgency=low
+
+  * make the sizelimit configurable via UCR
+    (directory/manager/web/sizelimit). Bug #16035
+  * sort the objects on the delete question side. Bug #10036
+  * removing the objects by default recursive and remove the Delete
+    recursively option from the drop down list. Bug #6101
+  * remove the referring objects by default. Bug #16036
+  * fixed some translation strings. Bug #6219 and Bug #7947
+  * added a ucr variable directory/manager/web/searchresult/showicons to
+    disable the icon in the search results. Bug #8721
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Oct 2009 07:08:51 +0200
+
 univention-directory-manager (7.0.34-1) unstable; urgency=low
 
   * re-aligned columns in report listing (Bug #13191)

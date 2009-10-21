@@ -50,6 +50,7 @@ from M2Crypto import X509
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
+default_sizelimit = ucr.get ('directory/manager/web/sizelimit', 1000)
 co=None
 
 # update choices-lists which are defined in LDAP
@@ -461,8 +462,9 @@ class modedit(unimodule.unimodule):
 				for n in range(len(policies_group.members)):
 					policy_module=univention.admin.modules.get(policies_group.members[n])
 					name=univention.admin.modules.short_description(policy_module)
-					sorting_helper_list.append(name)
-					sorting_helper_dict[name]=n
+					translated_name=_("%s" % name)
+					sorting_helper_list.append(translated_name)
+					sorting_helper_dict[translated_name]=n
 				sorting_helper_list.sort()
 
 				sorted_type=[]
@@ -915,7 +917,7 @@ class modedit(unimodule.unimodule):
 							b2_atts=copy.deepcopy(attributes)
 							ip_atts=copy.deepcopy(attributes)
 
-							self.minput[name].append(question_select( 'IP Address' ,ip_atts,{'choicelist':ip_choicelist,'width': 10, 'helptext':_('Select the IP address')}))
+							self.minput[name].append(question_select( _('IP Address') ,ip_atts,{'choicelist':ip_choicelist,'width': 10, 'helptext':_('Select the IP address')}))
 							# [1]: add button
 							self.minput[name].append(get_addbutton(b_atts,_("Add %s") % name))
 							# [2]: mselect list widget
@@ -1055,7 +1057,7 @@ class modedit(unimodule.unimodule):
 							b2_atts=copy.deepcopy(attributes)
 							ip_atts=copy.deepcopy(attributes)
 
-							self.minput[name].append(question_select( 'IP Address' ,ip_atts,{'choicelist':ip_choicelist,'width': 10, 'helptext':_('Select the IP address')}))
+							self.minput[name].append(question_select( _('IP Address') ,ip_atts,{'choicelist':ip_choicelist,'width': 10, 'helptext':_('Select the IP address')}))
 							# [1]: add button
 							self.minput[name].append(get_addbutton(b_atts,_("Add %s") % name))
 							# [2]: mselect list widget
@@ -1422,7 +1424,7 @@ class modedit(unimodule.unimodule):
 							ip_atts=copy.deepcopy(attributes)
 							mac_atts=copy.deepcopy(attributes)
 
-							self.minput[name].append(question_select( 'IP Address' ,ip_atts,{'choicelist':ip_choicelist,'helptext':_('Select the IP address')}))
+							self.minput[name].append(question_select( _('IP Address') ,ip_atts,{'choicelist':ip_choicelist,'helptext':_('Select the IP address')}))
 							# [1]: add button
 							self.minput[name].append(get_addbutton(b_atts,_("Add %s") % name))
 							# [2]: mselect list widget
@@ -1452,7 +1454,7 @@ class modedit(unimodule.unimodule):
 
 							update_choices2=button('lmanusel',{},{'helptext':_('Select a MAC Address')})
 							self.zinput[name].append(update_choices2)
-							self.zinput[name].append(question_select('MAC Address', mac_atts,
+							self.zinput[name].append(question_select(_('MAC Address'), mac_atts,
 																{'choicelist':mac_choicelist,'helptext':_('Select a MAC Address'),
 																'button':update_choices2}))
 							# put the widgets/buttons from minput[name] into a table
@@ -1676,8 +1678,8 @@ class modedit(unimodule.unimodule):
 						too_many_results = 0
 						try:
 							if property.syntax.searchFilter:
-								dns=self.lo.searchDn(property.syntax.searchFilter, base=position.getDomain(), scope='domain', timeout=10, sizelimit=200)
-						except: #univention.admin.uexceptions.ldapError, msg: #more than 200 results, timeout or whatever
+								dns=self.lo.searchDn(property.syntax.searchFilter, base=position.getDomain(), scope='domain', timeout=10, sizelimit=default_sizelimit)
+						except: #univention.admin.uexceptions.ldapError, msg: #more than default_sizelimit results, timeout or whatever
 							too_many_results = 1
 							dns=[]
 
@@ -2243,8 +2245,8 @@ class modedit(unimodule.unimodule):
 
 						try:
 							if property.syntax.searchFilter:
-								users=self.lo.searchDn(property.syntax.searchFilter, base=position.getDomain(), scope='domain', timeout=10, sizelimit=200)
-						except: #univention.admin.uexceptions.ldapError, msg: #more than 200 results, timeout or whatever
+								users=self.lo.searchDn(property.syntax.searchFilter, base=position.getDomain(), scope='domain', timeout=10, sizelimit=default_sizelimit)
+						except: #univention.admin.uexceptions.ldapError, msg: #more than default_sizelimit results, timeout or whatever
 							too_many_results = 1
 
 
@@ -2377,8 +2379,8 @@ class modedit(unimodule.unimodule):
 
 						try:
 							if property.syntax.searchFilter:
-								users=self.lo.searchDn(property.syntax.searchFilter, base=position.getDomain(), scope='domain', timeout=10, sizelimit=200)
-						except: #univention.admin.uexceptions.ldapError, msg: #more than 200 results, timeout or whatever
+								users=self.lo.searchDn(property.syntax.searchFilter, base=position.getDomain(), scope='domain', timeout=10, sizelimit=default_sizelimit)
+						except: #univention.admin.uexceptions.ldapError, msg: #more than default_sizelimit results, timeout or whatever
 							too_many_results = 1
 
 						atts=copy.deepcopy(attributes)
@@ -2680,7 +2682,7 @@ class modedit(unimodule.unimodule):
 
 						if name:
 
-							uris=self.lo.search('(objectClass=univentionPrinterURIs)', base=position.getDomain(), scope='domain', timeout=10, sizelimit=200)
+							uris=self.lo.search('(objectClass=univentionPrinterURIs)', base=position.getDomain(), scope='domain', timeout=10, sizelimit=default_sizelimit)
 							id_choicelist_sort={}
 
 							id_attrib='printerURI'
@@ -2781,8 +2783,8 @@ class modedit(unimodule.unimodule):
 								for host in self.object.info[ 'spoolHost' ]:
 									spoolhosts += "(univentionPrinterSpoolHost=%s)" % host
 								spoolhosts += ')'
-								dns=self.lo.searchDn('(&(objectClass=univentionPrinter)%s)' % spoolhosts, base=position.getDomain(), scope='domain', timeout=10, sizelimit=200)
-							except: #univention.admin.uexceptions.ldapError, msg: #more than 200 results, timeout or whatever
+								dns=self.lo.searchDn('(&(objectClass=univentionPrinter)%s)' % spoolhosts, base=position.getDomain(), scope='domain', timeout=10, sizelimit=default_sizelimit)
+							except: #univention.admin.uexceptions.ldapError, msg: #more than default_sizelimit results, timeout or whatever
 								too_many_results = 1
 								dns=[]
 							if not too_many_results: # Multiselect
@@ -2901,8 +2903,8 @@ class modedit(unimodule.unimodule):
 							too_many_results = 0
 							try:
 								if property.syntax.searchFilter:
-									dns=self.lo.searchDn(property.syntax.searchFilter, base=position.getDomain(), scope='domain', timeout=10, sizelimit=200)
-							except: #univention.admin.uexceptions.ldapError, msg: #more than 200 results, timeout or whatever
+									dns=self.lo.searchDn(property.syntax.searchFilter, base=position.getDomain(), scope='domain', timeout=10, sizelimit=default_sizelimit)
+							except: #univention.admin.uexceptions.ldapError, msg: #more than default_sizelimit results, timeout or whatever
 								too_many_results = 1
 								dns=[]
 							if not too_many_results: # Multiselect
@@ -3844,8 +3846,8 @@ class modedit(unimodule.unimodule):
 							packages=[]
 							if property.syntax.searchFilter:
 								try:
-									dns=self.lo.searchDn(property.syntax.searchFilter, base=position.getDomain(), scope='domain', timeout=10, sizelimit=200)
-								except univention.admin.uexceptions.ldapError, msg: #more than 200 results, timeout or whatever
+									dns=self.lo.searchDn(property.syntax.searchFilter, base=position.getDomain(), scope='domain', timeout=10, sizelimit=default_sizelimit)
+								except univention.admin.uexceptions.ldapError, msg: #more than default_sizelimit results, timeout or whatever
 									too_many_results = 1
 									dns=[]
 
@@ -3860,7 +3862,7 @@ class modedit(unimodule.unimodule):
 										continue
 
 									aRecord = vals['aRecord'][0]
-									zoneDNs = self.lo.searchDn("(&(aRecord=%s)(objectClass=dNSZone))" % aRecord, base=position.getDomain(), scope='domain', timeout=10, sizelimit=200)
+									zoneDNs = self.lo.searchDn("(&(aRecord=%s)(objectClass=dNSZone))" % aRecord, base=position.getDomain(), scope='domain', timeout=10, sizelimit=default_sizelimit)
 									if len(zoneDNs) > 0:
 										zone = self.lo.get(dn=zoneDNs[0], attr=[ 'zoneName' ] )['zoneName'][0]
 										fqdn="%s.%s" % (cn, zone)
@@ -4170,7 +4172,7 @@ class modedit(unimodule.unimodule):
 						try:
 							mod = univention.admin.modules.get( syntax.module_type )
 							if mod:
-								objs = univention.admin.modules.lookup( mod, None, self.lo, syntax.filter, scope='domain',timeout=10, sizelimit=200)
+								objs = univention.admin.modules.lookup( mod, None, self.lo, syntax.filter, scope='domain',timeout=10, sizelimit=default_sizelimit)
 							else:
 								objs = []
 						except univention.admin.uexceptions.ldapError, msg: #more than 1000 results

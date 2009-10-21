@@ -1,3 +1,10 @@
+univention-webui (3.0.18-1) unstable; urgency=low
+
+  * changed the password polciy tooltip because the minimum length of
+    the password is configurable. Bug #7296
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Oct 2009 06:34:09 +0200
+
 univention-webui (3.0.17-2) unstable; urgency=low
 
   * fix typo in question_choice (Bug #16031)

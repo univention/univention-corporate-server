@@ -1,3 +1,10 @@
+univention-webui-style (4.0.12-1) unstable; urgency=low
+
+  * added a ucr variable directory/manager/web/searchresult/showicons to
+    disable the icon in the search results. Bug #8721
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Oct 2009 08:02:13 +0200
+
 univention-webui-style (4.0.11-1) unstable; urgency=low
 
   * moved icons for CSV and PDF reports into correct directory (Bug

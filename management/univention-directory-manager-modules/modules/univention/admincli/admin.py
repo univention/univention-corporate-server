@@ -103,7 +103,6 @@ def usage():
 	out.append('  --%-30s %s' % ('filter', 'Lookup filter e.g. foo=bar'))
 	out.append('  --%-30s %s' % ('tls', '0 (no); 1 (try); 2 (must)'))
 	out.append('  --%-30s %s' % ('remove_referring', 'remove referring objects'))
-	out.append('  --%-30s %s' % ('recursive', 'remove objects and their sub-objects'))
 	out.append('')
 	out.append('list options:')
 	out.append('  --%-30s %s' % ('filter', 'Lookup filter e.g. foo=bar'))
@@ -383,7 +382,7 @@ def doit(arglist):
 		return list_available_modules()
 
 	remove_referring=0
-	recursive=0
+	recursive=1
 	# parse options
 	longopts=['position=', 'dn=', 'arg=', 'set=', 'append=', 'remove=', 'superordinate=', 'option=', 'append-option=', 'filter=', 'tls=', 'ignore_exists', 'logfile=', 'policies=', 'binddn=', 'bindpwd=', 'customattribute=', 'customattribute-remove=','policy-reference=','policy-dereference=','remove_referring','recursive']
 	try:

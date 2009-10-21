@@ -77,7 +77,7 @@ property_descriptions={
 		),
 	'linuxTerminalServer': univention.admin.property(
 			short_description=_('Linux terminal server'),
-			long_description='Linux Terminal Server of the Thin Client',
+			long_description=_('Linux terminal Server of the Thin Client'),
 			syntax=univention.admin.syntax.linuxTerminalServer,
 			multivalue=1,
 			options=[],
@@ -87,7 +87,7 @@ property_descriptions={
 		),
 	'fileServer': univention.admin.property(
 			short_description=_('File server'),
-			long_description='File server of the Thin Client',
+			long_description=_('File server of the Thin Client'),
 			syntax=univention.admin.syntax.fileServer,
 			multivalue=1,
 			options=[],
@@ -97,7 +97,7 @@ property_descriptions={
 		),
 	'authServer': univention.admin.property(
 			short_description=_('Authentication server'),
-			long_description='Authentication Server of the Thin Client',
+			long_description=_('Authentication server of the Thin Client'),
 			syntax=univention.admin.syntax.authenticationServer,
 			multivalue=1,
 			options=[],
@@ -107,7 +107,7 @@ property_descriptions={
 		),
 	'windowsTerminalServer': univention.admin.property(
 			short_description=_('Windows terminal server'),
-			long_description='Windows Terminal Server for Windows Login',
+			long_description=_('Windows terminal server for Windows Login'),
 			syntax=univention.admin.syntax.windowsTerminalServer,
 			multivalue=1,
 			options=[],
@@ -117,7 +117,7 @@ property_descriptions={
 		),
 	'windowsDomain': univention.admin.property(
 			short_description=_('Windows domain'),
-			long_description='Windows Domain for Windows Login',
+			long_description=_('Windows domain for Windows Login'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],

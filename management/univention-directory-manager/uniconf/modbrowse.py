@@ -50,6 +50,7 @@ ucr.load()
 
 DEFAULT_SIZELIMIT=1000
 directory_manager_web_ldap_sizelimit = ucr.get('directory/manager/web/ldap/sizelimit', DEFAULT_SIZELIMIT) # maximum number of results searched. This is more than the number of results that can be displayed !
+activate_icons = ucr.get('directory/manager/web/searchresult/showicons', 'true').lower()
 # if the definied sizelimit is invalid -> failback to default
 try:
 	max_results = int(directory_manager_web_ldap_sizelimit)
@@ -155,7 +156,7 @@ class modbrowse(unimodule.unimodule):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "check if cleanup neccessary: %s" % i[0])
 			if univention.admin.objects.wantsCleanup(object):
 				removelist_withcleanup.append(i)
-				cleanup_delete=question_bool('',{},{'helptext':_('select %s') % name})
+				cleanup_delete=question_bool('',{},{'usertext': '1', 'helptext':_('select %s') % name})
 				self.cleanup_delboxes.append((cleanup_delete, object.dn, object_type, univention.admin.objects.arg(object)))
 				cols.append(tablecol("",{'type':'browse_layout'},{"obs":[cleanup_delete]}))
 			else:
@@ -669,11 +670,14 @@ class modbrowse(unimodule.unimodule):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "rdn = "+domainContainer)
 
 			
-			if univention.admin.modules.childs(sub_object_module):
-				icon_path = unimodule.selectIconByName( sub_object_type,
-								   iconNameGeneric = 'folder' )
+			if activate_icons in ['true', 'yes', '1', 'on']:
+				if univention.admin.modules.childs(sub_object_module):
+					icon_path = unimodule.selectIconByName( sub_object_type,
+									   iconNameGeneric = 'folder' )
+				else:
+					icon_path = unimodule.selectIconByName( sub_object_type )
 			else:
-				icon_path = unimodule.selectIconByName( sub_object_type )
+				icon_path = 'icon/empty_eeeeee.png'
 
 
 			if position.isDomain() and not rdn in ['dhcp', 'dns', 'policies'] and not domainContainer in ['dc','ou','cn','uid','l','o','c','sambaDomainName']:
@@ -837,8 +841,7 @@ class modbrowse(unimodule.unimodule):
 				{'name': "uidummy098", 'description': "---"},
 					{'name': "invert", 'description': _("Invert selection")},
 				{'name': "edit", 'description': _("Edit")},
-				{'name': "delete", 'description': _("Delete")},
-				{'name': "recursive_delete", 'description': _("Delete recursively")},
+				{'name': "recursive_delete", 'description': _("Delete")},
 				{'name': "move", 'description': _("Move")},
 				],"button":self.selection_commit_button})
 		
@@ -1071,15 +1074,6 @@ class modbrowse(unimodule.unimodule):
 
 			if not self.selection_commit_button.pressed() or invert_selection:
 				pass
-
-			elif self.selection_select.getselected() == "delete":
-				removelist=[]
-				for i, val in selected_dns.items():
-					if val:
-						removelist.append((i[0], i[1], i[2]))
-				if removelist:
-					self.save.put("removelist", removelist)
-				return
 
 			elif self.selection_select.getselected() == "recursive_delete":
 				removelist=[]

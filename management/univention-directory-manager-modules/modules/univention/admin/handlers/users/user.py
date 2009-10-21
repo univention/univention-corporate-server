@@ -622,7 +622,7 @@ property_descriptions={
 			default=('<username>', ['username']) # FIXME: should escape umlauts
 		),
 	'sambaUserWorkstations': univention.admin.property(
-			short_description=_('Allowed hosts'),
+			short_description=_('Allow the authentication only on these windows hosts'),
 			long_description=(''),
 			syntax=univention.admin.syntax.string,
 			multivalue=1,

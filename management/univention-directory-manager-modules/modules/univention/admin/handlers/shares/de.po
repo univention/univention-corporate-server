@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-04 17:37+0200\n"
-"PO-Revision-Date: 2009-08-04 17:38+0200\n"
+"PO-Revision-Date: 2009-10-21 07:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -275,7 +275,7 @@ msgstr "Synchroner oder asynchroner Modus für die NFS-Freigabe."
 
 #: share.py:176
 msgid "Subtree checking"
-msgstr "Subtree Überprüfung"
+msgstr "Subtree-Überprüfung"
 
 #: share.py:177
 msgid ""
@@ -702,7 +702,7 @@ msgstr ""
 
 #: share.py:506
 msgid "Force group"
-msgstr "Erzwungene Gruppen"
+msgstr "Erzwungene Gruppe"
 
 #: share.py:507
 msgid ""
@@ -876,11 +876,11 @@ msgstr "Samba-Zugriffsrechte"
 
 #: share.py:682
 msgid "Samba extended permissions"
-msgstr "Samba-Erweiterte-Rechte"
+msgstr "Erweiterte Samba-Rechte"
 
 #: share.py:682
 msgid "Samba extended permission settings"
-msgstr "Samba Erweiterte Zugriffsrechte"
+msgstr "Samba erweiterte Zugriffsrechte"
 
 #: share.py:688
 msgid "Samba performance"

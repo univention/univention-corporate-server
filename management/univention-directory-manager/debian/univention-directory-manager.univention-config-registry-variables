@@ -70,3 +70,9 @@ Description[en]=The given computer typ will be preselected when a new computer i
 Type=str
 Categories=management-udm
 
+[directory/manager/web/searchresult/showicons]
+Description[de]=Wenn diese Option auf no gesetzt wird, werden in den Suchergenissen keine Icons mehr angezeigt (default: yes)
+Description[en]=No icons will be shown in the search result if this option is set to no (default: yes)
+Type=str
+Categories=management-udm
+
