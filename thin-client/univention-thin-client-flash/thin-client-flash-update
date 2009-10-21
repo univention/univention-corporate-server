@@ -41,7 +41,7 @@ eval $(univention-baseconfig shell thinclient/flash/update thinclient/flash/upda
 if [ -z "$thinclient_flash_update" ] || [ -n "$thinclient_flash_update" -a "$thinclient_flash_update" = "no" ]; then
 	echo "The UCR variable thinclient/flash/update is not set or is set to no."
 	echo "If you want to use the flash update, please activate a UCR policy"
-	echo "with thinclient/update/flash=yes for this Thin Client."
+	echo "with thinclient/flash/flash=yes for this Thin Client."
 	exit 0
 fi
 
@@ -184,8 +184,7 @@ if [ "$version" -lt "$new_version" ]; then
 	# create MBR on flash disk
 	cat /usr/lib/syslinux/mbr.bin > ${disk}
     echo
-    echo "The update was successful. Please press any key to reboot the thin client!"
-    read
+    echo "The update was successful. Rebooting the system."
     reboot
 else
     echo "	filesystem seems to be up-to-date."
