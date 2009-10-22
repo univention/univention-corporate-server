@@ -1,3 +1,9 @@
+univention-mozilla-firefox (4.0.1-2) unstable; urgency=low
+
+  * fixed typo. Bug #16057
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Oct 2009 11:53:58 +0200
+
 univention-mozilla-firefox (4.0.1-1) unstable; urgency=low
 
   * switch the firefox startsite to http://www.univention.de/ucd-
