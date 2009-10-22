@@ -97,23 +97,30 @@ if [ -e /usr/sbin/apache2 ]; then
 fi
 
 
-# pre-update univention-thin-client-basesystem to avoid pre-dependency-problems
-echo "Starting preupdate of univention-thin-client-basesystem... (takes some time)"
-$update_commands_install univention-thin-client-basesystem >>"$UPDATER_LOG" 2>&1
-if [ ! $? = 0 ]; then
-	echo "ERROR: pre-update of univention-thin-client-basesystem failed!" | tee -a "$UPDATER_LOG"
-	echo "       Please run 'dpkg --configure -a' manually." | tee -a "$UPDATER_LOG"
-	killall univention-updater
-	exit 1
-fi
-dpkg -l 2>&1  | grep "  " | grep -v "^|" | grep "^[a-z]*[A-Z]" >>"$UPDATER_LOG" 2>&1
-if [ $? = 0 ]; then
-	echo "ERROR: pre-update of univention-thin-client-basesystem failed!" | tee -a "$UPDATER_LOG"
-	echo "       Inconsistent package state detected. Please run 'dpkg --configure -a' manually." | tee -a "$UPDATER_LOG"
-	killall univention-updater
-	exit 1
-fi
-echo "Preupdate of univention-thin-client-basesystem done."
+# Update package lists
+apt-get update >>"$UPDATER_LOG" 2>&1
+#
+for pkg in univention-ssl univention-thin-client-basesystem ; do
+	# pre-update $pkg to avoid pre-dependency-problems
+	if dpkg -l $pkg | grep ^ii ; then
+	    echo "Starting preupdate of $pkg... (may take some time)"
+	    $update_commands_install $pkg >>"$UPDATER_LOG" 2>&1
+	    if [ ! $? = 0 ]; then
+	        echo "ERROR: pre-update of $pkg failed!" | tee -a "$UPDATER_LOG"
+	        echo "       Please run 'dpkg --configure -a' manually." | tee -a "$UPDATER_LOG"
+	        killall univention-updater
+	        exit 1
+	    fi
+	    dpkg -l 2>&1  | grep "  " | grep -v "^|" | grep "^[a-z]*[A-Z]" >>"$UPDATER_LOG" 2>&1
+	    if [ $? = 0 ]; then
+	        echo "ERROR: pre-update of $pkg failed!" | tee -a "$UPDATER_LOG"
+	        echo "       Inconsistent package state detected. Please run 'dpkg --configure -a' manually." | tee -a "$UPDATER_LOG"
+	        killall univention-updater
+	        exit 1
+	    fi
+	    echo "Preupdate of $pkg done."
+	fi
+done
 
 echo "Finished running preup.sh script"
 date
