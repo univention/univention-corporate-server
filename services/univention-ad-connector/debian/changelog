@@ -1,3 +1,9 @@
+univention-ad-connector (4.1.2-1) unstable; urgency=low
+
+  * use the correct pyshared path. Bug #16054
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Oct 2009 11:40:31 +0200
+
 univention-ad-connector (4.1.1-1) unstable; urgency=low
 
   * if the connection to the LDAP-Server is lost the connector tries to
