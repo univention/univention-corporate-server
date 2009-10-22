@@ -66,7 +66,7 @@ install: build-stamp
 	# option "mini" explained: http://www.sitepen.com/blog/2008/04/02/dojo-mini-optimization-tricks-with-the-dojo-toolkit/
 	tar xzf dojo-release-$(DOJO_VERSION)-src.tar.gz
 	cd dojo-release-${DOJO_VERSION}-src/util/buildscripts; \
-	./build.sh profileFile=../../../univention.profile.js action=release releaseDir=${D}${INSTDIR} version=${DOJO_VERSION} releaseName='' localeList="de-de,en-us" optimize=shrinksafe.keepLines layerOptimize=shrinksafe cssOptimize=comments.keepLines cssImportIgnore=../dijit.css copyTests=false # mini=true
+	./build.sh profileFile=../../../univention.profile.js action=release releaseDir=${D}${INSTDIR} version=${DOJO_VERSION} releaseName='' localeList="de-de,en-us" optimize=shrinksafe.keepLines layerOptimize=shrinksafe cssOptimize=comments.keepLines copyTests=false # mini=true # cssImportIgnore=../dijit.css
 
 binary-indep: build install
 	dh_testdir -i

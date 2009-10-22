@@ -29,9 +29,9 @@ dependencies = {
 				"dijit.layout.StackContainer",
 				"dojo.parser",
 				// The list below includes all widgets declared or required by
-				// unijit/form/DateTextWidget.js
-				"unijit.form.DateTextWidget",
-				"dijit.form.DateTextWidget",
+				// unijit/form/DateTextBox.js
+				"unijit.form.DateTextBox",
+				"dijit.form.DateTextBox",
 				"dijit._Calendar",
 			]
 		}

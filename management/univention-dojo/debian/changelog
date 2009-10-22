@@ -1,3 +1,10 @@
+univention-dojo (3.0.4-3) unstable; urgency=low
+
+  * typo fixed, now DateTextBox is included in the layer as well (Bug #14625)
+  * allowing inclusion of dijit.css seems to be more performant
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Oct 2009 12:10:57 +0200
+
 univention-dojo (3.0.4-2) unstable; urgency=low
 
   * include dijit._Calendar in unijit layer file (Bug #14625)
