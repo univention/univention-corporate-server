@@ -1,3 +1,9 @@
+univention-postgresql (2.0.1-9) unstable; urgency=low
+
+  * set postgres8/autostart?no on upgrade to wait for migration (Bug #12754)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Oct 2009 16:13:22 +0200
+
 univention-postgresql (2.0.1-8) unstable; urgency=low
 
   * avoid special lc_* locale settings in 8.3 template (Bug: #15117)
