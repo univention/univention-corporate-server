@@ -1,3 +1,9 @@
+univention-installer (5.0.25-4) unstable; urgency=low
+
+  * reverted changes r10235 r13126 (Bug: #5971)
+
+ -- Felix Botner <botner@univention.de>  Thu, 22 Oct 2009 16:19:40 +0200
+
 univention-installer (5.0.25-3) unstable; urgency=low
 
   * reverted changes r10235 r13126 (Bug: #5971)

@@ -668,6 +668,8 @@ def next_screen():
 		return 0
 
 def prev_screen():
+	i=1
+
 	if installer.current == 0:
 		return 0
 
