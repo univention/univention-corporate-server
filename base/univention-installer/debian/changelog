@@ -1,3 +1,10 @@
+univention-installer (5.0.26-1) unstable; urgency=low
+
+  * moved the univention-fax-client package to the fax server component.
+    Bug #16071 and Bug #14418
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Oct 2009 21:33:21 +0200
+
 univention-installer (5.0.25-4) unstable; urgency=low
 
   * reverted changes r10235 r13126 (Bug: #5971)

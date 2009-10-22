@@ -253,7 +253,7 @@ PackageList=[
 				},
 				{
 					'Name': _('Fax server'),
-					'Packages': ['univention-fax-server'],
+					'Packages': ['univention-fax-server', 'univention-fax-client'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],
@@ -416,7 +416,7 @@ PackageList=[
 				},
 				{
 					'Name': _('KDE desktop'),
-					'Packages': ['univention-kde', 'ispell', 'ingerman', 'gimp', 'acroread-de', 'univention-fax-client'],
+					'Packages': ['univention-kde', 'ispell', 'ingerman', 'gimp', 'acroread-de'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'EditionDisable': [ 'oxae' ],
