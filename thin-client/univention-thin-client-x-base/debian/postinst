@@ -30,6 +30,8 @@
 
 #DEBHELPER#
 
+univention-thin-client-apt install univention-thin-client-x-base-config
+
 univention-thin-client-apt install univention-gdm \
                                    univention-gdm-sessions \
                                    univention-xnumlock \
