@@ -1,3 +1,11 @@
+univention-dojo (3.0.4-2) unstable; urgency=low
+
+  * include dijit._Calendar in unijit layer file (Bug #14625)
+  * add css stripping options
+  * add links to documentation about layer files and build options
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Oct 2009 09:29:04 +0200
+
 univention-dojo (3.0.4-1) unstable; urgency=low
 
   * update unijit.form.DateTextBox to work with dojo 1.3.2 (Bug #12039)
