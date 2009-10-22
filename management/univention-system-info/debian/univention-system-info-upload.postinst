@@ -34,6 +34,10 @@ univention-config-registry set umc/sysinfo/upload/recipient?feedback@univention.
 univention-config-registry set umc/sysinfo/upload/sender?root
 
 dpkg-statoverride --add --force --update www-data www-data 0750 /usr/share/univention-management-console/system-info/ || true
+dpkg-statoverride --add --force --update www-data www-data 0750 /var/www/univention-system-info-upload/archives || true
+
+a2ensite univention-system-info-upload
+/etc/init.d/apache2 reload
 
 #DEBHELPER#
 

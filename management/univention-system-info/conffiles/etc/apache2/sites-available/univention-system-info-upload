@@ -1,0 +1,3 @@
+<Directory /var/www/univention-system-info-upload/archives/>
+        Options -Indexes
+</Directory>

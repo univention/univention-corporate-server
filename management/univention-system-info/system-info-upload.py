@@ -33,6 +33,7 @@ import univention.config_registry as ucr
 import cgi
 from email.MIMEText import MIMEText
 import os
+import socket
 import subprocess
 import smtplib
 import sys
@@ -77,11 +78,20 @@ ok, filename = save_uploaded_file( 'filename', path, configRegistry.get( 'umc/sy
 if not ok:
 	print 'ERROR: wrong file type or file to big'
 else:
+	msg = 
 	msg = MIMEText('''
-A new Univention system info archive has been uploaded.
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head/>
+<body>
+<p>A new Univention system info archive has been uploaded.</p>
 
-Archive: %s
-''' % os.path.join( path, filename ) )
+<p>
+Archive: <a href="https://%s/univention-system-info-upload/archives/%s">%s</a>
+</p>
+</body>
+</html>
+''' % ( socket.getfqdn(), filename, filename ), 'html' )
 	msg[ 'Subject' ] = 'Univention System Info Upload'
 	sender = configRegistry.get( 'umc/sysinfo/upload/sender', 'root' )
 	recipient = configRegistry.get( 'umc/sysinfo/upload/recipient', sender )

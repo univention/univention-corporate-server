@@ -29,6 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 dpkg-statoverride --remove /usr/share/univention-management-console/system-info/ || true
+dpkg-statoverride --remove /var/www/univention-system-info-upload/archives || true
 
 #DEBHELPER#
 

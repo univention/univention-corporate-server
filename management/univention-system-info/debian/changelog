@@ -1,3 +1,12 @@
+univention-system-info (0.1.7-1) unstable; urgency=low
+
+  * the mail send, when a new archive is uplaoded, will contain a link to
+    the archive
+  * restrict access to the directory were the archives are stored (Bug
+    #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 22 Oct 2009 14:32:01 +0200
+
 univention-system-info (0.1.6-2) unstable; urgency=low
 
   * renamed button upload to uploadfile to avoid collisions with other
