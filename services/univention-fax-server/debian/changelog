@@ -1,3 +1,9 @@
+univention-fax-server (3.0.0-2) unstable; urgency=low
+
+  * removed set -e from the postinst. Bug #16071
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Oct 2009 21:36:44 +0200
+
 univention-fax-server (3.0.0-1) unstable; urgency=low
 
   * Make init script LSB-compliant (Bug #14421)
