@@ -6,7 +6,7 @@ Build-Depends: debhelper (>> 3.0.0)
 
 Package: univention-bacula
 Architecture: all
-Depends: bacula, bacula-director-pgsql | bacula-director-mysql | bacula-director-sqlite3
+Depends: univention-postgresql, bacula, bacula-client, bacula-server, bacula-common, bacula-director-pgsql, bacula-common-pgsql, bacula-sd-pgsql
 Description: UCS - Bacula package
  This packages provides the meta packages for the backup software bacula.
  .
