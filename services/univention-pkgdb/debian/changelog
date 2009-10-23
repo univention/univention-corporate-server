@@ -1,3 +1,9 @@
+univention-pkgdb (3.0.2-1) unstable; urgency=low
+
+  * changed remaining paths to /usr/share/pyshared (Bug #14667)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 23 Oct 2009 10:35:10 +0200
+
 univention-pkgdb (3.0.1-3) unstable; urgency=low
 
   * check for postgresql-8.3 and postgresql-7.4 (Bug #12754)
