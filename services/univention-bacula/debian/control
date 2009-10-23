@@ -1,0 +1,17 @@
+Source: univention-bacula
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0)
+
+Package: univention-bacula
+Architecture: all
+Depends: bacula, bacula-director-pgsql | bacula-director-mysql | bacula-director-sqlite3
+Description: UCS - Bacula package
+ This packages provides the meta packages for the backup software bacula.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
