@@ -119,10 +119,10 @@ fi
 # on installation set autodetect ...
 if [ "$1" = configure -a -z "$2" ]; then
 	# ... to yes on mobile and managed clients
-	if [ "%server_role" = "mobileclient" -o "$server_role" = "fateclient" ]; then
-		univention-config-registry set xorg/autodetect=yes
+	if [ "$server_role" = "mobileclient" -o "$server_role" = "fatclient" ]; then
+		univention-config-registry set xorg/autodetect?yes
 	else
-		univention-config-registry set xorg/autodetect=no
+		univention-config-registry set xorg/autodetect?no
 	fi
 else
 	# ... to no on updates if not already set

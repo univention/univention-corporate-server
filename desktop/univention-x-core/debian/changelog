@@ -1,3 +1,9 @@
+univention-x-core (3.0.8-1) unstable; urgency=low
+
+  * fixed typos in postinst script (Bug #9132)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 23 Oct 2009 09:33:30 +0200
+
 univention-x-core (3.0.7-1) unstable; urgency=low
 
   * activate X.org auto detection on mobile and managed clients durch
