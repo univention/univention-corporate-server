@@ -1,3 +1,9 @@
+univention-postgresql (2.0.1-10) unstable; urgency=low
+
+  * add missing debhelper line to commit templates (Bug #12754)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 23 Oct 2009 09:24:00 +0200
+
 univention-postgresql (2.0.1-9) unstable; urgency=low
 
   * set postgres8/autostart?no on upgrade to wait for migration (Bug #12754)
