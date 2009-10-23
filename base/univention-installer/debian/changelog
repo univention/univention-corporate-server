@@ -1,3 +1,9 @@
+univention-installer (5.0.28-1) unstable; urgency=low
+
+  * bumped version (Bug: #14418)
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Oct 2009 14:45:05 +0200
+
 univention-installer (5.0.27-2) unstable; urgency=low
 
   * fixed packages_list (Bug: #14418)  
