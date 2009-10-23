@@ -172,7 +172,7 @@ PackageList=[
 				},
 				{
 					'Name': _('Bacula (Backup)'),
-					'Packages': ['bacula'],
+					'Packages': ['univention-bacula'],
 					'Edition': [ 'oxae' ],
 					'Architecture': [ 'x86' ],
 					'Active': [],
@@ -372,7 +372,7 @@ PackageList=[
 			[
 				{
 					'Name': _('Bacula (Backup)'),
-					'Packages': ['bacula-server', 'bacula-client'],
+					'Packages': ['univention-bacula'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': [],
