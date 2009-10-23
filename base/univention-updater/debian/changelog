@@ -1,3 +1,9 @@
+univention-updater (5.0.16-2) unstable; urgency=low
+
+  * redirect dpkg -l output in preup.sh to logfile (Bug: #15971)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 23 Oct 2009 10:56:18 +0200
+
 univention-updater (5.0.16-1) unstable; urgency=low
 
   * install univention-thin-client-basesystem and univention-ssl in
