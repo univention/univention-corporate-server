@@ -30,6 +30,8 @@
 
 . /tmp/installation_profile
 
+default_packages="dhcp-client openssh-client"
+
 if [ -n "$system_role" ]; then
 	export server_role="$system_role"
 fi
@@ -101,6 +103,10 @@ kolab=`echo $packages | grep "univention-kolab2"`
 if [ -n "$kolab" ]; then
 	export packages=`echo $packages | sed -e 's|univention-mail-postfix ||g;s|univention-mail-cyrus-imap ||g;s|univention-mail-cyrus-pop ||g;s|univention-mail-cyrus ||g;s|univention-spamassassin ||g'`
 fi
+
+# default packages
+packages="$packages $default_packages"
+
 cat >>/instmnt/install_packages.sh <<__EOT__
 
 

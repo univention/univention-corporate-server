@@ -35,7 +35,7 @@ PackageList=[
 {
 	'Category': _('Services for Windows'),
 	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
-	'Description': _("Windows Components"),
+	'Description': _("Several Windows related services"),
 	'Packages':
 			[
 				{
@@ -63,7 +63,7 @@ PackageList=[
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [],
 					'Possible': ['domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
-					'Description': _("Samba PDC on Non-DC Master"),
+					'Description': _("Samba domain controller as a slave to another master domain controller"),
 				},
 				{
 					'Name': _('Winbind'),
@@ -88,7 +88,7 @@ PackageList=[
 {
 	'Category': _('Mail/Groupware'),
 	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave' ],
-	'Description': _('Mail/Groupware Component'),
+	'Description': _('Several mail/groupware related services'),
 	'Packages':
 			[
 				{
@@ -123,7 +123,7 @@ PackageList=[
 {
 	'Category': _('IP management'),
 	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
-	'Description': _("Several IP Components"),
+	'Description': _("Several IP related services"),
 	'Packages':
 			[
 				{
@@ -240,7 +240,7 @@ PackageList=[
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'domaincontroller_master' ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
-					'Description': _('Host, service and network monitoring program '),
+					'Description': _('Host, service and network monitoring program (server software)'),
 				},
 				{
 					'Name': _('Nagios client'),
@@ -249,7 +249,7 @@ PackageList=[
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver' ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver' ],
-					'Description': _('Host, service and network monitoring program '),
+					'Description': _('Host, service and network monitoring program (client software)'),
 				},
 				{
 					'Name': _('Fax server'),
@@ -275,7 +275,7 @@ PackageList=[
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],
 					'Possible': ['all'],
-					'Description': _('FreeNX server'),
+					'Description': _('FreeNX application/thin-client server'),
 				},
 
 			],
@@ -289,7 +289,6 @@ PackageList=[
 				{
 					'Name': _('Xen hypervisor (2.6.18)'),
 					'Packages': ['univention-kernel-image-2.6.18-xen', 'univention-xen'],
-					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': [ ],
 					'Possible': ['all'],
@@ -298,7 +297,6 @@ PackageList=[
 				{
 					'Name': _('Xen hypervisor (2.6.26)'),
 					'Packages': ['univention-kernel-image-2.6.26-xen', 'univention-xen'],
-					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': [ ],
 					'Possible': ['all'],
@@ -310,7 +308,7 @@ PackageList=[
 					'Architecture': [ 'x86' ],
 					'Active': [ ],
 					'Possible': ['all'],
-					'Description': _('Xen kernel images to Xen guests.'),
+					'Description': _('Xen kernel images for Xen guests.'),
 				},
 				{
 					'Name': _('Xen kernel images (2.6.26)'),
@@ -318,7 +316,7 @@ PackageList=[
 					'Architecture': [ 'x86' ],
 					'Active': [ ],
 					'Possible': ['all'],
-					'Description': _('Xen kernel images to Xen guests.'),
+					'Description': _('Xen kernel images for Xen guests.'),
 				},
 			],
 },
@@ -410,7 +408,6 @@ PackageList=[
 					'Packages': ['univention-x-core', 'univention-gdm', 'univention-gdm-sessions'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
-					'EditionDisable': [ 'oxae' ],
 					'Possible': ['all'],
 					'Description': _('Core Packages for a Graphical Desktop Environment'),
 				},
@@ -419,7 +416,6 @@ PackageList=[
 					'Packages': ['univention-kde', 'ispell', 'ingerman', 'gimp', 'acroread-de'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
-					'EditionDisable': [ 'oxae' ],
 					'Possible': ['all'],
 					'Description': _('KDE - K Desktop Environment'),
 				},
@@ -428,14 +424,12 @@ PackageList=[
 					'Packages': ['k3b', 'k3b-i18n', 'cdrdao', 'kdeartwork-misc', 'kdeartwork-emoticons', 'kdeartwork-style', 'kdeartwork-theme-icon', 'kscreensaver', 'kdewallpapers', 'kdeartwork-theme-window', 'kamera', 'kfax', 'kpdf', 'kview', 'kuickshow', 'ksnapshot', 'kgpg', 'kpowersave', 'kwalletmanager', 'kdepim', 'kompose', 'kerry', 'amarok', 'kaffeine', 'kmplayer', 'kdemultimedia', 'mplayer'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
-					'EditionDisable': [ 'oxae' ],
 					'Possible': ['all'],
 					'Description': _('Additional KDE applications like k3b, kamera, ...'),
 				},
 				{
 					'Name': _('OpenOffice.org'),
 					'Packages': ['univention-ooffice2', 'myspell-de-de'],
-					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -445,7 +439,6 @@ PackageList=[
 					'Name': _('Mozilla Firefox'),
 					'Packages': ['univention-mozilla-firefox'],
 					'Architecture': [ 'x86' ],
-					'EditionDisable': [ 'oxae' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('Firefox Webbrowser'),
@@ -454,7 +447,6 @@ PackageList=[
 					'Name': "  %s" % _('Java plugin/runtime'),
 					'Packages': ['univention-java'],
 					'Architecture': [ 'x86' ],
-					'EditionDisable': [ 'oxae' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('Java Virtual Machine'),
@@ -463,7 +455,6 @@ PackageList=[
 					'Name': "  %s" %_('Flash plugin'),
 					'Packages': ['univention-flashplugin'],
 					'Architecture': [ 'x86' ],
-					'EditionDisable': [ 'oxae' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('Flashplugin for webbrowsers'),
@@ -471,8 +462,6 @@ PackageList=[
 				{
 					'Name': "  %s" %_('Mplayer plugin'),
 					'Packages': ['mozilla-mplayer'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'EditionDisable': [ 'oxae' ],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -481,11 +470,10 @@ PackageList=[
 				{
 					'Name': _('Microsoft fonts'),
 					'Packages': ['msttcorefonts'],
-					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],
 					'Possible': [ 'all' ],
-					'Description': _("Microsoft fonts"),
+					'Description': _("Microsoft True Type Core fonts"),
 				},
 			],
 },
@@ -495,23 +483,6 @@ PackageList=[
 	'Description': _("Extra Tools"),
 	'Packages':
 			[
-				{
-					'Name': _('OpenSSH client'),
-					'Packages': ['openssh-client'],
-					'Architecture': [ 'x86', 'powerpc' ],
-					'Active': [ 'all' ],
-					'Possible': [ 'all' ],
-					'Description': _("Secure shell client, an rlogin/rsh/rcp replacement"),
-				},
-				{
-					'Name': _('DHCP client'),
-					'Packages': ['dhcp-client'],
-					'Edition': [ 'scalix', 'ugs' ],
-					'Architecture': [ 'x86', 'powerpc' ],
-					'Active': ['all'],
-					'Possible': [ 'all' ],
-					'Description': _("Dynamic IP configuration"),
-				},
 				{
 					'Name': _('Java'),
 					'Packages': ['univention-java'],
