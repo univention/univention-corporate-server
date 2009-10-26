@@ -85,7 +85,7 @@ univention-admin policies/console_access modify $@ --ignore_exists \
 	--append allow=cn=softmon-all,cn=acls,cn=console,cn=univention,$ldap_base
 
 if [ -x /usr/sbin/univention-pkgdb-check ] && [ -e /usr/share/pyshared/univention/pkgdb.py ]; then
-	python /usr/share/pyshared/univention/pkgdb.py --db-server $hostname.$domainname --add $hostname\$
+	/usr/share/pyshared/univention/pkgdb.py --db-server $hostname.$domainname --add $hostname\$
 	univention-pkgdb-scan --db-server $hostname.$domainname
 fi
 

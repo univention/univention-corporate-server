@@ -1,3 +1,9 @@
+univention-pkgdb (3.0.2-2) unstable; urgency=low
+
+  * python now defaults to python2.5, call pkgdb.py directly (Bug #16082)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Oct 2009 11:05:28 +0100
+
 univention-pkgdb (3.0.2-1) unstable; urgency=low
 
   * changed remaining paths to /usr/share/pyshared (Bug #14667)
