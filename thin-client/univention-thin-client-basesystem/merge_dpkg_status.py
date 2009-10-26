@@ -20,8 +20,6 @@ status_new={}
 for pn in status_new_stream:
 	status_new[pn[0][1]]=pn
 
-status_result={}
-
 def package_print(package):
 	for entry in package:
 		if entry[0] == 'Description':
@@ -32,12 +30,18 @@ def package_print(package):
 			print '%s: %s' % (entry[0], entry[1])
 	print ''
 
+old_package_list=[]
 for old_package in status_old:
 	package_name=old_package[0][1]
 	if package_name in status_new.keys():
 		package_print(status_new[package_name])
 	else:
 		package_print(old_package)
+		old_package_list.append(old_package[0][1])
+
+for new_package in status_new.keys():
+	if not new_package in old_package_list:
+		package_print(status_new[package_name])
 
 sys.exit(0)
 
