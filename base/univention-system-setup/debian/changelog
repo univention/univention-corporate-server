@@ -1,3 +1,9 @@
+univention-system-setup (3.0.20-1) unstable; urgency=low
+
+  * disable bootsplash if uss-boot is enabled (Bug: #14309)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 26 Oct 2009 16:28:09 +0100
+
 univention-system-setup (3.0.19-1) unstable; urgency=low
 
   * add --brief option to ucr-command because of change in ucr-behaviour (Bug: #15026)
