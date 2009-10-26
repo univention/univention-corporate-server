@@ -1,3 +1,11 @@
+univention-thin-client-basesystem (6.0.17-1) unstable; urgency=low
+
+  * update the dpkg status file manually because the chroot will be
+    replaced during the upgrade but the dpkg status file is marked as
+    conffile and won't be replaced. Bug #16094
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Oct 2009 11:40:53 +0100
+
 univention-thin-client-basesystem (6.0.16-2) unstable; urgency=low
 
   * fixed dependencies in control file (Bug: #15971)
