@@ -25,7 +25,9 @@ status_result={}
 def package_print(package):
 	for entry in package:
 		if entry[0] == 'Description':
-			print '%s: %s' % (entry[0], entry[1].replace('\n','\n '))
+			print '%s: %s' % (entry[0], entry[1].replace('\n','\n ').replace('\n \n', '\n .\n'))
+		elif entry[0] == 'Conffiles':
+			print '%s: %s' % (entry[0], entry[1].replace('\n','\n ').replace('\n \n', '\n .\n'))
 		else:
 			print '%s: %s' % (entry[0], entry[1])
 	print ''

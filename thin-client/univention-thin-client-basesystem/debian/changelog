@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (6.0.18-1) unstable; urgency=low
+
+  * fixed a minor bug in merge_dpkg_status.py. Bug #16094
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Oct 2009 12:58:09 +0100
+
 univention-thin-client-basesystem (6.0.17-1) unstable; urgency=low
 
   * update the dpkg status file manually because the chroot will be
