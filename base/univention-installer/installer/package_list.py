@@ -318,6 +318,14 @@ PackageList=[
 					'Possible': ['all'],
 					'Description': _('Xen kernel images for Xen guests.'),
 				},
+				{
+					'Name': _('Xen kernel images (2.6.30)'),
+					'Packages': ['univention-kernel-image-2.6.30-xen'],
+					'Architecture': [ 'x86' ],
+					'Active': [ ],
+					'Possible': ['all'],
+					'Description': _('Xen kernel images for Xen guests.'),
+				},
 			],
 },
 {
