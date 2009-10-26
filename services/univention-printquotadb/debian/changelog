@@ -1,3 +1,9 @@
+univention-printquotadb (2.0.3-1) unstable; urgency=low
+
+  * added support for Postgres 8.3. Bug #16049
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Oct 2009 06:35:30 +0100
+
 univention-printquotadb (2.0.2-1) unstable; urgency=low
 
   * add a comment, why join-script should be kept and correct wrong exit-code (Bug #13218)
