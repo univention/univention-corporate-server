@@ -141,20 +141,20 @@ $PIPE dpkg --configure -a
 
 if [ -n "$packages" ]; then
 	for p in $packages; do
-		apt-get -y -o APT::Get::AllowUnauthenticated=1 install \$p
+		apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install \$p
 		$PIPE dpkg --configure -a
 	done
 fi
 
 if [ -n "$extra_packages" ]; then
 	for p in $extra_packages; do
-		apt-get -y -o APT::Get::AllowUnauthenticated=1 install \$p
+		apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install \$p
 		$PIPE dpkg --configure -a
 	done
 fi
 if [ -n "$local_repository" ]; then
 	if [ "$local_repository" = "true" ] || [ "$local_repository" = "yes" ]; then
-		apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-debmirror
+		apt-get -y -o DPkg::Options::=--force-confold -o APT::Get::AllowUnauthenticated=1 install univention-debmirror
 		$PIPE dpkg --configure -a
 	fi
 fi
