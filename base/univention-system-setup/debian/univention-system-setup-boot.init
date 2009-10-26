@@ -38,6 +38,7 @@ case "$1" in
 		if [ -n "$system_setup_boot_start" ] && [ "$system_setup_boot_start" = "yes" ] || [ "$system_setup_boot_start" = "true" ]; then
 			if [ -n "$system_setup_boot_modules" ]; then
 				/sbin/usplash_write "QUIT" || true
+				sleep 2s
 				if echo $system_setup_boot_modules | grep -q "keyboard"; then
 					univention-system-setup --modules=keyboard
 				fi

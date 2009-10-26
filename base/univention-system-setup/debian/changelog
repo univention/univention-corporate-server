@@ -1,3 +1,10 @@
+univention-system-setup (3.0.21-1) unstable; urgency=low
+
+  * added delay between deactivating bootsplash and starting uss-boot
+    (Bug: #14309)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 26 Oct 2009 16:45:39 +0100
+
 univention-system-setup (3.0.20-1) unstable; urgency=low
 
   * disable bootsplash if uss-boot is enabled (Bug: #14309)
