@@ -90,6 +90,7 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 	if [ $? = 0 ]; then
 		mv /var/lib/univention-client-root/var/lib/dpkg/status /var/lib/univention-client-root/var/lib/dpkg/status.BAK
 		mv /var/lib/univention-client-root/var/lib/dpkg/status.NEW /var/lib/univention-client-root/var/lib/dpkg/status
+		univention-thin-client-apt install -f
 	fi
 fi
 
