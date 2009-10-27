@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (6.0.20-1) unstable; urgency=low
+
+  * fixed a typo in merge_dpkg_status.py. Bug #16094
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Oct 2009 06:03:35 +0100
+
 univention-thin-client-basesystem (6.0.19-1) unstable; urgency=low
 
   * added the new packages to the status file. Bug #16094

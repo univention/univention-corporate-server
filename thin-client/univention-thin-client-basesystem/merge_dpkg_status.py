@@ -41,7 +41,7 @@ for old_package in status_old:
 
 for new_package in status_new.keys():
 	if not new_package in old_package_list:
-		package_print(status_new[package_name])
+		package_print(status_new[new_package])
 
 sys.exit(0)
 
