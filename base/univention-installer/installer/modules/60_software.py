@@ -194,6 +194,7 @@ class object(content):
 			for i in range(0,len( NewPackageList )):
 				p={}
 				count=0
+				installed_packages = []
 				for j in range(0,len(NewPackageList[i]['Packages'])):
 					if 'all' in NewPackageList[i]['Packages'][j]['Possible'] or self.parent.all_results.has_key( 'system_role' ) and self.parent.all_results['system_role'] in NewPackageList[i]['Packages'][j]['Possible']:
 						if not NewPackageList[i]['Packages'][j].has_key('Architecture') or (NewPackageList[i]['Packages'][j].has_key('Architecture') and self.parent.cmdline['architecture'] in NewPackageList[i]['Packages'][j]['Architecture']):
@@ -218,6 +219,15 @@ class object(content):
 							count=count+1
 				if len(p) > 0:
 					self.packages.append(p)
+			# dump the package status
+			if self.parent.cmdline.has_key('mode') and self.parent.cmdline['mode'] == 'setup':
+				file = open('/var/cache/univention-system-setup/packages.state', 'w')
+				for p in self.packages:
+					for p_key in p.keys():
+						if p[p_key][2] == 1:
+							for name in p[p_key][4]:
+								file.write('%s\n' % name)
+				file.close()
 
 		def _save_packages(self, category_name, package_names):
 			add=[]

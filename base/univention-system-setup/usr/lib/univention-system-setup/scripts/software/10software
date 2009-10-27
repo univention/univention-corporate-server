@@ -53,8 +53,10 @@ fi
 
 
 to_remove=""
+to_install=""
 
-packages_from_installer=`grep Packages /lib/univention-installer/package_list.py |grep "\[" | sed -e "s|.*\[||;s|'||g;s|,||g;s|]| |"`
+# packages_from_installer=`grep Packages /lib/univention-installer/package_list.py |grep "\[" | sed -e "s|.*\[||;s|'||g;s|,||g;s|]| |"`
+packages_from_installer=$(cat /var/cache/univention-system-setup/packages.state)
 packages_from_installer="$packages_from_installer "
 
 for i in $packages_from_installer; do
@@ -63,6 +65,15 @@ for i in $packages_from_installer; do
 		res=`echo "$packages_from_profile" | grep "$i$"`
 		if [ -z "$res" ]; then
 			to_remove="$to_remove $i"
+		fi
+	fi
+done
+for i in $packages_from_profile; do
+	res=`echo "$packages_from_installer" | grep "$i "`
+	if [ -z "$res" ]; then
+		res=`echo "$packages_from_installer" | grep "$i$"`
+		if [ -z "$res" ]; then
+			to_install="$to_install $i"
 		fi
 	fi
 done
@@ -86,11 +97,13 @@ export DEBIAN_FRONTEND=noninteractive
 
 for p in $to_remove; do
 	echo "apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p- $base " >>/var/log/univention/setup.log
-	apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p- $base
+	apt-get install -s -o DPkg::Options::=--force-confold -y --force-yes  $p- $base
 done
 
-echo "apt-get install -o DPkg::Options::=--force-confold -y --force-yes $packages_from_profile " >>/var/log/univention/setup.log
-apt-get install -o DPkg::Options::=--force-confold -y --force-yes $packages_from_profile
+for p in $to_install; do
+	echo "apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p $base " >>/var/log/univention/setup.log
+	apt-get install -s -o DPkg::Options::=--force-confold -y --force-yes  $p $base
+done
 
 exit 0
 
