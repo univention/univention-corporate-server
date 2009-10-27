@@ -1,3 +1,9 @@
+univention-network-manager (0.3.2-1) unstable; urgency=low
+
+  * ensure that a gateway is set if configured (Bug #15967)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 27 Oct 2009 17:51:57 +0100
+
 univention-network-manager (0.3.1-1) unstable; urgency=low
 
   * 99_resolvconf: just add timeout option if not already set (Bug #8994)
