@@ -97,12 +97,12 @@ export DEBIAN_FRONTEND=noninteractive
 
 for p in $to_remove; do
 	echo "apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p- $base " >>/var/log/univention/setup.log
-	apt-get install -s -o DPkg::Options::=--force-confold -y --force-yes  $p- $base
+	apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p- $base
 done
 
 for p in $to_install; do
 	echo "apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p $base " >>/var/log/univention/setup.log
-	apt-get install -s -o DPkg::Options::=--force-confold -y --force-yes  $p $base
+	apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p $base
 done
 
 exit 0
