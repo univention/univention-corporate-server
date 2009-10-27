@@ -1,3 +1,9 @@
+univention-installer (5.0.34-1) unstable; urgency=low
+
+  * don't show the hypervisor packages on OXAE. Bug #14418
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Oct 2009 14:24:32 +0100
+
 univention-installer (5.0.33-1) unstable; urgency=low
 
   * only install or remove switched packages in univention-system-setup-
