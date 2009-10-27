@@ -1,3 +1,10 @@
+univention-installer (5.0.32-1) unstable; urgency=low
+
+  * install emacs22 instead of emacs21. Bug #14418
+  * update translation. Bug #14418
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Oct 2009 07:56:21 +0100
+
 univention-installer (5.0.31-1) unstable; urgency=low
 
   * added --force-confold to avoid a request. Bug #16071

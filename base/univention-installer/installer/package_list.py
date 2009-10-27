@@ -258,7 +258,7 @@ PackageList=[
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],
 					'Possible': ['all'],
-					'Description': _('Fax server based on hylafax'),
+					'Description': _('Fax server and client based on hylafax'),
 				},
 				{
 					'Name': _('OpenSSH server'),
@@ -501,7 +501,7 @@ PackageList=[
 				},
 				{
 					'Name': _('Commandline tools'),
-					'Packages': ['vim', 'emacs21', 'less', 'elinks', 'wget', 'nmap', 'zip', 'unzip', 'eject'],
+					'Packages': ['vim', 'emacs22', 'less', 'elinks', 'wget', 'nmap', 'zip', 'unzip', 'eject'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['all'],
 					'Possible': [ 'all' ],

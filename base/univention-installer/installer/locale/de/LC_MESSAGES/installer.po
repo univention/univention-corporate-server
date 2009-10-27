@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-23 14:39+0200\n"
+"POT-Creation-Date: 2009-10-27 07:56+0100\n"
 "PO-Revision-Date: 2009-03-09 17:07+0100\n"
 "Last-Translator: END.PY TRANSLATIONS MUESSEN IN UTF-8 KODIERT SEIN, DER REST "
 "IN LATIN-1 <EMAIL@ADDRESS>\n"
@@ -344,11 +344,11 @@ msgstr "Systemdienste"
 msgid "Additional Services"
 msgstr "Weitere Dienste"
 
-#: installer/package_list.py:174 installer/package_list.py:372
+#: installer/package_list.py:174 installer/package_list.py:380
 msgid "Bacula (Backup)"
 msgstr "Bacula (Backup)"
 
-#: installer/package_list.py:180 installer/package_list.py:378
+#: installer/package_list.py:180 installer/package_list.py:386
 msgid "Network based Backup Software"
 msgstr "Netzwerk basierte Backup Software"
 
@@ -413,8 +413,8 @@ msgid "Fax server"
 msgstr "Fax-Server"
 
 #: installer/package_list.py:261
-msgid "Fax server based on hylafax"
-msgstr "Fax-Server basierend auf hylafax"
+msgid "Fax server and client based on hylafax"
+msgstr "Fax-Server und Fax-Client basierend auf hylafax"
 
 #: installer/package_list.py:264
 msgid "OpenSSH server"
@@ -450,13 +450,14 @@ msgstr "Xen-Hypervisor für den Betrieb virtualisierter Systeme."
 
 #: installer/package_list.py:298
 msgid "Xen hypervisor (2.6.26)"
-msgstr "Xen-Hypervisor (2.6.26"
+msgstr "Xen-Hypervisor (2.6.26)"
 
 #: installer/package_list.py:306
 msgid "Xen kernel images (2.6.18)"
 msgstr "Xen-Kernel-Images (2.6.18)"
 
 #: installer/package_list.py:311 installer/package_list.py:319
+#: installer/package_list.py:327
 msgid "Xen kernel images for Xen guests."
 msgstr "Xen-Kernel-Images für Xen-Gastinstanzen."
 
@@ -464,163 +465,167 @@ msgstr "Xen-Kernel-Images für Xen-Gastinstanzen."
 msgid "Xen kernel images (2.6.26)"
 msgstr "Xen-Kernel-Images (2.6.26)"
 
-#: installer/package_list.py:324 installer/package_list.py:326
+#: installer/package_list.py:322
+msgid "Xen kernel images (2.6.30)"
+msgstr "Xen-Kernel-Images (2.6.30)"
+
+#: installer/package_list.py:332 installer/package_list.py:334
 msgid "Administrative tools"
 msgstr "Administrative Werkzeuge"
 
-#: installer/package_list.py:330
+#: installer/package_list.py:338
 msgid "Univention Directory Manager"
 msgstr "Univention Directory Manager"
 
-#: installer/package_list.py:335
+#: installer/package_list.py:343
 msgid "Univention Director Manager Web Frontend"
 msgstr "Univention Directory Manager Web-Oberfläche"
 
-#: installer/package_list.py:338
+#: installer/package_list.py:346
 msgid "Univention Management Console"
 msgstr "Univention Management Console"
 
-#: installer/package_list.py:343
+#: installer/package_list.py:351
 msgid "Configuration Frontend for Servers and Clients"
 msgstr "Konfigurationsoberfläche für Server und Clients"
 
-#: installer/package_list.py:346
+#: installer/package_list.py:354
 msgid "Univention Software Monitor"
 msgstr "Univention Software Monitor"
 
-#: installer/package_list.py:352
+#: installer/package_list.py:360
 msgid "Univention packagestatus database"
 msgstr "Univention Paketstatus Datenbank"
 
-#: installer/package_list.py:355
+#: installer/package_list.py:363
 msgid "UCS Net Installer"
 msgstr "UCS-Net Installer"
 
-#: installer/package_list.py:361
+#: installer/package_list.py:369
 msgid "Install UCS over the network"
 msgstr "PXE-Installation von UCS"
 
-#: installer/package_list.py:366
+#: installer/package_list.py:374
 msgid "Backup"
 msgstr "Backup"
 
-#: installer/package_list.py:368
+#: installer/package_list.py:376
 msgid "Backup Tools"
 msgstr "Backup-Werkzeuge"
 
-#: installer/package_list.py:381
+#: installer/package_list.py:389
 msgid "Unidump"
 msgstr "Unidump"
 
-#: installer/package_list.py:387
+#: installer/package_list.py:395
 msgid "Tape Backup Software"
 msgstr "Bandsicherungssoftware"
 
-#: installer/package_list.py:390
+#: installer/package_list.py:398
 msgid "Remote backup"
 msgstr "Remote-Backup"
 
-#: installer/package_list.py:396
+#: installer/package_list.py:404
 msgid "Backup Software based on rsync"
 msgstr "Backup-Software basierend auf rsync"
 
-#: installer/package_list.py:401
+#: installer/package_list.py:409
 msgid "Desktop Environment"
 msgstr "Desktop-Umgebung"
 
-#: installer/package_list.py:403
+#: installer/package_list.py:411
 msgid "Desktop Environment packages"
 msgstr "Pakete der Desktop-Umgebung"
 
-#: installer/package_list.py:407
+#: installer/package_list.py:415
 msgid "Graphical user interface"
 msgstr "Grafische Benutzeroberfläche"
 
-#: installer/package_list.py:412
+#: installer/package_list.py:420
 msgid "Core Packages for a Graphical Desktop Environment"
 msgstr "Basispakete für die grafische Desktop-Umgebung"
 
-#: installer/package_list.py:415
+#: installer/package_list.py:423
 msgid "KDE desktop"
 msgstr "KDE-Desktop"
 
-#: installer/package_list.py:420
+#: installer/package_list.py:428
 msgid "KDE - K Desktop Environment"
 msgstr "KDE - K-Desktop-Umgebung"
 
-#: installer/package_list.py:423
+#: installer/package_list.py:431
 msgid "KDE add-ons"
 msgstr "KDE Erweiterungen"
 
-#: installer/package_list.py:428
+#: installer/package_list.py:436
 msgid "Additional KDE applications like k3b, kamera, ..."
 msgstr "Weitere KDE Anwendungen, wie k3b, kamera, ..."
 
-#: installer/package_list.py:431
+#: installer/package_list.py:439
 msgid "OpenOffice.org"
 msgstr "OpenOffice.org"
 
-#: installer/package_list.py:436
+#: installer/package_list.py:444
 msgid "OpenOffice.org is a full-featured office productivity suite."
 msgstr "OpenOffice.org ist eine vollständige Büroprogrammsammlung."
 
-#: installer/package_list.py:439
+#: installer/package_list.py:447
 msgid "Mozilla Firefox"
 msgstr "Mozilla Firefox"
 
-#: installer/package_list.py:444
+#: installer/package_list.py:452
 msgid "Firefox Webbrowser"
 msgstr "Firefox Webbrowser"
 
-#: installer/package_list.py:447
+#: installer/package_list.py:455
 msgid "Java plugin/runtime"
 msgstr "Java-Plugin/Java-Umgebung"
 
-#: installer/package_list.py:452 installer/package_list.py:492
+#: installer/package_list.py:460 installer/package_list.py:500
 msgid "Java Virtual Machine"
 msgstr "Java Virtual Machine"
 
-#: installer/package_list.py:455
+#: installer/package_list.py:463
 msgid "Flash plugin"
 msgstr "Flash-Plugin"
 
-#: installer/package_list.py:460
+#: installer/package_list.py:468
 msgid "Flashplugin for webbrowsers"
 msgstr "Flashplugin für Webbrowser"
 
-#: installer/package_list.py:463
+#: installer/package_list.py:471
 msgid "Mplayer plugin"
 msgstr "Mplayer-Plugin"
 
-#: installer/package_list.py:468
+#: installer/package_list.py:476
 msgid "Mplayer for webbrowsers"
 msgstr "Mplayer für Webbrowser"
 
-#: installer/package_list.py:471
+#: installer/package_list.py:479
 msgid "Microsoft fonts"
 msgstr "Microsoft-Schriften"
 
-#: installer/package_list.py:476
+#: installer/package_list.py:484
 msgid "Microsoft True Type Core fonts"
 msgstr "Microsoft True Type Core Schriften"
 
-#: installer/package_list.py:481
+#: installer/package_list.py:489
 msgid "Tools"
 msgstr "Werkzeuge"
 
-#: installer/package_list.py:483
+#: installer/package_list.py:491
 msgid "Extra Tools"
 msgstr "Zusatz-Werkzeuge"
 
-#: installer/package_list.py:487
+#: installer/package_list.py:495
 msgid "Java"
 msgstr "Java"
 
-#: installer/package_list.py:495
+#: installer/package_list.py:503
 msgid "Commandline tools"
 msgstr "Kommandozeilen-Programme"
 
-#: installer/package_list.py:500
+#: installer/package_list.py:508
 msgid "Various commandline tools, like vim, less, nmap, ..."
 msgstr "Verschiedene Kommandozeilen-Programme, wie vim, less, nmap, ..."
 
