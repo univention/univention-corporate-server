@@ -28,18 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-set -e
-
 #DEBHELPER#
 
-pkg_installed(){
-	PKGNAME="$1";
-	if dpkg -l $PKGNAME 2>/dev/null| grep $PKGNAME | grep -q ^ii; then
-		return 0;	# true
-	else
-		return 1;
-	fi
-}
 
 if [ "$1" = "configure" -o "$1" = "reconfigure" ]
 then
@@ -56,14 +46,13 @@ then
   	su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-2.0.2"
   fi
 
-  if pkg_installed postgresql-8.3 ; then
+  if [ -x /etc/init.d/postgresql-8.3 ]; then
     /etc/init.d/postgresql-8.3 reload
-  elif pkg_installed postgresql-7.4 ; then
-  	/etc/init.d/postgresql-7.4 reload
-  else
-	echo "ERROR: neither postgresql-8.3 nor postgresql-7.4 is installed."
-	exit 1
   fi
+  if [ -x /etc/init.d/postgresql-7.4 ]; then
+    /etc/init.d/postgresql-7.4 reload
+  fi
+	
 fi
 
 if [ -z "$2" ]; then

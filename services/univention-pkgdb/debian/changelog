@@ -1,3 +1,11 @@
+univention-pkgdb (3.0.2-3) unstable; urgency=low
+
+  * the pkg_installed function will fail if the package is not
+    completely installed. It might be better to restart the postgresql
+    versions always. Bug #12754
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Oct 2009 06:17:53 +0100
+
 univention-pkgdb (3.0.2-2) unstable; urgency=low
 
   * python now defaults to python2.5, call pkgdb.py directly (Bug #16082)
