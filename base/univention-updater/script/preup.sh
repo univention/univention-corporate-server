@@ -67,9 +67,9 @@ check_space(){
 if [ ! "$update23_checkfilesystems" = "no" ]
 then
 
-	check_space "/var/cache/apt/archives" "400000" "400 MB"
+	check_space "/var/cache/apt/archives" "3000000" "3,0 GB"
 	check_space "/boot" "20000" "20 MB"
-	check_space "/" "600000" "600 MB"
+	check_space "/" "4600000" "4,6 GB"
 
 else
     echo "WARNING: skipped disk-usage-test as requested"

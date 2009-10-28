@@ -1,3 +1,9 @@
+univention-updater (5.0.17-1) unstable; urgency=low
+
+  * adapt estimations for required disk space (Bug #16105)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Oct 2009 10:51:06 +0100
+
 univention-updater (5.0.16-2) unstable; urgency=low
 
   * redirect dpkg -l output in preup.sh to logfile (Bug: #15971)
