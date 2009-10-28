@@ -60,11 +60,6 @@ class object(content):
 		#For more nameservers and dns-forwarders
 		self.dns={}
 
-		if 'system_role' in self.all_results and (self.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
-			self.serversystem=False
-		else:
-			self.serversystem=True
-
 	def debug(self, txt):
 		info = inspect.getframeinfo(inspect.currentframe().f_back)[0:3]
 		line = info[1]
@@ -114,6 +109,11 @@ class object(content):
 		return dhcp_dict
 
 	def start(self):
+		if 'system_role' in self.all_results and (self.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
+			self.serversystem=False
+		else:
+			self.serversystem=True
+
 		for i in range(0,4):
 			if self.all_results.has_key('eth%d_type' % i) and (self.all_results['eth%d_type' % i] == 'dynamic' or self.all_results['eth%d_type' % i] == 'dhcp'):
 				self.interfaces.append(['eth%d' % i, '', '', '', '', 'dynamic', 0])
@@ -705,23 +705,23 @@ class object(content):
 				ip_str=device[1]
 				netmask_str=device[2]
 				if device[5] == "static":
-					dhcp_checkbox_value=1
+					dhcp_checkbox_value=[]
 				else:
-					dhcp_checkbox_value=0
+					dhcp_checkbox_value=[0]
 			else:
 				ip_str=''
 				netmask_str=''
 				if self.parent.serversystem:
-					dhcp_checkbox_value=1
+					dhcp_checkbox_value=[]
 				else:
-					dhcp_checkbox_value=0
+					dhcp_checkbox_value=[0]
 
 			self.add_elem('edit.TXT_INTERFACE', textline(_('Device:'),self.pos_y+2,self.pos_x+2))#0
 			self.add_elem('edit.INPUT_INTERFACE', input(interface_str, self.pos_y+2, self.pos_x+10, 10))#1
 
 			if not virtual:
-				dict={_('Dynamic (DHCP)'): ['dynamic',0], _('Static'): ['static',1]}
-				self.add_elem('edit.CHECKBOX_DHCP', checkbox(dict,self.pos_y+2,self.pos_x+31,18,2,[dhcp_checkbox_value]))#5
+				dict={_('Dynamic (DHCP)'): ['dynamic',0]}
+				self.add_elem('edit.CHECKBOX_DHCP', checkbox(dict,self.pos_y+2,self.pos_x+31,18,2,dhcp_checkbox_value))#5
 
 			self.add_elem('edit.TXT_IP', textline(_('IP address:'), self.pos_y+4, self.pos_x+2))#1
 			self.add_elem('edit.INPUT_IP', input(ip_str, self.pos_y+4, self.pos_x+14, MAXIP))#2
@@ -810,6 +810,8 @@ class object(content):
 			netmask_str=self.get_elem('edit.INPUT_NETMASK').result().strip()
 			(network_str, broadcast_str)=self.ipcalc(ip_str, netmask_str)
 			dhcp_str=self.get_elem('edit.CHECKBOX_DHCP').result().strip()
+			if not dhcp_str:
+				dhcp_str='static'
 			if len(interface_str.split(':')) > 1:
 				virtual='virtual'
 			interface_parameters=[ip_str, netmask_str, network_str, broadcast_str, dhcp_str, virtual]
