@@ -78,7 +78,6 @@ ok, filename = save_uploaded_file( 'filename', path, configRegistry.get( 'umc/sy
 if not ok:
 	print 'ERROR: wrong file type or file to big'
 else:
-	msg = 
 	msg = MIMEText('''
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>

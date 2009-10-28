@@ -442,7 +442,7 @@ Thank you very much for your support!
 
 		# seventh page
 		items = []
-		wiz = umcd.Wizard( _( "Transfered successfully" ) )
+		wiz = umcd.Wizard( _( "Transfer failed" ) )
 		image = umcd.Image( 'sysinfo/module', umct.SIZE_LARGE )
 		wiz.set_image( image )
 
@@ -452,7 +452,7 @@ The information could not be tranfered to Univention successfully. Therefor we w
 Thank you very much for your support!
 ''' )
 		wiz._content.add_row( [ umcd.HTML( description ), ] )
-		wiz._content.add_row( [ umcd.HTML( instruction ), ] )
+		wiz._content.add_row( [ '', ] )
 		
 		finish = umcp.SimpleCommand('sysinfo/show', { 'action' : 'finish' } )
 

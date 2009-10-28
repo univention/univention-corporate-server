@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-02 14:21+0200\n"
+"POT-Creation-Date: 2009-10-28 14:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,64 +15,64 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: __init__.py:59
-msgid "Collecting System Information"
-msgstr "Systeminformationen sammeln"
-
-#: __init__.py:58 __init__.py:64 __init__.py:65 __init__.py:73
+#: __init__.py:56 __init__.py:62 __init__.py:63 __init__.py:71
 msgid "System Information"
 msgstr "Systeminformation"
 
-#: __init__.py:72
+#: __init__.py:57
+msgid "Collecting System Information"
+msgstr "Systeminformationen sammeln"
+
+#: __init__.py:70
 msgid "Store System Information"
 msgstr "Speichern der Systeminformationen"
 
-#: __init__.py:75
+#: __init__.py:73
 msgid "Manufacturer"
 msgstr "Hersteller"
 
-#: __init__.py:76
+#: __init__.py:74
 msgid "Model"
 msgstr "Modell"
 
-#: __init__.py:77
+#: __init__.py:75
 msgid "Descriptive comment"
 msgstr "Beschreibung"
 
-#: __init__.py:78 __init__.py:79
+#: __init__.py:76 __init__.py:77
 msgid "This is related to a support case"
 msgstr "Dies bezieht sich auf einen Supportfall"
 
-#: __init__.py:80
+#: __init__.py:78
 msgid "CPU"
 msgstr "CPU"
 
-#: __init__.py:81
+#: __init__.py:79
 msgid "Number of CPUs"
 msgstr "Anzahl der CPUs"
 
-#: __init__.py:82
+#: __init__.py:80
 msgid "Memory"
 msgstr "Arbeitsspeicher"
 
-#: __init__.py:83
+#: __init__.py:81
 msgid "Network Device"
 msgstr "Netzwerkkarte"
 
-#: __init__.py:84
+#: __init__.py:82
 msgid "Graphics Device"
 msgstr "Graphikkarte"
 
-#: __init__.py:203
+#: __init__.py:199
 #, python-format
 msgid "Execution of univention-system-info failed: %s"
 msgstr "Die Ausführung von univention-system-info ist fehlgeschlagen: %s"
 
-#: __init__.py:238
+#: __init__.py:234
 msgid "General Information"
 msgstr "Allgenmeine Informationen"
 
-#: __init__.py:242
+#: __init__.py:238
 msgid ""
 "\n"
 "This modul collects information about the hardware of your system. These "
@@ -85,19 +84,20 @@ msgid ""
 "detail about the each step.\n"
 msgstr ""
 "\n"
-"Dieses Modul stellt Informationen zu der Hardware Ihres Systems "
-"zusammen. Diese können im Zusammenhang mit einem Supportfall hilfreich "
-"sein. Durch die Übersendung dieser Informationen teilen Sie Univention "
-"außerdem mit, welche Hardware mit UCS eingesetzt wird und deswegen auch "
-"zukünftig unterstützt werden sollte. Alle Daten werden von diesem "
-"Programm anonymisiert an Univention weitergeleitet. Im weiteren Verlauf "
-"werden Sie über die einzelnen Schritte genau informiert.\n"
+"Dieses Modul stellt Informationen zu der Hardware Ihres Systems zusammen. "
+"Diese können im Zusammenhang mit einem Supportfall hilfreich sein. Durch die "
+"Übersendung dieser Informationen teilen Sie Univention außerdem mit, welche "
+"Hardware mit UCS eingesetzt wird und deswegen auch zukünftig unterstützt "
+"werden sollte. Alle Daten werden von diesem Programm anonymisiert an "
+"Univention weitergeleitet. Im weiteren Verlauf werden Sie über die einzelnen "
+"Schritte genau informiert.\n"
 
-#: __init__.py:247
+#: __init__.py:243
 msgid "No information is transmitted without your acceptance!"
-msgstr "Es werden keine Informationen ohne Ihre Einwillung an Univention übermittelt!"
+msgstr ""
+"Es werden keine Informationen ohne Ihre Einwillung an Univention übermittelt!"
 
-#: __init__.py:264
+#: __init__.py:260
 msgid ""
 "\n"
 "If this is related to a support case the next step will be to enter the "
@@ -105,15 +105,15 @@ msgid ""
 "collected and a summary is shown.\n"
 msgstr ""
 "\n"
-"Wenn sich dies auf einen Supprtfall bezieht, wird im nächsten Schritt "
-"die Ticketnummer abgefragt, anderenfalls werden die Informationen zu "
-"Ihrem System gesammelt und eine Zusammenfassung angezeigt.\n"
+"Wenn sich dies auf einen Supprtfall bezieht, wird im nächsten Schritt die "
+"Ticketnummer abgefragt, anderenfalls werden die Informationen zu Ihrem "
+"System gesammelt und eine Zusammenfassung angezeigt.\n"
 
-#: __init__.py:279
+#: __init__.py:275
 msgid "Support Information"
 msgstr "Support Informationen"
 
-#: __init__.py:283
+#: __init__.py:279
 msgid ""
 "\n"
 "If a Univention Support Engeenier has aksed you to provide these "
@@ -125,36 +125,34 @@ msgstr ""
 "\n"
 "Wenn Sie durch den Univention-Support gebeten worden sind, diese "
 "Informationen zu sammeln, dann geben Sie bitte im folgenden Feld die "
-"Ticketnummer, die Sie im Betreff der Support-Mails finden, an. Dies "
-"hilft bei der Zuordnung zu dem Supportfall und beschleunigt die "
-"Bearbeitung.\n"
+"Ticketnummer, die Sie im Betreff der Support-Mails finden, an. Dies hilft "
+"bei der Zuordnung zu dem Supportfall und beschleunigt die Bearbeitung.\n"
 
-#: __init__.py:295
+#: __init__.py:291
 msgid ""
 "In the next step the information aobut the hardware of your system will be "
 "collect and a summary will be shown. No information will be send to "
 "Univention."
 msgstr ""
-"Im nächsten Schritt werden die Informationen Ihres Systems eingeholt und "
-"es wird Ihnen dazu eine Zusammenfassung angezeigt. Es werden noch keine "
+"Im nächsten Schritt werden die Informationen Ihres Systems eingeholt und es "
+"wird Ihnen dazu eine Zusammenfassung angezeigt. Es werden noch keine "
 "Informationen an Univention übertragen."
 
-
-#: __init__.py:311
+#: __init__.py:307
 msgid "Collected Data"
 msgstr "Gesammelte Daten"
 
-#: __init__.py:315
+#: __init__.py:311
 msgid ""
 "\n"
 "The following information has been collected and will be transfered to "
 "Univention with your acceptance.\n"
 msgstr ""
 "\n"
-"Die folgenden Daten wurden über Ihr System gesammelt und werden mit"
-"Ihrer Einwillung an Univention übertragen:\n"
+"Die folgenden Daten wurden über Ihr System gesammelt und werden mitIhrer "
+"Einwillung an Univention übertragen:\n"
 
-#: __init__.py:340
+#: __init__.py:338
 msgid ""
 "\n"
 "Additionally to the information listed above some more details about your "
@@ -162,16 +160,16 @@ msgid ""
 "transmitted to Univention can be downlaoded at the following URL:\n"
 msgstr ""
 "\n"
-"Zusätzlich wurde eine Liste mit Informationen über die "
-"Hardware-Komponenten in Ihrem System erstellt. Die gesamten "
-"Informationen, die an Univention übertragen werden sollen, können Sie "
-"sich unter dem folgenden URL herunterladen:\n"
+"Zusätzlich wurde eine Liste mit Informationen über die Hardware-Komponenten "
+"in Ihrem System erstellt. Die gesamten Informationen, die an Univention "
+"übertragen werden sollen, können Sie sich unter dem folgenden URL "
+"herunterladen:\n"
 
-#: __init__.py:347 __init__.py:412 __init__.py:461
+#: __init__.py:345 __init__.py:410 __init__.py:459
 msgid "Archive with system information"
 msgstr "Archiv mit den Systeminformationen"
 
-#: __init__.py:351
+#: __init__.py:349
 msgid ""
 "In the following step two possiblities to transmit the information to "
 "Nnivention will be described."
@@ -179,11 +177,11 @@ msgstr ""
 "Im folgenden Schritt werden Ihnen zwei Möglichkeiten geboten, die "
 "Informationen an Univention zu übermitteln."
 
-#: __init__.py:366
+#: __init__.py:364
 msgid "Transfer the information"
 msgstr "Übertragung der Informationen"
 
-#: __init__.py:370
+#: __init__.py:368
 msgid ""
 "\n"
 "The collected information can be transfered to Univention by uploading the "
@@ -192,23 +190,22 @@ msgid ""
 msgstr ""
 "\n"
 "Sie können die Informationen entweder direkt hochladen oder alternativ "
-"können Sie die Informationen auch per Mail an Univention "
-"schicken. Wählen Sie die entsprechende Schaltfläche für die von Ihnen "
-"gewünschte Variante.\n"
+"können Sie die Informationen auch per Mail an Univention schicken. Wählen "
+"Sie die entsprechende Schaltfläche für die von Ihnen gewünschte Variante.\n"
 
-#: __init__.py:382
+#: __init__.py:380
 msgid "Upload"
 msgstr "Hochladen"
 
-#: __init__.py:383
+#: __init__.py:381
 msgid "Send mail (optional)"
 msgstr "Mail senden (optional)"
 
-#: __init__.py:391
+#: __init__.py:389
 msgid "Transfer via mail"
 msgstr "Übertragung per Mail"
 
-#: __init__.py:395
+#: __init__.py:393
 msgid ""
 "\n"
 "To transfer the information via mail please follow these steps:\n"
@@ -216,7 +213,7 @@ msgstr ""
 "\n"
 "Für das Versenden der Informationen per Mail gehen Sie bitte wie folgt vor:\n"
 
-#: __init__.py:398
+#: __init__.py:396
 msgid ""
 "\n"
 "<ol>\n"
@@ -230,25 +227,27 @@ msgid ""
 msgstr ""
 "\n"
 "<ol>\n"
-"<li>Laden Sie die Datei mit den Informationen herunter und speichern diese auf Ihrem System. Der Link zum Herunterladen ist weiter utnen zu finden</li>"
-"<li>Klicken Sie auf den Link <i>Mail senden</i>, um Ihr Mailprogramm zu öffnen und eine Mail an Univention zu schicken</li>"
-"<li>Hängen Sie die heruntergeladene Datei an die Mail an und verschicken diese.</li>"
-"<li>Beenden Sie diesen Assistenten durch Klicken auf die Schaltfläche 'Beenden'</li>"
-"</ol>\n"
+"<li>Laden Sie die Datei mit den Informationen herunter und speichern diese "
+"auf Ihrem System. Der Link zum Herunterladen ist weiter utnen zu finden</"
+"li><li>Klicken Sie auf den Link <i>Mail senden</i>, um Ihr Mailprogramm zu "
+"öffnen und eine Mail an Univention zu schicken</li><li>Hängen Sie die "
+"heruntergeladene Datei an die Mail an und verschicken diese.</li><li>Beenden "
+"Sie diesen Assistenten durch Klicken auf die Schaltfläche 'Beenden'</li></"
+"ol>\n"
 
-#: __init__.py:414 __init__.py:463
+#: __init__.py:412 __init__.py:461
 msgid "Send mail"
 msgstr "Mail senden"
 
-#: __init__.py:417 __init__.py:439 __init__.py:466
+#: __init__.py:415 __init__.py:437 __init__.py:464
 msgid "Finish"
 msgstr "Beenden"
 
-#: __init__.py:426 __init__.py:447
+#: __init__.py:424
 msgid "Transfered successfully"
 msgstr "Übertragung erfolgreich"
 
-#: __init__.py:430
+#: __init__.py:428
 msgid ""
 "\n"
 "The information were tranfered to Univention successfully.\n"
@@ -260,7 +259,11 @@ msgstr ""
 "<br>\n"
 "Vielen Dank für Ihre Unterstützung!\n"
 
-#: __init__.py:451
+#: __init__.py:445
+msgid "Transfer failed"
+msgstr "Übertragung fehlgeschlagen"
+
+#: __init__.py:449
 msgid ""
 "\n"
 "The information could not be tranfered to Univention successfully. Therefor "
@@ -271,7 +274,7 @@ msgid ""
 msgstr ""
 "\n"
 "Die Informationen konnten nicht an Univention übermittelt werden. Als "
-"Alternative würden wir Sie bitten die Informationen per Mail an "
-"Univention zu versenden. Dafür gehen Sie bitte wie folgt vor:\n"
+"Alternative würden wir Sie bitten die Informationen per Mail an Univention "
+"zu versenden. Dafür gehen Sie bitte wie folgt vor:\n"
 "<br><br>\n"
 "Vielen Dank für Ihre Unterstützung!\n"

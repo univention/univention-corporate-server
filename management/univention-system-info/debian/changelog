@@ -1,3 +1,11 @@
+univention-system-info (0.1.8-1) unstable; urgency=low
+
+  * add link univention-sysinfo to univention-system-info (Bug #8969)
+  * fixed german translation
+  * fixed typo in upload script
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Oct 2009 13:54:12 +0100
+
 univention-system-info (0.1.7-1) unstable; urgency=low
 
   * the mail send, when a new archive is uplaoded, will contain a link to
