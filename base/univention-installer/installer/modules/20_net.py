@@ -704,24 +704,24 @@ class object(content):
 			if self.mode == 'edit':
 				ip_str=device[1]
 				netmask_str=device[2]
-				if device[5] == "dynamic":
-					dhcp_checkbox_value=[0]
+				if device[5] == "static":
+					dhcp_checkbox_value=1
 				else:
-					dhcp_checkbox_value=[]
+					dhcp_checkbox_value=0
 			else:
 				ip_str=''
 				netmask_str=''
-				if not self.parent.serversystem:
-					dhcp_checkbox_value=[0]
+				if self.parent.serversystem:
+					dhcp_checkbox_value=1
 				else:
-					dhcp_checkbox_value=[]	# default for server roles
+					dhcp_checkbox_value=0
 
 			self.add_elem('edit.TXT_INTERFACE', textline(_('Device:'),self.pos_y+2,self.pos_x+2))#0
 			self.add_elem('edit.INPUT_INTERFACE', input(interface_str, self.pos_y+2, self.pos_x+10, 10))#1
 
 			if not virtual:
-				dict={_('Dynamic (DHCP)'): ['dhcp',1]}
-				self.add_elem('edit.CHECKBOX_DHCP', checkbox(dict,self.pos_y+2,self.pos_x+31,18,2,dhcp_checkbox_value))#5
+				dict={_('Dynamic (DHCP)'): ['dynamic',0], _('Static'): ['static',1]}
+				self.add_elem('edit.CHECKBOX_DHCP', checkbox(dict,self.pos_y+2,self.pos_x+31,18,2,[dhcp_checkbox_value]))#5
 
 			self.add_elem('edit.TXT_IP', textline(_('IP address:'), self.pos_y+4, self.pos_x+2))#1
 			self.add_elem('edit.INPUT_IP', input(ip_str, self.pos_y+4, self.pos_x+14, MAXIP))#2
@@ -805,18 +805,18 @@ class object(content):
 		def put_result(self):
 			result={}
 			virtual=''
-			if len(self.get_elem('edit.INPUT_INTERFACE').result().strip().split(':')) > 1:
+			interface_str=self.get_elem('edit.INPUT_INTERFACE').result().strip()
+			ip_str=self.get_elem('edit.INPUT_IP').result().strip()
+			netmask_str=self.get_elem('edit.INPUT_NETMASK').result().strip()
+			(network_str, broadcast_str)=self.ipcalc(ip_str, netmask_str)
+			dhcp_str=self.get_elem('edit.CHECKBOX_DHCP').result().strip()
+			if len(interface_str.split(':')) > 1:
 				virtual='virtual'
-			networkbcast=self.ipcalc(self.get_elem('edit.INPUT_IP').result().strip(),self.get_elem('edit.INPUT_NETMASK').result().strip())
-			if (self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').result()):
-				mode='dynamic'
-			else:
-				mode='static'
-			interface_parameters=[self.get_elem('edit.INPUT_IP').result().strip(), self.get_elem('edit.INPUT_NETMASK').result().strip(), networkbcast[1], networkbcast[0], mode, virtual]
+			interface_parameters=[ip_str, netmask_str, network_str, broadcast_str, dhcp_str, virtual]
 			#example: result['eth0']=[ip, netmask, broadcast, network, mode]
-			result[self.get_elem('edit.INPUT_INTERFACE').result().strip()]=interface_parameters
+			result[interface_str]=interface_parameters
 			#example: [device, ip, netmask, broadcast, network, mode, virtual='']
-			self.parent.addinterface(self.get_elem('edit.INPUT_INTERFACE').result().strip(), *interface_parameters)
+			self.parent.addinterface(interface_str, *interface_parameters)
 			return result
 
 		def incomplete(self):
@@ -832,8 +832,8 @@ class object(content):
 				return invalid+_('Device')
 
 			ip_str=self.get_elem('edit.INPUT_IP').result().strip()
-			if not (self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').result()):
-				netmask_str=self.get_elem('edit.INPUT_NETMASK').result().strip()
+			netmask_str=self.get_elem('edit.INPUT_NETMASK').result().strip()
+			if not (self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').result().strip()):
 				#IP
 				if ip_str == '':
 					return missing+_('IP address')
@@ -848,7 +848,6 @@ class object(content):
 					return 0
 			else:
 				if self.parent.serversystem:
-					netmask_str=self.get_elem('edit.INPUT_NETMASK').result().strip()
 					#IP
 					if ip_str == '':
 						return _('For a server role an IP address must be determined at this point, please press F5 or deselect the DHCP option.')
@@ -939,6 +938,7 @@ class object(content):
 			return 1
 
 		class dhclient_active(act_win):
+			# dhclient activity indicator window
 			def __init__(self,parent,header,text,name):
 				# set this further right to avoid backdrop on left_menu, which fails to be redrawn
 				self.pos_x=parent.minX+17
@@ -946,6 +946,7 @@ class object(content):
 				act_win.__init__(self,parent,header,text,name)
 
 			def function(self):
+				# dhclient call and result evaluation
 				interface=self.parent.get_elem('edit.INPUT_INTERFACE').result().strip()
 				dhcp_dict=self.parent.parent.dhclient(interface, 45)
 				ip_str=dhcp_dict.get('address') or ''
@@ -963,8 +964,6 @@ class object(content):
 					netmask_input.set_cursor(len(netmask_input.text))
 					netmask_input.paste_text()
 					netmask_input.draw()
-					#gateway_str=self.get_elem('netobject.INPUT_GATEWAY').result().strip()
-					#if not gateway_str:
 					gateway_str=dhcp_dict.get('gateway') or ''
 					if gateway_str:
 						gateway_input=self.parent.parent.get_elem('netobject.INPUT_GATEWAY')
@@ -972,8 +971,6 @@ class object(content):
 						gateway_input.set_cursor(len(gateway_input.text))
 						gateway_input.paste_text()
 						gateway_input.draw()
-					#nameserver1_str=self.get_elem('netobject.INPUT_NAMESERVER1').result().strip()
-					#if not nameserver1_str:
 					nameserver1_str=dhcp_dict.get('nameserver_1') or ''
 					if nameserver1_str:
 						nameserver1_input=self.parent.parent.get_elem('netobject.INPUT_NAMESERVER1')
