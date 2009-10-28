@@ -60,7 +60,6 @@ Description: UCS - member server
 
 Package: univention-mobile-client
 Architecture: all
-Pre-Depends: univention-config-registry (>=0.06), univention-pam
 Conflicts: univention-application-server
 Depends: openssh-server, univention-policy-tools, univention-updater, ldap-utils, ntp | ntp-server, univention-x-core, univention-join, libnss-passwdcache, libpam-passwdcache, menu, univention-directory-listener, univention-heimdal-member, univention-ldap-client, nscd, vim, bind9-host, strace, anacron, univention-network-manager, univention-mail-postfix-forward, nfs-common, univention-directory-policy, univention-printclient, univention-pkgdb-tools, univention-gdm-sessions, python-univention-directory-manager, univention-firewall, univention-lilo | univention-grub, univention-system-setup, hibernate, acpid, univention-archive-key
 Description: UCS - Mobile Client
@@ -73,7 +72,6 @@ Description: UCS - Mobile Client
 
 Package: univention-managed-client
 Architecture: all
-Pre-Depends: univention-config-registry (>=0.06), univention-pam
 Conflicts: univention-application-server, univention-fat-client, univention-fat-client-small
 Replaces: univention-fat-client, univention-fat-client-small
 Provides: univention-fat-client, univention-fat-client-small
@@ -88,7 +86,6 @@ Description: UCS - Managed Client
 
 Package: univention-basesystem
 Architecture: all
-Pre-Depends: univention-config-registry (>=0.06), univention-pam
 Depends: univention-updater, univention-lilo | univention-grub, univention-archive-key, univention-network-manager, univention-firewall
 Description: UCS - Basesytem
  This is a Meta-package, that sets up a UCS Basesystem

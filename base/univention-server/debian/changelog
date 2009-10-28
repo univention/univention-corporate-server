@@ -1,3 +1,11 @@
+univention-server (5.0.7-1) unstable; urgency=low
+
+  * removed pre-dependencies to univention-config-registry and
+    univention-pam for univention-mobile-client, univention-managed-
+    client and univention-basesystem. Bug #16143
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Oct 2009 15:26:32 +0100
+
 univention-server (5.0.6-2) unstable; urgency=low
 
   * removed univention-appendsplash (Bug: #14309) 
