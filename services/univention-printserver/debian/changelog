@@ -1,3 +1,9 @@
+univention-printserver (3.0.21-1) unstable; urgency=low
+
+  * variable description cosmetics (Bug: #7027)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Wed, 28 Oct 2009 16:44:28 +0100
+
 univention-printserver (3.0.20-2) unstable; urgency=low
 
   * modified cups package names (Bug: #15731)
