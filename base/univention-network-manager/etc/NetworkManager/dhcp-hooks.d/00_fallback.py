@@ -41,7 +41,7 @@ VARIABLE_MAP = ( ( 'new_ip_address', 'address' ), ( 'new_broadcast_address', 'br
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
-new_env = {}
+new_env = os.environ
 
 def update_ucr_variables( environ ):
 	variables = []
@@ -107,6 +107,10 @@ elif os.environ.get( 'reason' ) in ( 'BOUND', 'RENEW', 'REBIND' ):
 else:
 	sys.exit( 0 )
 
+# check whether a gateway should be set from UCR
+if not new_env.get( 'new_routers' ) and 'gateway' in configRegistry.keys():
+	new_env[ 'new_routers' ] = configRegistry[ 'gateway' ]
+	
 # update modified values in UCR variables
 update_ucr_variables( new_env )
 
