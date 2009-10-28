@@ -1,3 +1,9 @@
+univention-join (2.0.15-1) unstable; urgency=low
+
+  * small quotation cosmetics that hopefully fix (Bug: #9650)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Wed, 28 Oct 2009 16:37:42 +0100
+
 univention-join (2.0.14-1) unstable; urgency=low
 
   * make joinscripthelper.lib more tolerant for different forms of VERSION-definitions (Bug: #14873)
