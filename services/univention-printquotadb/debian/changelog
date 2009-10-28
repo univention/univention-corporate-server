@@ -1,5 +1,11 @@
 univention-printquotadb (2.0.3-1) unstable; urgency=low
 
+  * correct copyright duration in joinscript (Bug #13218)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Wed, 28 Oct 2009 13:00:28 +0100
+
+univention-printquotadb (2.0.3-1) unstable; urgency=low
+
   * added support for Postgres 8.3. Bug #16049
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Oct 2009 06:35:30 +0100

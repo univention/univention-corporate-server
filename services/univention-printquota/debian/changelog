@@ -1,3 +1,9 @@
+univention-printquota (2.0.2-1) unstable; urgency=low
+
+  * correct copyright duration in joinscript (Bug #13218)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Wed, 28 Oct 2009 13:01:27 +0100
+
 univention-printquota (2.0.1-2) unstable; urgency=low
 
   * postinst should restart cups not cupsys (Bug: #15746)
