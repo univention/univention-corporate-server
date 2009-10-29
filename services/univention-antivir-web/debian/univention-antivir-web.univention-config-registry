@@ -14,6 +14,10 @@ Variables: hostname
 Variables: domainname
 
 Type: file
+File: etc/dansguardian/lists/filtergroupslist
+Variables: dansguardian/groups
+
+Type: file
 File: etc/dansguardian/lists/contentscanners/exceptionvirusextensionlist
 Variables: squid/virusscan
 Variables: dansguardian/.*scan.*

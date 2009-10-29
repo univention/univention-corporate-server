@@ -11,15 +11,20 @@
 #
 
 @!@
-import re
-
-begin = 'dansguardian/groups/'
-end = '/members'
 groups = configRegistry.get( 'dansguardian/groups', 'www-access' ).split( ';' )
-for key in configRegistry.keys():
-	if key.startswith( begin ) and key.endswith( end ):
-		group = key[ len( begin ) : -len( end ) ]
-		fgroup = 'filter%d' % ( groups.index( group ) + 1 )
-		for member in configRegistry[ key ].split( ',' ):
-			print '%s=%s' % ( member, fgroup )
+
+if configRegistry.get( 'dansguardian/groups/system', 'yes' ).lower() in ( 'on', 'yes', '1' ):
+	i = 1
+	for grp in groups:
+		print 'filter%d=%s' % ( i, grp )
+		i += 1
+else:
+	begin = 'dansguardian/groups/'
+	end = '/members'
+	for key in configRegistry.keys():
+		if key.startswith( begin ) and key.endswith( end ):
+			group = key[ len( begin ) : -len( end ) ]
+			fgroup = 'filter%d' % ( groups.index( group ) + 1 )
+			for member in configRegistry[ key ].split( ',' ):
+				print '%s=%s' % ( member, fgroup )
 @!@
