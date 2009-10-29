@@ -48,7 +48,7 @@ udev_sound_owner="$(getent passwd "$USER" | cut -d: -f3)"
 univention-baseconfig set udev/sound/owner="${udev_sound_owner}" udev/sound/group?"${udev_sound_group}"
 
 # tell udev to update devices of sound subsystems
-udevcontrol reload_rules
-udevtrigger --subsystem-match=sound
+udevadm control reload_rules
+udevadm trigger --subsystem-match=sound
 
 exit 0
