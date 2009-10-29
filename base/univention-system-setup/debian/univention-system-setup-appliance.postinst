@@ -28,16 +28,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-eval $(univention-config-registry shell system/setup/boot/modules)
 
 univention-config-registry set system/setup/appliance/start?true
+univention-config-registry set system/setup/boot/modules?"basis,net"
 
-if [ -n "$system_setup_boot_modules" ]; then
+eval $(univention-config-registry shell system/setup/boot/modules)
+
+if [ "$1" = "configure" -a -z "$2" ]; then
 	univention-config-registry set system/setup/boot/modules="$system_setup_boot_modules,ssl"
-else
-	univention-config-registry set system/setup/boot/modules="basis,net,ssl"
 fi
 
 #DEBHELPER#
 
-
+exit 0
