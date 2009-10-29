@@ -36,8 +36,8 @@ case "$1" in
 
     echo "run /usr/share/univention-client-login/client_login.sh"
 
-    eval `/usr/sbin/univention-baseconfig shell univentionWindowsDomain univentionWindowsTerminalServer univentionXKeyboardLayout`
-    rdpKeyboard=`univention-keyboardmapping --xtordp $univentionXKeyboardLayout`
+    eval $(/usr/sbin/univention-baseconfig shell)
+	rdpKeyboard=`univention-keyboardmapping --xtordp $xorg_keyboard_options_XkbLayout`
 
     echo stdout "$HOME"/.rdesktop-stdout
     echo stderr "$HOME"/.rdesktop-stderr
