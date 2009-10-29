@@ -1,3 +1,9 @@
+univention-join (2.0.16-1) unstable; urgency=low
+
+  * change implementation of fqdn-check to avoid many problems caused by the old one (Bug: #9650)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Thu, 29 Oct 2009 18:16:05 +0100
+
 univention-join (2.0.15-1) unstable; urgency=low
 
   * small quotation cosmetics that hopefully fix (Bug: #9650)

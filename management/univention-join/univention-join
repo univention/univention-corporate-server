@@ -217,23 +217,17 @@ if [ $? != 0 ]; then
 	failed_message "ping to $DCNAME failed"
 fi
 
+ldapsearch -x -ZZ -s base -h "$DCNAME" dn >/dev/null
+if  [ $? != 0 ]; then
+ 	failed_message "Establishing a TLS connection with $DCNAME failed. Maybe you didn't specify a FQDN."
+fi
+
+univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" echo ssh-check | grep -qs ssh-check
+if [ $? != 0 ]; then
+	failed_message "ssh-login for $DCACCOUNT@$DCNAME failed. Maybe you entered a wrong password."
+fi
+
 echo -e "\033[60Gdone"
-
-cert_name="$(univention-ssh $DCPWD "$DCNAME 'ls "/etc/univention/ssl/"$DCNAME"/cert.pem"'" | sed s/.*\ // | tr -d '\r\n')"
-
-if [ "$cert_name" != "/etc/univention/ssl/$DCNAME/cert.pem" ]; then
-	failed_message "Could not find the DC host certificate in /etc/univention/ssl/"$DCNAME"/cert.pem on the host. Maybe you specified an invalid dcname?"
-fi
-
-common_name="$(univention-ssh $DCPWD "$DCNAME 'openssl x509 -noout -in ""$cert_name"" -subject -nameopt multiline'" | grep commonName | sed s/.*\ // | tr -d '\r\n')"
-
-if [ -z "$common_name" ]; then
-	failed_message "Unable to extract common Name from DC host certificate in /etc/univention/ssl/"$DCNAME"/cert.pem on the host. Maybe the file is corrupted?"
-fi
-
-if [ "$common_name" != "$DCNAME" ]; then
-	failed_message "The specified dcname ($DCNAME) doesn't match the common Name in the host certificate ($common_name)"
-fi
 
 if [ -x /etc/init.d/slapd ]; then
 	echo -n "Stop LDAP Server: "
