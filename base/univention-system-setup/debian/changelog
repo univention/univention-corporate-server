@@ -1,3 +1,10 @@
+univention-system-setup (3.0.24-1) unstable; urgency=low
+
+  * since UCS 2.3 the GDM starts earlier but the system setup tools must
+    start before. Bug #15445
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Oct 2009 07:37:19 +0100
+
 univention-system-setup (3.0.23-1) unstable; urgency=low
 
   * remove the simulate flag for apt-get. Bug #16021
