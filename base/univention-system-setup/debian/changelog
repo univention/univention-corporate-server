@@ -1,3 +1,10 @@
+univention-system-setup (3.0.26-1) unstable; urgency=low
+
+  * regenerate certificate of univention-directory-manager if domain name
+    is changed (Bug #15214)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 29 Oct 2009 15:33:20 +0100
+
 univention-system-setup (3.0.25-1) unstable; urgency=low
 
   * cleanup the postinst script. Bug #15445

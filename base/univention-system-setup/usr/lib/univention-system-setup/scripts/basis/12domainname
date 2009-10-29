@@ -195,10 +195,14 @@ fi
 echo `date` : "Create new host certificate"  >> /var/log/univention/setup.log
 
 if [ "$server_role" = "domaincontroller_master" ]; then  # create the new certificate
+	source /usr/share/univention-ssl/make-certificates.sh;
 	if [ ! -d "/etc/univention/ssl/$hostname.$new_domainname" ]; then
-		source /usr/share/univention-ssl/make-certificates.sh;
 		gencert $hostname.$new_domainname $hostname.$new_domainname
 	fi
+	rm -rf /etc/univention/ssl/univention-directory-manager.$old_domainname
+	gencert univention-directory-manager.$new_domainname univention-directory-manager.$new_domainname
+	rm -f /etc/univention/ssl/univention-directory-manager
+	ln -sf /etc/univention/ssl/univention-directory-manager.$new_domainname /etc/univention/ssl/univention-directory-manager
 else # download certificate from master
 	if [ -x "/usr/sbin/univention-scp" ]; then
 		echo `date` : "Download host certificate"  >> /var/log/univention/setup.log
