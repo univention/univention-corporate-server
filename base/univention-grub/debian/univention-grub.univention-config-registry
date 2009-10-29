@@ -8,3 +8,4 @@ Variables: grub/timeout
 Variables: grub/append
 Variables: grub/vga
 Variables: grub/memtest86
+Variables: grub/loglevel

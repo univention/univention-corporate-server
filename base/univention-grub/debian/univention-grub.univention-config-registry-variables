@@ -39,3 +39,9 @@ Description[de]=Kernel-Option "quiet" für den Standardkernel
 Description[en]=Kernel option "quiet" for the default entry
 Type=str
 Categories=system-base
+
+[grub/loglevel]
+Description[de]=Alle Kernel Meldungen mit einem Loglevel kleiner als der hier angegebene werden auf der Konsole ausgegeben.
+Description[en]=All kernel messages with a loglevel smaller than the loglevel will be printed to the console.
+Type=str
+Categories=system-base

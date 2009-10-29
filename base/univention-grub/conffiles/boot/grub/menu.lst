@@ -85,6 +85,8 @@ if baseConfig.has_key('grub/vga'):
 	defoptions += ' vga=%s' % baseConfig['grub/vga']
 if baseConfig.get('grub/quiet', "False").lower() in ['yes', 'true', '1']:
 	defoptions += ' quiet'
+if baseConfig.get('grub/loglevel', False):
+	defoptions += ' loglevel=%s' % baseConfig['grub/loglevel']
 print defoptions
 @!@
 

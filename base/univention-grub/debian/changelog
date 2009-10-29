@@ -1,3 +1,10 @@
+univention-grub (3.0.2-1) unstable; urgency=low
+
+  * added the UCR variable grub/loglevel and set them to 0 and in return
+    disable the quiet option. Bug #14309
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Oct 2009 13:24:32 +0100
+
 univention-grub (3.0.1-1) unstable; urgency=low
 
   * move UCR variables to category system-base (Bug #13505)
