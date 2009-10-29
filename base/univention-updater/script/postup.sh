@@ -20,7 +20,7 @@ rm -f /var/cache/univention-config/cache
 
 eval $(univention-baseconfig shell) >>"$UPDATER_LOG" 2>&1
 
-for p in univention-kolab2-webclient; do
+for p in univention-client-kernel-image; do
 	check_and_install $p
 done
 
