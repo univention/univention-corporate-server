@@ -722,6 +722,7 @@ class object(content):
 			if not virtual:
 				dict={_('Dynamic (DHCP)'): ['dynamic',0]}
 				self.add_elem('edit.CHECKBOX_DHCP', checkbox(dict,self.pos_y+2,self.pos_x+31,18,2,dhcp_checkbox_value))#5
+				# CHECKBOX_DHCP will return ['dynamic'] or []
 
 			self.add_elem('edit.TXT_IP', textline(_('IP address:'), self.pos_y+4, self.pos_x+2))#1
 			self.add_elem('edit.INPUT_IP', input(ip_str, self.pos_y+4, self.pos_x+14, MAXIP))#2
@@ -752,7 +753,7 @@ class object(content):
 			self.get_elem('edit.INPUT_NETMASK').enable()
 
 		def tab(self):
-			if not (self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').result()) and self.tabinit <= 1:
+			if not (self.elem_exists('edit.CHECKBOX_DHCP') and 'dynamic' in self.get_elem('edit.CHECKBOX_DHCP').result()) and self.tabinit <= 1:
 				if self.current == self.get_elem_id('edit.INPUT_IP'):
 					ip_str=self.get_elem('edit.INPUT_IP').result().strip()
 					if ip_str and self.parent.is_ip(ip_str):
@@ -809,11 +810,13 @@ class object(content):
 			ip_str=self.get_elem('edit.INPUT_IP').result().strip()
 			netmask_str=self.get_elem('edit.INPUT_NETMASK').result().strip()
 			(network_str, broadcast_str)=self.ipcalc(ip_str, netmask_str)
-			dhcp_str=self.get_elem('edit.CHECKBOX_DHCP').result().strip()
-			if not dhcp_str:
-				dhcp_str='static'
+			dhcp_str='static'	# default
 			if len(interface_str.split(':')) > 1:
 				virtual='virtual'
+			else:
+				if 'dynamic' in self.get_elem('edit.CHECKBOX_DHCP').result():
+					dhcp_str='dynamic'
+
 			interface_parameters=[ip_str, netmask_str, network_str, broadcast_str, dhcp_str, virtual]
 			#example: result['eth0']=[ip, netmask, broadcast, network, mode]
 			result[interface_str]=interface_parameters
@@ -835,20 +838,8 @@ class object(content):
 
 			ip_str=self.get_elem('edit.INPUT_IP').result().strip()
 			netmask_str=self.get_elem('edit.INPUT_NETMASK').result().strip()
-			if not (self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').result().strip()):
-				#IP
-				if ip_str == '':
-					return missing+_('IP address')
-				elif not self.parent.is_ip(ip_str.strip('\n')):
-					return invalid+_('IP address')
-				#Netmask
-				elif netmask_str == '':
-					return missing+_('Netmask')
-				elif not self.parent.is_ip(netmask_str.strip('\n')):
-					return invalid+_('Netmask')
-				else:
-					return 0
-			else:
+			if self.elem_exists('edit.CHECKBOX_DHCP') and 'dynamic' in self.get_elem('edit.CHECKBOX_DHCP').result():
+				# CHECKBOX_DHCP returned ['dynamic']
 				if self.parent.serversystem:
 					#IP
 					if ip_str == '':
@@ -864,6 +855,20 @@ class object(content):
 						return 0
 				else:
 						return 0
+			else:
+				# CHECKBOX_DHCP is not present (virtual interface) or returned []
+				#IP
+				if ip_str == '':
+					return missing+_('IP address')
+				elif not self.parent.is_ip(ip_str.strip('\n')):
+					return invalid+_('IP address')
+				#Netmask
+				elif netmask_str == '':
+					return missing+_('Netmask')
+				elif not self.parent.is_ip(netmask_str.strip('\n')):
+					return invalid+_('Netmask')
+				else:
+					return 0
 
 
 		def input(self,key):

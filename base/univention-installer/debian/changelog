@@ -1,3 +1,9 @@
+univention-installer (5.0.36-3) unstable; urgency=low
+
+  * fix handling of DHCP option widget return value (Bug #12130)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Oct 2009 09:56:06 +0100
+
 univention-installer (5.0.36-2) unstable; urgency=low
 
   * refix bugs in DHCP option widget and default logic (Bug #12130)
