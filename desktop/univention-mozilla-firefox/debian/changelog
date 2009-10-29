@@ -1,3 +1,9 @@
+univention-mozilla-firefox (4.0.2-1) unstable; urgency=low
+
+  * update the firefox.js prefs to firefox 3.5.3. Bug #16146
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Oct 2009 08:59:45 +0100
+
 univention-mozilla-firefox (4.0.1-2) unstable; urgency=low
 
   * fixed typo. Bug #16057
