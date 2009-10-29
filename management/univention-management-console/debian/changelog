@@ -1,3 +1,10 @@
+univention-management-console (2.0.25-1) unstable; urgency=low
+
+  * added another expect question to the vnc password set script. Bug
+    #16141
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Oct 2009 06:36:23 +0100
+
 univention-management-console (2.0.24-1) unstable; urgency=low
 
   * use mod_rewrite instead of redirect for webui-style (Bug #14625)
