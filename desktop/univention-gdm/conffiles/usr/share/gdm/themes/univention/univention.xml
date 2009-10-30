@@ -77,6 +77,23 @@ pos["1280x1024"]["button_gap"] = 13
 pos["1280x1024"]["button_w"] = 141
 pos["1280x1024"]["button_h"] = 34
 
+pos["1400x1050"] = {}
+pos["1400x1050"]["fontscale"] = 60
+pos["1400x1050"]["login_x"] = 475
+pos["1400x1050"]["login_y"] = 574
+pos["1400x1050"]["loginpw_x"] = 628
+pos["1400x1050"]["loginpw_y"] = 565
+pos["1400x1050"]["login_w"] = 340
+pos["1400x1050"]["login_h"] = 39
+pos["1400x1050"]["loginPad_x"] = 4
+pos["1400x1050"]["loginPad_y"] = 4
+pos["1400x1050"]["loginPad_w"] = -8
+pos["1400x1050"]["loginPad_h"] = -8
+pos["1400x1050"]["button_y"] = 626
+pos["1400x1050"]["button_gap"] = 15
+pos["1400x1050"]["button_w"] = 159
+pos["1400x1050"]["button_h"] = 39
+
 pos["1600x1200"] = {}
 pos["1600x1200"]["fontscale"] = 60
 pos["1600x1200"]["login_x"] = 543
