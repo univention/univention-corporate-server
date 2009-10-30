@@ -770,15 +770,15 @@ msgstr "Nach unten schieben"
 
 #: modedit.py:1175 modedit.py:1179
 msgid "Select the DNS zone of the existing DNS entry"
-msgstr "Wählen Sie die DNS Zone des existierenden DNS Eintrags"
+msgstr "Wählen Sie die DNS Zone des existierenden DNS-Eintrags"
 
 #: modedit.py:1177
 msgid "Zone of existing DNS entry"
-msgstr "Zone des existierenden DNS Eintrags"
+msgstr "Zone des existierenden DNS-Eintrags"
 
 #: modedit.py:1217 modedit.py:1220
 msgid "Select the DNS zone for the DNS alias"
-msgstr "Wählen Sie die DNS Zone für das DNS Alias aus"
+msgstr "Wählen Sie die DNS Zone für das DNS-Alias aus"
 
 #: modedit.py:1263
 msgid "Alias"
@@ -786,7 +786,7 @@ msgstr "Alias"
 
 #: modedit.py:1263
 msgid "DNS alias"
-msgstr "DNS Alias"
+msgstr "DNS-Alias"
 
 #: modedit.py:1410
 msgid "Select the DHCP Zone"

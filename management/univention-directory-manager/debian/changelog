@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.35-2) unstable; urgency=low
+
+  * fix typo in translation files (Bug #16168)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Oct 2009 14:46:55 +0100
+
 univention-directory-manager (7.0.35-1) unstable; urgency=low
 
   * make the sizelimit configurable via UCR
