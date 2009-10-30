@@ -39,7 +39,8 @@ univention-config-registry set \
 	auth/user/methods?"krb5 ldap unix" \
 	auth/user/services?"chfn chsh kde kscreensaver kcheckpass rsh ssh su sudo passwd cron" \
 	auth/admin/methods?"krb5 ldap unix" \
-	auth/admin/services?"ftp gdm login other ppp rlogin screen"
+	auth/admin/services?"ftp gdm login other ppp rlogin screen" \
+	nssldap/tls/checkpeer?no
 	
 # remove old non-multifile template
 if [ -e /etc/univention/templates/files/etc/pam.d/common-auth ]; then
