@@ -50,7 +50,7 @@ msgstr "Reverse Zone und IP-Adresse sind inkompatibel."
 
 #: __init__.py:1533
 msgid "DNS alias is already in use."
-msgstr "DNS Alias ist bereits verwendet."
+msgstr "DNS-Alias ist bereits verwendet."
 
 #: __init__.py:1773
 msgid ""
@@ -65,8 +65,8 @@ msgid ""
 "The DNS alias entry for this host should contain the zone name, the alias "
 "zone container DN and the alias."
 msgstr ""
-"der DNS Alias Eintrag für diesen Rechner sollte den Zonennamen, die LDAP-DN "
-"des Alias Zonencontainers und den Alias Namen enthalten."
+"der DNS-Alias Eintrag für diesen Rechner sollte den Zonennamen, die LDAP-DN "
+"des Alias-Zonencontainers und den Alias-Namen enthalten."
 
 #: __init__.py:2031
 msgid "DNS forward zone"
@@ -87,7 +87,7 @@ msgstr "DHCP"
 
 #: __init__.py:2055
 msgid "DNS Alias"
-msgstr "DNS Alias"
+msgstr "DNS-Alias"
 
 #: __init__.py:2216
 msgid "Referencing objects"

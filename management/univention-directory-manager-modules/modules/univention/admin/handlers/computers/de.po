@@ -48,7 +48,7 @@ msgstr "Name"
 #: ipmanagedclient.py:139 macos.py:148 managedclient.py:157
 #: memberserver.py:177 mobileclient.py:157 thinclient.py:138 windows.py:146
 msgid "DNS alias"
-msgstr "DNS alias"
+msgstr "DNS-Alias"
 
 #: computer.py:88 domaincontroller_backup.py:76 domaincontroller_master.py:76
 #: domaincontroller_slave.py:76 ipmanagedclient.py:67 macos.py:76
@@ -142,7 +142,7 @@ msgstr "Reverse Zone für DNS-Eintrag"
 #: managedclient.py:146 memberserver.py:166 mobileclient.py:146
 #: thinclient.py:127 windows.py:135
 msgid "Zone for DNS alias"
-msgstr "Zone für DNS Alias"
+msgstr "Zone für DNS-Alias"
 
 #: domaincontroller_backup.py:187 domaincontroller_master.py:187
 #: domaincontroller_slave.py:187 ipmanagedclient.py:149 macos.py:158

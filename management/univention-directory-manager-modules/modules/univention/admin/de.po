@@ -880,8 +880,8 @@ msgid ""
 "The DNS alias entry for this host should contain the zone name, the alias "
 "zone container DN and the alias."
 msgstr ""
-"Der DNS Alias Eintrag für diesen Rechner sollte den Zonennamen, die LDAP-DN des Alias Zonencontainers und "
-"den Alias Namen enthalten."
+"Der DNS-Alias Eintrag für diesen Rechner sollte den Zonennamen, die LDAP-DN des Alias-Zonencontainers und "
+"den Alias-Namen enthalten."
 
 #: uexceptions.py:102
 msgid "Next IP address not found."
@@ -1082,7 +1082,7 @@ msgid ""
 "forward zone."
 msgstr ""
 "Der DNS-Forward Eintrag konnte nicht erzeugt werden. Es sollten existierende "
-"DNS Alias Records oder vergleichbare DNS-Objekte mit dem Namen dieses "
+"DNS-Alias Records oder vergleichbare DNS-Objekte mit dem Namen dieses "
 "Rechners aus der DNS-Forward-Zone entfernt werden."
 
 #: uexceptions.py:231
