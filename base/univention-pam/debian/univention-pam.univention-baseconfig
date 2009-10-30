@@ -29,6 +29,7 @@ Variables: ldap/server/name
 Variables: ldap/server/addition
 Variables: nssldap/bindpolicy
 Variables: nssldap/idle/timelimit
+Variables: nssldap/tls/checkpeer
 
 Type: file
 File: etc/nsswitch.conf

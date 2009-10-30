@@ -2,4 +2,10 @@
 Description[de]="nscd -i group bei Gruppenänderungen"
 Description[en]="nscd -i group at group changes"
 Type=str
-Categories=System
+Categories=system-base
+
+[nssldap/tls/checkpeer]
+Description[de]="Soll eine Überprüfung des Server-Zeritifikats durchgeführt werden"
+Description[en]="If a verification of the server certificate should be done"
+Type=bool
+Categories=system-base
