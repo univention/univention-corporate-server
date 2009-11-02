@@ -1,8 +1,15 @@
+univention-directory-replication (3.0.0-5) unstable; urgency=low
+
+  * add the new (future) OIDs for olc* attributes and objectclasses
+    to the filter list to be safe (Bug #16155).
+
+ -- Arvid Requate <requate@univention.de>  Mon,  2 Nov 2009 13:45:56 +0100
+
 univention-directory-replication (3.0.0-4) unstable; urgency=low
 
   * adjust filtered OIDs for olc* attributes and objectclasses to
     the internal OpenLDAP Experimental OIDs reintroduced by the
-    OLcfg_OIDs.patch for openldap (Bug #14411).
+    avoid_OID_changes.patch for openldap (Bug #14411).
 
  -- Arvid Requate <requate@univention.de>  Fri, 30 Oct 2009 13:56:55 +0100
 
