@@ -838,16 +838,16 @@ msgid "Load file"
 msgstr "Datei laden"
 
 #: modedit.py:1882
-msgid "JPEG photo"
-msgstr "JPEG Foto"
+msgid "User's picture (JPEG format)"
+msgstr "Bild des Benutzers (JPEG-Format)"
 
 #: modedit.py:1890
-msgid "Display JPEG photo"
-msgstr "JPEG Foto anzeigen"
+msgid "Display user's picture"
+msgstr "Bild des Benutzers anzeigen"
 
 #: modedit.py:1892
-msgid "Delete JPEG photo"
-msgstr "JPEG Foto löschen"
+msgid "Delete user's picture"
+msgstr "Bild des Benutzers löschen"
 
 #: modedit.py:1969
 msgid "Delete certificate"

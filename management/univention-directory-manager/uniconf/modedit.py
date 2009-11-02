@@ -1879,7 +1879,7 @@ class modedit(unimodule.unimodule):
 						if name:
 							self.jpegBrowse = question_file('', {} , {"helptext":_("Select a file")})
 							self.jpegLoadBtn = button(_("Load file"),{'icon':'/style/ok.gif'},{"helptext":_("Upload selected file")})
-							head_text = _('JPEG photo')
+							head_text = _('User\'s picture (JPEG format)')
 
 							if value:
 								tmp = tempfile.mkstemp('.jpg.tmp', 'univention-admin', '/tmp/webui')
@@ -1887,9 +1887,9 @@ class modedit(unimodule.unimodule):
 								fh.write(string.join(value, ''))
 								fh.close()
 								link_vars='mime-type=image/jpeg&tmpFile=%s' % tmp[1]
-								link_text=_('Display JPEG photo')
+								link_text=_('Display user\'s picture')
 								linktext='<a href="file.php?%s" target="_blank">%s</a>' % (link_vars,link_text)
-								self.jpegDeleteBtn = button(_("Delete JPEG photo"),{'icon':'/style/cancel.gif'},{"helptext":_("Delete JPEG photo")})
+								self.jpegDeleteBtn = button(_("Delete user\'s picture"),{'icon':'/style/cancel.gif'},{"helptext":_("Delete JPEG photo")})
 
 
 								
