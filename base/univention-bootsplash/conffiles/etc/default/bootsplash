@@ -25,7 +25,9 @@ SPLASH="no"
 THEME="current"
 
 # Which consoles should be displayed with different bootsplash images
-BOOTSPLASH_TTYS="1 2 3 4 5"
+BOOTSPLASH_TTYS=" "
+# the space is necessary to keep the bootsplash init script from
+# using defaults
 
 # What messages must be displayed at boot and shutdown time
 MSG_BOOT="Booting the system. Please wait..."

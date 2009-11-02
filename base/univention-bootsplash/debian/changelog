@@ -1,3 +1,9 @@
+univention-bootsplash (2.0.1-6) unstable; urgency=low
+
+  * switch of BOOTSPLASH_TTY on all consoles (Bug #16156)
+
+ -- Arvid Requate <requate@univention.de>  Mon,  2 Nov 2009 17:31:56 +0100
+
 univention-bootsplash (2.0.1-5) unstable; urgency=low
 
   * removed univention-appendsplash (Bug: #14309)
