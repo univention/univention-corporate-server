@@ -1,0 +1,6 @@
+#!/bin/sh
+@%@BCWARNING=#@%@
+
+numlockx
+
+exit 0
