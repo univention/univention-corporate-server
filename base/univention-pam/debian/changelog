@@ -1,3 +1,9 @@
+univention-pam (3.0.4-3) unstable; urgency=low
+
+  *  edit variable name and description for nscd listener module #2174
+
+ -- Tim Petersen <petersen@univention.de>  Thu,  2 Nov 2009 08:31:50 +0200
+
 univention-pam (3.0.4-2) unstable; urgency=low
 
   * disable the verification of the server certificate as this fails with

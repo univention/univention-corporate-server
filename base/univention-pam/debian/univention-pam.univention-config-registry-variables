@@ -1,6 +1,6 @@
-[nscd/listengroup]
-Description[de]="nscd -i group bei Gruppenänderungen"
-Description[en]="nscd -i group at group changes"
+[nscd/group/invalidate_cache_on_changes]
+Description[de]="Invalidiert NSCD Gruppen Cache, sobald Gruppenzugehörigkeiten verändert wurden."
+Description[en]="Invalidate the NSCD group cache whenever a group membership has been modified."
 Type=str
 Categories=system-base
 

@@ -30,7 +30,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA      02110-1301      USA
 
 name='nscd_update'
-description='updates nscd at group changes'
+description='Invalidate the NSCD group cache whenever a group membership has been modified.'
 filter='(objectClass=univentionGroup)'
 attributes=['uniqueMember', 'cn']
 
@@ -46,7 +46,7 @@ def postrun():
 		baseConfig = univention_baseconfig.baseConfig()
 		baseConfig.load()
 
-		if baseConfig['nscd/listengroup'] == 'true':
+		if baseConfig['nscd/group/invalidate_cache_on_changes'] == 'true':
 
 			listener.run('nscd -i', ['group'])
 	except:
