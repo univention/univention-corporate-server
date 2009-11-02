@@ -14,10 +14,8 @@
 groups = configRegistry.get( 'dansguardian/groups', 'www-access' ).split( ';' )
 
 if configRegistry.get( 'dansguardian/groups/system', 'yes' ).lower() in ( 'on', 'yes', '1' ):
-	i = 1
 	for grp in groups:
-		print 'filter%d=%s' % ( i, grp )
-		i += 1
+		print grp
 else:
 	begin = 'dansguardian/groups/'
 	end = '/members'

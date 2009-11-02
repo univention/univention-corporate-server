@@ -1,3 +1,9 @@
+univention-antivir-web (3.0.9-1) unstable; urgency=low
+
+  * fixed typos in two UCR templates (Bug #13850)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 02 Nov 2009 14:59:58 +0100
+
 univention-antivir-web (3.0.8-1) unstable; urgency=low
 
   * register UCR template for filter groups (Bug #15484)
