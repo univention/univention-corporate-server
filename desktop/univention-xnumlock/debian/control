@@ -7,7 +7,8 @@ Standards-Version: 3.5.2
 
 Package: univention-xnumlock
 Architecture: any
-Depends: ${shlibs:Depends}, gdm, numlockx
+Depends: ${shlibs:Depends}, univention-gdm (>>5.0.10-1), numlockx
+Conflicts: univention-gdm (<<5.0.10-1)
 Description: UCS - active numlock on login
  This package enables 'numlock' on login.
  .

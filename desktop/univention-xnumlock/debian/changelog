@@ -1,3 +1,10 @@
+univention-xnumlock (4.0.2-1) unstable; urgency=low
+
+  * move the xnumlock call to a own gdm init script because now
+    univention-gdm brings the default init script. Bug #16197
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 02 Nov 2009 07:21:35 +0100
+
 univention-xnumlock (4.0.1-1) unstable; urgency=low
 
   * switch to numlockx. Bug #14173
