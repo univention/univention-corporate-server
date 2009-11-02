@@ -46,7 +46,7 @@ def postrun():
 		baseConfig = univention_baseconfig.baseConfig()
 		baseConfig.load()
 
-		if baseConfig['nscd/group/invalidate_cache_on_changes'] == 'true':
+		if baseConfig.get('nscd/group/invalidate_cache_on_changes', 'false').lower() in [ 'true', 'yes', 'on']:
 
 			listener.run('nscd -i', ['group'])
 	except:
