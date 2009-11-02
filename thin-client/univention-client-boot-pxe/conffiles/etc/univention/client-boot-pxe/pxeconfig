@@ -28,6 +28,8 @@ if 'pxe/ldapport' in baseConfig.keys():
 	line += 'ldapPort=%s ' % baseConfig['pxe/ldapport']
 if 'pxe/append' in baseConfig.keys():
 	line += '%s ' % baseConfig['pxe/append']
+if baseConfig.get('pxe/loglevel', False):
+	line += 'loglevel=%s ' % baseConfig['pxe/loglevel']
 
 print 'APPEND %s' % line
 @!@

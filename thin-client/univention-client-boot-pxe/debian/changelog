@@ -1,3 +1,10 @@
+univention-client-boot-pxe (4.0.0-2) unstable; urgency=low
+
+  * added UCR var pxe/loglevel?0 for controlling  kernel log level
+    and disabled pxe/quiet (Bug: #16119)
+
+ -- Felix Botner <botner@univention.de>  Mon,  2 Nov 2009 10:50:25 +0100
+
 univention-client-boot-pxe (4.0.0-1) unstable; urgency=low
 
   * added some more pxe parameter for the boot, for example ldapServer.

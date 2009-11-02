@@ -5,8 +5,10 @@ Variables: pxe/quiet
 Variables: pxe/nameserver
 Variables: pxe/ldapserver
 Variables: pxe/ldapport
+Variables: pxe/loglevel
 
 Type: module
 Module: clientbootpxe.py
 Variables: pxe/nameserver
 Variables: pxe/quiet
+Variables: pxe/loglevel

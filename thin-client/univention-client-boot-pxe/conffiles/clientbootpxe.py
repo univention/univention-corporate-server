@@ -29,6 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os
+import re
 from fileinput import *
 from glob import glob
 
@@ -51,6 +52,14 @@ def update_nameserver(line, nameserver):
 	else:
 		return line
 
+def update_loglevel(line, loglevel):
+	line = line.strip('\n')
+	if 'APPEND root=' in line:
+		line = re.sub(" loglevel=\d+", "", line)
+		if loglevel:
+			line = line + " loglevel=%s" % loglevel
+	return line
+
 def update_quiet(line, quiet):
 	line = line.strip('\n')
 	if 'APPEND root=' in line:
@@ -67,8 +76,10 @@ def handler(baseConfig, changes):
 	quiet = False
 	if baseConfig.get('pxe/quiet', "False").lower() in ['yes', 'true', '1']:
 		quiet = True
+	loglevel = baseConfig.get('pxe/loglevel', False)
 	for line in input(glob(pattern), inplace = True):
 		if nameserver:
 			line = update_nameserver(line, nameserver)
 		line = update_quiet(line, quiet)
+		line = update_loglevel(line, loglevel)
 		print line
