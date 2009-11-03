@@ -113,7 +113,6 @@ check_ldap_tls_connection () {
 	fi
 
 	echo -e "\033[60Gdone"
-	exit 0
 }
 
 while [ $# -gt 0 ]
