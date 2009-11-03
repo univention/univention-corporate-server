@@ -104,6 +104,18 @@ download_host_certificate () {
 	echo -e "\033[60Gdone"
 }
 
+check_ldap_tls_connection () {
+	echo -n "Check TLS connection "
+
+	ldapsearch -x -ZZ -s base -h "$DCNAME" dn >/dev/null
+	if  [ $? != 0 ]; then
+ 		failed_message "Establishing a TLS connection with $DCNAME failed. Maybe you didn't specify a FQDN."
+	fi
+
+	echo -e "\033[60Gdone"
+	exit 0
+}
+
 while [ $# -gt 0 ]
 do
 	case "$1" in
@@ -215,11 +227,6 @@ ping -c 1 $DCNAME >/dev/null 2>&1
 
 if [ $? != 0 ]; then
 	failed_message "ping to $DCNAME failed"
-fi
-
-ldapsearch -x -ZZ -s base -h "$DCNAME" dn >/dev/null
-if  [ $? != 0 ]; then
- 	failed_message "Establishing a TLS connection with $DCNAME failed. Maybe you didn't specify a FQDN."
 fi
 
 univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" echo ssh-check | grep -qs ssh-check
@@ -387,6 +394,8 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	univention-ssh-rsync $DCPWD -az -e ssh $DCACCOUNT@$DCNAME:/etc/univention/ssl/* /etc/univention/ssl/ >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 
+	check_ldap_tls_connection
+
 	download_host_certificate
 
 	if [ ! -d "/etc/univention/ssl/$hostname" ] &&  [ ! -d "/etc/univention/ssl/$hostname.$domainname" ]; then
@@ -479,6 +488,8 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 		univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/udsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
 	fi
 
+	check_ldap_tls_connection
+
 	download_host_certificate
 
 	if [ ! -d "/etc/univention/ssl/$hostname" ] &&  [ ! -d "/etc/univention/ssl/$hostname.$domainname" ]; then
@@ -543,6 +554,8 @@ elif [ "$server_role" = "memberserver" ]; then
 		univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/udsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
 	fi
 
+	check_ldap_tls_connection
+
 	download_host_certificate
 
 	univention-config-registry set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
@@ -584,6 +597,8 @@ else
 	if [ ! -e /etc/univention/ssl/ucsCA/CAcert.pem ]; then
 		univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/udsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
 	fi
+
+	check_ldap_tls_connection
 
 	download_host_certificate
 
