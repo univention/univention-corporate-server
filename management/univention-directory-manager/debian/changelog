@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.36-1) unstable; urgency=low
+
+  * don't set the focus on the username input field. Bug #16070
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2009 15:28:40 +0100
+
 univention-directory-manager (7.0.35-2) unstable; urgency=low
 
   * fix typo in translation files (Bug #16168)
