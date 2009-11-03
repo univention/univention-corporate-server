@@ -28,29 +28,30 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-VERSION=2
-INDEX="/usr/lib/univention-install/.index.txt"
+VERSION=3
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
 ldapbase=`univention-config-registry get ldap/base`
 hostname=`univention-config-registry get hostname`
 domainname=`univention-config-registry get domainname`
-
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
-
-touch /usr/lib/univention-install/.index.txt
-
-test -n "`grep "univention-printserver-pdf v${VERSION} successful" ${INDEX}`" && exit 1
-
 
 # install new printer protocoll
 univention-directory-manager settings/printeruri modify $@ --dn="cn=printeruris,cn=cups,cn=univention,$ldapbase" \
                                --append printeruri="cups-pdf:/"
 
+if [ $JS_LAST_EXECUTED_VERSION -le 2 ]; then
+	if [ "$cups_keep_ppds" != "true" ]; then
+		ldapsearch -x "(&(objectclass=univentionPrinterModels)(cn=PDF))" dn | grep dn: >/dev/null
+		if [ $? -eq 0 ]; then
+			univention-admin settings/printermodel remove $@ --dn "cn=PDF,cn=cups,cn=univention,$ldapbase"
+		fi
+	fi
+fi
+
 # install the new PDF manufacturer
 univention-directory-manager settings/printermodel create $@ --ignore_exists --position "cn=cups,cn=univention,$ldapbase" --set name=PDF \
-	--append printmodel="\"cups-pdf/PostscriptColor.ppd\" \"Generic postscript color printer rev4\""
+	--append printmodel="\"cups-pdf/CUPS-PDF.ppd\" \"Generic CUPS-PDF Printer\""
 
 # create cups pdf samba share
 univention-directory-manager shares/share create $@ --ignore_exist \
@@ -63,5 +64,7 @@ univention-directory-manager shares/share create $@ --ignore_exist \
 	--set "description=pdf printer share"
 
 test -n "`grep "univention-printserver-pdf v${VERSION} successful" ${INDEX}`" || echo "univention-printserver-pdf v${VERSION} successful" >> ${INDEX}
+
+joinscript_save_current_version
 
 exit 0
