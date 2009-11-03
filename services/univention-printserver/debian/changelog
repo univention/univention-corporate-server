@@ -1,3 +1,9 @@
+univention-printserver (3.0.23-1) unstable; urgency=low
+
+  * fix treatment of printer locations and descriptions in a more general way (Bug: #15142)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Tue,  3 Nov 2009 16:11:52 +0100
+
 univention-printserver (3.0.22-1) unstable; urgency=low
 
   * fixed join script (Bug: #15467)

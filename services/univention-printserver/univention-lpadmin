@@ -57,11 +57,7 @@ machine_uid=pwd.getpwnam('%s$' % (baseConfig['hostname']))[2]
 old_uid=os.getuid()
 os.setuid(machine_uid)
 
-command = '%s' % lpadminexec
-for arg in args:
-	command += ' "%s"' % arg
-
-child = spawn( command )
+child = spawn( lpadminexec, args )
 
 i=0
 timeout=60

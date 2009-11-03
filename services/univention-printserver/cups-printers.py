@@ -239,7 +239,7 @@ def handler(dn, new, old):
 				add=new['univentionPrinterGroupMember']
 
 			if new.has_key('univentionPrinterQuotaSupport') and new['univentionPrinterQuotaSupport'][0] == "1":
-				pkprinters(["--add","-D","\"%s\""%description.replace(' ','\ '),"--charge","%s,%s"%(page_price,job_price), new['cn'][0]])
+				pkprinters(["--add","-D","%s"%description,"--charge","%s,%s"%(page_price,job_price), new['cn'][0]])
 				for member in new['univentionPrinterGroupMember']:
 					pkprinters([ "--groups",new['cn'][0],member])
 			elif new.has_key('univentionPrinterQuotaSupport') and new['univentionPrinterQuotaSupport'][0] == "0" and old:
@@ -285,7 +285,7 @@ def handler(dn, new, old):
 					args+=[options[a], new.get(a, [''])[0]]
 
 				else:
-					args+=[options[a], '"%s"' % new.get(a, [''])[0].replace(' ', '\ ')]
+					args+=[options[a], '%s' % new.get(a, [''])[0]]
 
 			args+=[options['univentionPrinterURI'], modified_uri]
 
