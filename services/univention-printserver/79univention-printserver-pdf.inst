@@ -60,10 +60,7 @@ univention-directory-manager shares/share create $@ --ignore_exist \
 	--set "host=${hostname}.${domainname}" \
 	--set "path=/var/cache/cups-pdf/%U" \
 	--set "webaccessName=pdfPrinterShare" \
-	--set "name=pdfPrinterShare" \
-	--set "description=pdf printer share"
-
-test -n "`grep "univention-printserver-pdf v${VERSION} successful" ${INDEX}`" || echo "univention-printserver-pdf v${VERSION} successful" >> ${INDEX}
+	--set "name=pdfPrinterShare"
 
 joinscript_save_current_version
 

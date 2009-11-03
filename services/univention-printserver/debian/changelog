@@ -1,3 +1,9 @@
+univention-printserver (3.0.22-1) unstable; urgency=low
+
+  * fixed join script (Bug: #15467)
+
+ -- Felix Botner <botner@univention.de>  Tue,  3 Nov 2009 11:54:35 +0100
+
 univention-printserver (3.0.21-2) unstable; urgency=low
 
   * added dependency to ppd package and fixed cups-pdf ppd path (Bug: #15467)
