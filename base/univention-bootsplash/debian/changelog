@@ -1,3 +1,9 @@
+univention-bootsplash (2.0.1-7) unstable; urgency=low
+
+  * added bootsplash config (Bug: #14309)
+
+ -- Felix Botner <botner@univention.de>  Tue,  3 Nov 2009 11:20:04 +0100
+
 univention-bootsplash (2.0.1-6) unstable; urgency=low
 
   * switch of BOOTSPLASH_TTY on all consoles (Bug #16156)

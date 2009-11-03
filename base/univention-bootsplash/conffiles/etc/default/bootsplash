@@ -1,12 +1,4 @@
-# Warning: This file is auto-generated and might be overwritten by
-#          univention-baseconfig.
-#          Please edit the following file instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-baseconfig überschrieben werden.
-#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
-#
-#       /etc/univention/templates/files/etc/default/bootsplash
-#
+@%@BCWARNING=# @%@
 
 # Defaults for bootsplash initscript
 # sourced by /etc/init.d/bootsplash
@@ -22,7 +14,7 @@ SPLASH="no"
 # The theme bootsplash should use.  Right now this points to
 # /etc/bootsplash/theme/current which is a symlink to the
 # current theme.
-THEME="current"
+THEME=/etc/bootsplash/themes/ucs
 
 # Which consoles should be displayed with different bootsplash images
 BOOTSPLASH_TTYS=" "
@@ -40,5 +32,4 @@ MSG_SHUTDOWN="Shutting down the system. Please wait..."
 USE_STATIC_FBT="no"
 
 # Size for the bootsplash-image in the initrd
-SPLASH_SIZE=1024x768
-
+SPLASH_SIZE=@!@print '%s' % baseConfig.get('bootsplash/size', '640x480')@!@
