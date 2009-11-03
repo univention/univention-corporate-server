@@ -1,3 +1,9 @@
+univention-thin-client-bootsplash (0.0.2-3) unstable; urgency=low
+
+  * fixed control (Bug: #14309)
+
+ -- Felix Botner <botner@univention.de>  Tue,  3 Nov 2009 10:56:28 +0100
+
 univention-thin-client-bootsplash (0.0.2-2) unstable; urgency=low
 
   * removed bootsplash config (Bug: #14309)
