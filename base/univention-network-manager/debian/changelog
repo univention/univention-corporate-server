@@ -1,3 +1,10 @@
+univention-network-manager (0.3.2-2) unstable; urgency=low
+
+  * if-up and ifdown scripts: just restart nscd and ntpd if they are
+    running (Bug #16162)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 03 Nov 2009 15:26:18 +0100
+
 univention-network-manager (0.3.2-1) unstable; urgency=low
 
   * ensure that a gateway is set if configured (Bug #15967)
