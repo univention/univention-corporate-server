@@ -1,3 +1,9 @@
+univention-thin-client-bootsplash (0.0.2-2) unstable; urgency=low
+
+  * removed bootsplash config (Bug: #14309)
+
+ -- Felix Botner <botner@univention.de>  Tue,  3 Nov 2009 10:45:09 +0100
+
 univention-thin-client-bootsplash (0.0.2-1) unstable; urgency=low
 
   * added build dependency to univention-thin-client-tools (Bug: #16196)

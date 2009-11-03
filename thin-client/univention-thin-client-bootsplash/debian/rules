@@ -52,8 +52,6 @@ install: build
 	dh_installdirs
 	
 	install -m 0755 thin-client-bootsplash debian/univention-thin-client-bootsplash-config/etc/init.d/
-	install -m 644 etc/bootsplash/themes/ucs/config/*cfg debian/univention-thin-client-bootsplash/etc/bootsplash/themes/ucs/config/
-	install -m 644 etc/bootsplash/themes/ucs/images/*jpg debian/univention-thin-client-bootsplash/etc/bootsplash/themes/ucs/images/
 	
 	univention-install-baseconfig
 	
