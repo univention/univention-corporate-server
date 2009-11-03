@@ -817,7 +817,7 @@ class object(content):
 				if 'dynamic' in self.get_elem('edit.CHECKBOX_DHCP').result():
 					dhcp_str='dynamic'
 
-			interface_parameters=[ip_str, netmask_str, network_str, broadcast_str, dhcp_str, virtual]
+			interface_parameters=[ip_str, netmask_str, broadcast_str, network_str, dhcp_str, virtual]
 			#example: result['eth0']=[ip, netmask, broadcast, network, mode]
 			result[interface_str]=interface_parameters
 			#example: [device, ip, netmask, broadcast, network, mode, virtual='']

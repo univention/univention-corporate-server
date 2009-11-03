@@ -1,3 +1,9 @@
+univention-installer (5.0.36-4) unstable; urgency=low
+
+  * fix broadcast and network flip (Bug #16234)
+
+ -- Arvid Requate <requate@univention.de>  Tue,  3 Nov 2009 11:38:49 +0100
+
 univention-installer (5.0.36-3) unstable; urgency=low
 
   * fix handling of DHCP option widget return value (Bug #12130)
