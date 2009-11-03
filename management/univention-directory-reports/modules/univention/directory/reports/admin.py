@@ -144,6 +144,9 @@ class AdminConnection( object ):
 
 			string = string.replace('°', '$^{\\circ}$')
 
+			# Unicode char \u8:´ not set up for use with LaTeX.
+			string = string.replace('´', "")
+
 			return string
 
 		if not prop:
