@@ -1,3 +1,9 @@
+univention-join (2.0.19-1) unstable; urgency=low
+
+  * chgrp ldap-backup.secret to "DC Backup Hosts" (Bug: 15557)
+
+ -- Felix Botner <botner@univention.de>  Wed,  4 Nov 2009 14:34:42 +0100
+
 univention-join (2.0.18-1) unstable; urgency=low
 
   * remove accidentaly leftover exit 0 (Bug: #9650)
