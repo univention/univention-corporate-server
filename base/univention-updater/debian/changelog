@@ -1,3 +1,9 @@
+univention-updater (5.0.19-1) unstable; urgency=low
+
+  * adapt estimations for required disk space (Bug #16105)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 04 Nov 2009 09:42:36 +0100
+
 univention-updater (5.0.18-1) unstable; urgency=low
 
   * Update univention-client-kernel-image in postup script (Bug #14905)
