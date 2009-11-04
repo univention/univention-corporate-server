@@ -1,3 +1,11 @@
+univention-gdm (5.0.11-1) unstable; urgency=low
+
+  * added a conflict to the old univention-xnumlock package beacause
+    gdm/Init/Default has been moved from univention-xnumlock to
+    univention-gdm. Bug #16197
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Nov 2009 08:43:09 +0100
+
 univention-gdm (5.0.10-1) unstable; urgency=low
 
   * add support for resolution 1400x1050 (Bug #15778)
