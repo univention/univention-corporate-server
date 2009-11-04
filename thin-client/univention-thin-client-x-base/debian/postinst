@@ -32,6 +32,12 @@
 
 univention-thin-client-apt install univention-thin-client-x-base-config
 
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.6-1; then
+	# install univention-xnumlock before updating univention-gdm because a conffile was
+	# moved from univention-xnumlock to univention-gdm. Bug #16197
+	univention-thin-client-apt install univention-xnumlock
+fi
+
 univention-thin-client-apt install univention-gdm \
                                    univention-gdm-sessions \
                                    univention-xnumlock \
