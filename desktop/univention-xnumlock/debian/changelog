@@ -1,3 +1,9 @@
+univention-xnumlock (4.0.2-3) unstable; urgency=low
+
+  * remove the gdm dependency and conflict. Bug #16197
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Nov 2009 14:26:38 +0100
+
 univention-xnumlock (4.0.2-2) unstable; urgency=low
 
   * added missing file from last commit. Bug #16197
