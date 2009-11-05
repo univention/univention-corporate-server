@@ -1,3 +1,10 @@
+univention-config-registry (5.0.51-1) unstable; urgency=low
+
+  * LocalizedDictionary.get: if the key could not be found return the
+    given default value (Bug #15556)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 05 Nov 2009 14:25:03 +0100
+
 univention-config-registry (5.0.50-1) unstable; urgency=low
 
   * set the codename for UCS 2.3. Bug #14412
