@@ -100,7 +100,7 @@ fi
 # Update package lists
 apt-get update >>"$UPDATER_LOG" 2>&1
 #
-for pkg in univention-ssl univention-thin-client-basesystem ; do
+for pkg in univention-ssl univention-thin-client-basesystem univention-thin-client-x-base ; do
 	# pre-update $pkg to avoid pre-dependency-problems
 	if dpkg -l $pkg | grep ^ii  >>"$UPDATER_LOG" 2>&1 ; then
 	    echo "Starting preupdate of $pkg... (may take some time)"
