@@ -1,3 +1,9 @@
+univention-netlogon-ldapsearch (1.0.0-2) unstable; urgency=low
+
+  * add conflict with univention-printer-assignment << 2.0.1-1 (Bug #14944)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Thu,  5 Nov 2009 09:50:09 +0100
+
 univention-netlogon-ldapsearch (1.0.0-1) unstable; urgency=low
 
   * create initial package (Bug #14944)
