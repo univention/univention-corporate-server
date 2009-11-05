@@ -1,3 +1,9 @@
+univention-join (2.0.19-2) unstable; urgency=low
+
+  * fixed postinst (Bug: 15557)
+
+ -- Felix Botner <botner@univention.de>  Thu,  5 Nov 2009 10:04:16 +0100
+
 univention-join (2.0.19-1) unstable; urgency=low
 
   * chgrp ldap-backup.secret to "DC Backup Hosts" (Bug: 15557)
