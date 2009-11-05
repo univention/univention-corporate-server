@@ -102,7 +102,7 @@ class handler( umch.simpleHandler ):
 			action = None
 		res = umcp.Response( object )
 		if not action or action == 'next':
-			if self._current_page == None:
+			if self._current_page == None or ( self._current_page == 'general' and not 'support' in object.options ):
 				m, p = self._call_dmidecode()
 				object.options[ 'manufacturer' ] = m
 				object.options[ 'model' ] = p
@@ -236,7 +236,7 @@ class handler( umch.simpleHandler ):
 		wiz.set_image( image )
 
 		description = _( '''
-This modul collects information about the hardware of your system. These might be helpful in connection with a support case. By transmitting the data to Univention you provide the information on which platforms UCS is currently used and therefore should be supported by newer versions. All information gathered by this modul will be made anonymous before the transfer to Univention. In the following procedure you will be informed in detail about the each step.
+This module collects information about the hardware of your system. This might be helpful in connection with a support case. By transmitting the data to Univention you provide the information on which platforms UCS is currently used and therefore should be supported by newer versions. All information gathered by this module will be made anonymous before the transfer to Univention. In the following procedure you will be informed in detail about the each step.
 ''' )
 		wiz._content.add_row( [ umcd.Fill( 2, description ), ] )
 		wiz._content.add_row( [ umcd.Fill( 2 ), ] )
@@ -277,7 +277,7 @@ If this is related to a support case the next step will be to enter the ticket n
 		wiz.set_image( image )
 
 		description = _( '''
-If a Univention Support Engeenier has aksed you to provide these information, than please insert the ticket number of the related support ticket into the following text field. The ticket number can be found in the subject of a support mail of the ticket. This information will speed up the processing of the ticket.
+If a Univention Support Engineer has asked you to provide these information, than please insert the ticket number of the related support ticket into the following text field. The ticket number can be found in the subject of a support mail of the ticket. This information will speed up the processing of the ticket.
 ''' )
 		wiz._content.add_row( [ umcd.Fill( 2, description ), ] )
 		wiz._content.add_row( [ umcd.Fill( 2 ), ] )
@@ -288,7 +288,7 @@ If a Univention Support Engeenier has aksed you to provide these information, th
 		wiz._content.add_row( [ ticket, ] )
 
 		wiz._content.add_row( [ umcd.Fill( 2 ), ] )
-		wiz._content.add_row( [ umcd.Fill( 2, _( 'In the next step the information aobut the hardware of your system will be collect and a summary will be shown. No information will be send to Univention.' ) ), ] )
+		wiz._content.add_row( [ umcd.Fill( 2, _( 'In the next step the information about the hardware of your system will be collect and a summary will be shown. No information will be send to Univention.' ) ), ] )
 		wiz._content.add_row( [ umcd.Fill( 2 ), ] )
 
 		
@@ -336,7 +336,7 @@ The following information has been collected and will be transfered to Univentio
 		wiz._content.add_row( [ gfx_dev, ] )
 
 		infos = _( '''
-Additionally to the information listed above some more details about your system hsa been collected. The hole set of collected data that willb e transmitted to Univention can be downlaoded at the following URL:
+Additionally to the information listed above some more details about your system has been collected. The hole set of collected data that will be transmitted to Univention can be downloaded at the following URL:
 ''' )
 		wiz._content.add_row( [ umcd.Fill( 2 ), ] )
 		wiz._content.add_row( [ umcd.Fill( 2, infos ), ] )
@@ -346,7 +346,7 @@ Additionally to the information listed above some more details about your system
 		wiz._content.add_row( [ link, ] )
 		wiz._content.add_row( [ umcd.Fill( 2 ), ] )
 
-		wiz._content.add_row( [ umcd.Fill( 2, _( 'In the following step two possiblities to transmit the information to Nnivention will be described.' ) ), ] )
+		wiz._content.add_row( [ umcd.Fill( 2, _( 'In the following step two possibilities to transmit the information to Univention will be described.' ) ), ] )
 		wiz._content.add_row( [ umcd.Fill( 2 ), ] )
 
 		
@@ -366,7 +366,7 @@ Additionally to the information listed above some more details about your system
 		wiz.set_image( image )
 
 		description = _( '''
-The collected information can be transfered to Univention by uploading the data or be sending the data via mail. Please selected the corresponding button for the technique of your choice.
+The collected information can be transfered to Univention by uploading the data or by sending the data via mail. Please selected the corresponding button for the technique of your choice.
 ''' )
 		wiz._content.add_row( [ umcd.Fill( 3, description ), ] )
 		wiz._content.add_row( [ umcd.Fill( 3 ), ] )
@@ -398,7 +398,7 @@ To transfer the information via mail please follow these steps:
 <li>Download the archive with the collected information and save it on your local system (find the link below)</li>
 <li>Click on link <i>Send mail</i> to open your mail program</li>
 <li>Attach the downloaded archive to the mail and send it to Univention</li>
-<li>End this assistent by clicking on the button <i>Finish</i></li>
+<li>End this assistant by clicking on the button <i>Finish</i></li>
 </ol>
 ''' )
 		wiz._content.add_row( [ description, ] )
@@ -426,7 +426,7 @@ To transfer the information via mail please follow these steps:
 		wiz.set_image( image )
 
 		description = _( '''
-The information were tranfered to Univention successfully.
+The information were transfered to Univention successfully.
 <br>
 Thank you very much for your support!
 ''' )
@@ -452,7 +452,7 @@ The information could not be tranfered to Univention successfully. Therefor we w
 Thank you very much for your support!
 ''' )
 		wiz._content.add_row( [ umcd.HTML( description ), ] )
-		wiz._content.add_row( [ '', ] )
+		wiz._content.add_row( [ umcd.HTML( instruction ), ] )
 		
 		finish = umcp.SimpleCommand('sysinfo/show', { 'action' : 'finish' } )
 

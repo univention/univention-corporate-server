@@ -1,3 +1,10 @@
+univention-system-info (0.1.9-2) unstable; urgency=low
+
+  * fixed some typos
+  * fixed a traceback (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 05 Nov 2009 11:23:15 +0100
+
 univention-system-info (0.1.8-1) unstable; urgency=low
 
   * add link univention-sysinfo to univention-system-info (Bug #8969)
