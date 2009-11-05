@@ -989,8 +989,7 @@ class question_mselect extends extra_multi{
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		$str .= '</td></tr><tr><td>
 <select '.$access.' title="'.$this->basket['helptext'].'" tabindex="'.$this->tabindex.'"';
-# FIXME: enabling dojo.form.MultiSelect leads to unusable question_mselect
-		#$str .= " dojoType=\"dijit.form.MultiSelect\"";
+		$str .= " dojoType=\"dijit.form.MultiSelect\"";
 		if ($this->warn) 
 			$str .= ' class="mselect_warn" ';
 		else 

@@ -1,3 +1,9 @@
+univention-webui (3.0.19-1) unstable; urgency=low
+
+  * add the dojoType to the mselect object. Bug #16256
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 05 Nov 2009 09:16:15 +0100
+
 univention-webui (3.0.18-1) unstable; urgency=low
 
   * changed the password polciy tooltip because the minimum length of
