@@ -130,7 +130,7 @@ nameserver=$(cat /proc/cmdline | grep DNSSERVER | sed -e 's/.*DNSSERVER=//g' | a
 ldapserver=$(cat /proc/cmdline | grep ldapServer | sed -e 's/.*ldapServer=//g' | awk '{print "ldapServer="$1;}')
 ldapport=$(cat /proc/cmdline | grep ldapPort | sed -e 's/.*ldapPort=//g' | awk '{print "ldapPort="$1;}')
 vga=$(cat /proc/cmdline | grep vga | sed -e 's/.*vga=//g' | awk '{print "vga="$1;}')
-quiet_cmdline=$(cat /proc/cmdline | grep " quiet" >/dev/null)
+quiet_cmdline=$(cat /proc/cmdline | grep " quiet" >/dev/null || true)
 quiet=""
 if [ -n "$quiet_cmdline" ]; then
 	quiet="quiet"
