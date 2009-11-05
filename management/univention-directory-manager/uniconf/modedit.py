@@ -5478,12 +5478,10 @@ class modedit(unimodule.unimodule):
 				except:
 					self.save.put("membership_search_value"+key,None)
 				self.save.put("membership_search_ok"+key,1)	
+			new=[]
 			for value in mitem[0].getselected():
 				if not value in new:
-					if new and new[0]:
-						new.append(value)
-					else:
-						new=[value]
+					new.append(value)
 					
 			try:
 				current_object[key]=new
