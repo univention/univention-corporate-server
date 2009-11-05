@@ -1,3 +1,10 @@
+univention-directory-manager (7.0.38-1) unstable; urgency=low
+
+  * convert the ucr value for the sizelimit into an integer value. Bug
+    #16035
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 05 Nov 2009 09:26:44 +0100
+
 univention-directory-manager (7.0.37-1) unstable; urgency=low
 
   * fixed the userDN and groupDN handling while removing users from

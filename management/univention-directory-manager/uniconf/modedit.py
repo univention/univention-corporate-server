@@ -50,7 +50,11 @@ from M2Crypto import X509
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
-default_sizelimit = ucr.get ('directory/manager/web/sizelimit', 1000)
+try:
+	default_sizelimit = int( ucr.get ('directory/manager/web/sizelimit', 1000) )
+except ValueError:
+	default_sizelimit = 1000
+	
 co=None
 
 # update choices-lists which are defined in LDAP
