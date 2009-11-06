@@ -69,9 +69,6 @@ if [ "$FLAGNFSBOOT" = "0" ] ; then
 		fi
 	done
 
-	# bring up the loopback device
-	ifup lo
-
 	if [ -z "$myip" ] ; then
 		echo "DHCP was successful but still unable to get network config - press ENTER to reboot"
 		read
@@ -119,6 +116,9 @@ hostname "$hostname"
 univention-baseconfig set hostname="$hostname" domainname="$domainname" \
 	nameserver1="$nameserver" interfaces/eth0/address="$myip" \
 	interfaces/eth0/netmask="$subnetmask" interfaces/eth0/network="$network"  >>/dev/tty8 2>&1
+
+# bring up the loopback device
+ifup lo
 
 log_action_end_msg 0
 
