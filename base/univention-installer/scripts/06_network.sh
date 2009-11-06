@@ -77,8 +77,8 @@ for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
 
     	network_device=`echo $ucr_network_device | sed -e 's|_|:|g'`
 
-		ifconfig $network_device up		# this does not cause dhclient to run, ifup would be needed
-
+		# try to bring up interface
+		dhclient3 $network_device
     done
     set | egrep "${ifaceregex}ip=" | while read line; do
 
