@@ -1,3 +1,10 @@
+univention-installer (5.0.38-1) unstable; urgency=low
+
+  * during installation there is no dhclient3; use dhclient instead
+    (Bug #15967)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 06 Nov 2009 14:18:53 +0100
+
 univention-installer (5.0.37-1) unstable; urgency=low
 
   * bring up interfaces configured as 'dynamic' via dhclient3 (Bug #15967)
