@@ -69,6 +69,9 @@ if [ "$FLAGNFSBOOT" = "0" ] ; then
 		fi
 	done
 
+	# bring up the loopback device
+	ifup lo
+
 	if [ -z "$myip" ] ; then
 		echo "DHCP was successful but still unable to get network config - press ENTER to reboot"
 		read
