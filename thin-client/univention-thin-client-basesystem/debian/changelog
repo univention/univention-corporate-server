@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (6.0.22-1) unstable; urgency=low
+
+  * switch from dhclient to dhclient3 in the flash boot. Bug #16213
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Nov 2009 06:40:43 +0100
+
 univention-thin-client-basesystem (6.0.21-1) unstable; urgency=low
 
   * clean up the installation because the base of the chroot was

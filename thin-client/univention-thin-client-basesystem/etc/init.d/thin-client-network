@@ -38,7 +38,7 @@ if [ "$FLAGNFSBOOT" = "0" ] ; then
 	# FLASH BOOT
 	echo "(Flash Card) ... "  >>/dev/tty8 2>&1
 	mkdir -p /var/lib/dhcp
-	dhclient -e >>/dev/tty8 2>&1
+	dhclient3 >>/dev/tty8 2>&1
 	if [ ! "$?" = "0" ] ; then
 		echo "failed"
 		echo "Unable to get network configuration via DHCP - press ENTER to reboot"
