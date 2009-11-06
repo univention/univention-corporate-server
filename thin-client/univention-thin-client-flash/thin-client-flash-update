@@ -27,7 +27,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
-echo "Installing new Thin Client base system on flash:"
+. /lib/lsb/init-functions
+
+log_action_msg "Installing new Thin Client base system on flash, this may take a while"
 
 FLAGNFSBOOT=$(grep -c "root=/dev/nfs" /proc/cmdline)
 if [ "$FLAGNFSBOOT" = "0" ] ; then
@@ -42,6 +44,7 @@ if [ -z "$thinclient_flash_update" ] || [ -n "$thinclient_flash_update" -a "$thi
 	echo "The UCR variable thinclient/flash/update is not set or is set to no."
 	echo "If you want to use the flash update, please activate a UCR policy"
 	echo "with thinclient/flash/update=yes for this Thin Client."
+	log_action_end_msg 1
 	exit 0
 fi
 
@@ -73,9 +76,10 @@ disk=""
 parts=$(sed -n '1,2d;p' < /proc/partitions | awk '{print $4;}' | grep "^[^0-9]*$")
 for i in $parts ; do
 	if [ -n "$disk" ]; then
-		echo "verbose" > /proc/splash
+		# echo "verbose" > /proc/splash
 		echo "failed"
 		echo "  error: More than one disk found. Not installing base system."
+		log_action_end_msg 1
 		exit 1
 	fi
 	disk="/dev/$i"
@@ -83,9 +87,10 @@ for i in $parts ; do
 done
 
 if [ -z "$disk" ]; then
-	echo "verbose" > /proc/splash
+	# echo "verbose" > /proc/splash
 	echo "failed"
 	echo "error: No disks found. Not installing base system."
+	log_action_end_msg 1
 	exit 1
 fi
 
@@ -115,6 +120,7 @@ EOF
 	echo "done"
 	if ! [ -b "$bootpart" ] || ! [ -b "$rootpart" ]; then
 		echo "  error: could not find partions on flash drive."
+		log_action_end_msg 1
 		exit 1
 	fi
 
@@ -138,7 +144,8 @@ fi
 
 
 if [ "$version" -lt "$new_version" ]; then
-	echo "verbose" > /proc/splash
+	/sbin/usplash_write "TIMEOUT 0"
+	# echo "verbose" > /proc/splash
     echo "	newer version available. Updating filesystem:"
     echo
     # ramdisk_blocksize=4096 is needed for cramfs
@@ -152,18 +159,22 @@ if [ "$version" -lt "$new_version" ]; then
 	echo -n "    downloading kernel image ..."
     wget -O /mnt/linux "$url/linux"
     if [ ! "$?" = "0" ] ; then
-      echo "not found"
-      read
-      halt
+		/sbin/usplash_write "QUIT" || true
+		echo "not found"
+		log_action_end_msg 1
+		read
+		halt
     fi
 	echo "done"
 
 	echo -n "    downloading initrd ..."
     wget -O /mnt/initrd.splash "$url/initrd.splash"
     if [ ! "$?" = "0" ] ; then
-      echo "not found"
-      read
-      halt
+		/sbin/usplash_write "QUIT" || true
+		echo "not found"
+		log_action_end_msg 1
+		read
+		halt
     fi
 	echo "done"
 
@@ -172,9 +183,11 @@ if [ "$version" -lt "$new_version" ]; then
 	echo -n "    downloading root filesystem ..."
     wget -O $rootpart "$url/$image"
     if [ ! "$?" = "0" ] ; then
-      echo " failed"
-      read
-      halt
+		/sbin/usplash_write "QUIT" || true
+		echo " failed"
+		log_action_end_msg 1
+		read
+		halt
     fi
 	echo "done"
     echo "$new_version" > /mnt/${image}.vers
@@ -185,10 +198,16 @@ if [ "$version" -lt "$new_version" ]; then
 	cat /usr/lib/syslinux/mbr.bin > ${disk}
     echo
     echo "The update was successful. Rebooting the system."
+	log_action_end_msg 0
+	log_action_msg "Rebooting"
     reboot
+	log_action_end_msg 0
 else
     echo "	filesystem seems to be up-to-date."
 fi
 
 umount /mnt
 trap - 0
+
+log_action_end_msg 0
+

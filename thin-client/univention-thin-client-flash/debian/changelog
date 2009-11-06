@@ -1,3 +1,9 @@
+univention-thin-client-flash (3.1.5-1) unstable; urgency=low
+
+  * make the flash init script more LSB compatible. Bug #16213
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Nov 2009 10:13:28 +0100
+
 univention-thin-client-flash (3.1.4-1) unstable; urgency=low
 
   * don't exit the init script if quiet is not set as cmdline argument.
