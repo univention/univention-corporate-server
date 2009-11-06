@@ -104,6 +104,8 @@ bootsplash_start() {
         /sbin/usplash_write "TIMEOUT 600"
         /sbin/usplash_write "PULSATE"
         sleep 1
+	# disable kernel bootsplash
+	echo verbose > /proc/splash
 }
 
 bootsplash_stop() {

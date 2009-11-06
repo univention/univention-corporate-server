@@ -1,3 +1,9 @@
+univention-thin-client-bootsplash (0.0.3-1) unstable; urgency=low
+
+  * disable kernel bootsplash after starting usplash (Bug: #14309)
+
+ -- Felix Botner <botner@univention.de>  Fri,  6 Nov 2009 10:36:32 +0100
+
 univention-thin-client-bootsplash (0.0.2-3) unstable; urgency=low
 
   * fixed control (Bug: #14309)
