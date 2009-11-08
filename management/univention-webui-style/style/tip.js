@@ -38,6 +38,18 @@ function hideTip(){ // Verbirgt Tooltip
 }
 
 function sendForm(id,value){ // Formular mit Link senden und Button auf pressed setzen
+   /* 
+      https://forge.univention.org/bugzilla/show_bug.cgi?id=13035
+
+      We have to select all members in the mmselect widget before
+      the form will be submitted.
+   */
+   selectBox=document.getElementById("mmselect_widget");
+   if ( selectBox != undefined ) {
+      for (var i = 0; i < selectBox.options.length; i++) {
+         selectBox.options[i].selected = true;
+      }
+   }
    if(!value)value='pressed';
    document.forms['cache'].elements['cache'].value=id;
    document.getElementById(id).value=value;

@@ -1,3 +1,10 @@
+univention-webui-style (4.0.13-1) unstable; urgency=low
+
+  * select all members in the mmselect widget before the form will be
+    submitted. Bug #13035
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 08 Nov 2009 19:40:00 +0100
+
 univention-webui-style (4.0.12-1) unstable; urgency=low
 
   * added a ucr variable directory/manager/web/searchresult/showicons to
