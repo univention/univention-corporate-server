@@ -57,7 +57,7 @@ policy_apply_to=["shares/share"]
 policy_position_dn_prefix="cn=userquota,cn=shares"
 
 childs=0
-short_description=_('Policy: User Quota')
+short_description=_('Policy: User quota')
 policy_short_description=_('User quota')
 long_description=_('Default quota for each user on a share')
 options={
@@ -84,7 +84,7 @@ property_descriptions={
 			identifies=0
 		),
 	'hardLimitSpace': univention.admin.property(
-			short_description=_('Hard Limit (Bytes)'),
+			short_description=_('Hard limit (Bytes)'),
 			long_description=_('Hard limit. Can not be exceeded.'),
 			syntax=univention.admin.syntax.filesize,
 			multivalue=0,
