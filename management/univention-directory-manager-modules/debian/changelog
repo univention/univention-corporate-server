@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.45-1) unstable; urgency=low
+
+  * fix some more policy translation bugs (Bug: #14815)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Mon,  9 Nov 2009 15:37:34 +0100
+
 univention-directory-manager-modules (5.0.44-1) unstable; urgency=low
 
   * fix 2 more quota translation bugs (Bug: #14815)

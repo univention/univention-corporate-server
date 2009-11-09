@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-09 15:10+0100\n"
-"PO-Revision-Date: 2009-10-21 12:09+0200\n"
+"POT-Creation-Date: 2009-11-09 15:42+0100\n"
+"PO-Revision-Date: 2009-11-09 15:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1101,7 +1101,7 @@ msgstr "Repository Synchronisationseinstellungen"
 msgid "Soft limit (Bytes)"
 msgstr "Soft-Limit (Anzahl Byte)"
 
-#: share_userquota.py:47
+#: share_userquota.py:47 share_userquota.py:87
 msgid "Hard limit (Bytes)"
 msgstr "Hard-Limit (Anzahl Byte)"
 
@@ -1129,10 +1129,6 @@ msgstr "Standard-Speicherplatzbegrenzung für jeden User auf der Freigabe"
 msgid "Soft limit. If exceeded users can be warned."
 msgstr ""
 "Weiche Grenze, bei deren Überschreitung der Benutzer gewarnt werden kann"
-
-#: share_userquota.py:87
-msgid "Hard Limit (Bytes)"
-msgstr "Hard-Limit (Anzahl Byte)"
 
 #: share_userquota.py:88 share_userquota.py:108
 msgid "Hard limit. Can not be exceeded."
@@ -1170,15 +1166,15 @@ msgstr "Richtlinie: Sound"
 msgid "Sound settings"
 msgstr "Sound-Einstellungen"
 
-#: thinclient.py:46
+#: thinclient.py:46 thinclient.py:89
 msgid "File servers"
 msgstr "File-Server"
 
-#: thinclient.py:47
+#: thinclient.py:47 thinclient.py:79
 msgid "Linux terminal servers"
 msgstr "Linux-Terminal-Server"
 
-#: thinclient.py:48
+#: thinclient.py:48 thinclient.py:109
 msgid "Windows terminal servers"
 msgstr "Windows-Terminal-Server"
 
@@ -1186,7 +1182,7 @@ msgstr "Windows-Terminal-Server"
 msgid "Windows domain"
 msgstr "Windows-Domäne"
 
-#: thinclient.py:50
+#: thinclient.py:50 thinclient.py:99
 msgid "Authentication servers"
 msgstr "Authentisierungsserver"
 
@@ -1198,36 +1194,20 @@ msgstr "Richtlinie: Thin Client"
 msgid "Thin client configuration"
 msgstr "Thin-Client-Konfiguration"
 
-#: thinclient.py:79
-msgid "Linux terminal server"
-msgstr "Linux-Terminal-Server"
-
 #: thinclient.py:80
-msgid "Linux terminal Server of the Thin Client"
+msgid "Linux terminal servers of the Thin Client"
 msgstr "Linux-Terminal-Server des Thin Clients"
 
-#: thinclient.py:89
-msgid "File server"
-msgstr "File-Server"
-
 #: thinclient.py:90
-msgid "File server of the Thin Client"
+msgid "File servers of the Thin Client"
 msgstr "File-Server des Thin Clients"
 
-#: thinclient.py:99
-msgid "Authentication server"
-msgstr "Authentisierungsserver"
-
 #: thinclient.py:100
-msgid "Authentication server of the Thin Client"
+msgid "Authentication servers of the Thin Client"
 msgstr "Authentisierungsserver des Thin Client"
 
-#: thinclient.py:109
-msgid "Windows terminal server"
-msgstr "Windows-Terminal-Server"
-
 #: thinclient.py:110
-msgid "Windows terminal server for Windows Login"
+msgid "Windows terminal servers for Windows Login"
 msgstr "Windows-Terminal-Server für die Windows Anmeldung"
 
 #: thinclient.py:120
@@ -1325,6 +1305,21 @@ msgstr "Display-Grösse (mm)"
 #: xfree.py:266
 msgid "RAM on the graphics adapter in kB"
 msgstr "RAM auf der Grafikkarte in kB"
+
+#~ msgid "Linux terminal server"
+#~ msgstr "Linux-Terminal-Server"
+
+#~ msgid "Hard Limit (Bytes)"
+#~ msgstr "Hard-Limit (Anzahl Byte)"
+
+#~ msgid "File server"
+#~ msgstr "File-Server"
+
+#~ msgid "Authentication server"
+#~ msgstr "Authentisierungsserver"
+
+#~ msgid "Windows terminal server"
+#~ msgstr "Windows-Terminal-Server"
 
 #~ msgid "Configuration Registry settings"
 #~ msgstr "Configuration Registry Einstellungen"
