@@ -1053,7 +1053,8 @@ dojo.addOnLoad(function(){
 	/* catch the sendForm event and select all values in the right selectbox */
 	var submitform = document.getElementById( "form" );
 	dojo.connect(submitform, "onsubmit",function(evt) {
-		selectBox=dijit.byId("usrinput[multiple#'.$this->tabindex.'][]");
+		selectBox=dijit.byId("mmselect_widget");
+		// selectBox=dijit.byId("usrinput[multiple#'.$this->tabindex.'][]");
 		/* FIXME: the setValue call ist not correct but it was the easiest way ;) */
 		selectBox.setValue(1);
 		selectBox.invertSelection();
@@ -1062,8 +1063,8 @@ dojo.addOnLoad(function(){
 
 	dojo.query("button.dojo_switchbutton").connect("onclick",function(e) {
 		switch(e.target.id.toString()){
-			case "left-'.$this->tabindex.'" : dijit.byId("usrinput[multiple#'.$this->tabindex.'][]").addSelected(dijit.byId("field1-'.$this->tabindex.'")); break;
-			case "right-'.$this->tabindex.'" : dijit.byId("field1-'.$this->tabindex.'").addSelected(dijit.byId("usrinput[multiple#'.$this->tabindex.'][]")); break;
+			case "left-'.$this->tabindex.'" : dijit.byId("mmselect_widget").addSelected(dijit.byId("field1-'.$this->tabindex.'")); break;
+			case "right-'.$this->tabindex.'" : dijit.byId("field1-'.$this->tabindex.'").addSelected(dijit.byId("mmselect_widget")); break;
 		}
 		dojo.stopEvent(e);
 	});
@@ -1118,7 +1119,7 @@ dojo.addOnLoad(function(){
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		}
 		$str .= '</td></tr><tr><td>
-<select '.$access.' title="'.$this->basket['helptext'].'" id="usrinput[multiple#'.$this->tabindex.'][]" tabindex="'.$this->tabindex.'"';
+<select '.$access.' title="'.$this->basket['helptext'].'" id="mmselect_widget" tabindex="'.$this->tabindex.'"';
 		if ($this->warn) 
 			$str .= ' class="mselect_warn" ';
 		else 
