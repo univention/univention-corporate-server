@@ -346,6 +346,13 @@ if [ -e "/usr/lib/univention-install/.index.txt" ]; then
 	ln -s /var/univention-join/status /usr/lib/univention-install/.index.txt
 fi
 
+if [ ! -e "/usr/lib/univention-install/.index.txt" ]; then
+   	mkdir -p /var/univention-join/
+	touch /var/univention-join/status
+	ln -s /var/univention-join/status /usr/lib/univention-install/.index.txt
+fi
+
+
 if [ -e "/etc/univention/ssl" ]; then
 	mv /etc/univention/ssl "/etc/univention/ssl_`date +"%y%m%d%H%M"`"
 	mkdir /etc/univention/ssl
