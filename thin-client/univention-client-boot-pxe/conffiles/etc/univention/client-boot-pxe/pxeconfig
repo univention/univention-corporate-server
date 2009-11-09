@@ -17,7 +17,8 @@ line = 'root=/dev/nfs '
 line += 'nfsroot=%s:/var/lib/univention-client-root ' % baseConfig['pxe/nameserver']
 line += 'DNSSERVER=%s ' % baseConfig['pxe/nameserver']
 line += 'vt.default_utf8=0 '
-line += 'vga=%s ' % baseConfig['pxe/vga']
+if baseConfgi.get('pxe/vga'):
+	line += 'vga=%s ' % baseConfig['pxe/vga']
 if baseConfig.get('pxe/initrd', "True").lower() in ['yes', 'true', '1']:
 	line += 'splash=silent initrd=initrd.splash '
 if baseConfig.get('pxe/quiet', "False").lower() in ['yes', 'true', '1']:
