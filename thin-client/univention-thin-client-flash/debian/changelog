@@ -1,3 +1,10 @@
+univention-thin-client-flash (3.1.6-1) unstable; urgency=low
+
+  * don't show an error message if the flash update was skipped. Bug
+    #14704
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Nov 2009 16:11:55 +0100
+
 univention-thin-client-flash (3.1.5-1) unstable; urgency=low
 
   * make the flash init script more LSB compatible. Bug #16213

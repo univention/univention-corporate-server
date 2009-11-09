@@ -44,7 +44,7 @@ if [ -z "$thinclient_flash_update" ] || [ -n "$thinclient_flash_update" -a "$thi
 	echo "The UCR variable thinclient/flash/update is not set or is set to no."
 	echo "If you want to use the flash update, please activate a UCR policy"
 	echo "with thinclient/flash/update=yes for this Thin Client."
-	log_action_end_msg 1
+	log_action_end_msg 0
 	exit 0
 fi
 
