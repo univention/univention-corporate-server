@@ -1,3 +1,9 @@
+univention-installer (5.0.41-1) unstable; urgency=low
+
+  * fix parsing of ethX_type from profile (Bug #12130)
+
+ -- Arvid Requate <requate@univention.de>  Mon,  9 Nov 2009 16:54:01 +0100
+
 univention-installer (5.0.40-1) unstable; urgency=low
 
   * set the hostname during the installation. Bug #16297

@@ -53,7 +53,7 @@ for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
     	if [ -z "$ucr_network_device" ]; then
     		continue
     	fi
-    	dynamic=`echo $line | sed -e 's|.*=||'`
+    	dynamic=`echo $line | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
     	if [ -n "$dynamic" ] && [ "$dynamic" = "dynamic" -o "$dynamic" = "dhcp" ]; then
     		python2.4 /sbin/univention-config-registry set interfaces/$ucr_network_device/type=dhcp
 
