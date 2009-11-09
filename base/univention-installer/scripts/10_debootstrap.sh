@@ -54,6 +54,10 @@ else
 	repo_dir="file:/mnt/mirror/${version}/maintained/${version}-0/"
 fi
 
+if [ -n "$hostname" ]; then
+	hostname $hostname
+fi
+
 # Installing univention base system
 if [ -z "$USE_NO_LOG" ]; then
 	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
