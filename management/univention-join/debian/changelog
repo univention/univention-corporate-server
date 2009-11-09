@@ -1,3 +1,9 @@
+univention-join (2.0.19-5) unstable; urgency=low
+
+  * Suppress error message (Bug: #14846)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 09 Nov 2009 14:42:41 +0100
+
 univention-join (2.0.19-4) unstable; urgency=low
 
   * Create a fallback symlink (Bug: #14846)

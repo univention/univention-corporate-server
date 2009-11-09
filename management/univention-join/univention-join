@@ -343,7 +343,6 @@ if [ -e "/usr/lib/univention-install/.index.txt" ]; then
 	rm -rf /var/univention-join/status
 	rm /usr/lib/univention-install/.index.txt
 	touch /var/univention-join/status
-	ln -s /var/univention-join/status /usr/lib/univention-install/.index.txt
 fi
 
 if [ ! -e "/usr/lib/univention-install/.index.txt" ]; then
