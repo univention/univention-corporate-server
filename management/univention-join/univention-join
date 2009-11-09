@@ -339,7 +339,11 @@ else
 fi
 
 if [ -e "/usr/lib/univention-install/.index.txt" ]; then
+   	mkdir -p /var/univention-join/
+	rm -rf /var/univention-join/status
 	rm /usr/lib/univention-install/.index.txt
+	touch /var/univention-join/status
+	ln -s /var/univention-join/status /usr/lib/univention-install/.index.txt
 fi
 
 if [ -e "/etc/univention/ssl" ]; then
