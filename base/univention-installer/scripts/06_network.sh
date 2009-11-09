@@ -50,7 +50,7 @@ fi
 for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
     set | egrep "${ifaceregex}type=" | while read line; do
     	ucr_network_device=`echo $line | sed -e 's|_type.*||'`
-    	if [ -z "$network_device" ]; then
+    	if [ -z "$ucr_network_device" ]; then
     		continue
     	fi
     	dynamic=`echo $line | sed -e 's|.*=||'`
@@ -78,6 +78,8 @@ for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
     	network_device=`echo $ucr_network_device | sed -e 's|_|:|g'`
 
 		# try to bring up interface
+		ifconfig $network_device up
+		mkdir -p /var/lib/dhcp3/
 		dhclient $network_device
     done
     set | egrep "${ifaceregex}ip=" | while read line; do

@@ -1,3 +1,10 @@
+univention-installer (5.0.39-1) unstable; urgency=low
+
+  * fixed a typo in the network script and bring up the interface before
+    calling dhclient. Bug #15967
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Nov 2009 13:23:43 +0100
+
 univention-installer (5.0.38-1) unstable; urgency=low
 
   * during installation there is no dhclient3; use dhclient instead
