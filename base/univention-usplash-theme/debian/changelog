@@ -1,3 +1,9 @@
+univention-usplash-theme (1.0.2-4) unstable; urgency=low
+
+  * change verbose textbox height (Bug: #14524) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 10 Nov 2009 16:30:42 +0100
+
 univention-usplash-theme (1.0.2-3) unstable; urgency=low
 
   * new progressbar position (Bug: #14524)

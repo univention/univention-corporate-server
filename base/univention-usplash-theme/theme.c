@@ -87,7 +87,7 @@ struct usplash_theme usplash_theme = {
         .text_x      = 640/4,
         .text_y      = 480/10*8.5,
         .text_width  = 640/2,
-        .text_height = 480/10*1.3,
+        .text_height = 480/10*1.2,
 
 	/* Text details */
   	.line_height  = 15,
@@ -132,7 +132,7 @@ struct usplash_theme usplash_theme_800_600 = {
         .text_x      = 800/4,
         .text_y      = 600/10*8.5,
         .text_width  = 800/2,
-        .text_height = 600/10*1.3,
+        .text_height = 600/10*1.2,
 
 	/* Text details */
   	.line_height  = 15,
@@ -174,7 +174,7 @@ struct usplash_theme usplash_theme_1024_768 = {
         .text_x      = 1024/4,
         .text_y      = 768/10*8.5,
         .text_width  = 1024/2,
-        .text_height = 768/10*1.3,
+        .text_height = 768/10*1.2,
 
 	/* Text details */
   	.line_height  = 15,
@@ -216,7 +216,7 @@ struct usplash_theme usplash_theme_1280_1024 = {
         .text_x      = 1280/4,
         .text_y      = 1024/10*8.5,
         .text_width  = 1280/2,
-        .text_height = 1024/10*1.3,
+        .text_height = 1024/10*1.2,
 
 	/* Text details */
   	.line_height  = 15,
@@ -258,7 +258,7 @@ struct usplash_theme usplash_theme_1600_1200 = {
         .text_x      = 1600/4,
         .text_y      = 1200/10*8.5,
         .text_width  = 1600/2,
-        .text_height = 1200/10*1.3,
+        .text_height = 1200/10*1.2,
 
 	/* Text details */
   	.line_height  = 15,
