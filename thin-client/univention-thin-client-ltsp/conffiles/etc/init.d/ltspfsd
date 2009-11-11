@@ -38,7 +38,7 @@ configure_localdev() {
             done
         fi
         # handle already plugged devices on login
-        # /usr/sbin/delayed_mounter
+        /usr/sbin/delayed_mounter
 }
 
 case "$1" in

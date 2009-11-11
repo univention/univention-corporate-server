@@ -1,3 +1,9 @@
+univention-thin-client-ltsp (3.0.2-1) unstable; urgency=low
+
+  * go back to the old ltspfs source package. Bug #16316
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Nov 2009 07:42:04 +0100
+
 univention-thin-client-ltsp (3.0.1-1) unstable; urgency=low
 
   * delayed_mounter is no longer in the ltspfs package. Bug #15793
