@@ -96,6 +96,10 @@ if [ -e /usr/sbin/apache2 ]; then
 	chmod -x /usr/sbin/apache2
 fi
 
+# deinstall python2.4-dns because it conflicts with python-dns
+if dpkg -l python2.4-dns >>"$UPDATER_LOG" 2>&1; then
+	dpkg -P python2.4-dns >>"$UPDATER_LOG" 2>&1
+fi
 
 # Update package lists
 apt-get update >>"$UPDATER_LOG" 2>&1
