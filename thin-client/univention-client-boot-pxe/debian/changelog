@@ -1,3 +1,9 @@
+univention-client-boot-pxe (4.0.3-1) unstable; urgency=low
+
+  * removed old initrd.splash (Bug: #14309) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 11 Nov 2009 08:32:45 +0100
+
 univention-client-boot-pxe (4.0.2-1) unstable; urgency=low
 
   * fixed typo of last commit. Bug #15551
