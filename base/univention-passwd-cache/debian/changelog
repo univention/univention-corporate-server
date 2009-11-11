@@ -1,3 +1,9 @@
+univention-passwd-cache (1.0.1-1) unstable; urgency=low
+
+  * link against libpam (Bug #15952)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Oct 2009 16:38:14 +0200
+
 univention-passwd-cache (1.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3

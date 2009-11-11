@@ -1,7 +1,7 @@
 all:	pam_passwdcache.so
 
 pam_passwdcache.so:	pam_passwdcache.o
-	gcc -shared -Wl,-x -lcrypt -lpamc -o $@ pam_passwdcache.o
+	gcc -shared -Wl,-x -lcrypt -lpamc -lpam -o $@ pam_passwdcache.o
 
 #%.o:	%.c
 #	gcc -Wall -O2 -D_GNU_SOURCE -D_REENTRANT -DLINUX_PAM -fPIC -Dlinux -DPAM_DYNAMIC -Di386 -c $< -o $@
