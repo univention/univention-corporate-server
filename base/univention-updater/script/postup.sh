@@ -46,6 +46,9 @@ if [ -x /usr/sbin/update-initramfs ]; then
 	update-initramfs -u -k all >>"$UPDATER_LOG" 2>&1
 fi
 
+# update the thin client chroot
+DEBIAN_FRONTEND=noninteractive univention-thin-client-apt dist-upgrade  >>"$UPDATER_LOG" 2>&1
+
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update
 if [ -e /usr/sbin/univention-management-console-server ]; then
 	dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1

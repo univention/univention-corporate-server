@@ -1,3 +1,9 @@
+univention-updater (5.0.22-1) unstable; urgency=low
+
+  * update the Thin client chroot to UCS 2.3. Bug #16094
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Nov 2009 14:51:46 +0100
+
 univention-updater (5.0.21-2) unstable; urgency=low
 
   * deinstall python2.4-dns in preup.sh because it conflicts with python-dns (Bug: #16313) 
