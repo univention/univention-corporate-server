@@ -65,7 +65,7 @@ binary-indep: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs
-	dh_installinit --name=univention-iptables -r -u"defaults 41"
+	dh_installinit --name=univention-iptables -r -u"defaults 15"
 	dh_installchangelogs 
 	dh_compress
 	dh_fixperms

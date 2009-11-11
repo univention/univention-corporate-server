@@ -1,3 +1,10 @@
+univention-firewall (2.0.1-2) unstable; urgency=low
+
+  * start univention-iptables init script directly after network-manager
+    and before all the network services start (Bug #16318)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 11 Nov 2009 15:44:28 +0100
+
 univention-firewall (2.0.1-1) unstable; urgency=low
 
   * flush the nat table (Bug: #10106)
