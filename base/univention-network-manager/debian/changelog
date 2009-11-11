@@ -1,3 +1,10 @@
+univention-network-manager (0.3.3-1) unstable; urgency=low
+
+  * be sure we don't get UCR debug info's into the network manager env.
+    Bug #15967
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Nov 2009 10:00:40 +0100
+
 univention-network-manager (0.3.2-2) unstable; urgency=low
 
   * if-up and ifdown scripts: just restart nscd and ntpd if they are

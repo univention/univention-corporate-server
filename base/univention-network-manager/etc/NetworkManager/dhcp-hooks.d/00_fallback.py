@@ -49,7 +49,7 @@ def update_ucr_variables( environ ):
 		if environ[ env ] != configRegistry.get( 'interfaces/%s/%s' % ( os.environ[ 'interface' ], var ) ):
 			variables.append( 'interfaces/%s/%s=%s' % ( os.environ[ 'interface' ], var, environ[ env ] ) )
 
-	ucr.handler_set( variables )
+	ucr.handler_set( variables, quiet=True )
 
 def get_dns_servers():
 	# check for a valid nameserver
