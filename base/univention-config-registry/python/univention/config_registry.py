@@ -817,7 +817,7 @@ def randpw():
 	fp.close()
 	return pw
 
-def handler_set( args, opts = {} ):
+def handler_set( args, opts = {}, quiet = False ):
 	c = configHandlers()
 	c.load()
 
@@ -852,17 +852,19 @@ def handler_set( args, opts = {} ):
 			value = arg[sep+1:]
 			old = reg[key]
 			if (reg[key] == None or sep == sep_set) and validateKey(key):
-				if reg.has_key( key, write_registry_only = True ):
-					print 'Setting '+key
-				else:
-					print 'Create '+key
+				if not quiet:
+					if reg.has_key( key, write_registry_only = True ):
+						print 'Setting '+key
+					else:
+						print 'Create '+key
 				reg[key] = value
 				changed[key] = (old, value)
 			else:
-				if old != None:
-					print 'Not updating '+key
-				else:
-					print 'Not setting '+key
+				if not quiet:
+					if old != None:
+						print 'Not updating '+key
+					else:
+						print 'Not setting '+key
 
 		reg.save()
 	finally:
