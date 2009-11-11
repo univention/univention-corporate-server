@@ -1,3 +1,10 @@
+univention-installer (5.0.44-1) unstable; urgency=low
+
+  * don't install dhclient in the 50_packages since we are using
+    network-manager. Bug #15967
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Nov 2009 09:44:39 +0100
+
 univention-installer (5.0.43-1) unstable; urgency=low
 
   * don't start dhclient in the 75_join script since we are using

@@ -112,14 +112,6 @@ cat >>/instmnt/install_packages.sh <<__EOT__
 
 export DEBIAN_FRONTEND=noninteractive
 
-for((i=0;i<4;i++)); do
-	dhcp=\`univention-config-registry get interfaces/eth\$i/type | grep dhcp\`
-	if [ -n "\$dhcp" ]; then
-		apt-get -y -o APT::Get::AllowUnauthenticated=1 install dhcp-client --yes
-		dhclient eth\$i
-	fi
-done
-
 if [ "$server_role" = "domaincontroller_master" ]; then
 	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-server-master --yes
 elif [ "$server_role" = "domaincontroller_backup" ]; then
