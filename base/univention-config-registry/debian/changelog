@@ -1,3 +1,9 @@
+univention-config-registry (5.0.54-1) unstable; urgency=low
+
+  * fixed typo in /etc/issue. Bug #16322
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Nov 2009 13:33:08 +0100
+
 univention-config-registry (5.0.53-1) unstable; urgency=low
 
   * added a quiet option for the handler_set function. Bug #15967
