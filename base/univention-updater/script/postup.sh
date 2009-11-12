@@ -49,6 +49,16 @@ fi
 # update the thin client chroot
 DEBIAN_FRONTEND=noninteractive univention-thin-client-apt dist-upgrade  >>"$UPDATER_LOG" 2>&1
 
+# install locate if findutils has been installed in UCR 2.2-2 (Bug: #15992)
+if dpkg -l findtutils | grep ^ii  >>"$UPDATER_LOG" 2>&1 ; then
+	echo "findutils has been installed in UCS 2.2-2 ... installing locate" | tee -a "$UPDATER_LOG"
+	$update_commands_install locate >>"$UPDATER_LOG" 2>&1
+	if [ ! $? = 0 ]; then
+	    echo "WARNING: post-installation of 'locate' failed!" | tee -a "$UPDATER_LOG"
+	    echo "         Please run 'dpkg --configure -a' manually." | tee -a "$UPDATER_LOG"
+	fi
+fi
+
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update
 if [ -e /usr/sbin/univention-management-console-server ]; then
 	dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1

@@ -159,7 +159,7 @@ apt-get update >>"$UPDATER_LOG" 2>&1
 for pkg in univention-ssl univention-thin-client-basesystem univention-thin-client-x-base ; do
 	# pre-update $pkg to avoid pre-dependency-problems
 	if dpkg -l $pkg | grep ^ii  >>"$UPDATER_LOG" 2>&1 ; then
-	    echo "Starting preupdate of $pkg... (may take some time)"
+	    echo "Starting preupdate of $pkg... (may take some time)" | tee -a "$UPDATER_LOG"
 	    $update_commands_install $pkg >>"$UPDATER_LOG" 2>&1
 	    if [ ! $? = 0 ]; then
 	        echo "ERROR: pre-update of $pkg failed!" | tee -a "$UPDATER_LOG"

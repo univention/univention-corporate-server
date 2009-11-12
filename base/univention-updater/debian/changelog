@@ -1,3 +1,9 @@
+univention-updater (5.0.25-1) unstable; urgency=low
+
+  * install locate if findutils has been installed in UCR 2.2-2 (Bug: #15992)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 12 Nov 2009 15:25:51 +0100
+
 univention-updater (5.0.24-1) unstable; urgency=low
 
   * deinstall alsa-headers in preup.sh (Bug: #16330)
