@@ -432,9 +432,15 @@ def main():
 
 		remove_temporary_sources_list()
 		new_version = UCS_Version( nextversion )
-		for arch in ['all', architecture, 'extern']:
-			if os.path.exists('%s/mirror/%d.%d/maintained/%s/%s' % ( repository_path, new_version.major, new_version.minor, nextversion, arch ) ):
-				add_temporary_sources_list ( 'deb file:%s/mirror/%d.%d/maintained/ %s/%s/' % ( repository_path, new_version.major, new_version.minor, nextversion, arch ) )
+
+		maintained_state_list = [ 'maintained' ]
+		if baseConfig.get( 'repository/online/unmaintained', 'no').lower() in ('yes', 'true', '1'):
+			maintained_state_list.append('unmaintained')
+
+		for maintained in maintained_state_list:
+			for arch in ['all', architecture, 'extern']:
+				if os.path.exists('%s/mirror/%d.%d/%s/%s/%s' % ( repository_path, new_version.major, new_version.minor, maintained, nextversion, arch ) ):
+					add_temporary_sources_list ( 'deb file:%s/mirror/%d.%d/%s/ %s/%s/' % ( repository_path, new_version.major, new_version.minor, maintained, nextversion, arch ) )
 		scriptPath = '%s/mirror/%d.%d/maintained/%s/all/' % ( repository_path, new_version.major, new_version.minor, nextversion )
 
 	elif command == 'cdrom':
@@ -515,12 +521,18 @@ def main():
 		next_vp = nextversion.split('-')[-1]
 
 		remove_temporary_sources_list()
-		for arch in ['all', architecture, 'extern' ]:
-			if updater.net_path_exists('%s/maintained/%s-%s/%s/' % (next_vv, next_vv, next_vp, arch)):
-				if updater.repository_prefix:
-					add_temporary_sources_list ('deb http://%s/%s/%s/maintained/ %s/%s/' % ( updater.repository_server, updater.repository_prefix, next_vv, nextversion, arch))
-				else:
-					add_temporary_sources_list ('deb http://%s/%s/maintained/ %s/%s/' % ( updater.repository_server, next_vv, nextversion, arch))
+
+		maintained_state_list = [ 'maintained' ]
+		if baseConfig.get( 'repository/online/unmaintained', 'no').lower() in ('yes', 'true', '1'):
+			maintained_state_list.append('unmaintained')
+
+		for maintained in maintained_state_list:
+			for arch in ['all', architecture, 'extern' ]:
+				if updater.net_path_exists('%s/%s/%s-%s/%s/' % (next_vv, maintained, next_vv, next_vp, arch)):
+					if updater.repository_prefix:
+						add_temporary_sources_list ('deb http://%s/%s/%s/%s/ %s/%s/' % ( updater.repository_server, updater.repository_prefix, next_vv, maintained, nextversion, arch))
+					else:
+						add_temporary_sources_list ('deb http://%s/%s/%s/ %s/%s/' % ( updater.repository_server, next_vv, maintained, nextversion, arch))
 
 		# Download the pre and postup scripts
 		scriptPath = tempdir

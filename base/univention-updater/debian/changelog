@@ -1,3 +1,12 @@
+univention-updater (5.0.23-1) unstable; urgency=low
+
+  * add "unmaintained" sources to temporary sources.list file if
+    repository/online/unmaintained=yes to prevent update issues.
+  	This is also done in current version of preup.sh and can be removed
+    after UCS 2.3-0 (Bug: #16331) 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 12 Nov 2009 12:06:07 +0100
+
 univention-updater (5.0.22-1) unstable; urgency=low
 
   * update the Thin client chroot to UCS 2.3. Bug #16094

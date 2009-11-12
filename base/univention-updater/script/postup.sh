@@ -64,6 +64,9 @@ univention-config-registry unset repository/local/old >>"$UPDATER_LOG" 2>&1
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 fi
+if [ -e "/etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list" ]; then
+	rm -f /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
+fi
 
 # fix ldap-backup.secret permissions
 if [ -e "/etc/ldap-backup.secret" ]; then

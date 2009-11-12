@@ -28,6 +28,55 @@ if [ "$TERM" = "xterm" ]; then
 	fi
 fi
 
+# Bug #16331 add temporary sources.list for unmaintained if neccessary
+# only required during update UCS 2.2-2 ==> 2.3-0
+if [ "$repository_online_unmaintained" = "yes" -o "$repository_online_unmaintained" = "true" -o "$repository_online_unmaintained" = "1" ] ; then
+	echo "repository branch 'unmaintained' is in use." >> "$UPDATER_LOG"
+	if [ -e "/etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list" ]; then
+		rm -f /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
+	fi
+
+	next_vv="${UPDATE_NEXT_VERSION%%-*}"
+	next_vp="${UPDATE_NEXT_VERSION##*-}"
+	architecture=$(dpkg-architecture -qDEB_BUILD_ARCH 2>/dev/null)
+
+	# test for "local" or "net" update
+	if grep -q "^deb file:" /etc/apt/sources.list.d/00_ucs_temporary_installation.list 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
+		# univention-updater is called in "local" mode
+
+		if [ -z "$repository_mirror_basepath" ] ; then
+			repo_path="/var/lib/univention-repository"
+		else
+			repo_path="$repository_mirror_basepath"
+		fi
+
+		for arch in all $architecture extern ; do
+			if [ -d "${repo_path}/mirror/${next_vv}/unmaintained/${UPDATE_NEXT_VERSION}/${arch}" ] ; then
+				echo "deb file:${repo_path}/mirror/${next_vv}/unmaintained/ ${UPDATE_NEXT_VERSION}/${arch}/" >> /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
+			fi
+		done
+	else
+		# univention-updater is called in "net" mode
+
+		repo_server=$(python2.4 -c 'import univention.updater; updater=univention.updater.UniventionUpdater(); print updater.repository_server')
+		repo_prefix=$(python2.4 -c 'import univention.updater; updater=univention.updater.UniventionUpdater(); print updater.repository_prefix')
+		for arch in all $architecture extern ; do
+			netpath="${next_vv}/unmaintained/${UPDATE_NEXT_VERSION}/${arch}/"
+			netpath_exists=$(python2.4 -c "import univention.updater; updater=univention.updater.UniventionUpdater(); print updater.net_path_exists('$netpath')")
+			if [ "$netpath_exists" = "True" ] ; then
+				if [ -n "$repo_prefix" ] ; then
+					echo "deb http://${repo_server}/${repo_prefix}/${next_vv}/unmaintained/ ${UPDATE_NEXT_VERSION}/${arch}/" >> /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
+				else
+					echo "deb http://${repo_server}/${next_vv}/unmaintained/ ${UPDATE_NEXT_VERSION}/${arch}/" >> /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
+				fi
+			fi
+		done
+	fi
+else
+	echo "repository branch 'unmaintained' is not in use." >> "$UPDATER_LOG"
+fi
+
+# call custom preup script if configured
 if [ ! -z "$update_custom_preup" ]; then
 	echo -n "Running custom preupdate script"
 	if [ -f "$update_custom_preup" ]; then
