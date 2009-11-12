@@ -40,6 +40,16 @@ if [ -n "$server_role" -a "$server_role" = "domaincontroller_master" -o "$server
 fi
 
 univention-baseconfig set auth/kdeprofile?true
-univention-baseconfig set "hal/devices/group?Domain Users"
+
+if [ "$1" = "configure" -a -z "$2" ]; then
+	#Fresh installation
+	univention-config-registry set "hal/devices/group?root"
+elif [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.2-1; then
+	# do something on update from VERSION <= 4.0.2-1 to current Version
+	eval "$(ucr shell hal/devices/group)"
+	if [ "$hal_devices_group" = "Domain Users" ]; then
+		univention-config-registry set "hal/devices/group=root"
+	fi
+fi
 
 ldconfig

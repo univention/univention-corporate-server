@@ -1,3 +1,9 @@
+univention-kde (4.0.2-1) unstable; urgency=low
+
+  * set ucr-variable hal/devices/group to root to avoid a boot lag (Bug: #16324)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Thu, 12 Nov 2009 15:07:52 +0100
+
 univention-kde (4.0.1-4) unstable; urgency=low
 
   * changed openoffice kicker entries (Bug: #14425)

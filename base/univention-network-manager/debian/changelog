@@ -1,3 +1,9 @@
+univention-network-manager (0.3.6-1) unstable; urgency=low
+
+  * initialise networkmanager/group as root instead of Domain Users (Bug: #16324)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Thu, 12 Nov 2009 15:09:12 +0100
+
 univention-network-manager (0.3.5-1) unstable; urgency=low
 
   * use a proper grep statement. Bug #15967

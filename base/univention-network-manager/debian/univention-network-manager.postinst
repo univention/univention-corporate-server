@@ -37,7 +37,7 @@ if [ -z "$ifplugd_action_mount" ]; then
 fi
 
 univention-config-registry set networkmanager/action/mount?$ifplugd_action_mount
-univention-config-registry set networkmanager/group?"Domain Users"
+univention-config-registry set networkmanager/group?"root"
 univention-config-registry set networkmanager/dhcp/options/fallback?"no"
 
 univention-config-registry set dhclient/options/timeout?"40"
