@@ -1,0 +1,7 @@
+Type: file
+File: etc/default/mdadm
+Variables: raid/autostart
+
+Type: file
+File: etc/mdadm/mdadm.conf
+Variables: raid/md.*

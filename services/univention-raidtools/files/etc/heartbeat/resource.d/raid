@@ -1,0 +1,56 @@
+#!/bin/sh
+#
+# Univention RAID Tools HA
+#  Start any arrays which are described in /etc/mdadm/mdadm.conf and
+#  which are not running already.
+#
+# Copyright (C) 2005-2009 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# Copyright (c) 2001-2004 Mario Jou/3en <joussen@debian.org>
+# Distributable under the terms of the GNU GPL version 2.
+
+
+MDADM=/sbin/mdadm
+MDRUN=/sbin/mdrun
+
+test -x $MDADM || exit 0
+
+AUTOSTART=true
+
+case "$2" in
+    start)
+	$MDADM -A -a /dev/$1
+        ;;
+    stop)
+	$MDADM -S /dev/$1
+        ;;
+    *)
+        echo "Usage: $0 device {start|stop}"
+        exit 1
+        ;;
+esac
+
+exit 0
