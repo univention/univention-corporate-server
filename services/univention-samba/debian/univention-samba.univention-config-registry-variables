@@ -293,7 +293,7 @@ Type=str
 Categories=service-samba
 
 [samba/interfaces/bindonly]
-Description[de]=Beschränkt Samba darauf nur auf den in samba/interfaces genannten Netzwerkgeräten zu horchen.
+Description[de]=Weist Samba an, nur die in samba/interfaces aufgeführten Interfaces zu verwenden.
 Description[en]=Limits Samba to listen only on the interfaces listed in samba/interfaces.
 Type=str
 Categories=service-samba
