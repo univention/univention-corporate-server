@@ -1,3 +1,10 @@
+univention-heimdal (3.0.12-1) unstable; urgency=low
+
+  * update the heimdal init script for the new upstream release. Bug
+    #16340
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Nov 2009 11:23:17 +0100
+
 univention-heimdal (3.0.11-1) unstable; urgency=low
 
   * fixed hashbang of check_cracklib.py (Bug: #14709)
