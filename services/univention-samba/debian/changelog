@@ -1,3 +1,9 @@
+univention-samba (4.0.8-1) unstable; urgency=low
+
+  * bump version (Bug #13483)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Thu, 12 Nov 2009 12:25:30 +0100
+
 univention-samba (4.0.7-1) unstable; urgency=low
 
   * change samba/interfaces/bindonly-description (Bug #13483)
