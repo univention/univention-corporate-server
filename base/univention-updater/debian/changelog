@@ -1,3 +1,9 @@
+univention-updater (5.0.24-1) unstable; urgency=low
+
+  * deinstall alsa-headers in preup.sh (Bug: #16330)
+
+ -- Felix Botner <botner@univention.de>  Thu, 12 Nov 2009 13:36:51 +0100
+
 univention-updater (5.0.23-1) unstable; urgency=low
 
   * add "unmaintained" sources to temporary sources.list file if
