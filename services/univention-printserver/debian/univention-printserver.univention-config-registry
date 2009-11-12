@@ -13,4 +13,4 @@ Variables: hostname
 Variables: domainname
 
 Type: file
-File: etc/pam.d/cupsys
+File: etc/pam.d/cups

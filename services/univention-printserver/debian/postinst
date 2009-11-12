@@ -80,8 +80,8 @@ if [ ! -e "/etc/cups/classes.conf" ]; then
 	touch /etc/cups/classes.conf
 fi
 
-if [ -x "/etc/init.d/cupsys" ]; then
-	/etc/init.d/cupsys restart
+if [ -x "/etc/init.d/cups" ]; then
+	/etc/init.d/cups restart
 fi
 
 # Version 0.9 may not update printers.conf

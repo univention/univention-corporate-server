@@ -48,7 +48,7 @@ def lpadmin(args):
 
 	rc = listener.run('/usr/sbin/univention-lpadmin', ['univention-lpadmin']+args, uid=0)
 	if rc != 0:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "cups-printers: Failed to execute the univention-lpadmin command. Please check the cupsys state.")
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "cups-printers: Failed to execute the univention-lpadmin command. Please check the cups state.")
 		filename=os.path.join('/var/cache/univention-printserver/','%f.sh' % time.time())
 		f=open(filename, 'w+')
 		os.chmod(filename, 0755)
