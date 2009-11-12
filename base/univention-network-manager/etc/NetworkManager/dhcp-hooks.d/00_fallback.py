@@ -64,8 +64,11 @@ def get_dns_servers():
 if os.environ.get( 'reason' ) in ( 'FAIL', 'TIMEOUT' ):
 	new_env[ 'reason' ] = 'BOUND'
 	for env, var in VARIABLE_MAP:
-		new_env[ env ] = configRegistry.get( 'interfaces/%s/fallback/%s' % ( os.environ[ 'interface' ], var ) )
-	new_env[ 'new_routers' ] = configRegistry.get( 'fallback/gateway' )
+		value = configRegistry.get( 'interfaces/%s/fallback/%s' % ( os.environ[ 'interface' ], var ) )
+		if value:
+			new_env[ env ] = value
+	if 'fallback/gateway' in configRegistry.keys():
+		new_env[ 'new_routers' ] = configRegistry.[ 'fallback/gateway' ]
 
 	# DNS server
 	servers = get_dns_servers()
@@ -73,14 +76,16 @@ if os.environ.get( 'reason' ) in ( 'FAIL', 'TIMEOUT' ):
 		new_env[ 'new_domain_name_servers' ] = ' '.join( servers )
 
 	# hostname
-	new_env[ 'new_host_name' ] = configRegistry[ 'hostname' ]
+	if 'hostname' in configRegistry.keys():
+		new_env[ 'new_host_name' ] = configRegistry[ 'hostname' ]
 
 	# domainname
-	new_env[ 'new_domain_name' ] = configRegistry[ 'domainname' ]
+	if 'domainname' in configRegistry.keys():
+		new_env[ 'new_domain_name' ] = configRegistry[ 'domainname' ]
 
 	# domain search option
 	if 'domain/search' in configRegistry.keys():
-		new_new[ 'new_domain_search' ] % configRegistry[ 'domain/search' ]
+		new_env[ 'new_domain_search' ] % configRegistry[ 'domain/search' ]
 elif os.environ.get( 'reason' ) in ( 'BOUND', 'RENEW', 'REBIND' ):
 	if configRegistry.get( 'networkmanager/dhcp/options/fallback', 'no' ).lower() in ( 'yes', 'true', '1' ):
 		# DNS server
@@ -90,11 +95,11 @@ elif os.environ.get( 'reason' ) in ( 'BOUND', 'RENEW', 'REBIND' ):
 				new_env[ 'new_domain_name_servers' ] = ' '.join( servers )
 
 		# hostname
-		if not os.environ.get( 'new_host_name' ):
+		if not os.environ.get( 'new_host_name' ) and 'hostname' in configRegistry.keys():
 			new_env[ 'new_host_name' ] = configRegistry[ 'hostname' ]
 
 		# domainname
-		if not os.environ.get( 'new_domain_name' ):
+		if not os.environ.get( 'new_domain_name' ) and 'domainname' in configRegistry.keys():
 			new_env[ 'new_domain_name' ] = configRegistry[ 'domainname' ]
 
 		# gateway

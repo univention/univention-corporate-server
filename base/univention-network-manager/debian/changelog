@@ -1,3 +1,12 @@
+univention-network-manager (0.3.7-1) unstable; urgency=low
+
+  * fix fallback script from exiting due to a None passed to os.environ
+  * reduce dhclient 'timout' to 30 sec and 'reboot' to 5 sec to stay below
+    the 45 sec that NetworkManager waits before terminating it, otherwise
+    fallback script will not get called (Bug #8994)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Nov 2009 20:24:27 +0100
+
 univention-network-manager (0.3.6-1) unstable; urgency=low
 
   * initialise networkmanager/group as root instead of Domain Users (Bug: #16324)
