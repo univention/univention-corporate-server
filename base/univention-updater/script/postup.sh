@@ -47,7 +47,9 @@ if [ -x /usr/sbin/update-initramfs ]; then
 fi
 
 # update the thin client chroot
-DEBIAN_FRONTEND=noninteractive univention-thin-client-apt dist-upgrade  >>"$UPDATER_LOG" 2>&1
+if [ -x /usr/bin/univention-thin-client-apt ]; then
+	DEBIAN_FRONTEND=noninteractive univention-thin-client-apt dist-upgrade  >>"$UPDATER_LOG" 2>&1
+fi
 
 # install locate if findutils has been installed in UCR 2.2-2 (Bug: #15992)
 if dpkg -l findtutils | grep ^ii  >>"$UPDATER_LOG" 2>&1 ; then

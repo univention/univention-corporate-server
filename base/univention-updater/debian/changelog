@@ -1,3 +1,9 @@
+univention-updater (5.0.26-1) unstable; urgency=low
+
+  * check if univention-thin-client-apt exists. Bug #16365
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Nov 2009 06:27:34 +0100
+
 univention-updater (5.0.25-1) unstable; urgency=low
 
   * install locate if findutils has been installed in UCR 2.2-2 (Bug: #15992)
