@@ -36,8 +36,6 @@ if [ "$repository_online_unmaintained" = "yes" -o "$repository_online_unmaintain
 		rm -f /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
 	fi
 
-	next_vv="${UPDATE_NEXT_VERSION%%-*}"
-	next_vp="${UPDATE_NEXT_VERSION##*-}"
 	architecture=$(dpkg-architecture -qDEB_BUILD_ARCH 2>/dev/null)
 
 	# test for "local" or "net" update
@@ -51,8 +49,8 @@ if [ "$repository_online_unmaintained" = "yes" -o "$repository_online_unmaintain
 		fi
 
 		for arch in all $architecture extern ; do
-			if [ -d "${repo_path}/mirror/${next_vv}/unmaintained/${UPDATE_NEXT_VERSION}/${arch}" ] ; then
-				echo "deb file:${repo_path}/mirror/${next_vv}/unmaintained/ ${UPDATE_NEXT_VERSION}/${arch}/" >> /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
+			if [ -d "${repo_path}/mirror/2.3/unmaintained/2.3-0/${arch}" ] ; then
+				echo "deb file:${repo_path}/mirror/2.3/unmaintained/ 2.3-0/${arch}/" >> /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
 			fi
 		done
 	else
@@ -61,13 +59,14 @@ if [ "$repository_online_unmaintained" = "yes" -o "$repository_online_unmaintain
 		repo_server=$(python2.4 -c 'import univention.updater; updater=univention.updater.UniventionUpdater(); print updater.repository_server')
 		repo_prefix=$(python2.4 -c 'import univention.updater; updater=univention.updater.UniventionUpdater(); print updater.repository_prefix')
 		for arch in all $architecture extern ; do
-			netpath="${next_vv}/unmaintained/${UPDATE_NEXT_VERSION}/${arch}/"
+			netpath="2.3/unmaintained/2.3-0/${arch}/"
 			netpath_exists=$(python2.4 -c "import univention.updater; updater=univention.updater.UniventionUpdater(); print updater.net_path_exists('$netpath')")
+			echo "netpath $netpath available: $netpath_exists" >> "$UPDATER_LOG"
 			if [ "$netpath_exists" = "True" ] ; then
 				if [ -n "$repo_prefix" ] ; then
-					echo "deb http://${repo_server}/${repo_prefix}/${next_vv}/unmaintained/ ${UPDATE_NEXT_VERSION}/${arch}/" >> /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
+					echo "deb http://${repo_server}/${repo_prefix}/2.3/unmaintained/ 2.3-0/${arch}/" >> /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
 				else
-					echo "deb http://${repo_server}/${next_vv}/unmaintained/ ${UPDATE_NEXT_VERSION}/${arch}/" >> /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
+					echo "deb http://${repo_server}/2.3/unmaintained/ 2.3-0/${arch}/" >> /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
 				fi
 			fi
 		done

@@ -1,3 +1,9 @@
+univention-updater (5.0.28-1) unstable; urgency=low
+
+  * use hardcoded values for unmaintained sources.list entries (Bug: #16331) 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 13 Nov 2009 09:37:21 +0100
+
 univention-updater (5.0.27-1) unstable; urgency=low
 
   * fixed typo in univention-actualise debug messages. Bug #11107
