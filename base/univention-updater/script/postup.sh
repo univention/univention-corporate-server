@@ -56,8 +56,9 @@ if dpkg -l findtutils 2>> "$UPDATER_LOG" | grep ^ii >> "$UPDATER_LOG" ; then
 	echo "findutils has been installed in UCS 2.2-2 ... installing locate" >> "$UPDATER_LOG"
 	$update_commands_install locate >>"$UPDATER_LOG" 2>&1
 	if [ ! $? = 0 ]; then
-	    echo "WARNING: post-installation of 'locate' failed!" | tee -a "$UPDATER_LOG"
-	    echo "         Please run 'dpkg --configure -a' manually." | tee -a "$UPDATER_LOG"
+		echo "findutils has been installed in UCS 2.2-2 ... installing locate"
+	    echo "WARNING: post-installation of 'locate' failed!"
+	    echo "         Please run 'dpkg --configure -a' manually."
 	fi
 fi
 
@@ -97,6 +98,11 @@ if [ ! -z "$update_custom_postup" ]; then
 	else
 		echo "Custom postupdate script $update_custom_postup not found" >>"$UPDATER_LOG" 2>&1
 	fi
+fi
+
+# Bug 16371: remove temporary apt.conf template to activate force-overwrite
+if [ -e "/etc/apt/apt.conf.d/02univentionupdate" ]; then
+	rm -f /etc/apt/apt.conf.d/02univentionupdate
 fi
 
 echo "Finished running postup.sh script"

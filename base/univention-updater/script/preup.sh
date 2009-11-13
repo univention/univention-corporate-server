@@ -75,6 +75,15 @@ else
 	echo "repository branch 'unmaintained' is not in use." >> "$UPDATER_LOG"
 fi
 
+
+# Bug 16371: add temporary apt.conf template to activate force-overwrite
+if [ -e "/etc/apt/apt.conf.d/02univentionupdate" ]; then
+	rm -f /etc/apt/apt.conf.d/02univentionupdate
+fi
+echo 'DPkg::Options { "--force-overwrite";"--force-overwrite-dir" }' > /etc/apt/apt.conf.d/02univentionupdate
+
+
+
 # call custom preup script if configured
 if [ ! -z "$update_custom_preup" ]; then
 	if [ -f "$update_custom_preup" ]; then
@@ -123,11 +132,11 @@ else
 fi
 
 
-echo "Checking for the package status" | tee -a "$UPDATER_LOG"
+echo "Checking for the package status"
 dpkg -l 2>&1  | grep "  " | grep -v "^|" | grep "^[a-z]*[A-Z]" >>"$UPDATER_LOG" 2>&1
 if [ $? = 0 ]; then
-	echo "ERROR: The package state on this system is inconsistent." | tee -a "$UPDATER_LOG"
-	echo "       Please run 'dpkg --configure -a' manually" | tee -a "$UPDATER_LOG"
+	echo "ERROR: The package state on this system is inconsistent."
+	echo "       Please run 'dpkg --configure -a' manually"
 	killall univention-updater
 	exit 1
 fi
@@ -157,18 +166,18 @@ apt-get update >>"$UPDATER_LOG" 2>&1
 for pkg in univention-ssl univention-thin-client-basesystem univention-thin-client-x-base ; do
 	# pre-update $pkg to avoid pre-dependency-problems
 	if dpkg -l $pkg | grep ^ii  >>"$UPDATER_LOG" 2>&1 ; then
-	    echo "Starting preupdate of $pkg... (may take some time)" | tee -a "$UPDATER_LOG"
+	    echo "Starting preupdate of $pkg... (may take some time)"
 	    $update_commands_install $pkg >>"$UPDATER_LOG" 2>&1
 	    if [ ! $? = 0 ]; then
-	        echo "ERROR: pre-update of $pkg failed!" | tee -a "$UPDATER_LOG"
-	        echo "       Please run 'dpkg --configure -a' manually." | tee -a "$UPDATER_LOG"
+	        echo "ERROR: pre-update of $pkg failed!"
+	        echo "       Please run 'dpkg --configure -a' manually."
 	        killall univention-updater
 	        exit 1
 	    fi
 	    dpkg -l 2>&1  | grep "  " | grep -v "^|" | grep "^[a-z]*[A-Z]" >>"$UPDATER_LOG" 2>&1
 	    if [ $? = 0 ]; then
-	        echo "ERROR: pre-update of $pkg failed!" | tee -a "$UPDATER_LOG"
-	        echo "       Inconsistent package state detected. Please run 'dpkg --configure -a' manually." | tee -a "$UPDATER_LOG"
+	        echo "ERROR: pre-update of $pkg failed!"
+	        echo "       Inconsistent package state detected. Please run 'dpkg --configure -a' manually."
 	        killall univention-updater
 	        exit 1
 	    fi
