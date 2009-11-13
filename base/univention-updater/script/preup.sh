@@ -4,8 +4,8 @@ UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
 
-echo "Running preup.sh script" | tee -a "$UPDATER_LOG"
-date >> "$UPDATER_LOG"
+echo "Running preup.sh script"
+date >>"$UPDATER_LOG" 2>&1
 
 eval $(univention-config-registry shell) >>"$UPDATER_LOG" 2>&1
 
@@ -77,17 +77,16 @@ fi
 
 # call custom preup script if configured
 if [ ! -z "$update_custom_preup" ]; then
-	echo -n "Running custom preupdate script"
 	if [ -f "$update_custom_preup" ]; then
 		if [ -x "$update_custom_preup" ]; then
-			echo " $update_custom_preup"
-			"$update_custom_preup" "$UPDATE_LAST_VERSION" "$UPDATE_NEXT_VERSION" 2>&1
-			echo "$update_custom_preup exited with exitcode: $?"
+			echo "Running custom preupdate script $update_custom_preup"
+			"$update_custom_preup" "$UPDATE_LAST_VERSION" "$UPDATE_NEXT_VERSION" >>"$UPDATER_LOG" 2>&1
+			echo "Custom postupdate script $update_custom_preup exited with exitcode: $?" >>"$UPDATER_LOG" 2>&1
 		else
-			echo " $update_custom_preup is not executable"
+			echo "Custom preupdate script $update_custom_preup is not executable" >>"$UPDATER_LOG" 2>&1
 		fi
 	else
-		echo " $update_custom_preup not found"
+		echo "Custom preupdate script $update_custom_preup not found" >>"$UPDATER_LOG" 2>&1
 	fi
 fi
 
@@ -177,7 +176,7 @@ for pkg in univention-ssl univention-thin-client-basesystem univention-thin-clie
 	fi
 done
 
-echo "Finished running preup.sh script --> STARTING UPDATE PROCESS..." | tee -a "$UPDATER_LOG"
+echo "Finished running preup.sh script --> STARTING UPDATE PROCESS..."
 date >> "$UPDATER_LOG"
 
 exit 0

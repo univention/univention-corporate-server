@@ -13,7 +13,7 @@ check_and_install ()
 }
 
 echo "Running postup.sh script"
-echo "$(date)"
+date >>"$UPDATER_LOG" 2>&1
 
 # remove old cache file
 rm -f /var/cache/univention-config/cache
@@ -86,22 +86,21 @@ if [ -e "/etc/ldap-backup.secret" ]; then
 fi
 
 if [ ! -z "$update_custom_postup" ]; then
-	echo -n "Running custom postupdate script"
 	if [ -f "$update_custom_postup" ]; then
 		if [ -x "$update_custom_postup" ]; then
-			echo " $update_custom_postup"
-			"$update_custom_postup" "$UPDATE_LAST_VERSION" "$UPDATE_NEXT_VERSION" 2>&1
-			echo "$update_custom_postup exited with exitcode: $?"
+			echo -n "Running custom postupdate script $update_custom_postup"
+			"$update_custom_postup" "$UPDATE_LAST_VERSION" "$UPDATE_NEXT_VERSION" >>"$UPDATER_LOG" 2>&1
+			echo "Custom postupdate script $update_custom_postup exited with exitcode: $?" >>"$UPDATER_LOG" 2>&1
 		else
-			echo " $update_custom_postup is not executable"
+			echo "Custom postupdate script $update_custom_postup is not executable" >>"$UPDATER_LOG" 2>&1
 		fi
 	else
-		echo " $update_custom_postup not found"
+		echo "Custom postupdate script $update_custom_postup not found" >>"$UPDATER_LOG" 2>&1
 	fi
 fi
 
 echo "Finished running postup.sh script"
-echo "$(date)"
+date >>"$UPDATER_LOG" 2>&1
 
 exit 0
 
