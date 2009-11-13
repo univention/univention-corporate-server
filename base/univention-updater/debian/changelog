@@ -1,3 +1,9 @@
+univention-updater (5.0.34-1) unstable; urgency=low
+
+  * fixed typo (Bug: #15992)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 13 Nov 2009 15:52:25 +0100
+
 univention-updater (5.0.33-2) unstable; urgency=low
 
   * add "--force-overwrite" and "--force-overwrite-dir" to dpkg options
