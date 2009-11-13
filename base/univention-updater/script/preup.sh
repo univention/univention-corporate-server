@@ -4,8 +4,8 @@ UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
 
-echo "Running preup.sh script"
-date
+echo "Running preup.sh script" | tee -a "$UPDATER_LOG"
+date >> "$UPDATER_LOG"
 
 eval $(univention-config-registry shell) >>"$UPDATER_LOG" 2>&1
 
@@ -177,7 +177,7 @@ for pkg in univention-ssl univention-thin-client-basesystem univention-thin-clie
 	fi
 done
 
-echo "Finished running preup.sh script"
-date
+echo "Finished running preup.sh script --> STARTING UPDATE PROCESS..." | tee -a "$UPDATER_LOG"
+date >> "$UPDATER_LOG"
 
 exit 0
