@@ -81,7 +81,7 @@ if [ ! -z "$update_custom_preup" ]; then
 		if [ -x "$update_custom_preup" ]; then
 			echo "Running custom preupdate script $update_custom_preup"
 			"$update_custom_preup" "$UPDATE_LAST_VERSION" "$UPDATE_NEXT_VERSION" >>"$UPDATER_LOG" 2>&1
-			echo "Custom postupdate script $update_custom_preup exited with exitcode: $?" >>"$UPDATER_LOG" 2>&1
+			echo "Custom preupdate script $update_custom_preup exited with exitcode: $?" >>"$UPDATER_LOG" 2>&1
 		else
 			echo "Custom preupdate script $update_custom_preup is not executable" >>"$UPDATER_LOG" 2>&1
 		fi
