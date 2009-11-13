@@ -101,6 +101,7 @@ if [ ! -z "$update_custom_postup" ]; then
 fi
 
 # Bug 16371: remove temporary apt.conf template to activate force-overwrite
+# only recommended for update to UCS 2.3-0
 if [ -e "/etc/apt/apt.conf.d/02univentionupdate" ]; then
 	rm -f /etc/apt/apt.conf.d/02univentionupdate
 fi

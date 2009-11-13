@@ -1,7 +1,14 @@
+univention-updater (5.0.33-2) unstable; urgency=low
+
+  * add "--force-overwrite" and "--force-overwrite-dir" to dpkg options
+    defined by UCR (Bug: #16371)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 13 Nov 2009 14:44:12 +0100
+
 univention-updater (5.0.33-1) unstable; urgency=low
 
   * add "--force-overwrite" and "--force-overwrite-dir" to dpkg options
-    during update (Bug: #16371)
+    during update temporarily (Bug: #16371)
   * avoid duplicated msgs in updater.log (Bug: #16384)
 
  -- Sönke Schwardt <schwardt@univention.de>  Fri, 13 Nov 2009 14:23:49 +0100

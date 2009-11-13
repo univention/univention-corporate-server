@@ -122,14 +122,14 @@ univention-config-registry unset update/server update/security/server update/sec
 
 # define update commands
 univention-config-registry set \
-		update/commands/distupgrade?"apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade" \
+		update/commands/distupgrade?"apt-get -o DPkg::Options::=--force-confold -y --force-yes --force-overwrite --force-overwrite-dir -u dist-upgrade" \
 		update/commands/update?"apt-get update" \
 		update/commands/show?"apt-cache show" \
-		update/commands/install?"apt-get -o DPkg::Options::=--force-confold -y --force-yes install" \
+		update/commands/install?"apt-get -o DPkg::Options::=--force-confold -y --force-yes --force-overwrite --force-overwrite-dir install" \
 		update/commands/remove?"apt-get --yes remove" \
 		update/commands/configure?"dpkg --configure -a" \
-		update/commands/distupgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -y --force-yes -us dist-upgrade" \
-		update/commands/upgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -y --force-yes -us upgrade"
+		update/commands/distupgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -y --force-yes --force-overwrite --force-overwrite-dir -us dist-upgrade" \
+		update/commands/upgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -y --force-yes --force-overwrite --force-overwrite-dir -us upgrade"
 
 if [ -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.73-0; then
 	
@@ -145,6 +145,23 @@ if [ -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.73-0; then
 				cp "/usr/share/univention-updater/${script}" "${all_path}/"
 			fi
 		done
+	fi
+fi
+
+# activate --force-overwrite and --force-overwrite-dir during updates
+if [ -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.33-1; then
+	eval $(univention-config-registry shell)
+	if [ "$update_commands_install" = "apt-get -o DPkg::Options::=--force-confold -y --force-yes install" ] ; then
+		univention-config-registry set update/commands/install?"apt-get -o DPkg::Options::=--force-confold -y --force-yes --force-overwrite --force-overwrite-dir install"
+	fi
+	if [ "$update_commands_distupgrade" = "apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade" ] ; then
+		univention-config-registry set update/commands/distupgrade="apt-get -o DPkg::Options::=--force-confold -y --force-yes --force-overwrite --force-overwrite-dir -u dist-upgrade"
+	fi
+	if [ "$update_commands_distupgrade_simulate" = "apt-get -o DPkg::Options::=--force-confold -y --force-yes -us dist-upgrade" ] ; then
+		univention-config-registry set update/commands/distupgrade/simulate="apt-get -o DPkg::Options::=--force-confold -y --force-yes --force-overwrite --force-overwrite-dir -us dist-upgrade"
+	fi
+	if [ "$update_commands_upgrade_simulate" = "apt-get -o DPkg::Options::=--force-confold -y --force-yes -us upgrade" ] ; then
+		univention-config-registry set update/commands/upgrade/simulate="apt-get -o DPkg::Options::=--force-confold -y --force-yes --force-overwrite --force-overwrite-dir -us upgrade"
 	fi
 fi
 
