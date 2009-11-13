@@ -1,3 +1,9 @@
+univention-maintenance (3.0.3-1) unstable; urgency=low
+
+  * avoid division by zero on systems without swap (Bug: #16385)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Fri, 13 Nov 2009 15:41:04 +0100
+
 univention-maintenance (3.0.2-3) unstable; urgency=low
 
   * one target per mrtg graphic (Bug: #15191)

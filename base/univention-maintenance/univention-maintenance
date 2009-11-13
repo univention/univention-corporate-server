@@ -105,7 +105,11 @@ echo "Auslastung: Speicher $prctmem%" >$wwwdir/$mrtgname.txt
 swaptotal=$(more /proc/meminfo | grep ^SwapTotal: | awk {'print $2'})
 swapfree=$(more /proc/meminfo | grep ^SwapFree: | awk {'print $2'})
 swapused=$(($swaptotal - $swapfree))
-prctswap=$((100 * $swapused / $swaptotal)) 
+if [ "$swaptotal" = "0" ]; then
+	prctswap=0
+else
+	prctswap=$((100 * $swapused / $swaptotal)) 
+fi
 mrtgname="ucs_3swap"
 echo "WorkDir: $wwwdir" > $mrtg_config
 echo "Language: german" >> $mrtg_config
