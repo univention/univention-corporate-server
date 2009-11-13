@@ -299,7 +299,7 @@ def main():
 					if not res:
 						res = subprocess.call( cmd_remove.split( ' ' ) + [ package ], stdout = logfile, stderr = logfile )
 				else:
-					print("The package %s doesn't exists." % package)
+					print("The package %s doesn't exist." % package)
 					res=0
 				if os.path.exists('/var/run/apt-get.lock'):
 					os.unlink('/var/run/apt-get.lock')
@@ -322,7 +322,7 @@ def main():
 					if not res:
 						res = subprocess.call( cmd_install.split( ' ' ) + [ package ], stdout = logfile, stderr = logfile )
 				else:
-					print("The package %s doesn't exists." % package)
+					print("The package %s doesn't exist." % package)
 					res=0
 
 				if os.path.exists('/var/run/apt-get.lock'):
