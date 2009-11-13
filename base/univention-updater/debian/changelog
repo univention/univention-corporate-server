@@ -1,3 +1,9 @@
+univention-updater (5.0.29-2) unstable; urgency=low
+
+  * redirect minor error message in postup.sh to updater.log (Bug: #15992)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 13 Nov 2009 12:24:47 +0100
+
 univention-updater (5.0.29-1) unstable; urgency=low
 
   * increased free disk space check for /boot to 40MB (Bug: #16364)

@@ -52,8 +52,8 @@ if [ -x /usr/bin/univention-thin-client-apt ]; then
 fi
 
 # install locate if findutils has been installed in UCR 2.2-2 (Bug: #15992)
-if dpkg -l findtutils | grep ^ii  >>"$UPDATER_LOG" 2>&1 ; then
-	echo "findutils has been installed in UCS 2.2-2 ... installing locate" | tee -a "$UPDATER_LOG"
+if dpkg -l findtutils 2>> "$UPDATER_LOG" | grep ^ii >> "$UPDATER_LOG" ; then
+	echo "findutils has been installed in UCS 2.2-2 ... installing locate" >> "$UPDATER_LOG"
 	$update_commands_install locate >>"$UPDATER_LOG" 2>&1
 	if [ ! $? = 0 ]; then
 	    echo "WARNING: post-installation of 'locate' failed!" | tee -a "$UPDATER_LOG"
