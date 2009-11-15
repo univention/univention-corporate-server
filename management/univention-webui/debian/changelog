@@ -1,3 +1,9 @@
+univention-webui (3.0.21-1) unstable; urgency=low
+
+  * support multiple mmselect widgets on the same tab. Bug #13035
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 15 Nov 2009 10:20:09 +0100
+
 univention-webui (3.0.20-1) unstable; urgency=low
 
   * select all members in the mmselect widget before the form will be

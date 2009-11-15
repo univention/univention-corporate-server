@@ -1,3 +1,9 @@
+univention-webui-style (4.0.15-1) unstable; urgency=low
+
+  * support multiple mmselect widgets on the same tab. Bug #13035
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 15 Nov 2009 10:20:15 +0100
+
 univention-webui-style (4.0.14-1) unstable; urgency=low
 
   * don't set the darker background to all disabled widgets otherwise
