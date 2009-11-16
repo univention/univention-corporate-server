@@ -545,7 +545,7 @@ class handler(umch.simpleHandler):
 
 		if self.__is_updater_running() or self.__is_security_update_running():
 			log = res.dialog
-			html = '<h2>' + _('The update is still in progress.') + '</h2>' + '<pre>' + _('Please be patient the update may take a while. Press refresh button to see the latest log output.') + '</pre>' + '<body>' + self.__remove_status_messages(log) + '</body>'
+			html = '<h2>' + _('The update is still in progress.') + '</h2>' + '<pre>' + _('Please wait. The update may take a while. A click on the refresh button will update the log messages.') + '</pre>' + '<body>' + self.__remove_status_messages(log) + '</body>'
 			result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
 			btn_refresh = umcd.Button(_('Refresh'), 'actions/refresh', actions = [umcd.Action(self.__get_logfile_request( self.logfile ))])
 			result.add_row([ btn_refresh, umcd.CloseButton()])
