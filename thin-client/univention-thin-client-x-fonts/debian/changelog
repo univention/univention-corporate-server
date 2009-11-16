@@ -1,3 +1,10 @@
+univention-thin-client-x-fonts (3.0.1-2) unstable; urgency=low
+
+  * create fontcache for /usr/share/fonts and /usr/share/X11 and copy
+    the generated fontcache to /var/lib/gdm. Bug #16379
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Nov 2009 09:01:16 +0100
+
 univention-thin-client-x-fonts (3.0.1-1) unstable; urgency=low
 
   * include the lsb init functions. Bug #14421

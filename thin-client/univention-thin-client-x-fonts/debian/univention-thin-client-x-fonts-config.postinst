@@ -30,7 +30,17 @@
 
 # copy the fontcache to /usr/share/fontconfig/cache
 # generate the fontcache
+
 fc-cache
+
+if [ -d /usr/share/fonts ]; then
+	fc-cache /usr/share/fonts
+fi
+
+if [ -d /usr/share/X11 ]; then
+	fc-cache /usr/share/X11
+fi
+
 if [ -d /var/cache/fontconfig ]; then
 	mkdir -p /usr/share/fontconfig/cache
 	cp -a /var/cache/fontconfig /usr/share/fontconfig/cache

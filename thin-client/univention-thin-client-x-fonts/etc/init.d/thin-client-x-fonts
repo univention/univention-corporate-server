@@ -35,6 +35,10 @@ log_action_msg "Setting up Thin Client X.org Font configuration"
 if [ -e /usr/share/fontconfig/cache/fontconfig ]; then
 	mkdir -p /var/cache/
 	cp -a /usr/share/fontconfig/cache/fontconfig /var/cache/fontconfig
+
+	mkdir -p /var/lib/gdm
+	cp -a /usr/share/fontconfig/cache/fontconfig /var/lib/gdm/.fontconfig
+	chown -R gdm /var/lib/gdm/.fontconfig
 fi
 
 log_action_end_msg 0
