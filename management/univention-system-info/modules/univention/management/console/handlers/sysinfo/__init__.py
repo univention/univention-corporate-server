@@ -72,7 +72,7 @@ command_description = {
 		method = 'sysinfo_show',
 		values = { 'manufacturer' : umc.String( _( 'Manufacturer' ) ),
 				   'model' : umc.String( _( 'Model' ) ),
-				   'comment' : umc.String( _( 'Descriptive comment' ), required = False ),
+				   'comment' : umc.Text( _( 'Descriptive comment' ), required = False ),
 				   'support' : umc.Boolean( _( 'This is related to a support case' ) ),
 				   'ticket' : umc.String( _( 'This is related to a support case' ) ),
 				   'cpu' : umc.String( _( 'CPU' ), required = False, may_change = False ),
@@ -177,7 +177,7 @@ class handler( umch.simpleHandler ):
 		if not object.options[ 'comment' ]:
 			comment = ''
 		else:
-			comment = object.options[ 'comment' ]
+			comment = '\n'.join( object.options[ 'comment' ] )
 		cmd = '/usr/bin/univention-system-info -m "%s" -t "%s" -c "%s" -s "%s" -u' % ( object.options[ 'manufacturer' ], object.options[ 'model' ], comment, object.options[ 'support' ] )
 		ret = umct.run_process( cmd, timeout = 10000 )
 		# usi exited successfully
@@ -190,7 +190,8 @@ class handler( umch.simpleHandler ):
 				match = self.mem_reg.match( object.options[ 'mem' ] )
 				if match:
 					try:
-						object.options[ 'mem' ] = '%.2f GB' % ( float( match.groups()[ 0 ] ) / 1024 )
+						object.options[ 'mem' ] = '%.2f GB' % ( float( match.groups()[ 0 ] ) / 1048576 )
+						object.options[ 'mem' ] = object.options[ 'mem' ].replace( '.', ',' )
 					except:
 						pass
 					
@@ -251,11 +252,12 @@ This module collects information about the hardware of your system. This might b
 		wiz._content.add_row( [ manu, model ] )
 		
 		comment = umcd.make( self[ 'sysinfo/upload' ][ 'comment' ] )
+		comment[ 'width' ] = '300'
 		items.append( comment.id() )
 		support = umcd.make( self[ 'sysinfo/upload' ][ 'support' ] )
 		items.append( support.id() )
 
-		wiz._content.add_row( [ comment, support ] )
+		wiz._content.add_row( [ comment, umcd.Cell( support, { 'valign' : 'top' } ) ] )
 		
 		description = _( '''
 If this is related to a support case the next step will be to enter the ticket number. if not than the information about your system will be collected and a summary is shown.
@@ -318,10 +320,10 @@ The following information has been collected and will be transfered to Univentio
 		cpu[ 'width' ] = '400'
 		items.append( cpu.id() )
 		num_cpu = umcd.make( self[ 'sysinfo/upload' ][ 'num_cpu' ] )
-		num_cpu[ 'width' ] = '50'
+		num_cpu[ 'width' ] = '80'
 		items.append( num_cpu.id() )
 		mem = umcd.make( self[ 'sysinfo/upload' ][ 'mem' ] )
-		mem[ 'width' ] = '50'
+		mem[ 'width' ] = '80'
 		items.append( mem.id() )
 		wiz._content.add_row( [ cpu, ] )
 		wiz._content.add_row( [ num_cpu, ] )

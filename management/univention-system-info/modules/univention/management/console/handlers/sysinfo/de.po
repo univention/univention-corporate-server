@@ -37,7 +37,7 @@ msgstr "Modell"
 
 #: __init__.py:75
 msgid "Descriptive comment"
-msgstr "Beschreibung"
+msgstr "Kommentar"
 
 #: __init__.py:76 __init__.py:77
 msgid "This is related to a support case"
@@ -105,7 +105,7 @@ msgid ""
 "collected and a summary is shown.\n"
 msgstr ""
 "\n"
-"Wenn sich dies auf einen Supprtfall bezieht, wird im nächsten Schritt die "
+"Wenn sich dies auf einen Supportfall bezieht, wird im nächsten Schritt die "
 "Ticketnummer abgefragt, anderenfalls werden die Informationen zu Ihrem "
 "System gesammelt und eine Zusammenfassung angezeigt.\n"
 

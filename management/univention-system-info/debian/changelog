@@ -1,3 +1,11 @@
+univention-system-info (0.1.10-1) unstable; urgency=low
+
+  * fixed german translation
+  * adapt size of text fields for number of processors and memory
+  * use a multiline field for the comment (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 16 Nov 2009 12:17:35 +0100
+
 univention-system-info (0.1.9-2) unstable; urgency=low
 
   * fixed some typos
