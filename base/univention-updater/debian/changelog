@@ -1,3 +1,9 @@
+univention-updater (5.0.36-1) unstable; urgency=low
+
+  * fixed typo in postinst (Bug: #16371)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 16 Nov 2009 15:05:06 +0100
+
 univention-updater (5.0.35-1) unstable; urgency=low
 
   * adapt the info message during an update and added a line break. Bug
