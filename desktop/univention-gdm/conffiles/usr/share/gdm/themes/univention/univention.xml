@@ -10,7 +10,6 @@
 pos = {}
 
 pos["640x480"] = {}
-pos["640x480"]["fontscale"] = 15
 pos["640x480"]["login_w"] = 169
 pos["640x480"]["login_h"] = 19
 pos["640x480"]["loginPad_x"] = 2
@@ -21,9 +20,9 @@ pos["640x480"]["button_gap"] = 7
 pos["640x480"]["button_w"] = 80
 pos["640x480"]["button_h"] = 19
 pos["640x480"]["font"] = "Sans 14"
+pos["640x480"]["font_small"] = "Sans 13"
 
 pos["800x600"] = {}
-pos["800x600"]["fontscale"] = 20
 pos["800x600"]["login_w"] = 203
 pos["800x600"]["login_h"] = 23
 pos["800x600"]["loginPad_x"] = 3
@@ -34,9 +33,9 @@ pos["800x600"]["button_gap"] = 8
 pos["800x600"]["button_w"] = 95
 pos["800x600"]["button_h"] = 23
 pos["800x600"]["font"] = "Sans 14"
+pos["800x600"]["font_small"] = "Sans 13"
 
 pos["1024x768"] = {}
-pos["1024x768"]["fontscale"] = 10
 pos["1024x768"]["login_w"] = 235
 pos["1024x768"]["login_h"] = 27
 pos["1024x768"]["loginPad_x"] = 4
@@ -47,9 +46,9 @@ pos["1024x768"]["button_gap"] = 10
 pos["1024x768"]["button_w"] = 110
 pos["1024x768"]["button_h"] = 27
 pos["1024x768"]["font"] = "Sans 14"
+pos["1024x768"]["font_small"] = "Sans 13"
 
 pos["1280x1024"] = {}
-pos["1280x1024"]["fontscale"] = 10
 pos["1280x1024"]["login_w"] = 300
 pos["1280x1024"]["login_h"] = 34
 pos["1280x1024"]["loginPad_x"] = 4
@@ -60,9 +59,9 @@ pos["1280x1024"]["button_gap"] = 13
 pos["1280x1024"]["button_w"] = 141
 pos["1280x1024"]["button_h"] = 34
 pos["1280x1024"]["font"] = "Sans 18"
+pos["1280x1024"]["font_small"] = "Sans 17"
 
 pos["1400x1050"] = {}
-pos["1400x1050"]["fontscale"] = 20
 pos["1400x1050"]["login_w"] = 340
 pos["1400x1050"]["login_h"] = 39
 pos["1400x1050"]["loginPad_x"] = 4
@@ -73,9 +72,9 @@ pos["1400x1050"]["button_gap"] = 15
 pos["1400x1050"]["button_w"] = 159
 pos["1400x1050"]["button_h"] = 39
 pos["1400x1050"]["font"] = "Sans 18"
+pos["1400x1050"]["font_small"] = "Sans 17"
 
 pos["1600x1200"] = {}
-pos["1600x1200"]["fontscale"] = 10
 pos["1600x1200"]["login_y"] = 637
 pos["1600x1200"]["login_w"] = 340
 pos["1600x1200"]["login_h"] = 39
@@ -87,9 +86,9 @@ pos["1600x1200"]["button_gap"] = 15
 pos["1600x1200"]["button_w"] = 159
 pos["1600x1200"]["button_h"] = 39
 pos["1600x1200"]["font"] = "Sans 20"
+pos["1600x1200"]["font_small"] = "Sans 19"
 
 pos["1680x1050"] = {}
-pos["1680x1050"]["fontscale"] = 10
 pos["1680x1050"]["login_w"] = 340
 pos["1680x1050"]["login_h"] = 39
 pos["1680x1050"]["loginPad_x"] = 4
@@ -100,9 +99,9 @@ pos["1680x1050"]["button_gap"] = 15
 pos["1680x1050"]["button_w"] = 159
 pos["1680x1050"]["button_h"] = 39
 pos["1680x1050"]["font"] = "Sans 20"
+pos["1680x1050"]["font_small"] = "Sans 19"
 
 pos["1920x1080"] = {}
-pos["1920x1080"]["fontscale"] = 10
 pos["1920x1080"]["login_w"] = 340
 pos["1920x1080"]["login_h"] = 39
 pos["1920x1080"]["loginPad_x"] = 4
@@ -113,6 +112,7 @@ pos["1920x1080"]["button_gap"] = 15
 pos["1920x1080"]["button_w"] = 159
 pos["1920x1080"]["button_h"] = 39
 pos["1920x1080"]["font"] = "Sans 24"
+pos["1920x1080"]["font_small"] = "Sans 23"
 
 
 res = baseConfig.get("xorg/resolution", "1024x768")
@@ -165,10 +165,10 @@ print '\t</item>'
 print ''
 print '\t<!-- caps-lock-warning -->'
 print '\t<item type="rect" id="caps-lock-warning">'
-print '\t\t<pos x="50%%" y="74%%" width="box" height="box"/>' % pos[res]
+print '\t\t<pos x="50%%" y="73%%" width="box" height="box"/>' % pos[res]
 print '\t\t<box orientation="vertical">'
 print '\t\t\t<item type="label">'
-print '\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t<normal color="#FFFFFF" font="%(font_small)s"/>' % pos[res]
 print '\t\t\t\t<pos anchor="center"/>'
 print '\t\t\t\t<stock type="caps-lock-warning"/>'
 print '\t\t\t</item>'
@@ -180,7 +180,7 @@ print '\t<item type="rect">'
 print '\t\t<pos x="50%%" y="53.5%%" width="box" height="box" anchor="c" />' % pos[res]
 print '\t\t<box spacing="%(button_gap)s" orientation="horizontal">' % pos[res]
 print '\t\t\t<item type="rect">'
-print '\t\t\t\t<pos width="box" height="box" y="60%%" />' % pos[res]
+print '\t\t\t\t<pos width="box" height="box" y="58%%" />' % pos[res]
 print '\t\t\t\t<box orientation="horizontal">'
 print '\t\t\t\t\t<item type="label" id="pam-prompt">'
 print '\t\t\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
@@ -193,7 +193,7 @@ print '\t\t\t\t<normal file="pw.png" />'
 print '\t\t\t\t<pos  y="50%%" width="%(login_w)s" height="%(login_h)s"/>' % pos[res]
 print '\t\t\t\t<fixed>'
 print '\t\t\t\t\t<item type="entry" id="user-pw-entry">'
-print '\t\t\t\t\t\t<normal color="#000000" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t\t\t<normal color="#000000" font="%(font_small)s"/>' % pos[res]
 print '\t\t\t\t\t\t<pos anchor="nw" x="%(loginPad_x)s" y="%(loginPad_y)s" height="%(loginPad_h)s" width="%(loginPad_w)s"/>' % pos[res]
 print '\t\t\t\t\t</item>'
 print '\t\t\t\t</fixed>'
@@ -206,7 +206,7 @@ print '\t<item type="rect">'
 print '\t\t<pos x="50%%" y="68%%" width="box" height="box"/>' % pos[res]
 print '\t\t<box orientation="vertical" min-width="%(pamEntry_width)s" >' % pos[res]
 print '\t\t\t<item type="label" id="pam-error">'
-print '\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t<normal color="#FFFFFF" font="%(font_small)s"/>' % pos[res]
 print '\t\t\t\t<pos anchor="center" />'
 print '\t\t\t\t<text></text>'
 print '\t\t\t</item>'
@@ -218,10 +218,10 @@ print '\t<item type="pixmap" id="session_button" button="true">'
 print '\t<normal file="action.png"/>'
 print '\t\t<prelight file="action-prelight.png"/>'
 print '\t\t<pos anchor="nw" x="%(session_x)s" y="59.7%%" width="%(session_w)s" height="%(session_h)s"/>' % pos[res]
-print '\t\t<box orientation="vertical">'
+print '\t\t<box orientation="vertical" homogeneous="true">'
 print '\t\t\t<item type="label">'
-print '\t\t\t\t<pos anchor="n" x="50%%" y="%(fontscale)s%%"/>' % pos[res]
-print '\t\t\t\t<normal color="#000000" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t<pos anchor="c" x="50%%" y="50%%"/>' % pos[res]
+print '\t\t\t\t<normal color="#000000" font="%(font_small)s"/>' % pos[res]
 print '\t\t\t\t<stock type="session"/>'
 print '\t\t\t</item>'
 print '\t\t</box>'
@@ -234,10 +234,10 @@ if system:
 	print '\t\t<normal file="action.png"/>'
 	print '\t\t<prelight file="action-prelight.png"/>'
 	print '\t\t<pos anchor="nw" x="%(system_x)s" y="59.7%%" width="%(system_w)s" height="%(system_h)s"/>' % pos[res]
-	print '\t\t<box orientation="vertical">'
+	print '\t\t<box orientation="vertical" homogeneous="true">'
 	print '\t\t\t<item type="label">'
-	print '\t\t\t\t<pos anchor="n" x="50%%" y="%(fontscale)s%%"/>' % pos[res]
-	print '\t\t\t\t<normal color="#000000" font="%(font)s"/>' % pos[res]
+	print '\t\t\t\t<pos anchor="c" x="50%%" y="50%%"/>' % pos[res]
+	print '\t\t\t\t<normal color="#000000" font="%(font_small)s"/>' % pos[res]
 	print '\t\t\t\t<stock type="system"/>'
 	print '\t\t\t</item>'
 	print '\t\t</box>'
@@ -250,10 +250,10 @@ if language:
 	print '\t\t<normal file="action.png"/>'
 	print '\t\t<prelight file="action-prelight.png"/>'
 	print '\t\t<pos anchor="nw" x="%(language_x)s" y="59.7%%" width="%(language_w)s" height="%(language_h)s"/>' % pos[res]
-	print '\t\t<box orientation="vertical">'
+	print '\t\t<box orientation="vertical" homogeneous="true">'
 	print '\t\t\t<item type="label">'
-	print '\t\t\t\t<pos anchor="n" x="50%%" y="%(fontscale)s%%"/>' % pos[res]
-	print '\t\t\t\t<normal color="#000000" font="%(font)s"/>' % pos[res]
+	print '\t\t\t\t<pos anchor="c" x="50%%" y="50%%"/>' % pos[res]
+	print '\t\t\t\t<normal color="#000000" font="%(font_small)s"/>' % pos[res]
 	print '\t\t\t\t<stock type="language"/>'
 	print '\t\t\t</item>'
 	print '\t\t</box>'
@@ -263,10 +263,10 @@ if language:
 if autostart:
 	print '\t<!-- autostart -->'
 	print '\t<item type="rect">'
-	print '\t\t<pos x="50%%" y="78%%" width="box" height="box"/>' % pos[res]
+	print '\t\t<pos x="50%%" y="76.5%%" width="box" height="box"/>' % pos[res]
 	print '\t\t<box orientation="vertical">' % pos[res]
 	print '\t\t\t<item type="label" id="timed-label">'
-	print '\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
+	print '\t\t\t\t<normal color="#FFFFFF" font="%(font_small)s"/>' % pos[res]
 	print '\t\t\t\t<pos anchor="center"/>'
 	print '\t\t\t\t<!-- Stock label for: User %s will login in %d seconds -->'
 	print '\t\t\t\t<stock type="timed-label"/>'
