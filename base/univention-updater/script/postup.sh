@@ -12,13 +12,13 @@ check_and_install ()
 	fi
 }
 
-echo "Running postup.sh script"
+echo -n "Running postup.sh script:"
 date >>"$UPDATER_LOG" 2>&1
 
 # remove old cache file
 rm -f /var/cache/univention-config/cache
 
-eval $(univention-baseconfig shell) >>"$UPDATER_LOG" 2>&1
+eval $(univention-config-registry shell) >>"$UPDATER_LOG" 2>&1
 
 for p in univention-client-kernel-image; do
 	check_and_install $p
@@ -65,11 +65,11 @@ fi
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update
 if [ -e /usr/sbin/univention-management-console-server ]; then
 	dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
-	chmod +x /usr/sbin/univention-management-console-server
+	chmod +x /usr/sbin/univention-management-console-server 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 fi
 if [ -e /usr/sbin/apache2 ]; then
 	dpkg-statoverride --remove /usr/sbin/apache2 >/dev/null 2>&1
-	chmod +x /usr/sbin/apache2
+	chmod +x /usr/sbin/apache2 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 fi
 
 univention-config-registry unset repository/local/old >>"$UPDATER_LOG" 2>&1
@@ -83,7 +83,7 @@ fi
 
 # fix ldap-backup.secret permissions
 if [ -e "/etc/ldap-backup.secret" ]; then
-	chgrp "DC Backup Hosts" /etc/ldap-backup.secret
+	chgrp "DC Backup Hosts" /etc/ldap-backup.secret 2>&1
 fi
 
 if [ ! -z "$update_custom_postup" ]; then
@@ -106,7 +106,7 @@ if [ -e "/etc/apt/apt.conf.d/02univentionupdate" ]; then
 	rm -f /etc/apt/apt.conf.d/02univentionupdate
 fi
 
-echo "Finished running postup.sh script"
+echo "done."
 date >>"$UPDATER_LOG" 2>&1
 
 exit 0

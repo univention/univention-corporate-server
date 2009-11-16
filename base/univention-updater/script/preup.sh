@@ -4,7 +4,7 @@ UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_LAST_VERSION="$1"
 UPDATE_NEXT_VERSION="$2"
 
-echo "Running preup.sh script"
+echo "Running preup.sh script" >> "$UPDATER_LOG"
 date >>"$UPDATER_LOG" 2>&1
 
 eval $(univention-config-registry shell) >>"$UPDATER_LOG" 2>&1
@@ -166,10 +166,11 @@ apt-get update >>"$UPDATER_LOG" 2>&1
 #
 for pkg in univention-ssl univention-thin-client-basesystem univention-thin-client-x-base ; do
 	# pre-update $pkg to avoid pre-dependency-problems
-	if dpkg -l $pkg | grep ^ii  >>"$UPDATER_LOG" 2>&1 ; then
-	    echo "Starting preupdate of $pkg... (may take some time)"
-	    $update_commands_install $pkg >>"$UPDATER_LOG" 2>&1
+	if dpkg -l $pkg 2>> "$UPDATER_LOG" | grep ^ii  >>"$UPDATER_LOG" ; then
+	    echo -n "Starting preupdate of $pkg..."
+	    $update_commands_install $pkg >>"$UPDATER_LOG" 2>> "$UPDATER_LOG"
 	    if [ ! $? = 0 ]; then
+			echo "failed."
 	        echo "ERROR: pre-update of $pkg failed!"
 	        echo "       Please run 'dpkg --configure -a' manually."
 	        killall univention-updater
@@ -177,16 +178,18 @@ for pkg in univention-ssl univention-thin-client-basesystem univention-thin-clie
 	    fi
 	    dpkg -l 2>&1  | grep "  " | grep -v "^|" | grep "^[a-z]*[A-Z]" >>"$UPDATER_LOG" 2>&1
 	    if [ $? = 0 ]; then
+			echo "failed."
 	        echo "ERROR: pre-update of $pkg failed!"
 	        echo "       Inconsistent package state detected. Please run 'dpkg --configure -a' manually."
 	        killall univention-updater
 	        exit 1
 	    fi
-	    echo "Preupdate of $pkg done."
+		echo "done."
 	fi
 done
 
-echo "Finished running preup.sh script --> STARTING UPDATE PROCESS..."
+echo "Starting update process, this may take a while."
+echo "Check /var/log/univention/updater.log for more information."
 date >> "$UPDATER_LOG"
 
 exit 0
