@@ -1224,6 +1224,9 @@ $sa_spam_modifies_subj = 0; # may be a ref to a lookup table, default is true
 # Example: modify Subject for all local recipients except user@example.com
 #$sa_spam_modifies_subj = [qw( !user@example.com . )];
 
+# don't add ***UNCHECKED*** to the subject
+$undecipherable_subject_tag = undef;
+
 
 # @av_scanners is a list of n-tuples, where fields semantics is:
 #  1. av scanner plain name, to be used in log and reports;

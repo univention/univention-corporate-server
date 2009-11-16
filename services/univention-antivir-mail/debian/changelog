@@ -1,3 +1,10 @@
+univention-antivir-mail (2.0.3-1) unstable; urgency=low
+
+  * don't add ***UNCHECKED*** to the subject of not checkable mails. Bug
+    #16439
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Nov 2009 21:01:04 +0100
+
 univention-antivir-mail (2.0.2-1) unstable; urgency=low
 
   * introduce 'none' value for mail/antivir/scanner as equivalent to '' but
