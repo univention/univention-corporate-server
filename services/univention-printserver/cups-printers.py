@@ -217,10 +217,10 @@ def handler(dn, new, old):
 				argument = "%s:" % new['univentionPrinterACLtype'][0]
 				if new.has_key('univentionPrinterACLUsers'):
 					for userDn in new['univentionPrinterACLUsers']:
-						argument += '"%s",' % userDn[userDn.find('=')+1:userDn.find(',')]
+						argument += '%s,' % userDn[userDn.find('=')+1:userDn.find(',')]
 				if new.has_key('univentionPrinterACLGroups'):
 					for groupDn in new['univentionPrinterACLGroups']:
-						argument += '"@%s",' % groupDn[groupDn.find('=')+1:groupDn.find(',')]
+						argument += '@%s,' % groupDn[groupDn.find('=')+1:groupDn.find(',')]
 				args.append(argument[:-1])
 
 		# Add/Modify Printergroup

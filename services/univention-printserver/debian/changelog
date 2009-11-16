@@ -1,3 +1,9 @@
+univention-printserver (3.0.24-1) unstable; urgency=low
+
+  * fix quotation bug with users an groups (Bug: #15142, #15273)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Mon, 16 Nov 2009 16:00:59 +0100
+
 univention-printserver (3.0.23-2) unstable; urgency=low
 
   * renamed pam.d/cupsys template to pam.d/cups 
