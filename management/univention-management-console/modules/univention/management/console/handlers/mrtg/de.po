@@ -16,20 +16,36 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 
 #: _revamp.py:41
-msgid "Day"
-msgstr "Tag"
+msgid "Period: previous day"
+msgstr "Zeitraum: vergangener Tag"
 
 #: _revamp.py:42
-msgid "Week"
-msgstr "Woche"
+msgid "Period: previous week"
+msgstr "Zeitraum: vergangene Woche"
 
 #: _revamp.py:43
-msgid "Month"
-msgstr "Month"
+msgid "Period: previous month"
+msgstr "Zeitraum: vergangener Monat"
 
 #: _revamp.py:44
-msgid "Year"
-msgstr "Jahr"
+msgid "Period: previous year"
+msgstr "Zeitraum: vergangenes Jahr"
+
+#: _revamp.py:44
+msgid "Utilization of the system load in percent"
+msgstr "Systemauslastung in Prozent"
+
+#: _revamp.py:44
+msgid "Number of active terminal server sessions"
+msgstr "Anzahl der aktiven Terminalserver Sitzungen"
+
+#: _revamp.py:44
+msgid "Utilization of the system memory in percent"
+msgstr "Auslastung des Hauptspeichers in Prozent"
+
+#: _revamp.py:44
+msgid "Utilization of the swap space in percent"
+msgstr "Auslastung des Auslagerungsspeichers in Prozent"
 
 #: _revamp.py:50
 msgid ""
@@ -40,22 +56,22 @@ msgstr ""
 "maintance korrekt installiert ist."
 
 #: __init__.py:47 __init__.py:53
-msgid "Load statistics"
-msgstr "Auslastungsstatistik"
+msgid "System load"
+msgstr "Systemauslastung"
 
 #: __init__.py:48
 msgid "System statistics"
 msgstr "System Statistiken"
 
 #: __init__.py:48
-msgid "Memory statistics"
-msgstr "Speicherstatistik"
+msgid "Memory"
+msgstr "Hauptspeicher"
 
 #: __init__.py:48
-msgid "Swap statistics"
-msgstr "Swapstatisktik"
+msgid "Swap space"
+msgstr "Auslagerungsspeicher"
 
 #: __init__.py:48
-msgid "Sessions statistics"
-msgstr "Sessionstatistik"
+msgid "Terminal server sessions"
+msgstr "Terminalserver Sitzungen"
 

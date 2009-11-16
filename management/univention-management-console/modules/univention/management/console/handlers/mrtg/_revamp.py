@@ -37,12 +37,19 @@ import univention.debug as ud
 _ = umc.Translation( 'univention.management.console.handlers.mrtg' ).translate
 
 class Web( object ):
+
+	day = _( "Period: previous day" )
+	week = _( "Period: previous week" )
+	month = _( "Period: previous month" )
+	year = _( "Period: previous year" )
+
 	def _web_mrtg_view( self, object, res ):
-		text = { 'day' : _( 'Day' ),
-				 'week' : _( 'Week' ),
-				 'month' : _( 'Month' ),
-				 'year' : _( 'Year' ) }
+		text = { 'day' : self.day,
+				 'week' : self.week,
+				 'month' : self.month,
+				 'year' : self.year }
 		lst = []
+		lst.append(umcd.HTML('<b style="font-size:150%">' + _( 'Utilization of the system load in percent' ) + '</b>'))
 		for key, img in res.dialog:
 			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
 
@@ -52,11 +59,12 @@ class Web( object ):
 		self.revamped( object.id(), res )
 
 	def _web_mrtg_view_session( self, object, res ):
-		text = { 'day' : _( 'Day' ),
-				 'week' : _( 'Week' ),
-				 'month' : _( 'Month' ),
-				 'year' : _( 'Year' ) }
+		text = { 'day' : self.day,
+				 'week' : self.week,
+				 'month' : self.month,
+				 'year' : self.year }
 		lst = []
+		lst.append(umcd.HTML('<b style="font-size:150%">' + _( 'Number of active terminal server sessions' ) + '</b>'))
 		for key, img in res.dialog:
 			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
 
@@ -66,11 +74,12 @@ class Web( object ):
 		self.revamped( object.id(), res )
 
 	def _web_mrtg_view_memory( self, object, res ):
-		text = { 'day' : _( 'Day' ),
-				 'week' : _( 'Week' ),
-				 'month' : _( 'Month' ),
-				 'year' : _( 'Year' ) }
+		text = { 'day' : self.day,
+				 'week' : self.week,
+				 'month' : self.month,
+				 'year' : self.year }
 		lst = []
+		lst.append(umcd.HTML('<b style="font-size:150%">' + _( 'Utilization of the system memory in percent' ) + '</b>'))
 		for key, img in res.dialog:
 			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
 
@@ -80,11 +89,12 @@ class Web( object ):
 		self.revamped( object.id(), res )
 
 	def _web_mrtg_view_swap( self, object, res ):
-		text = { 'day' : _( 'Day' ),
-				 'week' : _( 'Week' ),
-				 'month' : _( 'Month' ),
-				 'year' : _( 'Year' ) }
+		text = { 'day' : self.day,
+				 'week' : self.week,
+				 'month' : self.month,
+				 'year' : self.year }
 		lst = []
+		lst.append(umcd.HTML('<b style="font-size:150%">' + _( 'Utilization of the swap space in percent' ) + '</b>'))
 		for key, img in res.dialog:
 			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
 

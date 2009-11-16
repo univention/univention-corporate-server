@@ -50,28 +50,32 @@ categories = [ 'all', 'system' ]
 
 command_description = {
 	'mrtg/view' : umch.command(
-		short_description = _( 'Load statistics' ),
+		short_description = _( 'System load' ),
 		method = 'mrtg_view',
 		values = {},
 		startup = True,
+		priority = 40,
 	),
 	'mrtg/session' : umch.command(
-		short_description = _( 'Sessions statistics' ),
+		short_description = _( 'Terminal server sessions' ),
 		method = 'mrtg_view_session',
 		values = {},
 		startup = True,
+		priority = 30,
 	),
 	'mrtg/memory' : umch.command(
-		short_description = _( 'Memory statistics' ),
+		short_description = _( 'Memory' ),
 		method = 'mrtg_view_memory',
 		values = {},
 		startup = True,
+		priority = 20,
 	),
 	'mrtg/swap' : umch.command(
-		short_description = _( 'Swap statistics' ),
+		short_description = _( 'Swap space' ),
 		method = 'mrtg_view_swap',
 		values = {},
 		startup = True,
+		priority = 10,
 	),
 
 

@@ -1,3 +1,9 @@
+univention-management-console (2.0.26-1) unstable; urgency=low
+
+  * changed text in mrtg module (Bug: #15191) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Nov 2009 10:20:38 +0100
+
 univention-management-console (2.0.25-1) unstable; urgency=low
 
   * added another expect question to the vnc password set script. Bug
