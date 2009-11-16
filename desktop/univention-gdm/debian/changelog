@@ -1,3 +1,9 @@
+univention-gdm (5.0.12-4) unstable; urgency=low
+
+  * smaller fonts (Bug: #15778) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Nov 2009 16:39:20 +0100
+
 univention-gdm (5.0.12-3) unstable; urgency=low
 
   * smaller button fonts (Bug: #15778) 
