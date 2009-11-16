@@ -72,7 +72,7 @@ pos["1400x1050"]["button_gap"] = 15
 pos["1400x1050"]["button_w"] = 159
 pos["1400x1050"]["button_h"] = 39
 pos["1400x1050"]["font"] = "Sans 18"
-pos["1400x1050"]["font_small"] = "Sans 17"
+pos["1400x1050"]["font_small"] = "Sans 16"
 
 pos["1600x1200"] = {}
 pos["1600x1200"]["login_y"] = 637
@@ -86,7 +86,7 @@ pos["1600x1200"]["button_gap"] = 15
 pos["1600x1200"]["button_w"] = 159
 pos["1600x1200"]["button_h"] = 39
 pos["1600x1200"]["font"] = "Sans 20"
-pos["1600x1200"]["font_small"] = "Sans 19"
+pos["1600x1200"]["font_small"] = "Sans 18"
 
 pos["1680x1050"] = {}
 pos["1680x1050"]["login_w"] = 340
@@ -99,7 +99,7 @@ pos["1680x1050"]["button_gap"] = 15
 pos["1680x1050"]["button_w"] = 159
 pos["1680x1050"]["button_h"] = 39
 pos["1680x1050"]["font"] = "Sans 20"
-pos["1680x1050"]["font_small"] = "Sans 19"
+pos["1680x1050"]["font_small"] = "Sans 18"
 
 pos["1920x1080"] = {}
 pos["1920x1080"]["login_w"] = 340
@@ -112,7 +112,7 @@ pos["1920x1080"]["button_gap"] = 15
 pos["1920x1080"]["button_w"] = 159
 pos["1920x1080"]["button_h"] = 39
 pos["1920x1080"]["font"] = "Sans 24"
-pos["1920x1080"]["font_small"] = "Sans 23"
+pos["1920x1080"]["font_small"] = "Sans 22"
 
 
 res = baseConfig.get("xorg/resolution", "1024x768")
