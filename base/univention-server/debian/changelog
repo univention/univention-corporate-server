@@ -1,3 +1,9 @@
+univention-server (5.0.8-2) unstable; urgency=low
+
+  * revert to ifplugd (optionally univention-network-manager) (Bug: #8994)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 16 Nov 2009 14:19:37 +0100
+
 univention-server (5.0.8-1) unstable; urgency=low
 
   * revert to ifplugd (Bug: #8994)
