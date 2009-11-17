@@ -100,7 +100,10 @@ class LocalizedDictionary( dict ):
 	def get( self, key, default = None ):
 		if self.has_key( key ):
 			try:
-				return self.__getitem__( key )
+				value = self.__getitem__( key )
+				if not value:
+					return default
+				return value
 			except KeyError:
 				return default
 			

@@ -1,3 +1,10 @@
+univention-config-registry (5.0.56-1) unstable; urgency=low
+
+  * LocalizedDictionary.get: also return the default value if the value in
+    the dictionary is empty (Bug #15556)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 17 Nov 2009 17:16:02 +0100
+
 univention-config-registry (5.0.55-1) unstable; urgency=low
 
   * write dhcp entries depending on interface handler (ifplugd or
