@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.30 (1.0.1-2) unstable; urgency=low
+
+  * Update to latest 2.6.30 kernel (Bug #16350)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 17 Nov 2009 09:00:11 +0100
+
 univention-kernel-image-2.6.30 (1.0.1-1) unstable; urgency=low
 
   * use the 686 bigmem kernel as Xen kernel. Bug #16017
