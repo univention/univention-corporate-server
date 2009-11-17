@@ -1,3 +1,9 @@
+univention-network-manager (0.4.1-1) unstable; urgency=low
+
+  * added handling of EXPIRE and REBOOT (Bug: #8994)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 17 Nov 2009 14:58:41 +0100
+
 univention-network-manager (0.4.0-1) unstable; urgency=low
 
   * added univention-ifplugd (Bug: #12130)

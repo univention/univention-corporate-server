@@ -61,14 +61,14 @@ def get_dns_servers():
 
 	return nameservers
 
-if os.environ.get( 'reason' ) in ( 'FAIL', 'TIMEOUT' ):
+if os.environ.get( 'reason' ) in ( 'FAIL', 'TIMEOUT', 'EXPIRE' ):
 	new_env[ 'reason' ] = 'BOUND'
 	for env, var in VARIABLE_MAP:
 		value = configRegistry.get( 'interfaces/%s/fallback/%s' % ( os.environ[ 'interface' ], var ) )
 		if value:
 			new_env[ env ] = value
 	if 'fallback/gateway' in configRegistry.keys():
-		new_env[ 'new_routers' ] = configRegistry.[ 'fallback/gateway' ]
+		new_env[ 'new_routers' ] = configRegistry[ 'fallback/gateway' ]
 
 	# DNS server
 	servers = get_dns_servers()
@@ -86,7 +86,7 @@ if os.environ.get( 'reason' ) in ( 'FAIL', 'TIMEOUT' ):
 	# domain search option
 	if 'domain/search' in configRegistry.keys():
 		new_env[ 'new_domain_search' ] % configRegistry[ 'domain/search' ]
-elif os.environ.get( 'reason' ) in ( 'BOUND', 'RENEW', 'REBIND' ):
+elif os.environ.get( 'reason' ) in ( 'BOUND', 'RENEW', 'REBIND', 'REBOOT' ):
 	if configRegistry.get( 'networkmanager/dhcp/options/fallback', 'no' ).lower() in ( 'yes', 'true', '1' ):
 		# DNS server
 		if not os.environ.get( 'new_domain_name_servers' ):
