@@ -91,7 +91,7 @@ echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
 echo "MaxBytes[$mrtgname]: 100" >> $mrtg_config
 echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
 echo "Title[$mrtgname]: " >> $mrtg_config
-echo "Ylegend[$mrtgname]: $prctmem% " >> $mrtg_config
+echo "Ylegend[$mrtgname]: % " >> $mrtg_config
 echo "Colours[$mrtgname]: blau#6666ff,unused#000000,unused#000000,unused#000000" >> $mrtg_config
 echo "Background[$mrtgname]: #ffffff" >> $mrtg_config
 echo "PageTop[$mrtgname]: <H1>Speicherauslastung</H1>" >> $mrtg_config
@@ -118,7 +118,7 @@ echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
 echo "MaxBytes[$mrtgname]: 100" >> $mrtg_config
 echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
 echo "Title[$mrtgname]: " >> $mrtg_config
-echo "Ylegend[$mrtgname]: $prctswap%" >> $mrtg_config
+echo "Ylegend[$mrtgname]: %" >> $mrtg_config
 echo "Colours[$mrtgname]: blau#6666ff,unused#000000,unused#000000,unused#000000" >> $mrtg_config
 echo "Background[$mrtgname]: #ffffff" >> $mrtg_config
 echo "PageTop[$mrtgname]: <H1>Swapauslastung</H1>" >> $mrtg_config
@@ -138,7 +138,7 @@ echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
 echo "MaxBytes[$mrtgname]: 100" >> $mrtg_config
 echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
 echo "Title[$mrtgname]: " >> $mrtg_config
-echo "Ylegend[$mrtgname]: $loadavg%" >> $mrtg_config
+echo "Ylegend[$mrtgname]: %" >> $mrtg_config
 echo "Colours[$mrtgname]: blau#6666ff,unused#000000,unused#000000,unused#000000" >> $mrtg_config
 echo "Background[$mrtgname]: #ffffff" >> $mrtg_config
 echo "PageTop[$mrtgname]: <H1>Systemlast</H1>" >> $mrtg_config
@@ -158,7 +158,7 @@ echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
 echo "MaxBytes[$mrtgname]: 10" >> $mrtg_config
 echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
 echo "Title[$mrtgname]: " >> $mrtg_config
-echo "Ylegend[$mrtgname]: $nrsessions" >> $mrtg_config
+echo "Ylegend[$mrtgname]: Total" >> $mrtg_config
 echo "Colours[$mrtgname]: blau#6666ff,unused#000000,unused#000000,unused#000000" >> $mrtg_config
 echo "Background[$mrtgname]: #ffffff" >> $mrtg_config
 echo "PageTop[$mrtgname]: <H1>Sessions</H1>" >> $mrtg_config

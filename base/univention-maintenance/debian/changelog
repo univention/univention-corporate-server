@@ -1,3 +1,9 @@
+univention-maintenance (3.0.3-3) unstable; urgency=low
+
+  * changed mrtg graphics ylegend  (Bug: #15191) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Nov 2009 17:00:43 +0100
+
 univention-maintenance (3.0.3-2) unstable; urgency=low
 
   * changed mrtg graphics ylegend  (Bug: #15191)
