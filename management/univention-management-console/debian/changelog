@@ -1,3 +1,9 @@
+univention-management-console (2.0.27-1) unstable; urgency=low
+
+  * adapt UMC modul to API change in univention.info_tools (Bug #15556)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 17 Nov 2009 17:41:08 +0100
+
 univention-management-console (2.0.26-1) unstable; urgency=low
 
   * changed text in mrtg module (Bug: #15191) 

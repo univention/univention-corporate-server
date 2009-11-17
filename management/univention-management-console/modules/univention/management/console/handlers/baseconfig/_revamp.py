@@ -92,9 +92,9 @@ class Web( object ):
 					else:
 						cat_text = ''
 
-					if var[ 'description' ]:
+					try:
 						descr_text = var[ 'description' ]
-					else:
+					except KeyError:
 						descr_text = ''
 					if len( descr_text ) > 40:
 						try:
