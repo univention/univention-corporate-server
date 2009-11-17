@@ -28,10 +28,16 @@ def check_gateway (ip, netmask, gateway):
 
 gateway=False
 configExists=False
+ifhandler=configRegistry.get('interfaces/handler','ifplugd')
+
 for i in range(0,4):
 	configExists=False
 	if configRegistry.has_key('interfaces/eth%s/type' % i) and configRegistry['interfaces/eth%s/type' % i] == 'dhcp':
-		if configRegistry.get('interfaces/eth%s/networkmanager' % i, 'yes' ).lower() in ( 'no', 'false', '0' ):
+		if ifhandler == 'ifplugd' and configRegistry.get('interfaces/eth%s/ifplugd' % i, 'yes' ).lower() in ( 'yes', 'true', '1' ):
+			print 'auto eth%s' % i
+			print 'iface eth%s inet dhcp' % i
+			configExists=True
+		elif ifhandler == 'networkmanager' and configRegistry.get('interfaces/eth%s/networkmanager' % i, 'yes' ).lower() in ( 'no', 'false', '0' ):
 			print 'auto eth%s' % i
 			print 'iface eth%s inet dhcp' % i
 			configExists=True
@@ -53,9 +59,10 @@ for i in range(0,4):
 
 	for j in range(0,4):
 		if configRegistry.has_key('interfaces/eth%s_%s/type' % (i,j)) and configRegistry['interfaces/eth%s_%s/type' % (i,j) ] == 'dhcp':
-			if configRegistry.get('interfaces/eth%s_%s/networkmanager' % ( i, j ), 'yes' ).lower() in ( 'no', 'false', '0' ):
-				print 'auto eth%s:%s' % (i,j)
-			print 'iface eth%s:%s inet dchp' % (i,j)
+			if ifhandler == 'networkmanager':
+				if configRegistry.get('interfaces/eth%s_%s/networkmanager' % ( i, j ), 'yes' ).lower() in ( 'no', 'false', '0' ):
+					print 'auto eth%s:%s' % (i,j)
+				print 'iface eth%s:%s inet dchp' % (i,j)
 		elif configRegistry['interfaces/eth%s_%s/address' % (i,j) ]:
 			print 'auto eth%s:%s' % (i,j)
 			print 'iface eth%s:%s inet static' % (i,j)
