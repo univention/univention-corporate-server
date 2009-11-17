@@ -1,3 +1,9 @@
+univention-network-manager (0.4.1-2) unstable; urgency=low
+
+  * fixed UCR variable handling in univention-ifplugd.postinst (Bug: #12130)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 17 Nov 2009 15:11:02 +0100
+
 univention-network-manager (0.4.1-1) unstable; urgency=low
 
   * added handling of EXPIRE and REBOOT (Bug: #8994)

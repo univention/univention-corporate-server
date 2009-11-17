@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention Network Manager
+# Univention ifplugd
 #  postinst script
 #
 # Copyright (C) 2009 Univention GmbH
@@ -45,14 +45,11 @@ univention-config-registry set networkmanager/dhcp/options/fallback?"no"
 univention-config-registry set dhclient/options/timeout?"40"
 univention-config-registry set dhclient/options/retry?"60"
 
-# need to restart dbus to read new permissions for networkmanager/group
-/etc/init.d/dbus restart
-
 for i in $(seq 0 4); do
-	var="interfaces_eth${i}_ifplugd"
-	
+	var="interfaces_eth${i}_networkmanager"
+
 	if [ -n "${!var}" -a "${!var}" = "no" ]; then
-		univention-config-registry set "interfaces/eth${i}/networkmanager=no"
+		univention-config-registry set "interfaces/eth${i}/ifplugd=no"
 		univention-config-registry unset "${!var}"
 	fi
 done
