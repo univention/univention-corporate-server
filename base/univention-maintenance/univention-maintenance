@@ -91,15 +91,13 @@ echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
 echo "MaxBytes[$mrtgname]: 100" >> $mrtg_config
 echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
 echo "Title[$mrtgname]: " >> $mrtg_config
-echo "Ylegend[$mrtgname]: Last in %" >> $mrtg_config
-echo "LegendI[$mrtgname]: Last&nbsp;" >> $mrtg_config
-echo "ShortLegend[$mrtgname]: Last" >> $mrtg_config
+echo "Ylegend[$mrtgname]: $prctmem% " >> $mrtg_config
 echo "Colours[$mrtgname]: blau#6666ff,unused#000000,unused#000000,unused#000000" >> $mrtg_config
 echo "Background[$mrtgname]: #ffffff" >> $mrtg_config
 echo "PageTop[$mrtgname]: <H1>Speicherauslastung</H1>" >> $mrtg_config
 mrtg "$mrtg_config" 2>/dev/null
 rm -f $mrtg_config $wwwdir/ucs_*.htm*
-echo "Auslastung: Speicher $prctmem%" >$wwwdir/$mrtgname.txt
+echo "Auslastung des Hauptspeichers: $prctmem%" >$wwwdir/$mrtgname.txt
 
 # swap
 swaptotal=$(more /proc/meminfo | grep ^SwapTotal: | awk {'print $2'})
@@ -120,15 +118,13 @@ echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
 echo "MaxBytes[$mrtgname]: 100" >> $mrtg_config
 echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
 echo "Title[$mrtgname]: " >> $mrtg_config
-echo "Ylegend[$mrtgname]: Last in %" >> $mrtg_config
-echo "LegendI[$mrtgname]: Last&nbsp;" >> $mrtg_config
-echo "ShortLegend[$mrtgname]: Last" >> $mrtg_config
+echo "Ylegend[$mrtgname]: $prctswap%" >> $mrtg_config
 echo "Colours[$mrtgname]: blau#6666ff,unused#000000,unused#000000,unused#000000" >> $mrtg_config
 echo "Background[$mrtgname]: #ffffff" >> $mrtg_config
 echo "PageTop[$mrtgname]: <H1>Swapauslastung</H1>" >> $mrtg_config
 mrtg "$mrtg_config" 2>/dev/null
 rm -f $mrtg_config $wwwdir/ucs_*.htm*
-echo "Auslastung: Swap $prctswap%" >$wwwdir/$mrtgname.txt
+echo "Auslastung des Auslagerungsspeicher: $prctswap%" >$wwwdir/$mrtgname.txt
 
 # Prozessorlast der letzten 15 Minuten prüfen
 loadavg="`echo \`cat /proc/loadavg |awk '{print $3}'\`*100 | bc | cut -f1 -d"."`"
@@ -142,15 +138,13 @@ echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
 echo "MaxBytes[$mrtgname]: 100" >> $mrtg_config
 echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
 echo "Title[$mrtgname]: " >> $mrtg_config
-echo "Ylegend[$mrtgname]: Systemlast %" >> $mrtg_config
-echo "LegendI[$mrtgname]: Last&nbsp;" >> $mrtg_config
-echo "ShortLegend[$mrtgname]: Last" >> $mrtg_config
+echo "Ylegend[$mrtgname]: $loadavg%" >> $mrtg_config
 echo "Colours[$mrtgname]: blau#6666ff,unused#000000,unused#000000,unused#000000" >> $mrtg_config
 echo "Background[$mrtgname]: #ffffff" >> $mrtg_config
 echo "PageTop[$mrtgname]: <H1>Systemlast</H1>" >> $mrtg_config
 mrtg "$mrtg_config" 2>/dev/null
 rm -f $mrtg_config $wwwdir/ucs_*.htm*
-echo "Systemlast $loadavg%" >$wwwdir/$mrtgname.txt
+echo "Systemlast: $loadavg%" >$wwwdir/$mrtgname.txt
 
 # Anzahl der Sessions prüfen
 nrsessions="`ps -C univention-sess | grep -ic univention-sess`"
@@ -164,15 +158,13 @@ echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
 echo "MaxBytes[$mrtgname]: 10" >> $mrtg_config
 echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
 echo "Title[$mrtgname]: " >> $mrtg_config
-echo "Ylegend[$mrtgname]: Sessions" >> $mrtg_config
-echo "LegendI[$mrtgname]: Sessions&nbsp;" >> $mrtg_config
-echo "ShortLegend[$mrtgname]: Sessions" >> $mrtg_config
+echo "Ylegend[$mrtgname]: $nrsessions" >> $mrtg_config
 echo "Colours[$mrtgname]: blau#6666ff,unused#000000,unused#000000,unused#000000" >> $mrtg_config
 echo "Background[$mrtgname]: #ffffff" >> $mrtg_config
 echo "PageTop[$mrtgname]: <H1>Sessions</H1>" >> $mrtg_config
 mrtg "$mrtg_config" 2>/dev/null
 rm -f $mrtg_config $wwwdir/ucs_*.htm*
-echo "Session(s) $nrsessions" >$wwwdir/$mrtgname.txt
+echo "Session(s): $nrsessions" >$wwwdir/$mrtgname.txt
 
 # Statistik-HTML schreiben
 cat <<__ENDE__ >$wwwdir/$indexhtm
@@ -183,13 +175,13 @@ cat <<__ENDE__ >$wwwdir/$indexhtm
 __ENDE__
 for file in $wwwdir/*-day.png; do
     echo "<P ALIGN=\"center\"><FONT FACE=\"ARIAL\">" >>$wwwdir/$indexhtm
-    echo "<IMG SRC=\"`basename $file -day.png`-year.png\"><BR>" >>$wwwdir/$indexhtm
-    echo "<IMG SRC=\"`basename $file -day.png`-month.png\"><BR>" >>$wwwdir/$indexhtm
-    echo "<IMG SRC=\"`basename $file -day.png`-week.png\"><BR>" >>$wwwdir/$indexhtm
-    echo "<IMG SRC=\"`basename $file`\"><BR>" >>$wwwdir/$indexhtm
     cat "`echo \"$file\" | sed \"s/-day.png/.txt/\"`" >>$wwwdir/$indexhtm
-    echo "</FONT></P>" >>$wwwdir/$indexhtm
     echo "<BR>" >>$wwwdir/$indexhtm
+    echo "<IMG SRC=\"`basename $file`\"><BR>" >>$wwwdir/$indexhtm
+    echo "<IMG SRC=\"`basename $file -day.png`-week.png\"><BR>" >>$wwwdir/$indexhtm
+    echo "<IMG SRC=\"`basename $file -day.png`-month.png\"><BR>" >>$wwwdir/$indexhtm
+    echo "<IMG SRC=\"`basename $file -day.png`-year.png\"><BR>" >>$wwwdir/$indexhtm
+    echo "</FONT></P>" >>$wwwdir/$indexhtm
 done
 cat <<__ENDE__ >>$wwwdir/$indexhtm
 </BODY>
