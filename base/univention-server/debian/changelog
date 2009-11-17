@@ -1,3 +1,10 @@
+univention-server (5.0.8-3) unstable; urgency=low
+
+  * add network event script that checks the available authentication
+    methods (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 17 Nov 2009 10:49:33 +0100
+
 univention-server (5.0.8-2) unstable; urgency=low
 
   * revert to ifplugd (optionally univention-network-manager) (Bug: #8994)
