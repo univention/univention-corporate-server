@@ -39,6 +39,7 @@ from objects import *
 from local import _
 import inspect
 import os, subprocess, threading
+import time, tempfile
 
 class object(content):
 
@@ -77,9 +78,9 @@ class object(content):
 
 	def dhclient(self, interface, timeout=None):
 		self.debug('DHCP broadcast on %s' % interface)
-		tempfilename='/tmp/dhclient%s.out' % os.getpid()
-		open(tempfilename, 'w').close()	# touch the file in case dhclient does not receive a propper answer
-		cmd='/sbin/dhclient -1 -lf /tmp/dhclient.leases -sf /lib/univention-installer/dhclient-script-wrapper -e dhclientscript_outputfile="%s" %s' % (tempfilename, interface)
+		tempfilename = tempfile.mkstemp( '.out', 'dhclient.', '/tmp' )[1]
+		pidfilename = tempfile.mkstemp( '.pid', 'dhclient.', '/tmp' )[1]
+		cmd='/sbin/dhclient -1 -lf /tmp/dhclient.leases -pf %s -sf /lib/univention-installer/dhclient-script-wrapper -e dhclientscript_outputfile="%s" %s' % (pidfilename, tempfilename, interface)
 		p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
 		# read from stderr until timeout, following recipe of subprocess.communicate()
@@ -94,8 +95,18 @@ class object(content):
 		stderr_thread.join(timeout)
 		if stderr:
 			stderr=stderr[0]
-		# note: despite '-1' dhclient never seems to terminate
-		os.kill(p.pid, 15)
+		# note: despite '-1' background dhclient never seems to terminate
+		try:
+			self.debug('Reading dhclient pidfile')
+			dhclientpid = int(open(pidfilename,'r').read().strip('\n\r\t '))
+			self.debug('Sending signal 15 to pid %s' % dhclientpid)
+			os.kill(dhclientpid, 15)
+			time.sleep(1.0) # sleep 1s
+			self.debug('Sending signal 9 to pid %s' % dhclientpid)
+			os.kill(dhclientpid, 9)
+			self.debug('dhclient daemon stopped successfully')
+		except:
+			self.debug('Stopping dhclient daemon stopped here')
 
 		self.debug('DHCP output: %s' % stderr)
 		file = open(tempfilename)

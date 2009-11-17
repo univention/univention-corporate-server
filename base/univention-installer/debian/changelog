@@ -1,3 +1,9 @@
+univention-installer (5.0.45-1) unstable; urgency=low
+
+  * make sure dhclient will be terminated after use (Bug: #12130)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 17 Nov 2009 16:51:22 +0100
+
 univention-installer (5.0.44-1) unstable; urgency=low
 
   * don't install dhclient in the 50_packages since we are using
