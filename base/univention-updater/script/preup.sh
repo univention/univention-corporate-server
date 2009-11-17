@@ -28,6 +28,33 @@ if [ "$TERM" = "xterm" ]; then
 	fi
 fi
 
+check_cyrus21 ()
+{
+	pkg=$1
+	if dpkg -l $pkg 2>> "$UPDATER_LOG" | grep ^ii  >>"$UPDATER_LOG" ; then
+		if [ "$update23_cyrus21" != "yes" ]; then
+			echo "ERROR: You have installed the Cyrus21 package \"$pkg\". At the moment this package"
+			echo "is not available for UCS 2.3.  You have the following options to continue: "
+			echo " 1. Migrate to the Cyrus 2.2 as described here: "
+			echo "    http://www.univention.de/fileadmin/download/dokumentation_2.0/cyrus-migration_070411.pdf"
+			echo " 2. Uninstall the package if it is no longer used:"
+			echo "    apt-get remove $pkg"
+			echo " 3. Set the Univention Configuration Registry variable \"update23/cyrus21\" to \"yes\""
+			echo "    and ignore this warning. In this case the update may fail."
+			echo " 4. Contact Univention by email <feedback@univention.de>"
+			killall univention-updater
+			exit 1
+		else
+			echo "WARNING: update23/cyrus21 is set to yes and $pkg is installed." >>"$UPDATER_LOG"
+		fi
+		
+	fi
+}
+
+check_cyrus21 cyrus21-common
+check_cyrus21 cyrus21-admin
+check_cyrus21 cyrus21-clients
+
 # Bug #16331 add temporary sources.list for unmaintained if neccessary
 # only required during update UCS 2.2-2 ==> 2.3-0
 if [ "$repository_online_unmaintained" = "yes" -o "$repository_online_unmaintained" = "true" -o "$repository_online_unmaintained" = "1" ] ; then

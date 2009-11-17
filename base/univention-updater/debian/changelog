@@ -1,3 +1,10 @@
+univention-updater (5.0.38-1) unstable; urgency=low
+
+  * do not allow the update if cyrus21 packages are installed. Bug
+    #14652
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Nov 2009 12:01:11 +0100
+
 univention-updater (5.0.37-1) unstable; urgency=low
 
   * redirect and cleanup output of preup.sh/postup.sh (Bug: #15992)
