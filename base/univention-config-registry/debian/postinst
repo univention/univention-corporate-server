@@ -173,14 +173,6 @@ fi
 
 update-rc.d rdate defaults 21 >/dev/null 2>&1 || true
 
-if [ "$1" = configure -a -n "$2" ]; then
-	eval `univention-baseconfig shell`
-	set | grep "interfaces_eth.*_type=dhcp" | while read line; do
-		interface=$(echo $line | sed -e 's|interfaces_||;s|_type.*||')
-		dhclient $interface || true
-	done
-fi
-
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.53-6; then
     eval `univention-baseconfig shell proxy/address proxy/port proxy/http`
     if [ -n "$proxy_http" ];
