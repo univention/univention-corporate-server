@@ -14,7 +14,7 @@ DEFAULT linux
 IPAPPEND 1
 @!@
 line = 'root=/dev/nfs '
-line += 'nfsroot=%s:/var/lib/univention-client-root ' % baseConfig['pxe/nameserver']
+line += 'nfsroot=%s:/var/lib/univention-client-root ' % baseConfig['pxe/nfsroot']
 line += 'DNSSERVER=%s ' % baseConfig['pxe/nameserver']
 line += 'vt.default_utf8=0 '
 if baseConfig.get('pxe/vga'):

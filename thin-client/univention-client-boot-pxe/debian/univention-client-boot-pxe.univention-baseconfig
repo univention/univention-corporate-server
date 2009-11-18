@@ -7,6 +7,7 @@ Variables: pxe/ldapserver
 Variables: pxe/ldapport
 Variables: pxe/loglevel
 Variables: pxe/append
+Variables: pxe/nfsroot
 
 Type: module
 Module: clientbootpxe.py

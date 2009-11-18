@@ -1,3 +1,9 @@
+univention-client-boot-pxe (4.0.4-1) unstable; urgency=low
+
+  * fixed use of pxe/nfsroot ucr var in pxeconfig template, registered pxe/nfsroot (Bug: #16458)  
+
+ -- Felix Botner <botner@univention.de>  Wed, 18 Nov 2009 12:24:04 +0100
+
 univention-client-boot-pxe (4.0.3-1) unstable; urgency=low
 
   * removed old initrd.splash (Bug: #14309) 
