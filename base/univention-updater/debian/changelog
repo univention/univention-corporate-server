@@ -1,3 +1,10 @@
+univention-updater (5.0.40-1) unstable; urgency=low
+
+  * move backups of initrd files to /tmp/univention-initrd.bak in preup.sh
+    (Bug #16472)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 Nov 2009 16:59:48 +0100
+
 univention-updater (5.0.39-1) unstable; urgency=low
 
   * update the cyrus21 error message. Bug #14652
