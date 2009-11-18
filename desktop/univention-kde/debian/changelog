@@ -1,3 +1,9 @@
+univention-kde (4.0.2-2) unstable; urgency=low
+
+  * added ucs 2.3 theme screenshot (Bug: #14425)
+
+ -- Felix Botner <botner@univention.de>  Wed, 18 Nov 2009 08:28:31 +0100
+
 univention-kde (4.0.2-1) unstable; urgency=low
 
   * set ucr-variable hal/devices/group to root to avoid a boot lag (Bug: #16324)
