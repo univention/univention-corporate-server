@@ -124,7 +124,7 @@ class object(content):
 		return dhcp_dict
 
 	def start(self):
-		if 'system_role' in self.all_results and (self.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'basesystem', 'fatclient', 'mobileclient', 'managedclient']):
+		if 'system_role' in self.all_results and (self.all_results['system_role'] in [ 'managed_client',  'mobile_client', 'fatclient', 'mobileclient', 'managedclient']):
 			self.serversystem=False
 		else:
 			self.serversystem=True

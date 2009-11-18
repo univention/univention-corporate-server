@@ -1,3 +1,9 @@
+univention-installer (5.0.47-1) unstable; urgency=low
+
+  * consider "basesystem" as serversystem (Bug: #12130)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 18 Nov 2009 16:34:24 +0100
+
 univention-installer (5.0.46-1) unstable; urgency=low
 
   * remove temporary pid file after usage (Bug: #12130)
