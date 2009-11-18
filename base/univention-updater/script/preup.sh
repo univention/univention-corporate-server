@@ -33,14 +33,15 @@ check_cyrus21 ()
 	pkg=$1
 	if dpkg -l $pkg 2>> "$UPDATER_LOG" | grep ^ii  >>"$UPDATER_LOG" ; then
 		if [ "$update23_cyrus21" != "yes" ]; then
-			echo "ERROR: You have installed the Cyrus21 package \"$pkg\". At the moment this package"
-			echo "is not available for UCS 2.3.  You have the following options to continue: "
-			echo " 1. Migrate to the Cyrus 2.2 as described here: "
-			echo "    http://www.univention.de/fileadmin/download/dokumentation_2.0/cyrus-migration_070411.pdf"
+			echo "ERROR: You have installed the Cyrus21 package \"$pkg\"."
+			echo "At the moment this package is not available for UCS 2.3.  You have the following"
+			echo "options to continue: "
+			echo " 1. Migrate to Cyrus 2.2 as described here: "
+			echo "    http://www.univention.de/fileadmin/download/cyrus-migration_070411.pdf"
 			echo " 2. Uninstall the package if it is no longer used:"
 			echo "    apt-get remove $pkg"
-			echo " 3. Set the Univention Configuration Registry variable \"update23/cyrus21\" to \"yes\""
-			echo "    and ignore this warning. In this case the update may fail."
+			echo " 3. Set the Univention Configuration Registry variable \"update23/cyrus21\" to"
+			echo "    \"yes\" and ignore this warning. In this case the update may fail."
 			echo " 4. Contact Univention by email <feedback@univention.de>"
 			killall univention-updater
 			exit 1
