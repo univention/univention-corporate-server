@@ -71,8 +71,10 @@ msgstr "Nein"
 msgid "Results per page"
 msgstr "Ergebnisse pro Seite"
 
-#~ msgid "Invert selection"
-#~ msgstr "Auswahl umkehren"
+#: button.py:116
+msgid "Invert selection"
+msgstr "Auswahl umkehren"
 
-#~ msgid "Select all"
-#~ msgstr "Alle auswählen"
+#: button.py:118
+msgid "Select all"
+msgstr "Alle auswählen"

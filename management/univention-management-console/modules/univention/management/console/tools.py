@@ -158,10 +158,13 @@ def kill_process( pid, signal = 15, timeout = 0 ):
 	# remove dspatcher function
 	notifier.dispatcher_remove( fake_dispatcher )
 
-	if os.WIFSIGNALED( sts ):
-		returncode = -os.WTERMSIG( sts )
+	if os.WIFSIGNALED( sts ) and os.WIFEXITED( sts ):
+		returncode = os.WTERMSIG( sts ) + os.WEXITSTATUS( sts )
 	else:
-		returncode = os.WEXITSTATUS( sts )
+		if os.WIFSIGNALED( sts ):
+			returncode = -os.WTERMSIG( sts )
+		else:
+			returncode = os.WEXITSTATUS( sts )
 
 	return returncode
 	

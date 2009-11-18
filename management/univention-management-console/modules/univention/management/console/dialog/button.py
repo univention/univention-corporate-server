@@ -124,7 +124,15 @@ class ChoiceButton( Button ):
 		self.default = None
 		for i in range(len(self.choices)):
 			# add internal ids
-			if len(self.choices[ i ]['actions']) == 0:
+			if type(self.choices[ i ]['actions']) == str and self.choices[ i ]['actions'] in [ '::none', '::invert', '::select_all' ]:
+				self.choices[ i ]['name'] = self.choices[ i ]['actions']
+				if self.choices[ i ]['name'] == '::none':
+					self.choices[ i ]['description'] = '---'
+				elif self.choices[ i ]['name'] == '::invert':
+					self.choices[ i ]['description'] = _( 'Invert selection' )
+				elif self.choices[ i ]['name'] == '::select_all':
+					self.choices[ i ]['description'] = _( 'Select all' )
+			elif len(self.choices[ i ]['actions']) == 0:
 				self.choices[ i ]['name'] = '::none'
 			else:
 				self.choices[ i ]['name'] = 'choice-%d' % i

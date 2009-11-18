@@ -1,3 +1,17 @@
+univention-management-console (2.0.29-1) unstable; urgency=low
+
+  * ChoiceButton: add support for the internal actions ::select_all und
+    ::invert (Bug #14058)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 Nov 2009 11:05:34 +0100
+
+univention-management-console (2.0.28-1) unstable; urgency=low
+
+  * kill_process: return sum of exit code and signal if both is available
+    (Bug #14310)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 Nov 2009 11:02:21 +0100
+
 univention-management-console (2.0.27-1) unstable; urgency=low
 
   * adapt UMC modul to API change in univention.info_tools (Bug #15556)
