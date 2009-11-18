@@ -107,6 +107,10 @@ class object(content):
 			self.debug('dhclient daemon stopped successfully')
 		except:
 			self.debug('Stopping dhclient daemon stopped here')
+		try:
+			os.unlink(pidfilename)
+		except:
+			pass
 
 		self.debug('DHCP output: %s' % stderr)
 		file = open(tempfilename)

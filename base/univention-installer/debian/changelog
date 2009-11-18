@@ -1,3 +1,9 @@
+univention-installer (5.0.46-1) unstable; urgency=low
+
+  * remove temporary pid file after usage (Bug: #12130)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 18 Nov 2009 12:04:45 +0100
+
 univention-installer (5.0.45-1) unstable; urgency=low
 
   * make sure dhclient will be terminated after use (Bug: #12130)
