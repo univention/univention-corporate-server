@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (6.0.25-1) unstable; urgency=low
+
+  * regenerate locales in for thin client environment Bug #16442
+
+ -- Felix Botner <botner@univention.de>  Wed, 18 Nov 2009 12:00:36 +0100
+
 univention-thin-client-basesystem (6.0.24-1) unstable; urgency=low
 
   * bring up the loopback device during the flash boot. Bug #16213

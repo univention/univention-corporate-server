@@ -29,3 +29,10 @@
 
 univention-config-registry set locale?"de_DE.UTF-8:UTF-8 en_US.UTF-8:UTF-8"
 univention-config-registry set locale/default?"de_DE.UTF-8:UTF-8"
+
+# regenerate locales
+univention-config-registry commit /etc/default/locale
+univention-config-registry commit /etc/locale.gen
+if [ -x "$(which locale-gen)" ]; then 
+	locale-gen
+fi
