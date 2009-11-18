@@ -131,7 +131,12 @@ class object(content):
 
 		for i in range(0,4):
 			if self.all_results.has_key('eth%d_type' % i) and (self.all_results['eth%d_type' % i] == 'dynamic' or self.all_results['eth%d_type' % i] == 'dhcp'):
-				self.interfaces.append(['eth%d' % i, '', '', '', '', 'dynamic', 0])
+				self.interfaces.append(['eth%d' % i,
+										self.all_results.get('eth%d_ip' % i,''),
+										self.all_results.get('eth%d_netmask' % i,''),
+										self.all_results.get('eth%d_broadcast' % i, ''),
+										self.all_results.get('eth%d_network' % i, ''),
+										'dynamic', 0])
 			elif self.all_results.has_key('eth%d_ip' % i) and self.all_results['eth%d_ip' % i] and self.all_results.has_key('eth%d_netmask' % i) and self.all_results.has_key('eth%d_broadcast' % i) and self.all_results.has_key('eth%d_network' % i):
 				self.interfaces.append(['eth%d' % i, self.all_results['eth%d_ip' % i], self.all_results['eth%d_netmask' % i], self.all_results['eth%d_broadcast' % i], self.all_results['eth%d_network' % i], 'static', 0])
 			for j in range(0,4):
@@ -669,6 +674,7 @@ class object(content):
 					result['%s_broadcast'%device]=dev[3]
 					result['%s_network'%device]=dev[4]
 			else:
+				result['%s_type'%device]=''
 				result['%s_ip'%device]=dev[1]
 				result['%s_netmask'%device]=dev[2]
 				result['%s_broadcast'%device]=dev[3]

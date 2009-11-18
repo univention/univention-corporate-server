@@ -1,3 +1,10 @@
+univention-installer (5.0.48-1) unstable; urgency=low
+
+  * add (fallback) ip address to dhcp interface on startup (Bug: #12130)
+  * remove interface type "dhcp" if deactivated in USS (Bug: #12130)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 18 Nov 2009 16:36:39 +0100
+
 univention-installer (5.0.47-1) unstable; urgency=low
 
   * consider "basesystem" as serversystem (Bug: #12130)
