@@ -1,3 +1,11 @@
+univention-management-console (2.0.30-1) unstable; urgency=low
+
+  * users who are authenticated successfully, will be added to the password cache
+  * the UCR variable auth/passwdcache/max_users is evaluated by the UMC
+    PAM configuration (Bug #16354)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 Nov 2009 14:18:32 +0100
+
 univention-management-console (2.0.29-1) unstable; urgency=low
 
   * ChoiceButton: add support for the internal actions ::select_all und
