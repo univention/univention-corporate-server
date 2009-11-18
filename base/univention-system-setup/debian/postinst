@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention Setup
 #  postinst script
@@ -36,7 +36,10 @@ createLogfile () {
 	fi
 }
 
+#DEBHELPER#
+
 createLogfile /var/log/univention/setup.log "root:adm" 640
 
 chmod -R 700 /var/cache/univention-system-setup
 
+exit 0
