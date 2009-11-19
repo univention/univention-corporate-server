@@ -47,16 +47,6 @@ univention-baseconfig set ldap/port?389
 
 univention-baseconfig set homedir/mount?no
 
-admin_auth=`echo $auth_admin_methods | grep cache`
-if [ -z "$admin_auth" ]; then
-	univention-baseconfig set auth/admin/methods="$auth_admin_methods cache"
-fi
-
-users_auth=`echo $auth_user_methods | grep cache`
-if [ -z "$users_auth" ]; then
-	univention-baseconfig set auth/user/methods="krb5 ldap unix cache"
-fi
-
 admin_services=`echo $auth_admin_services | grep gdm`
 if [ -n "$admin_services" ]; then
 	univention-baseconfig set auth/admin/services="`echo $auth_admin_services | sed -e 's|gdm||'`"

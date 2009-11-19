@@ -1,3 +1,10 @@
+univention-server (5.0.8-5) unstable; urgency=low
+
+  * move the activation of the cache authentication mechanismn to the
+    preinst script (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 19 Nov 2009 13:23:10 +0100
+
 univention-server (5.0.8-4) unstable; urgency=low
 
   * added dependency to univention-ifplugd (Bug: #12130)
