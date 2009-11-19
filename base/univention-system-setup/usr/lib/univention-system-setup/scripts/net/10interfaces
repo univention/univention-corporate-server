@@ -36,7 +36,7 @@ ifup=""
 ldap_available=1
 serversystem=0
 restart_ifplugd=0
-
+dhcp_in_use=0
 
 eval $(univention-config-registry shell server/role interfaces/handler)
 
@@ -68,6 +68,7 @@ for interface in eth0 eth1 eth2 eth3; do
 					ifdown="$ifdown $interface"
 					ifup="$ifup $interface"
 				fi
+				dhcp_in_use=1
 			else
 				baseconfig_set="$baseconfig_set interfaces/$interface/$attr=$var"
 			fi
@@ -108,6 +109,7 @@ for interface in eth0 eth1 eth2 eth3; do
 				eval ${interface}_hook_old_type="get_old_from_fallback"
 				# we must save the fallback interface configuration
 				eval ${interface}_hook_new_type="save_fallback"
+				dhcp_in_use=1
 			fi
 		else
 			# whoopa, the type changed as well
@@ -121,6 +123,7 @@ for interface in eth0 eth1 eth2 eth3; do
 					ifdown="$ifdown $interface"
 					ifup="$ifup $interface"
 				fi
+				dhcp_in_use=1
 			elif [ -z "$type" ]; then
 				# the type changed to unset, i.e from dhcp to static
 				# 1. the address might have changed meanwhile,
@@ -499,6 +502,12 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 
 	if [ -n "$baseconfig_set" ]; then
 		univention-config-registry set $baseconfig_set
+	fi
+
+	# commit /etc/resolv.conf if dhcp is not (no longer) in use
+	# so resolv.conf gets rewritten after being modified by dhclient
+	if [ "$dhcp_in_use" = 0 ] ; then
+		univention-config-registry commit /etc/resolv.conf
 	fi
 
 	# remove dupes and (re)init interfaces

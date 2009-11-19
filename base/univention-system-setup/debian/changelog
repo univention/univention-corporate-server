@@ -1,3 +1,11 @@
+univention-system-setup (3.0.29-1) unstable; urgency=low
+
+  * commit template of /etc/resolv.conf if dhcp is not in use (any longer)
+    so modifications to /etc/resolv.conf by dhclient will be reverted
+    (Bug: #12130)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 19 Nov 2009 11:26:38 +0100
+
 univention-system-setup (3.0.28-1) unstable; urgency=low
 
   * fixed error message in 10interfaces (Bug: #12130)
