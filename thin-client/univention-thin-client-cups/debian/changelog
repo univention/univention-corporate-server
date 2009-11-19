@@ -1,3 +1,10 @@
+univention-thin-client-cups (4.0.1-2) unstable; urgency=low
+
+  * changed dependency of univention-thin-client-cups-config to cups
+    instead of cupsys (Bug: #16494)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 19 Nov 2009 16:46:21 +0100
+
 univention-thin-client-cups (4.0.1-1) unstable; urgency=low
 
   * use the device uri parallel:/dev/usb/lp0 for usb printers at the
