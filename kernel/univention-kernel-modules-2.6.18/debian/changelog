@@ -1,3 +1,11 @@
+univention-kernel-modules-2.6.18 (2.0.1-3) unstable; urgency=low
+
+  * Build the DRDB modules for the 2.6.18 kernel by using the
+    new binary package drbd8-source-2.6.18, which has the
+    compatibility wrapper applied (Bug: #16389)	 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 19 Nov 2009 14:41:28 +0100
+
 univention-kernel-modules-2.6.18 (2.0.1-2) unstable; urgency=low
 
   * Don't build squashfs modules any longer, they're
