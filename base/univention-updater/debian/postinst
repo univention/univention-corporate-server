@@ -152,16 +152,16 @@ fi
 if [ -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.33-1; then
 	eval $(univention-config-registry shell)
 	if [ "$update_commands_install" = "apt-get -o DPkg::Options::=--force-confold -y --force-yes install" ] ; then
-		univention-config-registry set update/commands/install="apt-get -o DPkg::Options::=--force-confold -y --force-yes --force-overwrite --force-overwrite-dir install"
+		univention-config-registry set update/commands/install="apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install"
 	fi
 	if [ "$update_commands_distupgrade" = "apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade" ] ; then
-		univention-config-registry set update/commands/distupgrade="apt-get -o DPkg::Options::=--force-confold -y --force-yes --force-overwrite --force-overwrite-dir -u dist-upgrade"
+		univention-config-registry set update/commands/distupgrade="apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u dist-upgrade"
 	fi
 	if [ "$update_commands_distupgrade_simulate" = "apt-get -o DPkg::Options::=--force-confold -y --force-yes -us dist-upgrade" ] ; then
-		univention-config-registry set update/commands/distupgrade/simulate="apt-get -o DPkg::Options::=--force-confold -y --force-yes --force-overwrite --force-overwrite-dir -us dist-upgrade"
+		univention-config-registry set update/commands/distupgrade/simulate="apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -us dist-upgrade"
 	fi
 	if [ "$update_commands_upgrade_simulate" = "apt-get -o DPkg::Options::=--force-confold -y --force-yes -us upgrade" ] ; then
-		univention-config-registry set update/commands/upgrade/simulate="apt-get -o DPkg::Options::=--force-confold -y --force-yes --force-overwrite --force-overwrite-dir -us upgrade"
+		univention-config-registry set update/commands/upgrade/simulate="apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -us upgrade"
 	fi
 fi
 

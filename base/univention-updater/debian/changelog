@@ -1,3 +1,10 @@
+univention-updater (5.0.40-2) unstable; urgency=low
+
+  * add "--force-overwrite" and "--force-overwrite-dir" to dpkg options
+    defined by UCR (Bug: #16371)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 19 Nov 2009 10:20:07 +0100
+
 univention-updater (5.0.40-1) unstable; urgency=low
 
   * move backups of initrd files to /tmp/univention-initrd.bak in preup.sh
