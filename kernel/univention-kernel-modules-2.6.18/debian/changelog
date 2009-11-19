@@ -1,3 +1,15 @@
+univention-kernel-modules-2.6.18 (2.0.1-2) unstable; urgency=low
+
+  * Don't build squashfs modules any longer, they're
+    incompatible with the 2.6.30-based thin client
+    images
+  * Stop building vmware modules, they show hangs with
+    recent 2.6.18 kernels
+  * Updated DRBD sources should fix the build with 2.6.18
+    (Bug: #16389)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 19 Nov 2009 13:52:10 +0100
+
 univention-kernel-modules-2.6.18 (2.0.1-1) unstable; urgency=low
 
   * don't fail the fail if the last process failed. The vmware kernel
