@@ -6,13 +6,14 @@ UPDATE_NEXT_VERSION="$2"
 
 check_and_install ()
 {
-	dpkg -l $1 | grep ^ii >>"$UPDATER_LOG" 2>&1
+	dpkg -l $1 2>>"$UPDATER_LOG" | grep ^ii >>"$UPDATER_LOG" 2>&1
 	if [ $? = 0 ]; then
 		DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install $1 >>"$UPDATER_LOG" 2>&1
 	fi
 }
 
 echo -n "Running postup.sh script:"
+echo >> "$UPDATER_LOG"
 date >>"$UPDATER_LOG" 2>&1
 
 # remove old cache file
@@ -25,22 +26,22 @@ for p in univention-client-kernel-image; do
 done
 
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-basesystem >>"$UPDATER_LOG" 2>&1
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-basesystem >>"$UPDATER_LOG" 2>&1
 elif [ "$server_role" = "domaincontroller_master" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-server-master  >>"$UPDATER_LOG" 2>&1
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-server-master  >>"$UPDATER_LOG" 2>&1
 elif [ "$server_role" = "domaincontroller_backup" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-server-backup  >>"$UPDATER_LOG" 2>&1
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-server-backup  >>"$UPDATER_LOG" 2>&1
 elif [ "$server_role" = "domaincontroller_slave" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-server-slave  >>"$UPDATER_LOG" 2>&1
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-server-slave  >>"$UPDATER_LOG" 2>&1
 elif [ "$server_role" = "memberserver" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-server-member  >>"$UPDATER_LOG" 2>&1
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-server-member  >>"$UPDATER_LOG" 2>&1
 elif [ "$server_role" = "mobileclient" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-mobile-client  >>"$UPDATER_LOG" 2>&1
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-mobile-client  >>"$UPDATER_LOG" 2>&1
 elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-managed-client  >>"$UPDATER_LOG" 2>&1
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-managed-client  >>"$UPDATER_LOG" 2>&1
 fi
 
-DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes dist-upgrade >>"$UPDATER_LOG" 2>&1
+DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes dist-upgrade >>"$UPDATER_LOG" 2>&1
 
 if [ -x /usr/sbin/update-initramfs ]; then
 	update-initramfs -u -k all >>"$UPDATER_LOG" 2>&1
