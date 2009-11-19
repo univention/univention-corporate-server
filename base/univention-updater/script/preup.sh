@@ -149,8 +149,8 @@ check_space(){
 }
 
 # move old initrd files in /boot
-mkdir /tmp/univention-initrd.bak/
-mv /boot/*.bak /tmp/univention-initrd.bak/
+mkdir /var/backups/univention-initrd.bak/
+mv /boot/*.bak /var/backups/univention-initrd.bak/
 
 # check space on filesystems
 if [ ! "$update23_checkfilesystems" = "no" ]

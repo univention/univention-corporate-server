@@ -1,3 +1,10 @@
+univention-updater (5.0.41-1) unstable; urgency=low
+
+  * move backups of initrd files to /var/backups/univention-initrd.bak in
+    preup.sh (Bug #16472)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 19 Nov 2009 11:40:15 +0100
+
 univention-updater (5.0.40-2) unstable; urgency=low
 
   * add "--force-overwrite" and "--force-overwrite-dir" to dpkg options
