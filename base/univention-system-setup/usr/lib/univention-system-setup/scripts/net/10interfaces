@@ -128,7 +128,7 @@ for interface in eth0 eth1 eth2 eth3; do
 				#    that where noted after last run of
 				#    univention-installerlast or u-s-s-net
 				# 2. we must note all current values to LDAP
-				eval ${interface}_hook_old_type="get_old_from_fallback get_new_from_profile_or_ucr"
+				eval ${interface}_hook_old_type="'get_old_from_fallback get_new_from_profile_or_ucr'"
 				# we should unset the fallback interface configuration
 				eval ${interface}_hook_new_type="unset_fallback"
 				# restart ifplugd due to changed dhcp settings

@@ -1,3 +1,9 @@
+univention-system-setup (3.0.28-1) unstable; urgency=low
+
+  * fixed error message in 10interfaces (Bug: #12130)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 19 Nov 2009 11:17:27 +0100
+
 univention-system-setup (3.0.27-1) unstable; urgency=low
 
   * fixed postinst script
