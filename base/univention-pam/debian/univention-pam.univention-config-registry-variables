@@ -1,11 +1,11 @@
 [nscd/group/invalidate_cache_on_changes]
-Description[de]="Invalidiert NSCD Gruppen Cache, sobald Gruppenzugehörigkeiten verändert wurden."
-Description[en]="Invalidate the NSCD group cache whenever a group membership has been modified."
+Description[de]=NSCD Gruppen Cache invalidieren, sobald Gruppenzugehörigkeiten verändert wurden? (yes/no).
+Description[en]=Invalidate NSCD group cache whenever a group membership has been modified? (yes/no).
 Type=str
 Categories=system-base
 
 [nssldap/tls/checkpeer]
-Description[de]="Soll eine Überprüfung des Server-Zeritifikats durchgeführt werden"
-Description[en]="If a verification of the server certificate should be done"
+Description[de]=Soll eine Überprüfung des Server-Zeritifikats durchgeführt werden
+Description[en]=If a verification of the server certificate should be done
 Type=bool
 Categories=system-base

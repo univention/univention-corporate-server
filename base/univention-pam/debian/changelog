@@ -1,3 +1,13 @@
+univention-pam (3.0.5-1) unstable; urgency=low
+
+  * nscd listener module update (Bug: #2174)
+  * always set nscd/group/invalidate_cache_on_changes to "true" if unset
+  * restart univention-directory-listener in postinst
+  * UCR variable description update
+  * "nscd -i group" has to be called as root
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 19 Nov 2009 17:15:25 +0100
+
 univention-pam (3.0.4-4) unstable; urgency=low
 
   *  edit nscd listener module #2174

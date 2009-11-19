@@ -42,12 +42,14 @@ def handler(dn, new, old):
 	pass
 
 def postrun():
-	try:
-		baseConfig = univention_baseconfig.baseConfig()
-		baseConfig.load()
+	baseConfig = univention_baseconfig.baseConfig()
+	baseConfig.load()
 
-		if baseConfig.get('nscd/group/invalidate_cache_on_changes', 'false').lower() in [ 'true', 'yes', 'on']:
-
-			listener.run('nscd -i', ['group'])
-	except:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "nscd -i group was not successfull")
+	if baseConfig.get('nscd/group/invalidate_cache_on_changes', 'false').lower() in [ 'true', 'yes', 'on']:
+		listener.setuid(0)
+		try:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "calling 'nscd -i group'")
+			listener.run('/usr/sbin/nscd', ['nscd', '-i', 'group'], uid=0)
+		except:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "nscd -i group was not successfull")
+		listener.unsetuid()

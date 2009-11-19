@@ -3,7 +3,7 @@
 # Univention PAM
 #  postinst script for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004-2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -40,8 +40,9 @@ univention-config-registry set \
 	auth/user/services?"chfn chsh kde kscreensaver kcheckpass rsh ssh su sudo passwd cron" \
 	auth/admin/methods?"krb5 ldap unix" \
 	auth/admin/services?"ftp gdm login other ppp rlogin screen" \
-	nssldap/tls/checkpeer?no
-	
+	nssldap/tls/checkpeer?no \
+	nscd/group/invalidate_cache_on_changes?"true"
+
 # remove old non-multifile template
 if [ -e /etc/univention/templates/files/etc/pam.d/common-auth ]; then
     rm /etc/univention/templates/files/etc/pam.d/common-auth
@@ -58,8 +59,9 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.2-1; t
 		echo "done"
 	fi
 fi
-if [ "$1" = configure -a -z "$2" ]; then
-	univention-config-registry set nscd/group/invalidate_cache_on_changes="true"
+
+if [ -x "/etc/init.d/univention-directory-listener" ] ; then
+	/etc/init.d/univention-directory-listener crestart
 fi
 
 #DEBHELPER#
