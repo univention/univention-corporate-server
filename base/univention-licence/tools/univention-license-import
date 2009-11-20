@@ -101,6 +101,9 @@ if [ "$rv" = "68" ]; then
 	backupfile="/var/backups/univention_license_replaced_at_$(date +%Y_%m_%d_%H_%M_%S)"
 	echo "Backing up old license to $backupfile"
 
+	touch "$backupfile"
+	chmod 0600 "$backupfile"
+
 	ldapsearch -xLLL -h "$ldap_master" -ZZ -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) cn=admin -b cn=license,cn=univention,$ldap_base | ldapsearch-wrapper > "$backupfile"
 
 	ldapdelete -x -h "$ldap_master" -ZZ -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) cn=admin,cn=license,cn=univention,dc=univention,dc=test
