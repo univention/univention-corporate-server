@@ -8,4 +8,4 @@ Type: file
 File: etc/cups/ppds.dat
 
 Type: file
-File: etc/init.d/cupsys
+File: etc/init.d/cups

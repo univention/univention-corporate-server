@@ -12,8 +12,8 @@ test -f $DAEMON || exit 0
 
 set -e
 
-if [ -r /etc/default/cupsys ]; then
-  . /etc/default/cupsys
+if [ -r /etc/default/cups ]; then
+  . /etc/default/cups
 fi
 
 . /lib/lsb/init-functions

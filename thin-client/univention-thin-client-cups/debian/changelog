@@ -1,3 +1,9 @@
+univention-thin-client-cups (4.0.2-1) unstable; urgency=low
+
+  * renamed cups init.d script (Bug: #16481)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 20 Nov 2009 10:21:43 +0100
+
 univention-thin-client-cups (4.0.1-2) unstable; urgency=low
 
   * changed dependency of univention-thin-client-cups-config to cups
