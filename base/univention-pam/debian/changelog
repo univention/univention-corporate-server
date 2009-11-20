@@ -1,3 +1,10 @@
+univention-pam (3.0.6-2) unstable; urgency=low
+
+  * fixed handling of nscd/group/invalidate_cache_on_changes in postinst
+    (Bug #2174)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 20 Nov 2009 15:56:31 +0100
+
 univention-pam (3.0.6-1) unstable; urgency=low
 
   * if 'unix' is the only authentication mechanism it is 'required' und
