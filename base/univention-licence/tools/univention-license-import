@@ -96,12 +96,17 @@ fi
 
 # ldapadd and ldapmodify work correctly with DOS linebreaks
 err=`ldapadd -x -h "$ldap_master" -ZZ -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) -f "$file" 2>&1` || rv=$?
+rv=${rv:-0}
 if [ "$rv" = "68" ]; then
-	err=`ldapmodify -x -h "$ldap_master" -ZZ -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) -f "$file" 2>&1` || rv=$?
-	if [ "$rv" != 0 ] && [ "$rv" != 89 ]; then
-		echo "$err" >&2
-		exit 1
-	fi
+	backupfile="/var/backups/univention_license_replaced_at_$(date +%Y_%m_%d_%H_%M_%S)"
+	echo "Backing up old license to $backupfile"
+
+	ldapsearch -xLLL -h "$ldap_master" -ZZ -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) cn=admin -b cn=license,cn=univention,$ldap_base | ldapsearch-wrapper > "$backupfile"
+
+	ldapdelete -x -h "$ldap_master" -ZZ -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) cn=admin,cn=license,cn=univention,dc=univention,dc=test
+
+	ldapadd -x -h "$ldap_master" -ZZ -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) -f "$file"
+
 	echo "Replaced license."
 elif [ "$rv" != 0 ] && [ "$rv" != 89 ]; then
 	echo "$err" >&2

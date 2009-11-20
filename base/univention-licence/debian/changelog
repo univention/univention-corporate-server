@@ -1,3 +1,10 @@
+univention-licence (2.0.4-1) unstable; urgency=low
+
+  * univention-license-import now uses delete/add instead of ldapmodify, which
+    doesn't accept the license-format any more. (Bug #16482)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Fri, 20 Nov 2009 13:44:46 +0100
+
 univention-licence (2.0.3-1) unstable; urgency=low
 
   * call automake-1.4 instead of automake-1,4. Bug #15577
