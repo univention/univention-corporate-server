@@ -37,7 +37,7 @@ check_cyrus21 ()
 			echo "At the moment this package is not available for UCS 2.3.  You have the following"
 			echo "options to continue: "
 			echo " 1. Migrate to Cyrus 2.2 as described here: "
-			echo "    http://www.univention.de/fileadmin/download/cyrus-migration_070411.pdf"
+			echo "    http://www.univention.de/fileadmin/download/cyrus-migration_091120.pdf"
 			echo " 2. Uninstall the package if it is no longer used:"
 			echo "    mv /etc/default/saslauthd.debian.dpkg-new /etc/default/saslauthd.debian"
 			echo "    apt-get remove $pkg"

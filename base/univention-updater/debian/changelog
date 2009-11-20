@@ -1,3 +1,9 @@
+univention-updater (5.0.42-3) unstable; urgency=low
+
+  * updated URL for cyrus migration techdoc (Bug #14652)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 20 Nov 2009 15:29:13 +0100
+
 univention-updater (5.0.42-2) unstable; urgency=low
 
   * document workaround for missing sasl config file Bug 16443 (Bug #14652)
