@@ -1,3 +1,9 @@
+univention-updater (5.0.42-2) unstable; urgency=low
+
+  * document workaround for missing sasl config file Bug 16443 (Bug #14652)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 20 Nov 2009 11:57:41 +0100
+
 univention-updater (5.0.42-1) unstable; urgency=low
 
   * "--force-overwrite" changes (Bug: #16371)

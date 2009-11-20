@@ -39,6 +39,7 @@ check_cyrus21 ()
 			echo " 1. Migrate to Cyrus 2.2 as described here: "
 			echo "    http://www.univention.de/fileadmin/download/cyrus-migration_070411.pdf"
 			echo " 2. Uninstall the package if it is no longer used:"
+			echo "    mv /etc/default/saslauthd.debian.dpkg-new /etc/default/saslauthd.debian"
 			echo "    apt-get remove $pkg"
 			echo " 3. Set the Univention Configuration Registry variable \"update23/cyrus21\" to"
 			echo "    \"yes\" and ignore this warning. In this case the update may fail."
