@@ -274,9 +274,9 @@ if [ $server_role != "domaincontroller_master" -a "$server_role" != "domaincontr
 	failed_message "binddn for user $DCACCOUNT not found"
 fi
 
-if [ -x /usr/sbin/rdate ]; then
+if [ -x /usr/bin/rdate ]; then
 	echo -n "Sync time "
-	/usr/sbin/rdate $DCNAME >/dev/null 2>&1
+	/usr/bin/rdate $DCNAME >/dev/null 2>&1
 	echo -e "\033[60Gdone"
 fi
 

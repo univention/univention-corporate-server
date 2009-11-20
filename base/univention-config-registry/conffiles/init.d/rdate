@@ -2,7 +2,7 @@
 
 PATH=/sbin:/bin
 
-test -f /usr/sbin/rdate || exit 0
+test -f /usr/bin/rdate || exit 0
 
 if test -f /etc/default/ntpdate ; then
 	. /etc/default/ntpdate
@@ -18,7 +18,7 @@ case "$1" in
 		echo -n "Synchronize clock:"
 		for srv in $NTPSERVERS; do
 			if /bin/netcat -q0 -w1 $srv time </dev/null >/dev/null 2>&1; then
-				if /usr/sbin/rdate $srv >/dev/null 2>&1; then
+				if /usr/bin/rdate $srv >/dev/null 2>&1; then
 					echo " done."
 					exit 0
 				fi

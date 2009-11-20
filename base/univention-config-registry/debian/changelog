@@ -1,3 +1,9 @@
+univention-config-registry (5.0.58-1) unstable; urgency=low
+
+  * fixed path to rdate (Bug #16504)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 20 Nov 2009 15:23:46 +0100
+
 univention-config-registry (5.0.57-1) unstable; urgency=low
 
   * do not call dhclient during update (Bug: #12130)

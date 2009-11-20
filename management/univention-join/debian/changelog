@@ -1,3 +1,9 @@
+univention-join (2.0.20-1) unstable; urgency=low
+
+  * fixed path to rdate (Bug #16504)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 20 Nov 2009 15:24:44 +0100
+
 univention-join (2.0.19-5) unstable; urgency=low
 
   * Suppress error message (Bug: #14846)

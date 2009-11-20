@@ -79,7 +79,7 @@ registry_vals="$registry_vals ntpdate/server=$timeserver"
 
 for i in $timeserver; do
 	if /bin/netcat -q0 -w4 $i 37 </dev/null >/dev/null 2>&1; then
-		/usr/sbin/rdate $i >/dev/tty8 2>&1
+		/usr/bin/rdate $i >/dev/tty8 2>&1
 	fi
 	/usr/sbin/ntpdate $i >/dev/tty8 2>&1 && break
 done
