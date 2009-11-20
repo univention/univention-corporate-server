@@ -1,3 +1,9 @@
+univention-dojo (3.0.4-4) unstable; urgency=low
+
+  * remove extra comma which causes an error in IE8 (Bug #16489)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 20 Nov 2009 13:51:45 +0100
+
 univention-dojo (3.0.4-3) unstable; urgency=low
 
   * typo fixed, now DateTextBox is included in the layer as well (Bug #14625)

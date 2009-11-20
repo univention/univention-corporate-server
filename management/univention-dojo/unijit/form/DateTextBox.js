@@ -7,7 +7,7 @@ dojo.declare(
 	"unijit.form.DateTextBox",
 	dijit.form.DateTextBox,
 	{
-		templatePath : dojo.moduleUrl("unijit", "form/template/DateTextBox.html"),
+		templatePath : dojo.moduleUrl("unijit", "form/template/DateTextBox.html")
 	}
 );
 
