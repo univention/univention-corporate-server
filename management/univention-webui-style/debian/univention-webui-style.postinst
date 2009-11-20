@@ -41,7 +41,9 @@ if [ -n "$locale_default" ]; then
 	fi
 fi
 
-univention-config-registry set apache2/startsite?"$default_site"
+univention-config-registry set apache2/startsite?"$default_site" \
+	directory/manager/web/onlinehelp/index?"/var/www/onlinehelp/index.udm.%s.html" \
+	umc/web/onlinehelp/index?"/var/www/onlinehelp/index.umc.%s.html"
 
 exit 0
 

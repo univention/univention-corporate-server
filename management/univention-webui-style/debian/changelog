@@ -1,3 +1,10 @@
+univention-webui-style (4.0.16-1) unstable; urgency=low
+
+  * added UCR template for help.php (Bug #16476)
+  * added simple online help page
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 20 Nov 2009 11:47:45 +0100
+
 univention-webui-style (4.0.15-1) unstable; urgency=low
 
   * support multiple mmselect widgets on the same tab. Bug #13035

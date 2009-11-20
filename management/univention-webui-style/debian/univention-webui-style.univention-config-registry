@@ -31,3 +31,7 @@ Variables: hostname
 Type: subfile
 Multifile: var/www/ucs-overview/en.html
 Subfile: var/www/ucs-overview/en.html.d/99en.html
+
+Type: file
+File: var/www/help.php
+Variables: webui/help/base

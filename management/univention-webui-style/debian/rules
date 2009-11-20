@@ -56,6 +56,7 @@ install: build
 	install -m644 icon/*.* $(D)/usr/share/univention-webui-style/icon/
 	install -m644 icon/submods/*.* $(D)/usr/share/univention-webui-style/icon/submods/
 	install -m644 style/*.* $(D)/usr/share/univention-webui-style/style/
+	install -m644 onlinehelp/*.* $(D)/var/www/onlinehelp/
 
 	find ${D} -name CVS | xargs rm -rf
 
