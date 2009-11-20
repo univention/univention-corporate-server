@@ -1,3 +1,10 @@
+univention-pam (3.0.6-1) unstable; urgency=low
+
+  * if 'unix' is the only authentication mechanism it is 'required' und
+    'sufficient' (Bug #16488)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 20 Nov 2009 10:32:48 +0100
+
 univention-pam (3.0.5-1) unstable; urgency=low
 
   * nscd listener module update (Bug: #2174)
