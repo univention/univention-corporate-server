@@ -1,3 +1,9 @@
+univention-webui (3.0.22-1) unstable; urgency=low
+
+  * make the mmselect widget IE 8 compatible. Bug #13035
+
+ -- Stefan Gohmann <gohman@univention.de>  Fri, 20 Nov 2009 22:30:23 +0100
+
 univention-webui (3.0.21-1) unstable; urgency=low
 
   * support multiple mmselect widgets on the same tab. Bug #13035

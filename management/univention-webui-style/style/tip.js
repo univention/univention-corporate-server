@@ -44,14 +44,16 @@ function sendForm(id,value){ // Formular mit Link senden und Button auf pressed 
       We have to select all members in the mmselect widget before
       the form will be submitted.
    */
-   mmselect=document.getElementsByTagName("mmselect");
-   for (var i = 0; i < mmselect.length; i++ ) {
-      box = mmselect[i].getElementsByTagName("select")[0]
-      for (var j = 0; j < box.options.length; j++) {
-         box.options[j].selected = true;
-      }
-   }
-   
+
+	mmselect_objects=document.getElementsByTagName("div");
+	for (var i = 0; i < mmselect_objects.length; i++) {
+		if (mmselect_objects[i].id=='mmselect') {
+			box = mmselect_objects[i].getElementsByTagName("select")[0];
+			for (var j = 0; j < box.options.length; j++) {
+				box.options[j].selected = true;
+			}
+		}
+	}
 
    if(!value)value='pressed';
    document.forms['cache'].elements['cache'].value=id;

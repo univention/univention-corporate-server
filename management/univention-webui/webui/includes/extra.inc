@@ -1052,14 +1052,13 @@ dojo.addOnLoad(function(){
 	});
 
 	/* catch the sendForm event and select all values in the right selectbox */
-	var submitform = document.getElementById( "form" );
+	var submitform = document.getElementById( "content" );
 	dojo.connect(submitform, "onsubmit",function(evt) {
 		selectBox=dijit.byId("usrinput[multiple#'.$this->tabindex.'][]");
 		// selectBox=dijit.byId("usrinput[multiple#'.$this->tabindex.'][]");
 		/* FIXME: the setValue call ist not correct but it was the easiest way ;) */
 		selectBox.setValue(1);
 		selectBox.invertSelection();
-		dojo.stopEvent(e);
 	});
 
 	dojo.query("button.dojo_switchbutton").connect("onclick",function(e) {
@@ -1120,7 +1119,7 @@ dojo.addOnLoad(function(){
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		}
 		$str .= '</td></tr><tr><td>
-<mmselect><select '.$access.' title="'.$this->basket['helptext'].'" id="usrinput[multiple#'.$this->tabindex.'][]" tabindex="'.$this->tabindex.'"';
+<div id="mmselect"><select '.$access.' title="'.$this->basket['helptext'].'" id="usrinput[multiple#'.$this->tabindex.'][]" tabindex="'.$this->tabindex.'"';
 		if ($this->warn) 
 			$str .= ' class="mselect_warn" ';
 		else 
@@ -1149,7 +1148,7 @@ dojo.addOnLoad(function(){
 				$str .= '</option>';
 				$is = '';
 			}
-		$str .='</select></mmselect>
+		$str .='</select></div>
 </td></tr></table>';
 		$str .= '</td></tr><tr class="leftright_top"><td  class="leftright_top_fixed"><table class="button"><tr><td class="button_icon">
 <button id="left-'.$this->tabindex.'" class="dojo_switchbutton" border="0" title="Add"><img src="/style/right.gif" /></button>
