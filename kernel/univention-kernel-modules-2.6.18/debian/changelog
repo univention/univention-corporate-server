@@ -1,3 +1,11 @@
+univention-kernel-modules-2.6.18 (2.0.1-4) unstable; urgency=low
+
+  * Use the renamed DRDB source package for 2.6.18, otherwise
+    the "prepare" stage	of m-a overwrites the previous configuration.
+    (Bug #16389)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 20 Nov 2009 14:32:57 +0100
+
 univention-kernel-modules-2.6.18 (2.0.1-3) unstable; urgency=low
 
   * Build the DRDB modules for the 2.6.18 kernel by using the

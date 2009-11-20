@@ -53,7 +53,7 @@ install:
 	dh_clean -k
 	dh_installdirs
 
-	for m in avm-capi-fcpci-modules srvmagt-modules drbd8; do \
+	for m in avm-capi-fcpci-modules srvmagt-modules drbd8-2.6.18; do \
 		for i in /usr/src/linux-headers-*; do \
 			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
 			m-a -t -l $$kversion prepare; \
