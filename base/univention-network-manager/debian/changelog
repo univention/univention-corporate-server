@@ -1,3 +1,10 @@
+univention-network-manager (0.4.3-1) unstable; urgency=low
+
+  * make NetworkManager control all network interfaces by default;
+    configurable via UCR (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 20 Nov 2009 15:13:30 +0100
+
 univention-network-manager (0.4.2-1) unstable; urgency=low
 
   * added missing file (Bug: #12130)
