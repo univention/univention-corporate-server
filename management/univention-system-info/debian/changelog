@@ -1,3 +1,10 @@
+univention-system-info (0.1.11-1) unstable; urgency=low
+
+  * support umlauts
+  * fix comment and ticket number in tar archive (Bug #8969)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 23 Nov 2009 18:46:02 +0100
+
 univention-system-info (0.1.10-1) unstable; urgency=low
 
   * fixed german translation

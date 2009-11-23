@@ -177,9 +177,9 @@ class handler( umch.simpleHandler ):
 		if not object.options[ 'comment' ]:
 			comment = ''
 		else:
-			comment = '\n'.join( object.options[ 'comment' ] )
-		cmd = '/usr/bin/univention-system-info -m "%s" -t "%s" -c "%s" -s "%s" -u' % ( object.options[ 'manufacturer' ], object.options[ 'model' ], comment, object.options[ 'support' ] )
-		ret = umct.run_process( cmd, timeout = 10000 )
+			comment = str( object.options[ 'comment' ] )
+		cmd = u'/usr/bin/univention-system-info -m "%s" -t "%s" -c "%s" -s "%s" -u' % ( object.options[ 'manufacturer' ], object.options[ 'model' ], comment, object.options.get( 'ticket', '' ) )
+		ret = umct.run_process( str( cmd ), timeout = 10000 )
 		# usi exited successfully
 		if ret[ 'exit' ] == 0:
 			for line in ret[ 'stdout' ].readlines():
