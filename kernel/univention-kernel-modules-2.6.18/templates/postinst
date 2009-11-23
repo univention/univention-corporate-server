@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+SYSTEMMAP=/boot/System.map-KVERSION
+
+if [ -f $SYSTEMMAP ]
+then
+    depmod -ae -F $SYSTEMMAP KVERSION
+elif [ "`uname -r`" = "KVERSION" ]
+then
+    depmod -a &
+fi
+
+#DEBHELPER#

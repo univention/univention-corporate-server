@@ -53,7 +53,7 @@ install:
 	dh_clean -k
 	dh_installdirs
 
-	for m in avm-capi-fcpci-modules srvmagt-modules drbd8-2.6.18; do \
+	for m in avm-capi-fcpci-modules srvmagt-modules; do \
 		for i in /usr/src/linux-headers-*; do \
 			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
 			m-a -t -l $$kversion prepare; \
@@ -61,6 +61,14 @@ install:
 			mv /tmp/usr_src/modules/*.deb ../ || mv /tmp/*.deb ../ || true; \
 		done \
 	done \
+
+	for i in /usr/src/linux-headers-*; do \
+		kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
+		m-a -t -l $$kversion prepare; \
+		m-a -f -u /tmp -l $$kversion -t a-b drbd8-2.6.18; \
+	done \
+	$(shell build-drbd-mod.sh)
+	mv /tmp/drbd-built/drbd*deb ../
 
 binary-indep: build install
 
