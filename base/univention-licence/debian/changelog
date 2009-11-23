@@ -1,3 +1,9 @@
+univention-licence (2.0.7-1) unstable; urgency=low
+
+  * fix accidentaly hardcoded test-value :-$ (Bug #16482)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Mon, 23 Nov 2009 14:25:56 +0100
+
 univention-licence (2.0.6-1) unstable; urgency=low
 
   * change license-backup-path to /var/univention-backup (Bug #16482)

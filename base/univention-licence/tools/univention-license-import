@@ -107,7 +107,7 @@ if [ "$rv" = "68" ]; then
 
 	ldapsearch -xLLL -h "$ldap_master" -ZZ -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) cn=admin -b cn=license,cn=univention,$ldap_base | ldapsearch-wrapper > "$backupfile"
 
-	ldapdelete -x -h "$ldap_master" -ZZ -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) cn=admin,cn=license,cn=univention,dc=univention,dc=test
+	ldapdelete -x -h "$ldap_master" -ZZ -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) cn=admin,cn=license,cn=univention,$ldap_base
 
 	ldapadd -x -h "$ldap_master" -ZZ -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) -f "$file"
 
