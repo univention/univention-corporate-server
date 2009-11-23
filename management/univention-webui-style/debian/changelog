@@ -1,8 +1,14 @@
 univention-webui-style (4.0.18-1) unstable; urgency=low
 
+<<<<<<< HEAD
   * make the mmselect widget IE 8 compatible. Bug #13035
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Nov 2009 22:30:58 +0100
+=======
+  * third draft for online help page (Bug #16476)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 23 Nov 2009 09:21:12 +0100
+>>>>>>> * third draft for online help page (Bug #16476)
 
 univention-webui-style (4.0.17-1) unstable; urgency=low
 
