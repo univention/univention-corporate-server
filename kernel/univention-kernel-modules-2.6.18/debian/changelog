@@ -1,3 +1,10 @@
+univention-kernel-modules-2.6.18 (2.0.1-5) unstable; urgency=low
+
+  * Add Build-Conflicts to 2.6.26 and 2.6.30 kernel headers to fix
+    false detection in wrapper script (Bug #16389)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 23 Nov 2009 10:00:55 +0100
+
 univention-kernel-modules-2.6.18 (2.0.1-4) unstable; urgency=low
 
   * Use the renamed DRDB source package for 2.6.18, otherwise
