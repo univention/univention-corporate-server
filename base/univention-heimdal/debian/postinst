@@ -39,6 +39,17 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	/usr/lib/univention-install/15univention-heimdal-kdc.inst || true
 fi
 
+# fix for http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=470404
+# fix for https://forge.univention.org/bugzilla/show_bug.cgi?id=16462
+if [ ! -e "/var/lib/heimdal-kdc/kdc.conf" ] ; then
+	ln -s /etc/heimdal-kdc/kdc.conf /var/lib/heimdal-kdc/kdc.conf
+else
+	if [ ! -h "/var/lib/heimdal-kdc/kdc.conf" ] ; then
+		mv /var/lib/heimdal-kdc/kdc.conf /var/lib/heimdal-kdc/kdc.conf.BACKUP
+		ln -s /etc/heimdal-kdc/kdc.conf /var/lib/heimdal-kdc/kdc.conf
+	fi
+fi
+
 if [ "$1" = "configure" -a -n "$2" ]; then
 	/etc/init.d/heimdal-kdc restart
 fi
