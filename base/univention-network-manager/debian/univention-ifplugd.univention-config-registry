@@ -6,7 +6,3 @@ Variables: dhclient/options/retry
 Type: file
 File: etc/default/ifplugd
 Variables: interfaces/.*
-
-Type: file
-File: etc/network/interfaces
-Variables: interfaces/handler

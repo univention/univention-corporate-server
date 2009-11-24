@@ -10,7 +10,3 @@ Variables: dhclient/options/retry
 Type: file
 File: etc/NetworkManager/nm-system-settings.conf
 Variables: networkmanager/all_interfaces
-
-Type: file
-File: etc/network/interfaces
-Variables: interfaces/handler
