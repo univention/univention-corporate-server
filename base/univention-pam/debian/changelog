@@ -1,3 +1,9 @@
+univention-pam (3.0.8-1) unstable; urgency=low
+
+  * fixed handling of cache only authentication (Bug #16488)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 24 Nov 2009 13:57:23 +0100
+
 univention-pam (3.0.7-1) unstable; urgency=low
 
   * if cache authentication is available than unix must be defined as

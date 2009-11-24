@@ -71,9 +71,8 @@ else:
 	index = -1
 
 # if no other authentication mechanism but unix is active it is required
-if not methods:
-	if index == -1:
-		print '''# local unix authentification; do not cache passwords
+if not methods and index == -1:
+	print '''# local unix authentification; do not cache passwords
 auth     required                         pam_unix.so'''
 else:
 	print '''# local unix authentification; do not cache passwords
