@@ -72,7 +72,7 @@ def add_ldap_server(baseConfig, name, domain, role):
 	server_name="%s.%s" % (name, domain)
 
 	if role == 'master':
-		old_master=baseConfig['ldap/master']
+		old_master=baseConfig.get('ldap/master')
 
 		univention_baseconfig.handler_set(['ldap/master=%s' % server_name])
 
@@ -84,7 +84,9 @@ def add_ldap_server(baseConfig, name, domain, role):
 
 
 	if role == 'backup':
-		backup_list = baseConfig['ldap/backup'].split(' ')
+		backup_list = []
+		if baseConfig.get('ldap/backup'):
+			backup_list = baseConfig.get('ldap/backup','').split(' ')
 		if not server_name in backup_list:
 			backup_list.append(server_name)
 			univention_baseconfig.handler_set(['ldap/backup=%s' % (string.join(backup_list, ' '))])
