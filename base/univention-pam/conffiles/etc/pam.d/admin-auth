@@ -70,13 +70,14 @@ if 'cache' in methods:
 else:
 	index = -1
 
-# if no other authentication mechanismn but unix is active it is required
+# if no other authentication mechanism but unix is active it is required
 if not methods:
-	print '''# local unix authentification; do not cache passwords
-auth     required                           pam_unix.so'''
+	if index == -1:
+		print '''# local unix authentification; do not cache passwords
+auth     required                         pam_unix.so'''
 else:
 	print '''# local unix authentification; do not cache passwords
-auth     sufficient                         pam_unix.so'''
+auth     sufficient                           pam_unix.so'''
 
 print '''
 # remote authentification; if a service
