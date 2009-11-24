@@ -3,7 +3,7 @@ Section: devel
 Priority: optional
 Maintainer: Univention GmbH
 Standards-Version: 3.7.2
-Build-Depends: debhelper (>= 5), module-assistant, bzip2, srvmagt-modules, drbd8-2.6.18-source, univention-kernel-headers-2.6.18, univention-kernel-headers-2.6.18-64gb, univention-kernel-headers-2.6.18-xen, avm-capi-fcpci-modules
+Build-Depends: debhelper (>= 5), module-assistant, bzip2, srvmagt-modules, drbd8-2.6.18-source, univention-kernel-headers-2.6.18, univention-kernel-headers-2.6.18-64gb [i386], univention-kernel-headers-2.6.18-xen, avm-capi-fcpci-modules
 Build-Conflicts: univention-kernel-headers-2.6.26, univention-kernel-headers-2.6.26-64gb, univention-kernel-headers-2.6.26, linux-headers-2.6.26-ucs18-486, linux-headers-2.6.26-ucs18-686, linux-headers-2.6.26-ucs18-486-bigmem, linux-headers-2.6.26-ucs18-amd64, linux-headers-2.6.26-ucs20-486, linux-headers-2.6.26-ucs20-686, linux-headers-2.6.26-ucs20-486-bigmem, linux-headers-2.6.26-ucs20-amd64, linux-headers-2.6.26-ucs32-486, linux-headers-2.6.26-ucs32-686, linux-headers-2.6.26-ucs32-486-bigmem, linux-headers-2.6.26-ucs32-amd64, univention-kernel-headers-2.6.30, univention-kernel-headers-2.6.30-64gb, univention-kernel-headers-2.6.30
 
 Package: univention-kernel-modules-2.6.18
