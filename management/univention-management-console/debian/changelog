@@ -1,3 +1,10 @@
+univention-management-console (2.0.31-1) unstable; urgency=low
+
+  * ChoiceButton: ensure that internal commands are not reselected as the
+    default (Bug #14058)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 24 Nov 2009 15:30:09 +0100
+
 univention-management-console (2.0.30-2) unstable; urgency=low
 
   * moved registration for UCR variable auth/passwdcache/max_users to

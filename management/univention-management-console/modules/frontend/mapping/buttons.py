@@ -235,7 +235,7 @@ class ChoiceButtonMap( IButtonMap, mapper.IMapper ):
 		choices = []
 		defaultset = False
 		for data in umcp_part.choices:
-			if default and data['name'] == default and not defaultset:
+			if default and not default.startswith( '::' ) and data['name'] == default and not defaultset:
 				defaultset = True
 				choices.append( { 'name' : data['name'], 'description' : data['description'], 'selected' : '1' } )
 			else:
