@@ -1,3 +1,10 @@
+univention-config-registry (5.0.59-1) unstable; urgency=low
+
+  * register UCR variable interfaces/handler for template
+    etc/network/interfaces (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 24 Nov 2009 13:24:12 +0100
+
 univention-config-registry (5.0.58-1) unstable; urgency=low
 
   * fixed path to rdate (Bug #16504)

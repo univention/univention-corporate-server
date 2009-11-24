@@ -100,6 +100,7 @@ File: etc/network/interfaces
 Preinst: interfaces.py
 Postinst: interfaces.py
 Variables: interfaces/eth.*
+Variables: interfaces/handler
 Variables: gateway
 
 Type: multifile
