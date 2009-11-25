@@ -8,8 +8,8 @@ univention-updater (5.0.44-1) unstable; urgency=low
 
   * remove avahi-daemon which seems to interfere nfs mounts in rcS.d
     remove libavahi-core4 which is pulled by avahi-daemon
-	remove legacy libnss-mdns that depends on avahi-daemon
-	unless update23/keep/avahi has been set (Bug #16339)
+    remove legacy libnss-mdns that depends on avahi-daemon
+    unless update23/keep/avahi has been set (Bug #16339)
 
  -- Arvid Requate <requate@univention.de>  Wed, 25 Nov 2009 13:16:49 +0100
 
