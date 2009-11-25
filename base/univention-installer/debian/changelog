@@ -1,3 +1,9 @@
+univention-installer (5.0.48-2) unstable; urgency=low
+
+  * changed filename due to udev update (Bug #16571)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 25 Nov 2009 15:40:40 +0100
+
 univention-installer (5.0.48-1) unstable; urgency=low
 
   * add (fallback) ip address to dhcp interface on startup (Bug: #12130)

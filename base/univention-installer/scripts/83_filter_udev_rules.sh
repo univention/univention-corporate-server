@@ -32,10 +32,10 @@
 
 UDEVDIR="/instmnt/etc/udev/rules.d"
 mkdir -p "$UDEVDIR"
-export UDEVRULEFN="${UDEVDIR}/z25_persistent-net.rules"
+export UDEVRULEFN="${UDEVDIR}/70-persistent-net.rules"
 
 # if dummy network interface is in use, delete mapping from existing rules file
-if [ -f "/tmp/dummy-network-interface.txt" ] ; then
+if [ -f "/tmp/dummy-network-interface.txt" -a -f "$UDEVRULEFN" ] ; then
 	MACADDR=$(/bin/ifconfig eth0 | grep " HWaddr " | awk "{ print $NF }")
 	TMPFN=$(mktemp /tmp/temp.XXXXXXX)
 	cat $UDEVRULEFN | grep -v "eth0" | grep -v "$MACADDR" > $TMPFN
