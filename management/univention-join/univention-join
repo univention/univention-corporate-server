@@ -441,7 +441,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	mkdir -p /var/lib/univention-ldap/notify/
 
 	touch /var/univention-join/joined
-	ln -s /var/univention-join/joined /usr/share/univention-join/.joined
+	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id
 	chown listener /var/lib/univention-ldap/schema/id/id

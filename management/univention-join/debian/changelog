@@ -1,3 +1,10 @@
+univention-join (2.0.21-1) unstable; urgency=low
+
+  * force removal of /usr/share/univention-join/.joined during symlink
+    creation (Bug #16560)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 25 Nov 2009 10:56:43 +0100
+
 univention-join (2.0.20-1) unstable; urgency=low
 
   * fixed path to rdate (Bug #16504)
