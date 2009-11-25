@@ -224,16 +224,14 @@ for pkg in univention-ssl univention-thin-client-basesystem univention-thin-clie
 	fi
 done
 
-if [ "$UPDATE_NEXT_VERSION" = "2.3-0"]; then
-	if [ "$update23_keep_avahi" != "yes" ]; then
-		# remove ucs_2.0-0 packages that cause conflicts
-		olddebs="libnss-mdns avahi-daemon libavahi-core4"	# libavahi-common3 left for evolution etc.
-		for deb in $olddebs; do
-			if dpkg -l $deb >>"$UPDATER_LOG" 2>&1; then
-				dpkg -P $deb >>"$UPDATER_LOG" 2>&1
-			fi
-		done
-	fi
+if [ "$update23_keep_avahi" != "yes" ]; then
+	# remove ucs_2.0-0 packages that cause conflicts
+	olddebs="libnss-mdns avahi-daemon libavahi-core4"	# libavahi-common3 left for evolution etc.
+	for deb in $olddebs; do
+		if dpkg -l $deb >>"$UPDATER_LOG" 2>&1; then
+			dpkg -P $deb >>"$UPDATER_LOG" 2>&1
+		fi
+	done
 fi
 
 echo "Starting update process, this may take a while."
