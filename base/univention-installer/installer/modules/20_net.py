@@ -921,21 +921,20 @@ class object(content):
 				else:
 					input_ip=self.get_elem('edit.INPUT_IP')
 					if input_ip.result():
-						input_ip.set_off()
-						self.get_elem('edit.BUTTON_OK').set_on()	# set the focus highlight
+						self.elements[self.current].set_off()		# reset actual focus highlight
 						self.current=self.get_elem_id('edit.BUTTON_OK')	# set the tab cursor
+						self.elements[self.current].set_on()		# reset actual focus highlight
 					self.parent.draw()
 					self.draw()
 			elif key in [ 10, 32 ] and self.elem_exists('edit.CHECKBOX_DHCP') and self.get_elem('edit.CHECKBOX_DHCP').usable() and self.get_elem('edit.CHECKBOX_DHCP').active: #Space in Checkbox
 				dhcp_checkbox=self.get_elem('edit.CHECKBOX_DHCP')
 				self.elements[self.current].key_event(32)	# send the event to the widget
+				self.elements[self.current].set_off()		# reset actual focus highlight
 				if dhcp_checkbox.result():
 					self.disable()
-					dhcp_checkbox.set_off()
 					self.current=self.get_elem_id('edit.BUTTON_DHCLIENT')	# set the tab cursor
 				else:
 					self.enable()
-					dhcp_checkbox.set_off()
 					self.current=self.get_elem_id('edit.INPUT_IP')	# set the tab cursor
 				self.get_elem_by_id(self.current).set_on()	# set the focus highlight
 				self.draw()

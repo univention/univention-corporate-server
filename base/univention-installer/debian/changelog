@@ -1,3 +1,9 @@
+univention-installer (5.0.50-1) unstable; urgency=low
+
+  * fixed focus handling in 20_net.py (Bug #12130)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 26 Nov 2009 11:35:28 +0100
+
 univention-installer (5.0.49-1) unstable; urgency=low
 
   * changed filename due to udev update (Bug #16571)
