@@ -39,7 +39,7 @@ fi
 # set "interfaces/handler" in any case to "networkmanager"
 univention-config-registry set interfaces/handler=networkmanager
 
-univention-config-registry set networkmanager/action/mount?$ifplugd_action_mount
+univention-config-registry set networkmanager/action/mount?"no"
 univention-config-registry set networkmanager/group?"root"
 univention-config-registry set networkmanager/all_interfaces?"yes"
 univention-config-registry set networkmanager/dhcp/options/fallback?"no"

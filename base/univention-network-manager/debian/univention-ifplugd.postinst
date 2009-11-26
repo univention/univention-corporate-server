@@ -39,7 +39,7 @@ fi
 # set "interfaces/handler" in any case to "ifplugd"
 univention-config-registry set interfaces/handler=ifplugd
 
-univention-config-registry set networkmanager/action/mount?$ifplugd_action_mount
+univention-config-registry set networkmanager/action/mount?"no"
 univention-config-registry set networkmanager/dhcp/options/fallback?"no"
 
 univention-config-registry set dhclient/options/timeout?"40"
