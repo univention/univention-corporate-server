@@ -1,3 +1,10 @@
+univention-server (5.0.9-1) unstable; urgency=low
+
+  * ensure that cache authentication method is set on mobile and managed
+    clients (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 26 Nov 2009 14:22:39 +0100
+
 univention-server (5.0.8-5) unstable; urgency=low
 
   * move the activation of the cache authentication mechanismn to the
