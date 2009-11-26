@@ -47,8 +47,8 @@ univention-config-registry set networkmanager/dhcp/options/fallback?"no"
 univention-config-registry set dhclient/options/timeout?"40"
 univention-config-registry set dhclient/options/retry?"60"
 
-# need to restart dbus to read new permissions for networkmanager/group
-/etc/init.d/dbus restart
+# need to reload dbus to read new permissions for networkmanager/group
+/etc/init.d/dbus reload
 
 for i in $(seq 0 4); do
 	var="interfaces_eth${i}_ifplugd"

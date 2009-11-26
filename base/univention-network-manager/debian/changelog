@@ -1,3 +1,9 @@
+univention-network-manager (0.4.4-2) unstable; urgency=low
+
+  * reload the dbus instead of restarting it (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 26 Nov 2009 10:58:22 +0100
+
 univention-network-manager (0.4.4-1) unstable; urgency=low
 
   * invoke univention-directory-policy when interface is up (Bug #16318)
