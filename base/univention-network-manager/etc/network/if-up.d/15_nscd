@@ -28,6 +28,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+. /etc/network/ucs-network-tools
+ucs_ignore_interface
+
 [ ! -f /var/run/nscd/nscd.pid ] && exit 0
 
 if [ -x /etc/init.d/nscd ]; then

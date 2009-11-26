@@ -28,6 +28,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+. /etc/network/ucs-network-tools
+ucs_ignore_interface
+
 eval $(univention-config-registry shell nameserver/option/timeout nameserver1 nameserver2 nameserver3)
 
 if [ -n "$nameserver_option_timeout" ] && ! grep timeout /etc/resolv.conf &>/dev/null; then

@@ -28,6 +28,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
+if [ -z "$reason" -o $reason = "PREINIT" ]; then
+        exit 0
+fi
+
 HOOKS_DIR=/etc/NetworkManager/dhcp-hooks.d/
 
 # call hooks: each hook script might write shell script to standard output to change environment variables

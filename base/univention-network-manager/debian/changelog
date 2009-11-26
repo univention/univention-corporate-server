@@ -1,6 +1,13 @@
+univention-network-manager (0.4.6-1) unstable; urgency=low
+
+  * the network event scripts should just not be invoked for the
+    interfaces 'all' and 'lo' (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 26 Nov 2009 16:58:20 +0100
+
 univention-network-manager (0.4.5-1) unstable; urgency=low
 
-  * if no nameserver is provided via DHCP ofr /etc/network/interfaces use
+  * if no nameserver is provided via DHCP or /etc/network/interfaces use
     the servers set via UCR as fallback (Bug #8994)
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 26 Nov 2009 11:56:03 +0100
