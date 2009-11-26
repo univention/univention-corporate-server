@@ -1,3 +1,9 @@
+univention-network-manager (0.4.4-1) unstable; urgency=low
+
+  * invoke univention-directory-policy when interface is up (Bug #16318)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 26 Nov 2009 09:39:22 +0100
+
 univention-network-manager (0.4.3-2) unstable; urgency=low
 
   * set networkmanager/action/mount?no to disable if-up.d/20_mount (Bug #16339)
