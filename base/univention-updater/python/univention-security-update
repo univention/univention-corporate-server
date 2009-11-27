@@ -164,7 +164,7 @@ if __name__ == '__main__':
 		sys.exit( 1 )
 
 	# install security updates
-	cmd_dist_upgrade = configRegistry.get( 'update/commands/distupgrade', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade' )
+	cmd_dist_upgrade = configRegistry.get( 'update/commands/distupgrade', 'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u dist-upgrade' )
 	cmd_update = configRegistry.get( 'update/commands/update', 'apt-get update' )
 
 	upgraded = False

@@ -1,3 +1,10 @@
+univention-updater (5.0.46-1) unstable; urgency=low
+
+  * updated UCR fallback values in univention-security-update and
+    univention-actualise (Bug #16603)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 27 Nov 2009 11:13:57 +0100
+
 univention-updater (5.0.45-1) unstable; urgency=low
 
   * univention-repository-update: create mirrorbase directory and create
