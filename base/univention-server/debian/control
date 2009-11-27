@@ -61,7 +61,7 @@ Description: UCS - member server
 Package: univention-mobile-client
 Architecture: all
 Conflicts: univention-application-server
-Depends: openssh-server, univention-policy-tools, univention-updater, ldap-utils, ntp | ntp-server, univention-x-core, univention-join, libnss-passwdcache, libpam-passwdcache, menu, univention-directory-listener, univention-heimdal-member, univention-ldap-client, nscd, vim, bind9-host, strace, anacron, univention-network-manager, univention-mail-postfix-forward, nfs-common, univention-directory-policy, univention-printclient, univention-pkgdb-tools, univention-gdm-sessions, python-univention-directory-manager, univention-firewall, univention-lilo | univention-grub, univention-system-setup, hibernate, acpid, univention-archive-key
+Depends: openssh-server, univention-policy-tools, univention-updater, ldap-utils, ntp | ntp-server, univention-x-core, univention-join, libnss-passwdcache, libpam-passwdcache, menu, univention-directory-listener, univention-heimdal-member, univention-ldap-client, nscd, vim, bind9-host, strace, anacron, univention-ifplugd | univention-network-manager, univention-mail-postfix-forward, nfs-common, univention-directory-policy, univention-printclient, univention-pkgdb-tools, univention-gdm-sessions, python-univention-directory-manager, univention-firewall, univention-lilo | univention-grub, univention-system-setup, hibernate, acpid, univention-archive-key
 Description: UCS - Mobile Client
  This is a Meta-package, that sets up a UCS mobile client
  .
@@ -75,7 +75,7 @@ Architecture: all
 Conflicts: univention-application-server, univention-fat-client, univention-fat-client-small
 Replaces: univention-fat-client, univention-fat-client-small
 Provides: univention-fat-client, univention-fat-client-small
-Depends: openssh-server, univention-policy-tools, univention-updater, ldap-utils, ntp | ntp-server, univention-x-core, univention-join, libnss-passwdcache, libpam-passwdcache, menu, univention-directory-listener, univention-heimdal-member, univention-ldap-client, nscd, vim, bind9-host, strace, anacron, univention-network-manager, univention-mail-postfix-forward, nfs-common, univention-directory-policy, univention-printclient, univention-pkgdb-tools, univention-gdm-sessions, python2.4-univention-admin | python2.4-univention-admin-2005, univention-firewall, univention-lilo | univention-grub, univention-system-setup, acpid, univention-archive-key
+Depends: openssh-server, univention-policy-tools, univention-updater, ldap-utils, ntp | ntp-server, univention-x-core, univention-join, libnss-passwdcache, libpam-passwdcache, menu, univention-directory-listener, univention-heimdal-member, univention-ldap-client, nscd, vim, bind9-host, strace, anacron, univention-ifplugd | univention-network-manager, univention-mail-postfix-forward, nfs-common, univention-directory-policy, univention-printclient, univention-pkgdb-tools, univention-gdm-sessions, python2.4-univention-admin | python2.4-univention-admin-2005, univention-firewall, univention-lilo | univention-grub, univention-system-setup, acpid, univention-archive-key
 Description: UCS - Managed Client
  This is a Meta-package, that sets up a UCS fat client
  .

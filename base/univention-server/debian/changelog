@@ -1,3 +1,10 @@
+univention-server (5.0.9-2) unstable; urgency=low
+
+  * use ifplugd instead of NetworkManager an mobile and managed clients
+    (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 27 Nov 2009 10:12:57 +0100
+
 univention-server (5.0.9-1) unstable; urgency=low
 
   * ensure that cache authentication method is set on mobile and managed
