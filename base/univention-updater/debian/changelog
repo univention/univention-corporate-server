@@ -1,3 +1,9 @@
+univention-updater (5.0.47-2) unstable; urgency=low
+
+  * added missing UCR variable update/commands/upgrade (Bug #16603)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 27 Nov 2009 13:12:56 +0100
+
 univention-updater (5.0.47-1) unstable; urgency=low
 
   * use UCR variables in univention-updater - also added UCR fallback

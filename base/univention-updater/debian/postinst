@@ -122,17 +122,18 @@ univention-config-registry unset update/server update/security/server update/sec
 
 # define update commands
 univention-config-registry set \
-		update/commands/distupgrade?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u dist-upgrade" \
 		update/commands/update?"apt-get update" \
 		update/commands/show?"apt-cache show" \
 		update/commands/install?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install" \
 		update/commands/remove?"apt-get --yes remove" \
 		update/commands/configure?"dpkg --configure -a" \
 		update/commands/distupgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -us dist-upgrade" \
-		update/commands/upgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -us upgrade"
+		update/commands/distupgrade?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u dist-upgrade" \
+		update/commands/upgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -us upgrade" \
+		update/commands/upgrade?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u upgrade"
 
 if [ -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.73-0; then
-	
+
 	eval $(univention-config-registry shell repository/mirror/basepath)
 	if [ -z "${repository_mirror_basepath}" ]; then
 		repository_mirror_basepath=/var/lib/univention-repository
