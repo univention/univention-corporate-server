@@ -1,3 +1,9 @@
+univention-installer (5.0.51-1) unstable; urgency=low
+
+  * install univention-network-manager on mobile clients (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 27 Nov 2009 10:35:36 +0100
+
 univention-installer (5.0.50-1) unstable; urgency=low
 
   * fixed focus handling in 20_net.py (Bug #12130)

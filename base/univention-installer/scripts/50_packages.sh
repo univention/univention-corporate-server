@@ -123,7 +123,7 @@ elif [ "$server_role" = "memberserver" ]; then
 elif [ "$server_role" = "managed_client" ]; then
 	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-managed-client --yes
 elif [ "$server_role" = "mobile_client" ]; then
-	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-mobile-client --yes
+	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-mobile-client univention-network-manager --yes
 elif [ "$server_role" = "basesystem" ]; then
 	apt-get -y -o APT::Get::AllowUnauthenticated=1 install univention-basesystem --yes
 fi
