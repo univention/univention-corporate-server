@@ -1,3 +1,10 @@
+univention-updater (5.0.45-1) unstable; urgency=low
+
+  * univention-repository-update: create mirrorbase directory and create
+    symlink "univention-repository" if missing (Bug #16596)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 26 Nov 2009 17:20:40 +0100
+
 univention-updater (5.0.44-2) unstable; urgency=low
 
   * UPDATE_NEXT_VERSION does not seem to be available (Bug #16339)
