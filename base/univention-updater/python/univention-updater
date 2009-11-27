@@ -557,11 +557,12 @@ def main():
 		count=count+1
 
 	# TODO: should we really exit if the 'apt-get update' process failed?
-	resultCode=os.system('touch /var/run/apt-get.lock && apt-get update >>/var/log/univention/updater.log 2>&1')
+	cmd_update = baseConfig.get( 'update/commands/update', 'apt-get update' )
+	resultCode=os.system('touch /var/run/apt-get.lock && %s >>/var/log/univention/updater.log 2>&1' % cmd_update)
 	if os.path.exists('/var/run/apt-get.lock'):
 		os.unlink('/var/run/apt-get.lock')
 	if resultCode != 0:
-		dprint('Failed to execute apt-get update', [sys.stdout,stdout])
+		dprint('Failed to execute %s' % cmd_update, [sys.stdout,stdout])
 		raise UpdateError
 
 	# Execute the dist-upgrade!
@@ -569,11 +570,13 @@ def main():
 	while os.path.exists('/var/run/apt-get.lock') and count < 300:
 		time.sleep(1)
 		count=count+1
-	resultCode=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade >>/var/log/univention/updater.log 2>&1')
+
+	cmd_dist_upgrade = baseConfig.get( 'update/commands/distupgrade', 'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u dist-upgrade' )
+	resultCode=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive %s >>/var/log/univention/updater.log 2>&1' % cmd_dist_upgrade)
 	if os.path.exists('/var/run/apt-get.lock'):
 		os.unlink('/var/run/apt-get.lock')
 	if resultCode != 0:
-		dprint('Failed to execute apt-get -u dist-upgrade', [sys.stdout,stdout])
+		dprint('Failed to execute %s' % cmd_dist_upgrade, [sys.stdout,stdout])
 		raise UpdateError
 
 	# Call the postup.sh
