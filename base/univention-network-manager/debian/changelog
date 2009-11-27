@@ -1,3 +1,9 @@
+univention-network-manager (0.4.6-2) unstable; urgency=low
+
+  * add missing file to univention-ifplugd (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 27 Nov 2009 16:09:46 +0100
+
 univention-network-manager (0.4.6-1) unstable; urgency=low
 
   * the network event scripts should just not be invoked for the
