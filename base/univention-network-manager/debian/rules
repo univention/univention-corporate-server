@@ -56,12 +56,14 @@ install: build
 	dh_installdirs
 
 	# univention-network-manager
+	install -m 755 etc/network/ucs-network-tools debian/univention-network-manager/etc/network
 	install -m 755 etc/network/if-up.d/[0-9]* debian/univention-network-manager/etc/network/if-up.d
 	install -m 755 etc/network/if-down.d/[0-9]* debian/univention-network-manager/etc/network/if-down.d
 	install -m 755 etc/NetworkManager/dhcp-hooks.d/[0-9]* debian/univention-network-manager/etc/NetworkManager/dhcp-hooks.d
 	install -m 755 nm-dhcp-client.action.sh debian/univention-network-manager/usr/lib/NetworkManager/nm-dhcp-client.action
 
 	# univention-ifplugd
+	install -m 755 etc/network/ucs-network-tools debian/univention-network-manager/etc/network
 	install -m 755 etc/network/if-up.d/[0-9]* debian/univention-ifplugd/etc/network/if-up.d
 	install -m 755 etc/network/if-down.d/[0-9]* debian/univention-ifplugd/etc/network/if-down.d
 	install -m 755 univention-ifplugd-enter-hook debian/univention-ifplugd/etc/dhcp3/dhclient-enter-hooks.d/univention-ifplugd-enter-hook
