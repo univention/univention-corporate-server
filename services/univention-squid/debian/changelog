@@ -1,3 +1,9 @@
+univention-squid (3.0.3-1) unstable; urgency=low
+
+  * added UCR default value (Bug #16620)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 27 Nov 2009 15:50:39 +0100
+
 univention-squid (3.0.2-1) unstable; urgency=low
 
   * support for deactivating the cache
