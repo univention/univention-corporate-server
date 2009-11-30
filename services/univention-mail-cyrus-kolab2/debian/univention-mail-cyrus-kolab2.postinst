@@ -64,14 +64,15 @@ cp /etc/univention/ssl/$hostname.$domainname/private.key /var/lib/cyrus/ || true
 chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
 chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
 
-univention-config-registry set mail/cyrus?yes
-univention-config-registry set mail/cyrus/autostart?yes
-univention-config-registry set mail/cyrus/version?"2.2"
-univention-config-registry set mail/cyrus/imap?yes
-univention-config-registry set mail/cyrus/imap/lookup_groups?yes
-univention-config-registry set mail/cyrus/pop?yes
-univention-config-registry set ldap/port=389
-univention-config-registry set mail/cyrus/sieve/listen_host?all
+univention-config-registry set mail/cyrus?yes \
+								mail/cyrus/autostart?yes \
+								mail/cyrus/version?"2.2" \
+								mail/cyrus/imap?yes \
+								mail/cyrus/imap/lookup_groups?yes \
+								mail/cyrus/pop?yes \
+								ldap/port=389 \
+								mail/cyrus/sieve/listen_host?all \
+								mail/cyrus/idlemethod?idled
 
 dpkg-statoverride --add root sasl 660 /etc/sasldb2 || true
 

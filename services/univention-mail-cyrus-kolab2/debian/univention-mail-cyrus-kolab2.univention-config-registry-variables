@@ -46,6 +46,12 @@ Description[en]=The maximum amount of free space (in kB) in which to give a quot
 Type=str
 Categories=service-mail
 
+[mail/cyrus/idlemethod]
+Description[de]=Zu verwendendes Backend für das IDLE Kommando ("no", "poll", "idled")
+Description[en]=The idle backend to use for IDLE command ("no", "poll", "idled")
+Type=str
+Categories=service-mail
+
 [mail/cyrus/pop]
 Description[de]=Aktiviert/Deaktiviert den POP3-Daemon
 Description[en]=Enable/Disable the POP3-Daemon
