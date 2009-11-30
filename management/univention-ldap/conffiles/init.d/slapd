@@ -21,24 +21,51 @@ SLAPDCONF=/etc/ldap/slapd.conf
 
 . /lib/lsb/init-functions
 
+determine_bdb_version ()
+{
+DB_LOGMAGIC=040988
+DB_LOGVERSION=$(od -j12 -N8 -tx4 /var/lib/univention-ldap/ldap/log.* \
+   | sed -n "s/^[0-9a-f]* 00${DB_LOGMAGIC} \([0-9a-f]*\)/\1/p")
+case $DB_LOGVERSION in
+	00000005)	echo '4.0';;
+	00000007)	echo '4.1';;
+	00000008)	echo '4.2';;
+	0000000a)	echo '4.3';;
+	0000000b)	echo '4.4';;
+	0000000c)	echo '4.5';;
+	0000000d)	echo '4.6';;
+	0000000e)	echo '4.7';;
+	0000000f)	echo '4.8';;
+	*) echo 'unknown';;
+esac
+}
+
 bdbrecover ()
 {
 	# determine libdb version that back-bdb.so was linked against
 	back_bdb_version="$(/usr/bin/ldd /usr/lib/ldap/back_bdb.so | sed -n 's|.*/usr/lib/libdb-\([0-9.]*\).so.*|\1|p')"
-	if [ -e "/usr/bin/db${back_bdb_version}_recover" ]; then
+	DBRECOVER="/usr/bin/db${back_bdb_version}_recover"
+	if [ -e "${DBRECOVER}" ]; then
 		# if the matching dbX.Y-util package is available
 		# check if the slapd backend database version matches
-		if "/usr/bin/db${back_bdb_version}_stat" -e -h /var/lib/univention-ldap/ldap 2>&1 | grep -q 'Environment version'; then
-			# version seems to match, so try a recover
+		if [ "$back_bdb_version" = "$(determine_bdb_version)" ]; then
+			# version matches, so try a recover
 			cd /var/lib/univention-ldap/ldap
-			"/usr/bin/db${back_bdb_version}_recover" -h /var/lib/univention-ldap/ldap
+			"${DBRECOVER}" -h /var/lib/univention-ldap/ldap
+		elif "/usr/bin/db${back_bdb_version}_stat" -e \
+			-h /var/lib/univention-ldap/ldap 2>&1 | \
+			grep 'Environment version'; then
+			# version seems to match, so try a recover
+			echo "BDB Version heuristic seems ok, trying ${DBRECOVER}"
+			cd /var/lib/univention-ldap/ldap
+			"${DBRECOVER}" -h /var/lib/univention-ldap/ldap
 		else
-			log_action_msg "/var/lib/univention-ldap/ldap BDB Version does not match the one back-bdb uses"
-			log_action_msg "Skipping db${back_bdb_version}_recover to avoid damage"
+			log_action_msg "/var/lib/univention-ldap/ldap BDB Version does not seem to match the one back-bdb uses"
+			log_action_msg "Skipping ${DBRECOVER} to avoid damage"
 		fi
 	else
 		log_action_msg "back-bdb was linked against ${back_bdb_version}, but db${back_bdb_version}-util package does not seem to be installed"
-		log_action_msg "Skipping db${back_bdb_version}_recover"
+		log_action_msg "Skipping ${DBRECOVER}"
 	fi
 }
 
