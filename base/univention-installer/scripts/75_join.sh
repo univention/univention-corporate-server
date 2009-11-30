@@ -46,7 +46,7 @@ if [ -d /var/lib/univention-ldap/ldap ]; then
 fi
 
 if [ "$server_role" != "domaincontroller_master" ] && [ -n "$domain_controller_account" -a -n "$domain_controller_password" ]; then
-	if [ -n "$interfaces_eth0_type" ] && [ "$interfaces_eth0_type" = "dynamic" -o "$interfaces_eth0_type" = "dhcp" ]; then
+	if [ -n "$eth0_type" ] && [ "$eth0_type" = "dynamic" -o "$eth0_type" = "dhcp" ]; then
 		dhclient eth0
 	fi
 	if [ -z "$auto_join" ] || [ "$auto_join" != "FALSE" -a "$auto_join" != "false" -a "$auto_join" != "False" ]; then

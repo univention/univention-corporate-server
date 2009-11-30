@@ -1,3 +1,9 @@
+univention-installer (5.0.53-1) unstable; urgency=low
+
+  * 75_join.sh: fixed typo (Bug #16318)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 30 Nov 2009 16:46:26 +0100
+
 univention-installer (5.0.52-1) unstable; urgency=low
 
   * revert changes of SVN r15383 to 75_join.sh: call dhclient before join
