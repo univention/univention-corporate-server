@@ -1,3 +1,10 @@
+univention-installer (5.0.52-1) unstable; urgency=low
+
+  * revert changes of SVN r15383 to 75_join.sh: call dhclient before join
+    (Bug #16318)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 30 Nov 2009 10:12:52 +0100
+
 univention-installer (5.0.51-1) unstable; urgency=low
 
   * install univention-network-manager on mobile clients (Bug #8994)
