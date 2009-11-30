@@ -54,7 +54,7 @@ bdbrecover ()
 			cd /var/lib/univention-ldap/ldap
 			"${DBRECOVER}" -h /var/lib/univention-ldap/ldap
 		elif [ "$ldapdata_bdb_version" = "unknown" ] &&
-			/usr/bin/db${back_bdb_version}_stat" -e \
+			"/usr/bin/db${back_bdb_version}_stat" -e \
 			-h /var/lib/univention-ldap/ldap 2>&1 | \
 			grep -q 'Environment version'; then
 			# version seems to match, so try a recover
