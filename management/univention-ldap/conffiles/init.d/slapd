@@ -48,13 +48,15 @@ bdbrecover ()
 	if [ -e "${DBRECOVER}" ]; then
 		# if the matching dbX.Y-util package is available
 		# check if the slapd backend database version matches
-		if [ "$back_bdb_version" = "$(determine_bdb_version)" ]; then
+		ldapdata_bdb_version="$(determine_bdb_version)"
+		if [ "$back_bdb_version" = "$ldapdata_bdb_version" ]; then
 			# version matches, so try a recover
 			cd /var/lib/univention-ldap/ldap
 			"${DBRECOVER}" -h /var/lib/univention-ldap/ldap
-		elif "/usr/bin/db${back_bdb_version}_stat" -e \
+		elif [ "$ldapdata_bdb_version" = "unknown" ] &&
+			/usr/bin/db${back_bdb_version}_stat" -e \
 			-h /var/lib/univention-ldap/ldap 2>&1 | \
-			grep 'Environment version'; then
+			grep -q 'Environment version'; then
 			# version seems to match, so try a recover
 			echo "BDB Version heuristic seems ok, trying ${DBRECOVER}"
 			cd /var/lib/univention-ldap/ldap
