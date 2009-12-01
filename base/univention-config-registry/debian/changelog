@@ -1,3 +1,10 @@
+univention-config-registry (5.0.60-1) unstable; urgency=low
+
+  * re-add resolv.py UCR module: call dhclient if resolv.conf is committed
+    and ifplugd is used (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 01 Dec 2009 14:05:12 +0100
+
 univention-config-registry (5.0.59-1) unstable; urgency=low
 
   * register UCR variable interfaces/handler for template
