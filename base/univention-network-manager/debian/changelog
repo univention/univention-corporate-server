@@ -1,3 +1,9 @@
+univention-network-manager (0.4.7-1) unstable; urgency=low
+
+  * remove debug message (Bug #8994)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 01 Dec 2009 15:03:17 +0100
+
 univention-network-manager (0.4.6-2) unstable; urgency=low
 
   * add missing file to univention-ifplugd (Bug #8994)

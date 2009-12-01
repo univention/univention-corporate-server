@@ -30,7 +30,6 @@
 
 function ucs_ignore_interface() {
 	if [ "$IFACE" = "lo" -o "$IFACE" = "all" ]; then
-		echo "$0: ignore $IFACE" >> /tmp/123
 		exit 0
 	fi
 }
