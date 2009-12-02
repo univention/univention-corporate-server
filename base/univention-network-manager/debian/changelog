@@ -1,3 +1,10 @@
+univention-network-manager (0.4.8-1) unstable; urgency=low
+
+  * set environment variables new_broadcast_arg and new_subnet_arg to
+    modify broadcast address und subnet mask when using ifplugd (Bug #12130)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 02 Dec 2009 15:02:57 +0100
+
 univention-network-manager (0.4.7-1) unstable; urgency=low
 
   * remove debug message (Bug #8994)

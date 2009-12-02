@@ -112,6 +112,12 @@ elif os.environ.get( 'reason' ) in ( 'BOUND', 'RENEW', 'REBIND', 'REBOOT' ):
 else:
 	sys.exit( 0 )
 
+# for ifplugd using dhclient-script
+if new_env.get( 'new_broadcast_address' ):
+	new_env[ 'new_broadcast_arg' ] = 'broadcast %s' % new_env[ 'new_broadcast_address' ]
+if new_env.get( 'new_subnet_mask' ):
+	new_env[ 'new_subnet_arg' ] = 'netmask %s' % new_env[ 'new_subnet_mask' ]
+
 # check whether a gateway should be set from UCR
 if not new_env.get( 'new_routers' ) and 'gateway' in configRegistry.keys():
 	new_env[ 'new_routers' ] = configRegistry[ 'gateway' ]
