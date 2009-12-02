@@ -1,3 +1,10 @@
+univention-updater (5.0.48-1) unstable; urgency=low
+
+  * reinit mirror object so all preup.sh and postup.sh script get fetched
+    (Bug #16668)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 02 Dec 2009 13:51:10 +0100
+
 univention-updater (5.0.47-2) unstable; urgency=low
 
   * added missing UCR variable update/commands/upgrade (Bug #16603)

@@ -146,6 +146,8 @@ def update_net( options ):
 		mirror_run = False
 		while nextupdate:
 			ucr.handler_set( [ 'repository/mirror/version/end=%s' % nextupdate ] )
+			# UCR variable repository/mirror/version/end has change - reinit Mirror object
+			mirror = UniventionMirror()
 			mirror.run()
 			mirror_run = True
 			nextupdate = mirror.release_update_available( nextupdate )
