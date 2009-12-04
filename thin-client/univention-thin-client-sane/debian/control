@@ -19,7 +19,7 @@ Description: UCS - Sane support for thin clients
 
 Package: univention-thin-client-sane-config
 Architecture: all
-Depends: sane-utils
+Depends: sane-utils, openbsd-inetd
 Description: UCS - Sane support for thin clients
  This package provides configuration for sane (scanner) supprt on thin clients
  .
