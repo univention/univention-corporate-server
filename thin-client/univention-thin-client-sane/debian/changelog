@@ -1,3 +1,9 @@
+univention-thin-client-sane (3.0.0-4) unstable; urgency=low
+
+  * add init script links for openbsd-inetd (Bug #16706)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 04 Dec 2009 14:16:33 +0100
+
 univention-thin-client-sane (3.0.0-3) unstable; urgency=low
 
   * really add dependency to openbsd-inetd (Bug #16706)

@@ -31,6 +31,7 @@
 #DEBHELPER#
 
 update-rc.d thin-client-sane start 16 2 .
+update-rc.d openbsd-inetd defaults 20 >/dev/null
 
 update-inetd --add 'sane-port stream tcp nowait saned.scanner /usr/sbin/tcpd /usr/sbin/saned'
 
