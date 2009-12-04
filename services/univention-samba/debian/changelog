@@ -1,3 +1,10 @@
+univention-samba (4.0.9-1) unstable; urgency=low
+
+  * the idmap backend config currently does not allow more than one ldap URL
+    (Bug #16665)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 04 Dec 2009 17:10:19 +0100
+
 univention-samba (4.0.8-1) unstable; urgency=low
 
   * bump version (Bug #13483)
