@@ -1,3 +1,10 @@
+univention-thin-client-sane (3.0.0-2) unstable; urgency=low
+
+  * moved udev rules into sub-directory rules.d
+  * add dependency to openbsd-inetd (Bug #16706)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 04 Dec 2009 10:43:43 +0100
+
 univention-thin-client-sane (3.0.0-1) unstable; urgency=low
 
   * Make init scripts LSB-compliant (Bug #14421)
@@ -147,6 +154,4 @@ univention-thin-client-sane (1.0.0-1) unstable; urgency=low
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 27 Sep 2007 15:11:00 +0200
 
-Local variables:
-mode: debian-changelog
-End:
+

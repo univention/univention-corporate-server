@@ -1,5 +1,5 @@
 Type: file
-File: etc/udev/libsane.rules
+File: etc/udev/rules.d/z60_libsane.rules
 
 Type: file
 File: etc/sane.d/saned.conf
