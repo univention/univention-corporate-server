@@ -1,3 +1,10 @@
+univention-server (5.0.9-3) unstable; urgency=low
+
+  * ensure that cache authentication method is set on mobile clients 
+    (Bug #16727)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Dec 2009 12:00:18 +0100
+
 univention-server (5.0.9-2) unstable; urgency=low
 
   * use ifplugd instead of NetworkManager an mobile and managed clients
