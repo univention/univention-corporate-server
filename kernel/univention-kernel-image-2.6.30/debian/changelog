@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.30 (1.0.1-3) unstable; urgency=low
+
+  * Update to latest 2.6.30 kernel (Bug #16712)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 07 Dec 2009 08:56:41 +0100
+
 univention-kernel-image-2.6.30 (1.0.1-2) unstable; urgency=low
 
   * Update to latest 2.6.30 kernel (Bug #16350)
