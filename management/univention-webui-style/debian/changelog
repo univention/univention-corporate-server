@@ -1,3 +1,9 @@
+univention-webui-style (4.0.20-1) unstable; urgency=low
+
+  * fourth draft for online help page (Bug #16476)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Dec 2009 15:15:15 +0100
+
 univention-webui-style (4.0.19-1) unstable; urgency=low
 
   * third draft for online help page (Bug #16476)
