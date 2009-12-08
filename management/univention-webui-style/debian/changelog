@@ -1,3 +1,9 @@
+univention-webui-style (4.0.21-1) unstable; urgency=low
+
+  * design update for UCS 2.3. Bug #16448
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Dec 2009 11:12:15 +0100
+
 univention-webui-style (4.0.20-2) unstable; urgency=low
 
   * fourth draft for online help page (Bug #16476)

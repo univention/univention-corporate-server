@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.46-1) unstable; urgency=low
+
+  * design update for UCS 2.3. Bug #16448
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Dec 2009 11:12:33 +0100
+
 univention-directory-manager-modules (5.0.45-1) unstable; urgency=low
 
   * fix some more policy translation bugs (Bug: #14815)

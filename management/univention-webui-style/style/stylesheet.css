@@ -178,17 +178,6 @@ div#user-menu .options li a
 	text-decoration: underline;
 }
 
-div#user-menu .profile
-{
-	background: url(/style/icons/users/self.png) no-repeat top left;
-	margin-right: 24px;
-}
-
-div#user-menu .logout
-{
-	background: url(/style/icons/exit.png) no-repeat top left;
-}
-
 /* @group info */
 
 div#info
