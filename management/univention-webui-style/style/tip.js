@@ -82,8 +82,9 @@ function clear_cached(){
    document.getElementById(document.forms['cache'].elements['cache'].value).value="";
   if(!document.forms['content'].elements['is_js'].value)
    document.forms['content'].elements['is_js'].value=1;
-  if(!document.forms['menu'].elements['is_js'].value)
-   document.forms['menu'].elements['is_js'].value=1;
+  if( document.forms['menu'] != undefined )
+   if(!document.forms['menu'].elements['is_js'].value)
+    document.forms['menu'].elements['is_js'].value=1;
 }
 
 function doReload(){

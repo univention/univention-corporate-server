@@ -164,10 +164,10 @@ property_descriptions={
 }
 layout=[
 	univention.admin.tab(_('General'),_('Desktop settings'), [
-		[univention.admin.field('name', hide_in_resultmode=1,width=320)],
-		[univention.admin.field('language', colspan=2, width=320)],
-		[univention.admin.field('profile', colspan=2, width=320)],
-		[univention.admin.field('logonScripts',width=320), univention.admin.field("logoutScripts",width=320)],
+		[univention.admin.field('name', hide_in_resultmode=1)],
+		[univention.admin.field('language', colspan=2)],
+		[univention.admin.field('profile', colspan=2)],
+		[univention.admin.field('logonScripts'), univention.admin.field("logoutScripts")],
 	]),
 	univention.admin.tab(_('Object'),_('Object'), [
 		[univention.admin.field('requiredObjectClasses') , univention.admin.field('prohibitedObjectClasses') ],

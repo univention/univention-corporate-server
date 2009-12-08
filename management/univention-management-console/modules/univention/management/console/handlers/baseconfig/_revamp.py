@@ -195,11 +195,11 @@ class Web( object ):
 
 		req = umcp.Command( args = [ 'baseconfig/set' ] )
 		ids = [ varname.id(), vartype.id(), value.id(), descr.id(),	category.id() ]
-		cancel = umcd.CancelButton()
+		cancel = umcd.CancelButton(attributes = {'class': 'cancel'})
 		if variable != None:
-			form.add_row( [ umcd.SetButton( umcd.Action( req, ids ) ), cancel ] )
+			form.add_row( [ cancel, umcd.SetButton( umcd.Action( req, ids ), attributes = {'class': 'submit'} ) ] )
 		else:
-			form.add_row( [ umcd.AddButton( umcd.Action( req, ids ) ), cancel ] )
+			form.add_row( [ cancel, umcd.AddButton( umcd.Action( req, ids ), attributes = {'class': 'submit'} ) ] )
 
 		# title
 		if variable != None:

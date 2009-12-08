@@ -172,7 +172,6 @@ class question_date extends extra{
 		$str .= '><tr><td colspan="6">
 <table border="0" cellspadding="0">
 <tr><td class="description" height="20" valign="bottom">
-<img src="style/blank_spacer.gif" width="2" height="2"></img>
 ';
 		if(isset($this->attribute['passive'])) $access = 'disabled';
 		$str .= $this->basket['description'].'</td>';
@@ -229,14 +228,58 @@ class question_text extends extra{
 		else
 			$str .= '<script type="text/javascript">dojo.require("dijit.form.TextBox");</script>';
 	  
-		if (isset($this->attribute['passive'])) 
+		if (isset($this->attribute['passive'])) {
 			$access = 'disabled';
+		}
+		# $str.= '<div class="form-item">';
+
+		if ($this->basket['description'])  {
+			$str .=  '<label for="usrinput['.$this->byteindex.']">'.$this->basket['description'].'</label>';
+		} else {
+			$str .=  '<label for="usrinput['.$this->byteindex.']">&nbsp;</label>';
+		}
+		$str .= '<input id="usrinput['.$this->byteindex.']" tabindex="'.$this->tabindex.'" type="text" name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'" ';
+		if ($this->attribute['width']) 
+			$str .= 'style="width:'.($this->attribute['width']).'px" ';
+		if ($this->js && isset($this->basket['update'])) 
+			$str .= 'onChange="sendForm('.$this->update_byteindex.')" ';
+		if ($validationbox)
+	    {
+			# enable as dijit.ValidationTextBox
+			$str .= ' dojoType="dijit.form.ValidationTextBox"';
+			#add regexp
+			$str .= ' regExp="'.$validregex.'"';
+			if ($isrequired) # value is required
+				$str .= ' required="true"';
+			if ($invalidmessage) # user defined message for invalid values
+				$str .= ' invalidMessage="'.$invalidmessage.'"';
+	    }
+		else
+			# enable as dijit.TextBox
+			if (!isset($this->attribute['puretext'])) 
+				$str .= ' dojoType="dijit.form.TextBox"';
+		if (isset($this->attribute['focus'])) {
+			$str .= ' onclick="this.form.submit()" ';
+		}
+		if ($this->attribute['width']) 
+			$str .= 'style="width:'.($this->attribute['width']).'px" ';
+		if ($this->warn) 
+			$str .= ' class="text_warn" ';
+		else 
+			$str .= ' class="text" ';
+		$str .= ' />';
+		if ($this->warn) 
+			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
+		/* TODO redesign */
+				
+
+/*
 		$str .= '<table border="0" cellspacing="0" cellpadding="0">';
 	  
 		if ($this->basket['description']) 
 	    {
+// <img src="style/blank_spacer.gif" height="2" width="2"></img>
 			$str .= '<tr><td class="description">
-<img src="style/blank_spacer.gif" height="2" width="2"></img>
 '.$this->basket['description'];
 			if ($this->warn) 
 				$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
@@ -273,6 +316,7 @@ class question_text extends extra{
 			$str .= ' onclick="this.form.submit()" ';
 		}
 		$str .= ' type="text" '.$access.' id="usrinput['.$this->byteindex.']" name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';
+*/
 		if (isset($this->basket['update'])) 
 			$str .= $this->basket['update'];
 		if (isset($this->attribute['focus'])) {
@@ -282,8 +326,11 @@ class question_text extends extra{
 			$str .= 'dijit.selectInputText(document.getElementById("usrinput['.$this->byteindex.']")); })';
 			$str .= '</script>';
 		}
+/*
 		$str .= '</td></tr>
 </table>';
+*/
+		# $str .= '</div>';
 		return $str;
 	}
 }
@@ -296,7 +343,6 @@ class question_dojo_date_widget extends extra {
 ';
 		if($this->basket['description']) {
 			$str .= '<tr><td class="description">
-<img src="style/blank_spacer.gif" height="2" width="2"></img>
 '.$this->basket['description'];
 			if($this->warn)
 				$str .= '<img src="style'.$this->warn.'.gif" alt="" class="warn"></img>';
@@ -324,7 +370,6 @@ class question_file extends extra{
 		$str .= '<table border="0" cellspacing="0" cellpadding="0">';
 		if($this->basket['description']) {
 			$str .= '<tr><td class="description">
-<img src="style/blank_spacer.gif" height="2" width="2"></img>
 ';
 			$str .= $this->basket['description'];
 			if($this->warn) $str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
@@ -356,7 +401,7 @@ class question_ltext extends extra{
 		$str .= '<table border="0" cellspacing="0" cellpadding="0">';
 		if ($this->basket['description'])
 	    {
-			$str .= '<tr><td class="description"><img src="style/blank_spacer.gif" height="2" width="2"></img>'.$this->basket['description'];
+			$str .= '<tr><td class="description">'.$this->basket['description'];
 			if ($this->warn) 
 				$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 			$str .= '</td></tr>';
@@ -396,16 +441,15 @@ class question_secure extends extra{
 		$str .= '<script type="text/javascript">dojo.require("dijit.form.TextBox");</script>';
 		if (isset($this->attribute['passive'])) 
 			$access = 'disabled';
+
 		$str .= '<table border="0" cellspacing="0" cellpadding="0">
-<tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['description'];
+<tr><td class="description">'.$this->basket['description'];
 		if ($this->warn) 
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		$str .= '</td></tr>
 <tr><td><input title="'.$this->basket['helptext'].'" tabindex="'.$this->tabindex.'"';
 		if ($this->attribute['width']) 
 			$str .= 'style="width:'.($this->attribute['width']).'px" ';
-		else
-			$str .= 'style="width:300px" ';
 		if ($this->js && isset($this->basket['update'])) 
 			$str .= 'onChange="sendForm('.$this->update_byteindex.')" ';
 		if ($this->warn) 
@@ -444,7 +488,7 @@ class question_bool extends extra{
 	  if (trim($this->basket['description']) != '')
 	    {
 	      $str .= '<td class="description" align="left" valign="middle">
-<img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket["description"].'</td>';
+'.$this->basket["description"].'</td>';
 	    }
 	  $str .= '<td>';
 	  if ($this->warn) 
@@ -472,10 +516,129 @@ class reset extends extra{
 }
 
 class button extends extra{
-	function show($csslength=FALSE){
+
+	function default_button($byteindex)
+	{
+		$defaultbutton  = '<div style="position:absolute;top:-1000px;left:-1000px;"><input type="submit" name="usrinput['.$byteindex.']" id="defaultbutton"></div>';
+		$defaultbutton .= '<script type="text/javascript">';
+		$defaultbutton .= 'dojo.addOnLoad(function(stopReturn){';
+		$defaultbutton .= 'submitform = document.getElementById( "component" );';
+		$defaultbutton .= 'if ( submitform == undefined) { submitform=document.getElementById( "component-menuless" ); };';
+		$defaultbutton .= 'dojo.connect(submitform, "onkeypress",function(evt) {';
+		$defaultbutton .= 'var b = document.getElementById("defaultbutton");';
+		$defaultbutton .= 'var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);';
+		$defaultbutton .= 'if ((evt.keyCode == 13 && b != null)) {dojo.stopEvent(evt);';
+		$defaultbutton .= 'b.click();}})});';
+		$defaultbutton .= '</script>';
+		return $defaultbutton;
+
+	}
+	function menu2_item($title, $icon, $byteindex, $content)
+	{
+		$str = '<li style="background-image: url('.$icon.');">';
+		$str .= '<input type="hidden" id="'.$byteindex.'" name="usrinput['.$byteindex.']" value="'.$content.'"></input>';
+		$str .= '<a title="'.$title.'" onClick="sendForm('.$byteindex.')">'.$title.'</a>';
+		$str .= '</li>';
+
+		return $str;
+	}
+	function menu3_item($title, $icon, $byteindex, $content)
+	{
+		$str = '<li class="submenu" style="background-image: url('.$icon.');">';
+		$str .= '<input type="hidden" id="'.$byteindex.'" name="usrinput['.$byteindex.']" value="'.$content.'"></input>';
+		$str .= '<a title="'.$title.'" onClick="sendForm('.$byteindex.')">'.$title.'</a>';
+		$str .= '</li>';
+
+		return $str;
+	}
+	function submit_button($title, $icon, $byteindex, $content, $defaultbutton)
+	{
+		$str = '<span class="submit">';
+		$str .= '<input type="hidden" id="'.$byteindex.'" name="usrinput['.$byteindex.']" value="'.$content.'"></input>';
+		if ($defaultbutton) {
+			$str .= $this->default_button($byteindex);	
+		}
+		$str .= '<span>';
+		if (isset($this->attribute['link'])) {
+			$str .= '<a title="'.$title.'" href="'.$this->attribute['link'].'">'.$title.'</a>';
+		} else {
+			$str .= '<a title="'.$title.'" onClick="sendForm('.$byteindex.')">'.$title.'</a>';
+		}
+		$str .= '</span>';
+		$str .= '</span>';
+
+		return $str;
+	}
+
+	function search_result_button($title, $icon, $byteindex, $content, $defaultbutton)
+	{
+		$str = '<span class="search_result" style="background-image: url('.$icon.');">';
+		$str .= '<input type="hidden" id="'.$byteindex.'" name="usrinput['.$byteindex.']" value="'.$content.'"></input>';
+		if ($defaultbutton) {
+			$str .= $this->default_button($byteindex);	
+		}
+		$str .= '<span>';
+		if (isset($this->attribute['link'])) {
+			$str .= '<a title="'.$title.'" href="'.$this->attribute['link'].'">'.$title.'</a>';
+		} else {
+			$str .= '<a title="'.$title.'" onClick="sendForm('.$byteindex.')">'.$title.'</a>';
+		}
+		$str .= '</span>';
+		$str .= '</span>';
+
+		return $str;
+	}
+
+	function cancel_button($title, $icon, $byteindex, $content, $defaultbutton)
+	{
+		$str .= '<span class="cancel">';
+		$str .= '<input type="hidden" id="'.$byteindex.'" name="usrinput['.$byteindex.']" value="'.$content.'"></input>';
+		if ($defaultbutton) {
+			$str .= $this->default_button($byteindex);	
+		}
+		if (isset($this->attribute['link'])) {
+			$str .= '<a title="'.$title.'" href="'.$this->attribute['link'].'">'.$title.'</a>';
+		} else {
+			$str .= '<a title="'.$title.'" onClick="sendForm('.$byteindex.')">'.$title.'</a>';
+		}
+		$str .= '</span>';
+
+		return $str;
+	}
+	function cancel_spacer_button($title, $icon, $byteindex, $content, $defaultbutton)
+	{
+		$str .= '<span class="cancel spacer">';
+		$str .= '<input type="hidden" id="'.$byteindex.'" name="usrinput['.$byteindex.']" value="'.$content.'"></input>';
+		if ($defaultbutton) {
+			$str .= $this->default_button($byteindex);	
+		}
+		if (isset($this->attribute['link'])) {
+			$str .= '<a title="'.$title.'" href="'.$this->attribute['link'].'">'.$title.'</a>';
+		} else {
+			$str .= '<a title="'.$title.'" onClick="sendForm('.$byteindex.')">'.$title.'</a>';
+		}
+		$str .= '</span>';
+
+		return $str;
+	}
+
+	function show($csslength=FALSE, $first_tab=FALSE){
 		if(isset($this->attribute['passive'])) $access = 'disabled';
 		$class=$this->status;
 		if(isset($this->attribute['active'])) $class .= '_on';
+
+		if ( $this->attribute['class'] && $this->attribute['class'] == 'submit' ) {
+			return $this->submit_button($this->basket['text'], $this->attribute['icon'], $this->byteindex, $this->basket['content'], $this->attribute['defaultbutton']); 
+		}
+		if ( $this->attribute['class'] && $this->attribute['class'] == 'cancel' ) {
+			return $this->cancel_button($this->basket['text'], $this->attribute['icon'], $this->byteindex, $this->basket['content'], $this->attribute['defaultbutton']); 
+		}
+		if ( $this->attribute['class'] && $this->attribute['class'] == 'cancel spacer' ) {
+			return $this->cancel_spacer_button($this->basket['text'], $this->attribute['icon'], $this->byteindex, $this->basket['content'], $this->attribute['defaultbutton']); 
+		}
+		if ( $this->attribute['class'] && $this->attribute['class'] == 'search_result' ) {
+			return $this->search_result_button($this->basket['text'], $this->attribute['icon'], $this->byteindex, $this->basket['content'], $this->attribute['defaultbutton']); 
+		}
 
 		if($this->js && $class != 'notebook' && $class != 'categoryitem' && isset($this->attribute['icon'])){
 
@@ -496,7 +659,7 @@ class button extends extra{
 
 				$inp = '<input type="hidden" id="'.$this->byteindex.'" name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';
 				if(isset($this->attribute['defaultbutton'])){
-					$inp .= '<div style="position:absolute;top:-100px;left:-100px;"><input type="submit" name="usrinput['.$this->byteindex.']" id="defaultbutton"></div>';
+					$inp .= '<div style="position:absolute;top:-1000px;left:-1000px;"><input type="submit" name="usrinput['.$this->byteindex.']" id="defaultbutton"></div>';
 				//if(isset($this->attribute['nodefault'])){
 				$inp .= '<script type="text/javascript">';
 				$inp .= 'dojo.addOnLoad(function(stopReturn){';
@@ -518,37 +681,10 @@ class button extends extra{
 		    }
 
 			// build html
-			if ($class == 'menu3' || $class == 'menu3_on' || $class == 'menu2' || $class == 'menu2_on') { //menu
-				$str .= '          <tr>';
-				if ($class == 'menu3' || $class == 'menu3_on') //submenu
-				{
-					$str .= '           <td></td>
-		   <td colspan="2">
-		   <table class="submenu">
-			<tr>
-			 <td class="submenu_icon">'.$inp.$img.'</td>
-             <td class="submenu_spacer">&nbsp;</td>
-			 <td class="submenu_link">
-			 '.$link.'
-			 </td>
-			</tr>
-		   </table>
-';
-				}
-				else //main menu
-				{
-					$str .= '           <td class="submenu_icon">'.$inp.$img.'</td>
-		   <td class=\"submenu_spacer\">&nbsp;</td><td>'.$link;
-				}
-
-				$str .= '           </td>
-		  </tr>
-		  <tr>
-			<td height="10"></td>
-			<td></td>
-			<td></td>
-		  </tr>';
-
+			if ( $class == 'menu2'  ||  $class == 'menu2_on' ) {
+				$str .= $this->menu2_item($this->basket['text'], $this->attribute['icon'], $this->byteindex, $this->basket['content']);
+			} elseif ($class == 'menu3' || $class == 'menu3_on' ) {
+				$str .= $this->menu3_item($this->basket['text'], $this->attribute['icon'], $this->byteindex, $this->basket['content']);
 			}
 			else //i.e. search result
 		    {
@@ -581,7 +717,7 @@ class button extends extra{
 			/* no icon */
 		}elseif($this->js && isset($this->attribute['link'])){
 			if (isset($this->attribute['type'])) {
-				$str .= '<a class=\''.$this->attribute['type'].'" onClick="sendForm('.$this->byteindex.')"';
+				$str .= '<a class="'.$this->attribute['type'].'" onClick="sendForm('.$this->byteindex.')"';
 			} elseif ($this->status == 'content') {
 				$str .= '<a class="'.$class.'" onClick="sendForm('.$this->byteindex.')"';
 			} else {
@@ -636,19 +772,27 @@ class button extends extra{
 					$img_str = '<input src="'.$this->attribute['icon'].'" tabindex="'.$this->tabindex.'" name="usrinput['.$this->byteindex.']" type="image" value="pressed" class="button_icon" title="'.$this->basket['helptext'].'"></input>';
 				}
 				$str .= '<a class="'.$cssclass.'" onClick="sendForm('.$this->byteindex.')"
- title="'.$this->basket['helptext'].'">'.$img_str.'&nbsp;'.$this->basket['text'].'</a>
+ title="'.$this->basket['helptext'].'">'.$img_str.$this->basket['text'].'</a>
 <input type="hidden" id="'.$this->byteindex.'" name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';
 			}
 		}
 		elseif($this->js && $class == 'notebook'){
-			$tdclass='tab';
+			if ( $first_tab == TRUE ) {
+				$tdclass='tab_first';
+			} else {
+				$tdclass='tab';
+			}
 			$img = '"style/reiter_grau18x24.gif"';
 
 			$close_icon_str = '/icon/close_page_inactive.gif';
 			if($this->basket['active'])
 		    {
 				$class = 'notebook_on';
-				$tdclass = 'tab_on';
+				if ( $first_tab == TRUE ) {
+					$tdclass = 'tab_on_first';
+				} else {
+					$tdclass = 'tab_on';
+				}
 				$img = '"style/reiter_rot18x24.gif"';
 				$close_icon_str = '/icon/close_page_active.gif';
 		    }
@@ -662,6 +806,10 @@ class button extends extra{
 				{
 # close button
 					$class .= 'closeableend';
+					if($this->basket['active'])
+						$tdclass = 'tab_on_close';
+					else
+						$tdclass = 'tab_close';
 					$str .= '<td class="'.$tdclass.'" nowrap><a class="'.$class.'" onClick="sendForm('.$this->byteindex.')" title="close">
 <img class="'.$class.'" src="'.$close_icon_str.'">
 </a><input id="'.$this->byteindex.'" name="usrinput['.$this->byteindex.']" type="hidden" value=""></input>
@@ -674,21 +822,21 @@ class button extends extra{
 					}
 
 					$str .= '<td class="'.$tdclass.'" nowrap>
-<table style="padding: 0px;"><tr>
-<td><a class="'.$class.'" onClick="sendForm('.$this->byteindex.')"';
+<a class="'.$class.'" onClick="sendForm('.$this->byteindex.')"';
 					if (  isset( $this->attribute[ 'icon' ] ) ) {
 						$str .= ' title="'.$this->basket['helptext'].'">
 <img class="'.$class.'" src="'.$this->attribute['icon'].'" alt=""></img>';
 					} else {
 						$str .= ' title="'.$this->basket['helptext'].'">';
 					}
-					$str .= '&nbsp;'.$this->basket['text'].'</a></td>';
+					$str .= $this->basket['text'].'</a>';
 					if (  isset( $this->attribute[ 'statusicon' ] ) ) {
-						$str .= '<td><img class="'.$class.'" src="'.$this->attribute['statusicon'].'" alt=""></img></td>';
+						$str .= '<img class="'.$class.'" src="'.$this->attribute['statusicon'].'" alt=""></img>';
 					}
-					$str .= '<input type="hidden" id="'.$this->byteindex.'" name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input></tr></table></td>';
+					$str .= '<input type="hidden" id="'.$this->byteindex.'" name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';
+					$str .= '</td>';
 				}
-		    }
+			}
 		}
 		else
 		{
@@ -721,7 +869,7 @@ class link extends extra{
 	function show(){
 		$class=$this->modus;
 	  	if(stristr($this->basket['dest'],'uniconf_modul')) $this->basket['dest'] .= '&session_id='.$session_id;
-		$str .= '<a class="'.$class.'"  tabindex="'.$this->tabindex.'" href="'.$this->basket['dest'].'">&nbsp;'.$this->basket['text'].'</a>';
+		$str .= '<a class="'.$class.'"  tabindex="'.$this->tabindex.'" href="'.$this->basket['dest'].'">'.$this->basket['text'].'</a>';
 	  	return $str;
 	}
 }
@@ -733,20 +881,21 @@ class question_select extends extra_multi{
 		$appendstr = '';
 		if(isset($this->attribute['passive'])) 
 			$access = 'disabled';
-		$str .= '
-<script type="text/javascript">dojo.require("dijit.form.FilteringSelect");</script>
-<table border="0" cellpadding="0" cellspacing="0">
-<tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['description'];
+		$str .= '<script type="text/javascript">dojo.require("dijit.form.FilteringSelect");</script>';
 		if($this->warn) 
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
-		$str .= '</td></tr>
-<tr><td>
-<select dojoType="dijit.form.FilteringSelect" autocomplete="true" '.$access.' title="'.$this->basket['helptext'].'" tabindex="'.$this->tabindex.'"';
+		# $str .= '<div class="form-item clear">';
+		if(isset($this->basket['description']) and strlen($this->basket['description']) > 0) {
+			$str .= '<label for="usrinput[question_select#'.$this->tabindex.'][]">'.$this->basket['description'].'</label>';
+		} else {
+			$str .= '<label for="usrinput[question_select#'.$this->tabindex.'][]">&nbsp;</label>';
+		}
+		$str .= '<select dojoType="dijit.form.FilteringSelect" autocomplete="true" '.$access.' title="'.$this->basket['helptext'].'" tabindex="'.$this->tabindex.'"';
     
 		if($this->warn) 
-			$str .= ' class="select_warn" ';
+			$str .= ' class="text_warn" ';
 		else 
-			$str .= ' class="select" ';
+			$str .= ' class="text" ';
     
 		if($this->attribute['width']) 
 			$str .= 'style="width:'.($this->attribute['width']).'px" ';
@@ -776,7 +925,8 @@ class question_select extends extra_multi{
 		$str .='</select>';
 		if(isset($this->basket['update'])) 
 			$str .= $this->basket['update'];
-		$str .= $appendstr.'</td></tr></table>';
+		$str .= $appendstr;
+		# $str .= '</div>';
 		return $str;
 	}
 }
@@ -861,7 +1011,7 @@ class language_dojo_select extends extra_multi{
 
 <script type="text/javascript">dojo.require("dijit.form.FilteringSelect");</script>
 <table border="0" cellpadding="0" cellspacing="0">
-<tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['description'];
+<tr><td class="description">'.$this->basket['description'];
 		if($this->warn) 
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		$str .= '</td></tr>
@@ -931,7 +1081,7 @@ class question_dojo_comboselect extends extra_multi{
 		$str .= '
 <script type="text/javascript">dojo.require("dijit.form.ComboBox");</script>
 <table border="0" cellpadding="0" cellspacing="0">
-<tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['description'];
+<tr><td class="description">'.$this->basket['description'];
 		if($this->warn) $str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		$str .= '</td></tr>
 <tr><td>
@@ -985,7 +1135,7 @@ class question_mselect extends extra_multi{
 
 		$str .= '<script type="text/javascript">dojo.require("dijit.form.MultiSelect");</script>
 <table border="0" cellspacing="0" cellpadding="0">
-<tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['description'];
+<tr><td class="description">'.$this->basket['description'];
 		if ($this->warn) 
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		$str .= '</td></tr><tr><td>
@@ -1072,7 +1222,7 @@ dojo.addOnLoad(function(){
 ';
 		$str .= '</script>';
 		$str .= '<table border="0" cellspacing="0" cellpadding="0">';
-		$str .= '<tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['caption-left'];
+		$str .= '<tr><td class="description">'.$this->basket['caption-left'];
 		if ($this->warn) {
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		}
@@ -1114,7 +1264,7 @@ dojo.addOnLoad(function(){
 		$str .= '<div>&nbsp;</div>';
 		$str .= '</td><td  rowspan="3"><script type="text/javascript">dojo.require("dijit.form.MultiSelect");</script>';
 		$str .= '<table border="0" cellspacing="0" cellpadding="0">';
-		$str .= '<tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['caption-right'];
+		$str .= '<tr><td class="description">'.$this->basket['caption-right'];
 		if ($this->warn) {
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		}
@@ -1150,10 +1300,10 @@ dojo.addOnLoad(function(){
 			}
 		$str .='</select></div>
 </td></tr></table>';
-		$str .= '</td></tr><tr class="leftright_top"><td  class="leftright_top_fixed"><table class="button"><tr><td class="button_icon">
+		$str .= '</td></tr><tr class="leftright_top"><td  class="leftright_top_fixed"><table class="button"><tr><td class="button_icon_switch">
 <button id="left-'.$this->tabindex.'" class="dojo_switchbutton" border="0" title="Add"><img src="/style/right.gif" /></button>
 </td></tr>';
-		$str .= '</table></td></tr><tr class="leftright_bottom"><td  class="leftright_bottom_fixed"><table class="button"><tr><td class="button_icon">
+		$str .= '</table></td></tr><tr class="leftright_bottom"><td  class="leftright_bottom_fixed"><table class="button"><tr><td class="button_icon_switch">
 <button id="right-'.$this->tabindex.'" class="dojo_switchbutton" border="0" title="Remove"><img src="/style/left.gif" /></button>
 </td></tr>';
 		$str .= '</table></td></tr></table>';
@@ -1369,6 +1519,8 @@ class notebook{
 # we have to check +2, otherwise the last tab on a new line wouldn't be displayed
 
 			$itemlength = $factor*(strlen($this->all_notebook[$i]->basket[text]));
+			if ($itemlength < 90)
+				$itemlength = 90;
 			if ($this->all_notebook[$i]->attribute['closebutton'] == "1") {
 				$itemlength = 14; // width of closebutton object
 				$spare = 10; // width pixel between
@@ -1376,8 +1528,8 @@ class notebook{
 				$spare = 20; // width pixel between
 			}
 
-			if((($length + $itemlength + $spare) > 778) || $i > $this->count){ # 780 at all - 14 (right) - 2 (left) -> 764 + 14 (otherwise we got an ugly user view)
-				if((($length + $itemlength + $spare) > 778)){
+			if((($length + $itemlength + $spare) > 800) || $i > $this->count){ # 780 at all - 14 (right) - 2 (left) -> 764 + 14 (otherwise we got an ugly user view)
+				if((($length + $itemlength + $spare) > 800)){
 # This tab line is full, print this line an than check the next line!
 					$one_line=FALSE;
 					$end=$i;
@@ -1407,52 +1559,52 @@ class notebook{
 								$sub='_sub';
 					}
 
-					if($first==$j){
-						$img = '';
-					}
-					else
-					{
-						if ($last_on)
-						{
-							$img = 'reiter_rotgrau18x24.gif';
-						}
-						elseif ($this->all_notebook[$j]->basket[active]) // this_on
-						{
-							$img = 'reiter_graurot18x24.gif';
-						}
-						else
-						{
-							$img = 'reiter_graugrau18x24.gif';
-						}
-					}
+					$img = '';
+					$img_end = '';
+					//if($first==$j){
+					//	$img = '';
+					//}
+					//else
+					//{
+					//	if ($last_on)
+					//	{
+					//		$img = 'reiter_rotgrau18x24.gif';
+					//	}
+					//	elseif ($this->all_notebook[$j]->basket[active]) // this_on
+					//	{
+					//		$img = 'reiter_graurot18x24.gif';
+					//	}
+					//	else
+					//	{
+					//		$img = 'reiter_graugrau18x24.gif';
+					//	}
+					//}
 
 					if($this->all_notebook[$j]->basket[active])
 					{ // active button
 
-						if($j==$end-1)
-						{
-							// last in line
-							$img_end = 'reiter_rot18x24.gif';
-						}
+						//if($j==$end-1)
+						//{
+						//	// last in line
+						//	$img_end = 'reiter_rot18x24.gif';
+						//}
 						//$bg='bg_on.gif';
 						$last_on=TRUE; // need to know for next button
 					}
 					else // inactive
 					{
-						if($j==$end-1)
-						{
-							//last in line
-							$img_end='reiter_grau18x24.gif';
-						}
+						//if($j==$end-1)
+						//{
+						//	//last in line
+						//	$img_end='reiter_grau18x24.gif';
+						//}
 						//$bg='bg_off.gif';
 						$last_on=FALSE; // need to know for next button
 					}
 
-					if($img != '') $image = '<img class="note" src="style/'.$img.'" alt=""></img>';
-					else $image = '';
+					$image = '';
 
-					if($img_end != '') $image_end='<img class="note" src="style/'.$img_end.'" alt=""></img>';
-					else $image_end='';
+					$image_end='';
 
 					$this->all_notebook[$j]->tabindex++;
 					if($this->config->browser=='Text'){$img=''; $img_end='';}
@@ -1478,15 +1630,23 @@ class notebook{
 					#############################################################################################################################
 					if($pressed)
 					{
-						if (($image!='') && $show_start) $str[pressed] .= '<td class="tab">'.$image.'</td>';
-						$str[pressed] .= $this->all_notebook[$j]->show($width);
-						if (($img_end != '') && $show_end)  $str[pressed] .= '<td class="tab">'.$image_end.'</td>';
+						if (($image!='') && $show_start) $str[pressed] .= $image;
+						if ($first == $j) {
+							$str[pressed] .= $this->all_notebook[$j]->show($width, TRUE);
+						} else {
+							$str[pressed] .= $this->all_notebook[$j]->show($width);
+						}
+						if (($img_end != '') && $show_end)  $str[pressed] .= $image_end;
 					}
 					else
 					{
-						if (($image!='') && $show_start)  $str[$x] .= '<td class="tab">'.$image.'</td>';
-						$str[$x] .= $this->all_notebook[$j]->show($width);
-						if (($img_end != '') && $show_end) $str[$x] .= '<td class="tab">'.$image_end.'</td>';
+						if (($image!='') && $show_start)  $str[$x] .= $image;
+						if ($first == $j) {
+							$str[$x] .= $this->all_notebook[$j]->show($width, TRUE);
+						} else {
+							$str[$x] .= $this->all_notebook[$j]->show($width);
+						}
+						if (($img_end != '') && $show_end) $str[$x] .= $image_end;
 					}
 					##############################################################################################################################
 				} #end of for
@@ -1656,10 +1816,10 @@ class dynamic_longtable extends webui_translator
 			$attrib_str .= ' class="table_default"';
 		}
 
-		if ($this->attribute['type'] == 'content_main')
-		{
-			$space_bottom='<tr><td class="content_spacer">&nbsp;</td></tr>';
-		}
+		#if ($this->attribute['type'] == 'content_main')
+		#{
+		#	$space_bottom='<tr><td class="content_spacer">&nbsp;</td></tr>';
+		#}
 
 		if($this->attribute['width'])
 		{
@@ -1902,10 +2062,10 @@ class table extends webui_translator
 			$attrib_str .= ' class="table_default"';
 		}
 
-		if ($this->attribute['type'] == 'content_main')
-		{
-			$space_bottom='<tr><td class="content_spacer">&nbsp;</td></tr>';
-		}
+		#if ($this->attribute['type'] == 'content_main')
+		#{
+		#	$space_bottom='<tr><td class="content_spacer">&nbsp;</td></tr>';
+		#}
 		if(isset($this->attribute['align'])) {
 			$attrib_str .= ' align="'.$this->attribute['align'].'"';
 		}
@@ -2243,7 +2403,7 @@ class question_select_old extends extra_multi{
 		$appendstr = '';
 		if(isset($this->attribute['passive'])) $access = 'disabled';
 		$str .= '<table border="0" cellpadding="0" cellspacing="0">
-<tr><td class="description"><img src="style/blank_spacer.gif" width="2" height="2"></img>'.$this->basket['description'];
+<tr><td class="description">'.$this->basket['description'];
 		if($this->warn) $str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		$str .= '</td></tr>
 <tr><td>;

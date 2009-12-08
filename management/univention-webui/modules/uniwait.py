@@ -62,17 +62,48 @@ class uniwait(unimodule.unimodule):
 		for att in [ 'layout_type' , 'site_title' , 'header_img' ]:
 			if self.save.get( att , False):
 				self.atts[ att ] = self.save.get( att , False)
-			
-		self.subobjs.append(table("",{ 'type':self.save.get( 'header_table_type' , 'content_header' ) },{"obs":[tablerow('',{},{'obs':[tablecol("",{'type':'browse_layout'},{"obs":[]})]})]}))
 
-		self.nbook=notebook('', {}, {'buttons': [(_('Operation in progress'), _('Operation in progress'))], 'selected': 0})
-		self.subobjs.append(self.nbook)
+		header = htmltext ('', {}, \
+			{'htmltext': [_("""
+						<div id="header">
+							<!-- @start header-title -->
+							<h1 class="header-title">
+								<span class="hide">univention</span> <a href="/univention-directory-manager/" title="Start">directory manager</a>
+							</h1>
+							<!-- @end header-title -->
+						<!-- @end header -->
+						</div>
+					""")]})
+		self.subobjs.append(header)
+
+		notebook_message = htmltext ('', {}, \
+				{'htmltext': ["""
+					<!-- @end tab-navigation -->
+					<div id=content-wrapper>
+					<div id=content-head>
+					<ul class="tabs">
+					<li class="active"><p>%(progress)s</p></li>
+					</ul>
+					</div>
+					<div id="content">
+					""" % {'progress': _('Operation in progress')}]})
+		self.subobjs.append(notebook_message)
+			
+		# self.subobjs.append(table("",{ 'type':self.save.get( 'header_table_type' , 'content_header' ) },{"obs":[tablerow('',{},{'obs':[tablecol("",{'type':'browse_layout'},{"obs":[]})]})]}))
+
+		# self.nbook=notebook('', {}, {'buttons': [(_('Operation in progress'), _('Operation in progress'))], 'selected': 0})
+		# self.subobjs.append(self.nbook)
 
 		msg = ''
 		if hasattr(self.pending_dialog, 'waitmessage'):
 			msg = self.pending_dialog.waitmessage()
 		if not msg:
 			msg = _('The operation is in progress. Please wait.')
+		info_message = htmltext ('', {}, \
+				{'htmltext': ["""
+					<div id="waittext"><p>%(text)s</p></div>
+					""" % {'text': msg}]})
+		self.subobjs.append(info_message)
 
 		rows=[]
 		rows.append(tablerow("",{},{"obs":[
@@ -81,19 +112,30 @@ class uniwait(unimodule.unimodule):
 			]}))
 
 
-		self.refresh_button=button(_('Update status'), {'icon':'/style/ok.gif'}, {'helptext': _('Update status')})
-		self.cancel_button=button(_('Cancel'), {'icon':'/style/cancel.gif'}, {'helptext': _('Cancel operation')})
+		self.refresh_button=button(_('Update status'), {'class':'submit'}, {'helptext': _('Update status')})
+		self.cancel_button=button(_('Cancel'), {'class':'submit'}, {'helptext': _('Cancel operation')})
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ['<div id="waitdialog">']}))
+		self.subobjs.append(self.cancel_button)
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ['</div>']}))
+		# self.subobjs.append(self.refresh_button)
 
 		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{'colspan':'2','type':'wait_layout'},{"obs":[self.refresh_button, self.cancel_button]})
+			tablecol("",{'colspan':'2','type':'wait_layout'},{"obs":[self.cancel_button, self.refresh_button]})
 			]}))
 
-		self.subobjs.append(table("",{'type':self.save.get( 'main_table_type' , 'content_main' )},{"obs":rows}))
+		# self.subobjs.append(table("",{'type':self.save.get( 'main_table_type' , 'content_main' )},{"obs":rows}))
 
-		self.atts['refresh']='1000'
+		self.atts['refresh']='500'
 
 	
 		# This "link button" is needed in order for the refresh to work properly.
 		hack_button=button('', {'link':'1'}, {'helptext': _('Update status')})
 		self.subobjs.append(hack_button)
+
+		notebook_message = htmltext ('', {}, \
+				{'htmltext': ["""
+					</div>
+					</div>
+					"""]})
+		self.subobjs.append(notebook_message)
 		

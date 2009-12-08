@@ -92,15 +92,21 @@ class modbrowse(unimodule.unimodule):
 	def delmode(self, removelist):
 		position=self.position
 
-		self.subobjs.append(table("",
-					  {'type':'content_header'},
-					  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'browse_layout'},{"obs":[]})]})]}))
+		self.div_start('content-wrapper', divtype='id')
 
 		self.nbook=notebook('', {}, {'buttons': [(_('delete'), _('delete'))], 'selected': 0})
 		self.subobjs.append(self.nbook)
+		self.div_start('content', divtype='id')
 
 		#begin table:
-		rows=[tablerow("",{},{"obs":[tablecol("",{'type':'browse_layout'},{"obs":[header(_("%d Object(s) Selected for Removal") % len(removelist),{"type":"3"},{})]})]})]
+		self.div_start('browse_layout_header', divtype='class')
+		if len(removelist) > 1:
+			self.subobjs.append(header(_("Are you sure you want to delete these %d objects and referring objects if enabled?") % len(removelist),{"type":"3"},{}))
+		elif len(removelist) == 0:
+			self.subobjs.append(header(_("Are you sure you want to delete these %d object and referring objects if enabled?") % len(removelist),{"type":"3"},{}))
+		self.div_stop('browse_layout_header')
+
+		rows=[]
 		cols=[]
 		cols.append(tablecol("",{'type':'browse_layout'},{"obs":[header(_("Object"),{"type":"6"},{})]}))
 		cols.append(tablecol("",{'type':'browse_layout'},{"obs":[header(_("Location"),{"type":"6"},{})]}))
@@ -108,12 +114,12 @@ class modbrowse(unimodule.unimodule):
 		cols.append(tablecol("",{'type':'browse_layout'},{"obs":[header(_("Delete referring objects?"),{"type":"6"},{})]}))
 		rows.append(tablerow("",{'type':'browse_layout'},{"obs": cols}))
 
-		rows.append(tablerow("",{},{"obs": [
-			tablecol("",{'type':'browse_layout'},{"obs":[space('',{'size':'1'},{})]}),
-			tablecol("",{'type':'browse_layout'},{"obs":[space('',{'size':'1'},{})]}),
-			tablecol("",{'type':'browse_layout'},{"obs":[space('',{'size':'1'},{})]}),
-			tablecol("",{'type':'browse_layout'},{"obs":[space('',{'size':'1'},{})]}),
-		]}))
+		#rows.append(tablerow("",{},{"obs": [
+		#	tablecol("",{'type':'browse_layout'},{"obs":[space('',{'size':'1'},{})]}),
+		#	tablecol("",{'type':'browse_layout'},{"obs":[space('',{'size':'1'},{})]}),
+		#	tablecol("",{'type':'browse_layout'},{"obs":[space('',{'size':'1'},{})]}),
+		#	tablecol("",{'type':'browse_layout'},{"obs":[space('',{'size':'1'},{})]}),
+		#]}))
 
 		removelist_withcleanup=[]
 
@@ -133,7 +139,7 @@ class modbrowse(unimodule.unimodule):
 				removelist.remove(i)
 				continue
 
-			icon_path = unimodule.selectIconByName( object_type )
+			icon_path = unimodule.selectIconByName( object_type, small=True )
 
 			name=univention.admin.objects.description(object)
 			description=univention.admin.modules.short_description(object_module)
@@ -151,14 +157,14 @@ class modbrowse(unimodule.unimodule):
 
 			final_delete=question_bool('',{},{'usertext':"1",'helptext':_('select %s') % name})
 			self.final_delboxes.append((final_delete, object.dn, object_type, univention.admin.objects.arg(object)))
-			cols.append(tablecol("",{'type':'browse_layout'},{"obs":[final_delete]}))
+			cols.append(tablecol("",{'type':'browse_layout', 'align': 'center'},{"obs":[final_delete]}))
 
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "check if cleanup neccessary: %s" % i[0])
 			if univention.admin.objects.wantsCleanup(object):
 				removelist_withcleanup.append(i)
 				cleanup_delete=question_bool('',{},{'usertext': '1', 'helptext':_('select %s') % name})
 				self.cleanup_delboxes.append((cleanup_delete, object.dn, object_type, univention.admin.objects.arg(object)))
-				cols.append(tablecol("",{'type':'browse_layout'},{"obs":[cleanup_delete]}))
+				cols.append(tablecol("",{'type':'browse_layout', 'align': 'center'},{"obs":[cleanup_delete]}))
 			else:
 				cols.append(tablecol("",{'type':'browse_layout'},{"obs":[text('',{},{'text':[""]})]}))
 			rows.append(tablerow("",{},{"obs":cols}))
@@ -172,17 +178,22 @@ class modbrowse(unimodule.unimodule):
 			tablerow("",{},{"obs":[tablecol("",{'type':'content_main'},{"obs":[table("",{"type":"content_list"},{"obs":rows})]})]})
 		)
 		#end table
-		self.final_delbut=button(_('OK'),{'icon':'/style/ok.gif'},{'helptext':_('Really delete selected objects and referring objects if enabled.')})
-		self.cancel_delbut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Cancel")})
+		self.cancel_delbut=button(_("Cancel"),{'class':'cancel'},{"helptext":_("Cancel")})
+		self.final_delbut=button(_('OK'),{'class':'submit'},{'helptext':_('Really delete selected objects and referring objects if enabled.')})
 
-		main_rows.append(
-			tablerow("",{},{"obs":[tablecol("",{'type':'content_main'},{"obs":[self.final_delbut, self.cancel_delbut]})]})
-		)
-		# main table
 		self.subobjs.append(table("",
 					  {'type':'content_main'},
 					  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'content_main'},{"obs":main_rows})]})]})
 				    )
+		self.subobjs.append(table("",
+					  {'type':'content_main'},
+					  {"obs":[tablerow("",{},{"obs":[
+							tablecol("",{'type':'cancel'},{"obs":[self.cancel_delbut]}),
+							tablecol("",{'type':'okcancel'},{"obs":[self.final_delbut]})
+						]})]}))
+
+		self.div_stop('content')
+		self.div_stop('content-wrapper')
 
 
 
@@ -212,6 +223,8 @@ class modbrowse(unimodule.unimodule):
 
 		if not position.getDn().endswith(settings.base_dn):
 			position.setDn(settings.base_dn)
+
+		self.div_start('content-wrapper')
 
 		###########################################################################
 		# current object
@@ -282,13 +295,19 @@ class modbrowse(unimodule.unimodule):
 		header_rows = []
 		main_rows = []
 
-		header_rows.append(tablerow("",{},{"obs":[tablecol("",{'colspan':'4','type':'content_position'},{"obs":[text("",{},{"text":["%s /" % _("Position:")]})] + positioncolcontent})]}))
+		self.div_start('advanced-head-text', divtype='class')
+		self.div_start('advanced-head-position', divtype='class')
+		self.subobjs.append(text("",{},{"text":["%s /" % _("Position:")]}))
+		for obj in positioncolcontent:
+			self.subobjs.append(obj)
+		self.div_stop('advanced-head-position')
+		# header_rows.append(tablerow("",{},{"obs":[tablecol("",{'colspan':'4','type':'content_position'},{"obs":[text("",{},{"text":["%s /" % _("Position:")]})] + positioncolcontent})]}))
 
 		###########################################################################
 		# add select
 		###########################################################################
 
-		self.add_button = button(_('add'),{},{'helptext':_('Add new object of selected type at current position')})
+		self.add_button = button(_('add'),{},{'helptext':_('Select a new object to add')})
 		add_types = []
 
 		list_types = []
@@ -303,10 +322,17 @@ class modbrowse(unimodule.unimodule):
 				continue
 			add_types.append({'name': univention.admin.modules.name(m), 'description': univention.admin.modules.short_description(m)})
 		add_types.sort()
-		add_types.insert(0, {'name': "uidummy098", 'description': _("Make your choice...")})
-		self.add_select=question_select(_('Add new object at current position'),{},{"helptext":_("Select type of object to add"),"choicelist":add_types,"button":self.add_button})
+		add_types.insert(0, {'name': "uidummy098", 'description': _("Select type to create new object")})
+		self.div_start('add_select', divtype='id')
+		self.add_select=question_select('',{},{"helptext":_("Select type of object to add at current position"),"choicelist":add_types,"button":self.add_button})
 
-		cols.append(tablecol('',{'colspan':'2','type':'browse_layout'},{'obs':[self.add_select]}))
+		self.subobjs.append(self.add_select)
+		self.div_stop('add_select')
+		self.div_stop('advanced-head-text')
+		self.div_start('advanced-head-space', divtype='class')
+		self.div_stop('advanced-head-space')
+
+		# cols.append(tablecol('',{'colspan':'2','type':'browse_layout'},{'obs':[self.add_select]}))
 
 		###########################################################################
 		# first table: position + add
@@ -325,6 +351,8 @@ class modbrowse(unimodule.unimodule):
 		self.subobjs.append(table("",{'type':'content_header'},{"obs":header_rows}))
 		self.subobjs.append(self.nbook)
 
+		self.div_start('content')
+		self.div_start('form-wrapper', divtype='class')
 
 		###########################################################################
 		# search select
@@ -409,28 +437,47 @@ class modbrowse(unimodule.unimodule):
 				self.search_input=text('',{},{'text':['']})
 
 			self.search_property_button=button('go',{},{'helptext':'go'})# TODO helptext
-			self.search_property_select=question_select(_('property'),{'width':'200'},{'helptext':_('Property'),'choicelist':search_properties,'button':self.search_property_button}) # TODO helptext
+			self.search_property_select=question_select(_('Search filter'),{},{'helptext':_('Search filter'),'choicelist':search_properties,'button':self.search_property_button}) # TODO helptext
 
 			# make fields available in apply
 			search_property_select=self.search_property_select
 			search_input=self.search_input
 
 		self.search_type_button=button(_('go'),{},{'helptext':_('go')})# TODO helptexs
-		self.search_type_select=question_select(_('type'),{'width':'200'},{"helptext":_('type'),"choicelist":search_types,'button':self.search_type_button})# TODO helptext
-		self.search_button=button(_('show'),{'defaultbutton': '1', 'icon':'/style/ok.gif'},{'helptext':_('show')})# TODO helptext
-		self.search_visible=question_text(_('Results per page'), {'width':'100', 'validregex':'\d*', 'invalidmessage':str(_('Please enter a number.'))},
+		self.search_type_select=question_select(_('Only show objects of type'),{},{"helptext":_('type'),"choicelist":search_types,'button':self.search_type_button})# TODO helptext
+		self.search_button=button(_('show'),{'defaultbutton': '1', 'class':'submit'},{'helptext':_('show')})# TODO helptext
+		self.search_visible=question_text(_('Results per page'), {'validregex':'\d*', 'invalidmessage':str(_('Please enter a number.'))},
 						  {'usertext': str(visible)})
 
-		searchcols.append(tablecol('',{'type':'browse_layout'},{'obs':[self.search_type_select]}))
-		searchcols.append(tablecol('',{'type':'browse_layout'},{'obs':[search_property_select]}))
-		searchcols.append(tablecol('',{'type':'browse_layout'},{'obs':[search_input]}))
-		main_rows.append(tablerow("",{},{"obs":[tablecol("",{},{"obs":[table("",{},{"obs":[tablerow('',{},{'obs':searchcols})]})]})]}))
+		self.div_start('form-item col', divtype='class')
+		self.subobjs.append(self.search_type_select)
+		self.div_stop('form-item col')
+		self.new_row()
+		self.div_start('form-item col', divtype='class')
+		self.subobjs.append(search_property_select)
+		self.div_stop('form-item col')
+		self.div_start('form-item col', divtype='class')
+		self.subobjs.append(search_input)
+		self.div_stop('form-item col')
+		self.new_row()
+		#searchcols.append(tablecol('',{'type':'browse_layout'},{'obs':[self.search_type_select]}))
+		#searchcols.append(tablecol('',{'type':'browse_layout'},{'obs':[search_property_select]}))
+		#searchcols.append(tablecol('',{'type':'browse_layout'},{'obs':[search_input]}))
+		#main_rows.append(tablerow("",{},{"obs":[tablecol("",{},{"obs":[table("",{},{"obs":[tablerow('',{},{'obs':searchcols})]})]})]}))
 
 		searchcols=[]
-		searchcols.append(tablecol('',{'type':'browse_layout'},{'obs':[self.search_visible]}))
-		searchcols.append(tablecol('',{'type':'browse_layout'},{'obs':[self.search_button]}))
+		#searchcols.append(tablecol('',{'type':'browse_layout'},{'obs':[self.search_visible]}))
+		#searchcols.append(tablecol('',{'type':'browse_layout'},{'obs':[self.search_button]}))
+		self.div_start('form-item col', divtype='class')
+		self.subobjs.append(self.search_visible)
+		self.div_stop('form-item col')
+		self.div_start('form-item col', divtype='class')
+		self.subobjs.append(self.search_button)
+		self.div_stop('form-item col')
+		self.new_row()
+		self.div_stop('form-wrapper')
 
-		searchTable = table("",{},{"obs":[tablerow('',{},{'obs':searchcols})]})
+		#searchTable = table("",{},{"obs":[tablerow('',{},{'obs':searchcols})]})
 
 		###########################################################################
 		# lookup objects
@@ -607,7 +654,7 @@ class modbrowse(unimodule.unimodule):
 
 		dirrows=[]
 		cols=[]
-		headerType = "5";
+		headerType = "6";
 		cols.append(tablecol("",{'type':'browse_layout'},{"obs":[header(_("Object"),{"type":headerType},{})]}))
 		cols.append(tablecol("",{'type':'browse_layout'},{"obs":[header(_("Type"),{"type":headerType},{})]}))
 		old_search_property_name=self.save.get('browse_old_search_property')
@@ -625,7 +672,7 @@ class modbrowse(unimodule.unimodule):
 		# switch to parent directory
 		if not position.isBase():
 			t=button( _('up'),
-				 { 'icon' : unimodule.selectIconByName( 'up' ) },
+				 { 'icon' : unimodule.selectIconByName( 'up' ), 'class':'search_result' },
 				 { "helptext" : _("switch to parent directory") })
 			self.dirbuts.append((t,self.lo.parentDn(position.getDn()), ''))
 			iconcols=[
@@ -643,14 +690,16 @@ class modbrowse(unimodule.unimodule):
 		###########################################################################
 
 
-		main_rows.append(tablerow("",{},{"obs":[tablecol("",{},{"obs":[searchTable]})]}))
+		#main_rows.append(tablerow("",{},{"obs":[tablecol("",{},{"obs":[searchTable]})]}))
 
-		main_rows.append(tablerow("",{},{"obs":[tablecol("",{},{"obs":[space('',{'size':'2'},{})]})]}))
+		#main_rows.append(tablerow("",{},{"obs":[tablecol("",{},{"obs":[space('',{'size':'2'},{})]})]}))
 		
 
 		###########################################################################
 		# listing objects
 		###########################################################################
+
+		self.div_start('search-result', divtype='class')
 
 		for sub_object in result:
 			valid=1
@@ -673,9 +722,9 @@ class modbrowse(unimodule.unimodule):
 			if activate_icons in ['true', 'yes', '1', 'on']:
 				if univention.admin.modules.childs(sub_object_module):
 					icon_path = unimodule.selectIconByName( sub_object_type,
-									   iconNameGeneric = 'folder' )
+									   iconNameGeneric = 'folder', small=True )
 				else:
-					icon_path = unimodule.selectIconByName( sub_object_type )
+					icon_path = unimodule.selectIconByName( sub_object_type, small=True )
 			else:
 				icon_path = 'icon/empty_eeeeee.png'
 
@@ -705,7 +754,7 @@ class modbrowse(unimodule.unimodule):
 
 			if valid:
 				if univention.admin.modules.childs(sub_object_module) and not object.dn == sub_object.dn:
-					atts={'icon':icon_path}
+					atts={'icon':icon_path, 'class':'search_result'}
 					if move_dn_list:
 						for dn, arg, _type in move_dn_list:
 							if dn == sub_object.dn:
@@ -713,13 +762,13 @@ class modbrowse(unimodule.unimodule):
 								break
 					edit_button=button(name,atts,{'helptext':_('open "%s"') % univention.admin.objects.description(sub_object)})
 				else:
-					atts={'icon':icon_path}
+					atts={'icon':icon_path, 'class':'search_result'}
 					if move_dn_list:
 						atts['passive']='1'
 					edit_button=button(name,atts,{'helptext':_('edit "%s"') % univention.admin.objects.description(sub_object)})
 				self.editbuts.append((edit_button, sub_object.dn, sub_object_type, univention.admin.objects.arg(sub_object)))
 			else:
-				edit_button=button(name,{'icon':icon_path,'passive':'1'},{'helptext':_('edit "%s"') % univention.admin.objects.description(sub_object)})
+				edit_button=button(name,{'icon':icon_path,'passive':'1', 'class': 'search_result'},{'helptext':_('edit "%s"') % univention.admin.objects.description(sub_object)})
 			cols.append(tablecol("",{'type':'browse_layout'},{"obs":[open_button, edit_button]}))
 
 			objecttype=text('',{},{'text':[univention.admin.modules.short_description(sub_object_module)]})
@@ -797,12 +846,18 @@ class modbrowse(unimodule.unimodule):
 		dynlongtable = dynamic_longtable("",
 						 {'header' : str(1), 'total': str(len_result), 'start': str(start), 'visible': str(visible)},
 						 {"obs":dirrows})
-		main_rows.append(tablerow("",
-					  {},
-					  {"obs":[tablecol("",{},{"obs":[dynlongtable]})]}))
+		self.subobjs.append(dynlongtable)
+		#main_rows.append(tablerow("",
+		#			  {},
+		#			  {"obs":[tablecol("",{},{"obs":[dynlongtable]})]}))
 			
 		if size_limit_reached:
-			main_rows.append(tablerow("",{},{"obs":[tablecol("",{'type':'browse_layout'},{"obs":[header(_("More than %d results, please refine search filter.") % max_results, {"type":"2"},{})]})]}))
+			#main_rows.append(tablerow("",{},{"obs":[tablecol("",{'type':'browse_layout'},{"obs":[header(_("More than %d results, please refine search filter.") % max_results, {"type":"2"},{})]})]}))
+			self.subobjs.append ( htmltext ('', {}, \
+				{'htmltext': ["""
+					<h3>%s</h3>
+					""" % _("More than %d results, please redefine search.")%max_results
+					]}))
 
 
 		###########################################################################
@@ -811,61 +866,73 @@ class modbrowse(unimodule.unimodule):
 
 		footerCols = []
 		if move_dn_list:
-			self.move_here_button=button(_("Move here"),{'icon':'/style/ok.gif'},{"helptext":_("move selected objects here")})
-			self.cancel_move_button=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("cancel moving object")})			
-			footerCols.append(tablecol("",{'type':'browse_layout'},{"obs":[self.move_here_button,self.cancel_move_button]}))
+			self.move_here_button=button(_("Move here"),{'class':'submit', 'defaultbutton': '1'},{"helptext":_("move selected objects here")})
+			self.cancel_move_button=button(_("Cancel"),{'class':'cancel'},{"helptext":_("cancel moving object")})			
+			self.subobjs.append(self.cancel_move_button)
+			self.subobjs.append(self.move_here_button)
+			# footerCols.append(tablecol("",{'type':'browse_layout'},{"obs":[self.move_here_button,self.cancel_move_button]}))
 		else:
 			# info: number of search results
 			resultinfoCols = []
 			if nresults > 0:
 				if cached:
-					resultinfoCols.append(tablecol("",{'type':'browse_layout_left'},{"obs":[header(_("%d search result(s) (cached)") % nresults,{"type":"5"},{})]}))
+					self.subobjs.append(header(_("%d search result(s) (cached)") % nresults,{"type":"5"},{}))
 
 				else:
-					resultinfoCols.append(tablecol("",{'type':'browse_layout_left'},{"obs":[header(_("%d search result(s)") % nresults,{"type":"5"},{})]}))
-			else:
-				resultinfoCols.append(tablecol("",{'type':'browse_layout_left'},{"obs":[]}))
+					self.subobjs.append(header(_("%d search result(s)") % nresults,{"type":"5"},{}))
+			#else:
+			#	resultinfoCols.append(tablecol("",{'type':'browse_layout_left'},{"obs":[]}))
 
-			footerCols.append(tablecol("",{'type':'browse_layout_left'},
-						   {"obs":[table("",
-								 {'type':'browse_layout_left'},
-								 {"obs" : [ tablerow("",
-										     {'type':'browse_layout_left'},
-										     {"obs": resultinfoCols}) ]
-								  })]
-						    }))
+			#footerCols.append(tablecol("",{'type':'browse_layout_left'},
+			#			   {"obs":[table("",
+			#					 {'type':'browse_layout_left'},
+			#					 {"obs" : [ tablerow("",
+			#							     {'type':'browse_layout_left'},
+			#							     {"obs": resultinfoCols}) ]
+			#					  })]
+			#			    }))
 
 			# drop-down: move, edit, ...
 			self.selection_commit_button=button(_("Do"),{},{"helptext":_("Do action with selected objects.")})
 			self.selection_select=question_select(_('Do with selected objects...'),{'width':'200'},{"helptext":_("Do with selected objects..."),"choicelist":[
 				{'name': "uidummy098", 'description': "---"},
-					{'name': "invert", 'description': _("Invert selection")},
+				{'name': "invert", 'description': _("Invert selection")},
 				{'name': "edit", 'description': _("Edit")},
 				{'name': "recursive_delete", 'description': _("Delete")},
 				{'name': "move", 'description': _("Move")},
 				],"button":self.selection_commit_button})
 		
 
-			footerCols.append(tablecol("",{'type':'browse_layout_right'},
-						   {"obs":[table("",
-								 {'type':'browse_layout_right'},
-								 {"obs" : [ tablerow("",
-										     {'type':'browse_layout_right'},
-										     {"obs": [ tablecol("",
-												      {'type':'browse_layout_right'},
-												      {"obs":[self.selection_select]})]
-										      })]
-								  })]
-						    }))
+			self.div_start('form-item', divtype='class')
+			self.div_start('form-right', divtype='class')
+			self.subobjs.append(self.selection_select)
+			self.div_stop('form-right')
+			self.div_stop('form-item')
+			self.div_stop('search-result')
 
-		footerTable = table("", {'type':'table_fullwidth'}, {"obs" : [ tablerow("",{'type':'table_fullwidth'},{"obs": footerCols}) ]})
-		main_rows.append(tablerow("", {}, {"obs":[tablecol("",{'type':'table_fullwidth'}, {"obs":[footerTable]},)]}))
+			#footerCols.append(tablecol("",{'type':'browse_layout_right'},
+			#			   {"obs":[table("",
+			#					 {'type':'browse_layout_right'},
+			#					 {"obs" : [ tablerow("",
+			#							     {'type':'browse_layout_right'},
+			#							     {"obs": [ tablecol("",
+			#									      {'type':'browse_layout_right'},
+			#									      {"obs":[self.selection_select]})]
+			#							      })]
+			#					  })]
+			#			    }))
+
+		#footerTable = table("", {'type':'table_fullwidth'}, {"obs" : [ tablerow("",{'type':'table_fullwidth'},{"obs": footerCols}) ]})
+		#main_rows.append(tablerow("", {}, {"obs":[tablecol("",{'type':'table_fullwidth'}, {"obs":[footerTable]},)]}))
 
 
-		self.subobjs.append(table("",
-					  {'type':'content_main'},
-					  {"obs":main_rows})
-				    )
+		#self.subobjs.append(table("",
+		#			  {'type':'content_main'},
+		#			  {"obs":main_rows})
+		#		    )
+
+		self.div_stop('content')
+		self.div_stop('content-wrapper')
 
 	def apply(self):
 		if self.applyhandlemessages():

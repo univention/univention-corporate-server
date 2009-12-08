@@ -194,7 +194,7 @@ def handle_sock( conn, session, options ):
 
 	if options.debug >= 2:
 		open('/tmp/xmlin', 'w').write(xmlin)
-	xmlout = session.startRequest( xmlin, number, ignore_ldap_connection=True, timeout = None )
+	xmlout = session.startRequest( xmlin, number, ignore_ldap_connection=True, timeout = None, meta=meta )
 	if options.debug >= 2:
 		open('/tmp/xmlout', 'w').write( xmlout )
 
@@ -241,6 +241,9 @@ def main(argv):
 	parser.add_option( '-e', '--https', action = 'store', type = 'int',
 					   dest = 'https', default = 0,
 					   help = 'if set to 1 HTTPS is used' )
+	parser.add_option( '-x', '--http_host', action = 'store', type = 'string',
+					   dest = 'http_host', default = None,
+					   help = 'add the $_SERVER[HTTP_HOST] variable from PHP to Python' )
 
 	# parse command line arguments
 	( options, arguments ) = parser.parse_args()
@@ -253,6 +256,7 @@ def main(argv):
 		ud.init('/dev/null', 0, 0)
 
 	os.environ["HTTPS"] = "%s" % options.https
+	os.environ["HTTP_HOST"] = "%s" % options.http_host
 
 	if options.socket == '-':
 		filename = sys.stdin.read()

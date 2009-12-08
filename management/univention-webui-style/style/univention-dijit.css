@@ -1,167 +1,14 @@
 /* Univention Admin Interface Stylesheet - dojo/dijit additions*/
 
-.tundra {
-  font-size: 10px;
-  font-weight:bold;  
-  font-family: Arial, Helvetica, sans-serif;
-  color: #666666;
-}
-
-/* Calendar*/
 	
-.dijitCalendarIncrementControl {
-	/* next/prev month buttons */
-	width:15px;
-	height:15px;
-
-}
-.dj_ie6 .dijitCalendarIncrementControl {
-	padding:.1em;
-	font-size:.1em;
-}
-
-/*
-.dijitCalendarIncreaseInner,
-.dijitCalendarDecreaseInner {
-	visibility:hidden;
-}
-
-.dijitCalendarDecrease {
-	background:url("images/spriteRoundedIconsSmall.png") no-repeat top left;
-}
-.dj_ie6 .dijitCalendarDecrease {
-	background:url("images/spriteRoundedIconsSmall.gif") no-repeat top left;
-}
-
-.dijitCalendarIncrease {
-	background:url("images/spriteRoundedIconsSmall.png") no-repeat -30px top;
-}
-.dj_ie6 .dijitCalendarIncrease {
-	background:url("images/spriteRoundedIconsSmall.gif") no-repeat -30px top;
-}
-*/
-
-table.dijitCalendarContainer {
-	font-size: 100%;
-	border-spacing: 0;
-	border-collapse: separate;
-	border: 1px solid #ccc;
-	margin: 0;
-}
-
-.dijitCalendarMonthContainer th {
-	/* month header cell */
-	/* background:#d3d3d3 url("images/titleBar.png") repeat-x top; */
-	padding-top:.3em;
-	padding-bottom:.2em;
-	text-align:center;
-}
-.dj_ie6 .dijitCalendarMonthContainer th {
-	padding-top:.1em;
-	padding-bottom:0em;
-}
-
-.dijitCalendarDayLabelTemplate {
-	/* day of week labels */
-	/* background:white url("images/calendarDayLabel.png") repeat-x bottom; */
-	font-weight:normal;
-	padding-top:.15em;
-	padding-bottom:0em;
-	border-top: 1px solid #eeeeee;
-	color:#293a4b;
-	text-align:center;
-}
-
-.dijitCalendarBodyContainer {
-	border-bottom: 1px solid #eeeeee;	
-}
-
-.dijitCalendarMonthLabel {
-	color:#293a4b;
-	font-weight: bold;
-}
-
-.dj_ie7 .dijitCalendarDateTemplate,
-.dj_ie6 .dijitCalendarDateTemplate {
-	font-size: 0.8em;
-}
-
-.dijitCalendarDateTemplate {
-	/* style for each day cell */
-	font-size: 0.9em;
-	font-weight: bold;
-	text-align: center;
-	padding: 0.3em 0.3em 0.05em 0.3em;
-	letter-spacing: 1px;
-}
-
-
-.dijitCalendarPreviousMonth,
-.dijitCalendarNextMonth 		{
-	/* days that are part of the previous or next month */
-	color:#999999;
-	background-color:#f8f8f8 !important;
-}
-
-.dijitCalendarPreviousMonthDisabled,
-.dijitCalendarNextMonthDisabled	{
-	/* days that are part of the previous or next month - disabled*/
-	background-color:#a4a5a6 !important;
-}
-
-.dijitCalendarCurrentMonth {
-	/* days that are part of this month */
-	background-color:white !important;
-}
-
-.dijitCalendarCurrentMonthDisabled {
-	/* days that are part of this month - disabled */	
-	background-color:#bbbbbc !important;
-}
-
-.dijitCalendarCurrentDate {
-	/* cell for today's date */
-	text-decoration:underline;
-	font-weight:bold;
-}
-
-.dijitCalendarCurrentDate {
-	/* cell for today's date */
-	text-decoration:underline;
-	font-weight:bold;
-}
-
-.dijitCalendarSelectedDate {
-	/* cell for the selected date */
-	background-color:#bbc4d0 !important;
-	color:black !important;
-}
-.dijitCalendarYearContainer {
-	/* footer of the table that contains the year display/selector */
-	/* background:white url("images/calendarYearLabel.png") repeat-x bottom; */
-	border-top:1px solid #ccc;
-}
-
-.dijitCalendarYearLabel {
-	/* container for all of 3 year labels */
-	margin:0;
-	padding:0.4em 0 0.25em 0;
-	text-align:center;
-}
-
-.dijitCalendarSelectedYear {
-	/* label for selected year */
-	color:black;
-	padding:0.2em;
-	padding-bottom:0.1em;
-	background-color:#bbc4d0 !important;
-}
-
-.dijitCalendarNextYear,
-.dijitCalendarPreviousYear {
-	/* label for next/prev years */
-	color:black !important;
-	font-weight:normal;
+.tundra
+{
+	font-family: Lucida Grande, Arial, sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 18px;
+	color: rgba(93, 94, 93, 1);
+	height: inherit;
 }
 /* ############ Customized DOJO-Layout ############### */
 
@@ -170,8 +17,8 @@ table.dijitCalendarContainer {
 	width:120px;
 	border-right-color:#CCCCCC;
 	border-bottom-color:#CCCCCC;
-	border-top-color:#666666;
-	border-left-color:#666666;
+	border-top-color:#939493;
+	border-left-color:#939493;
 }
 /*	height:17px;
 	    border:0pt none;
@@ -181,44 +28,6 @@ table.dijitCalendarContainer {
 	    width:120px;
 */
 
-table.dijitCalendarContainer {
-        background-color:#EEEEEE !important;
-        height:15px;
-        width:120px;
-	border-width:1px !important;
-	border-style:solid !important;
-        border-right-color:#CCCCCC;
-        border-bottom-color:#CCCCCC;
-        border-top-color:#666666;
-        border-left-color:#666666;
-/*         border:0pt none;
-          margin:0pt;
-          padding:0pt;
-          position:absolute;
-          width:120px;
-*/
-}
-
-.dijitCalendarMonthContainer{
-        background-color:#CCCCCC !important;
-        color=#FFFFFF !important;
-        height:15px;
-        width:120px;
-        border-right-color:#CCCCCC;
-        border-bottom-color:#CCCCCC;
-        border-top-color:#666666;
-        border-left-color:#666666;
-}
-.dijitCalendarYearLabel{
-        background-color:#CCCCCC !important;
-        color=#FFFFFF !important;
-        height:15px;
-        width:120px;
-        border-right-color:#CCCCCC;
-        border-bottom-color:#CCCCCC;
-        border-top-color:#666666;
-        border-left-color:#666666;
-}
 
 .dijitCalendarIcon {
 background-image:url(icon-1day.gif);
@@ -231,8 +40,7 @@ width:15px;
 /* FormFill  */
 
 .dijitReset input {
-font-size: 11px;
-font-weight:bold;
+font-size: 13px
 }
 
 .dijitComboBox,
@@ -255,24 +63,27 @@ padding-left: 3px;
 
 
 .dijitTextBox input, .dijitComboBox input, .dijitSpinner input {
-font-size: 11px;
+font-size: 13px;
 }
 
 .tundra .dijitTextBox, 
 .tundra .dijitComboBox, 
 .tundra .dijitSpinner, 
 .tundra .dijitInlineEditor input {
-border:1px solid #B3B3B3;
-line-height:normal;
-font-weight:bold;
-font-size: 11px;
-border-width:0 0 1px 1px;
-background-image: none !important;
+	line-height:normal;
+	font-size: 13px;
+	border: 1px solid #B5B5B5;
+	background-image: none !important;
+	width: 300px;
 }
 
-.tundra .dijitLeft input {
-font-weight:bold;
+.tundra .dijitTextBoxFocused, 
+.tundra .dijitComboBoxFocused, 
+.tundra .dijitSpinnerFocused, 
+.tundra .dijitInlineEditorFocused input {
+	background-color:#F7F7F7 !important;
 }
+
 
 /* darker background for read-only fields */
 .dijitTextBoxDisabled, .dijitDisabledClickableRegion, .dijitTextBoxDisabled input {
@@ -280,11 +91,6 @@ font-weight:bold;
 	cursor:not-allowed !important;
 }
 
-/*
-.text input {
-font-weight:bold;
-}
-*/
 /* drop-downs need a different padding then textboxes */
 /* this should be checked with other browsers than firefox */
 .select .dijitInputField {
@@ -304,7 +110,7 @@ font-weight:bold;
 
 .tundra .dynlongtable-buttons .dijitButtonNode,
 .tundra .dynlongtable-buttons .dijitButtonText {
-  font-size: 11px;
+  font-size: 13px;
   border: none;
   background: none;
 }
@@ -317,7 +123,6 @@ font-weight:bold;
 .tundra .dynlongtable-buttons .dijitToggleButtonChecked .dijitButtonNode,
 .tundra .dynlongtable-buttons .dijitToggleButtonChecked .dijitButtonText {
   color:#CC0033;
-  font-weight:bold;  
 }
 /* to blank the buttons we set background: none, orginal was:
   background: #FCFDFF url(../images/ButtonHover.png) repeat-x scroll center;

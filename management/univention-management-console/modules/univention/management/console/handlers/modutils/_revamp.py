@@ -46,15 +46,15 @@ class Web( object ):
 		# add search form
 		select = umcd.make( self[ 'modutils/search' ][ 'category' ],
 							default = object.options.get( 'category', 'all' ),
-							attributes = { 'width' : '200' } )
+							attributes = { 'width' : '250' } )
 		key = umcd.make( self[ 'modutils/search' ][ 'key' ],
 						 default = object.options.get( 'key', 'name' ),
-						 attributes = { 'width' : '200' } )
+						 attributes = { 'width' : '250' } )
 		text = umcd.make( self[ 'modutils/search' ][ 'pattern' ],
 						  default = object.options.get( 'pattern', '*' ),
 						  attributes = { 'width' : '250' } )
 		loaded = umcd.make( self[ 'modutils/search' ][ 'loaded' ],
-						  default = object.options.get( 'loaded', True ) )
+						  default = object.options.get( 'loaded', True ), attributes = {'valign': 'bottom'} )
 
 		form = umcd.SearchForm( 'modutils/search', [ [ ( select, 'all' ), ( loaded, 'loaded' ) ],
 													   [ ( key, 'name' ), ( text, '*' ) ] ] )
@@ -122,10 +122,9 @@ class Web( object ):
 									 		  'pattern' : object.options[ 'pattern' ],
 									 		  'loaded' : object.options[ 'loaded' ],
 											  'key' : object.options[ 'key' ] } )
-			result.add_row( [ umcd.Button( label = _( 'Load' ), tag = 'actions/ok',
-										   actions = [ umcd.Action( req, [ args.id() ] ),
-													   umcd.Action( req_list ) ] ),
-							  umcd.CancelButton() ] )
+			result.add_row( [	umcd.CancelButton(attributes = {'class': 'cancel'}),
+								umcd.Button( label = _( 'Load' ), attributes = {'class': 'submit'}, actions = [ umcd.Action( req, [ args.id() ] ), umcd.Action( req_list ) ] )
+							 ] )
 		else:
 			req = umcp.Command( args = [ 'modutils/unload' ], opts = { 'module' : mod.name } )
 			req_list = umcp.Command( args = [ 'modutils/search' ],

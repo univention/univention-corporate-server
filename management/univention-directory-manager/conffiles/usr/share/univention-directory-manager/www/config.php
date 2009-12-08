@@ -19,19 +19,24 @@ $https = "0";
 if (isset( $_SERVER["HTTPS"])) {
          $https = "1";
 }
+$http_host='';
+if (isset( $_SERVER["HTTP_HOST"])) {
+         $http_host = $_SERVER["HTTP_HOST"];
+}
+
 
 # Programmaufruf (die Variable wir in folgenden String eingefügt "$run > /temp_dir/session_id" )
 #$run="./examples/dummy.pl";
 @!@
 run='$run="/usr/bin/python2.4 /usr/share/univention-directory-manager/uniconf/univention-directory-manager.py '
 if baseConfig.has_key('directory/manager/web/debug/level'):
-        debug='-d %s '%baseConfig['directory/manager/web/debug/level']
+	debug='-d %s '%baseConfig['directory/manager/web/debug/level']
 else:
-        debug='-d 0 '
+	debug='-d 0 '
 if baseConfig.has_key('directory/manager/web/language'):
-        lang='-l %s'%baseConfig['directory/manager/web/language']
+	lang='-l %s'%baseConfig['directory/manager/web/language']
 else:
-        lang='-l de_DE.utf8'
+	lang='-l de_DE.utf8'
 tail='";'
 
 if baseConfig.has_key('directory/manager/timeout'):
@@ -49,7 +54,7 @@ else:
 
 timeout = '-t %d ' % time
 
-run=run+" -e $https "
+run=run+" -e $https -h $http_host "
 run=run+debug
 run=run+timeout
 run=run+lang

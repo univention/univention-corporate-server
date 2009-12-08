@@ -19,7 +19,12 @@ $temp_mode=0700;
 
 $https = "0";
 if (isset( $_SERVER["HTTPS"])) {
-        $https = "1";
+	$https = "1";
+}
+
+$http_host='';
+if (isset( $_SERVER["HTTP_HOST"])) {
+	$http_host = $_SERVER["HTTP_HOST"];
 }
 
 @!@
@@ -53,7 +58,7 @@ else:
 timeout = '-t %d ' % time
 
 
-run=run+" -e $https "
+run=run+" -e $https -x $http_host "
 run=run+debug
 run=run+timeout
 run=run+lang

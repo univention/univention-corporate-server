@@ -39,68 +39,71 @@ import unimodule
 from local import _
 
 def create(a,b,c):
-    return modlogout(a,b,c)
+	return modlogout(a,b,c)
 def myinfo(settings):
-    return unimodule.realmodule("logout", _("Logout"), _("Logout"))
+	return unimodule.realmodule("logout", _("Logout"), _("Logout"))
 def myrgroup():
-    return ""
+	return ""
 def mywgroup():
-    return ""
+	return ""
 def mymenunum():
-    return 800
+	return 800
 def mymenuicon():
 	return unimodule.selectIconByName( 'exit' )
 
 class modlogout(unimodule.unimodule):
-    def mytype(self):
-        return "dialog"
+	def mytype(self):
+		return "dialog"
 
-    def myinit(self):
-        #from uniparts import *
+	def myinit(self):
+		#from uniparts import *
 		pass
 
-    def myinit(self):
-        self.authfail=None
-        self.save=self.parent.save
-        if not self.save.get("LOGOUT"):
+	def myinit(self):
+		self.authfail=None
+		self.save=self.parent.save
+		if not self.save.get("LOGOUT"):
 
-            self.subobjs.append(table("",
-                                      {'type':'content_header'},
-                                      {"obs":[tablerow("",{},{"obs":[tablecol("",{},{"obs":[]})]})]})
-                                )
-            self.nbook=notebook('', {}, {'buttons': [(_('Logout'), _('Logout'))], 'selected': 0})
-            self.subobjs.append(self.nbook)
+			self.div_start('content-wrapper')
+			#self.subobjs.append(table("",
+			#		{'type':'content_header'},
+			#		{"obs":[tablerow("",{},{"obs":[tablecol("",{},{"obs":[]})]})]})
+			#	)
+			self.nbook=notebook('', {}, {'buttons': [(_('Logout'), _('Logout'))], 'selected': 0})
+			self.subobjs.append(self.nbook)
+			self.div_start('content')
 
-            self.okbut = button(_("OK"),{'icon':'/style/ok.gif'},{"helptext":_("ok")})
-            okbutcol = tablecol("",{'type':'note_layout'},{"obs":[self.okbut]})
+			self.okbut = button(_("OK"),{'class':'submit', 'defaultbutton': '1'},{"helptext":_("ok")})
+			okbutcol = tablecol("",{'type':'note_layout'},{"obs":[self.okbut]})
 
-            self.cabut = button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Cancel")})
-            cabutcol = tablecol("",{'type':'note_layout'},{"obs":[self.cabut]})
+			self.cabut = button(_("Cancel"),{'class':'cancel'},{"helptext":_("Cancel")})
+			cabutcol = tablecol("",{'type':'note_layout'},{"obs":[self.cabut]})
 
-            row1 = tablerow("",{},
-                            {"obs":[tablecol("",{"colspan":"2",'type':'note_layout_text'},
-                                             {"obs":[text('',{},{'text':[_("Do you really want to logout?")]})]})]
-                             }
-                            )
+			row1 = tablerow("",{},
+					{"obs":[tablecol("",{"colspan":"2",'type':'note_layout_text'},
+					{"obs":[text('',{},{'text':[_("Do you really want to logout?")]})]})]
+					}
+				)
 
-            row2 = tablerow("",{},{"obs":[okbutcol,cabutcol]})
-            tab = table("",{},{"obs":[row1, row2]})
+			row2 = tablerow("",{},{"obs":[cabutcol, okbutcol]})
+			tab = table("",{},{"obs":[row1, row2]})
 
-            self.subobjs.append(table("",{'type':'content_main'},
-                                      {"obs":[tablerow("",{},
-                                                       {"obs":[tablecol("",{"colspan":"2"},
-                                                                        {"obs":[tab]})]
-                                                        })]
-                                       })
-                                )
+			self.subobjs.append(table("",{'type':'logout'},
+						{"obs":[tablerow("",{},
+							{"obs":[tablecol("",{"colspan":"2"},
+								{"obs":[tab]})]
+							})]
+						})
+					)
+			self.div_stop('content')
+			self.div_stop('content-wrapper')
 
-        else:
-            self.subobjs.append(logout("",{},{}))
+		else:
+			self.subobjs.append(logout("",{},{}))
 
-    def apply(self):
-
-        if self.okbut.pressed():
-	     self.save.put("LOGOUT",1)
-        if self.cabut.pressed():
-             self.save.put("uc_module","none")
-             self.save.put("uc_submodule","none")
+	def apply(self):
+		if self.okbut.pressed():
+			self.save.put("LOGOUT",1)
+		if self.cabut.pressed():
+			self.save.put("uc_module","none")
+			self.save.put("uc_submodule","none")

@@ -92,12 +92,34 @@ class modrelogin(unimodule.unimodule):
 
 		self.uaccess = self.args['uaccess']
 
-		self.subobjs.append(table("",
-					  {'type':'content_header'},
-					  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'login_layout'},{"obs":[]})]})]})
-				    )
-		self.nbook=notebook('', {}, {'buttons': [(_('Login'), _('Login'))], 'selected': 0})
-		self.subobjs.append(self.nbook)
+		#self.subobjs.append(table("",
+		#			  {'type':'content_header'},
+		#			  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'login_layout'},{"obs":[]})]})]})
+		#		    )
+		# self.subobjs.append(htmltext('', {}, {'htmltext': ['<div id="content-head"> <h2>%s</h2> </div>' % _('Login')]}))
+		# self.nbook=notebook('', {}, {'buttons': [(_('Login'), _('Login'))], 'selected': 0})
+		# self.subobjs.append(self.nbook)
+		header = htmltext ('', {}, \
+			{'htmltext': ["""
+						<div id="header">
+							<!-- @start header-title -->
+							<h1 class="header-title">
+								<span class="hide">univention</span> <a href="/univention-directory-manager/" title="Start">directory manager</a>
+							</h1>
+							<!-- @end header-title -->
+						<!-- @end header -->
+						</div>
+					"""]})
+		self.subobjs.append(header)
+
+		login_message = htmltext ('', {}, \
+				{'htmltext': ["""
+					<div id="content-wrapper">
+					<div id="content-head">
+					<h2>%(login)s</h2>
+					</div>
+					""" % {'login': _('Univention Directory Manager Login')}]})
+		self.subobjs.append(login_message)
 
 		sessioninvalid = None
 		if self.req and self.req.meta and self.req.meta.has_key ('Sessioninvalid') \
@@ -105,58 +127,70 @@ class modrelogin(unimodule.unimodule):
 					description_caption = _('Session Timeout')
 					description1 = _('To increase the session timeout log into Univention Management Console, select the Univention Configuration Registry module and change the value of <code>directory/manager/timeout</code>.')
 					#description2 = _('As an alternative you can set the UCR variable with the following command line statement <code>univention-config-registry directory/manager/timeout=TIMEOUT_IN_SECONDS</code>.')
-					sessioninvalid = htmltext ('login_messagebox', {}, \
-							{'htmltext': [_("""
-								<h1 style='text-align:center; margin-top:0; top:0; font-weight:bold;'>
-								<img style='float:none;' src='/icon/warning.png' />&nbsp;%s
-								</h1>
+					sessioninvalid = htmltext ('', {}, \
+							{'htmltext': ["""
+								<div class=error message>
+								<h3>%s</h3>
 								<p>%s</p>
-								""") % (description_caption, description1)]})
+								</div>
+								""" % (description_caption, description1)]})
+
 		unsupportedbrowser = None
 		if self.req and self.req.meta and self.req.meta.has_key ('Unsupportedbrowser') \
 				and self.req.meta['Unsupportedbrowser'] == '1':
 					description_caption = _('Unsupported web browser')
 					description1 = _('The Univention Directory Manager (UDM) has not been tested with your web browser. You should use Firefox since version 3.x or Microsoft Internet Explorer since version 6.0.')
-					unsupportedbrowser = htmltext ('login_messagebox', {}, \
-							{'htmltext': [_("""
-								<h1 style='text-align:center; margin-top:0; top:0; font-weight:bold;'>
-								<img style='float:none;' src='/icon/warning.png' />&nbsp;%s
-								</h1>
+					unsupportedbrowser = htmltext ('', {}, \
+							{'htmltext': ["""
+								<div class=error message>
+								<h3>%s</h3>
 								<p>%s</p>
-								""") % (description_caption, description1)]})
+								</div>
+								""" % (description_caption, description1)]})
+
+		unsecureconnection = None
+		if int(os.environ["HTTPS"]) != 1:
+			description_caption = _('Insecure Connection')
+			description1 = _('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow <a href=https://%s/univention-directory-manager/ >this link</a> to use a secure SSL connection.') % os.environ['HTTP_HOST']
+			unsecureconnection = htmltext ('', {}, \
+							{'htmltext': ["""
+								<div class=error message>
+								<h3>%s</h3>
+								<p>%s</p>
+								</div>
+								""" % (description_caption, description1)]})
 		# input fields:
-		self.usernamein=question_text(_("Username"),{'width':'265', 'puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your username.")})
-		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("cancel login procedure")})
-		if int(os.environ["HTTPS"]) == 1 or self.save.get("http") == 1:
-			self.passwdin=question_secure(_("Password"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
-			self.okbut=button(_("OK"),{'icon':'/style/ok.gif'},{"helptext":_("Login")})
-		else:
-			self.passwdin=question_secure(_("Password"),{'width':'265','passive':'true','puretext': '1'},
-							{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
-			self.okbut=button(_("OK"),{'passive':'true','icon':'/style/ok.gif'},{"helptext":_("Login")})
+		self.usernamein=question_text(_("Username"),{'puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your username.")})
+		self.cabut=button(_("Cancel"),{'class':'cancel', 'link': '/'},{"helptext":_("cancel login procedure")})
+		self.passwdin=question_secure(_("Password"),{'puretext': '1'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
+		self.okbut=button(_("Login"),{'class':'submit', 'defaultbutton':'1'},{"helptext":_("Login")})
 
 		rows=[]
 
+		if unsecureconnection:
+			self.subobjs.append(unsecureconnection)
 		if sessioninvalid:
-			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]}), tablecol("",{"colspan":"2","rowspan":'5','type':'login_layout_session_timeout'},{"obs":[sessioninvalid]})]}))
-		elif unsupportedbrowser:
-			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]}), tablecol("",{"colspan":"2","rowspan":'5','type':'login_layout_session_timeout'},{"obs":[unsupportedbrowser]})]}))
-		else:
-			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]})]}))
-		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2", 'type':'login_layout'},{"obs":[self.passwdin]})]}))
+			self.subobjs.append(sessioninvalid)
+			#rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]}), tablecol("",{"colspan":"2","rowspan":'5','type':'login_layout_session_timeout'},{"obs":[sessioninvalid]})]}))
+		if unsupportedbrowser:
+			self.subobjs.append(unsupportedbrowser)
+			#rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]}), tablecol("",{"colspan":"2","rowspan":'5','type':'login_layout_session_timeout'},{"obs":[unsupportedbrowser]})]}))
+		login_message = htmltext ('', {}, \
+				{'htmltext': ["""
+					<div id="content">
+					<div class="form-wrapper">
+					"""]})
+		self.subobjs.append(login_message);
+		self.div_start('form-item', divtype='class')
+		self.subobjs.append(self.usernamein);
+		self.div_stop('form-item')
+		#rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]})]}))
+		self.div_start('form-item', divtype='class')
+		self.subobjs.append(self.passwdin);
+		self.div_stop('form-item')
+		#rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2", 'type':'login_layout'},{"obs":[self.passwdin]})]}))
 
                 #check if http should realy be used
-                if int(os.environ["HTTPS"]) != 1:
-                        sel = ""
-                        if self.save.get("http") == 1:
-                                sel = "selected"
-                        self.httpbut = button('httpbut',{},{"helptext":_("")})
-                        self.httpbool= question_bool(   _("Not using a secure SSL connection. Please accept to continue anyway."), {},
-                                                        {'helptext': _("Not using a secure SSL connection. Please accept to continue anyway."),'button':self.httpbut,'usertext':sel})
-
-                        use_httpbool=tablecol("",{'colspan':'2','type':'login_layout'},{"obs":[self.httpbool]})
-                        rows.append(tablerow("",{},{"obs":[use_httpbool]}))
-
 
 		# select domain...
 		domaindns=[]
@@ -170,8 +204,11 @@ class modrelogin(unimodule.unimodule):
 			(domaindescr,domaindepth) = domainpos.getPrintable_depth()
 			domainlist.append({"level":str(domaindepth),"name":domainpos.getDn(),"description":domaindescr})
 		if domainlist:
-			self.choosedomain=question_select(_("Login Domain:"),{'width':'265'},{"helptext":_("choose Domain for login"),"choicelist":domainlist})
-			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.choosedomain]})]}))
+			self.choosedomain=question_select(_("Login Domain:"),{'width':'255'},{"helptext":_("choose Domain for login"),"choicelist":domainlist})
+			self.div_start('form-item', divtype='class')
+			self.subobjs.append(self.choosedomain)
+			self.div_stop('form-item')
+			#rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.choosedomain]})]}))
 
 		# select language
 		# the installed languages can be obtained via locale -a
@@ -195,21 +232,46 @@ class modrelogin(unimodule.unimodule):
 					break
 
 		if langs:
-			self.chooselang=language_dojo_select(_("Language:"),{'width':'265'},{"helptext":_("Choose language for this session"),"choicelist":langs})
-			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.chooselang]})]}))
+			self.chooselang=language_dojo_select(_("Language:"),{'width':'255'},{"helptext":_("Choose language for this session"),"choicelist":langs})
+			self.div_start('form-item', divtype='class')
+			self.subobjs.append(self.chooselang)
+			self.div_stop('form-item')
+			#rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.chooselang]})]}))
 
 		# ok / cancel
-		okcol=tablecol("",{'type':'login_layout'},{"obs":[self.okbut]})
-		cacol=tablecol("",{'type':'login_layout'},{"obs":[self.cabut]})		
-		rows.append(tablerow("",{},{"obs":[okcol,cacol]}))
+		# okcol=tablecol("",{'type':'login_layout'},{"obs":[self.okbut]})
+		# cacol=tablecol("",{'type':'login_layout'},{"obs":[self.cabut]})		
+		# self.subobjs.append(tablerow("",{},{"obs":[okcol,cacol]}))
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ['<div class="form-item">']}))
+		self.subobjs.append(self.cabut)
+		self.subobjs.append(self.okbut)
+		self.subobjs.append(htmltext('', {}, {'htmltext': ['<br class="clear"/> </div>']}))
 
-		self.subobjs.append(table("",
-					  {'type':'content_main'},
-					  {"obs":[tablerow("",
-							   {},
-							   {"obs":[tablecol("",{},{"obs":[table("",{},{"obs":rows})]})]})]}
-					  )
-				    )
+		# close content div
+		login_message = htmltext ('', {}, \
+				{'htmltext': ["""
+					</div>
+					</div>
+					"""]})
+
+		# close content-wrapper div
+		login_message = htmltext ('', {}, \
+				{'htmltext': ["""
+					</div>
+					</div>
+					</div>
+					"""]})
+		self.subobjs.append(login_message);
+
+		# rows.append(tablerow("",{},{"obs":[okcol,cacol]}))
+
+		#self.subobjs.append(table("",
+		#			  {'type':'content_main'},
+		#			  {"obs":[tablerow("",
+		#					   {},
+		#					   {"obs":[tablecol("",{},{"obs":[table("",{},{"obs":rows})]})]})]}
+		#			  )
+		#		    )
 
 
 	def apply(self):
@@ -225,10 +287,6 @@ class modrelogin(unimodule.unimodule):
 		self.save.put("relogin_password",self.passwdin.xvars.get("usertext",""))
 		mu=0
 		
-		if int(os.environ["HTTPS"]) != 1 and self.httpbool.selected():
-			self.save.put("http",1)
-		else:
-			self.save.put("http",0)
 
 		if self.cabut.pressed():
 			self.save.put("logout",1)
@@ -271,18 +329,18 @@ class modrelogin(unimodule.unimodule):
 			gpl_version = False
 			try:
 				if  user == 'admin':
-					self.usermessage(_("You can't login with the admin user"))
+					self.usermessage(_("You can't login with the admin user"), need_header=True, relogin=True)
 				else:
 					userdn=self.uaccess.searchDn("(&(objectClass=posixAccount)(uid=%s))" % user,position.getLoginDomain(),required=1,scope="domain")[0]
 			except univention.admin.uexceptions.noObject, ex:
-				self.usermessage(_("Wrong Username or Password for the selected Domain"))
+				self.usermessage(_("Wrong Username or Password for the selected Domain"), need_header=True, relogin=True)
 				return
 			except Exception,ex:
 				pass
 			try:
 				self.uaccess.bind(userdn, self.save.get("pass"))
 			except univention.admin.uexceptions.authFail,ex:
-				self.usermessage(_("Wrong Username or Password for the selected Domain"))
+				self.usermessage(_("Wrong Username or Password for the selected Domain"), need_header=True, relogin=True)
 			except univention.admin.uexceptions.licenseNotFound:
 				self.usermessage(_('Licence not found. During this session add and modify are disabled. You can install a new License in the About section.'))
 				self.userinfo(_("Login successful"))

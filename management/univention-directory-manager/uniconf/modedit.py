@@ -75,13 +75,13 @@ def mywgroup():
 
 def get_okcancelbuttons(self, edit_policy=None):
 	if edit_policy:
-		self.edit_policy_ok=button(_("OK"),{'defaultbutton': '1', 'icon':'/style/ok.gif'},{"helptext":_("ok")})
-		self.edit_policy_cancel=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Cancel")})
-		return [self.edit_policy_ok, self.edit_policy_cancel]
+		self.edit_policy_ok=button(_("OK"),{'defaultbutton': '1', 'class':'submit'},{"helptext":_("ok")})
+		self.edit_policy_cancel=button(_("Cancel"),{'class':'cancel'},{"helptext":_("Cancel")})
+		return [self.edit_policy_cancel, self.edit_policy_ok]
 	else:
-		self.okbut=button(_("OK"),{'defaultbutton': '1', 'icon':'/style/ok.gif'},{"helptext":_("ok")})
-		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Cancel")})
-		return [self.okbut, self.cabut]
+		self.okbut=button(_("OK"),{'defaultbutton': '1', 'class':'submit'},{"helptext":_("ok")})
+		self.cabut=button(_("Cancel"),{'class':'cancel'},{"helptext":_("Cancel")})
+		return [self.cabut, self.okbut]
 
 def get_iconbutton(attributes, helptext, path):
 	tmp_atts=copy.deepcopy(attributes)
@@ -220,6 +220,9 @@ class modedit(unimodule.unimodule):
 		# UI START
 
 		######## generate header #######
+		self.div_start('content-wrapper')
+		# self.div_start('content-head')
+		# self.div_stop('content-head')
 
 		header_rows = []
 
@@ -270,10 +273,11 @@ class modedit(unimodule.unimodule):
 				colcontent.append(text("",{},{"text":[buttons[-1][0]]}))
 
 			# create "widgets"
-			header_rows.append(tablerow("",{},{"obs":[tablecol("",{'colspan':'4','type':'content_position'},{"obs":[text("",{},{"text":["%s /" % _("Position:")]})] + colcontent})]}))
+			#header_rows.append(tablerow("",{},{"obs":[tablecol("",{'colspan':'4','type':'content_position'},{"obs":[text("",{},{"text":["%s /" % _("Position:")]})] + colcontent})]}))
 		else:
 			# need an empty position-row
-			header_rows.append(tablerow("",{},{"obs":[tablecol("",{'colspan':'4'},{"obs":[htmltext("",{},{'htmltext':['&nbsp;']})]})]}))
+			#header_rows.append(tablerow("",{},{"obs":[tablecol("",{'colspan':'4'},{"obs":[htmltext("",{},{'htmltext':['&nbsp;']})]})]}))
+			pass
 
 		############################################################################
 		
@@ -292,6 +296,7 @@ class modedit(unimodule.unimodule):
 			head_type = [
 				text("",{},{"text":['%s %s' %(_("type:"),univention.admin.modules.short_description(module))]})
 				]
+			head_text = _('Modify %s (%s)') % (univention.admin.objects.description(self.object), univention.admin.modules.short_description(module))
 
 		elif multiedit:
 			head_name = [
@@ -303,6 +308,7 @@ class modedit(unimodule.unimodule):
 			head_type = [
 				text("",{},{"text":["%s %s" % (_("type:"),univention.admin.modules.short_description(module))]})
 				]
+			head_text = _('Modify %d %s') % ( len(self.save.get('edit_dn_list')), univention.admin.modules.short_description(module))
 
 		elif add:
 			head_name = [
@@ -311,9 +317,12 @@ class modedit(unimodule.unimodule):
 			head_type = [
 				text("",{},{"text":['%s %s "%s"%s' %(_('type:'),_("new"), univention.admin.modules.short_description(module), _("-object"))]})
 				]
+			head_text = _('Add new %s') % univention.admin.modules.short_description(module)
+		else:
+			head_text = ''
 
 		advanced_button = button('change',{},{'helptext':_('change')})
-		head_advanced_text = [ text("",{},{"text":[_("Show the advanced settings")]})]
+		# head_advanced_text = [ text("",{},{"text":[_("Show the advanced settings")]})]
 		if self.save.get('advanced_tabs'):
 			advanced_value = self.save.get('advanced_tabs')
 		else:
@@ -326,15 +335,14 @@ class modedit(unimodule.unimodule):
 		else:
 			advanced_value = None
 
-		self.advanced_checkbox = question_bool('', {},{'helptext': _("Show the advanced settings"), 'usertext': advanced_value, 'button': advanced_button})
+		self.advanced_checkbox = question_bool(_("Show the advanced settings"), {},{'helptext': _("Show the advanced settings"), 'usertext': advanced_value, 'button': advanced_button})
 		head_advanced = [ self.advanced_checkbox ]
 
+		links=[htmltext('',{},{'htmltext':[""]})]
 		if hasattr(self.object,'link'):
 			linktext=''
 			res=self.object.link()
-			if not res:
-				links=[htmltext('',{},{'htmltext':[""]})]
-			else:
+			if res:
 				for link in res:
 					if link.has_key('name') and link.has_key('url'):
 						if link.has_key('icon'):
@@ -343,20 +351,32 @@ class modedit(unimodule.unimodule):
 							linktext+=' <a href="%s" target="_blank">%s</a>'%(link['url'],link['name'])
 
 				links=[htmltext('',{},{'htmltext':[linktext]})]
-		else:
-			links=[htmltext('',{},{'htmltext':[""]})]
 		header_rows.append(
 			tablerow('',{},{'obs':
 					[tablecol('',{'type':'content_icon'},{'obs':[head_icon]}),
-					 tablecol('',{},{'obs':head_name}),
-					 tablecol('',{},{'obs':head_type}),
+					 tablecol('',{},{'obs': [text("",{},{"text":[head_text]})]}),
+					 #tablecol('',{},{'obs':head_name}),
+					 #tablecol('',{},{'obs':head_type}),
 					 tablecol('',{'type':'header_checkbox'},{'obs':head_advanced}),
-					 tablecol('',{},{'obs':head_advanced_text}),
-					 tablecol('',{'type':'object_links'},{'obs':links})
+					 # tablecol('',{},{'obs':head_advanced_text}),
+					 # tablecol('',{'type':'object_links'},{'obs':links})
 					 ]}))
 
-		# build header-table
+		#self.div_start('advanced-head', divtype='class')
+		#self.subobjs.append(self.advanced_checkbox)
+		#self.div_stop('advanced-head')
+
+		self.div_start('advanced-head-text', divtype='class')
+		#self.subobjs.append(text("",{},{"text":[head_text]}))
+		# self.subobjs.append(head_icon)
+		# self.subobjs.append(head_name[0]),
+		# self.subobjs.append(head_type[0]),
 		self.subobjs.append(table("",{'type':'content_header'},{"obs":header_rows}))
+		self.div_stop('advanced-head-text')
+
+		#self.div_start('advanced-head-space', divtype='class')
+		#self.div_start('advanced-head', divtype='class')
+		# build header-table
 
 		####### header generated ######
 
@@ -386,12 +406,14 @@ class modedit(unimodule.unimodule):
 
 		self.nbook = notebook('', {}, {'buttons': tabbing.tabs(), 'selected': tabbing.selected(tab)})
 		self.subobjs.append(self.nbook)
+		self.div_start('content')
 
 		current_module = tabbing.module(tab)
 		current_object = tabbing.object(tab)
 
 		####### tabs generated #######
 
+		self.div_start('form-wrapper', divtype='class')
 
 		####### generate content ######
 
@@ -557,6 +579,9 @@ class modedit(unimodule.unimodule):
 			else:
 				nbhead = header(tabbing.long_description(tab), {'type': '4'}, {})
 			cols.append(tablecol("",{'type':'tab_description'},{"obs":[nbhead]}))
+
+			if not edit_policy and not tabbing.is_policy_selection(tab) and current_module == module:
+				cols.append(tablecol("",{'type':'tab_description'},{"obs":links}))
 
 			current_object=self.object
 			if not current_module == module:
@@ -1775,9 +1800,6 @@ class modedit(unimodule.unimodule):
 							for pn in profiles['univentionDefaultKdeProfiles']:
 								univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, ('pn: %s' % pn))
 								profile_choicelist.append({'name': pn, 'description': pn})
-
-						if not atts.get('width'):
-							atts['width']='450' # FIXME
 
 						self.minput[name].append(question_select(property.short_description,atts,{'choicelist':profile_choicelist,'helptext':_('select profile')}))
 
@@ -4796,12 +4818,27 @@ class modedit(unimodule.unimodule):
 			main_rows.append(tablerow("",{},{"obs":[tablecol("",{'type':'content_main'},{"obs":[table("",{'type':'multi'},{"obs":rows})]})]}))
 
 
-		main_rows.append(tablerow("",{},{"obs":[tablecol("",{'type':'okcancel'},{"obs":get_okcancelbuttons(self, edit_policy=edit_policy)})]}))
+		#okcancelbuttons = get_okcancelbuttons(self, edit_policy=edit_policy)
+		#main_rows.append(tablerow("",{},{"obs":[
+		#						tablecol("",{'type':'okcancel'},{"obs":[okcancelbuttons[0]]}),
+		#						tablecol("",{'type':'okcancel'},{"obs":[okcancelbuttons[1]]})
+		#				]}))
 		self.subobjs.append(table("",
 					  {'type':'content_main'},
 					  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'content_main'},{"obs":main_rows})]})]})
 				    )
+		okcancelbuttons = get_okcancelbuttons(self, edit_policy=edit_policy)
+		self.subobjs.append(table("",
+					  {'type':'content_main'},
+					  {"obs":[tablerow("",{},{"obs":[
+								tablecol("",{'type':'cancel'},{"obs":[okcancelbuttons[0]]}),
+								tablecol("",{'type':'okcancel'},{"obs":[okcancelbuttons[1]]})
+						]})]}))
 		self.tabbing = tabbing
+		self.div_stop('form-wrapper')
+
+		self.div_stop('content')
+		self.div_stop('content-wrapper')
 
 	def apply(self, cancelMessage='', okMessage=''):
 		if self.applyhandlemessages():

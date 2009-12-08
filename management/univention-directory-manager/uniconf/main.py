@@ -153,6 +153,7 @@ class dialog(unimodule.unimodule):
 
 		# display info box with username
 		if good_login:
+			self.subobjs.append(table('',{'border':'1'},{'obs':rows}))
 			infoboxrows=[]
 			position=self.save.get('ldap_position')
 			logindomain=position.getLoginDomain()

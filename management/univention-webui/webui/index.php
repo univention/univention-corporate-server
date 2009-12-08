@@ -93,10 +93,16 @@ if(is_array($_FILES['userfile'])){
 
 if(!isset($logout))	{
 	$glob_tabindex=1;
-	$container = new webui_container($config, $glob_tabindex);
+	$container = new webui_container($config, $glob_tabindex, False);
+	if($config->layout_type && $config->layout_type=='menuless') {
+		$container->set_body_class("component-menuless");
+	} else {
+		$container->set_body_class("component");
+	}
 	$trans = new webui_translator($container, $config);
 	$parser = new webui_in($config, $trans);
 	if(!isset($session_id)) {
+		$container->set_body_class("login");
 		#################### For orig. Python Backend   ############
 		// spawn off daemon
 		$fp = popen($config->run." -s -", 'w');
@@ -106,6 +112,7 @@ if(!isset($logout))	{
 		$pipe=fsockopen("unix://".$config->socket_filename, 0);
         if(isset($module)) {
 			fwrite($pipe, "jumpurl: ".$module."\n");
+	 		$container->set_body_class("login");
 		}
 		if(isset($opts)) {
 			fwrite($pipe, "opts: ".$opts."\n");
@@ -113,9 +120,14 @@ if(!isset($logout))	{
 // send a notification when the session was caught by the timeout
 		if ($sessioninvalid == '1') {
 			fwrite($pipe, "Sessioninvalid: 1\n");
+	 		$container->set_body_class("login");
+		}
+		if ($relogin == '1') {
+	 		$container->set_body_class("login");
 		}
 		if (!isBrowserSupported() ) {
 			fwrite($pipe, "Unsupportedbrowser: 1\n");
+			$container->set_body_class("login");
 		}
 		fwrite($pipe, "SessionId: ".$config->session_id."\n");
 		fwrite($pipe, "Number: -1\n\n\0");
@@ -147,6 +159,7 @@ if(!isset($logout))	{
 		default:
 			$long_table[key($long_table)] = ($long_table[key($long_table)]-1)*$visible;
 		} if ($usrinput) {
+			$container->set_body_class("component");
 			$usrinput[key($long_table)] = $long_table[key($long_table)];
 			$output = new webui_out($config, $usrinput, $session_data, $parser );
 		} else {
@@ -161,6 +174,7 @@ if(!isset($logout))	{
 	$config->del_old();
 } else {
 	$container = new webui_container($config, $glob_tabindex);
+	$container->set_body_class("login");
 	#$this->config = $config;
 	$container->config = $config;
 	$container->logout($logout, $session_id);

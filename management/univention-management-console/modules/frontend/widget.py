@@ -46,8 +46,8 @@ class Notebook( object ):
 		self.selected = 0
 		self.__refresh = {}
 		self.notebook = None
-		# create default pages: overview, about
-		self.pages.extend( [ pages.Overview( self ), pages.About( self ) ] )
+		# create default page: overview
+		self.pages.extend( [ pages.Overview( self ) ] )
 
 	def existsPage( self, name ):
 		'''Checks whether a page already exists or not. This is used to
@@ -69,8 +69,7 @@ class Notebook( object ):
 		"""Append a new page to the notebook (before about page) and if
 		the argument 'selected' is set to True the page will be the new
 		current page"""
-		# insert before 'about' page
-		self.pages.insert( -1, page )
+		self.pages.append( page )
 		if select:
 			self.selectPage( page.id )
 
@@ -99,13 +98,15 @@ class Notebook( object ):
 		for i in range( 0, len( self.pages ) ):
 			pages.append( self.pages[ i ].title( selected = ( i == self.selected ) ) )
 
+		objects.append( self.div_start('content-wrapper', divtype='id'))
 		args = { 'buttons' : pages, 'selected' : self.selected }
 		self.notebook = uniparts.notebook( '', {}, args )
 		objects.append( self.notebook )
+		objects.append( self.div_start('content', divtype='id'))
 
 		# layout current page
 		inner_opts = { 'obs': page_layout }
-		inner_table = uniparts.table( 'testtesttest', { 'type' : 'inner_table', 'width':'100%' }, inner_opts )
+		inner_table = uniparts.table( 'testtesttest', { 'type' : 'inner_table' }, inner_opts )
 
 		col1 = uniparts.tablecol( '', {}, { 'obs': [ inner_table ] } )
 		row1 = uniparts.tablerow( '', {}, { 'obs' : [ col1 ] } )
@@ -115,7 +116,24 @@ class Notebook( object ):
 		# check for refresh
 		self.__refresh[ self.selected ] = self.pages[ self.selected ].refresh()
 
+		objects.append( self.div_stop('content') )
+		objects.append( self.div_stop('content-wrapper') )
+
 		return objects
+
+	def div_start(self, div, divtype='id'):
+		div_header = uniparts.htmltext ('', {}, \
+			{'htmltext': ["""
+				<div %(type)s="%(div)s">
+				""" % {'div': div, 'type': divtype }]})
+		return div_header
+
+	def div_stop(self, div=None):
+		div_header = uniparts.htmltext ('', {}, \
+			{'htmltext': ["""
+				</div>
+				""" ]})
+		return div_header
 
 	def logout ( self ):
 		self.save.put( 'logout' , '1')

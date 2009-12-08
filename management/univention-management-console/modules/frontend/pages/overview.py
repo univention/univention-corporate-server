@@ -59,13 +59,11 @@ class Overview( base.Page ):
 
 		iconbutton = uniparts.button( '',{ 'icon' : umc_tools.image_get( iconpath, size = umc_tools.SIZE_LARGE ) },
 									  { "helptext" : description } )
-		rows.append( uniparts.tablerow( "", { 'type' : 'desktopicon' },
-										{ 'obs' : [ uniparts.tablecol( '', { 'type' : 'desktopicon' },
-																	   { 'obs' : [ iconbutton ] } ) ] } ) )
+		rows.append( uniparts.tablecol( '', { 'type' : 'desktopicon' }, { 'obs' : [ iconbutton ] } ))
 
 		descriptionbutton = uniparts.button( description, { 'link' : '1' }, { 'helptext' : description } )
-		col1 = uniparts.tablecol( '', { 'type' : 'desktopicon' }, { 'obs' : [ descriptionbutton ] } )
-		rows.append( uniparts.tablerow( '', { 'type' : 'desktopicon' }, { 'obs' : [ col1 ] } ) )
+		col1 = uniparts.tablecol( '', { 'type' : 'desktopicon_description' }, { 'obs' : [ descriptionbutton ] } )
+		rows.append(  col1  )
 
 		return ( iconbutton, descriptionbutton,
 				 uniparts.table( '', { 'type' : 'desktopicon' }, { 'obs' : rows } ) )
@@ -103,7 +101,7 @@ class Overview( base.Page ):
 				buttoncols.append( uniparts.tablecol( '', { }, { 'obs' : [ btable ] } ) )
 				self.module_buttons[ name ] = ( but1, but2 )
 				iconcnt += 1
-				if iconcnt >= 10:
+				if iconcnt >= 4:
 					buttonrows.append( uniparts.tablerow( '', { }, { 'obs' : buttoncols } ) )
 					buttoncols = []
 					iconcnt = 0
@@ -119,10 +117,6 @@ class Overview( base.Page ):
 				uniparts.tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
 				]}))
 
-		self.logoutbutton = uniparts.button( _( 'Logout from Univention Management Console' ), { 'icon' : '/style/cancel.gif' }, { 'helptext' : _( 'Logout from Univention Management Console' ) } )
-		rows.append(uniparts.tablerow("",{},{"obs":[
-				uniparts.tablecol("",{'type':'about_layout'},{"obs":[ self.logoutbutton ]}),
-				]}))
 
 		return rows
 
@@ -130,13 +124,10 @@ class Overview( base.Page ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Overview.apply' )
 		base.Page.apply( self )
 		# see if the user has clicked anything on this page
-		if self.logoutbutton.pressed():
-			self.__notebook.logout()
-		else:
-			for name, ( but1, but2 ) in self.module_buttons.items():
-				if but1.pressed() or but2.pressed():
-					if self.__notebook.existsPage( name ):
-						self.__notebook.selectPage( name )
-					else:
-						mod = module.Module( name, self.modules[ name ] )
-						self.__notebook.appendPage( mod )
+		for name, ( but1, but2 ) in self.module_buttons.items():
+			if but1.pressed() or but2.pressed():
+				if self.__notebook.existsPage( name ):
+					self.__notebook.selectPage( name )
+				else:
+					mod = module.Module( name, self.modules[ name ] )
+					self.__notebook.appendPage( mod )

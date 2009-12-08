@@ -90,8 +90,8 @@ class NextButton( Button ):
 		Button.__init__( self, _( 'Next' ), 'actions/next', actions = actions, attributes = attributes, close_dialog = close_dialog, icon_right = True )
 
 class AddButton( Button ):
-	def __init__( self, actions = [], attributes = {}, close_dialog = True ):
-		Button.__init__( self, _( 'Add' ), 'actions/add', actions = actions, attributes = attributes, close_dialog = close_dialog )
+	def __init__( self, actions = [], attributes = {}, close_dialog = True, label = _('Add') ):
+		Button.__init__( self, label, 'actions/add', actions = actions, attributes = attributes, close_dialog = close_dialog )
 
 class SelectionButton( Button ):
 	def __init__( self, label = '', choices = [], actions = [], attributes = {}, close_dialog = True ):
@@ -189,8 +189,8 @@ class ISignalButton( Button ):
 
 class CancelButton( ISignalButton ):
 	"""Can be used for cancel buttons"""
-	def __init__( self, attributes = {} ):
-		ISignalButton.__init__( self, label = _( 'Cancel' ), tag = 'actions/cancel',
+	def __init__( self, label = _( 'Cancel' ), attributes = {} ):
+		ISignalButton.__init__( self, label , tag = 'actions/cancel',
 								actions = [ '::cancel' ], attributes = attributes )
 
 class CloseButton( ISignalButton ):

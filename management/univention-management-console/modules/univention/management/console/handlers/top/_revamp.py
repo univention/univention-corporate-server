@@ -47,16 +47,17 @@ class Web( object ):
 
 		sort = umcd.make( self[ 'top/view' ][ 'sort' ], attributes = { 'width' : '165' },
 						  default = object.options.get( 'sort', 'cpu' ) )
-		count = umcd.make( self[ 'top/view' ][ 'count' ], attributes = { 'width' : '80' },
+		count = umcd.make( self[ 'top/view' ][ 'count' ], attributes = { 'width' : '165' },
 						   default = object.options.get( 'count', '50' ) )
 
 		req = umcp.Command( args = [ 'top/view' ] )
-		btn = umcd.Button( _( 'Reload' ), 'actions/ok',
+		btn = umcd.Button( _( 'Reload' ), attributes = {'class': 'submit'}, 
 						   actions = [ umcd.Action( req, [ sort.id(), count.id() ] ) ] )
-		opts.add_row( [ sort, count, btn ] )
+		opts.add_row( [ sort, count ] )
+		opts.add_row( [ umcd.HTML(' '), btn ] )
 
 		lst.set_header( [ _( 'User' ), _( 'PID' ), _( 'CPU' ), _( 'Virtual size' ), _( 'Resident set size' ),
-						  _( 'Memory in %' ), _( 'Program' ), '' ] )
+						  _( 'Memory in %' ), _( 'Program' ), _('Select') ] )
 		boxes = []
 
 		for proc in res.dialog:
@@ -70,8 +71,8 @@ class Web( object ):
 										  'count' : object.options.get( 'count', '50' ) } )
 		actions = ( umcd.Action( req, boxes, True ), umcd.Action( req_list ) )
 		choices = [ ( 'top/kill', _( 'Kill processes' ) ), ]
-		select = umcd.SelectionButton( _( 'Select the operation' ), choices, actions )
-		lst.add_row( [ umcd.Fill( 7 ), select ] )
+		select = umcd.SelectionButton( _( 'Select the operation' ), choices, actions, attributes = {'colspan': '2', 'width': '245'} ) #FIXME
+		lst.add_row( [ umcd.Fill( 6 ), select ] )
 
 		res.dialog = [ opts, lst ]
 		self.revamped( object.id(), res )

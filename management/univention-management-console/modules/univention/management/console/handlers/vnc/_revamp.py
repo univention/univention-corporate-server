@@ -70,7 +70,7 @@ class Web( object ):
 			lst.add_row( [ umcd.InfoBox( _( 'Currently there is no VNC server running.' ) ) ] )
 			req = umcp.Command( args = [ 'vnc/start' ] )
 			req_config = umcp.Command( args = [ 'vnc/config' ] )
-			btn = umcd.Button( _( 'Start' ), 'actions/ok',
+			etn = umcd.Button( _( 'Start' ), 'actions/ok',  attributes = {'class': 'submit'},
 							   actions = [ umcd.Action( req ), umcd.Action( req_config ) ] )
 			lst.add_row( [ btn ] )
 			res.dialog = [ umcd.Frame( [ lst ], _( 'Start VNC server' ) ) ]
@@ -79,7 +79,7 @@ class Web( object ):
 			lst.add_row( [ umcd.HTML( self._create_vnc_url() ) ] )
 			req = umcp.Command( args = [ 'vnc/stop' ] )
 			req_config = umcp.Command( args = [ 'vnc/config' ] )
-			btn = umcd.Button( _( 'Stop VNC server' ), 'actions/ok',
+			btn = umcd.Button( _( 'Stop VNC server' ),
 							   actions = [ umcd.Action( req ), umcd.Action( req_config ) ] )
 			lst.add_row( [ btn ] )
 			res.dialog = [ umcd.Frame( [ lst ], _( 'Connect to VNC session' ) ) ]

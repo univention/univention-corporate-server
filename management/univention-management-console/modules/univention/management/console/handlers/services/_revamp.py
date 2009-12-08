@@ -44,7 +44,7 @@ class Web( object ):
 		lst = umcd.List()
 		servs = res.dialog
 		boxes = []
-		lst.set_header( [ umcd.Fill( 2, _( 'Name' ) ), _( 'Status' ), _( 'Start type' ), _( 'Description' ) ] )
+		lst.set_header( [ umcd.Fill( 2, _( 'Name' ) ), _( 'Status' ), _( 'Start type' ), _( 'Description' ), _('Select') ] )
 		for name, srv in servs.items():
 			if srv.running:
 				icon = umcd.Image( 'actions/yes', umct.SIZE_SMALL )

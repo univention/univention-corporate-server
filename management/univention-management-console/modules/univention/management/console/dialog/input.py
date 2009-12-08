@@ -41,7 +41,7 @@ class Input( base.Text ):
 	specific static values additional to the option provided by the
 	input field itself."""
 	def __init__( self, option = ( None, None ), default = None, static_options = {},
-				  attributes = {} ):
+				  attributes = {}, ):
 		self.value = None
 		self.syntax = None
 		self.option = None

@@ -62,9 +62,10 @@ def main(argv):
 	debugging = 0
 	language = configRegistry.get ('directory/manager/web/language', LANG_EN)
 	https = 0 
+	http_host = None
 
 	# parse command line arguments
-	opts, args = getopt.getopt(argv[1:], 's:t:d:l:e:')
+	opts, args = getopt.getopt(argv[1:], 's:t:d:l:e:h:')
 	for opt, val in opts:
 		if opt == '-s':
 			if val != '-':
@@ -86,6 +87,8 @@ def main(argv):
 			language = val
 		elif opt == '-e':
 			https = val
+		elif opt == '-h':
+			http_host = val
 
 	if debugging >0:
 		univention.debug.init('/var/log/univention/directory-manager-web.log', 1, 1)
@@ -94,6 +97,7 @@ def main(argv):
 	else:
 		univention.debug.init('/dev/null', 0, 0)
 
+	os.environ["HTTP_HOST"] = http_host
 	os.environ["HTTPS"] = https
 	os.environ["LC_MESSAGES"]=language
 	try:

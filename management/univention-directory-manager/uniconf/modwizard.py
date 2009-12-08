@@ -137,6 +137,7 @@ class modwizard(unimodule.unimodule):
 	def mytype(self):
 		return "dialog"
 
+
 	def add(self, module_type):
 		position=self.position
 		position.setDn(position.getBase())
@@ -145,16 +146,46 @@ class modwizard(unimodule.unimodule):
 		###########################################################################
 		# header
 		###########################################################################
+		self.div_start('content-wrapper')
 
 		module=univention.admin.modules.get(module_type)
 		module_description=univention.admin.modules.short_description(module)
-		self.subobjs.append(table("",
-					  {'type':'content_header'},
-					  {"obs":[tablerow("",{},{"obs":[tablecol("",{},{"obs":[]})]})]}))
+		#self.subobjs.append(table("",
+		#			  {'type':'content_header'},
+		#			  {"obs":[tablerow("",{},{"obs":[tablecol("",{},{"obs":[]})]})]}))
 
-		self.nbook=notebook('', {}, {'buttons': [(univention.admin.modules.wizardOperations(module).get("add", ['',''])[1],
-							  univention.admin.modules.wizardOperations(module).get("add", ['',''])[1])], 'selected': 0})
+		tab_line = htmltext ('', {}, \
+			{'htmltext': ["""
+					<div id="content-head">
+					<!-- @start tab-navigation -->
+					<ul class="tabs">
+						<li class="active">
+				""" ]})
+		self.subobjs.append(tab_line)
+		#self.nbook=notebook('', {}, {'buttons': [(univention.admin.modules.wizardOperations(module).get("add", ['',''])[1],
+		#					  univention.admin.modules.wizardOperations(module).get("add", ['',''])[1])], 'selected': 0})
+		self.nbook=button(univention.admin.modules.wizardOperations(module).get("add", ['',''])[1],{'link': '1'},{'helptext': univention.admin.modules.wizardOperations(module).get("add", ['',''])[1]})
 		self.subobjs.append(self.nbook)
+
+		tab_line = htmltext ('', {}, \
+			{'htmltext': ["""
+						</li>
+					</ul>
+					<!-- @end tab-navigation -->
+				</div>
+				""" ]})
+		self.subobjs.append(tab_line)
+
+		self.div_start('content')
+
+		#headline = htmltext ('', {}, \
+		#	{'htmltext': ["""
+		#		<h2 class=inline>%s</h2>
+		#		""" % univention.admin.modules.wizardOperations(module).get("add", ['',''])[1]
+		#		]})
+		#self.subobjs.append(headline)
+
+		self.div_start('form-wrapper', divtype='class')
 
 		###########################################################################
 		# Select Domain
@@ -245,12 +276,17 @@ class modwizard(unimodule.unimodule):
 
 		if displaypathlist:
 			self.path_select=question_select(_("Select container:"),{},{"helptext":_("Choose a position for your object"),"choicelist":displaypathlist})
-			path_select_col=tablecol("",{'type':'wizard_layout'},{"obs":[self.path_select]})
+			path_select_obj=self.path_select
 		else:
-			path_select_col=tablecol("",{'type':'wizard_layout'},{"obs":[text('',{},{'text':[_('no default path found')]})]})
+			path_select_obj=text('',{},{'text':[_('no default path found')]})
 
 		self.save.put('wizard_select_pathlist',pathlist)
 		self.save.put('wizard_select_displaypathlist',displaypathlist)
+
+		self.div_start('form-item col', divtype='class')
+		self.subobjs.append(path_select_obj)
+		self.div_stop('form-item col')
+
 
 		rows=[]
 		###########################################################################
@@ -290,12 +326,11 @@ class modwizard(unimodule.unimodule):
 			self.select_superordinate_button=button(_("apply"),{},{"helptext":""})
 			self.superordinate_select=question_select(_("Superordinate:"),{},{"helptext":_("Superordinate Object"),"choicelist":superordinatechoicelist,"button":self.select_superordinate_button})
 			superordinate_select_col=tablecol("",{'type':'wizard_layout'},{"obs":[self.superordinate_select]})
-			pathrow=tablerow("",{},{"obs":[path_select_col]})
-			superrow=tablerow("",{},{"obs":[superordinate_select_col]})
-			supertab=table("",{},{"obs":[pathrow,superrow]})
-			rows.append(tablerow("",{},{"obs":[domain_select_col,tablecol("",{},{"obs":[supertab]})]}))
-		else:
-			rows.append(tablerow("",{},{"obs":[domain_select_col, path_select_col]}))
+			self.new_row()
+			self.div_start('form-item col', divtype='class')
+			self.subobjs.append(self.superordinate_select)
+			self.div_stop('form-item col')
+
 
 		# check for child modules
 		child_ids=univention.admin.modules.childModules(module)
@@ -320,7 +355,11 @@ class modwizard(unimodule.unimodule):
 			else:
 				childlist[0]["selected"]="1"
 			self.child_module_select=question_select(_("Select Type:"),{},{"helptext":_("Choose the desired object type."), "choicelist":childlist})
-			rows.append(tablerow('',{},{'obs':[tablecol("",{"colspan":"2",'type':'wizard_layout'},{"obs":[self.child_module_select]})]}))
+			self.div_start('form-item col', divtype='class')
+			self.subobjs.append(self.child_module_select)
+			self.div_stop('form-item col')
+			self.new_row()
+			#rows.append(tablerow('',{},{'obs':[tablecol("",{"colspan":"2",'type':'wizard_layout'},{"obs":[self.child_module_select]})]}))
 
 		# check if module has templates
 		if hasattr(module,'template') and module.template:
@@ -333,28 +372,40 @@ class modwizard(unimodule.unimodule):
 
 			self.template_select=question_select(_("Select Template:"),{},{"helptext":_("Which template should new the new object be based on?"),
 																		   "choicelist":templatelist})
-			rows.append(tablerow('',{},{'obs':[tablecol("",{"colspan":"2",'type':'wizard_layout'},{"obs":[self.template_select]})]}))
+			# rows.append(tablerow('',{},{'obs':[tablecol("",{"colspan":"2",'type':'wizard_layout'},{"obs":[self.template_select]})]}))
+			self.div_start('form-item col', divtype='class')
+			self.subobjs.append(self.template_select)
+			self.div_stop('form-item col')
+			self.new_row()
+
+		if not child_ids and not (hasattr(module,'template') and module.template):
+			self.new_row()
 
 
 		# generate table
 		main_rows = []
-		main_rows.append(
-			tablerow("",{},{"obs":[tablecol("",{'type':'content_main'},{"obs":[table("",{'type':'search_header'},{"obs":rows})]})]})
-		)
+		#main_rows.append(
+		#	tablerow("",{},{"obs":[tablecol("",{'type':'content_main'},{"obs":[table("",{'type':'search_header'},{"obs":rows})]})]})
+		#)
 
-		attr={'icon':'/style/ok.gif'}
+		self.div_start('form-item col', divtype='class')
+		self.div_stop('form-item col')
+
+		self.div_start('form-item col', divtype='class')
+		attr={'class':'submit'}
 		if not pathlist:
 			attr['passive']='1'
 		attr['defaultbutton']='1'
+		self.cancel_button=button(_('Cancel'),{'class':'cancel'},{'helptext':_('Cancel')})
+		self.subobjs.append(self.cancel_button)
 		self.next_button=button(_('Next'),attr,{'helptext':_('go ahead')})
-		self.cancel_button=button(_('Cancel'),{'icon':'/style/cancel.gif'},{'helptext':_('Cancel')})
-		main_rows.append(
-			tablerow("",{},{"obs":[tablecol("",{'type':'okcancel'},{"obs":[self.next_button, self.cancel_button]})]})
-		)
-		self.subobjs.append(table("",
-					  {'type' : 'content_main'},
-					  {"obs" : main_rows})
-				    )
+		self.subobjs.append(self.next_button)
+		self.div_stop('form-item col')
+		self.new_row()
+
+		self.div_stop('form-wrapper')
+		self.div_stop('content')
+		self.div_stop('content-wrapper')
 
 	def report( self, search_type ):
 		'''creates reports for all objects defined by the search criterias'''
@@ -365,14 +416,12 @@ class modwizard(unimodule.unimodule):
 		if not module_object:
 			return
 
-		# layout: header
-		self.subobjs.append(table("",
-					  {'type':'content_header'},
-					  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'wizard_layout'},{"obs":[]})]})]}))
+		self.div_start('content-wrapper', divtype='id')
 
 		title = _( 'Create %s Reports' ) % univention.admin.modules.short_description( module_object )
 		self.nbook=notebook('', {}, {'buttons': [( title, title )], 'selected': 0})
 		self.subobjs.append(self.nbook)
+		self.div_start('content', divtype='id')
 
 		rows = []
 		# Available reports
@@ -403,8 +452,8 @@ class modwizard(unimodule.unimodule):
 				if report_list[ i ][ 'name' ] == sel:
 					report_list[ i ][ 'selected' ] = '1'
 					break
-		self.report_select = question_select( _( "Select Report:" ),{ 'width' : '300' }, { "helptext" : _( "Select Report" ), "choicelist" : report_list } )
-		self.create_report_button=button(_('create report'),{'icon':'/style/ok.gif'},{'helptext':_('Create Reports')})
+		self.report_select = question_select('', { 'width' : '300' }, { "helptext" : _( "Select Report" ), "choicelist" : report_list } )
+		self.create_report_button=button(_('create report'),{'class':'submit'},{'helptext':_('Create Report')})
 
 		description = _( 'Select the report you want to create: ' )
 		rows.append(tablerow("",{},{"obs":[
@@ -412,12 +461,7 @@ class modwizard(unimodule.unimodule):
 					 { 'obs' : [ text('',{},{'text':[ description ]}) ] } )	]}))
 		rows.append(tablerow("",{},{"obs":[
 			tablecol( '', { 'type':'wizard_layout'},{'obs':[self.report_select]}),
-			tablecol( '', { 'colspan' : '2', 'type' : 'wizard_layout' },{ 'obs' : [ text('',{},{'text':[ '' ] } ) ] } )
-												]}))
-		rows.append(tablerow("",{},{"obs":[
-			tablecol( '', { 'type' : 'wizard_layout' },{ 'obs' : [ text('',{},{'text':[ '' ] } ) ] } ),
 			tablecol( '', { 'type' : 'wizard_layout_bottom' },{ 'obs' : [ self.create_report_button ] } ),
-			tablecol( '', { 'type' : 'wizard_layout' },{ 'obs' : [ text('',{},{'text':[ '' ] } ) ] } )
 												]}))
 		rows.append(tablerow("",{},{"obs":[
 			tablecol( '', { 'colspan' : '3', 'type' : 'wizard_layout' },{ 'obs' : [ text('',{},{'text':[ '' ] } ) ] } )
@@ -460,6 +504,8 @@ class modwizard(unimodule.unimodule):
 					  {'type':'content_main'},
 					  {"obs":main_rows})
 				    )
+		self.div_stop('content')
+		self.div_stop('content-wrapper')
 
 	def create_report( self ):
 		position=self.position
@@ -674,16 +720,52 @@ class modwizard(unimodule.unimodule):
 		# header
 		###########################################################################
 
-		self.subobjs.append(table("",
-					  {'type':'content_header'},
-					  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'wizard_layout'},{"obs":[]})]})]}))
+		self.div_start('content-wrapper')
 
-		self.nbook=notebook('', {}, {'buttons': [(univention.admin.modules.wizardOperations(search_module).get("find", ['',''])[1],
-							  univention.admin.modules.wizardOperations(search_module).get("find", ['',''])[1])], 'selected': 0})
+		#self.subobjs.append(table("",
+		#			  {'type':'content_header'},
+		#			  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'wizard_layout'},{"obs":[]})]})]}))
+
+		tab_line = htmltext ('', {}, \
+			{'htmltext': ["""
+					<div id="content-head">
+					<!-- @start tab-navigation -->
+					<ul class="tabs">
+						<li class="active">
+				""" ]})
+		self.subobjs.append(tab_line)
+		self.nbook=button(univention.admin.modules.wizardOperations(search_module).get("find", ['',''])[1],{'link': '1'},{'helptext': univention.admin.modules.wizardOperations(search_module).get("find", ['',''])[1]})
+		# self.nbook=button(univention.admin.modules.wizardOperations(search_module).get("find", ['',''])[1],{'link': '1'},{'helptext': _('Find')})
 		self.subobjs.append(self.nbook)
+
+		#self.nbook=notebook('', {}, {'buttons': [(univention.admin.modules.wizardOperations(search_module).get("find", ['',''])[1],
+		#					  univention.admin.modules.wizardOperations(search_module).get("find", ['',''])[1])], 'selected': 0})
+
+		tab_line = htmltext ('', {}, \
+			{'htmltext': ["""
+						</li>
+					</ul>
+					<!-- @end tab-navigation -->
+				</div>
+				""" ]})
+		self.subobjs.append(tab_line)
+
+		self.div_start('content')
+
+		#headline = htmltext ('', {}, \
+		#	{'htmltext': ["""
+		#		<h2 class=inline>%s</h2>
+		#		""" % univention.admin.modules.wizardOperations(search_module).get("find", ['',''])[1]
+		#		]})
+		#self.subobjs.append(headline)
+
+		#self.nbook=notebook('', {}, {'buttons': [(univention.admin.modules.wizardOperations(search_module).get("find", ['',''])[1],
+		#					  univention.admin.modules.wizardOperations(search_module).get("find", ['',''])[1])], 'selected': 0})
+		#self.subobjs.append(self.nbook)
 
 		###########################################################################
 		# begin search table
+		self.div_start('form-wrapper', divtype='class')
 
 		rows=[]
 
@@ -716,7 +798,10 @@ class modwizard(unimodule.unimodule):
 		# create select box
 		self.select_domain_button=button(_("apply"),{},{"helptext":""})
 		self.domain_select=question_select(_("Select domain:"),{},{"helptext":_("Select domain"),"choicelist":domainlist,"button":self.select_domain_button})
-		domain_select_col=tablecol("",{'type':'wizard_layout'},{"obs":[self.domain_select]})
+		# domain_select_col=tablecol("",{'type':'wizard_layout'},{"obs":[self.domain_select]})
+		# self.div_start('form-item col', divtype='class')
+		# self.subobjs.append(self.domain_select)
+		# self.div_stop('form-item col')
 
 		###########################################################################
 		# select search path
@@ -808,7 +893,11 @@ class modwizard(unimodule.unimodule):
 
 		self.select_path_button=button(_("apply"),{},{"helptext":""})
 		self.path_select=question_select(_("Search:"),{},{"helptext":_("Where to search"),"choicelist":displaypathlist,"button":self.select_path_button})
-		path_select_col=tablecol("",{"colspan":"2",'type':'wizard_layout'},{"obs":[self.path_select]})
+		# path_select_col=tablecol("",{"colspan":"2",'type':'wizard_layout'},{"obs":[self.path_select]})
+		if not hasattr(search_module,"wizardsuperordinates"):
+			self.div_start('form-item col', divtype='class')
+			self.subobjs.append(self.path_select)
+			self.div_stop('form-item col')
 
 		searchpath=[path_preselect]
 		if searchpath[0] == allstr:
@@ -866,13 +955,17 @@ class modwizard(unimodule.unimodule):
 				superordinatechoicelist.append(temp)
 			self.select_superordinate_button=button(_("apply"),{},{"helptext":""})
 			self.superordinate_select=question_select(_("Superordinate:"),{},{"helptext":_("Superordinate Object"),"choicelist":superordinatechoicelist,"button":self.select_superordinate_button})
-			superordinate_select_col=tablecol("",{'type':'wizard_layout'},{"obs":[self.superordinate_select]})
-			pathrow=tablerow("",{},{"obs":[path_select_col]})
-			superrow=tablerow("",{},{"obs":[superordinate_select_col]})
-			supertab=table("",{},{"obs":[pathrow,superrow]})
-			rows.append(tablerow("",{},{"obs":[domain_select_col,tablecol("",{"colspan":"2"},{"obs":[supertab]})]})) # 3 cols
-		else:
-			rows.append(tablerow("",{},{"obs":[domain_select_col, path_select_col]})) # 3 cols
+			self.div_start('form-item col', divtype='class')
+			self.subobjs.append(self.superordinate_select)
+			self.div_stop('form-item col')
+			# superordinate_select_col=tablecol("",{'type':'wizard_layout'},{"obs":[self.superordinate_select]})
+			#pathrow=tablerow("",{},{"obs":[path_select_col]})
+			#superrow=tablerow("",{},{"obs":[superordinate_select_col]})
+			#supertab=table("",{},{"obs":[pathrow,superrow]})
+			#rows.append(tablerow("",{},{"obs":[domain_select_col,tablecol("",{"colspan":"2"},{"obs":[supertab]})]})) # 3 cols
+		#else:
+		#	rows.append(tablerow("",{},{"obs":[domain_select_col, path_select_col]})) # 3 cols
+
 
 
 		###########################################################################
@@ -906,9 +999,13 @@ class modwizard(unimodule.unimodule):
 			else:
 				childlist[0]["selected"]="1"
 			self.child_module_button=button('go',{},{'helptext':_('go ahead')})
-			self.child_module_select=question_select(_("Select Type:"),{'width':'200'},{"helptext":_("Select Type"), "choicelist":childlist, "button":self.child_module_button})
-			searchcols.append(tablecol("",{'type':'wizard_layout'},{"obs":[self.child_module_select]}))
+			self.child_module_select=question_select(_("Select Type:"),{},{"helptext":_("Select Type"), "choicelist":childlist, "button":self.child_module_button})
+			self.div_start('form-item col', divtype='class')
+			self.subobjs.append(self.child_module_select)
+			self.div_stop('form-item col')
+			# searchcols.append(tablecol("",{'type':'wizard_layout'},{"obs":[self.child_module_select]}))
 
+		self.new_row()
 		univention.admin.modules.init(self.lo, self.position, search_module )
 
 		search_property_name=self.save.get('wizard_search_property')
@@ -944,30 +1041,43 @@ class modwizard(unimodule.unimodule):
 
 			if tmp_search_property_name == '' and not search_value:
 				search_value = '*'
-			self.search_input=question_property('',{'width':'200', 'focus': '1'},{'property': search_property, 'value': search_value, 'search': '1', 'lo': self.lo})
+			self.search_input=question_property('',{'focus': '1'},{'property': search_property, 'value': search_value, 'search': '1', 'lo': self.lo})
 		else:
 			search_value='*'
 			self.search_input=text('',{},{'text':['']})
 
 		self.search_property_button=button(_('go'),{},{'helptext':_('go ahead')})
-		self.search_property_select=question_select(_('Property'),{'width':'200'},{'helptext':_('Choose property'),'choicelist':search_properties,'button':self.search_property_button})
+		self.search_property_select=question_select(_('Property'),{},{'helptext':_('Choose property'),'choicelist':search_properties,'button':self.search_property_button})
 
-		searchcols.append(tablecol('',{'type':'wizard_layout'},{'obs':[self.search_property_select]}))
+		# searchcols.append(tablecol('',{'type':'wizard_layout'},{'obs':[self.search_property_select]}))
+		self.div_start('form-item col', divtype='class')
+		self.subobjs.append(self.search_property_select)
+		self.div_stop('form-item col')
 		if child_ids:
 			# we have got three widgets, so the last widget should be in the right column, see Bug #13160
-			searchcols2 = []
-			searchcols2.append(tablecol('',{'type':'wizard_layout'},{'obs':[self.search_input]}))
-			rows.append(tablerow("",{},{"obs":[	tablecol('',{'colspan':'2'},{'obs':[table('',{},{'obs':[tablerow("",{},{"obs":searchcols}),]})]}), 
-												tablecol('',{'colspan':'1'},{'obs':[table('',{},{'obs':[tablerow("",{},{"obs":searchcols2}),]})]})
-											]}))
+			#searchcols2 = []
+			#searchcols2.append(tablecol('',{'type':'wizard_layout'},{'obs':[self.search_input]}))
+			#rows.append(tablerow("",{},{"obs":[	tablecol('',{'colspan':'2'},{'obs':[table('',{},{'obs':[tablerow("",{},{"obs":searchcols}),]})]}), 
+			#									tablecol('',{'colspan':'1'},{'obs':[table('',{},{'obs':[tablerow("",{},{"obs":searchcols2}),]})]})
+			#								]}))
+			self.div_start('form-item col', divtype='class')
+			self.subobjs.append(self.search_input)
+			self.div_stop('form-item col')
 		else:
-			searchcols.append(tablecol('',{'type':'wizard_layout'},{'obs':[self.search_input]}))
-			rows.append(tablerow("",{},{"obs":[tablecol('',{'colspan':'2'},{'obs':[table('',{},{'obs':[tablerow("",{},{"obs":searchcols})]})]})]}))
+			#searchcols.append(tablecol('',{'type':'wizard_layout'},{'obs':[self.search_input]}))
+			# rows.append(tablerow("",{},{"obs":[tablecol('',{'colspan':'2'},{'obs':[table('',{},{'obs':[tablerow("",{},{"obs":searchcols})]})]})]}))
+			self.div_start('form-item col', divtype='class')
+			self.subobjs.append(self.search_input)
+			self.div_stop('form-item col')
 
-		self.search_visible=question_text(_('Results per page'), {'width':'100', 'validregex':'\d*', 'invalidmessage':str(_('Please enter a number.'))},
+		self.new_row()
+		self.search_visible=question_text(_('Results per page'), {'validregex':'\d*', 'invalidmessage':str(_('Please enter a number.'))},
 						  {'usertext': str(visible)})
-		self.search_button=button(_('search'),{'defaultbutton': '1', 'icon':'/style/ok.gif'},{'helptext':_('Display (new) search results')})
-		self.reset_button=button(_('reset'),{'icon':'/style/cancel.gif'},{'helptext':_("reset search")})
+		self.div_start('form-item col', divtype='class')
+		self.subobjs.append(self.search_visible)
+		self.div_stop('form-item col')
+
+		self.search_button=button(_('search'),{'defaultbutton': '1', 'class':'submit'},{'helptext':_('Display (new) search results')})
 
 		mods = univention.admin.modules.childModules( search_module )
 		mods.insert( 0, univention.admin.modules.name( search_module ) )
@@ -975,28 +1085,30 @@ class modwizard(unimodule.unimodule):
 		reports = []
 		for mod in mods:
 			reports.extend( udr_cfg.get_report_names( mod ) )
+		self.div_start('form-item col', divtype='class')
 		if reports:
-			self.report_button=button(_('create report'),{'icon':'/style/ok.gif'},{'helptext':_('Create Reports')})
-			rows.append(tablerow("",{},{"obs":[
-				tablecol('',{'type':'wizard_layout'},{'obs':[self.search_visible]}),
-				tablecol("",{"colspan":"2",'type':'wizard_layout_bottom'},{"obs":[ self.search_button, self.report_button, self.reset_button ]})
-				]}))
+			self.reset_button=button(_('reset'),{'class':'cancel spacer'},{'helptext':_("reset search")})
+			self.subobjs.append(self.reset_button)
+			self.report_button=button(_('create report'),{'class':'cancel'},{'helptext':_('Create Reports')})
+			self.subobjs.append(self.report_button)
 		else:
-			rows.append(tablerow("",{},{"obs":[
-				tablecol('',{'type':'wizard_layout'},{'obs':[self.search_visible]}),
-				tablecol("",{"colspan":"2",'type':'wizard_layout_bottom'},{"obs":[ self.search_button, self.reset_button ]})
-				]}))
+			self.reset_button=button(_('reset'),{'class':'cancel'},{'helptext':_("reset search")})
+			self.subobjs.append(self.reset_button)
+		self.subobjs.append(self.search_button)
+		self.div_stop('form-item col')
 
 		# generate search table
 		main_rows = []
-		main_rows.append(
-			tablerow("",{},{"obs":[tablecol("",{'type':'content_main'},{"obs":[table("",{'type':'search_header'},{"obs":rows})]})]})
-		)
+		#main_rows.append(
+		#	tablerow("",{},{"obs":[tablecol("",{'type':'content_main'},{"obs":[table("",{'type':'search_header'},{"obs":rows})]})]})
+		#)
 
-		main_rows.append(
-			tablerow("",{},{"obs":[tablecol("",{'type':'wizard_layout'},{"obs":[space('',{'size':'1'},{})]})]})
-		)
+		#main_rows.append(
+		#	tablerow("",{},{"obs":[tablecol("",{'type':'wizard_layout'},{"obs":[space('',{'size':'1'},{})]})]})
+		#)
 
+		self.new_row()
+		self.div_stop('form-wrapper')
 		# end search table
 		###########################################################################
 
@@ -1139,16 +1251,18 @@ class modwizard(unimodule.unimodule):
 
 		result_list=self.save.get('wizard_search_result')
 		if size_limit_reached:
-			main_rows.append(
-				tablerow("",{},
-					{"obs":[tablecol("",{'type':'browse_layout_right'},
-					{"obs":[header(_("More than %d results, please redefine search.")%max_results,{"type":"5"},{})]})]})
-				)
+			self.subobjs.append ( htmltext ('', {}, \
+				{'htmltext': ["""
+					<h3>%s</h3>
+					""" % _("More than %d results, please redefine search.")%max_results
+					]}))
 		elif result_list and not nomatches:
 
 			###########################################################################
 			# listing head
 			###########################################################################
+
+			self.div_start('search-result', divtype='class')
 
 			# list
 			self.editbuts=[]
@@ -1173,7 +1287,7 @@ class modwizard(unimodule.unimodule):
 			###########################################################################
 			# listing objects
 			###########################################################################
-
+			
 			for sub_object in result_list:
 				if not hasattr(sub_object, 'dn') or not sub_object.dn:
 					continue
@@ -1189,7 +1303,7 @@ class modwizard(unimodule.unimodule):
 
 				icon_attribute={}
 				if activate_icons in ['true', 'yes', '1', 'on']:
-					icon_path = unimodule.selectIconByName( sub_object_type )
+					icon_path = unimodule.selectIconByName( sub_object_type, small=True )
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'icon path for %s: %s' % (sub_object_type,icon_path))
 					icon_attribute['icon']=icon_path
 				else:
@@ -1197,6 +1311,7 @@ class modwizard(unimodule.unimodule):
 
 				name=univention.admin.objects.description(sub_object)
 
+				icon_attribute['class'] = 'search_result'
 				edit_button=button(name,icon_attribute,{'helptext':_('edit "%s"') % univention.admin.objects.description(sub_object)})
 				self.editbuts.append((edit_button, sub_object.dn, sub_object_type, univention.admin.objects.arg(sub_object)))
 				cols.append(tablecol("",{'type':'wizard_layout'},{"obs":[edit_button]}))
@@ -1272,23 +1387,60 @@ class modwizard(unimodule.unimodule):
 
 			footerCols = []
 
+
+
+
+			#footerCols.append(tablecol("",{'type':'browse_layout_right'},
+			#			   {"obs":[table("",
+			#					 {'type':'browse_layout_right'},
+			#					 {"obs" : [ tablerow("",
+			#							     {'type':'browse_layout_right'},
+			#							     {"obs": [ tablecol("",
+			#									      {'type':'browse_layout_right'},
+			#									      {"obs":[self.selection_select]})]
+			#							      })]
+			#					  })]
+			#			    }))
+			#footerTable = table("", {'type':'table_fullwidth'}, {"obs" : [ tablerow("",{'type':'table_fullwidth'},{"obs": footerCols}) ]})
+			#main_rows.append(tablerow("", {}, {"obs":[tablecol("",{'type':'table_fullwidth'}, {"obs":[footerTable]},)]}))
+
+
+		if nomatches and not size_limit_reached:
+			#main_rows.append(
+			#	tablerow("",{'type':'wizard_layout'},{"obs":[ 
+			#		tablecol("",{'type':'wizard_layout_icon'},{"obs":
+			#			[icon( '', { 'url' : 'icon/dialog-warning.png' }, {} )]
+			#		}),
+			#		tablecol("",{'type':'wizard_layout'},{"obs":[
+			#			header(_('Your search did not match any objects.'),{"type":"5"},{})
+			#			]
+			#		})
+			#	]})
+			#)
+
+			# main table
+			#self.subobjs.append(table("",
+			#			  {'type':'content_main'},
+			#			  {"obs":main_rows})
+			#			)
+			self.subobjs.append ( htmltext ('', {}, \
+				{'htmltext': ["""
+					<h3>%s</h3>
+					""" % _('Your search did not match any objects.')
+					]}))
+		else:
+
+			# main table
+			self.subobjs.append(table("",
+						  {'type':'content_main'},
+						  {"obs":main_rows}))
+
 			# info: number of search results
 			resultinfoCols = []
 			if cache:
-				resultinfoCols.append(tablecol("",{'type':'browse_layout_right'},
-						{"obs":[header(_("%d Search result(s) (cached)") % len(result_list),{"type":"5"},{})]}))
+				self.subobjs.append(header(_("%d search result(s) (cached)") % len(result_list),{"type":"5"},{}))
 			else:
-				resultinfoCols.append(tablecol("",{'type':'browse_layout_left'},
-						{"obs":[header(_("%d Search result(s)") % len(result_list),{"type":"5"},{})]}))					
-			footerCols.append(tablecol("",{'type':'browse_layout_left'},
-						   {"obs":[table("",
-								 {'type':'browse_layout_left'},
-								 {"obs" : [ tablerow("",
-										     {'type':'browse_layout_left'},
-										     {"obs": resultinfoCols}) ]
-								  })]
-						    }))
-
+				self.subobjs.append(header(_("%d search result(s)") % len(result_list),{"type":"5"},{}))
 
 			# drop-down: move, edit, ...
 			self.selection_commit_button=button(_("Do"),{},{"helptext":_("Do action with selected objects.")})
@@ -1298,59 +1450,37 @@ class modwizard(unimodule.unimodule):
 				{'name': "edit", 'description': _("Edit")},
 				{'name': "recursive_delete", 'description': _("Delete")},
 			],"button":self.selection_commit_button})
+			
+			self.div_start('form-item', divtype='class')
+			self.div_start('form-right', divtype='class')
+			self.subobjs.append(self.selection_select)
+			self.div_stop('form-right')
+			self.div_stop('form-item')
+			self.div_stop('search-result')
 
-			footerCols.append(tablecol("",{'type':'browse_layout_right'},
-						   {"obs":[table("",
-								 {'type':'browse_layout_right'},
-								 {"obs" : [ tablerow("",
-										     {'type':'browse_layout_right'},
-										     {"obs": [ tablecol("",
-												      {'type':'browse_layout_right'},
-												      {"obs":[self.selection_select]})]
-										      })]
-								  })]
-						    }))
-			footerTable = table("", {'type':'table_fullwidth'}, {"obs" : [ tablerow("",{'type':'table_fullwidth'},{"obs": footerCols}) ]})
-			main_rows.append(tablerow("", {}, {"obs":[tablecol("",{'type':'table_fullwidth'}, {"obs":[footerTable]},)]}))
-
-		# main table
-		self.subobjs.append(table("",
-					  {'type':'content_main'},
-					  {"obs":main_rows})
-				    )
 
 		main_rows = []
-
-		if nomatches and not size_limit_reached:
-			main_rows.append(
-				tablerow("",{'type':'wizard_layout'},{"obs":[ 
-					tablecol("",{'type':'wizard_layout_icon'},{"obs":
-						[icon( '', { 'url' : 'icon/dialog-warning.png' }, {} )]
-					}),
-					tablecol("",{'type':'wizard_layout'},{"obs":[
-						header(_('Your search did not match any objects.'),{"type":"5"},{})
-						]
-					})
-				]})
-			)
-
-			# main table
-			self.subobjs.append(table("",
-						  {'type':'content_main'},
-						  {"obs":main_rows})
-						)
+		self.div_stop('content')
+		self.div_stop('content-wrapper')
 
 
 	def delmode(self, removelist):
 		position=self.position
 
-		self.subobjs.append(table("",
-					  {'type':'content_header'},
-					  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'wizard_layout'},{"obs":[header(_("%d Object(s) Selected for Removal") % len(removelist),{"type":"3"},{})]})]})]}))
+		self.div_start('content-wrapper', divtype='id')
+
 		self.nbook=notebook('', {}, {'buttons': [(_('delete'), _('delete'))], 'selected': 0})
 		self.subobjs.append(self.nbook)
+		self.div_start('content', divtype='id')
 
 		#begin table:
+		self.div_start('wizard_layout_header', divtype='class')
+		if len(removelist) > 1:
+			self.subobjs.append(header(_("Are you sure you want to delete these %d objects and referring objects if enabled?") % len(removelist),{"type":"3"},{}))
+		elif len(removelist) == 0:
+			self.subobjs.append(header(_("Are you sure you want to delete these %d object and referring objects if enabled?") % len(removelist),{"type":"3"},{}))
+		self.div_stop('wizard_layout_header')
+
 		rows=[]
 		cols=[]
 		cols.append(tablecol("",{'type':'wizard_layout'},{"obs":[header(_("Object"),{"type":"6"},{})]}))
@@ -1359,27 +1489,23 @@ class modwizard(unimodule.unimodule):
 		cols.append(tablecol("",{'type':'wizard_layout'},{"obs":[header(_("Delete referring objects?"),{"type":"6"},{})]}))
 		rows.append(tablerow("",{'type':'wizard_layout'},{"obs": cols}))
 
-		rows.append(tablerow("",{},{"obs": [
-			tablecol("",{'type':'wizard_layout'},{"obs":[space('',{'size':'1'},{})]}),
-			tablecol("",{'type':'wizard_layout'},{"obs":[space('',{'size':'1'},{})]}),
-			tablecol("",{'type':'wizard_layout'},{"obs":[space('',{'size':'1'},{})]}),
-			tablecol("",{'type':'wizard_layout'},{"obs":[space('',{'size':'1'},{})]}),
-		]}))
+		#rows.append(tablerow("",{},{"obs": [
+		#	tablecol("",{'type':'wizard_layout'},{"obs":[space('',{'size':'1'},{})]}),
+		#	tablecol("",{'type':'wizard_layout'},{"obs":[space('',{'size':'1'},{})]}),
+		#	tablecol("",{'type':'wizard_layout'},{"obs":[space('',{'size':'1'},{})]}),
+		#	tablecol("",{'type':'wizard_layout'},{"obs":[space('',{'size':'1'},{})]}),
+		#]}))
 
 		removelist_withcleanup=[]
 
 		self.ignore_buttons=[]
 		self.final_delboxes=[]
 		self.cleanup_delboxes=[]
-		removelist.sort()
 		for i in removelist:
 			cols=[]
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "creating object handler")
 			object_module=univention.admin.modules.get(i[1])
-			if i[3]:
-				superordinate=univention.admin.objects.get(univention.admin.modules.superordinate(object_module), None, self.lo, '', dn=i[3])
-			else:
-				superordinate=None
-			object=univention.admin.objects.get(object_module, None, self.lo, self.position, superordinate=superordinate, dn=i[0], arg=i[2])
+			object=univention.admin.objects.get(object_module, None, self.lo, self.position, dn=i[0], arg=i[2])
 			object_type=univention.admin.objects.module(object)
 
 			# We need to verify that the objects still exist. When a multidelete operation
@@ -1388,9 +1514,7 @@ class modwizard(unimodule.unimodule):
 				removelist.remove(i)
 				continue
 
-			icon_path = unimodule.selectIconByName( object_type )
-
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'icon path for %s: %s' % (object_type,icon_path))
+			icon_path = unimodule.selectIconByName( object_type, small=True )
 
 			name=univention.admin.objects.description(object)
 			description=univention.admin.modules.short_description(object_module)
@@ -1408,36 +1532,43 @@ class modwizard(unimodule.unimodule):
 
 			final_delete=question_bool('',{},{'usertext':"1",'helptext':_('select %s') % name})
 			self.final_delboxes.append((final_delete, object.dn, object_type, univention.admin.objects.arg(object)))
-			cols.append(tablecol("",{'type':'wizard_layout'},{"obs":[final_delete]}))
+			cols.append(tablecol("",{'type':'wizard_layout', 'align': 'center'},{"obs":[final_delete]}))
 
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "check if cleanup neccessary: %s" % i[0])
 			if univention.admin.objects.wantsCleanup(object):
 				removelist_withcleanup.append(i)
-				cleanup_delete=question_bool('',{},{'usertext': "1", 'helptext':_('select %s') % name})
+				cleanup_delete=question_bool('',{},{'usertext': '1', 'helptext':_('select %s') % name})
 				self.cleanup_delboxes.append((cleanup_delete, object.dn, object_type, univention.admin.objects.arg(object)))
-				cols.append(tablecol("",{'type':'wizard_layout'},{"obs":[cleanup_delete]}))
+				cols.append(tablecol("",{'type':'wizard_layout', 'align': 'center'},{"obs":[cleanup_delete]}))
 			else:
 				cols.append(tablecol("",{'type':'wizard_layout'},{"obs":[text('',{},{'text':[""]})]}))
 			rows.append(tablerow("",{},{"obs":cols}))
 
 		if removelist_withcleanup:
 			self.save.put('removelist_withcleanup', removelist_withcleanup)
+
 		# generate table
 		main_rows = []
 		main_rows.append(
-			tablerow("",{},{"obs":[tablecol("",{'type':'wizard_layout'},{"obs":[table("",{"type":"content_list"},{"obs":rows})]})]})
+			tablerow("",{},{"obs":[tablecol("",{'type':'content_main'},{"obs":[table("",{"type":"content_list"},{"obs":rows})]})]})
 		)
 		#end table
-		self.final_delbut=button(_('OK'),{'icon':'/style/ok.gif'},{'helptext':_('Really delete selected objects and referring objects if enabled.')})
-		self.cancel_delbut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Cancel")})
-		main_rows.append(
-			tablerow("",{},{"obs":[tablecol("",{'type':'wizard_layout'},{"obs":[self.final_delbut, self.cancel_delbut]})]})
-		)
+		self.cancel_delbut=button(_("Cancel"),{'class':'cancel'},{"helptext":_("Cancel")})
+		self.final_delbut=button(_('OK'),{'class':'submit'},{'helptext':_('Really delete selected objects and referring objects if enabled.')})
 
-		# main table
 		self.subobjs.append(table("",
-					  {'type' : 'content_main'},
-					  {"obs" : main_rows})
+					  {'type':'content_main'},
+					  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'content_main'},{"obs":main_rows})]})]})
 				    )
+		self.subobjs.append(table("",
+					  {'type':'content_main'},
+					  {"obs":[tablerow("",{},{"obs":[
+							tablecol("",{'type':'cancel'},{"obs":[self.cancel_delbut]}),
+							tablecol("",{'type':'okcancel'},{"obs":[self.final_delbut]})
+						]})]}))
+
+		self.div_stop('content')
+		self.div_stop('content-wrapper')
 
 		self.save.put('wizard_search_result', None) ## reset after delete
 		self.save.put('wizard_selected_dns', {})

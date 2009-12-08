@@ -9,73 +9,90 @@
 #       /etc/univention/templates/files/var/www/ucs-overview/en.html.d/
 #
 -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-<title>Univention Server</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link rel="SHORTCUT ICON" href="../icon/about.png" />
-<link rel="stylesheet" href="../style/stylesheet.css" type="text/css" />
-</head>
-<body>
-<table class="global" cellpadding="0" cellspacing="0">
-<tbody>
-<tr class="global_head">
-<td class="global_head_spacer" colspan="4"></td>
-</tr>
-<tr class="global_head">
-<td height="33"><img src="../style/logo_univention.gif" alt="Univention" border="0" height="33" width="180" /></td>
-<td height="33" width="15"></td>
-<td height="33" width="100"></td>
-<td width="722"></td>
-</tr>
-<tr>
-<td colspan="4">
-<table class="global_menu" cellpadding="0" cellspacing="0" width="98%">
-<tbody>
-<tr class="global_menu">
-<td class="global_menu_slogan" ><img src="../style/slogan_whitebg.gif" alt="linux for your business" border="0"height="29" width="180" /></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-<div id="tools_overview">
-<form name="jump" action="GO"><select name="menu" onchange="location=document.jump.menu.options[document.jump.menu.selectedIndex].value;"value="GO">
-<option selected value="en.html">english</option>
-<option value="de.html">deutsch</option>
-</select></form>
-</div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<!-- 
+	@description
+-->
+
+<!-- @start html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" dir="ltr">
+	
+	<!-- @start head -->
+	<head>
+		
+		<!-- @start meta -->
+
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<!-- @end meta -->
+		
+		<!-- @start title -->
+		<title>Univention Server</title>
+		<!-- @end title -->
+		
+		<!-- @start favicon -->
+		<link rel="shortcut icon" href="style/favicon.ico" />
+		<!-- @end favicon -->
+
+		
+		<!-- @start styles -->
+		<link rel="stylesheet" href="../style/stylesheet.css" type="text/css" media="screen" title="style.css" charset="utf-8" />
+		<!-- @end styles -->
+		
+	</head>
+	<!-- @end head -->
+	
+	<!-- @start body -->
+	<body class="start tundra">
+		<!-- @start wrapper -->
+		<div id="wrapper">
+
+			<!-- @start header -->
+			<div id="header">
+				<!-- @start header-title -->
+				<h1 class="header-title">
 @!@
 rolesdict = {"domaincontroller_master":"Domaincontroller Master","domaincontroller_backup":"Domaincontroller Backup","domaincontroller_slave":"Domaincontroller Slave","memberserver":"Memberserver","fatclient":"Managed Client","mobileclient":"Mobile Client"}
 try:
-        role = rolesdict["@%@server/role@%@"]
+	role = rolesdict["@%@server/role@%@"]
 except:
-        role = "Univention Corporate Server"
-print'<div id="welcome_overview">Welcome to', role , '@%@hostname@%@</div>'
-print'<img src="../icon/blank.gif" alt="" />'
-print'<table class="global_menu" summary="" border="0" cellpadding="0"cellspacing="0">'
-print'<tr class="notebook">'
-print'<td class="notebook">'
-print'<table class="tab_on" border="0" cellpadding="0" cellspacing="0">'
-print'<tr>'
-print'<td class="tab_on" nowrap>'
-print'<table>'
-print'<tr>'
-print'<td><a class="notebook_on">Overview</a></td>'
-print'</tr>'
-print'</table>'
-print'</td>'
-print'<td class="tab"><img src="../style/reiter_rot18x24.gif" alt="" /></td>'
-print'</tr>'
-print'<tr>'
-print'<td class="notebook_spacer"></td>'
-print'</tr>'
-print'</table>'
-print'<table class="content_main_menuless">'
-if not role == "Domaincontroller Master" and baseConfig.has_key('ldap/master'):
+	role = "Univention Corporate Server"
+print '					<span class="hide">univention</span> <a href="#" title="Start">%s</a>' % role
+
+print """
+				</h1>
+				<!-- @end header-title -->
+
+				
+				<!-- @start header-form -->
+				<form name="jump" id="lang" action="GO"><select name="lang" id=language onchange="location=document.jump.lang.options[document.jump.lang.selectedIndex].value;"value="GO">
+				<option selected value="en.html">english</option>
+				<option value="de.html">deutsch</option>
+				</select>
+				</form>
+				<br class="clear" />
+				<!-- @end header-form -->
+			</div>
+			<!-- @end header -->
+			
+			<!-- @start content-wrapper -->
+			<div id="content-wrapper">
+				<!-- @start content-head -->
+				<div id="content-head">
+
+					<h2>Welcome to %(role)s %(host)s</h2>
+	""" % {'role': role, 'host': baseConfig.get('hostname') }
+@!@
+				</div>				
+				<!-- @end content-head -->
+				
+				<!-- @start content -->
+				<div id="content">
+			<table class="content">
+
+
+@!@	
+if not baseConfig.get('server/role', None) == "domaincontroller_master" and baseConfig.has_key('ldap/master'):
 	print'<tr>'
 	print'<td class="overview"><a href="https://@%@ldap/master@%@/ucs-overview/en.html"><img src="../icon/about.png" alt="" border="0" /></a></td>'
 	print'<td class="overview"><a href="https://@%@ldap/master@%@/ucs-overview/en.html">@%@ldap/master@%@</a></td>'
@@ -85,3 +102,4 @@ if not role == "Domaincontroller Master" and baseConfig.has_key('ldap/master'):
 	print'<td></td>'
 	print'</tr>'
 @!@
+

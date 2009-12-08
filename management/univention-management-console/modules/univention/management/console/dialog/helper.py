@@ -53,8 +53,8 @@ class Question( base.List ):
 		self._image = image.Image( 'actions/info', umct.SIZE_SMALL )
 		self._text = base.Text( text, attributes = { 'colspan' : '2' } )
 		self.add_row( [ self._image, self._text ] )
-		btn = button.CancelButton()
-		self.add_row( [ '', button.Button( okay, 'actions/ok', actions = actions ), btn ] )
+		btn = button.CancelButton( attributes = {'class': 'cancel'} ) 
+		self.add_row( [ '', btn , button.Button( okay, 'actions/ok', attributes = {'class': 'submit'}, actions = actions ) ] )
 
 class YesNoQuestion( base.Frame ):
 	def __init__( self, title = _( 'Confirmation' ), text = _( 'Are you sure?' ), actions = [], yes = _( 'Yes' ), no = _( 'No' ), icon = 'actions/info' ):
@@ -84,9 +84,9 @@ class SearchForm( base.List ):
 					line.append( pair )
 			self.add_row( line )
 		req = umcp.Command( args = [ command ], opts = opts )
-		btn = button.SearchButton( button.Action( req, ids ), label = search_button_label )
+		btn = button.SearchButton( button.Action( req, ids ), {'class': 'submit', 'defaultbutton': '1'}, label = search_button_label )
 		btn.close_dialog = False
-		reset = button.ResetButton( fields = defaults )
+		reset = button.ResetButton( fields = defaults, attributes = {'class': 'cancel'})
 		reset.close_dialog = False
 		if paged_results:
 			num_result = widget.make_readonly( ( None, umcv.Integer( _( 'Results per page' ) ) ),
@@ -94,7 +94,7 @@ class SearchForm( base.List ):
 		else:
 			num_result = base.Fill(1)
 		btnlst = base.List()
-		btnlst.add_row( [ btn, reset ] )
+		btnlst.add_row( [ reset, btn ], attributes = { 'padding-top': '10px'} )
 		self.add_row( [ num_result, btnlst ] )
 		self.add_row( [ base.Fill( 2 ) ] )
 

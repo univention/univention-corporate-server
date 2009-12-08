@@ -39,7 +39,7 @@ import ldap
 from uniparts import *
 from localwebui import _
 
-def selectIconByName(iconName, iconNameGeneric = 'generic', filesystemSubpath = '/icon/' ):
+def selectIconByName(iconName, iconNameGeneric = 'generic', filesystemSubpath = '/icon/', small = False ):
 	'''Select an icon by an given object name.
 	iconPathGeneric is the fallback if no icon with the given Name exists'''
 	
@@ -50,10 +50,17 @@ def selectIconByName(iconName, iconNameGeneric = 'generic', filesystemSubpath = 
 		'/usr/share/univention-webui-style' ]
 	filesystemSubpathGeneric = '/icon/'
 	
-	availablePaths = [filesystemSubpath+iconName+defaultType,
-			  filesystemSubpath+iconName+alternativeType ]
+	availablePaths = []
+	if small:
+		availablePaths.append( filesystemSubpath+iconName+'-small'+defaultType )
+		availablePaths.append( filesystemSubpath+iconName+'-small'+alternativeType )
+	availablePaths.append(filesystemSubpath+iconName+defaultType)
+	availablePaths.append(filesystemSubpath+iconName+alternativeType)
 	
 	if iconNameGeneric:
+		if small:
+			availablePaths.append( filesystemSubpathGeneric+iconNameGeneric+'-small'+defaultType )
+			availablePaths.append( filesystemSubpathGeneric+iconNameGeneric+'-small'+alternativeType )
 		availablePaths.append( filesystemSubpathGeneric+iconNameGeneric+defaultType )
 		availablePaths.append( filesystemSubpathGeneric+iconNameGeneric+alternativeType )
 		
@@ -72,15 +79,49 @@ class unimodule(uniconf):
 		return v.build
 	def isallowedtoview(self,ldapob,rgroup,user=None):
 		return 1
+
+	def new_row(self):
+		br_clean = htmltext ('', {}, {'htmltext': ['<br class="clear"/>']})
+		self.subobjs.append(br_clean)
+
+	def div_start(self, div, divtype='id'):
+		div_header = htmltext ('', {}, \
+			{'htmltext': ["""
+				<div %(type)s="%(div)s">
+				""" % {'div': div, 'type': divtype }]})
+		self.subobjs.append(div_header)
+
+	def div_stop(self, div=None):
+		div_header = htmltext ('', {}, \
+			{'htmltext': ["""
+				</div>
+				""" ]})
+		self.subobjs.append(div_header)
 	
-	def usermessage(self,message):
+	def usermessage(self,message, application='udm', need_header=False, relogin=False):
+		self.save.put("application",application)
+		if need_header:
+			self.save.put("need_header",'yes')
+		else:
+			self.save.put("need_header",'no')
+	
+		if relogin:
+			self.save.put("relogin", "yes")
+		else:
+			self.save.put("relogin", "no")
+
 		messages=self.save.get("usermessages")
 		if not messages:
 			messages=[]
 		messages.append(("message",message))
 		self.save.put("usermessages",messages)
 
-	def askuser(self,question,val,yes=_("OK"),no=_("Cancel"),yeshelp=_("OK"),nohelp=_("Cancel")):
+	def askuser(self,question,val,yes=_("OK"),no=_("Cancel"),yeshelp=_("OK"),nohelp=_("Cancel"), application='udm', need_header=False):
+		self.save.put("application",application)
+		if need_header:
+			self.save.put("need_header",'yes')
+		else:
+			self.save.put("need_header",'no')
 		messages=self.save.get("usermessages")
 		if messages==None:
 			messages=[]
@@ -97,44 +138,93 @@ class unimodule(uniconf):
 	def inithandlemessages(self):
 		self.grokset=0
 		messages=self.save.get("usermessages")
+
 		if messages:
+			need_header=self.save.get("need_header")
+			application=self.save.get("application")
+			relogin=self.save.get("relogin")
+			if need_header == 'yes':
+				header_link = '/univention-directory-manager/'
+				header_name = 'directory manager'
+				if application == 'umc':
+					header_link = '/univention-management-console/'
+					header_name = 'management console'
+			
+				htmlheader = htmltext ('', {}, \
+					{'htmltext': ["""
+								<div id="header">
+									<!-- @start header-title -->
+									<h1 class="header-title">
+										<span class="hide">univention</span> <a href="%(header_link)s" title="Start">%(header_name)s</a>
+									</h1>
+									<!-- @end header-title -->
+								<!-- @end header -->
+								</div>
+							""" % {'header_link': header_link, 'header_name': header_name}
+							]})
+				self.subobjs.append(htmlheader)
+
 			if messages[0][0] in ["message", "simplequestion"]:
 				usertext=messages[0][1]
-				self.subobjs.append(table("",
-						  {'type':self.save.get( 'header_table_type' , 'content_header' )},
-						  {"obs":[tablerow("",{},{"obs":[tablecol("",{},{"obs":[]})]})]}))
+				notebook_message = htmltext ('', {}, \
+						{'htmltext': ["""
+							<!-- @end tab-navigation -->
+							<div id=content-wrapper>
+							<div id=content-head>
+							<ul class="tabs">
+							<li class="active"><p>%(notification)s</p></li>
+							</ul>
+							</div>
+							<div id="content">
+							<div id="usertext">%(content)s</div>
+							""" % {'notification': _('Notification'), 'content': usertext}]})
+				self.subobjs.append(notebook_message)
+				#self.subobjs.append(table("",
+				#		  {'type':self.save.get( 'header_table_type' , 'content_header' )},
+				#		  {"obs":[tablerow("",{},{"obs":[tablecol("",{},{"obs":[]})]})]}))
 				
-				self.nbook=notebook('', {}, {'buttons': [(_('Notification'), _('Notification'))], 'selected': 0})
-				self.subobjs.append(self.nbook)
+				#self.nbook=notebook('', {}, {'buttons': [(_('Notification'), _('Notification'))], 'selected': 0})
+				#self.subobjs.append(self.nbook)
 
 				self.usert=htmltext('',{},{'htmltext':["<b>%s</b>"%usertext]})
 
 			if messages[0][0]=="message":
 				
-				self.usertcol=tablecol("",{'type':'note_layout'},{"obs":[self.usert]})
-				self.okbut=button(_("OK"),{'icon':'/style/ok.gif'},{"helptext":_("ok")})
-				self.okbutcol=tablecol("",{'type':'note_layout'},{"obs":[self.okbut]})
-				self.row1=tablerow("",{},{"obs":[self.usertcol]})
-				self.row2=tablerow("",{},{"obs":[self.okbutcol]})
-				self.tab=table("",{},{"obs":[self.row1,self.row2]})
-				self.subobjs.append(table("",{'type':self.save.get( 'main_table_type' , 'content_main' )},
-						{"obs":[tablerow("",{},
-							{"obs":[tablecol("",{"colspan":"2"},
-								{"obs":[self.tab]})]
-							})]
-						})
-					)
+				self.subobjs.append(htmltext('',{},{'htmltext':['<div class="usertext">']}))
+				#self.usertcol=tablecol("",{'type':'note_layout'},{"obs":[self.usert]})
+				if relogin == 'yes':
+					if application == 'umc':
+						relogin_link = '/univention-management-console/index.php?relogin=1'
+					else:
+						relogin_link = '/univention-directory-manager/index.php?relogin=1'
+					self.okbut=button(_("OK"),{'class':'submit', 'link': relogin_link},{"helptext":_("ok")})
+				else:
+					self.okbut=button(_("OK"),{'class':'submit'},{"helptext":_("ok")})
+				self.save.get("relogin", 'no')
+				self.subobjs.append(self.okbut)
+				self.subobjs.append(htmltext('',{},{'htmltext':['</div>']}))
+				#self.okbutcol=tablecol("",{'type':'note_layout'},{"obs":[self.okbut]})
+				##self.row1=tablerow("",{},{"obs":[self.usertcol]})
+				#self.row2=tablerow("",{},{"obs":[self.okbutcol]})
+				#self.tab=table("",{},{"obs":[self.row2]})
+				#self.subobjs.append(table("",{'type':self.save.get( 'main_table_type' , 'content_main' )},
+				#		{"obs":[tablerow("",{},
+				#			{"obs":[tablecol("",{"colspan":"2"},
+				#				{"obs":[self.tab]})]
+				#			})]
+				#		})
+				#	)
 				return 1
 			elif messages[0][0]=="simplequestion":
 				if self.askedfor(messages[0][2],0):
-					self.usertcol=tablecol("",{"colspan":"2",'type':'note_layout'},{"obs":[self.usert]})
+					#self.usertcol=tablecol("",{"colspan":"2",'type':'note_layout'},{"obs":[self.usert]})
 					self.okbut=button(messages[0][3],{'icon':'/style/ok.gif'},{"helptext":messages[0][5]})
 					self.okbutcol=tablecol("",{'type':'note_layout'},{"obs":[self.okbut]})
 					self.cabut=button(messages[0][4],{'icon':'/style/cancel.gif'},{"helptext":messages[0][6]})
 					self.cabutcol=tablecol("",{'type':'note_layout'},{"obs":[self.cabut]})
-					self.row1=tablerow("",{},{"obs":[self.usertcol]})
+					#self.row1=tablerow("",{},{"obs":[self.usertcol]})
 					self.row2=tablerow("",{},{"obs":[self.okbutcol,self.cabutcol]})
-					self.tab=table("",{},{"obs":[self.row1,self.row2]})
+					self.tab=table("",{},{"obs":[self.row2]})
 					self.subobjs.append(table("",{'type':self.save.get( 'main_table_type' , 'content_main' )},
 							{"obs":[tablerow("",{},
 								{"obs":[tablecol("",{"colspan":"2"},

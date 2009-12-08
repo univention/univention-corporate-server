@@ -44,6 +44,7 @@ class webui_container{
 	var $ref_config;
 	var $status;
 	var $tabindex;
+	var $body_class;
 
 	function webui_container(&$ref_config, &$tabindex){
 		$this->ref_config = &$ref_config;
@@ -86,6 +87,10 @@ class webui_container{
 		$this->status = $str; 
 	}
 
+	function set_body_class($str) {
+		$this->body_class=$str;
+	}
+
 	function logout($type, $session_id){
 
 		$this->title = 'Logout';
@@ -109,17 +114,14 @@ class webui_container{
 	}
 
 	function show_head() {
-		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <title>',$this->site_title,'   ',$this->title,'</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 <link rel="SHORTCUT ICON" href="/style/favicon.ico"></link>
-<style type="text/css">
-@import "/univention-dojo/dojo/resources/dojo.css";
-</style>
 <link id="themeStyles" rel="stylesheet" href="/univention-dojo/dijit/themes/tundra/tundra.css" type="text/css"></link>
-<link rel="stylesheet" href="/style/stylesheet.css" type="text/css"></link>
+<link rel="stylesheet" href="/style/stylesheet.css" type="text/css" media="screen" title="style.css" charset="utf-8"></link>
 <link rel="stylesheet" href="/style/univention-dijit.css" type="text/css"></link>
 <script type="text/javascript" src="/style/tip.js"></script>
 <script type="text/javascript" src="/univention-dojo/dojo/dojo.js" ></script>
@@ -145,130 +147,50 @@ class webui_container{
 
 </head>
 ';
-		if($this->ref_config->refresh)
-			echo '<body class="tundra" onload="doRefresh(',($this->ref_config->refresh),'); clear_cached(); ">';
-		else
-			echo '<body class="tundra" onload="clear_cached()">';
+
+		if($this->ref_config->refresh) {
+			echo '<body class="'.$this->body_class.' tundra" onload="doRefresh(',($this->ref_config->refresh),'); clear_cached(); ">';
+		} else {
+			echo '<body class="'.$this->body_class.' tundra" onload="clear_cached()">';
+		}
+		echo "<div id=\"preloader\"></div> \n";
 		$this->ref_config->debug_show();
 	}
 
 	function show_headertext() {
+		echo '<form name="content" id="'.$this->body_class.'" method="post" enctype="multipart/form-data" action="'.$this->port.'://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/index.php">';
 		echo '
-<div id="preloader"></div>
-<table class="global" cellspacing="0" cellpadding="0">
-  <tr class="global_head">
-	<td class="global_head_spacer" colspan="4"></td>
-  </tr>
-  <tr class="global_head">
-	<td height="33"><img src="style/logo_univention.gif" alt="',$this->site_title,'" width="180" height="33" border="0"></img></td>
-    <td width="15" height="33"></td>
-    <td width="100" height="33">
-';
-		if (isset($this->header_img) && ($this->header_img != '')) {
-			echo '     <img src="',$this->header_img,'" alt="" height="33" border="0"></td>
-';
-		}
-		echo '    <td width="722"><span class="Stil2">',$this->headertext,'</span></td>
-  </tr>
+		<div id="wrapper">
 ';
 	}
 
 	function show_info() {
 		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless') {
-		    echo '  <tr>
-   <td colspan="4">
-   <!-- layout is menuless -->
-	<table width="98%" class="global_menu" cellspacing="0" cellpadding="0">
-	  <tr class="global_menu">
-		<td class="global_menu_slogan" align="top">
-		  <img src="style/slogan_whitebg.gif" alt="linux for your business" width="180" height="29" border="0"></img>
-		</td>
-		<td align="right">
-
-<!-- ####### info2 ####### -->
-';
-		    if ($this->info2 && $this->info2 != '') {
-		       echo $this->info2;
-		    } else {
-		       echo "        &nbsp;&nbsp;\n";
-			}
 		    echo '
-<!-- ####### end of info2 ####### -->
-<!-- ####### info ####### -->
-';
-		    if ($this->info && $this->info != '')
-		       echo $this->info;
-		    else
-		       echo '        &nbsp;&nbsp;';
-		    # include menu-form which is called by several javascripts
-		    echo '
-<!-- ####### end of info ####### -->
 	  <form class="menu" name="menu" method="post" action="',$this->port,'://',$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']),'/index.php">
 	  <input type="hidden" name="session_id" value="',$this->ref_config->number,'_',$this->ref_config->session_id,'"></input>
 	  <input type="hidden" name="is_js" value="',$this->ref_config->is_js,'"></input>
 	  </form>
-		  </td>
-		</tr>
-	  </table>
-	 </td>
-	</tr>
 ';
 		  }
 		else
 		  {
 		    echo '  <tr>
-	<td class="global_left" >
-	  <table class="global_menu" cellspacing="0" cellpadding="0">
-	  <tr class="global_menu">
-		<td colspan="2" class="global_menu_slogan"><img src="style/slogan.gif" alt="linux for your business" width="180" height="29" border="0"></img></td>
-		</tr>
-	  <tr>
-		<td width="35" height="25" class="global_menu">&nbsp;</td>
-		<td width="145" class="global_menu">&nbsp;</td>
-	  </tr>
-	  <tr>
-		<td height="20" class="global_menu"></td>
-		<td class="global_menu"></td>
-	  </tr>
-	  <tr>
-		<td class="global_menu_left"></td>
-		<td class="global_menu_right">
-
-<!-- ####### menu ####### -->
-
-	  <form class="menu" name="menu" method="post" action="',$this->port,'://',$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']),'/index.php">
-	  <table class="menu" cellspacing="0" cellpadding="0">
-',$this->menu,'
-
-<!-- ####### end of menu ####### -->
-
-		<tr><td colspan="3">
-
-<!-- ####### info ####### -->
-		<br><br>',$this->info,'
-
-<!-- ####### end of info ####### -->
-
-<!-- ####### info2 ####### -->
-		<br><br>',$this->info2,'
-<!-- ####### end of info2 ####### -->
-		</td></tr>
-		<tr><td colspan="3" class="menu_spacer">
-		</td></tr>
-
-	</table>
+	  <form name="menu" method="post" action="',$this->port,'://',$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']),'/index.php">
+	
+	<div id=menu>
+	<ul>
+	'.$this->menu.'
+	</ul>
+	</div>
     <input type="hidden" name="session_id" value="',$this->ref_config->number,'_',$this->ref_config->session_id,'"></input>
 	<input type="hidden" name="is_js" value="',$this->ref_config->is_js,'"></input>
-	</form>
-	</td></tr>
-	<tr><td colspan="3" class="menu_foot">&nbsp;</td></tr>
-	</table>
-	</td>
 ';
 		  }
 	}
 
 	function show_header() {
+/*
 		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless')
 		  {
 		    echo '    <tr><td colspan="4" valign="top">
@@ -291,15 +213,18 @@ class webui_container{
 	  <td colspan="2" valign="top">
 <!-- ####### pre-content ####### -->
 ';
+*/
 		$this->header=trim($this->header);
 
 		if($this->header)
 			echo "<div class=\"header\">",$this->header,"</div>\n";
 
-		echo "<form class=\"content\" name=\"content\" method=\"post\" enctype=\"multipart/form-data\" action=\"",$this->port,"://",$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']),"/index.php\">\n";
+		/*echo "<form name=\"content\" method=\"post\" enctype=\"multipart/form-data\" action=\"",$this->port,"://",$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']),"/index.php\">\n";*/
+/*
 		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless') {
 		    echo "    <table class=\"global\"><tr><td width=\"20\" height=\"100\"></td><td>\n";
 		}
+*/
 	}
 
 	function show_content() {
@@ -307,24 +232,26 @@ class webui_container{
 <!-- ####### content ####### -->
 ',$this->content,'
 <!-- ####### end of content ####### -->
+
+<br class="clear" />
+</div>
+<!-- @end wrapper -->
 ';
 
 	}
 
 	function show_end() {
+/*
 		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless') {
 		    echo "\n    </td></tr></table>\n";
 		}
+*/
 
 		echo '<input type="hidden" name="session_id" value="',$this->ref_config->number,'_',$this->ref_config->session_id,'"></input>
 <input type="hidden" name="is_js" value="',$this->ref_config->is_js,'"></input>
+<!-- @end content-wrapper -->
 </form>
 
-	  </td></tr>
-	 </table>
-   </td></tr>
-
-</table>
 
 <!-- ####### cache-control ####### -->
 
@@ -332,9 +259,7 @@ class webui_container{
 <input type="hidden" value="" name="cache"></input>
 </form>
 <!-- ####### end of cache-control ####### -->
-
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+</div>
 </body>
 </html>
 ';
@@ -344,7 +269,9 @@ class webui_container{
 		$this->ref_config->debug_put('HTML: '.(strlen($this->menu)+strlen($this->content)+strlen($this->info)).' Byte');
 		$this->show_head();
 		$this->show_headertext();
-		$this->show_info();
+		if ($this->body_class != 'login') {
+			$this->show_info();
+		}
 		$this->show_header();
 		$this->show_content();
 		$this->show_end();

@@ -109,39 +109,71 @@ def genErrorMessage(head, messagelines, mailto = None, atts = None):
 	utfxml += '<dialog id="main_dialog"><table class="border" id="main_dialog_table" type="%s">' % myatts['header_table_type']
 	utfxml += '<row class="border" id="main_dialog_table_row"><col class="border" id="main_dialog_table_row_col"/></row></table>'
 	# tabs
-	utfxml += '<notebook id="main_dialog_notebook"><var internal="1"><name>selected</name><content>0</content></var><var internal="1"><name>selected</name><content>0</content></var><button><text>%s</text><helptext>%s</helptext><var><name>pressed</name><content/></var><active>1</active></button></notebook>' % (_("Error"),_("Error"))
+	#utfxml += '<notebook id="main_dialog_notebook"><var internal="1"><name>selected</name><content>0</content></var><var internal="1"><name>selected</name><content>0</content></var><button><text>%s</text><helptext>%s</helptext><var><name>pressed</name><content/></var><active>1</active></button></notebook>' % (_("Error"),_("Error"))
 	# content
-	utfxml += '<table class="border" id="main_dialog_table1" type="%s">' % myatts['main_table_type']
+	#utfxml += '<table class="border" id="main_dialog_table1" type="%s">' % myatts['main_table_type']
 
 
 
 
-	utfxml += '<row class="border" id="main_dialog_table1_row"><col class="border" id="main_dialog_table1_row_col">'
-	utfxml += '<header id="main_header" type="3"><htmltext>%s</htmltext></header><header id="main_spacer" type="2"><text> </text></header>'%head
-	utfxml += '</col></row>'
-	utfxml += '<row class="border" id="main_dialog_table1_row"><col class="border" id="main_dialog_table1_row_col">'
+	#utfxml += '<row class="border" id="main_dialog_table1_row"><col class="border" id="main_dialog_table1_row_col">'
+	#utfxml += '<header id="main_header" type="3"><htmltext>%s</htmltext></header><header id="main_spacer" type="2"><text> </text></header>'%head
+	#utfxml += '</col></row>'
+	#utfxml += '<row class="border" id="main_dialog_table1_row"><col class="border" id="main_dialog_table1_row_col">'
 
 
-	small=1
+	#small=1
 	import cgi
-	for n, i in enumerate(messagelines):
-		utfxml +='<header id="exception%d" type="%d"><text>%s</text></header><break />' % (n, 3+small, cgi.escape(i.replace(" ","&nbsp;")))
+	#for n, i in enumerate(messagelines):
+	#	utfxml +='<header id="exception%d" type="%d"><text>%s</text></header><break />' % (n, 3+small, cgi.escape(i.replace(" ","&nbsp;")))
 
-	utfxml += '</col></row>'
+	#utfxml += '</col></row>'
 	def htmltext(text):
-		result = '<row class="border" id="main_dialog_table1_row"><col class="border" id="main_dialog_table1_row_col">'
-		result += '<htmltext><htmltext>%s</htmltext></htmltext>' % cgi.escape(text)
-		result += '</col></row>'
+		#result = '<row class="border" id="main_dialog_table1_row"><col class="border" id="main_dialog_table1_row_col">'
+		result = '<htmltext><htmltext>%s</htmltext></htmltext>' % cgi.escape(text)
+		#result += '</col></row>'
 		return result
-	utfxml += htmltext('&nbsp;')
+	#utfxml += htmltext('&nbsp;')
+	utfxml += htmltext("""
+			<div id=content-wrapper>
+				<div id=content-head>
+					<ul class="tabs">
+						<li class="active"><p>%(tab)s</p></li>
+					</ul>
+				</div>
+				<div id="content">
+				""" % {'tab': _('Error') } )
+	utfxml += htmltext("""
+					<div id="usertext">
+			""" )
+	for n, i in enumerate(messagelines):
+		utfxml += '<htmltext><htmltext>%s</htmltext></htmltext>' % cgi.escape(i+'<br/>') #(cgi.escape(i.replace(" ","&nbsp;")))
+	utfxml += htmltext("""
+					</div>
+			""" )
 	if mailto:
 		text = _('Report this error to %s &lt;%s&gt;' % (ucr.get('directory/manager/web/feedback/description', 'Univention Feedback'), ucr.get('directory/manager/web/feedback/mail', 'feedback@univention.de')))
 		link = '<a href="%s">%s</a>' % (mailto, text)
-		utfxml += htmltext(link)
-		utfxml += htmltext('&nbsp;')
-	utfxml += htmltext('<a href="index.php">%s</a>' % _('Login'))
+		#utfxml += htmltext(link)
+		#utfxml += htmltext('&nbsp;')
+		utfxml += htmltext("""
+						<div id="usertext">
+							%(content)s
+						</div>
+				""" % { 'content': link })
+
+	utfxml += htmltext("""
+					<div id="usertext">
+						%(login)s
+					</div>
+				</div>
+			</div>
+			""" % { 'login': '<a href="index.php">%s</a>' % _('Login')})
 	utfxml += '</table>'
 	utfxml += '</col></row></table></dialog><menu id="main_menu"/></dialog>'
+	
+	# New start
+
 	return utfxml
 
 def genErrorMailto(messagelines):

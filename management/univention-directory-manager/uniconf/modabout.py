@@ -114,6 +114,18 @@ class modabout(unimodule.unimodule):
 	def mytype(self):
 		return "dialog"
 
+	def __add_row(self, left_text, right_text):
+
+		self.div_start('form-item col', divtype='class')
+		self.subobjs.append(htmltext ('', {}, {'htmltext': [left_text]}))
+		self.div_stop('form-item col')
+
+		self.div_start('form-item col right', divtype='class')
+		self.subobjs.append(htmltext ('', {}, {'htmltext': [right_text]}))
+		self.div_stop('form-item col right')
+
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ['<br class="clear" />']}))
+
 	def myinit(self):
 		self.save=self.parent.save
 		self.lo=self.args["uaccess"]
@@ -121,13 +133,18 @@ class modabout(unimodule.unimodule):
 		if self.inithandlemessages():
 			return
 
-		self.subobjs.append(table("",
-					  {'type':'content_header'},
-					  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'about_layout'},{"obs":[]})]})]})
-				    )
+		#self.subobjs.append(table("",
+		#			  {'type':'content_header'},
+		#			  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'about_layout'},{"obs":[]})]})]})
+		#		    )
+		self.div_start('content-wrapper', divtype='id')
 
-		self.nbook = notebook('', {}, {'buttons': [("%s %s" % (_('About'),_("Univention Directory Manager")),"%s %s" % (_('About'),_("Univention Directory Manager")))], 'selected': 0})
-		self.subobjs.append(self.nbook)
+		self.div_start('content-head', divtype='id')
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ['<h2>%s</h2>' % _('About Univention Directory Manager')]}))
+		# self.nbook = notebook('', {}, {'buttons': [("%s %s" % (_('About'),_("Univention Directory Manager")),"%s %s" % (_('About'),_("Univention Directory Manager")))], 'selected': 0})
+		#self.subobjs.append(self.nbook)
+
+		self.div_start('content', divtype='id')
 
 
 		rows=[]
@@ -135,32 +152,15 @@ class modabout(unimodule.unimodule):
 		baseConfig=univention_baseconfig.baseConfig()
 		baseConfig.load()
 
-		## Admin
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[
-			header(_("Univention Directory Manager"),{"type":"4"},{})
-			]})
-			]}))
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ['<h3 class="about">%s</h3>' % _('General')]}))
 
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Version')]})]}),
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[self.getversion()]})]})
-			]}))
+		self.div_start('form-wrapper about', divtype='class')
 
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Build')]})]}),
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[self.getbuild()]})]})
-			]}))
+		self.__add_row(_('Version'), self.getversion() )
+		self.__add_row(_('Build'), self.getbuild() )
 
-		## UCS
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
-			]}))
 
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Hostname')]})]}),
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[baseConfig['hostname']]})]})
-			]}))
+		self.__add_row(_('Hostname'),'%s.%s' % (baseConfig['hostname'],baseConfig['domainname']))
 
 		version_string = ""
 		codename = ""
@@ -175,32 +175,20 @@ class modabout(unimodule.unimodule):
 		if baseConfig.has_key("version/releasename"):
 			codename = baseConfig["version/releasename"]
 
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('local Installation')]})]}),
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':["%s %s (%s)" % (_('Univention Corporate Server'), version_string, codename)]})]})
-			]}))
+		self.__add_row(_('local Installation'), "%s %s (%s)" % (_('Univention Corporate Server'), version_string, codename))
 
 		days = baseConfig.get( 'ssl/validity/days', '' )
 		if days:
 			days = datetime.datetime.fromtimestamp( int( days ) * 24 * 60 * 60 ).strftime( "%x" )
 
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Validity date of the SSL certificate')]})]}),
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ days ]})]})
-			]}))
-
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
-			]}))
+		self.__add_row( _('Validity date of the SSL certificate'), days)
 
 		if baseConfig.get( 'univention-ox-directory-integration/oxae', 'false').lower() in [ 'true', 'yes', '1' ] or \
 				baseConfig.get( 'univention-ox-directory-integration/oxse', 'false').lower() in [ 'true', 'yes', '1' ]:
 			## OX
-			rows.append(tablerow("",{},{"obs":[
-				tablecol("",{"colspan":"3",'type':'about_layout'},{"obs":[
-				header(_("Open-Xchange"),{'width':'400', "type":"4"},{})
-				]})
-				]}))
+			self.div_stop('form-wrapper about')
+			self.subobjs.append(htmltext ('', {}, {'htmltext': ['<h3 class="about">%s</h3>' % _('Open-Xchange')]}))
+			self.div_start('form-wrapper about', divtype='class')
 
 			### get ox context and integration versions
 			ldap_base = baseConfig['ldap_base']
@@ -210,166 +198,115 @@ class modabout(unimodule.unimodule):
 			for ox_context in result_set:
 				name = ox_context[0].split(",")[0][3:]
 				ox_context_info = ox_context[1]
-				rows.append(tablerow("",{},{"obs":[
-					tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[
-					header(_("Context: %s") % name, {"type":"4"},{})
-					]})
-					]}))
+				self.__add_row( _('Context'), name)
 				if ox_context_info.has_key("oxAdminDaemonVersion"):
-					rows.append(tablerow("",{},{"obs":[
-						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Admin Daemon Version:')]})]}),
-						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context_info['oxAdminDaemonVersion'][0] ]})]})
-						]}))
+					self.__add_row( _('Admin Daemon Version'), ox_context_info['oxAdminDaemonVersion'][0])
 				if ox_context_info.has_key("oxGroupwareVersion"):
-					rows.append(tablerow("",{},{"obs":[
-						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Groupware Version:')]})]}),
-						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context_info['oxGroupwareVersion'] [0]]})]})
-						]}))
+					self.__add_row( _('Groupware Version'), ox_context_info['oxGroupwareVersion'] [0])
 				if ox_context_info.has_key("oxGuiVersion"):
-					rows.append(tablerow("",{},{"obs":[
-						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('GUI Version:')]})]}),
-						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context_info['oxGuiVersion'][0] ]})]})
-						]}))
+					self.__add_row( _('GUI Version'), ox_context_info['oxGuiVersion'][0])
 				if ox_context_info.has_key("oxIntegrationVersion"):
-					rows.append(tablerow("",{},{"obs":[
-						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Integration Version:')]})]}),
-						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context_info['oxIntegrationVersion'][0] ]})]})
-						]}))
+					self.__add_row( _('Integration Version:'), ox_context_info['oxIntegrationVersion'][0])
 
-				rows.append(tablerow("",{},{"obs":[
-					tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
-					]}))
 
 		## Licence
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[
-			header(_("Licence"),{"type":"4"},{})
-			]})
-			]}))
+		self.div_stop('form-wrapper about')
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ['<h3 class="about">%s</h3>' % _('Licence')]}))
+		self.div_start('form-wrapper about', divtype='class')
+
 		module=univention.admin.modules.get('settings/license')
 		objects=module.lookup(None, self.lo, '')
 
 		if objects:
 			object=objects[0]
 			object.open()
-			rows.append(tablerow("",{},{"obs":[
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object.descriptions['base'].short_description]})]}),
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object['base']]})]})
-				]}))
+			self.__add_row( object.descriptions['base'].short_description, object['base'])
 
 			if object['base'] == 'Free for personal use edition':
 				self.save.put("personal_use","1")
 
-			rows.append(tablerow("",{},{"obs":[
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object.descriptions['accounts'].short_description]})]}),
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object['accounts']]})]})
-				]}))
+			self.__add_row( object.descriptions['accounts'].short_description, object['accounts'])
 
-			rows.append(tablerow("",{},{"obs":[
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object.descriptions['groupwareaccounts'].short_description]})]}),
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object['groupwareaccounts']]})]})
-				]}))
+			self.__add_row( object.descriptions['groupwareaccounts'].short_description, object['groupwareaccounts'])
+			self.__add_row( object.descriptions['clients'].short_description, object['clients'])
 
-			rows.append(tablerow("",{},{"obs":[
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object.descriptions['clients'].short_description]})]}),
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object['clients']]})]})
-				]}))
-
-			rows.append(tablerow("",{},{"obs":[
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object.descriptions['desktops'].short_description]})]}),
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object['desktops']]})]})
-				]}))
-
-			rows.append(tablerow("",{},{"obs":[
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object.descriptions['expires'].short_description]})]}),
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object['expires']]})]})
-				]}))
+			self.__add_row(object.descriptions['desktops'].short_description, object['desktops'])
+			self.__add_row(object.descriptions['expires'].short_description, object['expires'])
 
 			productTypes = ""
 			for t in object['productTypes']:
 				productTypes += ", " + t
 
-			rows.append(tablerow("",{},{"obs":[
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object.descriptions['productTypes'].short_description]})]}),
-				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[productTypes[2:]]})]})
-				]}))
+			self.__add_row(object.descriptions['productTypes'].short_description, productTypes[2:])
 
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "check for personal use: %s" % self.save.get( 'personal_use' ))
 			if self.save.get( 'personal_use' ) == '1':
-				rows.append(tablerow("",{},{"obs":[
-					tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[_('License')]})]}),
-					tablecol("",{'type':'about_layout'},{"obs":[htmltext('',{},{'htmltext':[u'Die "Free For Personal Use" Ausgabe von Univention Corporate Server ist eine spezielle Softwarelizenz mit der Verbraucher im Sinne des § 13 BGB die kostenlose Nutzung von Univention Corporate Server und darauf basierenden Softwareprodukten für private Zwecke ermöglicht wird. <br><br>\
+				self.__add_row(_('License'), u'Die "Free For Personal Use" Ausgabe von Univention Corporate Server ist eine spezielle Softwarelizenz mit der Verbraucher im Sinne des § 13 BGB die kostenlose Nutzung von Univention Corporate Server und darauf basierenden Softwareprodukten für private Zwecke ermöglicht wird. <br><br>\
 							Im Rahmen dieser Lizenz darf UCS von unseren Servern heruntergeladen, installiert und genutzt werden. Es ist jedoch nicht erlaubt, die Software Dritten zum Download oder zur Nutzung zur Verfügung zu stellen oder sie im Rahmen einer überwiegend beruflichen oder gewerbsmäßigen Nutzung zu verwenden.  <br><br>\
 							Die Überlassung der "Free For Personal Use"-Ausgabe von UCS erfolgt im Rahmen eines Schenkungsvertrages. Wir schließen deswegen alle Gewährleistungs- und Haftungsansprüche aus, es sei denn, es liegt ein Fall des Vorsatzes oder der groben Fahrlässigkeit vor. Wir weisen darauf hin, dass bei der "Free For Personal Use"-Ausgabe die Haftungs-, Gewährleistungs-, Support- und Pflegeansprüche, die sich aus unseren kommerziellen Softwareverträgen ergeben, nicht gelten.  <br><br>\
-							Wir wünschen Ihnen viel Freude bei der Nutzung der "Free For Personal Use" Ausgabe von Univention Corporate Server und freuen uns über Ihr Feedback. Bei Fragen wenden Sie sich bitte an unser Forum, dass Sie im Internet unter <a target=parent href=http://forum.univention.de/>http://forum.univention.de/</a> erreichen.']})]})
-					]}))
+							Wir wünschen Ihnen viel Freude bei der Nutzung der "Free For Personal Use" Ausgabe von Univention Corporate Server und freuen uns über Ihr Feedback. Bei Fragen wenden Sie sich bitte an unser Forum, dass Sie im Internet unter <a target=parent href=http://forum.univention.de/>http://forum.univention.de/</a> erreichen.')
 		else:
-			rows.append(tablerow("",{},{"obs":[
-				tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[text('',{},{'text':[_('no licence found')]})]})
-				]}))
+			self.__add_row(_('License'), _('no licence found'))
 
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
-			]}))
+		self.div_stop('form-wrapper about')
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ['<h3 class="about">%s</h3>' % _('License update')]}))
+		self.div_start('form-wrapper about', divtype='class')
 
-		##Upload License from Keyfile
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ["""
+							<div class="form-item col">
+								%(update)s
+							</div>							
+							<div class="form-item col right">
+							""" % {'update': _("Update License via File")}
+							]}))
 		self.certBrowse = question_file('', {} , {"helptext":_("Select a file")})
-		self.certLoadBtn = button(_("Update License"),{'icon':'/style/ok.gif'},{"helptext":_("Upload selected file")})
-		rows.append(tablerow("",{},{"obs":[
-						tablecol("",{'type':'about_layout'},{"obs":[
-									header(_("Update License via File"),{"type":"4"},{})
-									]}),
-						tablecol("",{'colspan':'2','type':'about_layout'},{"obs":[
-									self.certBrowse,
-									htmltext('',{},{'htmltext':['<br>']}),
-									self.certLoadBtn
-									]})
-						]}))
+		self.certLoadBtn = button(_("Update"),{'class':'submit'},{"helptext":_("Upload selected file")})
+		self.subobjs.append(self.certBrowse)
+		#self.subobjs.append(htmltext ('', {}, {'htmltext': ["""
+		#					</div>							
+		#					<div class="form-item col right">
+		#					"""
+		#					]}))
+		self.subobjs.append(self.certLoadBtn)
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ['</div><br class="clear" />']}))
 
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
-			]}))
+
 
 		#Upload License as Text-Copy from License-Mail
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ["""
+							<div class="form-item col">
+								%(update)s
+							</div>							
+							<div class="form-item col right">
+							""" % {'update':_("Insert License Key") }
+							]}))
+
 		self.certText =	 question_ltext('', {}, {'helptext': _("Copy the License Code into this field")})
-		self.certLoadTextBtn = button(_("Update License"),{'icon':'/style/ok.gif'},{"helptext":_("Upload the License")})
-		rows.append(tablerow("",{},{"obs":[
-						tablecol("",{'type':'about_layout'},{"obs":[
-									header(_("Insert License Key"),{"type":"4"},{})
-									]}),
-						tablecol("",{'colspan':'2','type':'about_layout'},{"obs":[
-									self.certText,
-									htmltext('',{},{'htmltext':['<br>']}),
-									self.certLoadTextBtn
-									]})
-						]}))
+		self.certLoadTextBtn = button(_("Update"),{'class':'submit'},{"helptext":_("Upload the License")})
+		self.subobjs.append(self.certText)
+		#self.subobjs.append(htmltext ('', {}, {'htmltext': ["""
+		#					</div>							
+		#					<div class="form-item col right">
+		#					"""
+		#					]}))
+		self.subobjs.append(self.certLoadTextBtn)
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ['</div><br class="clear" />']}))
 
-		## Contact
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[
-			header(_("Contact"),{"type":"4"},{})
-			]})
-			]}))
+		self.div_stop('form-wrapper about')
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ['<h3 class="about">%s</h3>' % _('Contact')]}))
+		self.div_start('form-wrapper about', divtype='class')
 
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':['Univention GmbH']})]}),
-			tablecol("",{'type':'about_layout'},{"obs":[htmltext('',{},{'htmltext':[
-			'<a href=http://www.univention.de target=parent>www.univention.de</a>'
-			]})]})
-			]}))
 
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[_('ALL RIGHTS RESERVED')]})]}),
-			tablecol("",{'type':'about_layout'},{"obs":[htmltext('',{},{'htmltext':[
-			'<a href="mailto:info@univention.de">info@univention.de</a>'
-			]})]})
-			]}))
+		self.__add_row('Univention GmbH', '<a href=http://www.univention.de target=parent>www.univention.de</a>')
+		self.__add_row( _('ALL RIGHTS RESERVED'), '<a href="mailto:info@univention.de">info@univention.de</a>')
 
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
-			]}))
+		self.div_stop('form-wrapper about')
 
-		self.subobjs.append(table("",{'type':'content_main'},{"obs":rows}))
+		self.div_stop('content')
+
+		self.div_stop('content-wrapper')
+
+		self.div_stop('content-head')
 
 	def apply(self):
 		# license import

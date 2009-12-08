@@ -101,7 +101,7 @@ class webui_translator{
 				case 'space':   $tag=""; $close="<img src=\"style/space.gif\" alt=\"\" width=\"".(5*$size)."\"></img>"; break;
 				case 'emphatize':  $tag="<i>"; $close="</i>";  break;
 				case 'important':  $tag="<b>"; $close="</b>";  break;
-				case 'htmltext':  $tag="<div>"; $close="</div>";  break;
+				case 'htmltext':  $tag=""; $close="";  break;
 				case 'info':	$tag = "<div class=\"info\">"; 
 					$close="</div>"; 
 					$this->conti_ref->set_current("info");  

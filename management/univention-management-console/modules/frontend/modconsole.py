@@ -46,6 +46,10 @@ import client
 # main widget for UMC (based on notebook)
 import widget
 
+import pages
+
+import v
+
 import univention.config_registry
 
 configRegistry = univention.config_registry.ConfigRegistry ()
@@ -86,36 +90,150 @@ class modconsole(unimodule.unimodule):
 	def __init__( self, a, b, c ):
 		unimodule.unimodule.__init__( self, a, b, c )
 
-	def __commonHeader(self, layoutType):
+	def __commonHeader(self, close_header=False):
 		obs = []
-##		if self.save.get( 'auth_ok', None ):
-##			self.logoutbut = button(_("Logout"),{'icon':'/style/cancel.gif'},{"helptext":_("Quit Session")})
-##			obs.append(self.logoutbut)
-		self.save.put( 'header_table_type' , 'content_header_menuless' )
-		self.save.put( 'main_table_type' , 'content_main_menuless' )
 		if configRegistry.has_key('umc/title') and configRegistry['umc/title']:
 			self.save.put( 'site_title' , '%s' % configRegistry['umc/title'] )
 		else:
 			self.save.put( 'site_title' , 'Univention Management Console' )
-		if configRegistry.has_key('umc/title/image') and \
-			   configRegistry['umc/title/image']:
-			self.save.put( 'header_img' , configRegistry['umc/title/image'] )
+
+		close_header_tag = ''
+		if close_header:
+			close_header_tag='</div>'
+
+		if configRegistry.has_key('umc/title/image') and configRegistry['umc/title/image']:
+			header = htmltext ('', {}, \
+				{'htmltext': ["""
+							<div id="header" style="background:transparent url(%(image)s) no-repeat scroll left top">
+							%(close_header)s
+						""" % {'image': configRegistry['umc/title/image'], 'close_header':close_header_tag}]})
 		else:
-			self.save.put( 'header_img' , 'themes/images/default/management-console.gif' )
+			header = htmltext ('', {}, \
+				{'htmltext': ["""
+							<div id="header">
+								<!-- @start header-title -->
+								<h1 class="header-title">
+									<span class="hide">univention</span> <a href="/univention-management-console/" title="Start">management console</a>
+								</h1>
+								<!-- @end header-title -->
+							%(close_header)s
+						""" % {'close_header':close_header_tag}]})
+		self.subobjs.append(header)
 
-
-		self.subobjs.append(table("",
-			{'type':'content_header_menuless'},
-			{"obs":[tablerow("",{},{"obs":
-						[tablecol("",{'type':layoutType},{"obs":[]}),
-						 tablecol("",{'type':layoutType},{"obs":obs})
-						 ]})]
-			 }))
+	def __quickmenu(self):
+		lang = locale.getlocale( locale.LC_MESSAGES )
+		if lang and lang[0]:
+			lang = lang[0].split('_',1)[0]
+		else:
+			lang = 'en'
+		usermenu = htmltext ('', {}, \
+			{'htmltext': ["""
+				<div id="user-menu">
+				<!-- @start info -->
+				<div id="info">
+					<ul>
+						<li class="help">
+								<a title="%(help)s" href="/help.php?lang=%(lang)s&app=umc" target="_blank" onclick="helpwindow=window.open('/help.php?lang=%(lang)s&app=umc','pophelp','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=530,height=450,top=150,left=100');helpwindow.focus();return false;">%(help)s</a>
+						</li>
+						<li class="spacer"> </li>
+						<li class="about">
+				""" % {'help': _('Help'), 'lang': lang} ]})
+		self.subobjs.append(usermenu)
+		self.aboutbutton=button(_('About UMC'),{'link':'1'},{"helptext":_('About UMC')})
+		self.subobjs.append(self.aboutbutton)
+		usermenu = htmltext ('', {}, \
+			{'htmltext': ["""
+						</li>
+					</ul>
+					
+					<br class="clear"/>
+				"""]})
+		self.subobjs.append(usermenu)
+					
+		usermenu = htmltext ('', {}, \
+			{'htmltext': ["""
+					<span class="session">
+						%(loginmessage)s <span class="name">%(username)s</span>
+					</span>
+				</div>
+				<!-- @end info -->
+				""" % { 'loginmessage': _('You are logged in as'), 'username': self.save.get("relogin_username")}
+				]})
+		self.subobjs.append(usermenu)
+				
+		usermenu = htmltext ('', {}, \
+			{'htmltext': ["""
+					<!-- @start account options -->
+					<ul class="options">
+						<li class="logout">
+				"""]})
+		self.subobjs.append(usermenu)
+		self.logoutbutton=button(_('Logout'),{'icon':'/icon/exit.png'},{"helptext":_('Logout')})
+		self.subobjs.append(self.logoutbutton)
+		#self.mbutlist.append([logout_button, 'logout', None])
+		usermenu = htmltext ('', {}, \
+			{'htmltext': ["""
+					</li>
+				</ul>
+				<br class="clear"/>
+				<!-- @end account-options -->
+			</div>
+        </div>
+				"""]})
+		self.subobjs.append(usermenu)
 
 	def __login(self): # build login-Screen
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Function: __login: log on to UMCP server')
-		self.__commonHeader('login_layout')
 
+		self.__commonHeader(True)
+
+		login_message = htmltext ('', {}, \
+				{'htmltext': ["""
+					<div id=content-wrapper>
+					<div id=content-head>
+					<h2>%(login)s</h2>
+					</div>
+					""" % {'login': _('Univention Management Console Login')}]})
+		self.subobjs.append(login_message)
+
+		sessioninvalid = None
+		if self.req and self.req.meta and self.req.meta.has_key ('Sessioninvalid') \
+				and self.req.meta['Sessioninvalid'] == '1':
+					description_caption = _('Session Timeout')
+					description1 = _('To increase the session timeout log into Univention Management Console, select the Univention Configuration Registry module and change the value of <code>umc/web/timeout</code>.')
+					#description2 = _('As an alternative you can set the UCR variable with the following command line statement <code>univention-config-registry directory/manager/timeout=TIMEOUT_IN_SECONDS</code>.')
+					sessioninvalid = htmltext ('', {}, \
+							{'htmltext': ["""
+								<div class=error message>
+								<h3>%s</h3>
+								<p>%s</p>
+								</div>
+								""" % (description_caption, description1)]})
+
+		unsupportedbrowser = None
+		if self.req and self.req.meta and self.req.meta.has_key ('Unsupportedbrowser') \
+				and self.req.meta['Unsupportedbrowser'] == '1':
+					description_caption = _('Unsupported web browser')
+					description1 = _('The Univention Management Console (UMC) has not been tested with your web browser. You should use Firefox since version 3.x or Microsoft Internet Explorer since version 6.0.')
+					unsupportedbrowser = htmltext ('', {}, \
+							{'htmltext': ["""
+								<div class=error message>
+								<h3>%s</h3>
+								<p>%s</p>
+								</div>
+								""" % (description_caption, description1)]})
+
+		unsecureconnection = None
+		if int(os.environ["HTTPS"]) != 1:
+			description_caption = _('Insecure Connection')
+			description1 = _('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow <a href=https://%s/univention-management-console/ >this link</a> to use a secure SSL connection.') % os.environ['HTTP_HOST']
+			unsecureconnection = htmltext ('', {}, \
+							{'htmltext': ["""
+								<div class=error message>
+								<h3>%s</h3>
+								<p>%s</p>
+								</div>
+								""" % (description_caption, description1)]})
 		# select language
 		# the installed languages can be obtained via locale -a
 		# but I shouldn't check on that but rely on the languages I set
@@ -140,71 +258,185 @@ class modconsole(unimodule.unimodule):
 		self.chooselang=language_dojo_select(_("Language:"),{'width':'265'},{"helptext":_("Select language for this session"),"choicelist":langs})
 
 		self.usernamein=question_text(_("User name"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your uid.")})
-		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Abort login")})
-		if int(os.environ["HTTPS"]) == 1 or self.save.get("http") == 1:
-			self.passwdin=question_secure(_("Password"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("Please enter your password.")})
-			self.okbut=button(_("OK"),{'icon':'/style/ok.gif'},{"helptext":_("Login")})
-		else:
-			self.passwdin=question_secure(_("Password"),{'width':'265','passive':'true','puretext': '1'},
-						{"usertext":self.save.get("relogin_passwd"),"helptext":_("Please enter your password.")})
-			self.okbut=button(_("OK"),{'passive':'true','icon':'/style/ok.gif'},{"helptext":_("Login")})
+		self.cabut=button(_("Cancel"),{'class':'cancel', 'link': '/'},{"helptext":_("Abort login")})
+		self.passwdin=question_secure(_("Password"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("Please enter your password.")})
+		self.okbut=button(_("Login"),{'class':'submit', 'defaultbutton':'1'},{"helptext":_("Login")})
 
-		rows = []
+		if unsecureconnection:
+			self.subobjs.append(unsecureconnection)
 
-		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]})]}))
-		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.passwdin]})]}))
-		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.chooselang]})]}))
+		if sessioninvalid:
+			self.subobjs.append(sessioninvalid);
 
-		#check if http should realy be used
-		if int(os.environ["HTTPS"]) != 1:
-			sel = ""
-			if self.save.get("http") == 1:
-				sel = "selected"
-			self.httpbut = button('httpbut',{},{"helptext":_("")})
-			self.httpbool= question_bool(   _("Not using a secure SSL connection. Click to continue."), {'width':'265'},
-							{'helptext': _("Not using a secure SSL connection. Click to continue."),'button':self.httpbut,'usertext':sel})
-			use_httpbool=tablecol("",{'colspan':'2','type':'login_layout'},{"obs":[self.httpbool]})
-			rows.append(tablerow("",{},{"obs":[use_httpbool]}))
+		if unsupportedbrowser:
+			self.subobjs.append(unsupportedbrowser);
 
-		okcol=tablecol("",{'type':'login_layout'},{"obs":[self.okbut]})
-		cacol=tablecol("",{'type':'login_layout'},{"obs":[self.cabut]})
-		rows.append(tablerow("",{},{"obs":[okcol,cacol]}))
+		login_message = htmltext ('', {}, \
+				{'htmltext': ["""
+					<div id=content>
+					<div class=form-wrapper>
+					"""]})
+		self.subobjs.append(login_message);
 
-		self.nbook=notebook('', {}, {'buttons': [(_('Login'), _('Login'))], 'selected': 0})
-		self.subobjs.append(self.nbook)
+		self.div_start('form-item', divtype='class')
+		self.subobjs.append(self.usernamein);
+		self.div_stop('form-item')
+		self.div_start('form-item', divtype='class')
+		self.subobjs.append(self.passwdin);
+		self.div_stop('form-item')
+		self.div_start('form-item', divtype='class')
+		self.subobjs.append(self.chooselang)
+		self.div_stop('form-item')
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ['<div class="form-item">']}))
+		self.subobjs.append(self.cabut)
+		self.subobjs.append(self.okbut)
+		self.subobjs.append(htmltext('', {}, {'htmltext': ['<br class="clear"/> </div">']}))
 
-		self.subobjs.append(table("",
-			{'type':'content_main_menuless'},
-			{"obs":[tablerow("",{},{"obs":[tablecol("",{},{"obs":[table("",{},{"obs":rows})]})]})]}
-			))
+		# close content div
+		login_message = htmltext ('', {}, \
+				{'htmltext': ["""
+					</div>
+					</div>
+					"""]})
+
+		# close content-wrapper div
+		login_message = htmltext ('', {}, \
+				{'htmltext': ["""
+					</div>
+					"""]})
+		self.subobjs.append(login_message);
+
+
+		#self.subobjs.append(table("",
+		#	{'type':'content_main_menuless'},
+		#	{"obs":[tablerow("",{},{"obs":[tablecol("",{},{"obs":[table("",{},{"obs":rows})]})]})]}
+		#	))
 
 
 	def __logout(self): # ask for logout and jump to login or back to process
-		self.__commonHeader( 'login_layout')
+		self.__commonHeader( )
+		self.__quickmenu( )
 
-		self.okbut=button(_("Logout"),{'icon':'/style/ok.gif'},{"helptext":_("Logout")})
-		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Abort logout")})
+		self.div_start('content-wrapper', divtype='id')
+		self.okbut=button(_("Logout"),{'class':'submit', 'link': '/univention-management-console/index.php?relogin=1', 'defaultbutton': '1'},{"helptext":_("Logout")})
+		self.cabut=button(_("Cancel"),{'class':'cancel'},{"helptext":_("Abort logout")})
 
 		rows = []
 
 		logouttext = text('',{},{'text':[_("Do you really want to logout?")]})
 		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[ logouttext ]})]}))
 
-		okcol=tablecol("",{'type':'login_layout'},{"obs":[self.okbut]})
-		cacol=tablecol("",{'type':'login_layout'},{"obs":[self.cabut]})
-		rows.append(tablerow("",{},{"obs":[okcol,cacol]}))
+		okcol=tablecol("",{'type':'login_layout_button'},{"obs":[self.okbut]})
+		cacol=tablecol("",{'type':'login_layout_button'},{"obs":[self.cabut]})
+		rows.append(tablerow("",{},{"obs":[cacol,okcol]}))
 
 		self.nbook=notebook('', {}, {'buttons': [(_('Logout'), _('Logout'))], 'selected': 0})
 		self.subobjs.append(self.nbook)
+		self.div_start('content', divtype='id')
+		self.div_start('logout_message', divtype='id')
+
+		self.subobjs.append(table("",
+			{'type':'content_main_menuless'},
+			{"obs":[tablerow("",{},{"obs":[tablecol("",{},{"obs":[table("",{},{"obs":rows})]})]})]}
+			))
+		self.div_stop('logout_message')
+		self.div_stop('content')
+		self.div_stop('content-wrapper')
+
+	def __about(self): # ask for logout and jump to login or back to process
+		self.__commonHeader( )
+		self.__quickmenu( )
+
+		rows = []
+
+		build_version = v.build
+
+		self.div_start('content-wrapper', divtype='id')
+
+		if configRegistry.has_key("version/releasename"):
+			build_version = build_version + "(" + configRegistry["version/releasename"] + ")"
+
+		self.div_start('content-head', divtype='id')
+		self.subobjs.append(htmltext ('', {}, {'htmltext': ['<h2>%s</h2>' % _('About Univention Management Console')]}))
+		self.div_stop('content-head')
+
+		self.div_start('content', divtype='id')
+
+		rows.append(tablerow("",{},{"obs":[
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Version')]})]}),
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[v.version]})]})
+				]}))
+
+		rows.append(tablerow("",{},{"obs":[
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Build')]})]}),
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[build_version]})]})
+				]}))
+
+		## UCS
+		rows.append(tablerow("",{},{"obs":[
+				tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
+				]}))
+
+		rows.append(tablerow("",{},{"obs":[
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Hostname')]})]}),
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[configRegistry['hostname']]})]})
+				]}))
+
+		version_string = ""
+		for key in ['version/version','version/patchlevel','version/security-patchlevel']:
+			if configRegistry.has_key(key) and configRegistry[key]:
+				if version_string:
+					version_string = "%s-%s" % (version_string,configRegistry[key])
+				else:
+					version_string = configRegistry[key]
+
+		rows.append(tablerow("",{},{"obs":[
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Local installation')]})]}),
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':["%s %s" % (_('UCS version'), version_string)]})]})
+				]}))
+
+		rows.append(tablerow("",{},{"obs":[
+				tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
+				]}))
+
+		## Contact
+		rows.append(tablerow("",{},{"obs":[
+				tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[
+				header(_("Contact"),{"type":"4"},{})
+				]})
+				]}))
+
+		rows.append(tablerow("",{},{"obs":[
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':['Univention GmbH']})]}),
+				tablecol("",{'type':'about_layout'},{"obs":[htmltext('',{},{'htmltext':[
+				'<a href=http://www.univention.de target=parent>www.univention.de</a>'
+				]})]})
+				]}))
+
+		rows.append(tablerow("",{},{"obs":[
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[_('ALL RIGHTS RESERVED')]})]}),
+				tablecol("",{'type':'about_layout'},{"obs":[htmltext('',{},{'htmltext':[
+				'<a href="mailto:info@univention.de">info@univention.de</a>'
+				]})]})
+				]}))
+
+		rows.append(tablerow("",{},{"obs":[
+				tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
+				]}))
 
 		self.subobjs.append(table("",
 			{'type':'content_main_menuless'},
 			{"obs":[tablerow("",{},{"obs":[tablecol("",{},{"obs":[table("",{},{"obs":rows})]})]})]}
 			))
 
+		self.okbut=button(_("Ok"),{'class':'submit', 'defaultbutton': '1'},{"helptext":_("Logout")})
+
+		self.subobjs.append(self.okbut)
+		self.div_stop('content')
+		self.div_stop('content-wrapper')
+
 	def __process(self):
 		global notebook_widget
-		self.__commonHeader('about_layout')
 		layout = notebook_widget.layout()
 		report = notebook_widget.report()
 
@@ -220,6 +452,21 @@ class modconsole(unimodule.unimodule):
 			# work properly.
 			hack_button = button( '', { 'link' : '1' }, { 'helptext' : _( 'Update status' ) } )
 			self.subobjs.append( hack_button )
+
+	def __div_start(self, div):
+		div_header = htmltext ('', {}, \
+			{'htmltext': ["""
+				<div id="%(div)s">
+				""" % {'div': div }]})
+		self.subobjs.append(div_header)
+
+	def __div_stop(self, div=None):
+		div_header = htmltext ('', {}, \
+			{'htmltext': ["""
+				</div>
+				""" ]})
+		self.subobjs.append(div_header)
+
 
 	def mytype(self):
 		return "dialog"
@@ -239,6 +486,11 @@ class modconsole(unimodule.unimodule):
 			self.__logout()
 			return
 
+		if self.save.get('about'): # quit connection and fall back to login...
+			self.save.put('consolemode','about')
+			self.__about()
+			return
+
 		if not self.save.get( 'auth_ok' , False ) == True: # do authentication and login
 			# connect to daemon
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Function: myinit: connection to UMCP server')
@@ -250,7 +502,7 @@ class modconsole(unimodule.unimodule):
 			if client.error_get() != client.NOERROR:
 				self.save.put( 'consolemode', None )
 				self.save.put( 'auth_ok', False )
-				self.usermessage( _('Authentication failed: A connection to the UMC daemon could not be established.' ) )
+				self.usermessage( _('Authentication failed: A connection to the UMC daemon could not be established.' ), application='umc', need_header=True, relogin=True )
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'UMCP client error: no connection')
 			else:
 				self.save.put('consolemode','login')
@@ -262,6 +514,8 @@ class modconsole(unimodule.unimodule):
 				self.save.put( 'auth_ok', False )
 				self.save.put( 'umc_connected', False )
 				return
+			self.__commonHeader()
+			self.__quickmenu()
 			self.save.put('consolemode','process')
 			global notebook_widget
 			if not notebook_widget:
@@ -273,14 +527,17 @@ class modconsole(unimodule.unimodule):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Function: apply')
 		self.applyhandlemessages()
 
+		if hasattr(self,'logoutbutton') and self.logoutbutton.pressed():
+			self.save.put('logout','1')
+			return
+
+		if hasattr(self,'aboutbutton') and self.aboutbutton.pressed():
+			self.save.put('about','1')
+			return
+
 		if self.save.get('consolemode') == 'login':
 			self.save.put("relogin_username",self.usernamein.xvars.get("usertext",""))
 			self.save.put("relogin_password",self.passwdin.xvars.get("usertext",""))
-
-			if int(os.environ["HTTPS"]) != 1 and self.httpbool.selected():
-				self.save.put("http",1)
-			else:
-				self.save.put("http",0)
 
 			if self.cabut.pressed():
 				self.save.put( 'auth_ok', False ) # just to be sure
@@ -356,7 +613,7 @@ class modconsole(unimodule.unimodule):
 				else:
 					self.save.put( 'consolemode', None )
 					self.save.put( 'auth_ok', False )
-					self.usermessage( _('Authentication failed: %s') % statusinformation )
+					self.usermessage( _('Authentication failed: %s') % statusinformation, application='umc', need_header=True, relogin=True )
 
 		elif self.save.get('consolemode') == 'logout':
 			if self.cabut.pressed():
@@ -372,6 +629,10 @@ class modconsole(unimodule.unimodule):
 				self.save.put( 'umc_connected', False )
 				self.save.put( 'auth_ok', False )
 				self.userinfo( _( 'Logout successful.' ) )
+		elif self.save.get('consolemode') == 'about':
+			if self.okbut.pressed():
+				self.save.put( 'consolemode', 'process' )
+				self.save.put( 'about', None )
 
 		elif self.save.get('consolemode') == 'process':
 			global notebook_widget

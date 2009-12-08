@@ -127,7 +127,10 @@ class Frame( Element, list ):
 	def __init__( self, elements = [], title = '' ):
 		Element.__init__( self )
 		list.__init__( self, _verify_list_items( elements ) )
-		self.set_title( title )
+		if title:
+			self.set_title( title )
+		else:
+			self.__title = None
 
 	def __str__( self ):
 		return "%s:\n  %s" % ( Element.__str__( self ), _str_list( self ) )

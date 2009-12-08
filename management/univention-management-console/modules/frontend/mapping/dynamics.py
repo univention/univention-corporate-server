@@ -56,7 +56,7 @@ class DynamicListMap( mapper.IMapper ):
 		headers = []
 
 		for col in umcp_part.get_header():
-			head = header( str( col ), { 'type' : '4' }, {} )
+			head = header( str( col ), { 'type' : '5' }, {} )
 			headers.append( tablecol( '', { 'type' : 'umc_list_head' }, { 'obs' : [ head ] } ) )
 		rows = [ tablerow( '', { 'type' : 'umc_list_head' }, { 'obs' : headers } ) ]
 
@@ -81,7 +81,7 @@ class DynamicListMap( mapper.IMapper ):
 				select_btns.append( modifier_obj.args['button'] )
 
 			icon = { 'icon' : umc_tools.image_get( 'actions/remove', umc_tools.SIZE_SMALL ) }
-			but = button( '', icon, { 'helptext' : '' } )
+			but = button( '', icon, { 'helptext' : '', 'padding-top': '10px' } )
 			remove_btns.append( but )
 			btn_col = tablecol( '', { 'type' : 'umc_list_element' },
 								{ 'obs' : [ but ] } )
@@ -604,7 +604,7 @@ class FileUploadMap( mapper.IMapper ):
 
 		fileDeleteBtnList = []
 		fileBrowseBtn = question_file( _('Select a file'), {} , {"helptext":_("Select a file")})
-		fileLoadBtn = button(_("Upload file"),{'icon':'/style/ok.gif'},{"helptext":_("Upload selected file")})
+		fileLoadBtn = button(_("Upload file"),{'class':'submit'},{"helptext":_("Upload selected file")})
 
 		filelist = save.get('uploadFilelist',[])
 		rows = []
