@@ -32,24 +32,31 @@
 if [ "$1" = "install" ]; then
 	eval $(univention-config-registry shell)
 
-	admin_auth="$(echo $auth_admin_methods | grep cache)"
-	if [ -z "$admin_auth" ]; then
-		univention-config-registry set auth/admin/methods="$auth_admin_methods cache"
+	if [ -z "$auth_admin_methods" ]; then
+		univention-config-registry set auth/admin/methods?"krb5 ldap unix" auth/admin/methods/default?"krb5 ldap unix cache"
+	else
+		admin_auth="$(echo $auth_admin_methods | grep cache)"
+		if [ -z "$admin_auth" ]; then
+			univention-config-registry set auth/admin/methods="$auth_admin_methods cache"
+
+		admin_auth="$(echo $auth_admin_methods_default | grep cache)"
+		if [ -z "$admin_auth" ]; then
+			univention-config-registry set auth/admin/methods/default="$auth_admin_methods_defaults cache"
+		fi
 	fi
 
-	admin_auth="$(echo $auth_admin_methods_default | grep cache)"
-	if [ -z "$admin_auth" ]; then
-		univention-config-registry set auth/admin/methods/default="$auth_admin_methods_defaults cache"
-	fi
+	if [ -z "$auth_user_methods" ]; then
+		univention-config-registry set auth/user/methods?"krb5 ldap unix cache" auth/user/methods/default?"krb5 ldap unix cache"
+	else
+		users_auth="$(echo $auth_user_methods | grep cache)"
+		if [ -z "$users_auth" ]; then
+			univention-config-registry set auth/user/methods="$auth_user_methods cache"
+		fi
 
-	users_auth="$(echo $auth_user_methods | grep cache)"
-	if [ -z "$users_auth" ]; then
-		univention-config-registry set auth/user/methods="$auth_user_methods cache"
-	fi
-
-	users_auth="$(echo $auth_user_methods_default | grep cache)"
-	if [ -z "$users_auth" ]; then
-		univention-config-registry set auth/user/methods/default="$auth_user_methods_defaults cache"
+		users_auth="$(echo $auth_user_methods_default | grep cache)"
+		if [ -z "$users_auth" ]; then
+			univention-config-registry set auth/user/methods/default="$auth_user_methods_defaults cache"
+		fi
 	fi
 fi
 
