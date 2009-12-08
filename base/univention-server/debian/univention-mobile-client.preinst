@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 # on installation and not on update
-if [ "$1" = "configure" -a -z "$2" ]; then
+if [ "$1" = "install" ]; then
 	eval $(univention-config-registry shell)
 
 	admin_auth="$(echo $auth_admin_methods | grep cache)"
