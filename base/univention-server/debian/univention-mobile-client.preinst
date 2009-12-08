@@ -38,6 +38,7 @@ if [ "$1" = "install" ]; then
 		admin_auth="$(echo $auth_admin_methods | grep cache)"
 		if [ -z "$admin_auth" ]; then
 			univention-config-registry set auth/admin/methods="$auth_admin_methods cache"
+		fi
 
 		admin_auth="$(echo $auth_admin_methods_default | grep cache)"
 		if [ -z "$admin_auth" ]; then
