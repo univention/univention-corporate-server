@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-06 14:48+0200\n"
+"POT-Creation-Date: 2009-12-08 20:12+0100\n"
 "PO-Revision-Date: 2009-08-04 17:18+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -279,6 +279,14 @@ msgstr "(Re)installation"
 #: memberserver.py:324 mobileclient.py:301 thinclient.py:206 windows.py:254
 msgid "Group memberships"
 msgstr "Gruppenmitgliedschaften"
+
+#: domaincontroller_backup.py:603 domaincontroller_backup.py:606
+#: domaincontroller_master.py:601 domaincontroller_master.py:604
+#: domaincontroller_slave.py:601 domaincontroller_slave.py:604
+#: managedclient.py:566 managedclient.py:569 memberserver.py:588
+#: memberserver.py:591 mobileclient.py:562 mobileclient.py:565
+msgid "Open Univention Management Console on this computer"
+msgstr "Univention Management Console auf diesem Rechner öffnen"
 
 #: domaincontroller_master.py:52
 msgid "Computer: Domain Controller Master"

@@ -322,7 +322,7 @@ class modbrowse(unimodule.unimodule):
 				continue
 			add_types.append({'name': univention.admin.modules.name(m), 'description': univention.admin.modules.short_description(m)})
 		add_types.sort()
-		add_types.insert(0, {'name': "uidummy098", 'description': _("Select type to create new object")})
+		add_types.insert(0, {'name': "uidummy098", 'description': _("Create new object")})
 		self.div_start('add_select', divtype='id')
 		self.add_select=question_select('',{},{"helptext":_("Select type of object to add at current position"),"choicelist":add_types,"button":self.add_button})
 

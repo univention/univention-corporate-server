@@ -393,8 +393,8 @@ msgid "Select a new object to add"
 msgstr "Neuen Objekttyp zum Hinzufügen auswählen"
 
 #: modbrowse.py:325
-msgid "Select type to create new object"
-msgstr "Neuen Objekttyp zum Hinzufügen auswählen"
+msgid "Create new object"
+msgstr "Neues Objekt hinzufügen"
 
 #: modbrowse.py:327
 msgid "Select type of object to add at current position"
@@ -1400,9 +1400,9 @@ msgid ""
 "section."
 msgstr ""
 "Der Lizenzstatus konnte nicht validiert werden, Sie verwenden zur Zeit "
-"eineVersion ohne Support oder Maintenance-Unterstützung durch Univention. "
-"WennSie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
-"einen Univention Partner"
+"eine Version ohne Support oder Maintenance-Unterstützung durch Univention. "
+"Wenn Sie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
+"einen Univention Partner."
 
 #: modrelogin.py:415 modrelogin.py:417
 #, python-format
@@ -1612,7 +1612,7 @@ msgstr "Die ausgewählten Objekten ..."
 
 #: unidialog.py:287
 msgid "Help"
-msgstr ""
+msgstr "Hilfe"
 
 #: unidialog.py:289
 msgid "About UDM"

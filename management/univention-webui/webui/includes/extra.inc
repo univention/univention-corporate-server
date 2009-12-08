@@ -1855,7 +1855,7 @@ class dynamic_longtable extends webui_translator
 		if ( $totalrows > $visiblerows ) {
 # back button
 			$button_str .='<div class="dynlongtable-buttons" id="dynlongtable_buttons" align="center">
-<button class="dynlongtable-button" dojoType="dijit.form.Button">
+<button class="dynlongtable-button" type=button dojoType="dijit.form.Button">
   <img alt="&lt;" style="margin: 4px;" src="style/l_ar_small.gif" />
   <script type="dojo/method" event="onClick" args="evt">
      dijit.byId("longtable").back()
@@ -1866,7 +1866,7 @@ class dynamic_longtable extends webui_translator
 			$button_str .= '<span class="dynlongtable-controller" dojoType="dijit.layout.StackController" containerId="longtable"></span>';
 
 # forward button
-			$button_str .= '<button class="dynlongtable-button" dojoType="dijit.form.Button">
+			$button_str .= '<button class="dynlongtable-button" type=button dojoType="dijit.form.Button">
   <img alt="&gt;" style="margin: 4px;" src="style/r_ar_small.gif" />
   <script type="dojo/method" event="onClick" args="evt">
      dijit.byId("longtable").forward()

@@ -162,6 +162,11 @@ div#user-menu .options li
 	float: left;
 }
 
+div#user-menu .options li.profile
+{
+	padding-right: 10px;
+}
+
 div#user-menu .options li a
 {
 	padding-left: 5pt;

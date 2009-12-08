@@ -1,3 +1,9 @@
+univention-webui (3.0.24-1) unstable; urgency=low
+
+  * make the longtable IE 8 compatible. Bug #16448
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Dec 2009 15:21:19 +0100
+
 univention-webui (3.0.23-1) unstable; urgency=low
 
   * design update for UCS 2.3. Bug #16448
