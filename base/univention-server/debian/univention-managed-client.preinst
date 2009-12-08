@@ -33,7 +33,7 @@ if [ "$1" = "install" ]; then
 	eval $(univention-config-registry shell)
 
 	if [ -z "$auth_admin_methods" ]; then
-		univention-config-registry set auth/admin/methods?"krb5 ldap unix" auth/admin/methods/default?"krb5 ldap unix cache"
+		univention-config-registry set auth/admin/methods?"krb5 ldap unix cache" auth/admin/methods/default?"krb5 ldap unix cache"
 	else
 		admin_auth="$(echo $auth_admin_methods | grep cache)"
 		if [ -z "$admin_auth" ]; then

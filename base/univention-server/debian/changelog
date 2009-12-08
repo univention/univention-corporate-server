@@ -1,3 +1,9 @@
+univention-server (5.0.12-1) unstable; urgency=low
+
+  * also set the cache for auth/admin/methods. Bug #16727
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Dec 2009 21:42:04 +0100
+
 univention-server (5.0.11-1) unstable; urgency=low
 
   * fixed typo in managed and mobile client preinst which was imported
