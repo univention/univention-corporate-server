@@ -1,3 +1,11 @@
+unidump (2.0.1-1) unstable; urgency=low
+
+  * added mt-st to the dependecies. Bug #16801
+  * adjust a tail call in GenericDumper.pm to the newer tail syntax. Bug
+    #16802
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Dec 2009 21:50:39 +0100
+
 unidump (2.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3

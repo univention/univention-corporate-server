@@ -406,7 +406,7 @@ sub holdingdisk_ok {
     my $hdsize = (split(' ', qx(du -bs $hd)))[0];
     return $maxsize > ($hdsize + $size/2) ? 1 : 0;
   }
-  my $hdfree = 1024*(split(' ', qx(df -k $hd | tail +2)))[3]
+  my $hdfree = 1024*(split(' ', qx(df -k $hd | tail -n +2)))[3]
     + $maxsize;
 
   return $hdfree > $size/2 ? 1 : 0; 
