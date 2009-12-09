@@ -866,10 +866,18 @@ class modbrowse(unimodule.unimodule):
 
 		footerCols = []
 		if move_dn_list:
-			self.move_here_button=button(_("Move here"),{'class':'submit', 'defaultbutton': '1'},{"helptext":_("move selected objects here")})
+			self.move_here_button=button(_("Move"),{'class':'submit', 'defaultbutton': '1'},{"helptext":_("move selected objects here")})
 			self.cancel_move_button=button(_("Cancel"),{'class':'cancel'},{"helptext":_("cancel moving object")})			
-			self.subobjs.append(self.cancel_move_button)
-			self.subobjs.append(self.move_here_button)
+			self.div_stop('search-result')
+			self.subobjs.append(table("",
+				  {'type':'content_move'},
+				  {"obs":[tablerow("",{},{"obs":[
+							tablecol("",{'type':'cancel'},{"obs":[self.cancel_move_button]}),
+							tablecol("",{'type':'okcancel'},{"obs":[self.move_here_button]})
+					]})]}))
+
+			# self.subobjs.append(self.cancel_move_button)
+			# self.subobjs.append(self.move_here_button)
 			# footerCols.append(tablecol("",{'type':'browse_layout'},{"obs":[self.move_here_button,self.cancel_move_button]}))
 		else:
 			# info: number of search results
