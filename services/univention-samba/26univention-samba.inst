@@ -58,6 +58,7 @@ eval `univention-baseconfig shell`
 
 trustaccounts="$(ldapsearch -x '(&(objectClass=sambaSamAccount)(sambaAcctFlags=[I          ]))' cn | sed -n 's/^cn: \(.*\)/\1/p')"
 if [ -z "$samba_idmap_domains" -a -n "$trustaccounts" ]; then
+	trustaccounts="$(echo "$trustaccounts" | tr '[:lower:]' '[:upper:]')"
 	univention-config-registry set samba/idmap/domains?"$trustaccounts"
 	samba_idmap_domains="$trustaccounts"
 fi
