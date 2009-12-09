@@ -1,3 +1,11 @@
+univention-samba (4.0.10-1) unstable; urgency=low
+
+  * Adjust idmap config to 3.3.0 changes (for Bug #16765)
+  * introduces new UCR variable samba/idmap/domains
+  * fix ldap ssl to valid (default) setting 'start tls' (Bug #16002)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 09 Dec 2009 18:28:34 +0100
+
 univention-samba (4.0.9-1) unstable; urgency=low
 
   * the idmap backend config currently does not allow more than one ldap URL

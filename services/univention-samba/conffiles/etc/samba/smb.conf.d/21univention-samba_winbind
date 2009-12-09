@@ -17,6 +17,24 @@
 #if ldaphosts:
 #	print '\tidmap backend = ldap:"%s"' % ' '.join(['ldap://%s' % i for i in ldaphosts])
 
+### <idmap config for Samba 3.3.0>
+admindn=baseConfig.get('samba/user')
+if not admindn:
+	if baseConfig['server/role'] == 'domaincontroller_master':
+		admindn='cn=admin,%s' % (baseConfig['ldap/base'])
+	else:
+		admindn='cn=backup,%s' % (baseConfig['ldap/base'])
+ldap_server_name=baseConfig.get('ldap/server/name', 'localhost')
+print '\tidmap alloc backend = ldap'
+print '\tidmap alloc config : ldap_user_dn = %s' % (admindn)
+print '\tidmap alloc config : ldap_url = ldap://%s' % (ldap_server_name)
+idmap_domains=baseConfig.get('samba/idmap/domains')
+if idmap_domains:
+	for domain in idmap_domains.replace('"','').split(' '):
+		print '\tidmap config %s : ldap_user_dn = %s' % (domain, admindn)
+		print '\tidmap config %s : ldap_url = ldap://%s' % (domain, ldap_server_name)
+### </idmap config for Samba 3.3.0>
+
 print '\twinbind trusted domains only = %s' % baseConfig.get('samba/winbind/trusted/domains/only', 'yes')	
 
 if baseConfig.has_key('samba/winbind/nested/groups') and baseConfig['samba/winbind/nested/groups']:

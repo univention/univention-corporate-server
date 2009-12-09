@@ -75,10 +75,16 @@ if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver
 	#FIXME
 	sleep 2
 	smbpasswd -w `cat /etc/machine.secret`
+	for idmap_ldap_config in alloc ${samba_idmap_domains}; do
+		net idmap secret ${idmap_ldap_config} `</etc/machine.secret` 2>/dev/null
+	done
 else
 	univention-baseconfig set samba/user?"cn=admin,$ldap_base"
 	/etc/init.d/samba restart >/dev/null 2>&1
 	smbpasswd -w `cat /etc/ldap.secret`
+	for idmap_ldap_config in alloc ${samba_idmap_domains}; do
+		net idmap secret ${idmap_ldap_config} `</etc/ldap.secret` 2>/dev/null
+	done
 fi
 
 mkdir -p /var/lib/samba/drivers

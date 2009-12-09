@@ -232,6 +232,12 @@ Description[en]=Allow Samba member-servers of a samba domain to use UNIX account
 Type=str
 Categories=service-samba
 
+[samba/idmap/domains]
+Description[de]=Domänennamen von Windows-Domänen, deren SID zu Posix-ID Abbildung per idmap_ldap über eine authentifizierte LDAP-Suche im UCS Verzeichnisdienst aufgelöst werden soll
+Description[en]=Domain names of Windows domains for which SID to posix ID mappings should be resolved via idmap_ldap by an authenticated LDAP search in the UCS directory service
+Type=str
+Categories=service-samba
+
 [windows/wins-server]
 Description[de]=WINS-Server an dem Samba sich registriert
 Description[en]=WINS server, on which Samba should register
