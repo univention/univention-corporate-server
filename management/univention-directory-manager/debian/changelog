@@ -1,3 +1,10 @@
+univention-directory-manager (7.0.41-1) unstable; urgency=low
+
+  * fixed a traceback in modwizard which occurs when the autosearch is
+    disabled and the search type will be changed. Bug #16781
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Dec 2009 11:16:05 +0100
+
 univention-directory-manager (7.0.40-1) unstable; urgency=low
 
   * translation updates. Bug #16448

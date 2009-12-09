@@ -1437,25 +1437,26 @@ class modwizard(unimodule.unimodule):
 
 			# info: number of search results
 			resultinfoCols = []
-			if cache:
-				self.subobjs.append(header(_("%d search result(s) (cached)") % len(result_list),{"type":"5"},{}))
-			else:
-				self.subobjs.append(header(_("%d search result(s)") % len(result_list),{"type":"5"},{}))
+			if result_list:
+				if cache:
+					self.subobjs.append(header(_("%d search result(s) (cached)") % len(result_list),{"type":"5"},{}))
+				else:
+					self.subobjs.append(header(_("%d search result(s)") % len(result_list),{"type":"5"},{}))
 
-			# drop-down: move, edit, ...
-			self.selection_commit_button=button(_("Do"),{},{"helptext":_("Do action with selected objects.")})
-			self.selection_select=question_select(_('Do with selected objects...'),{'width':'200'},{"helptext":_("Do with selected objects...."),"choicelist":[
-				{'name': "uidummy098", 'description': "---"},
-				{'name': "invert", 'description': _("Invert selection")},
-				{'name': "edit", 'description': _("Edit")},
-				{'name': "recursive_delete", 'description': _("Delete")},
-			],"button":self.selection_commit_button})
-			
-			self.div_start('form-item', divtype='class')
-			self.div_start('form-right', divtype='class')
-			self.subobjs.append(self.selection_select)
-			self.div_stop('form-right')
-			self.div_stop('form-item')
+				# drop-down: move, edit, ...
+				self.selection_commit_button=button(_("Do"),{},{"helptext":_("Do action with selected objects.")})
+				self.selection_select=question_select(_('Do with selected objects...'),{'width':'200'},{"helptext":_("Do with selected objects...."),"choicelist":[
+					{'name': "uidummy098", 'description': "---"},
+					{'name': "invert", 'description': _("Invert selection")},
+					{'name': "edit", 'description': _("Edit")},
+					{'name': "recursive_delete", 'description': _("Delete")},
+				],"button":self.selection_commit_button})
+				
+				self.div_start('form-item', divtype='class')
+				self.div_start('form-right', divtype='class')
+				self.subobjs.append(self.selection_select)
+				self.div_stop('form-right')
+				self.div_stop('form-item')
 			self.div_stop('search-result')
 
 
