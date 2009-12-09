@@ -1,3 +1,9 @@
+univention-webui-style (4.0.23-1) unstable; urgency=low
+
+  * use new URL for current manual (Bug #16476)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 09 Dec 2009 15:01:45 +0100
+
 univention-webui-style (4.0.22-1) unstable; urgency=low
 
   * more design issues. Bug #16448
