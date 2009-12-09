@@ -495,10 +495,6 @@ msgstr ""
 "Es wurden mehr als %d Objekte gefunden, bitte schränken Sie die Suche ein."
 
 #: modbrowse.py:869
-msgid "Move"
-msgstr "Verschieben"
-
-#: modbrowse.py:869
 msgid "move selected objects here"
 msgstr "Ausgewählte Objekte hierher verschieben"
 
@@ -540,7 +536,7 @@ msgstr "Bearbeiten"
 msgid "Delete"
 msgstr "Löschen"
 
-#: modbrowse.py:902
+#: modbrowse.py:902 modbrowse.py:869
 msgid "Move"
 msgstr "Verschieben"
 
