@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.42-2) unstable; urgency=low
+
+  * fixed error in the po file. Bug #16803
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Dec 2009 22:23:06 +0100
+
 univention-directory-manager (7.0.42-1) unstable; urgency=low
 
   * adjust the move buttons in move mode in modbrowse. Bug #16803
