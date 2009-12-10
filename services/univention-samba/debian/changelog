@@ -1,3 +1,9 @@
+univention-samba (4.0.10-6) unstable; urgency=low
+
+  * workaround for restricted shell syntax in /bin/sh (Bug #16765)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Dec 2009 14:06:56 +0100
+
 univention-samba (4.0.10-5) unstable; urgency=low
 
   * make winbind status check language independent (Bug #16765)
