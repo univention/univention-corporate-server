@@ -1,3 +1,10 @@
+univention-directory-manager (7.0.43-1) unstable; urgency=low
+
+  * fixed the link syntax on the UDM logon page to the univention
+    website. Bug #16825
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Dec 2009 14:23:57 +0100
+
 univention-directory-manager (7.0.42-2) unstable; urgency=low
 
   * fixed error in the po file. Bug #16803

@@ -487,7 +487,7 @@ class unidialog(unimodule.unimodule):
 				welcomemessage = htmltext ('', {}, \
 					{'htmltext': ["""
 						<li class="furtherinformation">
-						<h2 class="h-link"> <a title="Univention website" target=parent href=www.univention.de class="h-link">%(link)s</a></h2>
+						<h2 class="h-link"> <a title="Univention website" target=parent href=http://www.univention.de class="h-link">%(link)s</a></h2>
 							<p>
 								%(wizard_text)s
 							</p>
