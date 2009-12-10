@@ -344,6 +344,10 @@ div#content-head h2
 	background: #ffffff;
 }
 
+.component-menuless div#content-head .tabs
+{
+	width: 948px;
+}
 div#content-head .tabs
 {
 	list-style: none;
@@ -1203,6 +1207,7 @@ div#content-wrapper .advanced-head-text
 	/* color:#c00000;
 	font-size: 14pt; */
 	font-size: 13px;
+	height: 30px;
 }
 
 div#content-wrapper .advanced-head-space

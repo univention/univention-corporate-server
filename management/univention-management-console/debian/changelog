@@ -1,3 +1,10 @@
+univention-management-console (2.0.33-1) unstable; urgency=low
+
+  * close all open div tags to avoid scroll errors on the UMC login
+    page. Bug #16448
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Dec 2009 21:15:43 +0100
+
 univention-management-console (2.0.32-1) unstable; urgency=low
 
   * design update for UCS 2.3. Bug #16448

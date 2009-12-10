@@ -329,8 +329,8 @@ class modbrowse(unimodule.unimodule):
 		self.subobjs.append(self.add_select)
 		self.div_stop('add_select')
 		self.div_stop('advanced-head-text')
-		self.div_start('advanced-head-space', divtype='class')
-		self.div_stop('advanced-head-space')
+		#self.div_start('advanced-head-space', divtype='class')
+		#self.div_stop('advanced-head-space')
 
 		# cols.append(tablecol('',{'colspan':'2','type':'browse_layout'},{'obs':[self.add_select]}))
 

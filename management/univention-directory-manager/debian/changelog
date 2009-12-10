@@ -1,3 +1,10 @@
+univention-directory-manager (7.0.44-1) unstable; urgency=low
+
+  * removed some space between the modbrowse tab and the browse status
+    line. Bug #16448
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Dec 2009 21:09:17 +0100
+
 univention-directory-manager (7.0.43-1) unstable; urgency=low
 
   * fixed the link syntax on the UDM logon page to the univention

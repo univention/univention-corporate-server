@@ -290,7 +290,7 @@ class modconsole(unimodule.unimodule):
 		self.subobjs.append(htmltext ('', {}, {'htmltext': ['<div class="form-item">']}))
 		self.subobjs.append(self.cabut)
 		self.subobjs.append(self.okbut)
-		self.subobjs.append(htmltext('', {}, {'htmltext': ['<br class="clear"/> </div">']}))
+		self.subobjs.append(htmltext('', {}, {'htmltext': ['<br class="clear"/> </div>']}))
 
 		# close content div
 		login_message = htmltext ('', {}, \
@@ -298,6 +298,7 @@ class modconsole(unimodule.unimodule):
 					</div>
 					</div>
 					"""]})
+		self.subobjs.append(login_message);
 
 		# close content-wrapper div
 		login_message = htmltext ('', {}, \
@@ -546,8 +547,8 @@ class modconsole(unimodule.unimodule):
 				authUsername = self.usernamein.xvars.get("usertext","")
 				authPassword = self.passwdin.xvars.get("usertext","")
 
-				if not authUsername or not authPassword:
-					return
+				#if not authUsername or not authPassword:
+				#	return
 				req = umcp.Request( 'AUTH' )
 				req.body[ 'username' ] = authUsername
 				req.body[ 'password' ] = authPassword
