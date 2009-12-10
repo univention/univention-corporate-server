@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-VERSION=2
+VERSION=3
 
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
@@ -47,6 +47,17 @@ if [ -n "$nfsd_pid" ]; then
 	test -x /etc/init.d/nfs-kernel-server && /etc/init.d/nfs-kernel-server stop
 fi
 
+# determine the list of trusted nonlocal domains and stop winbind
+winbind_was_running=0
+trusted_nonlocal_domains=''
+if [ "$(/etc/init.d/winbind status)" = "winbind is running" ]; then
+	winbind_was_running=1
+	# subtract own (local) domains from list of trusted domains
+	trusted_nonlocal_domains="$(grep -vxF -f <(wbinfo --own-domain) <(wbinfo -m) | grep -v BUILTIN)"
+	/etc/init.d/winbind stop
+fi
+
+# stop samba
 restart=0
 samba_pid=`pidof smbd`
 if [ -n "$samba_pid" ]; then
@@ -56,11 +67,10 @@ fi
 
 eval `univention-baseconfig shell`
 
-trustaccounts="$(ldapsearch -x '(&(objectClass=sambaSamAccount)(sambaAcctFlags=[I          ]))' cn | sed -n 's/^cn: \(.*\)/\1/p')"
-if [ -z "$samba_idmap_domains" -a -n "$trustaccounts" ]; then
-	trustaccounts="$(echo "$trustaccounts" | tr '[:lower:]' '[:upper:]')"
-	univention-config-registry set samba/idmap/domains?"$trustaccounts"
-	samba_idmap_domains="$trustaccounts"
+# inititalize samba/idmap/domains for UCS 2.3-0 update
+if [ -z "$samba_idmap_domains" -a -n "$trusted_nonlocal_domains" ]; then
+	univention-config-registry set samba/idmap/domains?"$trusted_nonlocal_domains"
+	samba_idmap_domains="$trusted_nonlocal_domains"
 fi
 
 if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
@@ -83,6 +93,7 @@ if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver
 	sleep 2
 	smbpasswd -w `cat /etc/machine.secret`
 	for idmap_ldap_config in alloc ${samba_idmap_domains}; do
+		echo "setting idmap secret for ${idmap_ldap_config} from /etc/machine.secret"
 		net idmap secret ${idmap_ldap_config} `</etc/machine.secret` 2>/dev/null
 	done
 else
@@ -90,6 +101,7 @@ else
 	/etc/init.d/samba restart >/dev/null 2>&1
 	smbpasswd -w `cat /etc/ldap.secret`
 	for idmap_ldap_config in alloc ${samba_idmap_domains}; do
+		echo "setting idmap secret for ${idmap_ldap_config} from /etc/ldap.secret"
 		net idmap secret ${idmap_ldap_config} `</etc/ldap.secret` 2>/dev/null
 	done
 fi
@@ -127,6 +139,10 @@ sleep 2
 
 if [ -n "$nfsd_pid" ]; then
 	test -x /etc/init.d/nfs-kernel-server && /etc/init.d/nfs-kernel-server start
+fi
+
+if [ $winbind_was_running -eq 1 ]; then
+	/etc/init.d/winbind start
 fi
 
 test -n "`grep "univention-samba v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-samba v${VERSION} successful" >>/usr/lib/univention-install/.index.txt

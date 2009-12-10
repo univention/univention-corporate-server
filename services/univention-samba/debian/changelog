@@ -1,3 +1,10 @@
+univention-samba (4.0.10-4) unstable; urgency=low
+
+  * determine list of trusted domains from wbinfo (Bug #16765)
+  * stop and restart winbind if running at join time
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Dec 2009 11:19:29 +0100
+
 univention-samba (4.0.10-3) unstable; urgency=low
 
   * add trustaccount names in uppercase in samba/idmap/domains (for Bug #16765)
