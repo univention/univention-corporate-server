@@ -63,7 +63,7 @@ fi
 sed -i "/$oldbn/d" /etc/exports
 rm /var/lib/univention-directory-listener/nfs-shares
 
-service_stop nscd slapd univention-directory-notifier heimdal-kdc
+service_stop nscd slapd univention-directory-notifier univention-directory-listener heimdal-kdc
 
 d=$(date +%Y%m%d%H%M%S)
 
@@ -133,6 +133,8 @@ if [ -n "$passfile" ]; then
 		service_stop samba; sleep 1; service_start samba
 	fi
 fi
+
+service_start univention-directory-listener
 
 if [ -d "/var/lib/univention-system-setup/ldapbase.post" ]; then
 	run-parts /var/lib/univention-system-setup/ldapbase.post --arg=$oldbn --arg=$new_ldap_base

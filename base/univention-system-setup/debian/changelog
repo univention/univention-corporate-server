@@ -1,3 +1,10 @@
+univention-system-setup (3.0.30-1) unstable; urgency=low
+
+  * restart univention-directory-listener after changing the ldap base.
+    Bug #16824
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Dec 2009 14:11:15 +0100
+
 univention-system-setup (3.0.29-1) unstable; urgency=low
 
   * commit template of /etc/resolv.conf if dhcp is not in use (any longer)
