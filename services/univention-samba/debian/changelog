@@ -1,7 +1,14 @@
+univention-samba (4.0.10-5) unstable; urgency=low
+
+  * make winbind status check language independent (Bug #16765)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Dec 2009 11:38:30 +0100
+
 univention-samba (4.0.10-4) unstable; urgency=low
 
   * determine list of trusted domains from wbinfo (Bug #16765)
   * stop and restart winbind if running at join time
+  * increase join script version
 
  -- Arvid Requate <requate@univention.de>  Thu, 10 Dec 2009 11:19:29 +0100
 

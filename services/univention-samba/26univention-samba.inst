@@ -50,7 +50,7 @@ fi
 # determine the list of trusted nonlocal domains and stop winbind
 winbind_was_running=0
 trusted_nonlocal_domains=''
-if [ "$(/etc/init.d/winbind status)" = "winbind is running" ]; then
+if /etc/init.d/winbind status >/dev/null 2>&1; then
 	winbind_was_running=1
 	# subtract own (local) domains from list of trusted domains
 	trusted_nonlocal_domains="$(grep -vxF -f <(wbinfo --own-domain) <(wbinfo -m) | grep -v BUILTIN)"
@@ -142,7 +142,7 @@ if [ -n "$nfsd_pid" ]; then
 fi
 
 if [ $winbind_was_running -eq 1 ]; then
-	/etc/init.d/winbind start
+	/etc/init.d/winbind start >/dev/null 2>&1
 fi
 
 test -n "`grep "univention-samba v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-samba v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
