@@ -145,7 +145,7 @@ for line in `egrep -v "^ *#|^ *$" $CONFFILE`; do
 		fi
 		mountpoint="`echo "$dir" | sed 's°/°_=_°g'`"
 		mkdir -p "$BACKUPROOT/0/$host/$mountpoint"
-		if rsync -e ssh -ar -x --password-file /dev/null --safe-links --delete "$remuser@$host:$dir" "$BACKUPROOT/0/$host/$mountpoint" </dev/null >/dev/null 2>&1; then
+		if rsync -e ssh -ar -x --safe-links --delete "$remuser@$host:$dir" "$BACKUPROOT/0/$host/$mountpoint" </dev/null >/dev/null 2>&1; then
 			echo "OK"
 		else
 			echo "ERROR: rsync error!"

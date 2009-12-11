@@ -1,3 +1,10 @@
+univention-remote-backup (3.0.2-1) unstable; urgency=low
+
+  * removed useless rsync option "--password-file" that caused some
+    trouble (Bug #16919)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 11 Dec 2009 15:47:04 +0100
+
 univention-remote-backup (3.0.1-1) unstable; urgency=low
 
   * avoid warning printed by find (Bug #16921)
