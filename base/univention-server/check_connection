@@ -50,7 +50,11 @@ fi
 
 
 action () {
-	/etc/NetworkManager/dispatcher.d/01ifupdown all $1 >/dev/null
+	dir="/etc/network/if-$1.d"
+
+	if [ -d "$dir" ]; then
+		run-parts "$dir" >/dev/null
+	fi
 }
 
 connection_okay=0

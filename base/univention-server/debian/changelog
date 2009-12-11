@@ -1,3 +1,10 @@
+univention-server (5.0.13-1) unstable; urgency=low
+
+  * invoke the network event scripts directly instead of using the
+    NetworkManager dispatcher script. Bug #16865, Bug #16880
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 11 Dec 2009 10:55:06 +0100
+
 univention-server (5.0.12-1) unstable; urgency=low
 
   * also set the cache for auth/admin/methods. Bug #16727
