@@ -1,3 +1,9 @@
+univention-remote-backup (3.0.3-1) unstable; urgency=low
+
+  * fixed broken sed expression (Bug #16919)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 11 Dec 2009 16:28:33 +0100
+
 univention-remote-backup (3.0.2-1) unstable; urgency=low
 
   * removed useless rsync option "--password-file" that caused some
