@@ -166,12 +166,7 @@ class webui_container{
 
 	function show_info() {
 		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless') {
-		    echo '
-	  <form class="menu" name="menu" method="post" action="',$this->port,'://',$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']),'/index.php">
-	  <input type="hidden" name="session_id" value="',$this->ref_config->number,'_',$this->ref_config->session_id,'"></input>
-	  <input type="hidden" name="is_js" value="',$this->ref_config->is_js,'"></input>
-	  </form>
-';
+		    echo '';
 		  }
 		else
 		  {

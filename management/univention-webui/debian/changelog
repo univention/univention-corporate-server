@@ -1,3 +1,10 @@
+univention-webui (3.0.25-1) unstable; urgency=low
+
+  * don't add the menu form on a menuless site like UMC. Otherwise the
+    site is not IE compatible. Bug #16926
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Dec 2009 16:15:40 +0100
+
 univention-webui (3.0.24-1) unstable; urgency=low
 
   * make the longtable IE 8 compatible. Bug #16448
