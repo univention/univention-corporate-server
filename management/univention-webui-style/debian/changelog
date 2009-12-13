@@ -1,3 +1,9 @@
+univention-webui-style (4.0.26-1) unstable; urgency=low
+
+  * more position changes to be more IE compatible. Bug #16930
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Dec 2009 18:16:26 +0100
+
 univention-webui-style (4.0.25-1) unstable; urgency=low
 
   * make some positions absolute to be more IE compatible. Bug #16930

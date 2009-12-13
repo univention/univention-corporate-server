@@ -97,8 +97,7 @@ div#header
 {
 	height: 150px;
 	width: 1000px;
-	position: absolute;
-	left: 10px;
+	position: relative;
 }
 
 .component div#header
@@ -243,6 +242,7 @@ div#menu
 	padding: 24px;
 	padding-bottom: 0;
 	float: left;
+	position: absolute;
 }
 
 div#menu ul
@@ -308,8 +308,12 @@ div#content-wrapper
 	margin-left: 24px;
 	margin-top: 10px;
 	float: left;
-	position: absolute;
-	top: 150px;
+}
+
+.component div#content-wrapper
+{
+	position: relative;
+	left: 225px;
 }
 
 
