@@ -1,3 +1,9 @@
+univention-installer (5.0.54-1) unstable; urgency=low
+
+  * improve the usb device detection. Bug #15921
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Dec 2009 08:48:25 +0100
+
 univention-installer (5.0.53-1) unstable; urgency=low
 
   * 75_join.sh: fixed typo (Bug #16318)

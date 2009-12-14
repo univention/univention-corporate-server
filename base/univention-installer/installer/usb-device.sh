@@ -93,15 +93,26 @@ else
 	dir="${sysfsmtpt}/bus/usb/drivers/usb-storage"
 	for s in `/bin/ls -d ${dir}/*:*/host*/target*:*:*/*:*:*:*/block:* 2>/dev/null`;
 	do
-	  # Nearly everything we need is encoded in this path, let's grab the pieces:
-	  str=$(echo "$s" | /bin/sed -e "s|${dir}/\(.\+\):.\+/host\(.\+\)/target\2:\(.\+\):\(.\+\)/\2:\3:\4:.\+/block:\(.\+\)|\1 scsi\2 \5|")
-	  token=`echo $str| awk '{ print $1 }'`
-	  bus=`echo $str| awk '{ print $2 }'`
-	  device=`echo $str| awk '{ print $3 }'`
-	  manufact=$(/bin/cat /sys/bus/usb/devices/"${token}"/manufacturer |
-		     /bin/sed -e 's| *$||' -e 's| |_|g')
-	  echo $i "${manufact}" "${bus}" "${device}"
-	  i=$(($i + 1))
+		# Nearly everything we need is encoded in this path, let's grab the pieces:
+		str=$(echo "$s" | /bin/sed -e "s|${dir}/\(.\+\):.\+/host\(.\+\)/target\2:\(.\+\):\(.\+\)/\2:\3:\4:.\+/block:\(.\+\)|\1 scsi\2 \5|")
+		token=`echo $str| awk '{ print $1 }'`
+		bus=`echo $str| awk '{ print $2 }'`
+		device=`echo $str| awk '{ print $3 }'`
+		manufact=$(/bin/cat /sys/bus/usb/devices/"${token}"/manufacturer |
+			/bin/sed -e 's| *$||' -e 's| |_|g')
+		for sub in `/bin/ls -d ${dir}/*:*/host*/target*:*:*/*:*:*:*/block:${device}/${device}* 2>/dev/null`; do
+			# Nearly everything we need is encoded in this path, let's grab the pieces:
+			str=$(echo "$sub" | /bin/sed -e "s|${dir}/\(.\+\):.\+/host\(.\+\)/target\2:\(.\+\):\(.\+\)/\2:\3:\4:.\+/block:\(.\+\)|\1 scsi\2 \5|")
+			token_sub=`echo $str| awk '{ print $1 }'`
+			bus_sub=`echo $str| awk '{ print $2 }'`
+			device_sub=`echo $str| awk '{ print $3 }' | sed -e 's|.*/||'`
+			manufact_sub=$(/bin/cat /sys/bus/usb/devices/"${token}"/manufacturer |
+				/bin/sed -e 's| *$||' -e 's| |_|g')
+			echo $i "${manufact_sub}" "${bus_sub}" "${device_sub}"
+			i=$(($i + 1))
+		done
+		echo $i "${manufact}" "${bus}" "${device}"
+		i=$(($i + 1))
 	done
 
 	# this is for kernel >= 2.6.30
@@ -111,6 +122,13 @@ else
 		device=$(echo $s | awk -F / {'print $NF'})
 		vendor=$(cat $s/device/vendor)
 		media=$(cat $s/device/type)
+		for sub in `/bin/ls -d ${dir}/*:*/host*/target*:*:*/*:*:*:*/block/${device}/${devices}* 2>/dev/null`; do
+			device_sub=$(echo $sub | awk -F / {'print $NF'})
+			vendor_sub=$(cat $s/device/vendor)
+			media_sub=$(cat $s/device/type)
+			echo $i "$vendor_sub" "$media_sub" "$device_sub"
+			i=$(($i + 1))
+		done
 		echo $i "$vendor" "$media" "$device"
 		i=$(($i + 1))
 	done
