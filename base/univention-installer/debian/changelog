@@ -1,3 +1,10 @@
+univention-installer (5.0.56-1) unstable; urgency=low
+
+  * copy /mount.nfs and rpc.statd into the chroot otherwise the repository
+    nfs mount will be failed. Bug #16953
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Dec 2009 15:07:55 +0100
+
 univention-installer (5.0.55-1) unstable; urgency=low
 
   * 20_preconfigure.sh: use /bin/mount instead of busybox mount (Bug #16953)

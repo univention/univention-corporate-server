@@ -34,6 +34,15 @@ architecture=`/bin/uname -m`
 mkdir -p /instmnt/etc/univention/
 cp /etc/univention/base.conf /instmnt/etc/univention/
 
+# preconfigure for nfs mounts
+if [ -e /sbin/mount.nfs ]; then
+	cp /sbin/mount.nfs /instmnt/sbin/
+fi
+
+if [ -e /sbin/rpc.statd ]; then
+	cp /sbin/rpc.statd /instmnt/sbin/
+fi
+
 cat >>/instmnt/preconfigure.sh <<__EOT__
 #!/bin/sh
 
