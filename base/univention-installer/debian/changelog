@@ -1,3 +1,9 @@
+univention-installer (5.0.55-1) unstable; urgency=low
+
+  * 20_preconfigure.sh: use /bin/mount instead of busybox mount (Bug #16953)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 14 Dec 2009 11:25:09 +0100
+
 univention-installer (5.0.54-1) unstable; urgency=low
 
   * improve the usb device detection. Bug #15921

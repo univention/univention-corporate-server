@@ -103,9 +103,9 @@ tail -f /var/log/univention/join.log >/dev/tty4 2>&1 &
 nfs=`echo $cdrom_device | grep "nfs:"`
 smbfs=`echo $cdrom_device | grep "smbfs:"`
 if [ -n "\$nfs" ]; then
-	mount -t nfs `echo $cdrom_device | sed -e 's|nfs:||'` /sourcedevice
+	/bin/mount -t nfs `echo $cdrom_device | sed -e 's|nfs:||'` /sourcedevice
 elif [ -n "\$smbfs" ]; then
-	mount -t smbfs `echo $cdrom_device | sed -e 's|smbfs:||'` /sourcedevice
+	/bin/mount -t smbfs `echo $cdrom_device | sed -e 's|smbfs:||'` /sourcedevice
 else
 	mount -t iso9660 $cdrom_device /sourcedevice
 fi
