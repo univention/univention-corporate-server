@@ -1,3 +1,9 @@
+univention-management-console (2.0.34-1) unstable; urgency=low
+
+  * fixed typo in the vnc _revamp module. Bug #16945
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Dec 2009 13:46:20 +0100
+
 univention-management-console (2.0.33-1) unstable; urgency=low
 
   * close all open div tags to avoid scroll errors on the UMC login
