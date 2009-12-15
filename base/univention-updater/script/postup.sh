@@ -82,6 +82,11 @@ if [ -e "/etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo
 	rm -f /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
 fi
 
+# Enable usplash after update (Bug #16363)
+if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
+	dpkg-divert --rename --divert /usr/share/initramfs-tools/bootsplash.debian --remove /usr/share/initramfs-tools/hooks/bootsplash 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
+fi
+
 # fix ldap-backup.secret permissions
 if [ -e "/etc/ldap-backup.secret" ]; then
 	chgrp "DC Backup Hosts" /etc/ldap-backup.secret 2>&1

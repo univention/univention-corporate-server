@@ -189,6 +189,11 @@ if [ -e /usr/sbin/apache2 ]; then
 	chmod -x /usr/sbin/apache2
 fi
 
+# Disable usplash during update (Bug #16363)
+if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
+	dpkg-divert --rename --divert /usr/share/initramfs-tools/bootsplash.debian --add /usr/share/initramfs-tools/hooks/bootsplash 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
+fi
+
 # remove old packages that causes conflicts
 olddebs="python2.4-dns alsa-headers"
 for deb in $olddebs; do
