@@ -583,6 +583,8 @@ else:
 # $hdrfrom_notify_spamadmin = $mailfrom_notify_spamadmin;
 #   (defaults to: $mailfrom_notify_spamadmin)
 
+$hdrfrom_notify_sender = "amavisd-new <postmaster\@$myhostname>";
+
 # whom quarantined messages appear to be sent from (envelope sender)
 $mailfrom_to_quarantine = undef; # original sender if undef, or set explicitly
                                  # (default is undef)
