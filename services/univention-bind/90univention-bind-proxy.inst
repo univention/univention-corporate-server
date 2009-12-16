@@ -79,11 +79,13 @@ fi
 update-rc.d -f bind9 remove >/dev/null 2>&1
 update-rc.d -f bind remove >/dev/null 2>&1
 
-ln -s /etc/runit/univention-bind-proxy /etc/runit/univention/univention-bind-proxy
+if [ ! -h /etc/runit/univention/univention-bind-proxy ] || [ ! -e /etc/runit/univention/univention-bind-proxy ]; then
+	ln -s /etc/runit/univention-bind-proxy /etc/runit/univention/univention-bind-proxy
+fi
 
 old=`univention-admin policies/dhcp_dns list $@ --filter cn=default-settings | grep domain_name_servers | sed -e 's|.*domain_name_servers: ||'`
 if [ -z "$old" -o "$old" = "None" ]; then
-    univention-admin policies/dhcp_dns modify $@ --ignore_exists --dn "cn=default-settings,cn=dns,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set domain_name=$domainname --set domain_name_servers=$interfaces_eth0_address
+		univention-admin policies/dhcp_dns modify $@ --ignore_exists --dn "cn=default-settings,cn=dns,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set domain_name=$domainname --set domain_name_servers=$interfaces_eth0_address
 fi
 
 test -n "`grep "univention-bind-proxy v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-bind-proxy v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
