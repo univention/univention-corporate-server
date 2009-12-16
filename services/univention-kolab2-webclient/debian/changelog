@@ -1,3 +1,9 @@
+univention-kolab2-webclient (5.0.2-3) unstable; urgency=low
+
+  * bump version (Bug #16787)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Wed, 16 Dec 2009 16:48:38 +0100
+
 univention-kolab2-webclient (5.0.2-2) unstable; urgency=low
 
   * bump version (Bug #16787)
