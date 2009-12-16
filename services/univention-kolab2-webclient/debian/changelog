@@ -1,3 +1,9 @@
+univention-kolab2-webclient (5.0.2-2) unstable; urgency=low
+
+  * bump version (Bug #16787)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Wed, 16 Dec 2009 16:37:28 +0100
+
 univention-kolab2-webclient (5.0.2-1) unstable; urgency=low
 
   * avoid exceptions in horde-prefs.py by checking, whether db-entries already exist (Bug #16787)
