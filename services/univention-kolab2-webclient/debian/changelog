@@ -1,3 +1,9 @@
+univention-kolab2-webclient (5.0.2-1) unstable; urgency=low
+
+  * avoid exceptions in horde-prefs.py by checking, whether db-entries already exist (Bug #16787)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Wed, 16 Dec 2009 16:13:25 +0100
+
 univention-kolab2-webclient (5.0.1-4) unstable; urgency=low
 
   * added ucr registration for etc/postgresql/8.3/main/pg_hba.conf.d/11-horde_user (Bug: #16016) 
