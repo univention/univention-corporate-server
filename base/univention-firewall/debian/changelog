@@ -1,8 +1,15 @@
- univention-firewall (2.0.2-1) unstable; urgency=low
+univention-firewall (2.0.3-1) unstable; urgency=low
+
+  * changed wrong link to non-existing template (Bug #10105)
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 17 Dez 2009 09:12:32 +0100
+
+
+univention-firewall (2.0.2-1) unstable; urgency=low
  
   * changed usage logmsg for univention-iptables init script (Bug #16653)
- 
- -- Tim Petersen <petersen@univention.de>  Wed, 17 Dez 2009 08:47:32 +0100
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 17 Dez 2009 08:47:32 +0100
 
 univention-firewall (2.0.1-3) unstable; urgency=low
 
