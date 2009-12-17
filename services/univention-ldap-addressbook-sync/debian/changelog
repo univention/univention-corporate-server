@@ -1,3 +1,9 @@
+univention-ldap-addressbook-sync (3.0.2-1) unstable; urgency=low
+
+  * move postinst listener restart to a later point to prevent error (Bug: #16785)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Thu, 17 Dec 2009 10:55:33 +0100
+
 univention-ldap-addressbook-sync (3.0.1-1) unstable; urgency=low
 
   * added support for birthday and homeAddress (Bug: #14746) 
