@@ -1,3 +1,9 @@
+ univention-firewall (2.0.2-1) unstable; urgency=low
+ 
+  * changed usage logmsg for univention-iptables init script (Bug #16653)
+ 
+ -- Tim Petersen <petersen@univention.de>  Wed, 17 Dez 2009 08:47:32 +0100
+
 univention-firewall (2.0.1-3) unstable; urgency=low
 
   * provide postinst to update-rc.d remove the init links on updates
