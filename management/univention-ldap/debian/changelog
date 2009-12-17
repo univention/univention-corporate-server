@@ -1,3 +1,9 @@
+univention-ldap (5.0.8-1) unstable; urgency=low
+
+  * fixed typo "opnessh-server" (Bug #12301)
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 17 Dez 2009 12:07:18 +0100
+
 univention-ldap (5.0.7-5) unstable; urgency=low
 
   * fix missing quote (Bug #16547)

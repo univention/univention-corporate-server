@@ -126,7 +126,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 
         univention-admin settings/packages create --superordinate "cn=packages,cn=univention,$ldap_base" --set name=Fernwartung \
                                                         --append packageList=openssh-client  \
-                                                        --append packageList=opnessh-server  \
+                                                        --append packageList=openssh-server  \
                                                         --append packageList=tightvncserver  \
                                                         --append packageList=vncserver  \
                                                         --append packageList=rdesktop  \
