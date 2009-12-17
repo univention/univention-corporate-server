@@ -438,4 +438,14 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.7-1; t
 	fi
 fi
 
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.8-1; then
+	eval `univention-config-registry shell server/role ldap/base`
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		univention-directory-manager  settings/packages modify \
+			--dn cn=Fernwartung,cn=packages,cn=univention,$ldap_base \
+			--remove packageList=opnessh-server \
+			--append packageList=openssh-server
+	fi
+fi
+
 exit 0
