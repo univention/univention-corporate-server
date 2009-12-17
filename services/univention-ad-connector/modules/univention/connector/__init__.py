@@ -529,9 +529,10 @@ class ucs:
 				object = { 'dn': unicode(dn,'utf8'), 'modtype': 'modify', 'attributes': new}
 				try:
 					if self._ignore_object(key, object):
-						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: moved object is now ignored, will delete it")
-						change_type = 'delete'
+						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new object is ignored, nothing to do")
+						change_type = 'modify'
 						ignore_subtree_match = True
+						return True
 					else:
 						if old_dn and not old_dn == dn:
 							change_type="modify"

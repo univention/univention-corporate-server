@@ -1,3 +1,9 @@
+univention-ad-connector (4.1.4-1) unstable; urgency=low
+
+  * exit earlier if new object is ignored (Bug #16734)
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 17 Dec 2009 12:42:29 +0100
+
 univention-ad-connector (4.1.3-1) unstable; urgency=low
 
   * pass default value to ucr-get-call. (Bug #16638)
