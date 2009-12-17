@@ -53,7 +53,7 @@ case "$1" in
 		$0 start
 		;;
 	*)
-		log_action_msg "Usage: /etc/init.d/univention-firewall {start|stop|restart}"
+		log_action_msg "Usage: /etc/init.d/univention-iptables {start|stop|restart}"
 		exit 1
 		;;
 esac
