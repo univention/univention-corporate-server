@@ -1,3 +1,9 @@
+univention-dojo (3.0.5-1) unstable; urgency=low
+
+  * update to dojo 1.4.0 (Bug #16767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Dec 2009 07:10:35 +0100
+
 univention-dojo (3.0.4-4) unstable; urgency=low
 
   * remove extra comma which causes an error in IE8 (Bug #16489)
