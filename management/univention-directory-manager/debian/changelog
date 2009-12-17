@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.45-1) unstable; urgency=low
+
+  * fixed some typos at ucs-overview. Bug #9724
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 17 Dec 2009 09:53:17 +0100
+
 univention-directory-manager (7.0.44-1) unstable; urgency=low
 
   * removed some space between the modbrowse tab and the browse status
