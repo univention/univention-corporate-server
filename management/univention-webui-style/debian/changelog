@@ -1,3 +1,9 @@
+univention-webui-style (4.0.27-1) unstable; urgency=low
+  
+  * fixed some typos at ucs-overview. Bug #9724
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 17 Dec 2009 10:09:26 +0100
+
 univention-webui-style (4.0.26-1) unstable; urgency=low
 
   * more position changes to be more IE compatible. Bug #16930
@@ -164,6 +170,12 @@ univention-webui-style (4.0.2-1) unstable; urgency=low
     (Bug #8969)
 
  -- Andreas Büsching <buesching@univention.de>  Sat,  3 Oct 2009 18:14:43 +0200
+
+univention-webui-style (4.0.1-1) unstable; urgency=low
+
+  * set a darker background for read-only fields. Bug #13209
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 17 Dez 2009 10:08:00 +0200
 
 univention-webui-style (4.0.1-1) unstable; urgency=low
 
