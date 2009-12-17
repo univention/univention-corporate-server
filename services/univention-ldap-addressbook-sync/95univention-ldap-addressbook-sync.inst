@@ -48,6 +48,8 @@ univention-directory-manager mail/folder create $@ --position "cn=folder,cn=mail
 
 univention-config-registry set ldap/addressbook/sync/folder="shared/global-addressbook@$maildomain"
 
+/etc/init.d/univention-directory-listener crestart
+
 test -n "`grep "univention-ldap-addressbook-sync v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-addressbook-sync v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
