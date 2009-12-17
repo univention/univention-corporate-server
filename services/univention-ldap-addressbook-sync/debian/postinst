@@ -46,6 +46,4 @@ if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domain
 	/usr/lib/univention-install/95univention-ldap-addressbook-sync.inst || true
 fi
 
-/etc/init.d/univention-directory-listener crestart
-
 exit 0

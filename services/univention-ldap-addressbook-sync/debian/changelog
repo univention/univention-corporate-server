@@ -1,3 +1,9 @@
+univention-ldap-addressbook-sync (3.0.3-1) unstable; urgency=low
+
+  * move restart yet again, this time to the joinscript (Bug: #16785)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Thu, 17 Dec 2009 11:23:01 +0100
+
 univention-ldap-addressbook-sync (3.0.2-1) unstable; urgency=low
 
   * move postinst listener restart to a later point to prevent error (Bug: #16785)
