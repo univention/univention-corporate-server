@@ -40,12 +40,12 @@ univention-config-registry set ldap/addressbook/sync/debug/level?0
 
 univention-config-registry set ldap/addressbook/sync/cron?"*/5 * * * *"
 
-/etc/init.d/univention-directory-listener crestart
-
 eval $(univention-config-registry shell server/role)
 
 if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/95univention-ldap-addressbook-sync.inst || true
 fi
+
+/etc/init.d/univention-directory-listener crestart
 
 exit 0
