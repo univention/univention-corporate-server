@@ -1,3 +1,9 @@
+univention-ad-connector (4.1.3-1) unstable; urgency=low
+
+  * pass default value to ucr-get-call. (Bug #16638)
+
+ -- Daniel Hofmann <hofmann@univention.de>  Thu, 17 Dec 2009 12:29:38 +0100
+
 univention-ad-connector (4.1.2-1) unstable; urgency=low
 
   * use the correct pyshared path. Bug #16054

@@ -37,7 +37,7 @@ cert_cmd = '/usr/sbin/univention-certificate'
 cert_log = '/var/log/univention/ad-connector-certificate.log'
 
 def handler(baseConfig, changes):
-	new = baseConfig.get(ad_var)
+	new = baseConfig.get(ad_var, '')
 	path = os.path.join(ssl_path, new)
 	if new and os.path.exists(path):
 		os.system('%s new -name %s >> %s 2>&1' % (cert_cmd, new, cert_log))
