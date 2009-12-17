@@ -1,4 +1,5 @@
 <?php
+@%@BCWARNING=// @%@
 /*
  * Univention Webui
  *  help.php
