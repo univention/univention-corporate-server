@@ -1,3 +1,10 @@
+univention-system-setup (3.0.32-1) unstable; urgency=low
+
+  * do not start GDM Bug #17059
+  * restart dbus Bug #17060
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 18 Dec 2009 15:21:07 +0100
+
 univention-system-setup (3.0.31-1) unstable; urgency=low
 
   * be sure system setup boot will be start on tty1. Bug #16978
