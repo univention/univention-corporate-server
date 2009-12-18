@@ -1,3 +1,11 @@
+univention-webui-style (4.0.29-1) unstable; urgency=low
+
+  * more position handling to be IE (in every mode: locale intranet and
+    trusted sites) compatible without showing a too short background
+    image in Firefox 3.5 (Bug #16947)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Dec 2009 21:10:42 +0100
+
 univention-webui-style (4.0.28-1) unstable; urgency=low
 
   * add missing overwrite warning for help.php. Bug #16625

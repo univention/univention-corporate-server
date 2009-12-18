@@ -21,7 +21,6 @@ body
 	font-weight: normal;
 	line-height: 17px;
 	color: #5d5e5d;
-	height: 100%;
 }
 
 body.component
@@ -75,9 +74,8 @@ h3.form
 
 div#wrapper
 {
-	width: 1000px;
+	width: 1050px;
 	margin-left: 10px;
-	height: auto;
 }
 
 .component div#wrapper
@@ -97,7 +95,9 @@ div#header
 {
 	height: 150px;
 	width: 1000px;
-	position: relative;
+	position: absolute;
+	top:0;
+	left:10px;
 }
 
 .component div#header
@@ -242,7 +242,6 @@ div#menu
 	padding: 24px;
 	padding-bottom: 0;
 	float: left;
-	position: absolute;
 }
 
 div#menu ul
@@ -308,12 +307,12 @@ div#content-wrapper
 	margin-left: 24px;
 	margin-top: 10px;
 	float: left;
+	padding-top: 150px;
 }
 
 .component div#content-wrapper
 {
 	position: relative;
-	left: 225px;
 }
 
 
