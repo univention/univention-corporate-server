@@ -50,6 +50,7 @@ install: build
 
 	install -D -m 755 thin-client-flash-update debian/univention-thin-client-flash-config/etc/init.d/thin-client-flash-update
 	install -D -m 755 thin-client-flash debian/univention-thin-client-flash-config/etc/init.d/thin-client-flash
+	install -D -m 755 univention-thin-client-detect-nfsboot debian/univention-thin-client-flash-config/usr/bin/univention-thin-client-detect-nfsboot
 	install -D -m 755 univention-thin-client-flash debian/univention-thin-client-flash/usr/bin/univention-thin-client-flash
 	dh_installdirs
 	univention-install-config-registry

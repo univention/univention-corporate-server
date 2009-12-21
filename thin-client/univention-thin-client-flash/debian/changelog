@@ -1,3 +1,11 @@
+univention-thin-client-flash (3.3.0-2) unstable; urgency=low
+
+  * New script to detect NFS boot. The previously used grep
+    call in a subshell sometimes aborted with exit code 1.
+    (Bug #17116)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Dec 2009 16:01:19 +0100
+
 univention-thin-client-flash (3.3.0-1) unstable; urgency=low
 
   * Add support for updating a Compact Flash image of a thin
