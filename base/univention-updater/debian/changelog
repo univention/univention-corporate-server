@@ -1,8 +1,8 @@
-univention-updater (5.0.50-1) unstable; urgency=low
+univention-updater (5.0.50-2) unstable; urgency=low
 
   * Redirect output of apt-cache show (Bug #16525)
 
- -- Philipp Hahn <hahn@univention.de>  Mon, 21 Dec 2009 14:23:27 +0100
+ -- Philipp Hahn <hahn@univention.de>  Mon, 21 Dec 2009 15:38:05 +0100
 
 univention-updater (5.0.49-1) unstable; urgency=low
 
