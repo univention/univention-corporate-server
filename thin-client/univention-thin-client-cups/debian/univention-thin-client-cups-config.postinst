@@ -37,6 +37,6 @@ univention-baseconfig set cups/autostart=yes
 # remove all man pages (not required on thin client)
 rm -rf /usr/share/man
 
-if [ ! -e /etc/printcap ]; then
+if [ ! -L /etc/printcap ]; then
     ln -s /etc/printcap.cups /etc/printcap
 fi
