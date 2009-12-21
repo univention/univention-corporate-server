@@ -3,7 +3,7 @@
 # Univention Thin Client Basesystem
 #  init script: checking for new flash images
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,13 +32,8 @@
 log_action_msg "Installing new Thin Client base system on flash, this may take a while"
 
 FLAGNFSBOOT=$(grep -c "root=/dev/nfs" /proc/cmdline)
-if [ "$FLAGNFSBOOT" = "0" ] ; then
-    # FLASH BOOT
-    echo "Booting from flash - skipping update"
-    exit 0
-fi
 
-eval $(univention-baseconfig shell thinclient/flash/update thinclient/flash/update/url thinclient/flash/update/image univentionDesktopServer interfaces/eth0/address hostname domainname)
+eval $(univention-config-registry shell thinclient/flash/update thinclient/flash/update/url thinclient/flash/update/image univentionDesktopServer interfaces/eth0/address hostname domainname)
 
 if [ -z "$thinclient_flash_update" ] || [ -n "$thinclient_flash_update" -a "$thinclient_flash_update" = "no" ]; then
 	echo "The UCR variable thinclient/flash/update is not set or is set to no."
@@ -148,16 +143,45 @@ if [ "$version" -lt "$new_version" ]; then
 	# echo "verbose" > /proc/splash
     echo "	newer version available. Updating filesystem:"
     echo
-    # ramdisk_blocksize=4096 is needed for cramfs
-    echo "default linux initrd=initrd.splash root=$rootpart DNSSERVER=$nameserver $vga $quiet splash=silent $ldapserver $ldapport" > /mnt/extlinux.conf
 
-	# store current network configuration
-	echo "FLASH_HOSTNAME=$hostname" > /mnt/network.conf
-	echo "FLASH_DOMAIN=$domainname" >> /mnt/network.conf
-	echo "FLASH_NAMESERVER=$nameserver" >> /mnt/network.conf
+    PATH_EXTLINUX=/mnt/extlinux.conf
+    PATH_NETWORKCONFIG=/mnt/network.conf
+    PATH_KERNEL=/mnt/linux
+    PATH_INITRD=/mnt/initrd.splash
+    PATH_ROOTTXT=/mnt/root.txt
+    PATH_BASE=/mnt
+    PATH_WGET=/usr/bin/wget
+    PATH_SYNC=/bin/sync
+    PATH_UMOUNT=/bin/umount
+    PATH_REBOOT=/sbin/reboot
 
-	echo -n "    downloading kernel image ..."
-    wget -O /mnt/linux "$url/linux"
+    if [ "$FLAGNFSBOOT" = "0" ] ; then
+    # FLASH BOOT
+	PATH_EXTLINUX=/config/extlinux.conf
+	PATH_NETWORKCONFIG=/config/network.conf
+	PATH_KERNEL=/config/linux
+	PATH_INITRD=/config/initrd.splash
+	PATH_CONFIG=/config/root.txt
+	PATH_BASE=/config/
+	cp /bin/sync /ramdisk
+	cp /usr/bin/wget /ramdisk
+	cp /bin/umount /ramdisk
+	cp /sbin/reboot /ramdisk
+	PATH_WGET=/ramdisk/wget
+	PATH_SYNC=/ramdisk/sync
+	PATH_UMOUNT=/ramdisk/umount
+	PATH_REBOOT=/ramdisk/reboot
+    fi
+
+    echo "default linux initrd=initrd.splash root=$rootpart DNSSERVER=$nameserver $vga $quiet splash=silent $ldapserver $ldapport" > $PATH_EXTLINUX
+
+    # store current network configuration
+    echo "FLASH_HOSTNAME=$hostname" > $PATH_NETWORKCONFIG
+    echo "FLASH_DOMAIN=$domainname" >> $PATH_NETWORKCONFIG
+    echo "FLASH_NAMESERVER=$nameserver" >> $PATH_NETWORKCONFIG
+
+    echo -n "    downloading kernel image ..."
+    $PATH_WGET -O $PATH_KERNEL "$url/linux"
     if [ ! "$?" = "0" ] ; then
 		/sbin/usplash_write "QUIT" || true
 		echo "not found"
@@ -165,10 +189,10 @@ if [ "$version" -lt "$new_version" ]; then
 		read
 		halt
     fi
-	echo "done"
+    echo "done"
 
-	echo -n "    downloading initrd ..."
-    wget -O /mnt/initrd.splash "$url/initrd.splash"
+    echo -n "    downloading initrd ..."
+    $PATH_WGET -O $PATH_INITRD "$url/initrd.splash"
     if [ ! "$?" = "0" ] ; then
 		/sbin/usplash_write "QUIT" || true
 		echo "not found"
@@ -176,12 +200,12 @@ if [ "$version" -lt "$new_version" ]; then
 		read
 		halt
     fi
-	echo "done"
+    echo "done"
 
-    echo "$rootpart" > "/mnt/root.txt"
+    echo "$rootpart" > $PATH_ROOTTXT
 
-	echo -n "    downloading root filesystem ..."
-    wget -O $rootpart "$url/$image"
+    echo -n "    downloading root filesystem ..."
+    $PATH_WGET -O $rootpart "$url/$image"
     if [ ! "$?" = "0" ] ; then
 		/sbin/usplash_write "QUIT" || true
 		echo " failed"
@@ -189,24 +213,24 @@ if [ "$version" -lt "$new_version" ]; then
 		read
 		halt
     fi
-	echo "done"
-    echo "$new_version" > /mnt/${image}.vers
+    echo "done"
+    echo "$new_version" > $PATH_BASE/${image}.vers
 
-    umount /mnt
-    sync
-	# create MBR on flash disk
-	cat /usr/lib/syslinux/mbr.bin > ${disk}
+    $PATH_UMOUNT $PATH_BASE
+    $PATH_SYNC
+    # create MBR on flash disk
+    cat /usr/lib/syslinux/mbr.bin > ${disk}
     echo
     echo "The update was successful. Rebooting the system."
-	log_action_end_msg 0
-	log_action_msg "Rebooting"
-    reboot
-	log_action_end_msg 0
+    log_action_end_msg 0
+    log_action_msg "Rebooting"
+    $PATH_REBOOT
+    log_action_end_msg 0
 else
     echo "	filesystem seems to be up-to-date."
 fi
 
-umount /mnt
+$PATH_UMOUNT /mnt
 trap - 0
 
 log_action_end_msg 0
