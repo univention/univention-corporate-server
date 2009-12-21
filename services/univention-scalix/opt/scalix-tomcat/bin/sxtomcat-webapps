@@ -6,12 +6,29 @@
 OMCHECKGC=/opt/scalix/bin/omcheckgc
 
 if [ "$#" -lt 3 ] ; then
-    echo "Usage: $0 [--add|--del] instance [ALL|app1 app2...]" >&2
+    echo "Usage: $0 [--add|--del] instance [--timeout <seconds>] [ALL|app1 app2...]" >&2
     exit 1
 fi
 
 action="$1"
 instance="$2"
+
+case "$3" in
+    --timeout )
+        # Bash 2 (SLES9) doesn't support regex
+        #if [[ $4 =~ ^[0-9]+$ ]]
+        #then
+        timeout="$4"
+        #else
+        #    echo "Error: $4 is not valid value" >&2    
+        #    exit 1
+        #fi
+        shift
+        shift
+        ;;
+esac
+
+
 shift
 shift
 
@@ -20,7 +37,7 @@ instdir=$(/opt/scalix-tomcat/bin/sxtomcat-get-inst-dir $instance)
 instappsdir="$instdir/conf/Catalina/localhost"
 connectordir="/etc/opt/scalix-tomcat/connector"
 
-configdirs="caa mobile platform res sis webmail wireless"
+configdirs="caa mobile platform res sis webmail wireless sacapi"
 
 if [ ! -d "$instdir" ] ; then
     echo "Error: instance $instance doesn't exist" >&2
@@ -84,6 +101,7 @@ determine_instance_host() {
 add_webapp_connector() {
     instance="$1"
     app="$2"
+    timeout="$3"
     tomcathost=$(determine_instance_host $instance)
     app_conf_file=app-$instance.$app.conf
     if [ $app == "wireless" ]
@@ -104,13 +122,19 @@ add_webapp_connector() {
             >>$ajp_conf_file
     fi
 
-    echo "ProxyPass /${target}  ajp://${tomcathost}:8009/${app}" \
-         >>$ajp_conf_file
+    if [ $app == "wireless" ] && [ "$timeout" ]
+    then
+        echo "ProxyPass /${target}  ajp://${tomcathost}:8009/${app} timeout=${timeout}" \
+              >>$ajp_conf_file
+    else
+        echo "ProxyPass /${target}  ajp://${tomcathost}:8009/${app}" \
+              >>$ajp_conf_file
+    fi
 
     if [ $app == "wireless" ]
     then
         echo "ProxyPassReverseCookiePath /${app} /${target}" \
-            >>$ajp_conf_file
+              >>$ajp_conf_file
     fi
 
     # JK:
@@ -124,7 +148,11 @@ add_webapp_connector() {
         echo 'RewriteRule ^/Microsoft-Server-ActiveSync(.*)$ /wireless$1 [PT]' >>$jk_conf_file
     fi
 
-    echo "JkMount /${app}* ${instance}" \
+    echo "JkMount /${app} ${instance}" \
+        >>$jk_conf_file
+    echo "JkMount /${app}.* ${instance}" \
+        >>$jk_conf_file
+    echo "JkMount /${app}/* ${instance}" \
         >>$jk_conf_file
 
     # api needs a second identical ProxyPass directive in the jk file
@@ -142,7 +170,7 @@ add_webapps() {
         aw_count=0
 		for a in $apps ; do
 			ln -sf $appsdir/$a.xml $instappsdir/$a.xml
-			add_webapp_connector $instance $a
+			add_webapp_connector $instance $a $timeout
 		done
 		tomcatdir=$(dirname $instdir)
 		for d in $config_dirs

@@ -1,3 +1,11 @@
+univention-scalix (4.0.2-1) unstable; urgency=low
+
+  * update scalix_version to 11.4.6 (Bug #16774)
+  * upstream changes merged into UCR templates (srcpkg-dir: static_conffiles)
+  * upstream changes merged into diverted scripts (srcpkg-dir: opt)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 15 Dec 2009 20:27:23 +0100
+
 univention-scalix (4.0.1-9) unstable; urgency=low
 
   * revert modification of Conflicts and Replaces fields (Bug #10389)
