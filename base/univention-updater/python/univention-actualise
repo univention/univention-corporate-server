@@ -313,7 +313,7 @@ def main():
 			add_packages=getPackageList(configRegistry, 'add')
 			for package in add_packages:
 				waitForLock()
-				res = subprocess.call( cmd_show.split( ' ' ) + [ package ] )
+				res = subprocess.call( cmd_show.split( ' ' ) + [ package ], stdout = logfile, stderr = logfile )
 				if res == 0:
 					print "Installing packages: %s" % package
 					createLock()
