@@ -1,6 +1,12 @@
+univention-squid (3.0.6-1) unstable; urgency=low
+
+  * register UCR variable squid/cache; Bug #16636
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 21 Dec 2009 14:54:14 +0100
+
 univention-squid (3.0.5-1) unstable; urgency=low
 
-  * use default of 3128 if squid/parent/port is not set; Bug #16636
+  * use default of 3128 if squid/parent/port is not set; Bug #16612
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 21 Dec 2009 14:49:35 +0100
 
