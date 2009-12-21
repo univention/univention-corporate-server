@@ -1,3 +1,11 @@
+univention-thin-client-cups (4.0.2-3) unstable; urgency=low
+
+  * Add an explicit symlink for /etc/printcap, due to the
+    structure of the cups-bsd postinst, it isn't created
+    during installation time (Bug #15870)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Dec 2009 13:20:16 +0100
+
 univention-thin-client-cups (4.0.2-2) unstable; urgency=low
 
   * Install /etc/printcap.cups into the ramdisk. It is required
