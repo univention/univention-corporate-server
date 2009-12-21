@@ -1,3 +1,10 @@
+univention-squid (3.0.4-1) unstable; urgency=low
+
+  * re-add support for UCR variable squid/parent/directnetworks;
+    Bug #16147
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 21 Dec 2009 13:44:48 +0100
+
 univention-squid (3.0.3-1) unstable; urgency=low
 
   * added UCR default value (Bug #16620)
