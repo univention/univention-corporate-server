@@ -31,7 +31,7 @@
 
 log_action_msg "Installing new Thin Client base system on flash, this may take a while"
 
-FLAGNFSBOOT=$(grep -c "root=/dev/nfs" /proc/cmdline)
+FLAGNFSBOOT=`univention-thin-client-detect-nfsboot`
 
 eval $(univention-config-registry shell thinclient/flash/update thinclient/flash/update/url thinclient/flash/update/image univentionDesktopServer interfaces/eth0/address hostname domainname)
 

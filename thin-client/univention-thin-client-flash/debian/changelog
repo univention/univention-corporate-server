@@ -1,6 +1,13 @@
+univention-thin-client-flash (3.3.0-4) unstable; urgency=low
+
+  * Integrate univention-thin-client-detect-nfsboot into
+    init script for Compact Flash update (Bug #17116)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Dec 2009 16:40:47 +0100
+
 univention-thin-client-flash (3.3.0-3) unstable; urgency=low
 
-  * Add missing file (Bug #171169
+  * Add missing file (Bug #17116)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Dec 2009 16:11:41 +0100
 
