@@ -176,8 +176,8 @@ if [ ! -x /usr/NX/bin/nxclient ]; then
 	exit 1
 fi
 
-#/usr/NX/bin/nxclient --config $NX_DIR/config
-/usr/NX/bin/nxclient
+/usr/NX/bin/nxclient --config $NX_DIR/config
+#/usr/NX/bin/nxclient
 
 # Unfortunately, nxclient disattaches from the parent process when
 # the connection is established. Hence, we need to poll if NX is
