@@ -55,7 +55,7 @@ def import_syntax_files():
 							exec fd in univention.admin.syntax.__dict__
 							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: importing "%s"' % fn)
 						except:
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_syntax_files: loading %s failed' % fn )
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: loading %s failed' % fn )
 
 
 choice_update_functions = []
@@ -109,7 +109,7 @@ class complex:
 			p=s.parse(texts[i])
 
 		for i in range(0, len(self.subsyntaxes)):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i,self.subsyntaxes[i],  texts))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i,self.subsyntaxes[i],  texts))
 			if type( self.subsyntaxes[i][1] ) == types.InstanceType:
 				s=self.subsyntaxes[i][1]
 			else:
@@ -128,7 +128,7 @@ class complex:
 		if len(self.subsyntaxes) != len(texts):
 			return ''
 		else:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'syntax.py: text: %s' % str(texts) )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: text: %s' % str(texts) )
 			for i in range(0,len(texts)):
 				if  texts[i]:
 					if type( self.subsyntaxes[i][1] ) == types.InstanceType:
@@ -156,7 +156,7 @@ class complex:
 	def new(self):
 		s=[]
 		for desc, syntax in self.subsyntaxes:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'syntax.py: syntax is %s, text is %s, type is %s' % (syntax, desc, type(syntax)) )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'syntax.py: syntax is %s, text is %s, type is %s' % (syntax, desc, type(syntax)) )
 			if type( syntax ) == types.InstanceType:
 				s.append(syntax.new())
 			else:
