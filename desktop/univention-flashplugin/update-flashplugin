@@ -66,7 +66,7 @@ safe_move() {
 
 fp_download_and_unpack
 
-install -m 644 install_flash_player_9_linux/libflashplayer.so $TARGET_DIR
+install -m 644 $DOWNLOAD_DIR/libflashplayer.so $TARGET_DIR
 rm -f $TARGET_DIR/flashplayer.xpt
 rm -rf install_flash_player_9_linux/
 
