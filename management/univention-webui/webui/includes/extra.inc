@@ -524,6 +524,7 @@ class button extends extra{
 		$defaultbutton .= 'dojo.addOnLoad(function(stopReturn){';
 		$defaultbutton .= 'submitform = document.getElementById( "component" );';
 		$defaultbutton .= 'if ( submitform == undefined) { submitform=document.getElementById( "component-menuless" ); };';
+		$defaultbutton .= 'if ( submitform == undefined) { submitform=document.getElementById( "login" ); };';
 		$defaultbutton .= 'dojo.connect(submitform, "onkeypress",function(evt) {';
 		$defaultbutton .= 'var b = document.getElementById("defaultbutton");';
 		$defaultbutton .= 'var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);';
