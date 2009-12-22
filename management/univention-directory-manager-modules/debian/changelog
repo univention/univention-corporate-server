@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.48-1) unstable; urgency=low
+
+  * changed debuglevel in syntax.py to INFO. Bug #16503
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 22 Dec 2009 13:27:04 +0100
+
 univention-directory-manager-modules (5.0.47-1) unstable; urgency=low
 
   * translation and design updates. Bug #16448
