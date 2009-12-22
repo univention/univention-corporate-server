@@ -519,7 +519,7 @@ class button extends extra{
 
 	function default_button($byteindex)
 	{
-		$defaultbutton  = '<div style="position:absolute;top:-1000px;left:-1000px;"><input type="submit" name="usrinput['.$byteindex.']" id="defaultbutton"></div>';
+		$defaultbutton  = '<div style="position:absolute;top:-1000px;left:-1000px;"><input type="submit" name="usrinput['.$byteindex.']" id="defaultbutton"/></div>';
 		$defaultbutton .= '<script type="text/javascript">';
 		$defaultbutton .= 'dojo.addOnLoad(function(stopReturn){';
 		$defaultbutton .= 'submitform = document.getElementById( "component" );';

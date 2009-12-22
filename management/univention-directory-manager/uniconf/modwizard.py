@@ -1457,7 +1457,7 @@ class modwizard(unimodule.unimodule):
 				self.subobjs.append(self.selection_select)
 				self.div_stop('form-right')
 				self.div_stop('form-item')
-			self.div_stop('search-result')
+				self.div_stop('search-result')
 
 
 		main_rows = []

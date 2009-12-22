@@ -170,16 +170,13 @@ class webui_container{
 		  }
 		else
 		  {
-		    echo '  <tr>
-	  <form name="menu" method="post" action="',$this->port,'://',$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']),'/index.php">
+		    echo ' 
 	
 	<div id=menu>
 	<ul>
 	'.$this->menu.'
 	</ul>
 	</div>
-    <input type="hidden" name="session_id" value="',$this->ref_config->number,'_',$this->ref_config->session_id,'"></input>
-	<input type="hidden" name="is_js" value="',$this->ref_config->is_js,'"></input>
 ';
 		  }
 	}
