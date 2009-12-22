@@ -1,3 +1,9 @@
+univention-gdm (5.0.13-1) unstable; urgency=low
+
+  * fixed nx script, in order to load config correctly (Bug: #13770) 
+
+ -- Tim Petersen <petersen@univention.de>  Di, 22 Dez 2009 15:15:20 +0100
+
 univention-gdm (5.0.12-4) unstable; urgency=low
 
   * smaller fonts (Bug: #15778) 
