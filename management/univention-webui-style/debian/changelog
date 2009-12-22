@@ -1,3 +1,9 @@
+univention-webui-style (4.0.30-1) unstable; urgency=low
+
+  * more design fixes, specially the too short background. Bug #16947
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Dec 2009 14:03:50 +0100
+
 univention-webui-style (4.0.29-1) unstable; urgency=low
 
   * more position handling to be IE (in every mode: locale intranet and
