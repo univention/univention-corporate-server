@@ -1,3 +1,9 @@
+univention-config-registry (5.0.61-1) unstable; urgency=low
+
+  * edit values for ucr/output/brief (Bug #16408)
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 22 Dec 2009 11:42:12 +0100
+
 univention-config-registry (5.0.60-1) unstable; urgency=low
 
   * re-add resolv.py UCR module: call dhclient if resolv.conf is committed

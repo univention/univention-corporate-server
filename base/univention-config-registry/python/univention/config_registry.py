@@ -1037,7 +1037,7 @@ def handler_search( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
 
-	if not brief and b.get ('ucr/output/brief', 'no') == 'yes':
+	if not brief and b.get ('ucr/output/brief', 'no') in ['yes','true','1']:
 		brief = True
 
 	all_vars = {}
