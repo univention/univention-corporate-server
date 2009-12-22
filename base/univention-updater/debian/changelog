@@ -1,3 +1,9 @@
+univention-updater (5.0.51-1) unstable; urgency=low
+
+  * Remove left-over debugging message from c10393 (Bug #14002)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Dec 2009 12:49:50 +0100
+
 univention-updater (5.0.50-2) unstable; urgency=low
 
   * Redirect output of apt-cache show (Bug #16525)
