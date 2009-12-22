@@ -232,12 +232,6 @@ if __name__ == '__main__':
 		print >> options.teefile, 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0'
 		sys.exit( 1 )
 
-	repository_server = configRegistry.get('repository/mirror/server', '')
-	if not repository_server:
-		repository_server = configRegistry.get('repository/online/server', '')
-	
-	print >> options.teefile, 'Starting the repository synchronisation from %s' % repository_server
-
 	if command == 'net':
 		local_server='%s.%s' % (configRegistry['hostname'], configRegistry['domainname'])
 
