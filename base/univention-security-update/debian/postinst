@@ -32,4 +32,4 @@ set -e
 
 #DEBHELPER#
 
-univention-baseconfig set version/security-patchlevel=0
+univention-config-registry set version/security-patchlevel=1
