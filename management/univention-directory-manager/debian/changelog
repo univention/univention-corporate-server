@@ -1,3 +1,11 @@
+univention-directory-manager (7.0.47-1) unstable; urgency=low
+
+  * remember the values of search property and search value when creating
+    a report; otherwise the report will be created for all objects
+    Bug #17129
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 Dec 2009 16:54:33 +0100
+
 univention-directory-manager (7.0.46-1) unstable; urgency=low
 
   * more design fixes, specially the too short background. Bug #16947

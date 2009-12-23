@@ -1797,6 +1797,8 @@ class modwizard(unimodule.unimodule):
 			return
 
 		if hasattr(self, 'report_button') and self.report_button.pressed():
+			self.save.put('wizard_search_property', self.search_property_select.getselected())
+			self.save.put('wizard_search_value', self.search_input.get_input())
 			self.save.put( 'uc_report', True )
 			return
 
