@@ -1,3 +1,9 @@
+univention-updater (5.0.52-1) unstable; urgency=low
+
+  * set executable flags of apache and UMC if the update fails. Bug #17124
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 Dec 2009 16:00:59 +0100
+
 univention-updater (5.0.51-2) unstable; urgency=low
 
   * Remove /etc/cron.d/univention-maintenance when repository-update-policy is
