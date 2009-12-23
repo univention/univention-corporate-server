@@ -1,3 +1,10 @@
+univention-config-registry (5.0.62-1) unstable; urgency=low
+
+  * UCR module resolv.py: do not start a new dhclient, but re-initialize
+    the interface via ifdown/ifup. Bug #16652
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 Dec 2009 14:39:05 +0100
+
 univention-config-registry (5.0.61-1) unstable; urgency=low
 
   * edit values for ucr/output/brief (Bug #16408)

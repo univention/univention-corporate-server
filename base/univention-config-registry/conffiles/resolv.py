@@ -29,6 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os
+import subprocess
 
 def postinst(baseConfig, changes):
 	if baseConfig.get( 'interfaces/handler', 'ifplugd' ) == 'networkmanager':
@@ -37,5 +38,7 @@ def postinst(baseConfig, changes):
 		if key.startswith('interfaces/') and key.endswith('/type'):
 			if baseConfig[key] == 'dhcp' and os.path.exists('/sbin/dhclient'):
 				iface=key.split('/')[1]
-				os.system('/sbin/dhclient %s' % iface)
+				subprocess.call( [ 'ifdown', iface ] )
+				subprocess.call( [ 'ifup', iface ] )
+
 
