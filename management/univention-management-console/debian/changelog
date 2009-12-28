@@ -1,3 +1,10 @@
+univention-management-console (2.0.35-2) unstable; urgency=low
+
+  * UCR module: ensure that selecting variables for editing that are not
+    registered do not result in a traceback. (Bug #17156)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Dec 2009 17:43:59 +0100
+
 univention-management-console (2.0.34-1) unstable; urgency=low
 
   * fixed typo in the vnc _revamp module. Bug #16945
