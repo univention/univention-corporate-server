@@ -1,3 +1,9 @@
+univention-config-registry (5.0.63-1) unstable; urgency=low
+
+  * rename option --forced to --force (Bug #16369)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Dec 2009 16:29:34 +0100
+
 univention-config-registry (5.0.62-1) unstable; urgency=low
 
   * UCR module resolv.py: do not start a new dhclient, but re-initialize

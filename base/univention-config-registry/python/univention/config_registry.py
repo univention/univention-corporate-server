@@ -824,7 +824,7 @@ def handler_set( args, opts = {}, quiet = False ):
 	reg = None
 	if opts.get( 'ldap-policy', False ):
 		reg = ConfigRegistry( write_registry = ConfigRegistry.LDAP )
-	elif opts.get( 'forced', False ):
+	elif opts.get( 'force', False ):
 		reg = ConfigRegistry( write_registry = ConfigRegistry.FORCED )
 	elif opts.get( 'schedule', False ):
 		reg = ConfigRegistry( write_registry = ConfigRegistry.SCHEDULE )
@@ -876,7 +876,7 @@ def handler_unset( args, opts = {} ):
 	reg = None
 	if opts.get( 'ldap-policy', False ):
 		reg = ConfigRegistry( write_registry = ConfigRegistry.LDAP )
-	elif opts.get( 'forced', False ):
+	elif opts.get( 'force', False ):
 		reg = ConfigRegistry( write_registry = ConfigRegistry.FORCED )
 	elif opts.get( 'schedule', False ):
 		reg = ConfigRegistry( write_registry = ConfigRegistry.SCHEDULE )
@@ -1147,7 +1147,7 @@ Options:
 	print only the keys
 
 Actions:
-  set [--forced|--schedule|--ldap-policy] <key>=<value> [... <key>=<value>]:
+  set [--force|--schedule|--ldap-policy] <key>=<value> [... <key>=<value>]:
 	set one or more keys to specified values; if a key is non-existent
 	in the configuration registry it will be created
 
@@ -1155,7 +1155,7 @@ Actions:
 	retrieve the value of the specified key from the configuration
 	database
 
-  unset [--forced|--schedule|--ldap-policy] <key> [... <key>]:
+  unset [--force|--schedule|--ldap-policy] <key> [... <key>]:
 	remove one or more keys (and its associated values) from
 	configuration database
 
@@ -1276,8 +1276,8 @@ def main(args):
 			}
 		BOOL, STRING = range ( 2 )
 		opt_commands = {
-			'set' : { 'forced' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
-			'unset' : { 'forced' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
+			'set' : { 'force' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
+			'unset' : { 'force' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
 			'search' : { 'key' : (BOOL, False), 'value' : (BOOL, False), 'all' : (BOOL, False), \
 						 'brief' : (BOOL, False), 'category' : (STRING, None), 'non-empty' : (BOOL, False) },
 			'filter' : { 'encode-utf8' : (BOOL, False) }
