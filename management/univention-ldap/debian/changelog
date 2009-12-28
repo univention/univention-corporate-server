@@ -1,3 +1,9 @@
+univention-ldap (5.0.9-1) unstable; urgency=low
+
+  * Eval server/role before restarting on domaincontroller_master. (Bug #7811)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Dec 2009 09:48:47 +0100
+
 univention-ldap (5.0.8-1) unstable; urgency=low
 
   * fixed typo "opnessh-server" (Bug #12301)
