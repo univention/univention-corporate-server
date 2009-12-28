@@ -31,8 +31,9 @@
 #DEBHELPER#
 
 if test -x /etc/init.d/slapd
-    then
+then
     # always start on master, slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
+    server_role=$(ucr get server/role)
     if [ "$server_role" = "domaincontroller_master" ]
 	then
 	/etc/init.d/slapd restart
