@@ -1,3 +1,10 @@
+univention-updater (5.0.53-1) unstable; urgency=low
+
+  * Immediately resolve pending policy changes if local/repository is changed.
+    (Bug #16646)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Dec 2009 08:48:58 +0100
+
 univention-updater (5.0.52-1) unstable; urgency=low
 
   * set executable flags of apache and UMC if the update fails. Bug #17124
