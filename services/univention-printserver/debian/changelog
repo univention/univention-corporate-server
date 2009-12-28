@@ -1,3 +1,9 @@
+univention-printserver (3.0.25-1) unstable; urgency=low
+
+  * add anoymous directory for pdf printing as root Bug #16786 
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Dec 2009 16:14:46 +0100
+
 univention-printserver (3.0.24-1) unstable; urgency=low
 
   * fix quotation bug with users an groups (Bug: #15142, #15273)

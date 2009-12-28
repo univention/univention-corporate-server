@@ -33,7 +33,7 @@ hostname=`univention-config-registry get hostname`
 domain=`univention-config-registry get domainname`
 server_role=`univention-config-registry get server/role`
 dir='/var/cache/cups-pdf/%U'
-anon_dir='/var/cache/cups-pdf'
+anon_dir='/var/cache/cups-pdf/%U'
 
 # set up directory
 univention-baseconfig set "cups/cups-pdf/directory?$dir"
