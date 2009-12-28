@@ -1,3 +1,9 @@
+univention-mozilla-firefox (4.0.3-1) unstable; urgency=low
+
+  * added 'pref("intl.locale.matchOS", true);' to firefox.js prefs Bug #17125
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Dec 2009 14:26:43 +0100
+
 univention-mozilla-firefox (4.0.2-1) unstable; urgency=low
 
   * update the firefox.js prefs to firefox 3.5.3. Bug #16146
