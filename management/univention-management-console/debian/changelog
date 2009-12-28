@@ -1,3 +1,10 @@
+univention-management-console (2.0.36-1) unstable; urgency=low
+
+  * UCR module: avoid a traceback when searching for variable descriptions
+    (Bug #16940)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Dec 2009 17:57:45 +0100
+
 univention-management-console (2.0.35-2) unstable; urgency=low
 
   * UCR module: ensure that selecting variables for editing that are not
