@@ -1,3 +1,10 @@
+univention-directory-manager (7.0.48-1) unstable; urgency=low
+
+  * remove redundant backslash while creating printer with file:/ uri 
+    Bug #16776
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Dec 2009 10:33:52 +0100
+
 univention-directory-manager (7.0.47-1) unstable; urgency=low
 
   * remember the values of search property and search value when creating
