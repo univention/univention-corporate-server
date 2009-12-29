@@ -42,6 +42,10 @@ if [ "$thinclient_sound_daemon" = "esd" ]; then
 	fi
 else
 	if test -e "/usr/bin/artswrapper" -a -e "/dev/dsp"; then
+		# be sure .mcoprc exists
+		if [ ! -e ${HOME}/.mcoprc ]; then
+			su - ${USER} -c "echo GlobalComm=Arts::X11GlobalComm > /${HOME}/.mcoprc"
+		fi
 		#be sure the directory exists, otherwise the artsd on the thinclient isn't able to start
 		su - ${USER} -c "mkdir -p \"/tmp/ksocket-${USER}\""
 		su - ${USER} -c "DISPLAY=${DISPLAY} /usr/bin/artswrapper -n -F 5 -S 8192 -u -p 1601 &"
