@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (6.0.27-1) unstable; urgency=low
+
+  * added rdesktop to thin client base Bug #16321
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Dec 2009 17:17:09 +0100
+
 univention-thin-client-basesystem (6.0.26-1) unstable; urgency=low
 
   * fixed path to rdate (Bug #16504)
