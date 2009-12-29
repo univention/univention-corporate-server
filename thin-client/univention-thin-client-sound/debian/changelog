@@ -1,3 +1,9 @@
+univention-thin-client-sound (3.0.2-1) unstable; urgency=low
+
+  * create default .mcoprc before artsd is started Bug #16708 
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Dec 2009 16:25:30 +0100
+
 univention-thin-client-sound (3.0.1-1) unstable; urgency=low
 
   * udevcontrol and udevtrigger have been replaced with udevadm. Bug
