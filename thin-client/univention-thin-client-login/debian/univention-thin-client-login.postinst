@@ -31,6 +31,6 @@ set -e
 
 #DEBHELPER#
 
-univention-thin-client-apt install univention-client-session rdesktop
+univention-thin-client-apt install univention-client-session
 
 exit 0

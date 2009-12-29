@@ -1,9 +1,3 @@
-univention-thin-client-login (5.0.3-1) unstable; urgency=low
-
-  * added rdesktop to tc environment Bug #16321
-
- -- Felix Botner <botner@univention.de>  Mon, 28 Dec 2009 16:41:11 +0100
-
 univention-thin-client-login (5.0.2-1) unstable; urgency=low
 
   * use univentionXKeyboardLayout if xorg_keyboard_options_XkbLayout is
