@@ -1337,6 +1337,10 @@ def main(args):
 		if action in [ 'dump', 'search', 'info' ]:
 			opt_filters[ 10 ][ 2 ] = True
 
+		# set brief option when generating shell output
+		if opt_filters[ 99 ][ 2 ] == True:
+			opt_commands[ 'search' ][ 'brief' ] = (BOOL, True)
+
 		# if a filter option is set: verify that a valid command is given
 		filter = False
 		for id, opt in opt_filters.items():
