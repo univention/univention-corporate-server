@@ -49,7 +49,7 @@ cache_version_text = 'univention-config cache, version'
 cache_version_notice = '%s %s\n' % (cache_version_text, cache_version)
 cache_version_re = re.compile('^%s (P<version>[0-9]+)$' % cache_version_text)
 
-invalid_key_chars = re.compile ('[\\r\\n\!\"\§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\:\<\>\\\]')
+invalid_key_chars = re.compile ('[\\r\\n\!\"\§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\<\>\\\]')
 invalid_value_chars = '\r\n'
 shell_valid_key_chars = string.ascii_letters + string.digits + '_'
 

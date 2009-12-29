@@ -1,3 +1,9 @@
+univention-config-registry (5.0.64-1) unstable; urgency=low
+
+  * allow colon in UCR variable names (Bug #15561)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 29 Dec 2009 14:56:53 +0100
+
 univention-config-registry (5.0.63-1) unstable; urgency=low
 
   * rename option --forced to --force (Bug #16369)
