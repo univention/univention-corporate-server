@@ -1,3 +1,9 @@
+univention-installer (5.0.57-1) unstable; urgency=low
+
+  * fixed typo in packages list Bug #16611 
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Dec 2009 14:16:07 +0100
+
 univention-installer (5.0.56-1) unstable; urgency=low
 
   * copy /mount.nfs and rpc.statd into the chroot otherwise the repository
