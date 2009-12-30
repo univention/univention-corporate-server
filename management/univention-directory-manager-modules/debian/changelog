@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.49-1) unstable; urgency=low
+
+  * fixed typo in /admin/handlers/policies/de.po Bug #16595 
+
+ -- Felix Botner <botner@univention.de>  Wed, 30 Dec 2009 14:45:13 +0100
+
 univention-directory-manager-modules (5.0.48-1) unstable; urgency=low
 
   * changed debuglevel in syntax.py to INFO. Bug #16503
