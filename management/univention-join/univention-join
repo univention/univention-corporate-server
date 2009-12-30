@@ -618,7 +618,7 @@ else
 	univention-config-registry set ldap/master="$DCNAME" >>/var/log/univention/join.log 2>&1
 	univention-config-registry set kerberos/adminserver="$DCNAME" >>/var/log/univention/join.log 2>&1
 	univention-config-registry set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
-	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
+	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep -q TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
 
 	touch /var/univention-join/joined
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
