@@ -1,3 +1,10 @@
+univention-dhcp (4.0.2-1) unstable; urgency=low
+
+  * add univentionDhcpPool to listener module filter to force a restart
+    of dhcpd when creating a DHCP pool (Bug #16766)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Dec 2009 16:56:49 +0100
+
 univention-dhcp (4.0.1-1) unstable; urgency=low
 
   * provide new UCR category service-dhcp and descriptions for variables
