@@ -1,3 +1,9 @@
+univention-join (2.0.24-1) unstable; urgency=low
+
+  * suppress unwanted output when checking LDAP TLS configuration (Bug #16568)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Dec 2009 13:05:27 +0100
+
 univention-join (2.0.23-1) unstable; urgency=low
 
   * do not write the password of the host account to the log file (Bug #11893)

@@ -568,7 +568,7 @@ elif [ "$server_role" = "memberserver" ]; then
 	download_host_certificate
 
 	univention-config-registry set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
-	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
+	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep -q TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
 
 	# invalidate the nscd hosts cache
 	nscd -i hosts
