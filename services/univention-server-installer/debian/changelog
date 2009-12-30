@@ -1,3 +1,9 @@
+univention-server-installer (3.0.1-1) unstable; urgency=low
+
+  * increased size of RAM disk; required for amd64 systems (Bug #16952)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 29 Dec 2009 16:03:23 +0100
+
 univention-server-installer (3.0.0-1) unstable; urgency=low
 
   * fixed installer boot kernel links (Bug: #16019) 
