@@ -555,7 +555,7 @@ msgstr "KDE - K-Desktop-Umgebung"
 
 #: installer/package_list.py:431
 msgid "KDE add-ons"
-msgstr "KDE Erweiterungen"
+msgstr "KDE-Erweiterungen"
 
 #: installer/package_list.py:436
 msgid "Additional KDE applications like k3b, kamera, ..."
