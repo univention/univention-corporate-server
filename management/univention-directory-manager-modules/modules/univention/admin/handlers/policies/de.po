@@ -518,7 +518,7 @@ msgstr "Lease-Zeit"
 #: dhcp_leasetime.py:75
 msgid ""
 "Lease time used, if the client does not request a specific expiration time"
-msgstr "Lease-Zeit, wenn der Client nicht eie bestimmte Ablaufzeit erbittet"
+msgstr "Lease-Zeit, wenn der Client nicht eine bestimmte Ablaufzeit erbittet"
 
 #: dhcp_leasetime.py:85
 msgid "Maximum lease time, that the server will accept if asked for"
