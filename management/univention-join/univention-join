@@ -301,7 +301,7 @@ else
 fi
 
 if [ -n "$res" ]; then
-	echo "Join result = [$res]" >>/var/log/univention/join.log
+	echo "Join result = [$res]" | sed -e 's/KerberosPasswd="[^"]*"//' | fromdos -fa >>/var/log/univention/join.log
 
 	#try to get password
 	pwd=`echo $res | grep -i KerberosPasswd | sed -e 's|.*KerberosPasswd="||;s|".*||g'`

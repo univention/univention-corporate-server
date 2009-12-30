@@ -1,3 +1,9 @@
+univention-join (2.0.23-1) unstable; urgency=low
+
+  * do not write the password of the host account to the log file (Bug #11893)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Dec 2009 11:42:47 +0100
+
 univention-join (2.0.22-1) unstable; urgency=low
 
   * force removal of /usr/share/univention-join/.joined during symlink
