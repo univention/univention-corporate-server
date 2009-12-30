@@ -1,3 +1,10 @@
+univention-ldap (5.0.10-1) unstable; urgency=low
+
+  * restrict access to attributes sambaClearTextPassword and
+    sambaPreviousClearTextPassword (Bug #16795)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Dec 2009 15:43:06 +0100
+
 univention-ldap (5.0.9-1) unstable; urgency=low
 
   * Eval server/role before restarting on domaincontroller_master. (Bug #7811)
