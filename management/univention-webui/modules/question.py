@@ -269,6 +269,16 @@ class question_mmselect(question_select):
 		captin_right_text=xmlob.createTextNode(self.caption_right)
 		caption_right_tag.appendChild(captin_right_text)
 
+		helptext_right_tag = xmlob.createElement("helptext_right")
+		node.appendChild(helptext_right_tag)
+		helptext_right_text=xmlob.createTextNode(self.helptext_right)
+		helptext_right_tag.appendChild(helptext_right_text)
+		
+		helptext_left_tag = xmlob.createElement("helptext_left")
+		node.appendChild(helptext_left_tag)
+		helptext_left_text=xmlob.createTextNode(self.helptext_left)
+		helptext_left_tag.appendChild(helptext_left_text)
+
 		return xmlob
 	def reprchoice(self,xmlob,choice,node):
 		choicetag=xmlob.createElement("choice")
@@ -285,16 +295,6 @@ class question_mmselect(question_select):
 		choicetag.appendChild(activatedtag)
 		activatedtexttag=xmlob.createTextNode(choice["activated"])
 		activatedtag.appendChild(activatedtexttag)
-
-		helptext_right_tag = xmlob.createElement("helptext_right")
-		node.appendChild(helptext_right_tag)
-		helptext_right_text=xmlob.createTextNode(self.helptext_right)
-		helptext_right_tag.appendChild(helptext_right_text)
-		
-		helptext_left_tag = xmlob.createElement("helptext_left")
-		node.appendChild(helptext_left_tag)
-		helptext_left_text=xmlob.createTextNode(self.helptext_left)
-		helptext_left_tag.appendChild(helptext_left_text)
 
 		if choice.has_key("level"): # is an attr of choice
 			choicetag.setAttribute("level",choice["level"])
