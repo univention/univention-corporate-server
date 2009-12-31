@@ -1726,9 +1726,6 @@ msgstr ""
 #~ msgid "Current"
 #~ msgstr "Aktuell"
 
-#~ msgid "choose objects to remove"
-#~ msgstr "Wählen Sie die zu entfernenden Objekte aus."
-
 #~ msgid "select attribute"
 #~ msgstr "Wählen Sie ein Attribut aus."
 
