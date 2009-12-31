@@ -49,12 +49,13 @@ class Web( object ):
 				 'month' : self.month,
 				 'year' : self.year }
 		lst = []
-		lst.append(umcd.HTML('<b>' + _( 'Utilization of the system load in percent' ) + '</b>'))
 		for key, img in res.dialog:
 			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
 
 		if not lst:
 			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
+		lst.insert(0, umcd.HTML('<b>' + _( 'Utilization of the system load in percent' ) + '</b>'))
+
 		res.dialog = lst
 		self.revamped( object.id(), res )
 
@@ -64,12 +65,13 @@ class Web( object ):
 				 'month' : self.month,
 				 'year' : self.year }
 		lst = []
-		lst.append(umcd.HTML('<b>' + _( 'Number of active terminal server sessions' ) + '</b>'))
 		for key, img in res.dialog:
 			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
 
 		if not lst:
 			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
+		lst.insert(0, umcd.HTML('<b>' + _( 'Number of active terminal server sessions' ) + '</b>'))
+
 		res.dialog = lst
 		self.revamped( object.id(), res )
 
@@ -79,12 +81,13 @@ class Web( object ):
 				 'month' : self.month,
 				 'year' : self.year }
 		lst = []
-		lst.append(umcd.HTML('<b>' + _( 'Utilization of the system memory in percent' ) + '</b>'))
 		for key, img in res.dialog:
 			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
 
 		if not lst:
 			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
+		lst.insert(0, umcd.HTML('<b>' + _( 'Utilization of the system memory in percent' ) + '</b>'))
+
 		res.dialog = lst
 		self.revamped( object.id(), res )
 
@@ -94,11 +97,12 @@ class Web( object ):
 				 'month' : self.month,
 				 'year' : self.year }
 		lst = []
-		lst.append(umcd.HTML('<b>' + _( 'Utilization of the swap space in percent' ) + '</b>'))
 		for key, img in res.dialog:
 			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
 
 		if not lst:
 			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
+		lst.insert(0, umcd.HTML('<b>' + _( 'Utilization of the swap space in percent' ) + '</b>'))
+
 		res.dialog = lst
 		self.revamped( object.id(), res )
