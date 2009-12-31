@@ -1,3 +1,9 @@
+univention-management-console (2.0.37-1) unstable; urgency=low
+
+  * fixed error handling in mrtg Bug #16943 
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 Dec 2009 09:41:24 +0100
+
 univention-management-console (2.0.36-1) unstable; urgency=low
 
   * UCR module: avoid a traceback when searching for variable descriptions
