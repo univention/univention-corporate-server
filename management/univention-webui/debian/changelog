@@ -1,3 +1,9 @@
+univention-webui (3.0.28-1) unstable; urgency=low
+
+  * added helptext_left and helptext_right tags to question_mmselect Bug #16538 
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 Dec 2009 11:03:59 +0100
+
 univention-webui (3.0.27-1) unstable; urgency=low
 
   * make the defaultbutton javascript code dojo 1.4 compatible since the

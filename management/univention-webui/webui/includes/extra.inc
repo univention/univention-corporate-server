@@ -1227,7 +1227,7 @@ dojo.addOnLoad(function(){
 		if ($this->warn) {
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		}
-		$str .= '</td></tr><tr><td> <select '.$access.' title="'.$this->basket['helptext'].'" id="field1-'.$this->tabindex.'" tabindex="'.$this->tabindex.'"';
+		$str .= '</td></tr><tr><td> <select '.$access.' title="'.$this->basket['helptext_left'].'" id="field1-'.$this->tabindex.'" tabindex="'.$this->tabindex.'"';
 		if ($this->warn) 
 			$str .= ' class="mselect_warn" ';
 		else 
@@ -1270,7 +1270,7 @@ dojo.addOnLoad(function(){
 			$str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
 		}
 		$str .= '</td></tr><tr><td>
-<div id="mmselect"><select '.$access.' title="'.$this->basket['helptext'].'" id="usrinput[multiple#'.$this->tabindex.'][]" tabindex="'.$this->tabindex.'"';
+<div id="mmselect"><select '.$access.' title="'.$this->basket['helptext_right'].'" id="usrinput[multiple#'.$this->tabindex.'][]" tabindex="'.$this->tabindex.'"';
 		if ($this->warn) 
 			$str .= ' class="mselect_warn" ';
 		else 
