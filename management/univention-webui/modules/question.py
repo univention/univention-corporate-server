@@ -217,6 +217,21 @@ class question_mmselect(question_select):
 		self.choicelist=self.args["choicelist"]
 		self.caption_left=self.args["caption-left"]
 		self.caption_right=self.args["caption-right"]
+
+		if self.args.has_key("helptext"):
+			self.helptext_left=self.args["helptext"]
+		else:
+			self.helptext_left=""
+		if self.args.has_key("helptext"):
+			self.helptext_right=self.args["helptext"]
+		else:
+			self.helptext_right=""
+
+		if self.args.has_key("helptext_left"):
+			self.helptext_left=self.args["helptext_left"]
+		if self.args.has_key("helptext_right"):
+			self.helptext_right=self.args["helptext_right"]
+
 		x=0
 		for entry in self.choicelist:
 			if entry["name"]=='0':
@@ -270,6 +285,16 @@ class question_mmselect(question_select):
 		choicetag.appendChild(activatedtag)
 		activatedtexttag=xmlob.createTextNode(choice["activated"])
 		activatedtag.appendChild(activatedtexttag)
+
+		helptext_right_tag = xmlob.createElement("helptext_right")
+		node.appendChild(helptext_right_tag)
+		helptext_right_text=xmlob.createTextNode(self.helptext_right)
+		helptext_right_tag.appendChild(helptext_right_text)
+		
+		helptext_left_tag = xmlob.createElement("helptext_left")
+		node.appendChild(helptext_left_tag)
+		helptext_left_text=xmlob.createTextNode(self.helptext_left)
+		helptext_left_tag.appendChild(helptext_left_text)
 
 		if choice.has_key("level"): # is an attr of choice
 			choicetag.setAttribute("level",choice["level"])

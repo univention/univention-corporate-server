@@ -1,6 +1,12 @@
+univention-webui (3.0.29-1) unstable; urgency=low
+
+  * added helptext_left and helptext_right tags to question_mmselect in question.py Bug #16538
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 Dec 2009 11:17:52 +0100
+
 univention-webui (3.0.28-1) unstable; urgency=low
 
-  * added helptext_left and helptext_right tags to question_mmselect Bug #16538 
+  * added helptext_left and helptext_right tags to question_mmselect in extra.inc Bug #16538 
 
  -- Felix Botner <botner@univention.de>  Thu, 31 Dec 2009 11:03:59 +0100
 
