@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.48-2) unstable; urgency=low
+
+  * added helptext_left and helptext_right to question_mmselect in modedit.py Bug #16538
+
+ -- Felix Botner <botner@univention.de>  Thu, 31 Dec 2009 11:23:21 +0100
+
 univention-directory-manager (7.0.48-1) unstable; urgency=low
 
   * remove redundant backslash while creating printer with file:/ uri 

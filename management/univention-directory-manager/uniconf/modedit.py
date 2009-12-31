@@ -4404,7 +4404,7 @@ class modedit(unimodule.unimodule):
 						searchcols.append(tablecol('',{'type':'tab_layout_bottom_space'},{'obs':[self.search_button]}))
 
 						atts['height']='150'
-						group_box=question_mmselect(_('All'),atts,{'caption-left': _('Search results'), 'caption-right': _('Selected objects'), 'choicelist':group_choicelist,'helptext':_('choose objects to add')})
+						group_box=question_mmselect(_('All'),atts,{'caption-left': _('Search results'), 'caption-right': _('Selected objects'), 'choicelist':group_choicelist,'helptext_left':_('choose objects to add'),'helptext_right':_('choose objects to remove')})
 
 						# |------------------------------------------|
 						# |             |          |                 |

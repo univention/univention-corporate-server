@@ -1100,6 +1100,10 @@ msgstr "Ausgewählte Objekte "
 msgid "choose objects to add"
 msgstr "Wählen Sie die Objekte zum Hinzufügen aus."
 
+#: modedit.py:4407
+msgid "choose objects to remove"
+msgstr "Wählen Sie die zu entfernenden Objekte aus."
+
 #: modedit.py:4442
 msgid "Sun"
 msgstr "So"
