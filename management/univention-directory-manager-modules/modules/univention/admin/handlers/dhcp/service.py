@@ -37,7 +37,7 @@ translation=univention.admin.localization.translation('univention.admin.handlers
 _=translation.translate
 
 module='dhcp/service'
-operations=['add','edit','remove','search','move']
+operations=['add','edit','remove','search']
 childs=1
 usewizard=1
 short_description=_('DHCP: Service')

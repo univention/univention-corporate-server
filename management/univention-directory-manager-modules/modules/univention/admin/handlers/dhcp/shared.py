@@ -39,7 +39,7 @@ translation=univention.admin.localization.translation('univention.admin.handlers
 _=translation.translate
 
 module='dhcp/shared'
-operations=['add','edit','remove','search','move']
+operations=['add','edit','remove','search']
 superordinate='dhcp/service'
 childs=1
 short_description=_('DHCP: Shared network')
