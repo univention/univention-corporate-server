@@ -37,7 +37,7 @@ translation=univention.admin.localization.translation('univention.admin.handlers
 _=translation.translate
 
 module='dhcp/server'
-operations=['add','edit','remove','search','move']
+operations=['add','edit','remove','search']
 superordinate='dhcp/service'
 childs=0
 usewizard=1

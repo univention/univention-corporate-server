@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.49-2) unstable; urgency=low
+
+  * deactivate move operation on DHCP objects (Bug #14003)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jan 2010 12:56:12 +0100
+
 univention-directory-manager-modules (5.0.49-1) unstable; urgency=low
 
   * fixed typo in /admin/handlers/policies/de.po Bug #16595 
