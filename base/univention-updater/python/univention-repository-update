@@ -127,7 +127,7 @@ def update_net( options ):
 		sys.exit( 1 )
 
 	# create mirror_base and symbolic link "univention-repository" if missing
-	destdir = os.path.join( configRegistry.get( 'reposiory/mirror/basepath', '/var/lib/univention-repository' ), 'mirror' )
+	destdir = os.path.join( configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' ), 'mirror' )
 	if not os.path.exists( destdir ):
 		os.makedirs( destdir )
 	if not os.path.exists( os.path.join(destdir, 'univention-repository') ):
