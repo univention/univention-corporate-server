@@ -167,6 +167,11 @@ if __name__ == '__main__':
 	cmd_dist_upgrade = configRegistry.get( 'update/commands/distupgrade', 'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u dist-upgrade' )
 	cmd_update = configRegistry.get( 'update/commands/update', 'apt-get update' )
 
+	filename = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
+	if os.path.exists(filename):
+		dprint('Warning: Found `%s`\nfrom incomplete univention-updater run. Deleted.' % (filename), [sys.stdout, stdout])
+		os.remove(filename)
+
 	upgraded = False
 	while True:
 		try:
