@@ -58,7 +58,7 @@ wizarddescription=_("Add, edit and delete DHCP objects")
 wizardoperations={"add":[_("Add"), _("Add DHCP object")],"find":[_("Search"), _("Search DHCP object(s)")]}
 wizardpath="univentionDhcpObject"
 wizardsuperordinates=["None","dhcp/service"]
-wizardtypesforsuper={"None":["dhcp/service"],"dhcp/service":["dhcp/host","dhcp/pool","dhcp/server","dhcp/shared","dhcp/sharedsubnet","dhcp/subnet"]}
+wizardtypesforsuper={"None":["dhcp/service"],"dhcp/service":["dhcp/host","dhcp/server","dhcp/shared","dhcp/subnet"]}
 
 childmodules=["dhcp/host","dhcp/pool","dhcp/server","dhcp/service","dhcp/shared","dhcp/sharedsubnet","dhcp/subnet"]
 virtual=1
