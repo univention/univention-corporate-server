@@ -9,12 +9,18 @@ date >>"$UPDATER_LOG" 2>&1
 
 eval $(univention-config-registry shell) >>"$UPDATER_LOG" 2>&1
 
+# Bug #16454: Workaround to remove source.list on failed upgrades
+function cleanup() {
+	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
+	killall univention-updater
+}
+trap cleanup EXIT
+
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
 	if [ "$update23_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or set the Univention Configuration Registry variable \"update23/ignoressh\" to \"yes\" to ignore it."
-		killall univention-updater
 		exit 1
 	fi
 fi
@@ -23,7 +29,6 @@ if [ "$TERM" = "xterm" ]; then
 	if [ "$update23_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or set the Univention Configuration Registry variable \"update23/ignoreterm\" to \"yes\" to ignore it."
-		killall univention-updater
 		exit 1
 	fi
 fi
@@ -44,7 +49,6 @@ check_cyrus21 ()
 			echo " 3. Set the Univention Configuration Registry variable \"update23/cyrus21\" to"
 			echo "    \"yes\" and ignore this warning. In this case the update may fail."
 			echo " 4. Contact Univention by email <feedback@univention.de>"
-			killall univention-updater
 			exit 1
 		else
 			echo "WARNING: update23/cyrus21 is set to yes and $pkg is installed." >>"$UPDATER_LOG"
@@ -144,7 +148,6 @@ check_space(){
 		echo "         But be aware that this is not recommended!"
 		echo ""
 		# kill the running univention-updater process
-		killall univention-updater
 		exit 1
 	fi
 }
@@ -170,11 +173,10 @@ fi
 
 
 echo "Checking for the package status"
-dpkg -l 2>&1  | grep "  " | grep -v "^|" | grep "^[a-z]*[A-Z]" >>"$UPDATER_LOG" 2>&1
+dpkg -l 2>&1 | grep "^[a-z]*[A-Z]" >>"$UPDATER_LOG" 2>&1
 if [ $? = 0 ]; then
 	echo "ERROR: The package state on this system is inconsistent."
 	echo "       Please run 'dpkg --configure -a' manually"
-	killall univention-updater
 	exit 1
 fi
 
@@ -214,7 +216,6 @@ for pkg in univention-ssl univention-thin-client-basesystem univention-thin-clie
 			echo "failed."
 	        echo "ERROR: pre-update of $pkg failed!"
 	        echo "       Please run 'dpkg --configure -a' manually."
-	        killall univention-updater
 	        exit 1
 	    fi
 	    dpkg -l 2>&1  | grep "  " | grep -v "^|" | grep "^[a-z]*[A-Z]" >>"$UPDATER_LOG" 2>&1
@@ -222,7 +223,6 @@ for pkg in univention-ssl univention-thin-client-basesystem univention-thin-clie
 			echo "failed."
 	        echo "ERROR: pre-update of $pkg failed!"
 	        echo "       Inconsistent package state detected. Please run 'dpkg --configure -a' manually."
-	        killall univention-updater
 	        exit 1
 	    fi
 		echo "done."
@@ -242,5 +242,6 @@ fi
 echo "Starting update process, this may take a while."
 echo "Check /var/log/univention/updater.log for more information."
 date >> "$UPDATER_LOG"
+trap - EXIT
 
 exit 0

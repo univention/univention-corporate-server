@@ -154,7 +154,6 @@ def download_sh_files(updater, server_path, tempdir):
 				dprint(' %s: %s' % (response.status,response.reason))
 				continue
 		except:
-			import traceback
 			dprint( traceback.format_exc ())
 
 		f=open(os.path.join(tempdir, sh), 'w+' )
@@ -350,7 +349,6 @@ def main():
 		fp_debug.close()
 		sys.exit(2)
 
-	import univention_baseconfig
 	baseConfig=univention_baseconfig.baseConfig()
 	baseConfig.load()
 	sourcedir=None
@@ -470,17 +468,12 @@ def main():
 				dprint('Failed to execute univention-repository-update cdrom', [sys.stdout,stdout])
 				raise UpdateError
 
-			callupdateto=[sys.argv[0], 'local', '--updateto', updateto]
-			calllocal=[sys.argv[0], 'local']
-
-			if not clean:
-				callupdateto.append('--no-clean')
-				calllocal.append('--no-clean')
-
+			calllocal = [sys.argv[0], 'local']
 			if updateto:
-				os.execv(sys.argv[0], callupdateto)
-			else:
-				os.execv(sys.argv[0], calllocal)
+				calllocal += ['--updateto', updateto]
+			if not clean:
+				calllocal.append('--no-clean')
+			os.execv(sys.argv[0], calllocal)
 		else:
 			dprint('Error: You are trying to install from a cdrom/dvd image', [stdout,sys.stdout])
 			dprint('       but a local repository was not found. If you want to', [stdout,sys.stdout])
@@ -498,17 +491,12 @@ def main():
 				dprint('Failed to execute univention-repository-update net', [sys.stdout,stdout])
 				raise UpdateError
 
-			callupdateto=[sys.argv[0], 'local', '--updateto', updateto]
-			calllocal=[sys.argv[0], 'local']
-
-			if not clean:
-				callupdateto.append('--no-clean')
-				calllocal.append('--no-clean')
-
+			calllocal = [sys.argv[0], 'local']
 			if updateto:
-				os.execv(sys.argv[0], callupdateto)
-			else:
-				os.execv(sys.argv[0], calllocal)
+				calllocal += ['--updateto', updateto]
+			if not clean:
+				calllocal.append('--no-clean')
+			os.execv(sys.argv[0], calllocal)
 
 		updater = UniventionUpdater()
 
@@ -546,8 +534,10 @@ def main():
 		if os.path.exists(os.path.join(scriptPath, 'preup.sh')):
 			dprint('Execute %s' % os.path.join(scriptPath, 'preup.sh'))
 			os.chmod(os.path.join(scriptPath, 'preup.sh'), 0744)
-			resultCode=os.system('%s %s %s | tee -a /var/log/univention/updater.log 2>&1' % (os.path.join(scriptPath, 'preup.sh'), lastversion, nextversion))
-			if resultCode != 0:
+			postup = subprocess.Popen((os.path.join(scriptPath, 'preup.sh'), lastversion, nextversion), stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
+			tee = subprocess.Popen(('tee', '-a', '/var/log/univention/updater.log'), stdin=postup.stdout)
+			tee.communicate()
+			if postup.returncode != 0:
 				dprint('Failed to execute preup.sh', [sys.stdout,stdout])
 				raise UpdateError
 
@@ -585,16 +575,17 @@ def main():
 		if os.path.exists(os.path.join(scriptPath, 'postup.sh')):
 			dprint('Execute %s' % os.path.join(scriptPath, 'postup.sh'))
 			os.chmod(os.path.join(scriptPath, 'postup.sh'), 0744)
-			resultCode=os.system('%s %s %s | tee -a /var/log/univention/updater.log 2>&1' % (os.path.join(scriptPath, 'postup.sh'), lastversion, nextversion))
-			if resultCode != 0:
+			postup = subprocess.Popen((os.path.join(scriptPath, 'postup.sh'), lastversion, nextversion), stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
+			tee = subprocess.Popen(('tee', '-a', '/var/log/univention/updater.log'), stdin=postup.stdout)
+			tee.communicate()
+			if postup.returncode != 0:
 				dprint('Failed to execute postup.sh', [sys.stdout,stdout])
 				raise UpdateError
 
-	nvv=nextversion.split('-')[0]
-	nvp=nextversion.split('-')[1]
+	(nvv,nvp)=nextversion.split('-')[0:2]
 
-	import univention_baseconfig
 	out=univention_baseconfig.handler_set(['version/version=%s' % nvv, 'version/patchlevel=%s' % nvp])
+	remove_temporary_sources_list()
 
 	if os.path.exists('/usr/sbin/univention-pkgdb-scan'):
 		os.system('/usr/sbin/univention-pkgdb-scan >>/var/log/univention/updater.log 2>&1')
@@ -615,7 +606,7 @@ if __name__ == '__main__':
 			filename = os.path.join( '/usr/sbin/', prog )
 			if os.path.isfile( filename ):
 				os.chmod( filename, 0755 )
-
+		remove_temporary_sources_list()
 		sys.exit(1)
 	except UpToDateNoError, error:
 		if os.path.exists(failure):

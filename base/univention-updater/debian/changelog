@@ -1,3 +1,9 @@
+univention-updater (5.0.54-1) unstable; urgency=low
+
+  * Remove 00_ucs_temporary_installation.list on failed upgrades (Bug #16454)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 04 Jan 2010 13:53:54 +0100
+
 univention-updater (5.0.53-1) unstable; urgency=low
 
   * Immediately resolve pending policy changes if local/repository is changed.
