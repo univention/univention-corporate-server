@@ -1,3 +1,10 @@
+univention-updater (5.0.55-1) unstable; urgency=low
+
+  * Fix wrong spelling of 'reposi_t_ory/mirror/base' in
+    univention-repository-update and univention-repository-create (Bug #17195)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 04 Jan 2010 17:05:37 +0100
+
 univention-updater (5.0.54-2) unstable; urgency=low
 
   * Remove 00_ucs_temporary_installation.list in security-update (Bug #17122)

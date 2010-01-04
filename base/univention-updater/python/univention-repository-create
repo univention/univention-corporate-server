@@ -227,7 +227,7 @@ if __name__ == '__main__':
 		ucr.handler_set( [ 'repository/mirror/version/start?%s-0' % repo_version ] )
 
 	# create symbolic link univention-repository
-	os.chdir( os.path.join( configRegistry.get( 'reposiory/mirror/basepath', '/var/lib/univention-repository' ), 'mirror' ) )
+	os.chdir( os.path.join( configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' ), 'mirror' ) )
 	os.symlink( '.', 'univention-repository' )
 
 	print  "The local repository has been created."
