@@ -29,7 +29,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os
-import re
 import sys
 import getopt
 import univention.config_registry as ucr
@@ -63,15 +62,12 @@ def remove_temporary_sources_list ():
 		os.remove(filename)
 
 def usage(fd=sys.stdout):
-	print >> fd, 'univention-security-update: tool for include security updates into local repository'
-	print >> fd, 'copyright (c) 2004-2009 Univention GmbH, Germany'
+	print >> fd, 'univention-security-update: tool for including security updates into local repository'
+	print >> fd, 'copyright (c) 2004-2010 Univention GmbH, Germany'
 	print >> fd, ''
 	print >> fd, 'Syntax:'
 	print >> fd, '  univention-security-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate]'
 	print >> fd, '  univention-security-update [--help] '
-	print >> fd, ''
-	print >> fd, 'Known-Bugs:'
-	print >> fd, '  -None-'
 	print >> fd, ''
 
 
@@ -180,11 +176,11 @@ if __name__ == '__main__':
 			dprint(traceback.format_exc ())
 
 			code, message = msg
-      
+
 			if code == socket.EAI_NONAME:
 				dprint('Error: The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a diffrent value.' % (updater.repository_server), [ sys.stdout, stdout ])
 			else:
-				dprint('Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile /var/log/univention/security-update.log' % (updater.repository_server), [ sys.stdout, stdout ])
+				dprint('Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile /var/log/univention/security-updates.log' % (updater.repository_server), [ sys.stdout, stdout ])
 
 			sys.exit( 1 )
 
@@ -221,7 +217,7 @@ if __name__ == '__main__':
 						os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
 						ret = subprocess.call( cmd_dist_upgrade.split( ' ' ), stdout = logfile, stderr = logfile )
 						if ret:
-							dprint( 'Error: Failed to update APT indices', [ sys.stdout, stdout ] )
+							dprint( 'Error: Failed to upgrade packages', [ sys.stdout, stdout ] )
 
 					remove_temporary_sources_list()
 					if os.path.exists('/var/run/apt-get.lock'):
