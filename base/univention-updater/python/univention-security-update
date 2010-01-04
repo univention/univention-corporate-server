@@ -29,7 +29,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os
-import re
 import sys
 import getopt
 import univention.config_registry as ucr
@@ -43,11 +42,11 @@ import univention.updater
 updater = univention.updater.UniventionUpdater()
 
 def dprint(str, fd=[], toStdout=False):
+	""" print message to multiple destinations, optionally to std-out """
 	if len(fd) < 1:
 		print str
-	for i in range(0,len(fd)):
-		print >>fd[i], str
-		print str
+	for f in fd:
+		print >>f, str
 	if toStdout and not extra_silent:
 		print >>real_stdout, str
 
@@ -63,15 +62,12 @@ def remove_temporary_sources_list ():
 		os.remove(filename)
 
 def usage(fd=sys.stdout):
-	print >> fd, 'univention-security-update: tool for include security updates into local repository'
-	print >> fd, 'copyright (c) 2004-2009 Univention GmbH, Germany'
+	print >> fd, 'univention-security-update: tool for including security updates into local repository'
+	print >> fd, 'copyright (c) 2004-2010 Univention GmbH, Germany'
 	print >> fd, ''
 	print >> fd, 'Syntax:'
 	print >> fd, '  univention-security-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate]'
 	print >> fd, '  univention-security-update [--help] '
-	print >> fd, ''
-	print >> fd, 'Known-Bugs:'
-	print >> fd, '  -None-'
 	print >> fd, ''
 
 
@@ -167,6 +163,11 @@ if __name__ == '__main__':
 	cmd_dist_upgrade = configRegistry.get( 'update/commands/distupgrade', 'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u dist-upgrade' )
 	cmd_update = configRegistry.get( 'update/commands/update', 'apt-get update' )
 
+	filename = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
+	if os.path.exists(filename):
+		dprint('Warning: Found `%s`\nfrom incomplete univention-updater run. Deleted.' % (filename), [sys.stdout, stdout])
+		os.remove(filename)
+
 	upgraded = False
 	while True:
 		try:
@@ -175,11 +176,11 @@ if __name__ == '__main__':
 			dprint(traceback.format_exc ())
 
 			code, message = msg
-      
+
 			if code == socket.EAI_NONAME:
 				dprint('Error: The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a diffrent value.' % (updater.repository_server), [ sys.stdout, stdout ])
 			else:
-				dprint('Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile /var/log/univention/security-update.log' % (updater.repository_server), [ sys.stdout, stdout ])
+				dprint('Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile /var/log/univention/security-updates.log' % (updater.repository_server), [ sys.stdout, stdout ])
 
 			sys.exit( 1 )
 
@@ -193,12 +194,10 @@ if __name__ == '__main__':
 			remove_temporary_sources_list()
 			sources_list_entries = updater.security_update_temporary_sources_list()
 			upgraded = nextupdate
-			if sources_list_entries:
-				for line in sources_list_entries:
-					add_temporary_sources_list(line)
+			if call_upgrade and sources_list_entries:
+					add_temporary_sources_list('\n'.join(sources_list_entries))
 
-				# Execute the dist-upgrade!
-				if call_upgrade:
+					# Execute the dist-upgrade!
 					count=0
 					while os.path.exists('/var/run/apt-get.lock') and count < 300:
 						time.sleep(1)
@@ -218,7 +217,7 @@ if __name__ == '__main__':
 						os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
 						ret = subprocess.call( cmd_dist_upgrade.split( ' ' ), stdout = logfile, stderr = logfile )
 						if ret:
-							dprint( 'Error: Failed to update APT indices', [ sys.stdout, stdout ] )
+							dprint( 'Error: Failed to upgrade packages', [ sys.stdout, stdout ] )
 
 					remove_temporary_sources_list()
 					if os.path.exists('/var/run/apt-get.lock'):
