@@ -43,11 +43,11 @@ import univention.updater
 updater = univention.updater.UniventionUpdater()
 
 def dprint(str, fd=[], toStdout=False):
+	""" print message to multiple destinations, optionally to std-out """
 	if len(fd) < 1:
 		print str
-	for i in range(0,len(fd)):
-		print >>fd[i], str
-		print str
+	for f in fd:
+		print >>f, str
 	if toStdout and not extra_silent:
 		print >>real_stdout, str
 
@@ -198,12 +198,10 @@ if __name__ == '__main__':
 			remove_temporary_sources_list()
 			sources_list_entries = updater.security_update_temporary_sources_list()
 			upgraded = nextupdate
-			if sources_list_entries:
-				for line in sources_list_entries:
-					add_temporary_sources_list(line)
+			if call_upgrade and sources_list_entries:
+					add_temporary_sources_list('\n'.join(sources_list_entries))
 
-				# Execute the dist-upgrade!
-				if call_upgrade:
+					# Execute the dist-upgrade!
 					count=0
 					while os.path.exists('/var/run/apt-get.lock') and count < 300:
 						time.sleep(1)
