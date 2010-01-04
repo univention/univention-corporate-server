@@ -36,12 +36,12 @@ import os
 import copy
 import httplib, base64, string
 import socket
-import subprocess
 import univention.config_registry
 
 HTTP_PROXY_DEFAULT_PORT = 3128
 
 class UCS_Version( object ):
+	'''Version object consisting of major-, minor-number and patch-level'''
 	# regular expression matching a UCS version X.Y-Z
 	_regexp = re.compile( '(?P<major>[0-9]*)\.(?P<minor>[0-9]*)-(?P<patch>[0-9]*)' )
 
@@ -111,11 +111,11 @@ class UniventionUpdater:
 			self.nameserver_available=True
 		except:
 			pass
-					
+
 		self.ucr_reinit()
 
-	# TODO set default value of the variable port to "self.repository_port"
 	def open_connection(self, server=None, port=None):
+		'''Open http-connection to server:port'''
 
 		if not self.nameserver_available:
 			raise 'UniventionUpdater', 'The repository server %s could not be reached.' % (self.configRegistry.get('repository/online/server', 'apt.univention.de'))
@@ -158,9 +158,11 @@ class UniventionUpdater:
 				self.connection = httplib.HTTPConnection(self.repository_server)
 
 	def close_connection(self):
+		'''Close http-connection'''
 		self.connection.close()
 
 	def ucr_reinit(self):
+		'''Re-initialize settings'''
 		self.configRegistry=univention.config_registry.ConfigRegistry()
 		self.configRegistry.load()
 
@@ -262,27 +264,29 @@ class UniventionUpdater:
 			else:
 				print '# The http error code (%d) was returned for the site http://%s%s' % (response.status, server, site)
 
-
 		self.close_connection()
 		return False
 
 	def get_next_version( self, version ):
+		'''Check if a new patchlevel, minor or major release is available for the given version'''
 		if self.net_path_exists( '%d.%d/maintained/%d.%d-%d/' % ( version.major, version.minor, version.major, version.minor, version.patchlevel + 1 ) ): #check for x.y-(z+1)
 			return '%d.%d-%d' % ( version.major, version.minor, version.patchlevel + 1 )
-		elif self.net_path_exists( '%d.%d/maintained/%d.%d-0/' % ( version.major, version.minor + 1, version.major, version.minor + 1 ) ): #check for x.y-(z+1)
+		elif self.net_path_exists( '%d.%d/maintained/%d.%d-0/' % ( version.major, version.minor + 1, version.major, version.minor + 1 ) ): #check for x.(y+1)-0
 			return '%d.%d-0' % ( version.major, version.minor + 1 )
-		elif self.net_path_exists('%d.0/maintained/%d.0-0/' % ( version.major + 1, version.major + 1 ) ): #check for x.y-(z+1)
+		elif self.net_path_exists('%d.0/maintained/%d.0-0/' % ( version.major + 1, version.major + 1 ) ): #check for (x+1).0-0
 			return '%d.0-0' % ( version.major + 1 )
 
 		return None
 
 	def release_update_available( self, ucs_version = None ):
+		'''Check if an update is available for the ucs_version'''
 		if not ucs_version:
 			return self.get_next_version( UCS_Version( ( self.version_major, self.version_minor, self.patchlevel ) ) )
 
 		return self.get_next_version( UCS_Version( ucs_version ) )
 
 	def security_update_temporary_sources_list(self):
+		'''Create a list of debian repository statements for the next security update'''
 		sources_list = []
 		for part in self.parts:
 			# for example: http://apt.univention.de/2.0/maintained/
@@ -301,7 +305,7 @@ class UniventionUpdater:
 		return sources_list
 
 	def security_update_available(self):
-		# check for the security version for the current version
+		'''Check for the security version for the current version'''
 		for part in self.parts:
 			# for example: http://apt.univention.de/2.0/maintained/
 			path='/%s/%s/' % (self.ucs_version, part)
@@ -315,11 +319,11 @@ class UniventionUpdater:
 
 		return False
 
-
 	def get_ucs_version(self):
 		return '%s-%s' % (self.ucs_version, self.patchlevel)
 
 	def get_components(self):
+		'''Retrieve all enabled components from registry as list'''
 		components = []
 		for key in self.configRegistry.keys():
 			if key.startswith('repository/online/component/'):
@@ -329,6 +333,7 @@ class UniventionUpdater:
 		return components
 
 	def get_all_components(self):
+		'''Retrieve all configured components from registry as list'''
 		components = []
 		for key in self.configRegistry.keys():
 			if key.startswith('repository/online/component/'):
@@ -338,6 +343,7 @@ class UniventionUpdater:
 		return components
 
 	def get_component(self, name):
+		'''Retrieve named component from registry as hash'''
 		component = {}
 		for key in self.configRegistry.keys():
 			component['activated'] = self.configRegistry['repository/online/component/%s' % name]
@@ -349,6 +355,10 @@ class UniventionUpdater:
 		return component
 
 	def print_version_repositories( self, clean = False, dists = False, start = None, end = None ):
+		'''Return a string of Debian repository statements for all UCS versions
+		between start and end.
+		For dists=True, additional entries for the parts below dists/ are also added.
+		For clean=True, additional clean statements are added if online/repository/clean is enabled.'''
 		repos = ''
 		if not self.online_repository:
 			return repos
@@ -431,6 +441,11 @@ class UniventionUpdater:
 		return repos
 
 	def print_security_repositories( self, clean = False, start = None, end = None, all_security_updates = False ):
+		'''Return a string of Debian repository statements for all UCS security
+		updates for UCS versions between start and end.
+		For clean=True, additional clean statements are added if online/repository/clean is enabled.
+		For all_security_updates=True, all available instead of all needed
+		statements for security updates are returned.'''
 		repos = ''
 		if not self.online_repository:
 			return repos
@@ -511,6 +526,8 @@ class UniventionUpdater:
 		return repos
 
 	def print_component_repositories( self, clean = False ):
+		'''Return a string of Debian repository statements for all enabled components.
+		For clean=True, additional clean statements are added if online/repository/clean is enabled.'''
 		repos = ''
 		if not self.online_repository:
 			return repos
@@ -594,10 +611,9 @@ class UniventionUpdater:
 					if clean:
 						if repository_prefix:
 							path = 'http://%s%s/%s/%s/%s/' % ( auth_string, repository_server, repository_prefix, version, part )
-							repos += 'clean %s/component/%s/\n' % ( path, component )
 						else:
 							path = 'http://%s%s/%s/%s/' % ( auth_string, repository_server, version, part )
-							repos += 'clean %s/component/%s/\n' % ( path, component )
+						repos += 'clean %s/component/%s/\n' % ( path, component )
 					if printed:
 						repos += '\n'
 						printed = False
