@@ -32,7 +32,7 @@ msgid "Period: previous year"
 msgstr "Zeitraum: vergangenes Jahr"
 
 #: _revamp.py:44
-msgid "Utilization of the system load in percent"
+msgid "System load in percent"
 msgstr "Systemauslastung in Prozent"
 
 #: _revamp.py:44
@@ -40,11 +40,11 @@ msgid "Number of active terminal server sessions"
 msgstr "Anzahl der aktiven Terminalserver Sitzungen"
 
 #: _revamp.py:44
-msgid "Utilization of the system memory in percent"
+msgid "Utilization of system memory in percent"
 msgstr "Auslastung des Hauptspeichers in Prozent"
 
 #: _revamp.py:44
-msgid "Utilization of the swap space in percent"
+msgid "Utilization of swap space in percent"
 msgstr "Auslastung des Auslagerungsspeichers in Prozent"
 
 #: _revamp.py:50
