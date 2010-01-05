@@ -54,7 +54,7 @@ class Web( object ):
 
 		if not lst:
 			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
-		lst.insert(0, umcd.HTML('<b>' + _( 'Utilization of the system load in percent' ) + '</b>'))
+		lst.insert(0, umcd.HTML('<b>' + _( 'System load in percent' ) + '</b>'))
 
 		res.dialog = lst
 		self.revamped( object.id(), res )
@@ -86,7 +86,7 @@ class Web( object ):
 
 		if not lst:
 			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
-		lst.insert(0, umcd.HTML('<b>' + _( 'Utilization of the system memory in percent' ) + '</b>'))
+		lst.insert(0, umcd.HTML('<b>' + _( 'Utilization of system memory in percent' ) + '</b>'))
 
 		res.dialog = lst
 		self.revamped( object.id(), res )
@@ -102,7 +102,7 @@ class Web( object ):
 
 		if not lst:
 			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
-		lst.insert(0, umcd.HTML('<b>' + _( 'Utilization of the swap space in percent' ) + '</b>'))
+		lst.insert(0, umcd.HTML('<b>' + _( 'Utilization of swap space in percent' ) + '</b>'))
 
 		res.dialog = lst
 		self.revamped( object.id(), res )
