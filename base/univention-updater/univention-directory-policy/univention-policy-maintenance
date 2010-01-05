@@ -32,9 +32,11 @@ import os, string, sys
 import tempfile
 import univention_baseconfig
 
+# Name of the cron.d file
+CRON_D='/etc/cron.d/univention-maintenance'
 
 def write_cron_job(baseConfig, cron, updateto, reboot):
-	file=open('/etc/cron.d/univention-maintenance', 'w')
+	file=open(CRON_D, 'w')
 	file.write('# cron job for update\n')
 	if cron != '* * * * * ':
 		file.write('%s root ' % cron)
@@ -54,8 +56,8 @@ def write_cron_job(baseConfig, cron, updateto, reboot):
 baseConfig=univention_baseconfig.baseConfig()
 baseConfig.load()
 
-if os.path.exists('/etc/cron.d/univention-maintenance'):
-	os.unlink('/etc/cron.d/univention-maintenance')
+if os.path.exists(CRON_D):
+	os.unlink(CRON_D)
 
 if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
 	tempfile=tempfile.mktemp()
@@ -91,6 +93,5 @@ if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
 			write_cron_job(baseConfig, cron, updateto, reboot)
 
 	os.remove(tempfile)
-
 
 sys.exit(0)
