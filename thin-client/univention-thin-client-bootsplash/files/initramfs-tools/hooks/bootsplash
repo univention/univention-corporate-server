@@ -1,0 +1,62 @@
+#!/bin/sh
+
+PREREQ=""
+
+prereqs()
+{
+	echo "$PREREQ"
+}
+
+case $1 in
+prereqs)
+	prereqs
+	exit 0
+	;;
+esac
+
+
+SPLASH_BIN=/usr/sbin/splash
+SPLASH_CONFIG=/usr/share/univention-thin-client-bootsplash/bootsplash.cfg
+
+
+if [ ! -x $SPLASH_BIN ]
+then
+	echo "$SPLASH_BIN not found. Bootsplash image won't be installed"
+	exit 0
+fi
+
+if [ ! -e $SPLASH_CONFIG ]
+then
+	echo "$SPLASH_CONFIG not found. Bootsplash image won't be installed"
+	exit 0
+fi
+
+. $SPLASH_CONFIG
+
+if [ $SPLASH != "yes" ]
+then
+	echo "Bootsplash disabled. (see /etc/default/bootsplash)"
+	exit 0
+fi
+
+if [ -z "$SPLASH_SIZE" ]; then
+	echo "SPLASH_SIZE in /etc/default/bootsplash is not set. Bootsplash image won't be installed"
+	exit 0
+fi
+
+if [ "$SPLASH_SIZE" = "all" ]; then
+	for SPLASH_FILE in /etc/bootsplash/themes/$THEME/config/bootsplash-*.cfg; do
+		$SPLASH_BIN -s -f $SPLASH_FILE >> $DESTDIR/bootsplash
+	done
+else
+	SPLASH_FILE=/etc/bootsplash/themes/$THEME/config/bootsplash-$SPLASH_SIZE.cfg
+
+	if [ ! -e $SPLASH_FILE ]
+	then
+		echo "Config file $SPLASH_FILE not found. Bootsplash image won't be installed"
+		echo "Check the SPLASH_SIZE entry in $SPLASH_CONFIG"
+		exit 0
+	fi
+
+$SPLASH_BIN -s -f $SPLASH_FILE > $DESTDIR/bootsplash
+fi

@@ -1,1 +1,5 @@
 var/lib/univention-client-root/thin-client-archive/bootsplash
+usr/share/univention-thin-client-bootsplash/initramfs-tools
+usr/share/univention-thin-client-bootsplash/initramfs-tools/conf.d
+usr/share/univention-thin-client-bootsplash/initramfs-tools/scripts
+usr/share/univention-thin-client-bootsplash/initramfs-tools/hooks

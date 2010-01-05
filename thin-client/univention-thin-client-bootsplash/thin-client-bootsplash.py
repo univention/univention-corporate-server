@@ -65,5 +65,11 @@ res = translate_vga.get(int(vga), "1024x768")
 bootsplashConfig = bootsplashConfig + res + ".cfg"
 if os.path.isfile(thinClientInitrd):
 	shutil.copyfile(thinClientInitrd, "%s.bak" % thinClientInitrd)
-cmd = "splash -s -f %s > %s" % (bootsplashConfig, thinClientInitrd) 	
+
+# create empty initrd, use kernel version from thin client chroot
+cmd = "/usr/share/univention-thin-client-bootsplash/initramfs-tools/thin-client-mkinitramfs -o %s -d /usr/share/univention-thin-client-bootsplash/initramfs-tools `ls /var/lib/univention-client-root/lib/modules/`" % thinClientInitrd
 os.system(cmd)
+
+# append splash
+#cmd = "splash -s -f %s >> %s" % (bootsplashConfig, thinClientInitrd) 	
+#os.system(cmd)
