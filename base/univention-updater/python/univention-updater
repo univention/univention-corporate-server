@@ -275,9 +275,8 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 
 
 	elif mode == 'net':
-		updater = UniventionUpdater()
-
 		try:
+			updater = UniventionUpdater()
 			nextversion = updater.release_update_available()
 		except socket.gaierror, msg:
 			dprint(traceback.format_exc ())

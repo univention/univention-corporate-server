@@ -1,3 +1,9 @@
+univention-updater (5.0.58-1) unstable; urgency=low
+
+  * Throw socket.gaierror instead of 'UniventionUpdater'. (Bug #15205)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 05 Jan 2010 16:02:32 +0100
+
 univention-updater (5.0.57-1) unstable; urgency=low
 
   * Fix regex for broken package status. (Bug #16454)
