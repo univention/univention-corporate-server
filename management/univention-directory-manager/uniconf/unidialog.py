@@ -342,9 +342,10 @@ class unidialog(unimodule.unimodule):
 						<li class="profile">
 					"""]})
 			header_item.append(usermenu)
-			self_button=button(_('Navigation'),{'icon':'/icon/browse.png'},{"helptext":_('Navigation')})
-			header_item.append(self_button)
-			self.mbutlist.append([self_button, 'browse', None])
+			if self.have_browse:
+				self_button=button(_('Navigation'),{'icon':'/icon/browse.png'},{"helptext":_('Navigation')})
+				header_item.append(self_button)
+				self.mbutlist.append([self_button, 'browse', None])
 			usermenu = htmltext ('', {}, \
 				{'htmltext': ["""
 						</li>
