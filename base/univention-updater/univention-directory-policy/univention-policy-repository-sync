@@ -33,7 +33,7 @@ import tempfile
 import univention_baseconfig
 
 # Name of the cron.d file
-CRON_D='/etc/cron.d/univention-maintenance'
+CRON_D='/etc/cron.d/univention-repository-sync'
 
 baseConfig=univention_baseconfig.baseConfig()
 baseConfig.load()
