@@ -1,3 +1,9 @@
+univention-updater (5.0.57-1) unstable; urgency=low
+
+  * Fix regex for broken package status. (Bug #16454)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 05 Jan 2010 13:28:51 +0100
+
 univention-updater (5.0.56-1) unstable; urgency=low
 
   * remove stat overrides for apache and UMC if update fails (Bug #17124)
