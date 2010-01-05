@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.50-1) unstable; urgency=low
+
+  * show navigation link only if policy is set Bug #16958 
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Jan 2010 16:50:11 +0100
+
 univention-directory-manager (7.0.49-1) unstable; urgency=low
 
   * fixed uniconf.po Bug #16538
