@@ -82,6 +82,7 @@ def warning_string(prefix='# ', width=80, srcfiles=[], enforce_ascii=False):
 def filesort(x,y):
 	return cmp(os.path.basename(x), os.path.basename(y))
 
+SCOPE = ['normal', 'ldap', 'schedule', 'forced', 'custom']
 class ConfigRegistry( dict ):
 	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM = range( 5 )
 	PREFIX = '/etc/univention'
@@ -155,10 +156,13 @@ class ConfigRegistry( dict ):
 
 	__iter__ = iterkeys
 
-	def get( self, key, default = None ):
+	def get( self, key, default = None, getscope = False ):
 		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL ):
 			if self._registry[ reg ].has_key( key ):
-				return self._registry[ reg ][ key ]
+				if getscope:
+					return (reg, self._registry[ reg ][ key ])
+				else:
+					return self._registry[ reg ][ key ]
 		
 		return self._registry[ ConfigRegistry.CUSTOM ].get( key, default )
 
@@ -168,7 +172,7 @@ class ConfigRegistry( dict ):
 		else:
 			return self.get( key, None ) != None
 
-	def _merge( self ):
+	def _merge( self, getscope=False ):
 		merge = {}
 		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL,
 					 ConfigRegistry.CUSTOM ):
@@ -176,11 +180,14 @@ class ConfigRegistry( dict ):
 				continue
 			for key in self._registry[ reg ].keys():
 				if not merge.has_key( key ):
-					merge[ key ] = self._registry[ reg ][ key ]
+					if getscope:
+						merge[ key ] = (reg, self._registry[ reg ][ key ])
+					else:
+						merge[ key ] = self._registry[ reg ][ key ]
 		return merge
 
-	def items( self ):
-		merge = self._merge()
+	def items( self, getscope=False ):
+		merge = self._merge(getscope=getscope)
 		return merge.items()
 
 	def keys( self ):
@@ -830,13 +837,17 @@ def handler_set( args, opts = {}, quiet = False ):
 	c = configHandlers()
 	c.load()
 
+	current_scope = ConfigRegistry.NORMAL
 	reg = None
 	if opts.get( 'ldap-policy', False ):
-		reg = ConfigRegistry( write_registry = ConfigRegistry.LDAP )
+ 		current_scope = ConfigRegistry.LDAP
+ 		reg = ConfigRegistry( write_registry = current_scope )
 	elif opts.get( 'force', False ):
-		reg = ConfigRegistry( write_registry = ConfigRegistry.FORCED )
+ 		current_scope = ConfigRegistry.FORCED
+ 		reg = ConfigRegistry( write_registry = current_scope)
 	elif opts.get( 'schedule', False ):
-		reg = ConfigRegistry( write_registry = ConfigRegistry.SCHEDULE )
+ 		current_scope = ConfigRegistry.SCHEDULE
+ 		reg = ConfigRegistry( write_registry = current_scope)
 	else:
 		reg = ConfigRegistry()
 
@@ -866,6 +877,9 @@ def handler_set( args, opts = {}, quiet = False ):
 						print 'Setting '+key
 					else:
 						print 'Create '+key
+					k = reg.get(key, None, getscope=True)
+					if k and k[0] > current_scope:
+						print 'Warning: %s is overridden by scope "%s"' % (key, SCOPE[k[0]])
 				reg[key] = value
 				changed[key] = (old, value)
 			else:
@@ -882,13 +896,17 @@ def handler_set( args, opts = {}, quiet = False ):
 	c( changed.keys(), ( reg, changed ) )
 
 def handler_unset( args, opts = {} ):
+ 	current_scope = ConfigRegistry.NORMAL
 	reg = None
 	if opts.get( 'ldap-policy', False ):
-		reg = ConfigRegistry( write_registry = ConfigRegistry.LDAP )
+ 		current_scope = ConfigRegistry.LDAP
+ 		reg = ConfigRegistry( write_registry = current_scope )
 	elif opts.get( 'force', False ):
-		reg = ConfigRegistry( write_registry = ConfigRegistry.FORCED )
+ 		current_scope = ConfigRegistry.FORCED
+ 		reg = ConfigRegistry( write_registry = current_scope)
 	elif opts.get( 'schedule', False ):
-		reg = ConfigRegistry( write_registry = ConfigRegistry.SCHEDULE )
+ 		current_scope = ConfigRegistry.SCHEDULE
+ 		reg = ConfigRegistry( write_registry = current_scope)
 	else:
 		reg = ConfigRegistry()
 	reg.lock()
@@ -905,6 +923,9 @@ def handler_unset( args, opts = {} ):
 				print 'Unsetting '+arg
 				del reg[arg]
 				changed[arg] = ( oldvalue, '' )
+				k = reg.get(arg, None, getscope=True)
+				if k and k[0] > current_scope:
+					print 'Warning: %s is still set in scope "%s"' % (arg, SCOPE[k[0]])
 			else:
 				print "Warning: The config registry variable '%s' does not exist" % arg
 		reg.save()
@@ -1046,30 +1067,34 @@ def handler_search( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
 
-	if not brief and b.get ('ucr/output/brief', 'no') in ['yes','true','1']:
+ 	show_scope = False
+ 	if b.get('ucr/output/scope', 'no').lower() in ('yes', 'enabled', 'true', '1'):
+ 		show_scope = True
+ 
+	if not brief and b.get ('ucr/output/brief', 'no') in ('yes', 'enabled', 'true', '1'):
 		brief = True
 
 	all_vars = {}
 	for key, var in info.get_variables (category).items ():
-		all_vars [ key ] = ( None, var )
-	for key, value in b.items():
-		var_tuple = all_vars.get ( key )
-		if var_tuple:
-			all_vars [ key ] = ( value, var_tuple[1] )
+		all_vars [ key ] = ( None, var, None )
+ 	for key, scope_value in b.items( getscope = True ):
+ 		var_triple = all_vars.get ( key )
+ 		if var_triple:
+ 			all_vars [ key ] = ( scope_value[1], var_triple[2], scope_value[0] )
 		elif not category:
-			all_vars [ key ] = ( value, None )
+ 			all_vars [ key ] = ( scope_value[1], None, scope_value[0] )
 
-	for key, var_tuple in all_vars.items():
+ 	for key, var_triple in all_vars.items():
 		for reg in regex:
 			if \
 				( search_keys and reg.search ( key ) ) or \
-				( search_values and var_tuple[0] and reg.search ( var_tuple[0] ) ) or \
+ 				( search_values and var_triple[0] and reg.search ( var_triple[0] ) ) or \
 				( search_all and ( \
 				  ( reg.search ( key ) ) or \
-				  ( var_tuple[0] and reg.search ( var_tuple[0] ) ) or \
-				  ( var_tuple[1] and reg.search ( var_tuple[1].get ( 'description', '' ) ) ) ) \
+ 				  ( var_triple[0] and reg.search ( var_triple[0] ) ) or \
+ 				  ( var_triple[1] and reg.search ( var_triple[1].get ( 'description', '' ) ) ) ) \
 				):
-				print_variable_info_string ( key, var_tuple[0], var_tuple[1], brief, non_empty )
+ 				print_variable_info_string ( key, var_triple[0], var_triple[1], var_triple[2], show_scope, brief, non_empty )
 				break
 
 def handler_get( args, opts = {} ):
@@ -1084,7 +1109,7 @@ class UnknownKeyException ( Exception ):
 	def __str__ (self):
 		return repr (self.value)
 
-def print_variable_info_string( key, value, variable_info, brief=False, non_empty=False ):
+def print_variable_info_string( key, value, variable_info, scope=None, show_scope=False, brief=False, non_empty=False ):
 	value_string = None
 	if value == None and not variable_info:
 		raise UnknownKeyException ( 'W: unknown key: "%s"' % key )
@@ -1095,7 +1120,10 @@ def print_variable_info_string( key, value, variable_info, brief=False, non_empt
 	else:
 		value_string = '%s' % value
 
-	key_value = '%s: %s' % (key, value_string)
+	if not show_scope or scope in (None, 0) or scope > len(SCOPE):
+		key_value = '%s: %s' % (key, value_string)
+	else:
+		key_value = '%s (%s): %s' % (key, SCOPE[scope], value_string)
 
 	info_string = None
 	if brief or not variable_info:
