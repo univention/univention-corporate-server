@@ -61,7 +61,7 @@ install: build
 	
 	univention-install-baseconfig
 	
-	#univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-bootsplash/var/lib/univention-client-root/thin-client-archive/bootsplash -p univention-thin-client-bootsplash-config univention-usplash-theme usplash
+	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-bootsplash/var/lib/univention-client-root/thin-client-archive/bootsplash -p univention-thin-client-bootsplash-config univention-usplash-theme usplash
 
 binary-indep: build install
 

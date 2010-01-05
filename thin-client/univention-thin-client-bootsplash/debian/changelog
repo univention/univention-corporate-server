@@ -1,3 +1,9 @@
+univention-thin-client-bootsplash (0.0.4-3) unstable; urgency=low
+
+  * fixed rules file Bug #16290 
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Jan 2010 10:21:18 +0100
+
 univention-thin-client-bootsplash (0.0.4-2) unstable; urgency=low
 
   * merged from customer branch Bug #16290 
