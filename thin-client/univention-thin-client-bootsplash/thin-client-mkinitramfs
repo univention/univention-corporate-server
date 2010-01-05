@@ -1,0 +1,316 @@
+#!/bin/sh
+
+umask 0022
+export PATH='/usr/bin:/sbin:/bin'
+
+# Defaults
+keep="n"
+CONFDIR="/etc/initramfs-tools"
+verbose="n"
+errors_to="2>/dev/null"
+# BUSYBOXDIR="/usr/lib/initramfs-tools/bin/"
+BUSYBOXDIR="/bin"
+
+# UNIVENTION-FORK: for thin clients:
+MODULEBASEDIR="/var/lib/univention-client-root/lib/modules/"
+
+OPTIONS=`getopt -o d:ko:r:v --long supported-host-version:,supported-target-version: -n "$0" -- "$@"`
+
+# Check for non-GNU getopt
+if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
+
+eval set -- "$OPTIONS"
+
+while true; do
+	case "$1" in
+	-d)
+		CONFDIR="$2"
+		shift 2
+		if [ ! -d "${CONFDIR}" ]; then
+			echo "${0}: ${CONFDIR}: Not a directory" >&2
+			exit 1
+		fi
+		;;
+	-o)
+		outfile="$2"
+		shift 2
+		;;
+	-k)
+		keep="y"
+		shift
+		;;
+	-r)
+		ROOT="$2"
+		shift 2
+		;;
+	-v)
+		verbose="y"
+		shift
+		;;
+	--supported-host-version)
+		supported_host_version="$2"
+		shift 2
+		;;
+	--supported-target-version)
+		supported_target_version="$2"
+		shift 2
+		;;
+	--)
+		shift
+		break
+		;;
+	*)
+		echo "Internal error!" >&2
+		exit 1
+		;;
+	esac
+done
+
+# FIXME: remove after Lenny (needed for Etch linux-images)
+if [ -n "$supported_host_version" ] || [ -n "$supported_target_version" ]; then
+	if [ -n "$supported_host_version" ]; then
+		host_upstream_version="${supported_host_version%%-*}"
+	fi
+	if [ -n "$supported_target_version" ]; then
+		target_upstream_version="${supported_target_version%%-*}"
+		if dpkg --compare-versions "$target_upstream_version" lt "2.6.12"; then
+			exit 2
+		fi
+	fi
+	echo "Depreciation warning: use ramdisk=mkinitramfs-kpkg."
+	exit 0
+fi
+
+# For dependency ordered mkinitramfs hook scripts.
+. /usr/share/initramfs-tools/scripts/functions
+. /usr/share/initramfs-tools/hook-functions
+
+. "${CONFDIR}/initramfs.conf"
+EXTRA_CONF=''
+# UNIVENTION-FORK: don't use global hooks for thin clients
+# for i in /usr/share/initramfs-tools/conf.d/* ${CONFDIR}/conf.d/*; do
+for i in ${CONFDIR}/conf.d/*; do
+	EXTRA_CONF="${EXTRA_CONF} $(basename $i \
+		| grep '^[[:alnum:]][[:alnum:]\._-]*$' | grep -v '\.dpkg-.*$')";
+done
+# FIXME: deprecated those settings on mkinitramfs run
+#        these conf dirs are for boot scripts and land on initramfs
+for i in ${EXTRA_CONF}; do
+	if [ -e  ${CONFDIR}/conf.d/${i} ]; then
+		. ${CONFDIR}/conf.d/${i}
+	# UNIVENTION-FORK: don't use for thin clients
+	#elif [ -e  /usr/share/initramfs-tools/conf.d/${i} ]; then
+	#	. /usr/share/initramfs-tools/conf.d/${i}
+	fi
+done
+
+# source package confs
+# UNIVENTION-FORK: don't use for thin clients
+#for i in /usr/share/initramfs-tools/conf-hooks.d/*; do
+#	if [ -e "${i}" ]; then
+#		. "${i}"
+#	fi
+#done
+
+if [ -n "${UMASK}" ]; then
+	umask "${UMASK}"
+fi
+
+if [ -z "${outfile}" ]; then
+	usage
+fi
+
+touch "$outfile"
+outfile="$(readlink -f "$outfile")"
+
+# And by "version" we really mean path to kernel modules
+# This is braindead, and exists to preserve the interface with mkinitrd
+if [ ${#} -ne 1 ]; then
+	version="$(uname -r)"
+else
+	version="${1}"
+fi
+
+# Check that we're using a new enough kernel version, first for ourselves,
+# then for each of the hooks, which can have a MINKVER variable defined
+# UNIVENTION-FORK: don't use global hooks for thin clients
+# check_minkver ${version}
+# check_minkver ${version} /usr/share/initramfs-tools/hooks
+# check_minkver ${version} ${CONFDIR}/hooks
+
+case "${version}" in
+"$MODULEBASEDIR"*/[!/]*)
+	;;
+"$MODULEBASEDIR"[!/]*)
+	version="${version#"$MODULEBASEDIR"}"
+	version="${version%%/*}"
+	;;
+esac
+
+case "${version}" in
+*/*)
+	echo "$PROG: ${version} is not a valid kernel version" >&2
+	exit 1
+	;;
+esac
+
+if [ -d "${outfile}" ]; then
+	echo "${outfile} is a directory"
+	exit 1
+fi
+
+MODULESDIR=""$MODULEBASEDIR"${version}"
+
+if [ ! -e "${MODULESDIR}" ]; then
+	echo "Cannot find ${MODULESDIR}"
+	exit 1
+fi
+if [ ! -e "${MODULESDIR}/modules.dep" ]; then
+	depmod ${version}
+fi
+
+DESTDIR="$(mktemp -t -d mkinitramfs_XXXXXX)" || exit 1
+__TMPCPIOGZ="$(mktemp -t mkinitramfs-OL_XXXXXX)" || exit 1
+
+DPKG_ARCH=`dpkg --print-installation-architecture`
+
+# Export environment for hook scripts.
+#
+export MODULESDIR
+export version
+export CONFDIR
+export DESTDIR
+export DPKG_ARCH
+export verbose
+export KEYMAP
+export MODULES
+
+# Private, used by 'catenate_cpiogz'.
+export __TMPCPIOGZ
+
+for d in bin conf/conf.d etc lib/modules sbin scripts ${MODULESDIR}; do
+	mkdir -p "${DESTDIR}/${d}"
+done
+
+# MODULES=list case.  Always honour.
+# UNIVENTION-FORK: don't use global hooks for thin clients
+for x in "${CONFDIR}/modules" /usr/share/initramfs-tools/modules.d/*; do
+	if [ -f "${x}" ]; then
+		add_modules_from_file "${x}"
+	fi
+done
+
+# MODULES=most is default
+case "${MODULES}" in
+dep)
+	dep_add_modules
+	;;
+most)
+	auto_add_modules
+	;;
+netboot)
+	auto_add_modules base
+	auto_add_modules net
+	;;
+list)
+	# nothing to add
+	;;
+*)
+	echo "mkinitramfs: Warning unsupported MODULES setting: ${MODULES}."
+	echo "mkinitramfs: Falling back to MODULES=most."
+	auto_add_modules
+	;;
+esac
+
+# Have to do each file, because cpio --dereference doesn't recurse down
+# symlinks.
+
+# klibc
+ln -s /usr/lib/klibc/bin/* ${DESTDIR}/bin
+ln -s /lib/klibc-*.so ${DESTDIR}/lib
+rm -f ${DESTDIR}/bin/kinit* ${DESTDIR}/bin/gzip
+
+copy_exec /usr/share/initramfs-tools/init /init
+
+# add existant boot scripts
+for b in $(cd /usr/share/initramfs-tools/scripts/ && find . \
+	-regextype posix-extended -regex '.*/[[:alnum:]_]+$' -type f); do
+	[ -d "${DESTDIR}/scripts/$(dirname "${b}")" ] \
+		|| mkdir -p "${DESTDIR}/scripts/$(dirname "${b}")"
+	cp -p "/usr/share/initramfs-tools/scripts/${b}" \
+		"${DESTDIR}/scripts/$(dirname "${b}")/"
+done
+for b in $(cd "${CONFDIR}/scripts" && find . \
+	-regextype posix-extended -regex '.*/[[:alnum:]_]+$' -type f); do
+	[ -d "${DESTDIR}/scripts/$(dirname "${b}")" ] \
+		|| mkdir -p "${DESTDIR}/scripts/$(dirname "${b}")"
+	cp -p "${CONFDIR}/scripts/${b}" "${DESTDIR}/scripts/$(dirname "${b}")/"
+done
+
+echo "DPKG_ARCH=${DPKG_ARCH}" > ${DESTDIR}/conf/arch.conf
+copy_exec "${CONFDIR}/initramfs.conf" /conf
+for i in ${EXTRA_CONF}; do
+	if [ -e "${CONFDIR}/conf.d/${i}" ]; then
+		copy_exec "${CONFDIR}/conf.d/${i}" /conf/conf.d
+	elif [ -e "/usr/share/initramfs-tools/conf.d/${i}" ]; then
+		copy_exec "/usr/share/initramfs-tools/conf.d/${i}" /conf/conf.d
+	fi
+done
+
+# ROOT hardcoding
+if [ -n "${ROOT}" ]; then
+	echo "ROOT=${ROOT}" > ${DESTDIR}/conf/conf.d/root
+fi
+
+# Busybox
+if [ "${BUSYBOX}" = "n" ] || [ ! -e ${BUSYBOXDIR}/busybox ]; then
+	mv ${DESTDIR}/bin/sh.shared ${DESTDIR}/bin/sh
+	# those root need busybox
+	eval "$(mount | awk '/ \/ / {print "r_dev=" $1; exit}')"
+	if [ "${r_dev#/dev/mapper/}" != "${r_dev}" ]; then
+		echo "Warning: Busybox is required for successful boot!"
+	fi
+else
+	rm -f ${DESTDIR}/bin/sh
+	rm -f ${DESTDIR}/bin/busybox
+	copy_exec ${BUSYBOXDIR}/busybox /bin/busybox
+	ln -s ${BUSYBOXDIR}/busybox ${DESTDIR}/bin/sh
+	echo "" >> ${DESTDIR}/etc/busybox.conf
+fi
+
+# Modutils
+copy_exec /sbin/modprobe /sbin
+copy_exec /sbin/depmod /sbin
+copy_exec /sbin/rmmod /sbin
+mkdir -p "${DESTDIR}/etc/modprobe.d"
+cp -a /etc/modprobe.d/* "${DESTDIR}/etc/modprobe.d/"
+
+# workaround: libgcc always needed on old-abi arm
+if [ "$DPKG_ARCH" = arm ] || [ "$DPKG_ARCH" = armeb ]; then
+	cp -a /lib/libgcc_s.so.1 "${DESTDIR}/lib/"
+fi
+
+# UNIVENTION-FORK: don't use global hooks for thin clients
+# run_scripts /usr/share/initramfs-tools/hooks
+run_scripts "${CONFDIR}"/hooks
+
+# Apply DSDT to initramfs
+if [ -e "${CONFDIR}/DSDT.aml" ]; then
+	copy_exec "${CONFDIR}/DSDT.aml" /
+fi
+
+[ "${verbose}" = y ] && echo "Building cpio ${outfile} initramfs"
+(cd "${DESTDIR}" && find . | cpio --quiet --dereference -o -H newc | gzip >"${outfile}") || exit 1
+
+if [ -s "${__TMPCPIOGZ}" ]; then
+	cat "${__TMPCPIOGZ}" >>"${outfile}" || exit 1
+fi
+
+if [ "${keep}" = "y" ]; then
+	echo "Working files in ${DESTDIR} and overlay in ${__TMPCPIOGZ}"
+else
+	rm -rf "${DESTDIR}"
+	rm -rf "${__TMPCPIOGZ}"
+fi
+
+exit 0

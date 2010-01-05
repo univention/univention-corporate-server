@@ -1,0 +1,31 @@
+#!/bin/sh
+
+PREREQ="kernelextras"
+
+prereqs()
+{
+	echo "$PREREQ"
+}
+
+case $1 in
+prereqs)
+	prereqs
+	exit 0
+	;;
+esac
+
+[ -x /sbin/usplash ] || exit 0
+
+. /usr/share/initramfs-tools/hook-functions
+
+mkdir -p ${DESTDIR}/usr/lib/usplash
+
+copy_exec /sbin/usplash /sbin
+copy_exec /sbin/usplash_write /sbin
+if [ -f /etc/usplash.conf ]; then
+	copy_exec /etc/usplash.conf /etc
+fi
+
+if [ -f /usr/lib/usplash/usplash-artwork.so ]; then
+    copy_exec /usr/lib/usplash/usplash-artwork.so /usr/lib/usplash
+fi
