@@ -601,12 +601,15 @@ if __name__ == '__main__':
 		main()
 	except UpdateError:
 		os.system('touch %s' % failure)
-		# set executable flags for apach und UMC
+		# set executable flags for apache and UMC
+		devnull = open( '/dev/null', 'w' )
 		for prog in ( 'apache2', 'univention-management-console-server' ):
 			filename = os.path.join( '/usr/sbin/', prog )
 			if os.path.isfile( filename ):
 				os.chmod( filename, 0755 )
+				subprocess.call( ( 'dpkg-statoverride', '--remove', filename ), stdout = devnull, stderr = devnull )
 		remove_temporary_sources_list()
+		devnull.close()
 		sys.exit(1)
 	except UpToDateNoError, error:
 		if os.path.exists(failure):
