@@ -755,19 +755,28 @@ class configHandlers:
 
 	def commit(self, bc, filelist=[]):
 
+		_filelist = []
+		if filelist:
+			cwd = os.getcwd()
+			for _f in filelist:
+				_f = os.path.normpath(os.path.expandvars(os.path.expanduser(os.path.normpath(_f))))
+				if _f.startswith('/'):
+					_filelist.append(_f)
+				else:
+					_filelist.append(os.path.normpath(os.path.join(cwd, _f)))
 		objects = []
 		for file in directoryFiles(info_dir):
 			for s in parseRfc822(open(file).read()):
 				if not s.has_key('Type'):
 					continue
 				object = None
-				if filelist:
+				if _filelist:
 					if s.has_key('File'):
 						object = None
 						for f in s['File']:
 							if f[0] != '/':
 								f = '/'+f
-							if f in filelist:
+							if f in _filelist:
 								object = self.getHandler(s)
 								break
 						if not object:
@@ -777,7 +786,7 @@ class configHandlers:
 						for f in s['Multifile']:
 							if f[0] != '/':
 								f = '/'+f
-							if f in filelist:
+							if f in _filelist:
 								object = self.getHandler(s)
 								break
 						if not object:
