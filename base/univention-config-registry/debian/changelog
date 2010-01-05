@@ -1,3 +1,9 @@
+univention-config-registry (5.0.66-1) unstable; urgency=low
+
+  * commit now supports relative path names for configuration files (Bug #17201)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 05 Jan 2010 10:05:17 +0100
+
 univention-config-registry (5.0.65-1) unstable; urgency=low
 
   * when generating shell output the brief mode will be set (Bug #16711)
