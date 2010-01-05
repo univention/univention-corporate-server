@@ -173,7 +173,7 @@ fi
 
 
 echo "Checking for the package status"
-dpkg -l 2>&1 | grep "^[a-z]*[A-Z]" >>"$UPDATER_LOG" 2>&1
+dpkg -l 2>&1 | grep "^[a-zA-Z][A-Z] " >>"$UPDATER_LOG" 2>&1
 if [ $? = 0 ]; then
 	echo "ERROR: The package state on this system is inconsistent."
 	echo "       Please run 'dpkg --configure -a' manually"
