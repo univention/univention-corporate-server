@@ -101,24 +101,13 @@ class UniventionUpdater:
 		self.proxy_server = None
 		self.proxy_port = None
 
-		self.configRegistry=univention.config_registry.ConfigRegistry()
-		self.configRegistry.load()
-
-		# check availability of the repository server
-		self.nameserver_available=False
-		try:
-			socket.gethostbyname(self.configRegistry.get('repository/online/server', 'apt.univention.de'))
-			self.nameserver_available=True
-		except:
-			pass
-
 		self.ucr_reinit()
 
 	def open_connection(self, server=None, port=None):
 		'''Open http-connection to server:port'''
 
 		if not self.nameserver_available:
-			raise 'UniventionUpdater', 'The repository server %s could not be reached.' % (self.configRegistry.get('repository/online/server', 'apt.univention.de'))
+			raise socket.gaierror, (socket.EAI_NONAME, 'The repository server %s could not be resolved.' % server)
 
 		if self.proxy and self.proxy != '':
 			if server:
@@ -208,13 +197,19 @@ class UniventionUpdater:
 		# should hotfixes be used
 		self.hotfixes = self.configRegistry.get( 'repository/online/hotfixes', 'no' ).lower() in ( 'true', 'yes' )
 
+		# check availability of the repository server
+		try:
+			socket.gethostbyname(self.repository_server)
+			self.nameserver_available=True
+		except socket.gaierror:
+			self.nameserver_available=False
+
 		# check for prefix on repository server (if the repository server is reachable)
 		try:
 			if not self.repository_prefix and self.net_path_exists( '/univention-repository/' ):
 				self.repository_prefix = 'univention-repository'
 		except:
 			self.repository_prefix = ''
-			pass
 
 	def net_path_exists (self, path, server='', port='', prefix='', username='', password='', debug=False):
 		# path MUST NOT contain the schema and hostname
