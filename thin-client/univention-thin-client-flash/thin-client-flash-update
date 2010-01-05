@@ -33,7 +33,7 @@ log_action_msg "Installing new Thin Client base system on flash, this may take a
 
 FLAGNFSBOOT=`univention-thin-client-detect-nfsboot`
 
-eval $(univention-config-registry shell thinclient/flash/update thinclient/flash/update/url thinclient/flash/update/image univentionDesktopServer interfaces/eth0/address hostname domainname)
+eval $(univention-config-registry shell thinclient/flash/update thinclient/flash/update/disk thinclient/flash/update/url thinclient/flash/update/image univentionDesktopServer interfaces/eth0/address hostname domainname)
 
 if [ -z "$thinclient_flash_update" ] || [ -n "$thinclient_flash_update" -a "$thinclient_flash_update" = "no" ]; then
 	echo "The UCR variable thinclient/flash/update is not set or is set to no."
@@ -66,10 +66,14 @@ else
 fi
 
 # Find flashdrive
-echo -n "  search for flash disk drive ... "
-disk=""
-parts=$(sed -n '1,2d;p' < /proc/partitions | awk '{print $4;}' | grep "^[^0-9]*$")
-for i in $parts ; do
+if [ "$thinclient_flash_update_disk" ];
+    then
+    disk="$thinclient_flash_update_disk"
+else
+    echo -n "  search for flash disk drive ... "
+    disk=""
+    parts=$(sed -n '1,2d;p' < /proc/partitions | awk '{print $4;}' | grep "^[^0-9]*$")
+    for i in $parts ; do
 	if [ -n "$disk" ]; then
 		# echo "verbose" > /proc/splash
 		echo "failed"
@@ -79,7 +83,8 @@ for i in $parts ; do
 	fi
 	disk="/dev/$i"
 	echo $disk
-done
+    done
+fi
 
 if [ -z "$disk" ]; then
 	# echo "verbose" > /proc/splash
@@ -106,10 +111,10 @@ if [ "$version" = "0" ]; then
 	umount /mnt || true
 	trap - 0
 	echo -n "	partioning the drive ..."
-	# first partition: 10 MB, type 4 (FAT16 < 32MB), bootable
+	# first partition: 16 MB, type 4 (FAT16 < 32MB), bootable
 	# second partition: rest, type Linux
 	sfdisk -uM -D $disk <<EOF >/dev/null 2>/dev/null
-,10,L,*
+,16,L,*
 ,,L
 EOF
 	echo "done"
