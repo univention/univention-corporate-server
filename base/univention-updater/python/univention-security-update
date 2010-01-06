@@ -3,7 +3,7 @@
 # Univention Updater
 #  security update
 #
-# Copyright (C) 2004-2009 Univention GmbH
+# Copyright (C) 2004-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,14 +41,12 @@ import univention.updater
 
 updater = univention.updater.UniventionUpdater()
 
-def dprint(str, fd=[], toStdout=False):
-	""" print message to multiple destinations, optionally to std-out """
+def dprint(str, fd=[]):
+	""" print message to multiple destinations or stdout """
 	if len(fd) < 1:
 		print str
 	for f in fd:
 		print >>f, str
-	if toStdout and not extra_silent:
-		print >>real_stdout, str
 
 def add_temporary_sources_list ( debline ):
 	filename = '/etc/apt/sources.list.d/00_ucs_temporary_security_update.list'
@@ -66,31 +64,44 @@ def usage(fd=sys.stdout):
 	print >> fd, 'copyright (c) 2004-2010 Univention GmbH, Germany'
 	print >> fd, ''
 	print >> fd, 'Syntax:'
-	print >> fd, '  univention-security-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate]'
+	print >> fd, '  univention-security-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate] [--check]'
 	print >> fd, '  univention-security-update [--help] '
 	print >> fd, ''
 
+def checkForUpdate(command):
+	""" Check for availability of security updates """
+	if command == 'local':
+		configRegistry = ucr.ConfigRegistry()
+		configRegistry.load()
+		repo_path = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
+		next_security_version = "sec%d" % (int(updater.security_patchlevel) + 1)
+		for part in updater.parts:
+			if os.path.exists(os.path.join(repo_path, 'mirror', updater.ucs_version, part, next_security_version)):
+					return True
+	elif command == 'net':
+		try:
+			if updater.security_update_available():
+				return True
+		except socket.gaierror:
+			pass
+	return False
 
 if __name__ == '__main__':
 	# parse options
 
 	fp_debug=open('/var/log/univention/security-updates.log', 'a+')
-	stdout=sys.stdout
-	real_stdout = sys.stdout
-	sys.stdout=fp_debug
 	call_upgrade=True
-
 	file=''
 
-	dprint('***** Starting univention-security-update at %s\n' % time.ctime())
+	dprint( '***** Starting univention-security-update at %s\n' % time.ctime(), [fp_debug] )
 
 	if len(sys.argv) < 2:
-		usage(stdout)
+		usage(sys.stderr)
 		fp_debug.close()
 		sys.exit(1)
 
 	if sys.argv[1] in ['-h', '-?', '--help']:
-		usage(stdout)
+		usage(sys.stdout)
 		fp_debug.close()
 		sys.exit(0)
 
@@ -99,33 +110,38 @@ if __name__ == '__main__':
 	elif sys.argv[1] == 'local':
 		command = 'local'
 	else:
-		usage(stdout)
+		usage(sys.stderr)
 		fp_debug.close()
 		sys.exit(1)
 
-	longopts=['file=', 'silent', 'noupdate' ]
+	longopts=['file=', 'silent', 'noupdate', 'check' ]
 	try:
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
-		usage(stdout)
+		usage(sys.stderr)
 		fp_debug.close()
 		sys.exit(1)
 	for opt, val in opts:
 		if opt == '--file':
 			file=val
 			if command=='net':
-				dprint("Parameter \"--file\" only valid when running locally.")
+				dprint( "Parameter \"--file\" only valid when running locally.", [fp_debug,sys.stderr] )
 				fp_debug.close()
 				sys.exit(1)
 			if not val:
-				dprint("Parameter \"--file\" needs an argument.")
+				dprint( "Parameter \"--file\" needs an argument.", [fp_debug,sys.stderr] )
 				fp_debug.close()
 				sys.exit(1)
 			file = os.path.abspath( file )
 		if opt == '--silent':
-			extra_silent=True
+			sys.stdout = open('/dev/null', 'w+')
 		if opt == '--noupdate':
 			call_upgrade=False
+		elif opt == '--check':
+			if checkForUpdate(command):
+				sys.exit(1)	# reversed: 1=update available
+			else:
+				sys.exit(0)	# reversed: 0=no updates
 
 	configRegistry = ucr.ConfigRegistry()
 	configRegistry.load()
@@ -136,27 +152,27 @@ if __name__ == '__main__':
 		local_repository = True
 		# if there is no _new_ repository server -> exit
 		if configRegistry.has_key( 'repository/local/old' ):
-			dprint( 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0', [ stdout, sys.stdout ] )
+			dprint( 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0', [fp_debug,sys.stderr] )
 			sys.exit( 1 )
 
 		# ... via mirror synchronsiation
 		if command == 'net':
-			dprint( 'Update local repository server ...', [ sys.stdout, stdout ] )
-			ret = subprocess.call( [ 'univention-repository-update', 'net', '--security-only' ] )
+			dprint( 'Update local repository server ...', [fp_debug] )
+			ret = subprocess.call( ['univention-repository-update', 'net', '--security-only'], stdout=fp_debug, stderr=fp_debug )
 			if ret:
-				dprint( 'Error: Update of local repository server failed', [ sys.stdout, stdout ] )
+				dprint( 'Error: Update of local repository server failed', [fp_debug,sys.stderr] )
 				sys.exit( 1 )
 		# ... via tar archive
 		elif command == 'local' and file:
 			repo_path = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
-			ret = subprocess.call( [ 'tar','xzf', file ], cwd = os.path.join( repo_path, 'mirror' ) )
+			ret = subprocess.call( ['tar','xzf', file], cwd=os.path.join(repo_path, 'mirror'), stdout=fp_debug, stderr=fp_debug )
 			if ret:
-				dprint( 'Error: Failed to extract security update archive.' )
+				dprint( 'Error: Failed to extract security update archive.', [fp_debug,sys.stderr] )
 				sys.exit( 1 )
 
 	# without a local repository the local mode is not supported
 	elif command == 'local':
-		dprint( 'Error: The local mode can just be used on repository servers', [ sys.stdout, stdout ] )
+		dprint( 'Error: The local mode can just be used on repository servers', [fp_debug,sys.stderr] )
 		sys.exit( 1 )
 
 	# install security updates
@@ -165,22 +181,22 @@ if __name__ == '__main__':
 
 	filename = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
 	if os.path.exists(filename):
-		dprint('Warning: Found `%s`\nfrom incomplete univention-updater run. Deleted.' % (filename), [sys.stdout, stdout])
+		dprint( 'Warning: Found `%s`\nfrom incomplete univention-updater run. Deleted.' % (filename), [fp_debug,sys.stdout] )
 		os.remove(filename)
 
-	upgraded = False
+	upgraded = None
 	while True:
 		try:
 			nextupdate = updater.security_update_available()
 		except socket.gaierror, msg:
-			dprint(traceback.format_exc ())
+			dprint(traceback.format_exc(), [fp_debug])
 
 			code, message = msg
 
 			if code == socket.EAI_NONAME:
-				dprint('Error: The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a diffrent value.' % (updater.repository_server), [ sys.stdout, stdout ])
+				dprint( 'Error: The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a diffrent value.' % (updater.repository_server), [fp_debug,sys.stderr] )
 			else:
-				dprint('Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile /var/log/univention/security-updates.log' % (updater.repository_server), [ sys.stdout, stdout ])
+				dprint( 'Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile /var/log/univention/security-updates.log' % (updater.repository_server), [fp_debug,sys.stderr] )
 
 			sys.exit( 1 )
 
@@ -189,7 +205,7 @@ if __name__ == '__main__':
 			break
 
 		if nextupdate:
-			dprint('Update to Security Update %s-%s' % (updater.ucs_version, nextupdate), [sys.stdout,stdout])
+			dprint( 'Update to Security Update %s-%s' % (updater.ucs_version, nextupdate), [fp_debug,sys.stdout] )
 
 			remove_temporary_sources_list()
 			sources_list_entries = updater.security_update_temporary_sources_list()
@@ -202,7 +218,6 @@ if __name__ == '__main__':
 					while os.path.exists('/var/run/apt-get.lock') and count < 300:
 						time.sleep(1)
 						count=count+1
-					logfile = open( '/var/log/univention/security-updates.log', 'a' )
 					# create lock file
 					try:
 						fd = open( '/var/run/apt-get.lock', 'w' )
@@ -210,14 +225,14 @@ if __name__ == '__main__':
 						pass
 					fd.close()
 					# update indices
-					ret = subprocess.call( cmd_update.split( ' ' ), stdout = logfile, stderr = logfile )
+					ret = subprocess.call( cmd_update.split( ' ' ), stdout=fp_debug, stderr=fp_debug )
 					if ret:
-						dprint( 'Error: Failed to update APT indices', [ sys.stdout, stdout ] )
+						dprint( 'Error: Failed to update APT indices', [fp_debug,sys.stderr] )
 					else:
 						os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
-						ret = subprocess.call( cmd_dist_upgrade.split( ' ' ), stdout = logfile, stderr = logfile )
+						ret = subprocess.call( cmd_dist_upgrade.split( ' ' ), stdout=fp_debug, stderr=fp_debug )
 						if ret:
-							dprint( 'Error: Failed to upgrade packages', [ sys.stdout, stdout ] )
+							dprint( 'Error: Failed to upgrade packages', [fp_debug,sys.stderr] )
 
 					remove_temporary_sources_list()
 					if os.path.exists('/var/run/apt-get.lock'):
@@ -227,5 +242,5 @@ if __name__ == '__main__':
 			updater.ucr_reinit()
 		else:
 			if not upgraded:
-				dprint('No Security Update available!', [sys.stdout,stdout])
+				dprint( 'No Security Update available!', [fp_debug,sys.stdout] )
 			break
