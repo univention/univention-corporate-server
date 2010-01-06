@@ -1,3 +1,10 @@
+univention-updater (5.0.59-2) unstable; urgency=low
+
+  * Integrate univention-security-update into maintenance. (Bug #16282)
+  * Fix wrong spellings of 'univention' in debian/changelog.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2010 17:33:23 +0100
+
 univention-updater (5.0.59-1) unstable; urgency=low
 
   * Fix name of cron-file, introduces by Bug #16643.
@@ -263,7 +270,7 @@ univention-updater (5.0.29-1) unstable; urgency=low
 
 univention-updater (5.0.28-1) unstable; urgency=low
 
-  * use hardcoded values for unmaintained sources.list entries (Bug: #16331) 
+  * use hardcoded values for unmaintained sources.list entries (Bug: #16331)
 
  -- Sönke Schwardt <schwardt@univention.de>  Fri, 13 Nov 2009 09:37:21 +0100
 
@@ -296,7 +303,7 @@ univention-updater (5.0.23-1) unstable; urgency=low
   * add "unmaintained" sources to temporary sources.list file if
     repository/online/unmaintained=yes to prevent update issues.
   	This is also done in current version of preup.sh and can be removed
-    after UCS 2.3-0 (Bug: #16331) 
+    after UCS 2.3-0 (Bug: #16331)
 
  -- Sönke Schwardt <schwardt@univention.de>  Thu, 12 Nov 2009 12:06:07 +0100
 
@@ -308,7 +315,7 @@ univention-updater (5.0.22-1) unstable; urgency=low
 
 univention-updater (5.0.21-2) unstable; urgency=low
 
-  * deinstall python2.4-dns in preup.sh because it conflicts with python-dns (Bug: #16313) 
+  * deinstall python2.4-dns in preup.sh because it conflicts with python-dns (Bug: #16313)
 
  -- Felix Botner <botner@univention.de>  Wed, 11 Nov 2009 15:09:17 +0100
 
@@ -780,7 +787,7 @@ univention-updater (4.0.40-1) unstable; urgency=low
 univention-updater (4.0.39-1) unstable; urgency=low
 
   * fixed a bug in univention-updater that occured on systems with a local
-    repository when running 'univenton-updater cdrom' (Bug #12511)
+    repository when running 'univention-updater cdrom' (Bug #12511)
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 12 Mar 2009 10:43:04 +0100
 
@@ -1399,7 +1406,7 @@ univention-updater (2.3.16-1) unstable; urgency=low
 univention-updater (2.3.15-1) unstable; urgency=low
 
   * be sure univention-ooffice2 is installed after the upgrade if
-    univnetion-ooffice was installed
+    univention-ooffice was installed
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat,  8 Dec 2007 17:09:51 +0100
 
@@ -2003,7 +2010,7 @@ univention-updater (1.34) unstable; urgency=low
 
 univention-updater (1.33) unstable; urgency=low
 
-  * refuse to run unviention-actualise after univention-updater failed.
+  * refuse to run univention-actualise after univention-updater failed.
 
  -- Martin Kuehl <kuehl@univention.de>  Wed, 15 Feb 2006 12:53:53 +0100
 

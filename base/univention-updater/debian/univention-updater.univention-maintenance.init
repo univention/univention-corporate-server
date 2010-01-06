@@ -29,6 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 . /lib/lsb/init-functions
+LOG="/var/log/univention/updater.log"
 
 case "$1" in
 	start|restart|stop)
@@ -103,20 +104,25 @@ case "$1" in
 			echo -e "$warning_message" > "$ttyname"
 		}
 
-		if [ -n "$local_repository" ] && [ "$local_repository" = "yes" -o "$local_repository" = "true" ]; then
+		if [ "$local_repository" = "yes" -o "$local_repository" = "true" ]; then
+			mode="local"
 			/usr/sbin/univention-updater local --check >/dev/null 2>&1
 			upd_local=$?
+			/usr/sbin/univention-security-update local --check >/dev/null 2>&1
+			sec_local=$?
 		else
+			mode="net"
 			upd_local=0
+			sec_local=0
 		fi
 		/usr/sbin/univention-updater net --check >/dev/null 2>&1
 		upd_net=$?
+		/usr/sbin/univention-security-update net --check >/dev/null 2>&1
+		sec_net=$?
 		/usr/sbin/univention-actualise --silent --check >/dev/null 2>&1
 		actualise=$?
 
-		if [ $upd_local = 1 -o $upd_net = 1 -o $actualise = 1 ]; then
-			continue
-		else
+		if [ "$upd_local$sec_local$upd_net$sec_net$actualise" = 00000 ]; then
 			if echo $update_warning_coloured | egrep -i 'yes|true' >/dev/null 2>&1; then
 				echo -e "\033[32;1mNothing to do for Univention Updater.\033[0m"
 			else
@@ -155,42 +161,35 @@ case "$1" in
 
 		log_action_msg "Starting Univention Updater"
 
-		if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
-			if [ "$1" = "stop" ]; then
-				start=`univention_policy_result -s "$ldap_hostdn" 2>$1 | grep univentionInstallationShutdown | sed -e 's|^ *||g;s|univentionInstallationShutdown=||;s|"||g'`
-			else
-				start=`univention_policy_result -s "$ldap_hostdn" 2>$1 | grep univentionInstallationStartup | sed -e 's|^ *||g;s|univentionInstallationStartup=||;s|"||g'`
-			fi
-			updateto=`univention_policy_result -s "$ldap_hostdn" 2>$1 | grep univentionUpdateVersion | sed -e 's|^ *||g;s|univentionUpdateVersion=||;s|"||g'`
-			updateactive=`univention_policy_result -s "$ldap_hostdn" 2>$1 | grep univentionUpdateActivate | sed -e 's|^ *||g;s|univentionUpdateActivate=||;s|"||g'`
-			if [ -n "$start" -a "$start" = "1" ]; then
-				if [ -n "$local_repository" ] && [ "$local_repository" = "yes" -o "$local_repository" = "true" ]; then
-					if [ -n "$updateto" ] && [ "$updateactive" = "TRUE" ]; then
-						echo -n "  updater [$updateto] "
-						/usr/sbin/univention-updater local --updateto $updateto >>/var/log/univention/updater.log 2>&1
-					elif [ "$updateactive" = "TRUE" ]; then
-						echo -n "  updater "
-						/usr/sbin/univention-updater local >>/var/log/univention/updater.log 2>&1
-					fi
-				else
-					if [ -n "$repository_online_server" ]; then
-						ping -c 1 $repository_online_server >/dev/null 2>&1
-						if [ $? != 0 ]; then
+		if /bin/netcat -q0 -w4 "$ldap_server_name" 389 </dev/null >/dev/null 2>&1; then
+			eval `univention_policy_result -s "$ldap_hostdn"`
+			if [ "$1" = stop -a "$univentionInstallationShutdown" = 1 -o "$univentionInstallationStartup" = 1 ]
+			then
+				if [ "$univentionUpdateActivate" = "TRUE" ]
+			   	then
+					if [ "$mode" = net -a -n "$repository_online_server" ]
+					then
+						if ! ping -c 1 "$repository_online_server" >/dev/null 2>&1
+						then
 							echo -n "  repository/online/server not available"
 							exit 1
 						fi
 					fi
-					if [ -n "$updateto" ] && [ "$updateactive" = "TRUE" ]; then
-						echo -n "  updater [$updateto] "
-						/usr/sbin/univention-updater net --updateto $updateto >>/var/log/univention/updater.log 2>&1
-					elif [ "$updateactive" = "TRUE" ]; then
+					if [ -n "$univentionUpdateVersion" ]
+					then
+						echo -n "  updater [$univentionUpdateVersion] "
+						/usr/sbin/univention-updater "$mode" --updateto "$univentionUpdateVersion" >>"$LOG" 2>&1
+					else
 						echo -n "  updater "
-						/usr/sbin/univention-updater net >>/var/log/univention/updater.log 2>&1
+						/usr/sbin/univention-updater "$mode" >>"$LOG" 2>&1
 					fi
 				fi
 
 				echo -n "  actualise "
-				/usr/sbin/univention-actualise --silent >>/var/log/univention/updater.log 2>&1
+				/usr/sbin/univention-actualise --silent >>"$LOG" 2>&1
+				echo -n "  security-update "
+				/usr/sbin/univention-security-update "$mode" --silent >>"$LOG" 2>&1
+				echo
 			fi
 		fi
 
