@@ -1,3 +1,9 @@
+univention-kolab2-webclient (5.0.3-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:44:24 +0100
+
 univention-kolab2-webclient (5.0.2-3) unstable; urgency=low
 
   * bump version (Bug #16787)
