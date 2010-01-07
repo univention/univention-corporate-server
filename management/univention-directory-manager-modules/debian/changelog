@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.51-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:18:57 +0100
+
 univention-directory-manager-modules (5.0.50-1) unstable; urgency=low
 
   * removed dhcp/pool and dhcp/sharedsubnet from list of objects that can
