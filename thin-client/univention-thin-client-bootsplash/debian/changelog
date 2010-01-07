@@ -1,3 +1,9 @@
+univention-thin-client-bootsplash (0.0.5-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 15:33:43 +0100
+
 univention-thin-client-bootsplash (0.0.4-3) unstable; urgency=low
 
   * fixed rules file Bug #16290 
