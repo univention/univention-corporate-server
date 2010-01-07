@@ -1,3 +1,9 @@
+univention-dojo (3.0.6-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:28:55 +0100
+
 univention-dojo (3.0.5-1) unstable; urgency=low
 
   * update to dojo 1.4.0 (Bug #16767)
