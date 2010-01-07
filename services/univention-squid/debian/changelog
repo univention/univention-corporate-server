@@ -1,3 +1,9 @@
+univention-squid (3.0.7-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 15:24:17 +0100
+
 univention-squid (3.0.6-1) unstable; urgency=low
 
   * register UCR variable squid/cache; Bug #16636
