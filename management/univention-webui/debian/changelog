@@ -1,3 +1,9 @@
+univention-webui (3.0.30-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 15:51:31 +0100
+
 univention-webui (3.0.29-2) unstable; urgency=low
 
   * fixed question.py Bug #16538 
