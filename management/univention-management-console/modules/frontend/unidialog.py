@@ -3,7 +3,7 @@
 # Univention Management Console
 #  web interface: basic dialog class
 #
-# Copyright (C) 2006-2009 Univention GmbH
+# Copyright (C) 2006-2010 Univention GmbH
 #
 # http://www.univention.de/
 #

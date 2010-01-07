@@ -3,7 +3,7 @@
 Univention Console VNC
  PHP script for the web access
 
-Copyright (C) 2003-2009 Univention GmbH
+Copyright (C) 2003-2010 Univention GmbH
 
 http://www.univention.de/
 
