@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: manages pykota
 #
-# Copyright (C) 2007-2009 Univention GmbH
+# Copyright (C) 2007-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
