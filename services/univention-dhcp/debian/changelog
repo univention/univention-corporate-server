@@ -1,5 +1,11 @@
 univention-dhcp (4.0.2-1) unstable; urgency=low
 
+  * updated copyright Bug #17222
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:08:49 +0100
+
+univention-dhcp (4.0.2-1) unstable; urgency=low
+
   * add univentionDhcpPool to listener module filter to force a restart
     of dhcpd when creating a DHCP pool (Bug #16766)
 
