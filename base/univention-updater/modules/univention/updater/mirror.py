@@ -3,7 +3,7 @@
 # Univention Debmirror
 #  mirrors a repository server
 #
-# Copyright (C) 2009 Univention GmbH
+# Copyright (C) 2009-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
