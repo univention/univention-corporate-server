@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.50-2) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:12:23 +0100
+
 univention-directory-manager (7.0.50-1) unstable; urgency=low
 
   * show navigation link only if policy is set Bug #16958 
