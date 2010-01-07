@@ -1,3 +1,9 @@
+univention-thin-client-sound (3.0.3-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 15:43:59 +0100
+
 univention-thin-client-sound (3.0.2-1) unstable; urgency=low
 
   * create default .mcoprc before artsd is started Bug #16708 
