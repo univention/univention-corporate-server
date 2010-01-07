@@ -1,7 +1,7 @@
 # Univention Setup
 #  ldap available check script
 #
-# Copyright (C) 2004-2009 Univention GmbH
+# Copyright (C) 2004-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
