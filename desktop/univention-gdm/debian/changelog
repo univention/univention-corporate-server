@@ -1,3 +1,9 @@
+univention-gdm (5.0.14-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:34:26 +0100
+
 univention-gdm (5.0.13-1) unstable; urgency=low
 
   * fixed nx script, in order to load config correctly (Bug: #13770) 
