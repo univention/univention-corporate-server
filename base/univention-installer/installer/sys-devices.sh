@@ -4,7 +4,7 @@
 #  helper script: scanning /sys for devices
 #  usage: $0 BUS TYPE
 #
-# Copyright (C) 2004-2009 Univention GmbH
+# Copyright (C) 2004-2010 Univention GmbH
 #
 # http://www.univention.de/
 #

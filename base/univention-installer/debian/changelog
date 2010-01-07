@@ -1,3 +1,9 @@
+univention-installer (5.0.58-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:37:39 +0100
+
 univention-installer (5.0.57-1) unstable; urgency=low
 
   * fixed typo in packages list Bug #16611 
