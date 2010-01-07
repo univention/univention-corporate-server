@@ -127,7 +127,7 @@ if not (baseConfig.has_key('%s/ad/ldap/host' % CONFIGBASENAME)
 	sys.exit(1)
 	
 
-ldapuri = "LDAP://%s:%d" % (baseConfig['%s/ad/ldap/host' % CONFIGBASENAME],int(baseConfig['%s/ad/ldap/port' % CONFIGBASENAME]))
+ldapuri = "ldap://%s:%d" % (baseConfig['%s/ad/ldap/host' % CONFIGBASENAME],int(baseConfig['%s/ad/ldap/port' % CONFIGBASENAME]))
 
 login_dn = baseConfig['%s/ad/ldap/binddn' % CONFIGBASENAME]
 pw_file = baseConfig['%s/ad/ldap/bindpw' % CONFIGBASENAME]
@@ -143,6 +143,7 @@ start_tls = 2
 if baseConfig.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and baseConfig['%s/ad/ldap/ssl' % CONFIGBASENAME] == "no":
     start_tls = 0
 
+ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_file )
 lo = ldap.ldapobject.SmartLDAPObject(uri=ldapuri,
                                      who = login_dn,
                                      cred = login_pw,

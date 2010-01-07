@@ -1,3 +1,10 @@
+univention-ad-connector (4.1.6-1) unstable; urgency=low
+
+  * use ldap:// as prefix for LDAP URIs and set CA certificate file via
+    global option (Bug #16432)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 07 Jan 2010 17:34:28 +0100
+
 univention-ad-connector (4.1.5-1) unstable; urgency=low
 
   * updated copyright Bug #17222 
