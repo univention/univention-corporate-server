@@ -1,3 +1,9 @@
+univention-ldap-addressbook-sync (3.0.4-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:49:32 +0100
+
 univention-ldap-addressbook-sync (3.0.3-1) unstable; urgency=low
 
   * move restart yet again, this time to the joinscript (Bug: #16785)
