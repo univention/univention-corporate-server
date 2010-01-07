@@ -1,3 +1,9 @@
+univention-config-registry (5.0.68-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:05:00 +0100
+
 univention-config-registry (5.0.67-1) unstable; urgency=low
 
   * if the UCR variable ucr/output/scope is set to yes the scope of a
