@@ -1,3 +1,9 @@
+univention-nagios (3.0.17-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:59:38 +0100
+
 univention-nagios (3.0.16-1) unstable; urgency=low
 
   * fixed some typos at ucs-overview. Bug #9724
