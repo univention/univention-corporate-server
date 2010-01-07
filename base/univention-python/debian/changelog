@@ -1,3 +1,10 @@
+univention-python (4.0.4-1) unstable; urgency=low
+
+  * use ldap:// instead of LDAP:// as prefix for LDAP URIs, otherwise TLS
+    encryption is not activated (Bug #16432)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 07 Jan 2010 17:31:47 +0100
+
 univention-python (4.0.3-1) unstable; urgency=low
 
   * removed useless dependencies and moved set command of UCR to

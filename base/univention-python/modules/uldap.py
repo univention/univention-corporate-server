@@ -133,13 +133,14 @@ class access:
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
 
-		self.lo=ldap.ldapobject.SmartLDAPObject(uri="LDAP://"+str(self.host)+":"+str(self.port), who=self.binddn, cred=self.__encode_pwd(self.bindpw), start_tls=self.start_tls, tls_cacertfile=self.ca_certfile)
+		ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, self.ca_certfile )
+		self.lo=ldap.ldapobject.SmartLDAPObject(uri="ldap://"+str(self.host)+":"+str(self.port), who=self.binddn, cred=self.__encode_pwd(self.bindpw), start_tls=self.start_tls, tls_cacertfile=self.ca_certfile)
 
 	def __open(self):
 		_d=univention.debug.function('uldap.__open host=%s port=%d base=%s' % (self.host, self.port, self.base))
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
-		self.lo=ldap.initialize("LDAP://"+str(self.host)+":"+str(self.port))
+		self.lo=ldap.initialize("ldap://"+str(self.host)+":"+str(self.port))
 
 		if self.start_tls == 1:
 			try:
