@@ -1,3 +1,9 @@
+univention-join (2.0.25-1) unstable; urgency=low
+
+  * updated copyright Bug #17222
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:41:07 +0100
+
 univention-join (2.0.24-2) unstable; urgency=low
 
   * suppress unwanted output when checking LDAP TLS configuration (Bug #16568)
