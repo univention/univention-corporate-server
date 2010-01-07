@@ -1,4 +1,4 @@
-# Copyright (C) 2002,2003,2004,2005,2006
+# Copyright (C) 2002-2010 Univention GmbH
 # This file is distributed under the same license as the univention-webui package.
 # AUTHOR: Univention GmbH <packages@univention.de>
 #

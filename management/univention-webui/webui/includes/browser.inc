@@ -3,7 +3,7 @@
  * Univention Webui
  *  browser.inc
  *
- * Copyright (C) 2009 Univention GmbH
+ * Copyright (C) 2009-2010 Univention GmbH
  *
  * http://www.univention.de/
  *
