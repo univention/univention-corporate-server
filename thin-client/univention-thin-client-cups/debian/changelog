@@ -1,3 +1,9 @@
+univention-thin-client-cups (4.0.3-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 15:36:27 +0100
+
 univention-thin-client-cups (4.0.2-7) unstable; urgency=low
 
   * Integrate cups-bsd into the standard 
