@@ -4,7 +4,7 @@
 # Univention Management Console
 #  cups module: helper functions for print job management
 #
-# Copyright (C) 2006-2009 Univention GmbH
+# Copyright (C) 2006-2010 Univention GmbH
 #
 # http://www.univention.de/
 #

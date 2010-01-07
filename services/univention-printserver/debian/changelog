@@ -1,3 +1,9 @@
+univention-printserver (3.0.26-1) unstable; urgency=low
+
+  * updated copyright Bug #17222 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 15:02:53 +0100
+
 univention-printserver (3.0.25-1) unstable; urgency=low
 
   * add anoymous directory for pdf printing as root Bug #16786 
