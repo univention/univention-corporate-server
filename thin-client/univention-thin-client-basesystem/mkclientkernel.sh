@@ -3,7 +3,7 @@
 # Univention Client Basesystem
 #  helper script for building the kernel for the client basesystem
 #
-# Copyright (C) 2001-2009 Univention GmbH
+# Copyright (C) 2001-2010 Univention GmbH
 #
 # http://www.univention.de/
 #

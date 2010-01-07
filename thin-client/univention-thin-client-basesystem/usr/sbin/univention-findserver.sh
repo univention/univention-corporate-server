@@ -3,7 +3,7 @@
 # Univention Client Basesystem
 #  helper script finding the best desktop server for a thin client
 #
-# Copyright (C) 2001-2009 Univention GmbH
+# Copyright (C) 2001-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
