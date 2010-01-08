@@ -1,3 +1,9 @@
+univention-samba4wins (2.0.2-1) unstable; urgency=low
+
+  * updated copyright Bug #16818 
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Jan 2010 10:33:36 +0100
+
 univention-samba4wins (2.0.1-1) unstable; urgency=low
 
   * move UCR variables to new category service-samba (Bug #13505)
