@@ -108,17 +108,13 @@ class UniventionUpdater:
 
 		if not self.nameserver_available:
 			raise socket.gaierror, (socket.EAI_NONAME, 'The repository server %s could not be resolved.' % server)
+		if not server:
+			server = self.repository_server
+		if port in (None, ''):
+			port = self.repository_port
 
 		if self.proxy and self.proxy != '':
-			if server:
-				self.proxy_prefix = server
-			else:
-				self.proxy_prefix = self.repository_server
-
-			if port in (None, ''):
-				port = int (self.repository_port)
-			else:
-				port = int (port)
+			self.proxy_prefix = "%s:%s" % (server, port)
 
 			location = self.proxy
 			if location.find ('@') != -1:
@@ -132,7 +128,7 @@ class UniventionUpdater:
 				self.proxy_port = HTTP_PROXY_DEFAULT_PORT
 			self.proxy_server   = location
 
-			self.connection = httplib.HTTPConnection('%s:%s' % (self.proxy_server, self.proxy_port))
+			self.connection = httplib.HTTPConnection(self.proxy_server, self.proxy_port)
 			proxy_headers = {}
 
 			if self.proxy_username and self.proxy_password:
@@ -141,10 +137,7 @@ class UniventionUpdater:
 				proxy_headers['Proxy-Authorization'] = string.strip ('Basic %s' % user_pass)
 			return proxy_headers
 		else:
-			if server:
-				self.connection = httplib.HTTPConnection(server)
-			else:
-				self.connection = httplib.HTTPConnection(self.repository_server)
+			self.connection = httplib.HTTPConnection(server, int(port))
 
 	def close_connection(self):
 		'''Close http-connection'''
