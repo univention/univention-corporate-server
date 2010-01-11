@@ -32,7 +32,7 @@ attributetype ( 1.3.6.1.4.1.10176.1010.1.10 NAME 'mailRelay'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
 objectclass ( 1.3.6.1.4.1.10176.1010.2.10 NAME 'univentionMailDomain'
-	DESC 'Univention Mail Domain Prefernces' SUP top AUXILIARY
+	DESC 'Univention Mail Domain Preferences' SUP top AUXILIARY
 	MAY ( mailRelay ) )
 
 attributetype ( 1.3.6.1.4.1.10176.1010.1.41 NAME 'univentionCanonicalSenderRewriteEnabled'
