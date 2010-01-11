@@ -1,3 +1,10 @@
+univention-updater (5.0.61-2) unstable; urgency=low
+
+  * Since proxy_headers may by an empty hash, fix tests for proxy usage.
+    (Bug #15653)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 11 Jan 2010 11:44:43 +0100
+
 univention-updater (5.0.61-1) unstable; urgency=low
 
   * For proxy-access, Host:-header must match the real host and port, not the
