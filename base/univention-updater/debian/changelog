@@ -1,6 +1,14 @@
+univention-updater (5.0.61-1) unstable; urgency=low
+
+  * For proxy-access, Host:-header must match the real host and port, not the
+    proxy's name and port. httplib is clever enougth to extract the host-name
+    and port from the URI itself, also correctly handling idna. (Bug #15653)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 11 Jan 2010 10:26:30 +0100
+
 univention-updater (5.0.60-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 15:46:31 +0100
 
