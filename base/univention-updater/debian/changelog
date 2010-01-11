@@ -1,3 +1,9 @@
+univention-updater (5.0.62-1) unstable; urgency=low
+
+  * Use configured repository and proxy TCP port. (Bug #13610)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 11 Jan 2010 12:14:20 +0100
+
 univention-updater (5.0.61-2) unstable; urgency=low
 
   * Since proxy_headers may by an empty hash, fix tests for proxy usage.
