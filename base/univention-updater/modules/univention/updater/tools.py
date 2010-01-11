@@ -224,10 +224,10 @@ class UniventionUpdater:
 
 		replace_slash = re.compile ('[/]{2,}')
 		site = replace_slash.sub ('/', site)
-		if not site.startswith ('http://') and proxy_headers:
+		if not site.startswith ('http://') and proxy_headers != None:
 			site = 'http://%s' % site
 
-		if proxy_headers:
+		if proxy_headers != None:
 			self.connection.putrequest('GET', site, skip_accept_encoding=1)
 		else:
 			self.connection.putrequest('GET', site)
@@ -237,7 +237,7 @@ class UniventionUpdater:
 			auth = 'Basic ' + string.strip(base64.encodestring(username + ':' + password))
 			self.connection.putheader('Authorization', auth)
 
-		if proxy_headers:
+		if proxy_headers != None:
 			for k, v in proxy_headers.items ():
 				self.connection.putheader (k, v)
 		self.connection.endheaders ()
