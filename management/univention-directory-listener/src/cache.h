@@ -35,6 +35,8 @@
 
 #include "network.h"
 #include "cache_entry.h"
+#include <stdbool.h>
+
 
 #ifdef WITH_DB42
 struct _CacheMasterEntry {
@@ -52,12 +54,20 @@ int	cache_update_master_entry		(CacheMasterEntry	 *master_entry,
 int	cache_update_entry			(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
+inline int	cache_update_entry_lower			(NotifierID		  id,
+						 char			 *dn,
+						 CacheEntry		 *entry);
 int	cache_delete_entry			(NotifierID		  id,
+						 char			 *dn);
+int	cache_delete_entry_lower_upper			(NotifierID		  id,
 						 char			 *dn);
 int	cache_update_or_deleteifunused_entry	(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
 int	cache_get_entry				(NotifierID		  id,
+						 char			 *dn,
+						 CacheEntry		 *entry);
+int	cache_get_entry_lower_upper				(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
 int	cache_first_entry			(DBC			**cur,
