@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  demo program for the notifier client API.
  *
- * Copyright (C) 2004-2009 Univention GmbH
+ * Copyright (C) 2004-2010 Univention GmbH
  *
  * http://www.univention.de/
  *
