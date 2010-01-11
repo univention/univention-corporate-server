@@ -133,7 +133,7 @@ class UniventionUpdater:
 			self.proxy_server   = location
 
 			self.connection = httplib.HTTPConnection('%s:%s' % (self.proxy_server, self.proxy_port))
-			proxy_headers = {'Host': self.proxy_server}
+			proxy_headers = {}
 
 			if self.proxy_username and self.proxy_password:
 				#setup basic authentication
@@ -228,7 +228,7 @@ class UniventionUpdater:
 			site = 'http://%s' % site
 
 		if proxy_headers:
-			self.connection.putrequest('GET', site, skip_host=1, skip_accept_encoding=1)
+			self.connection.putrequest('GET', site, skip_accept_encoding=1)
 		else:
 			self.connection.putrequest('GET', site)
 

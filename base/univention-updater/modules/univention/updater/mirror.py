@@ -69,7 +69,7 @@ class UniventionMirror( UniventionUpdater ):
 			site = 'http://%s' % site
 
 		if proxy_headers:
-			self.connection.putrequest('GET', site, skip_host=1, skip_accept_encoding=1)
+			self.connection.putrequest('GET', site, skip_accept_encoding=1)
 		else:
 			self.connection.putrequest('GET', site)
 

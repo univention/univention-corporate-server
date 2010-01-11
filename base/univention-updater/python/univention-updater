@@ -137,7 +137,7 @@ def download_sh_files(updater, server_path, tempdir):
 		if not site.startswith ('http://') and proxy_headers:
 			site = 'http://%s' % site
 		if proxy_headers:
-			updater.connection.putrequest('GET', site, skip_host=1, skip_accept_encoding=1)
+			updater.connection.putrequest('GET', site, skip_accept_encoding=1)
 		else:
 			updater.connection.putrequest('GET', site)
 
