@@ -1,3 +1,9 @@
+univention-pkgdb (3.0.2-4) unstable; urgency=low
+
+  * Fix spelling errors in univention_pkgdb.py (Bug #16948)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 11 Jan 2010 13:07:02 +0100
+
 univention-pkgdb (3.0.2-3) unstable; urgency=low
 
   * the pkg_installed function will fail if the package is not
