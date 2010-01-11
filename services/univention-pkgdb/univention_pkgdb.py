@@ -4,7 +4,7 @@
 # Univention Package Database
 #  python module for the package database
 #
-# Copyright (C) 2004-2009 Univention GmbH
+# Copyright (C) 2004-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,25 +35,25 @@ import pgdb, commands
 import univention.baseconfig
 
 def usage():
-	print 'univention-pkgdb-scan: Scan all packages in the lokal system and send this data to the database pkgdb.'
-	print 'Copyright (c) 2005, 2006 Univention GmbH, Germany'
+	print 'univention-pkgdb-scan: Scan all packages in the local system and send this data to the database pkgdb.'
+	print 'Copyright (c) 2005-2010 Univention GmbH, Germany'
 	print ''
 	print 'Syntax:'
-	print '  univention-pkg-scan [options]'
+	print '  univention-pkgdb-scan [options]'
 	print ''
 	print 'options:'
 	print '  -h | --help | -?'
 	print '    Print this usage message and exit'
 	print ''
 	print '  --test-superuser'
-	print '    Test for ability to add or del database users'
+	print '    Test for ability to add or delete database users'
 	print ''
 	print '  --add-system=<name>'
 	print '    Add a system as db-user-account.'
 	print '    Normaly this will be used by univention-listener'
 	print ''
 	print '  --del-system=<name>'
-	print '    Del a system as db-user-account.'
+	print '    Delete a system as db-user-account.'
 	print '    Normaly this will be used by univention-listener'
 	print ''
 	print '  --db-server=<name>'
