@@ -66,6 +66,7 @@
 #include <sys/file.h>
 #include <sys/stat.h>
 #include <db.h>
+#include <stdbool.h>
 
 #include <univention/debug.h>
 
@@ -111,6 +112,7 @@ char* _convert_to_lower(char *dn)
 
 	return lower_dn;
 }
+
 static void cache_error_message(const char *errpfx, char *msg)
 {
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
@@ -361,12 +363,11 @@ DB_TXN* cache_new_transaction(NotifierID id, char *dn)
    implemented, entries other than the most recent one can be returned.
    At the moment, the id parameters for cache_update_entry, and
    cache_delete_entry do nothing (at least if WITH_DB42 is undefined) */
-int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
+inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 {
 	DBT key, data;
 	DB_TXN *dbtxnp;
 	int rv = 0;
-	char *lower_dn;
 
 	memset(&key, 0, sizeof(DBT));
 	memset(&data, 0, sizeof(DBT));
@@ -391,8 +392,7 @@ int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 	dbtxnp = NULL;
 #endif
 
-	lower_dn = _convert_to_lower(dn);
-	key.data=lower_dn;
+	key.data=dn;
 	key.size=strlen(dn)+1;
 
 	if ((rv=dbp->put(dbp, dbtxnp, &key, &data, 0)) != 0) {
@@ -403,7 +403,6 @@ int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 #ifdef WITH_DB42
 		dbtxnp->abort(dbtxnp);
 #endif
-		free(lower_dn);
 		free(data.data);
 		return rv;
 	}
@@ -416,8 +415,19 @@ int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 	}
 	signals_unblock();
 
-	free(lower_dn);
 	free(data.data);
+	return rv;
+}
+
+int cache_update_entry_lower(NotifierID id, char *dn, CacheEntry *entry)
+{
+	char *lower_dn;
+	int rv = 0;
+
+	lower_dn = _convert_to_lower(dn);
+	rv = cache_update_entry(id, lower_dn, entry);
+
+	free(lower_dn);
 	return rv;
 }
 
@@ -461,6 +471,28 @@ int cache_delete_entry(NotifierID id, char *dn)
 	return rv;
 }
 
+int cache_delete_entry_lower_upper(NotifierID id, char *dn)
+{
+	char *lower_dn;
+	bool mixedcase = false;
+	int	 rv;
+
+	// convert to a lowercase dn
+	lower_dn = _convert_to_lower(dn);
+	if (strcmp(dn, lower_dn) != 0) {
+		mixedcase = true;
+	}
+
+	rv=cache_delete_entry(id, lower_dn);
+	if (rv == DB_NOTFOUND && mixedcase ) {
+		// try again with original dn
+		rv=cache_delete_entry(id, dn);
+	}
+
+	free(lower_dn);
+	return rv;
+}
+
 int cache_update_or_deleteifunused_entry(NotifierID id, char *dn, CacheEntry *entry)
 {
 	if (entry->module_count == 0)
@@ -476,42 +508,29 @@ int cache_get_entry(NotifierID id, char *dn, CacheEntry *entry)
 
 	memset(&key, 0, sizeof(DBT));
 	memset(&data, 0, sizeof(DBT));
+	memset(entry, 0, sizeof(CacheEntry));
 
 	key.data=dn;
 	key.size=strlen(dn)+1;
 	data.flags = DB_DBT_REALLOC;
 
 	signals_block();
-	memset(entry, 0, sizeof(CacheEntry));
-	if ((rv=dbp->get(dbp, NULL, &key, &data, 0)) != 0 && rv != DB_NOTFOUND) {
-		signals_unblock();
+	rv=dbp->get(dbp, NULL, &key, &data, 0);
+	signals_unblock();
+
+	if (rv != 0 && rv != DB_NOTFOUND) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 				"reading %s from database failed", dn);
 		dbp->err(dbp, rv, "get");
 		return rv;
 	} else if (rv == DB_NOTFOUND) {
-		// convert to a lowercase dn
-		char *lower_dn;
-		lower_dn = _convert_to_lower(dn);
-		key.data=lower_dn;
-		if ((rv=dbp->get(dbp, NULL, &key, &data, 0)) != 0 && rv != DB_NOTFOUND) {
-			signals_unblock();
-			free(lower_dn);
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-					"reading %s from database failed", lower_dn);
-			dbp->err(dbp, rv, "get");
-			return rv;
-		} else if (rv == DB_NOTFOUND) {
-			signals_unblock();
-			free(lower_dn);
-			return rv;
-		}
-		free(lower_dn);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "no cache entry found for %s",
+				dn);
+		return rv;
 	}
-	signals_unblock();
 	
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "got %d bytes",
-			data.size);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "got %d bytes for %s",
+			data.size, dn);
 
 	if ((rv=parse_entry(data.data, data.size, entry)) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
@@ -521,6 +540,28 @@ int cache_get_entry(NotifierID id, char *dn, CacheEntry *entry)
 	}
 
 	free(data.data);
+	return rv;
+}
+
+int cache_get_entry_lower_upper(NotifierID id, char *dn, CacheEntry *entry)
+{
+	char *lower_dn;
+	bool mixedcase = false;
+	int	 rv;
+
+	// convert to a lowercase dn
+	lower_dn = _convert_to_lower(dn);
+	if (strcmp(dn, lower_dn) != 0) {
+		mixedcase = true;
+	}
+
+	rv=cache_get_entry(id, lower_dn, entry);
+	if (rv == DB_NOTFOUND && mixedcase ) {
+		// try again with original dn
+		rv=cache_get_entry(id, dn, entry);
+	}
+
+	free(lower_dn);
 	return rv;
 }
 

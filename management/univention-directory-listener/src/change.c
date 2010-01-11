@@ -111,7 +111,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 			"initialize schema for module %s", handler->name);
 	/* initialize schema; if it's not in cache yet (it really should be), it'll
 	   be initialized on the regular schema check after ldapsearches */
-	if ((rv=cache_get_entry(0, "cn=Subschema", &cache_entry)) != 0 &&
+	if ((rv=cache_get_entry_lower_upper(0, "cn=Subschema", &cache_entry)) != 0 &&
 			rv != DB_NOTFOUND) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 				"error while reading from database");
@@ -119,7 +119,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 	} else if (rv == 0) {
 		signals_block();
 		handler_update("cn=Subschema", &cache_entry, &old_cache_entry, handler, 'n');
-		cache_update_entry(0, "cn=Subschema", &cache_entry);
+		cache_update_entry(0, "cn=subschema", &cache_entry);
 		signals_unblock();
 		cache_free_entry(NULL, &cache_entry);
 	}
@@ -167,7 +167,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 		for (i=0; i<dn_count; i++) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "DN: %s", dns[i].dn);
 
-			if ((rv=cache_get_entry(0, dns[i].dn, &cache_entry)) == DB_NOTFOUND) { /* XXX */
+			if ((rv=cache_get_entry_lower_upper(0, dns[i].dn, &cache_entry)) == DB_NOTFOUND) { /* XXX */
 				LDAPMessage *res2, *first;
 				if ((rv = ldap_search_s(lp->ld, dns[i].dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, &res2)) == LDAP_SUCCESS) {
 					first = ldap_first_entry(lp->ld, res2);
@@ -189,7 +189,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 	
 			signals_block();
 			handler_update(dns[i].dn, &cache_entry, &old_cache_entry, handler, 'n');
-			cache_update_entry(0, dns[i].dn, &cache_entry);
+			cache_update_entry_lower(0, dns[i].dn, &cache_entry);
 			signals_unblock();
 			cache_free_entry(NULL, &cache_entry);
 		}
@@ -239,13 +239,13 @@ int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMes
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while converting LDAP entry to cache entry");
 		goto result;
 	}
-	if ((rv=cache_get_entry(id-1, dn, &old_cache_entry)) != 0 && rv != DB_NOTFOUND) {
+	if ((rv=cache_get_entry_lower_upper(id-1, dn, &old_cache_entry)) != 0 && rv != DB_NOTFOUND) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while reading from database");
 		rv = LDAP_OTHER;
 	} else {
 		signals_block();
 		handlers_update(dn, &cache_entry, &old_cache_entry, command);
-		if ((rv=cache_update_entry(id, dn, &cache_entry)) != 0) {
+		if ((rv=cache_update_entry_lower(id, dn, &cache_entry)) != 0) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
 		}
 		signals_unblock();
@@ -264,7 +264,7 @@ int change_delete_dn(NotifierID id, char *dn, char command)
 	CacheEntry entry;
 	int rv;
 	
-	if ((rv=cache_get_entry(id-1, dn, &entry)) == DB_NOTFOUND) {
+	if ((rv=cache_get_entry_lower_upper(id-1, dn, &entry)) == DB_NOTFOUND) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "not in cache: %s", dn);
 		return LDAP_SUCCESS;
 	} else if (rv != 0) {
@@ -275,11 +275,11 @@ int change_delete_dn(NotifierID id, char *dn, char command)
 	signals_block();
 	if (handlers_delete(dn, &entry, command) == 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "deleted from cache: %s", dn);
-		cache_delete_entry(id, dn);
+		cache_delete_entry_lower_upper(id, dn);
 	} else {
 		/* update information which modules failed and are still to be run */
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "at least one delete handler failed");
-		cache_update_entry(id, dn, &entry);
+		cache_update_entry_lower(id, dn, &entry);
 	}
 	signals_unblock();
 	cache_free_entry(NULL, &entry);
