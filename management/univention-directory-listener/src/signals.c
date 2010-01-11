@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  signal handlers are initialized and defined here.
  *
- * Copyright (C) 2004-2009 Univention GmbH
+ * Copyright (C) 2004-2010 Univention GmbH
  *
  * http://www.univention.de/
  *

@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  dump_signals.c
  *
- * Copyright (C) 2004-2009 Univention GmbH
+ * Copyright (C) 2004-2010 Univention GmbH
  *
  * http://www.univention.de/
  *
