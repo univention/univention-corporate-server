@@ -1,8 +1,9 @@
 univention-pkgdb (3.0.2-4) unstable; urgency=low
 
   * Fix spelling errors in univention_pkgdb.py (Bug #16948)
+  * Update copyright. (Bug #17222)
 
- -- Philipp Hahn <hahn@univention.de>  Mon, 11 Jan 2010 13:07:02 +0100
+ -- Philipp Hahn <hahn@univention.de>  Mon, 11 Jan 2010 13:38:22 +0100
 
 univention-pkgdb (3.0.2-3) unstable; urgency=low
 

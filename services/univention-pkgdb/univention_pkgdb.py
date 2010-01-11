@@ -4,7 +4,7 @@
 # Univention Package Database
 #  python module for the package database
 #
-# Copyright (C) 2004-2009 Univention GmbH
+# Copyright (C) 2004-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -36,7 +36,7 @@ import univention.baseconfig
 
 def usage():
 	print 'univention-pkgdb-scan: Scan all packages in the local system and send this data to the database pkgdb.'
-	print 'Copyright (c) 2005, 2006 Univention GmbH, Germany'
+	print 'Copyright (c) 2005-2010 Univention GmbH, Germany'
 	print ''
 	print 'Syntax:'
 	print '  univention-pkgdb-scan [options]'
