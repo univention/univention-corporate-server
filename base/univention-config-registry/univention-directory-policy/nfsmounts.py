@@ -33,6 +33,7 @@ import os
 import univention.config_registry
 import ldap
 import string
+import sys
 
 configRegistry=univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -71,12 +72,16 @@ def main():
 	lo.simple_bind_s("","")
 
 	# remove all nfs mounts from the fstab
-	os.system('cat /etc/fstab | grep -v "#LDAP Entry DN:" >/etc/fstab.new')
+	fstabNew = "/etc/fstab.new.%s" % str(os.getpid())
+	os.system('cat /etc/fstab | grep -v "#LDAP Entry DN:" >%s' % fstabNew)
 
 	mount_points = []
 	sources = []
 
-	fp = open("/etc/fstab.new", "r")
+	try:
+		fp = open(fstabNew, "r")
+	except:
+		sys.exit(0)
 	lines = fp.readlines()
 	fp.close()
 
@@ -141,7 +146,10 @@ def main():
 		if nfs_path_fqdn in sources or nfs_path_ip in sources or mp in mount_points:
 			continue
 
-		fp = open("/etc/fstab.new", "a+")
+		try:
+			fp = open(fstabNew, "a+")
+		except:
+			sys.exit(0)
 		fp.write("%s\t%s\tnfs\tdefaults\t0\t0\t#LDAP Entry DN: %s\n" % (nfs_path_ip, mp, dn))
 		fp.close()
 
@@ -150,7 +158,7 @@ def main():
 		if not os.path.exists(mp):
 			os.system('mkdir -p %s' % mp)
 
-	os.system('mv /etc/fstab.new /etc/fstab')
+	os.system('mv %s /etc/fstab' % fstabNew)
 
 	already_mounted = []
 	fp = open('/etc/mtab')

@@ -1,3 +1,9 @@
+univention-config-registry (5.0.69-1) unstable; urgency=low
+
+  * make nfsmounts more robust Bug #15350
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Jan 2010 14:18:49 +0100
+
 univention-config-registry (5.0.68-1) unstable; urgency=low
 
   * updated copyright Bug #17222 
