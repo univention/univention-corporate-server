@@ -3,13 +3,13 @@ role = "@%@server/role@%@"
 if role == "domaincontroller_master" or role == "domaincontroller_backup" :
 	print'<tr>'
 	print'<td class="overview"><a href="../ucs-root-ca.crt"><img src="../icon/perms.png" alt="" border="0" /></a></td>'
-	print'<td class="overview"><a href="../ucs-root-ca.crt">Import certificate</a></td>'
-	print'<td class="overview">Root certificate of server</td>'
+	print'<td class="overview"><a href="../ucs-root-ca.crt">Root certificate</a></td>'
+	print'<td class="overview">Certificate of the Certification Authority for UCS-Domain @%@domainname@%@</td>'
 	print'</tr>'
 	print'<tr>'
 	print'<td class="overview"><a href="../ucsCA.crl"><img src="../icon/invalidperms.png" alt="" border="0" /></a></td>'
-	print'<td class="overview"><a href="../ucsCA.crl">Reject certificate</a></td>'
-	print'<td class="overview">Invalid certificates</td>'
+	print'<td class="overview"><a href="../ucsCA.crl">Certificate revocation list</a></td>'
+	print'<td class="overview">List of withdrawn certificates</td>'
 	print'</tr>'
 @!@
 <tr>
