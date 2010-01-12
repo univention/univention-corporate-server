@@ -1,3 +1,9 @@
+univention-ad-connector (4.1.7-1) unstable; urgency=low
+
+  * added ad-connector umc service configuration Bug #17311
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Jan 2010 16:31:14 +0100
+
 univention-ad-connector (4.1.6-1) unstable; urgency=low
 
   * use ldap:// as prefix for LDAP URIs and set CA certificate file via
