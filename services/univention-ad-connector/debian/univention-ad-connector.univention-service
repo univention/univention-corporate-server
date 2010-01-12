@@ -1,0 +1,7 @@
+
+[univention-ad-connector]
+Description[de]=Univention AD Connector
+Description[en]=Univention AD Connector
+programs=/usr/sbin/univention-ad-connector
+icon=service/ad-connector
+start_type=connector/ad/autostart
