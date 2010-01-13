@@ -1,3 +1,9 @@
+univention-webui-style (4.0.34-1) unstable; urgency=low
+
+  * UMC design updates. Bug #16808 and Bug #16809
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 13 Jan 2010 09:15:57 +0100
+
 univention-webui-style (4.0.33-1) unstable; urgency=low
 
   * fixed some typos at ucs-overview #9724 

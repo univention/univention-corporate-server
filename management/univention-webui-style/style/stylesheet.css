@@ -1386,6 +1386,11 @@ padding-left: 0px;
 text-align: center;
 }
 
+td.umc_list_element img.icon
+{
+padding-right: 8px;
+}
+
 span.h4
 {
 	font-size: 16px;
@@ -1680,9 +1685,14 @@ table.desktopicon td.desktopicon td.button_icon
 	padding-right: 10px;
 }
 
+.button_icon {
+    border: none;
+}
+
+
 /* listings generated in UMC */
 
-.umc_list, .umc_frame {
+.umc_frame {
 	margin: 8px;
 	padding: 10px;
 }
@@ -1690,6 +1700,8 @@ table.desktopicon td.desktopicon td.button_icon
 .umc_frame .h4 {
     padding-bottom: 5px;
     padding-bottom: 5px;
+	color:#C00000;
+	font-size:18px;
 }
 
 td.umc_list_element table.button td.button_icon input.button_icon
@@ -1705,8 +1717,7 @@ td.umc_list_element table.button td.button_icon input.button_icon
 .umc_list_head_first,
 .umc_list_head_second,
 .umc_list_head {
-	padding-left: 8px;
-	padding-right: 8px;
+	padding-right: 16px;
 	padding-top: 3px;
 	padding-bottom: 3px;
 }
@@ -1797,7 +1808,7 @@ tr.desktopicon,td.desktopicon {
 
 /* listings generated in UMC */
 
-.umc_list, .umc_frame {
+.umc_frame {
 	margin: 8px;
 	padding: 10px;
 }
@@ -1815,8 +1826,7 @@ tr.desktopicon,td.desktopicon {
 .umc_list_head_first,
 .umc_list_head_second,
 .umc_list_head {
-	padding-left: 8px;
-	padding-right: 8px;
+	padding-right: 16px;
 	padding-top: 3px;
 	padding-bottom: 3px;
 }
