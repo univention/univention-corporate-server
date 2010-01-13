@@ -261,6 +261,9 @@ class question_text extends extra{
 		if (isset($this->attribute['focus'])) {
 			$str .= ' onclick="this.form.submit()" ';
 		}
+		if (isset($this->attribute['passive'])) {
+			$str .= ' disabled';
+		}
 		if ($this->attribute['width']) 
 			$str .= 'style="width:'.($this->attribute['width']).'px" ';
 		if ($this->warn) 
