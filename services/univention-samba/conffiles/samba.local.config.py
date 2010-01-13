@@ -105,7 +105,7 @@ def get_shares():
 # set invalid users to -> shares
 def set_invalids (match, value):
 
-        if match and match.group(1) and match.group(2) and value == "true":
+	if match and match.group(1) and match.group(2) and value == "true":
 
 		share = match.group(1)
 		user = match.group(2)
@@ -230,6 +230,7 @@ def set_othershares(group, invalid):
 		for share in shares.keys():
 			if share == group: continue
 			if share == "marktplatz": continue
+			if share == "homes": continue
 			if not shares[share].has_key("invalid users"): shares[share]["invalid users"] = {}
 			shares[share]["invalid users"].update({groupname : 1})
 			shares[share]["ucr"] = 1
