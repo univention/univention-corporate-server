@@ -1,3 +1,11 @@
+univention-samba (4.0.11-1) unstable; urgency=low
+
+  * ignore share "homes" while setting "invalid users" for all other
+    shares (Bug #17114)
+  * fixed wrong indention
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 06 Jan 2010 16:00:28 +0100
+
 univention-samba (4.0.10-6) unstable; urgency=low
 
   * workaround for restricted shell syntax in /bin/sh (Bug #16765)
