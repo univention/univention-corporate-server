@@ -456,19 +456,19 @@ class handler(umch.simpleHandler):
 		list_status = umcd.List()
 
 		if self.status_configured:
-			list_status.add_row( [ umcd.Image( 'adconnector/yes', umct.SIZE_SMALL ), umcd.Text( _('The configuration process has been finished and all required settings for Active Directory Connector are set.') ) ] )
+			list_status.add_row( [ ( umcd.Image( 'adconnector/yes', umct.SIZE_SMALL ), umcd.Text( _('The configuration process has been finished and all required settings for Active Directory Connector are set.') ) ) ] )
 		else:
-			list_status.add_row( [ umcd.Image( 'adconnector/no', umct.SIZE_SMALL ), umcd.Text( _('The configuration process has not been started yet or is incomplete.') ) ] )
+			list_status.add_row( [ ( umcd.Image( 'adconnector/no', umct.SIZE_SMALL ), umcd.Text( _('The configuration process has not been started yet or is incomplete.') ) ) ] )
 
 		if self.status_certificate:
-			list_status.add_row( [ umcd.Image( 'adconnector/yes', umct.SIZE_SMALL ), umcd.Text( _('The Active Directory certificate has been sucessfully installed.') ) ] )
+			list_status.add_row( [ ( umcd.Image( 'adconnector/yes', umct.SIZE_SMALL ), umcd.Text( _('The Active Directory certificate has been sucessfully installed.') ) ) ] )
 		else:
-			list_status.add_row( [ umcd.Image( 'adconnector/no', umct.SIZE_SMALL ), umcd.Text( _('The Active Directory certificate has not been installed yet.') ) ] )
+			list_status.add_row( [ ( umcd.Image( 'adconnector/no', umct.SIZE_SMALL ), umcd.Text( _('The Active Directory certificate has not been installed yet.') ) ) ] )
 
 		if self.status_running:
-			list_status.add_row( [ umcd.Image( 'adconnector/yes', umct.SIZE_SMALL ), umcd.Text( _('Active Directory Connector is currently running.') ) ] )
+			list_status.add_row( [ ( umcd.Image( 'adconnector/yes', umct.SIZE_SMALL ), umcd.Text( _('Active Directory Connector is currently running.') ) ) ] )
 		else:
-			list_status.add_row( [ umcd.Image( 'adconnector/no', umct.SIZE_SMALL ), umcd.Text( _('Active Directory Connector is not running.') ) ] )
+			list_status.add_row( [ ( umcd.Image( 'adconnector/no', umct.SIZE_SMALL ), umcd.Text( _('Active Directory Connector is not running.') ) ) ] )
 
 		frame_status = umcd.Frame( [list_status], _('Active Directory Connector status'))
 
@@ -523,7 +523,7 @@ class handler(umch.simpleHandler):
 		opts = { 'action': 'guess_basedn' }
 		req = umcp.Command( args = [ 'adconnector/configure' ], opts = opts )
 		actions = ( umcd.Action( req, [ inp_ldap_host.id() ] ), )
-		btn_guess = umcd.Button( _('Determine BaseDN'), 'actions/ok', actions = actions, close_dialog = False )
+		btn_guess = umcd.Button( _('Determine BaseDN'), 'actions/ok', actions = actions, close_dialog = False)
 
 		# ask for ldap_base and/or display a first guess based on ldapsearch call
 		if obj.options.get('action') == 'guess_basedn' and self.guessed_baseDN:
@@ -592,9 +592,9 @@ class handler(umch.simpleHandler):
 		opts = { 'action': 'save' }
 		req = umcp.Command( args = [ 'adconnector/configure' ], opts = opts )
 		actions = ( umcd.Action( req, list_id ), )
-		btn_set = umcd.Button( _('Save Changes'), 'actions/ok', actions = actions, close_dialog = False )
+		btn_set = umcd.Button( _('Save'), 'actions/ok', actions = actions, close_dialog = False, attributes = {'class': 'submit', 'defaultbutton': '1'} )
 
-		btn_close = umcd.CloseButton()
+		btn_close = umcd.CloseButton(attributes = {'class': 'cancel'})
 
 		# upload/download certificate buttons
 		btn_download_cert = umcd.Link( description = _('Download ucs-ad-connector.msi and UCS certificate'), link='/univention-ad-connector/', icon='actions/download', icon_and_text=True )
@@ -616,7 +616,7 @@ class handler(umch.simpleHandler):
 		list_items.add_row( [ inp_poll_sleep, inp_retry_rejected ] )
 		list_items.add_row( [ inp_debug_level, inp_debug_function ] )
 		list_items.add_row( [ txt_hint ] )
-		list_items.add_row( [ btn_set, btn_close ] )
+		list_items.add_row( [ btn_close, btn_set ] )
 
 		frame = umcd.Frame( [list_items], _('Active Directory Connector Configuration'))
 
@@ -655,7 +655,7 @@ class handler(umch.simpleHandler):
 		# create save and close button
 		req = umcp.Command( args = [ 'adconnector/uploadcert' ] )
 		actions = ( umcd.Action( req, [ inp_certfile.id() ] ), )
-		btn_save = umcd.Button( _('Save'), 'actions/ok', actions = actions, close_dialog = False )
+		btn_save = umcd.Button( _('Save'), 'actions/ok', actions = actions, close_dialog = False, attributes = {'class': 'submit', 'defaultbutton': '1' } )
 
 		btn_close = umcd.CloseButton()
 
@@ -663,7 +663,7 @@ class handler(umch.simpleHandler):
 		list_items = umcd.List()
 		list_items.add_row( [ _('Please select the file containing the Active Directory certificate.') ] )
 		list_items.add_row( [ inp_certfile ] )
-		list_items.add_row( [ btn_save, btn_close ] )
+		list_items.add_row( [ btn_close, btn_save ] )
 		frame = umcd.Frame( [list_items], _('Upload Active Directory Certificate'))
 
 		res.dialog = []
@@ -687,17 +687,21 @@ class handler(umch.simpleHandler):
 
 		self.__update_status()
 
-		btn_close = umcd.CloseButton()
+		btn_close = umcd.CloseButton(attributes = {'class': 'submit', 'defaultbutton': '1'})
 
 		res.dialog = []
 		lst = umcd.List()
 		if self.msg['error'] or self.msg['warn'] or self.msg['hint']:
 			for key in ( 'error', 'warn', 'hint' ):
 				for msg in self.msg[key]:
-					img = umcd.Image( 'adconnector/%s' % key )
 					txt = umcd.Text( msg )
-					lst.add_row( [ ( img, txt ) ] )
+					if key != 'hint':
+						img = umcd.Image( 'adconnector/%s' % key )
+						lst.add_row( [ ( img, txt ) ] )
+					else:
+						lst.add_row( [ txt ] )
 
+		lst.add_row( [ umcd.HTML('&nbsp;') ] )
 		lst.add_row( [ btn_close ] )
 		res.dialog = [ lst ]
 

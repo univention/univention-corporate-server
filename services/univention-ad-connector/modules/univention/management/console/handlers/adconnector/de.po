@@ -267,10 +267,6 @@ msgstr ""
 msgid "The password of specified replication user has not been set yet!"
 msgstr "Das Passwort des Replikationsbenutzers wurde noch nicht gesetzt!"
 
-#: __init__.py:588
-msgid "Save Changes"
-msgstr "Änderungen speichern"
-
 #: __init__.py:593
 msgid "Download ucs-ad-connector.msi and UCS certificate"
 msgstr "Download des .msi-Pakets und UCS-Zertifikats"

@@ -1,3 +1,9 @@
+univention-ad-connector (4.1.8-1) unstable; urgency=low
+
+  * design updates for the AD Connector UMC module. Bug #16808
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 13 Jan 2010 09:17:20 +0100
+
 univention-ad-connector (4.1.7-1) unstable; urgency=low
 
   * added ad-connector umc service configuration Bug #17311
