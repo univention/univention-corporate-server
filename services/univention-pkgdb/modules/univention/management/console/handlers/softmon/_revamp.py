@@ -141,7 +141,7 @@ class Web( object ):
 		###################################################
 
 		req = umcp.Command( args = [ umc_command ], opts= { 'filter': [], 'search': True } )
-		search_btn = umcd.SearchButton( umcd.Action( req, idlist_search ) )
+		search_btn = umcd.SearchButton( umcd.Action( req, idlist_search ), attributes = {'class': 'submit', 'defaultbutton': '1'} )
 
 		###################################################
 		# build layout
@@ -155,7 +155,7 @@ class Web( object ):
 		lst2.add_row( [ descr ] )
 
 		lst3 = umcd.List()
-		lst3.add_row( [ max_results, search_btn ] )
+		lst3.add_row(  [ search_btn ] )
 
 		if umc_command == 'softmon/system/search':
 			res.dialog = [ umcd.Frame( [ lst1, lst2, lst3 ], _('Search systems') ) ]
@@ -242,7 +242,7 @@ class Web( object ):
 		###################################################
 
 		req = umcp.Command( args = [ 'softmon/problem/identification' ], opts= { 'check': current_check, 'search': True } )
-		search_btn = umcd.SearchButton( umcd.Action( req, idlist ) )
+		search_btn = umcd.SearchButton( umcd.Action( req, idlist ), attributes = {'class': 'submit', 'defaultbutton': '1'} )
 
 		###################################################
 		# build layout
@@ -253,7 +253,7 @@ class Web( object ):
 		if version_input:
 			row.append(version_input)
 		lst1.add_row( row )
-		lst1.add_row( [ max_results, search_btn ] )
+		lst1.add_row( [ search_btn ] )
 
 		res.dialog = [ umcd.Frame( [ lst1 ], _('Identify problems') ) ]
 

@@ -1,3 +1,9 @@
+univention-pkgdb (3.0.3-1) unstable; urgency=low
+
+  * design updates for the pkgdb UMC module. Bug #16809
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 13 Jan 2010 09:51:44 +0100
+
 univention-pkgdb (3.0.2-4) unstable; urgency=low
 
   * Fix spelling errors in univention_pkgdb.py (Bug #16948)
