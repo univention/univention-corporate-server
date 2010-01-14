@@ -31,7 +31,7 @@
 import os
 
 def interface(var):
-	if var.startswith('interfaces/'):
+	if var.startswith('interfaces/') and not var.endswith( 'handler' ):
 		return var.split('/')[1].replace('_', ':')
 	return None
 
