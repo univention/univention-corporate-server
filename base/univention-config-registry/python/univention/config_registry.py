@@ -60,6 +60,7 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
          univention-config-registry überschrieben werden.
          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):'''
 
+
 sys.path.insert(0, '')
 
 def warning_string(prefix='# ', width=80, srcfiles=[], enforce_ascii=False):
@@ -1098,10 +1099,15 @@ def handler_search( args, opts = {} ):
 				break
 
 def handler_get( args, opts = {} ):
+	global opt_filters
+	
 	b = ConfigRegistry()
 	b.load()
 
-	print b.get( args[ 0 ], '' )
+	if opt_filters[ 99 ][ 2 ]:
+		print '%s: %s' % ( args[ 0 ], b.get( args[ 0 ], '' ) )
+	else:
+		print b.get( args[ 0 ], '' )
 
 class UnknownKeyException ( Exception ):
 	def __init__ (self, value):
@@ -1281,44 +1287,47 @@ class Output:
 		for l in lines:
 			self.text.append(l)
 
+handlers = {
+	'set': (handler_set, 1),
+	'unset': (handler_unset, 1),
+	'dump': (handler_dump, 0),
+	'update': (handler_update, 0),
+	'commit': (handler_commit, 0),
+	'register': (handler_register, 1),
+	'unregister': (handler_unregister, 1),
+	'randpw': (handler_randpw, 0),
+	'shell': (None, 0),	# for compatibility only
+	'filter': (handler_filter, 0),
+	'search': (handler_search, 0),
+	'get': (handler_get, 1),
+	'info': (handler_info, 1),
+	}
+# action options: each of these options perform an action
+opt_actions = {
+	# name : ( function, state, ( alias list ) )
+	'help' : [ handler_help, False, ( '-h', '-?' ) ],
+	'version' : [ handler_version, False, ( '-v', ) ],
+	}
+# filter options: these options define filter for the output
+opt_filters = {
+	# id : ( name, function, state, ( valid actions ) )
+	0  : [ 'keys-only', filter_keys_only, False, ( 'dump', 'search' ) ],
+	10 : [ 'sort', filter_sort, False, ( 'dump', 'search', 'info' ) ],
+	99 : [ 'shell', filter_shell, False, ( 'dump', 'search', 'shell', 'get' ) ],
+	}
+BOOL, STRING = range ( 2 )
+opt_commands = {
+	'set' : { 'force' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
+	'unset' : { 'force' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
+	'search' : { 'key' : (BOOL, False), 'value' : (BOOL, False), 'all' : (BOOL, False), \
+				 'brief' : (BOOL, False), 'category' : (STRING, None), 'non-empty' : (BOOL, False) },
+	'filter' : { 'encode-utf8' : (BOOL, False) }
+	}
+
 def main(args):
+	global handlers, opt_actions, opt_filters, opt_commands
+
 	try:
-		handlers = {
-			'set': (handler_set, 1),
-			'unset': (handler_unset, 1),
-			'dump': (handler_dump, 0),
-			'update': (handler_update, 0),
-			'commit': (handler_commit, 0),
-			'register': (handler_register, 1),
-			'unregister': (handler_unregister, 1),
-			'randpw': (handler_randpw, 0),
-			'shell': (None, 0),	# for compatibility only
-			'filter': (handler_filter, 0),
-			'search': (handler_search, 0),
-			'get': (handler_get, 1),
-			'info': (handler_info, 1),
-			}
-		# action options: each of these options perform an action
-		opt_actions = {
-			# name : ( function, state, ( alias list ) )
-			'help' : [ handler_help, False, ( '-h', '-?' ) ],
-			'version' : [ handler_version, False, ( '-v', ) ],
-			}
-		# filter options: these options define filter for the output
-		opt_filters = {
-			# id : ( name, function, state, ( valid actions ) )
-			0  : [ 'keys-only', filter_keys_only, False, ( 'dump', 'search' ) ],
-			10 : [ 'sort', filter_sort, False, ( 'dump', 'search', 'info' ) ],
-			99 : [ 'shell', filter_shell, False, ( 'dump', 'search', 'shell' ) ],
-			}
-		BOOL, STRING = range ( 2 )
-		opt_commands = {
-			'set' : { 'force' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
-			'unset' : { 'force' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
-			'search' : { 'key' : (BOOL, False), 'value' : (BOOL, False), 'all' : (BOOL, False), \
-						 'brief' : (BOOL, False), 'category' : (STRING, None), 'non-empty' : (BOOL, False) },
-			'filter' : { 'encode-utf8' : (BOOL, False) }
-			}
 		# close your eyes ...
 		if not args: args.append( '--help' )
 		# search for options in command line arguments
