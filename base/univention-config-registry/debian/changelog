@@ -1,3 +1,9 @@
+univention-config-registry (5.0.70-1) unstable; urgency=low
+
+  * allow option --shell for action get; Bug #16711
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 14 Jan 2010 14:02:48 +0100
+
 univention-config-registry (5.0.69-1) unstable; urgency=low
 
   * make nfsmounts more robust Bug #15350
