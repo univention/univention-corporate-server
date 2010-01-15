@@ -107,6 +107,7 @@ install-ext-%:
 
 	univention-install-config-registry
 	univention-install-config-registry-info
+	univention-install-service-info
 
 binary-arch: build install
 
