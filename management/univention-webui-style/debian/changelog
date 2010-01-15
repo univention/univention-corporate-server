@@ -1,3 +1,9 @@
+univention-webui-style (4.0.35-1) unstable; urgency=low
+
+  * UMC design updates. Bug #17368
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 15 Jan 2010 13:51:23 +0100
+
 univention-webui-style (4.0.34-1) unstable; urgency=low
 
   * UMC design updates. Bug #16808 and Bug #16809

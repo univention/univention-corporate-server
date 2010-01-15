@@ -1685,6 +1685,10 @@ table.desktopicon td.desktopicon td.button_icon
 	padding-right: 10px;
 }
 
+.button_icon_link {
+	float: left;
+}
+
 .button_icon {
     border: none;
 }

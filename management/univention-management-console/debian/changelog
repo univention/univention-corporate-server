@@ -1,3 +1,9 @@
+univention-management-console (2.0.40-1) unstable; urgency=low
+
+  * UMC design updates. Bug #17368
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 15 Jan 2010 14:10:16 +0100
+
 univention-management-console (2.0.39-1) unstable; urgency=low
 
   * updated copyright Bug #17222 

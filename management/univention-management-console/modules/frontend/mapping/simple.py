@@ -81,7 +81,7 @@ def link_map( storage, umcp_part ):
 		if attributes.has_key(key):
 			attrstr += ' %s="%s"' % (key, attributes[key])
 
-	html =  ' <table class="button"><tr>\n'
+	html =  ' <table class="button_icon_link"><tr>\n'
 	if umcp_part.get_icon():
 		html += '<td class="button_icon"><a href="%s" target="_blank" class="nounderline"><img class="button_icon" src="%s" alt="%s" %s></a></td>\n' % ( umcp_part.get_link(),
 																																						 umc_tools.image_get( umcp_part.get_icon(), umc_tools.SIZE_MEDIUM ),
