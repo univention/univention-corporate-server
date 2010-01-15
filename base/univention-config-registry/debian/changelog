@@ -1,3 +1,9 @@
+univention-config-registry (5.0.72-1) unstable; urgency=low
+
+  * fixed service_info Bug #17311 
+
+ -- Felix Botner <botner@univention.de>  Fri, 15 Jan 2010 15:49:42 +0100
+
 univention-config-registry (5.0.71-1) unstable; urgency=low
 
   * exclude interfaces/handler from list of valid interfaces; Bug #16652
