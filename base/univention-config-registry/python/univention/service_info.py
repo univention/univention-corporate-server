@@ -74,7 +74,7 @@ def pidof( name ):
 		else:
 			args = cmd.split(' ')
 		cmd = shlex.split( name )
-		if args[ 0 ].endswith( cmd[ 0 ] ):
+		if cmd[0] in args:
 			if len( cmd ) > 1 and len( args ) >= len( cmd ):
 				for i in range( 1, len( cmd ) ):
 					print cmd[ i ], args[ i ]
