@@ -86,7 +86,7 @@ def usage():
 	print '    Print version information and exit'
 	print ''
 	print 'Description:'
-	print '  Scans all packages in the lokal system and sends this data to the database pkgdb.'
+	print '  Scans all packages in the local system and sends this data to the database pkgdb.'
 	print '  If any options are given, no scan is run.'
 	print ''
 	print 'Known-Bugs:'
