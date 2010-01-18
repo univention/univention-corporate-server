@@ -89,7 +89,7 @@ if [ "$repository_online_unmaintained" = "yes" -o "$repository_online_unmaintain
 	else
 		# univention-updater is called in "net" mode
 
-		repo_server=$(python2.4 -c 'import univention.updater; updater=univention.updater.UniventionUpdater(); print updater.repository_server')
+		repo_server=$(python2.4 -c 'import univention.updater; updater=univention.updater.UniventionUpdater(); print "%s:%s" % (updater.repository_server,updater.repository_port)')
 		repo_prefix=$(python2.4 -c 'import univention.updater; updater=univention.updater.UniventionUpdater(); print updater.repository_prefix')
 		for arch in all $architecture extern ; do
 			netpath="2.3/unmaintained/2.3-0/${arch}/"

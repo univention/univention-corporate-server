@@ -1,3 +1,13 @@
+univention-updater (5.0.64-1) unstable; urgency=low
+
+  * Actually insert port number into URIs. (Bug #13610)
+  * UCR variable repository/online/port no longer specifies the default port
+    for all repositories without a more specific setting, but only the port
+    for repository/online/server.
+  * Introduce new UCR variable repository/mirror/port.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 18 Jan 2010 16:03:10 +0100
+
 univention-updater (5.0.63-1) unstable; urgency=low
 
   * ensure that univention-(security-update|updater) or any other package

@@ -243,14 +243,14 @@ class UniventionUpdater:
 
 		if debug:
 			if response.status == 404:
-				print '# The site http://%s%s was not found' % (server, site)
+				print '# The site http://%s:%s%s was not found' % (server, port, site)
 			elif response.status == 401:
 				if username and password:
-					print '# Authentication failure for http://%s:%s@%s%s' % (username, password, server, site)
+					print '# Authentication failure for http://%s:%s@%s:%s%s' % (username, password, server, port, site)
 				else:
-					print '# Username and password are requiered for http://%s%s' % (server, site)
+					print '# Username and password are requiered for http://%s:%s%s' % (server, port, site)
 			else:
-				print '# The http error code (%d) was returned for the site http://%s%s' % (response.status, server, site)
+				print '# The http error code (%d) was returned for the site http://%s:%s%s' % (response.status, server, port, site)
 
 		self.close_connection()
 		return False
@@ -288,7 +288,7 @@ class UniventionUpdater:
 				for arch in ['all', 'extern'] + self.architectures:
 					path='/%s/%s/sec%s/%s/' % (self.ucs_version, part, next_security_version, arch)
 					if self.net_path_exists(path):
-						sources_list.append('deb http://%s/%s/%s/%s/ sec%s/%s/' % (self.repository_server, self.repository_prefix, self.ucs_version, part, next_security_version, arch))
+						sources_list.append('deb http://%s:%s/%s/%s/%s/ sec%s/%s/' % (self.repository_server, self.repository_port, self.repository_prefix, self.ucs_version, part, next_security_version, arch))
 
 		return sources_list
 
@@ -375,9 +375,9 @@ class UniventionUpdater:
 						path = '%s/dists/univention/main/binary-%s/' % ( path_base, arch )
 						if self.net_path_exists( path ):
 							if self.repository_prefix:
-								repos += 'deb http://%s/%s%s dists/univention/main/binary-%s/\n' % ( self.repository_server, self.repository_prefix, path_base, arch )
+								repos += 'deb http://%s:%s/%s%s dists/univention/main/binary-%s/\n' % ( self.repository_server, self.repository_port, self.repository_prefix, path_base, arch )
 							else:
-								repos += 'deb http://%s%s dists/univention/main/binary-%s/\n' % ( self.repository_server, path_base, arch )
+								repos += 'deb http://%s:%s%s dists/univention/main/binary-%s/\n' % ( self.repository_server, self.repository_port, path_base, arch )
 			for part in self.parts:
 				# for example: http://apt.univention.de/2.0/maintained/
 				path='/%s.%s/%s/' % (start.major, start.minor, part)
@@ -399,16 +399,16 @@ class UniventionUpdater:
 							continue
 						printed = True
 						if self.repository_prefix:
-							path = 'http://%s/%s/%s.%s/%s/' % ( self.repository_server, self.repository_prefix, patch_inc.major, patch_inc.minor, part )
+							path = 'http://%s:%s/%s/%s.%s/%s/' % ( self.repository_server, self.repository_port, self.repository_prefix, patch_inc.major, patch_inc.minor, part )
 						else:
-							path = 'http://%s/%s.%s/%s/' % ( self.repository_server, patch_inc.major, patch_inc.minor, part )
+							path = 'http://%s:%s/%s.%s/%s/' % ( self.repository_server, self.repository_port, patch_inc.major, patch_inc.minor, part )
 						repos += 'deb %s %s.%s-%s/%s/\n' % ( path, patch_inc.major, patch_inc.minor , patch_inc.patchlevel, arch)
 
 					if clean:
 						if self.repository_prefix:
-							path = 'http://%s/%s/%s.%s/%s/' % ( self.repository_server, self.repository_prefix, patch_inc.major, patch_inc.minor, part )
+							path = 'http://%s:%s/%s/%s.%s/%s/' % ( self.repository_server, self.repository_port, self.repository_prefix, patch_inc.major, patch_inc.minor, part )
 						else:
-							path = 'http://%s/%s.%s/%s/' % ( self.repository_server, patch_inc.major, patch_inc.minor, part )
+							path = 'http://%s:%s/%s.%s/%s/' % ( self.repository_server, self.repository_port, patch_inc.major, patch_inc.minor, part )
 						repos += 'clean %s/%s.%s-%s/\n' % ( path, patch_inc.major, patch_inc.minor , patch_inc.patchlevel )
 
 					if printed:
@@ -474,14 +474,14 @@ class UniventionUpdater:
 							continue
 						printed = True
 						if self.repository_prefix:
-							repos += 'deb http://%s/%s/%d.%d/%s/ sec%s/%s/\n' % ( self.repository_server, self.repository_prefix, start.major, start.minor, part, p, arch)
+							repos += 'deb http://%s:%s/%s/%d.%d/%s/ sec%s/%s/\n' % ( self.repository_server, self.repository_port, self.repository_prefix, start.major, start.minor, part, p, arch)
 						else:
-							repos += 'deb http://%s/%d.%d/%s/ sec%s/%s/\n' % ( self.repository_server, start.major, start.minor, part, p, arch)
+							repos += 'deb http://%s:%s/%d.%d/%s/ sec%s/%s/\n' % ( self.repository_server, self.repository_port, start.major, start.minor, part, p, arch)
 					if clean:
 						if self.repository_prefix:
-							repos += 'clean http://%s/%s/%d.%d/%s/sec%s/%s/\n' % ( self.repository_server, self.repository_prefix, start.major, start.minor, part, p )
+							repos += 'clean http://%s:%s/%s/%d.%d/%s/sec%s/%s/\n' % ( self.repository_server, self.repository_port, self.repository_prefix, start.major, start.minor, part, p )
 						else:
-							repos += 'clean http://%s/%d.%d/%s/sec%s/%s/\n' % ( self.repository_server, start.major, start.minor, part, p )
+							repos += 'clean http://%s:%s/%d.%d/%s/sec%s/%s/\n' % ( self.repository_server, self.repository_port, start.major, start.minor, part, p )
 					if printed:
 						repos += '\n'
 						printed = False
@@ -495,9 +495,9 @@ class UniventionUpdater:
 						path='/%s/%s/hotfixes/%s/Packages.gz' % ( self.ucs_version, part, arch )
 						if self.net_path_exists( path ):
 							if self.repository_prefix:
-								repos += 'deb http://%s/%s/%s/%s/ hotfixes/%s/\n' % ( self.repository_server, self.repository_prefix, self.ucs_version, part, arch )
+								repos += 'deb http://%s:%s/%s/%s/%s/ hotfixes/%s/\n' % ( self.repository_server, self.repository_port, self.repository_prefix, self.ucs_version, part, arch )
 							else:
-								repos += 'deb http://%s/%s/%s/ hotfixes/%s/\n' % ( self.repository_server, self.ucs_version, part, arch )
+								repos += 'deb http://%s:%s/%s/%s/ hotfixes/%s/\n' % ( self.repository_server, self.repository_port, self.ucs_version, part, arch )
 
 			start.minor += 1
 			# is there a minor version update
@@ -537,7 +537,7 @@ class UniventionUpdater:
 				repository_server = self.configRegistry.get('repository/online/component/%s/server' % component, self.repository_server)
 			else:
 				repository_server = self.repository_server
-			repository_port = self.configRegistry.get('repository/online/component/%s/port' % component, self.repository_port)
+			repository_port = self.configRegistry.get('repository/online/component/%s/port' % component, '80')
 			prefix_var = 'repository/online/component/%s/prefix' % component
 			repository_prefix = self.configRegistry.get( 'repository/online/component/%s/prefix' % component, '' )
 
@@ -578,9 +578,9 @@ class UniventionUpdater:
 					path = '/%s/%s/component/%s/Packages.gz' % ( version, part, component )
 					if self.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password, debug=True):
 						if repository_prefix:
-							path = 'http://%s%s/%s/%s/%s/component/%s/' % ( auth_string, repository_server, repository_prefix, version, part, component)
+							path = 'http://%s%s:%s/%s/%s/%s/component/%s/' % ( auth_string, repository_server, repository_port, repository_prefix, version, part, component)
 						else:
-							path = 'http://%s%s/%s/%s/component/%s/' % ( auth_string, repository_server, version, part, component)
+							path = 'http://%s%s:%s/%s/%s/component/%s/' % ( auth_string, repository_server, repository_port, version, part, component)
 						repos += 'deb %s ./ \n' % path
 						if clean:
 							repos += 'clean %s\n' % path
@@ -592,15 +592,15 @@ class UniventionUpdater:
 								continue
 							printed = True
 							if repository_prefix:
-								path = 'http://%s%s/%s/%s/%s/' % ( auth_string, repository_server, repository_prefix, version, part )
+								path = 'http://%s%s:%s/%s/%s/%s/' % ( auth_string, repository_server, repository_port, repository_prefix, version, part )
 							else:
-								path = 'http://%s%s/%s/%s/' % ( auth_string, repository_server, version, part )
+								path = 'http://%s%s:%s/%s/%s/' % ( auth_string, repository_server, repository_port, version, part )
 							repos += 'deb %scomponent %s/%s/\n' % ( path, component, arch )
 					if clean:
 						if repository_prefix:
-							path = 'http://%s%s/%s/%s/%s/' % ( auth_string, repository_server, repository_prefix, version, part )
+							path = 'http://%s%s:%s/%s/%s/%s/' % ( auth_string, repository_server, repository_port, repository_prefix, version, part )
 						else:
-							path = 'http://%s%s/%s/%s/' % ( auth_string, repository_server, version, part )
+							path = 'http://%s%s:%s/%s/%s/' % ( auth_string, repository_server, repository_port, version, part )
 						repos += 'clean %s/component/%s/\n' % ( path, component )
 					if printed:
 						repos += '\n'
