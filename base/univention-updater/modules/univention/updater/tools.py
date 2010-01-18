@@ -214,7 +214,7 @@ class UniventionUpdater:
 	def net_path_exists (self, path, server='', port='', prefix='', username='', password='', debug=False):
 		# path MUST NOT contain the schema and hostname
 		proxy_headers = self.open_connection(server=server, port=port)
-		if server: #if we use a diffrent server we should also use a diffrent prefix
+		if server: #if we use a different server we should also use a different prefix
 			if prefix:
 				site = '%s/%s/%s' % (self.proxy_prefix, prefix, path)
 			else:
@@ -581,7 +581,7 @@ class UniventionUpdater:
 						continue
 					printed = False
 
-					# support a diffrent repository
+					# support a different repository
 					path = '/%s/%s/component/%s/Packages.gz' % ( version, part, component )
 					if self.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password, debug=True):
 						if repository_prefix:

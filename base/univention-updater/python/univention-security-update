@@ -194,7 +194,7 @@ if __name__ == '__main__':
 			code, message = msg
 
 			if code == socket.EAI_NONAME:
-				dprint( 'Error: The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a diffrent value.' % (updater.repository_server), [fp_debug,sys.stderr] )
+				dprint( 'Error: The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a different value.' % (updater.repository_server), [fp_debug,sys.stderr] )
 			else:
 				dprint( 'Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile /var/log/univention/security-updates.log' % (updater.repository_server), [fp_debug,sys.stderr] )
 
