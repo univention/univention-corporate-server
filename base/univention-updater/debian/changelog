@@ -1,3 +1,9 @@
+univention-updater (5.0.64-4) unstable; urgency=low
+
+  * Fix spelling: s/diffrent/different/. (Bug #17379)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 18 Jan 2010 18:31:09 +0100
+
 univention-updater (5.0.64-3) unstable; urgency=low
 
   * Make repository/online/port the default port again, but reorganize code
@@ -1266,7 +1272,7 @@ univention-updater (3.1.1-5) unstable; urgency=low
 univention-updater (3.1.1-4) unstable; urgency=low
 
   * support for username and password for components, Bug #12514
-  * support a diffrent repository style, ../component/ox/ ./, Bug #12514
+  * support a different repository style, ../component/ox/ ./, Bug #12514
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Oct 2008 14:45:36 +0100
 

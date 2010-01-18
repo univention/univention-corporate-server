@@ -284,7 +284,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 			code, message = msg
 
 			if code == socket.EAI_NONAME:
-				dprint('Error: The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a diffrent value.' % (updater.repository_server), [ sys.stdout, stdout ])
+				dprint('Error: The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a different value.' % (updater.repository_server), [ sys.stdout, stdout ])
 			else:
 				dprint('Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile /var/log/univention/updater.log' % (updater.repository_server), [ sys.stdout, stdout ])
 
@@ -383,7 +383,7 @@ def main():
 	deactivateSourcesListMethods( methods = [ 'cdrom' ] )
 
 	# save the path for the pre- and postup scripts,
-	# this path will be diffrent for the diffrent modes
+	# this path will be different for the different modes
 	scriptPath = None
 
 	if clean:
