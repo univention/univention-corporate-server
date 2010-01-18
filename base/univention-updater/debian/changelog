@@ -1,3 +1,11 @@
+univention-updater (5.0.63-1) unstable; urgency=low
+
+  * ensure that univention-(security-update|updater) or any other package
+    installed during the update do not read parts of the at script via
+    stdin; Bug #17124
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 18 Jan 2010 10:54:16 +0100
+
 univention-updater (5.0.62-1) unstable; urgency=low
 
   * Use configured repository and proxy TCP port. (Bug #13610)

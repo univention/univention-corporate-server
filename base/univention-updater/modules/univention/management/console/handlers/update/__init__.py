@@ -693,7 +693,7 @@ class handler(umch.simpleHandler):
 dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server
 dpkg-statoverride --add root root 0644 /usr/sbin/apache2
 chmod -x /usr/sbin/univention-management-console-server /usr/sbin/apache2
-%s
+%s < /dev/null
 if [ $? -eq 0 ]; then
 	univention-config-registry set update/reboot/required=yes
 fi
@@ -701,8 +701,8 @@ dpkg-statoverride --remove /usr/sbin/univention-management-console-server
 dpkg-statoverride --remove /usr/sbin/apache2
 chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 ''' % command
-		p1 = subprocess.Popen(['echo "%s" | at now' % script], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		(stdout,stderr) = p1.communicate()
+		p1 = subprocess.Popen( [ 'at now', ], stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True )
+		(stdout,stderr) = p1.communicate( script )
 		ud.debug(ud.ADMIN, ud.WARN, 'executing "%s"' % command)
 		ud.debug(ud.ADMIN, ud.WARN, 'install stderr=%s' % stderr)
 		ud.debug(ud.ADMIN, ud.INFO, 'install stdout=%s' % stdout)
