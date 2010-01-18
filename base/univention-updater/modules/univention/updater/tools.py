@@ -103,6 +103,17 @@ class UniventionUpdater:
 
 		self.ucr_reinit()
 
+	def config_repository( self ):
+		""" Retrieve configuration to access repository. Overridden in UniventionMirror. """
+		self.online_repository = self.configRegistry.get('repository/online', 'True')
+		if self.online_repository.lower() in ['true', 'yes', '1']:
+			self.online_repository = True
+		else:
+			self.online_repository = False
+		self.repository_server = self.configRegistry.get('repository/online/server', 'apt.univention.de')
+		self.repository_port = self.configRegistry.get('repository/online/port', '80')
+		self.repository_prefix = self.configRegistry.get('repository/online/prefix', '')
+
 	def open_connection(self, server=None, port=None):
 		'''Open http-connection to server:port'''
 
@@ -128,6 +139,7 @@ class UniventionUpdater:
 				self.proxy_port = HTTP_PROXY_DEFAULT_PORT
 			self.proxy_server   = location
 
+			#print "# %s:%d %s" % (self.proxy_server, self.proxy_port, self.proxy_prefix)
 			self.connection = httplib.HTTPConnection(self.proxy_server, self.proxy_port)
 			proxy_headers = {}
 
@@ -137,6 +149,7 @@ class UniventionUpdater:
 				proxy_headers['Proxy-Authorization'] = string.strip ('Basic %s' % user_pass)
 			return proxy_headers
 		else:
+			#print "# %s:%s" % (server, port)
 			self.connection = httplib.HTTPConnection(server, int(port))
 
 	def close_connection(self):
@@ -150,15 +163,6 @@ class UniventionUpdater:
 
 		self.architectures = [ os.popen('dpkg-architecture -qDEB_BUILD_ARCH 2>/dev/null').readline()[:-1] ]
 
-		self.online_repository=self.configRegistry.get('repository/online', 'True')
-		if self.online_repository.lower() in ['true', 'yes', '1']:
-			self.online_repository = True
-		else:
-			self.online_repository = False
-
-		self.repository_server = self.configRegistry.get('repository/online/server', 'apt.univention.de')
-		self.repository_port = self.configRegistry.get('repository/online/port', '80')
-		self.repository_prefix = self.configRegistry.get('repository/online/prefix', '')
 		self.is_repository_server = self.configRegistry.get( 'local/repository', 'no' ) in ( 'yes', 'true' )
 
 		if self.configRegistry.has_key('proxy/http') and self.configRegistry['proxy/http']:
@@ -189,6 +193,9 @@ class UniventionUpdater:
 
 		# should hotfixes be used
 		self.hotfixes = self.configRegistry.get( 'repository/online/hotfixes', 'no' ).lower() in ( 'true', 'yes' )
+
+		# UniventionMirror needs to provide its own settings
+		self.config_repository()
 
 		# check availability of the repository server
 		try:
@@ -537,7 +544,7 @@ class UniventionUpdater:
 				repository_server = self.configRegistry.get('repository/online/component/%s/server' % component, self.repository_server)
 			else:
 				repository_server = self.repository_server
-			repository_port = self.configRegistry.get('repository/online/component/%s/port' % component, '80')
+			repository_port = self.configRegistry.get('repository/online/component/%s/port' % component, self.repository_port)
 			prefix_var = 'repository/online/component/%s/prefix' % component
 			repository_prefix = self.configRegistry.get( 'repository/online/component/%s/prefix' % component, '' )
 

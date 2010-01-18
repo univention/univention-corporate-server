@@ -37,13 +37,7 @@ from tools import UniventionUpdater, UCS_Version
 class UniventionMirror( UniventionUpdater ):
 	def __init__( self ):
 		UniventionUpdater.__init__( self )
-		self.online_repository = self.configRegistry.get( 'repository/mirror', 'yes' )
-		self.repository_server = self.configRegistry.get( 'repository/mirror/server', 'apt.univention.de' )
-		self.repository_port = self.configRegistry.get( 'repository/mirror/port', '80' )
 		self.repository_path =  self.configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
-		self.repository_prefix = self.configRegistry.get( 'repository/mirror/prefix', '' )
-		if not self.repository_prefix and self.net_path_exists( '/univention-repository/' ):
-			self.repository_prefix = 'univention-repository'
 			
 		if self.configRegistry.has_key( 'repository/mirror/version/end' ):
 			self.version_end = UCS_Version( self.configRegistry.get( 'repository/mirror/version/end' ) )
@@ -57,6 +51,13 @@ class UniventionMirror( UniventionUpdater ):
 		archs = self.configRegistry.get( 'repository/mirror/architectures', '' )
 		if archs:
 			self.architectures = archs.split( ' ' )
+	
+	def config_repository( self ):
+		""" Retrieve configuration to access repository. Overrides UniventionUpdater. """
+		self.online_repository = self.configRegistry.get( 'repository/mirror', 'yes' )
+		self.repository_server = self.configRegistry.get( 'repository/mirror/server', 'apt.univention.de' )
+		self.repository_port = self.configRegistry.get( 'repository/mirror/port', '80' )
+		self.repository_prefix = self.configRegistry.get( 'repository/mirror/prefix', '' )
 
 	def retrieve_url( self, path ):
 		'''downloads the given path from the repository server'''
