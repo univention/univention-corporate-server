@@ -1,3 +1,9 @@
+univention-updater (5.0.64-2) unstable; urgency=low
+
+  * Remove ! from grep expression for bash security. (Bug #16282)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 18 Jan 2010 16:49:22 +0100
+
 univention-updater (5.0.64-1) unstable; urgency=low
 
   * Actually insert port number into URIs. (Bug #13610)
