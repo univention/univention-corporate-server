@@ -517,9 +517,9 @@ def main():
 			for arch in ['all', architecture, 'extern' ]:
 				if updater.net_path_exists('%s/%s/%s-%s/%s/' % (next_vv, maintained, next_vv, next_vp, arch)):
 					if updater.repository_prefix:
-						add_temporary_sources_list ('deb http://%s/%s/%s/%s/ %s/%s/' % ( updater.repository_server, updater.repository_prefix, next_vv, maintained, nextversion, arch))
+						add_temporary_sources_list ('deb http://%s:%s/%s/%s/%s/ %s/%s/' % ( updater.repository_server, updater.repository_port, updater.repository_prefix, next_vv, maintained, nextversion, arch))
 					else:
-						add_temporary_sources_list ('deb http://%s/%s/%s/ %s/%s/' % ( updater.repository_server, next_vv, maintained, nextversion, arch))
+						add_temporary_sources_list ('deb http://%s:%s/%s/%s/ %s/%s/' % ( updater.repository_server, updater.repository_port, next_vv, maintained, nextversion, arch))
 
 		# Download the pre and postup scripts
 		scriptPath = tempdir

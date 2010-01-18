@@ -39,6 +39,7 @@ class UniventionMirror( UniventionUpdater ):
 		UniventionUpdater.__init__( self )
 		self.online_repository = self.configRegistry.get( 'repository/mirror', 'yes' )
 		self.repository_server = self.configRegistry.get( 'repository/mirror/server', 'apt.univention.de' )
+		self.repository_port = self.configRegistry.get( 'repository/mirror/port', '80' )
 		self.repository_path =  self.configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
 		self.repository_prefix = self.configRegistry.get( 'repository/mirror/prefix', '' )
 		if not self.repository_prefix and self.net_path_exists( '/univention-repository/' ):

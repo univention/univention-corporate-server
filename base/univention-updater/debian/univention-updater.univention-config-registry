@@ -51,6 +51,7 @@ Variables: repository/online/unmaintained
 Variables: repository/online/component/.*
 Variables: repository/mirror
 Variables: repository/mirror/server
+Variables: repository/mirror/port
 Variables: repository/mirror/cron
 Variables: repository/mirror/basepath
 Variables: repository/mirror/threads
