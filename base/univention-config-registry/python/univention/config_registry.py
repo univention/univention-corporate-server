@@ -1104,6 +1104,8 @@ def handler_get( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
 
+	if not args[ 0 ] in b:
+		return
 	if opt_filters[ 99 ][ 2 ]:
 		print '%s: %s' % ( args[ 0 ], b.get( args[ 0 ], '' ) )
 	else:
@@ -1119,7 +1121,7 @@ def print_variable_info_string( key, value, variable_info, scope=None, show_scop
 	value_string = None
 	if value == None and not variable_info:
 		raise UnknownKeyException ( 'W: unknown key: "%s"' % key )
-	elif value == None and non_empty:
+	elif value in ( None, '' ) and non_empty:
 		return
 	elif value == None:
 		# if not shell filter option is set
@@ -1372,15 +1374,16 @@ def main(args):
 			opt_filters[ 99 ][ 2 ] = True
 			# switch to old, brief output
 			opt_commands[ 'search' ][ 'brief' ] = (BOOL, True)
-			# only include non-empty variables
-			opt_commands[ 'search' ][ 'non-empty' ] = (BOOL, True)
-			# modify arguments: each argument must be a complete key and not just part of it
+
 			tmp = []
 			if not args:
 				tmp.append( '' )
 			else:
 				for arg in args:
-					tmp.append( '^%s$' % arg )
+					if not arg.startswith( '--' ):
+						tmp.append( '^%s$' % arg )
+					else:
+						tmp.append( arg )
 			args = tmp
 
 		# set 'sort' option by default for dump and search

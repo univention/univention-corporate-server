@@ -1,3 +1,11 @@
+univention-config-registry (5.0.72-3) unstable; urgency=low
+
+  * get and search in shell mode: do not print anything if variable does
+    not exist
+  * make option --non-empty work correctly; Bug #16711
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 19 Jan 2010 11:45:44 +0100
+
 univention-config-registry (5.0.72-2) unstable; urgency=low
 
   * search: if creating shell output the value of an empty variable is set
