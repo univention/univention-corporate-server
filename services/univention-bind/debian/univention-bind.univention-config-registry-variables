@@ -1,0 +1,11 @@
+[dns/allow/query]
+Description[de]=ACL ID der Systeme oder Netzwerke, die als Option allow-query eingetragen werden soll. Zusätzlich zu dem Wert 'any' ist die Angabe definierter ACLs möglich.
+Description[en]=ACL ID of the systems or networks, that are set for the option allow-query. Additionally to the value 'any' the use of defnied ACLs is possible.
+Type=str
+Categories=Network
+
+[dns/allow/query/cache]
+Description[de]=ACL ID der Systeme oder Netzwerke, die als Option allow-query-cache eingetragen werden soll. Zusätzlich zu dem Wert 'any' ist die Angabe definierter ACLs möglich.
+Description[en]=ACL ID of the systems or networks, that are set for the option allow-query-cache. Additionally to the value 'any' the use of defnied ACLs is possible.
+Type=str
+Categories=Network
