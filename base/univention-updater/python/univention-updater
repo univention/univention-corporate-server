@@ -533,10 +533,12 @@ def main():
 		if os.path.exists(os.path.join(scriptPath, 'preup.sh')):
 			dprint('Execute %s' % os.path.join(scriptPath, 'preup.sh'))
 			os.chmod(os.path.join(scriptPath, 'preup.sh'), 0744)
-			postup = subprocess.Popen((os.path.join(scriptPath, 'preup.sh'), lastversion, nextversion), stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
-			tee = subprocess.Popen(('tee', '-a', '/var/log/univention/updater.log'), stdin=postup.stdout)
-			tee.communicate()
-			if postup.returncode != 0:
+			preup = subprocess.Popen((os.path.join(scriptPath, 'preup.sh'), lastversion, nextversion), stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
+			tee = subprocess.Popen(('tee', '-a', '/var/log/univention/updater.log'), stdin=preup.stdout)
+			# Order is important! See bug #16454
+			tee.wait()
+			preup.wait()
+			if preup.returncode != 0:
 				dprint('Failed to execute preup.sh', [sys.stdout,stdout])
 				raise UpdateError
 
@@ -576,7 +578,9 @@ def main():
 			os.chmod(os.path.join(scriptPath, 'postup.sh'), 0744)
 			postup = subprocess.Popen((os.path.join(scriptPath, 'postup.sh'), lastversion, nextversion), stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
 			tee = subprocess.Popen(('tee', '-a', '/var/log/univention/updater.log'), stdin=postup.stdout)
-			tee.communicate()
+			# Order is important! See bug #16454
+			tee.wait()
+			postup.wait()
 			if postup.returncode != 0:
 				dprint('Failed to execute postup.sh', [sys.stdout,stdout])
 				raise UpdateError
