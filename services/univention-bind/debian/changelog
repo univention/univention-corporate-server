@@ -1,8 +1,8 @@
-univention-bind (4.0.4-2) unstable; urgency=low
+univention-bind (4.0.5-1) unstable; urgency=low
 
   * new UCR variables dns/allow/query and dns/allow/query/cache allow setting named.conf
     options allow-query and allow-query-cache/allow-recursion to 'any' or some other
-	defined ACL (Bug #17270)
+    defined ACL (Bug #17270)
 
  -- Arvid Requate <requate@univention.de>  Tue, 19 Jan 2010 11:31:23 +0100
 
