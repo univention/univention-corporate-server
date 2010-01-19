@@ -1,3 +1,9 @@
+univention-updater (5.0.64-5) unstable; urgency=low
+
+  * Fix order of wait on subprocesses. (Bug #16454)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Jan 2010 10:35:57 +0100
+
 univention-updater (5.0.64-4) unstable; urgency=low
 
   * Fix spelling: s/diffrent/different/. (Bug #17379)
