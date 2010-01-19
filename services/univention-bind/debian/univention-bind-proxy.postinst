@@ -44,6 +44,11 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions $2 lt 1.4; then
 	fi
 fi
 
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions $2 lt 4.0.5-2; then
+	univention-config-registry set dns/allow/query='any'
+	univention-config-registry set dns/allow/query/cache='any'
+fi
+
 mkdir -p /var/cache/univention-bind-proxy
 
 if [ "$1" = "configure" -a -n "$2" ]; then
