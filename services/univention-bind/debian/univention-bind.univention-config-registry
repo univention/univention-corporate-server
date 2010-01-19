@@ -1,5 +1,7 @@
 Type: file
 File: etc/bind/named.conf
+Variables: dns/allow/query
+Variables: dns/allow/query/cache
 
 Type: file
 File: etc/runit/univention-bind/run
