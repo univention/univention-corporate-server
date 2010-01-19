@@ -1122,7 +1122,11 @@ def print_variable_info_string( key, value, variable_info, scope=None, show_scop
 	elif value == None and non_empty:
 		return
 	elif value == None:
-		value_string = '<empty>'
+		# if not shell filter option is set
+		if not opt_filters[ 99 ][ 2 ]:
+			value_string = '<empty>'
+		else:
+			value_string = ''
 	else:
 		value_string = '%s' % value
 

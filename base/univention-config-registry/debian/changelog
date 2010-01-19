@@ -1,3 +1,10 @@
+univention-config-registry (5.0.72-2) unstable; urgency=low
+
+  * search: if creating shell output the value of an empty variable is set
+    to "" instead of the keyword "<empty>"; Bug #16711
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 19 Jan 2010 09:18:56 +0100
+
 univention-config-registry (5.0.72-1) unstable; urgency=low
 
   * fixed service_info Bug #17311 
