@@ -192,6 +192,22 @@ for d in bin conf/conf.d etc lib/modules sbin scripts ${MODULESDIR}; do
 	mkdir -p "${DESTDIR}/${d}"
 done
 
+# UNIVENTION-FORK: copy kernel modules
+add_modules_from_file() {
+	thinClientPrefix="/var/lib/univention-client-root/"
+	sed -e '/^#/d' ${1} | while read module rest; do
+		echo "${module} ${rest}" >>"${DESTDIR}/conf/modules"
+		for mod in $(cat ${MODULESDIR}/modules.dep | grep ${module}.ko: | sed 's/://') ; do
+			if [ -e "${DESTDIR}/${mod}" ]; then
+				continue
+			fi
+			mkdir -p "${DESTDIR}/$(dirname "${mod}")"
+			ln -s "${thinClientPrefix}${mod}" "${DESTDIR}/$(dirname "${mod}")"
+		done
+	done
+	cp ${MODULESDIR}/modules.dep ${DESTDIR}/lib/modules/${version}/
+}
+
 # MODULES=list case.  Always honour.
 # UNIVENTION-FORK: don't use global hooks for thin clients
 for x in "${CONFDIR}/modules" /usr/share/initramfs-tools/modules.d/*; do
