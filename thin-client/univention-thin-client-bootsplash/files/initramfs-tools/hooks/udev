@@ -1,0 +1,34 @@
+#!/bin/sh -e
+
+PREREQS=""
+
+prereqs() { echo "$PREREQS"; }
+
+case "$1" in
+    prereqs)
+    prereqs
+    exit 0
+    ;;
+esac
+
+. /usr/share/initramfs-tools/hook-functions
+
+# udevd uses unix domain sockets for communication
+force_load unix
+
+cp -a /etc/udev/ $DESTDIR/etc/
+cp /etc/scsi_id.config $DESTDIR/etc/
+rm -f $DESTDIR/etc/udev/rules.d/*_hotplugd.rules # XXX
+rm -f $DESTDIR/etc/udev/rules.d/*_cd-aliases-generator.rules
+
+copy_exec /sbin/udevd /sbin/
+copy_exec /sbin/udevtrigger /sbin/
+copy_exec /sbin/udevsettle /sbin/
+
+mkdir $DESTDIR/lib/udev/
+cp /lib/udev/hotplug.functions $DESTDIR/lib/udev/
+copy_exec /lib/udev/ide.agent /lib/udev/
+for program in /lib/udev/*_id; do
+  copy_exec $program /lib/udev/
+done
+
