@@ -1,3 +1,9 @@
+univention-updater (5.0.64-7) unstable; urgency=low
+
+  * Remove 00_ucs_temporary_*.list in univention-actualise. (Bug #17122)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 21 Jan 2010 09:33:07 +0100
+
 univention-updater (5.0.64-6) unstable; urgency=low
 
   * Check network before doing maintenance. (Bug #17115)
