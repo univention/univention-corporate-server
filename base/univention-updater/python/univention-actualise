@@ -387,11 +387,11 @@ if __name__ == '__main__':
 		for root, dirs, files in os.walk('/etc/apt/sources.list.d'):
 			for file in [file for file in files if file.startswith('00_ucs_temporary_')]:
 				filename = os.path.join(root, file)
-				dprint( 'Warning: Deleting `%s` from incomplete update.' % (filename), [fp_debug,sys.stdout] )
+				print 'Warning: Deleting `%s` from incomplete update.' % filename
 				os.remove(filename)
 			del dirs[:]
 	except:
-		dprint( 'Failed, aborting.' % (filename), [fp_debug,sys.stdout] )
+		print 'Failed, aborting.'
 		sys.exit(2)
 
 	main()

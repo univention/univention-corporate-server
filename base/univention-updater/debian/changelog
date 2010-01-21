@@ -1,3 +1,9 @@
+univention-updater (5.0.64-8) unstable; urgency=low
+
+  * Fix s/dprint/print/ in univention-actualise. (Bug #17122)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 21 Jan 2010 10:40:35 +0100
+
 univention-updater (5.0.64-7) unstable; urgency=low
 
   * Remove 00_ucs_temporary_*.list in univention-actualise. (Bug #17122)
