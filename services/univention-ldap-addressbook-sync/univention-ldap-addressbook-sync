@@ -196,10 +196,8 @@ class IMAP_Client( object ):
 		except:
 			ud.debug( ud.ADMIN, ud.ERROR, 'Failed to read password for user cyrus. Is there a IMAP server installed?' )
 			sys.exit( 1 )
-		password = fd.readline()
+		password = fd.readline().rstrip('\n')
 		fd.close()
-		if password[ -1 ] == '\n':
-			password = password[ : -1 ]
 
 		# check for IMAP folder
 		self.folder = cfgRegistry.get( 'ldap/addressbook/sync/folder', '' )
@@ -221,10 +219,14 @@ class IMAP_Client( object ):
 			sys.exit( 1 )
 
 		# set ACLs (required!)
-		self.imap4.setacl( self.folder, 'cyrus', 'lrswipcda' )
+		(type, data) = self.imap4.setacl( self.folder, 'cyrus', 'lrswipcda' )
+		if type != 'OK':
+			raise RuntimeError( 'SetACL failed: %s' % repr(data) )
 
 		# select mailbox (checks existance)
-		self.imap4.select( self.folder )
+		(type, data) = self.imap4.select( self.folder )
+		if type != 'OK':
+			raise RuntimeError( 'Select folder failed: %s' % repr(data) )
 
 	def find( self, dn ):
 		# find it
@@ -424,8 +426,11 @@ def main():
 	# clean up mode?
 	if _options.remove_all_contacts:
 		ud.debug(ud.ADMIN, ud.ERROR, 'remove all existing contacts')
-		imap = IMAP_Client()
-		imap.remove_all()
+		try:
+			imap = IMAP_Client()
+			imap.remove_all()
+		except RuntimeError, e:
+			ud.debug( ud.ADMIN, ud.ERROR, str( e ) )
 	else:
 		# process datadir
 		datadir = cfgRegistry.get( 'ldap/addressbook/sync/listener/dir',
