@@ -419,7 +419,9 @@ def main():
 	try:
 		fcntl.lockf( fd, fcntl.LOCK_EX | fcntl.LOCK_NB )
 	except IOError, e:
-		ud.debug( ud.ADMIN, ud.ERROR, 'Failed to get lock for %s - another instance seems to be running: %s' % ( fn, str( e ) ) )
+		message = 'Failed to get lock for %s - another instance seems to be running: %s' % ( fn, str( e ) )
+		ud.debug( ud.ADMIN, ud.ERROR, message )
+		print >> sys.stderr, message
 		sys.exit( 1 )
 	fd.write( str( os.getpid() ) + '\n' )
 
@@ -431,6 +433,7 @@ def main():
 			imap.remove_all()
 		except RuntimeError, e:
 			ud.debug( ud.ADMIN, ud.ERROR, str( e ) )
+			print >> sys.stderr, str( e )
 	else:
 		# process datadir
 		datadir = cfgRegistry.get( 'ldap/addressbook/sync/listener/dir',
@@ -440,6 +443,7 @@ def main():
 			read_changes( datadir )
 		except RuntimeError, e:
 			ud.debug( ud.ADMIN, ud.ERROR, str( e ) )
+			print >> sys.stderr, str( e )
 
 	# free lock and exit
 	fcntl.lockf( fd, fcntl.LOCK_UN )
