@@ -1,3 +1,9 @@
+univention-thin-client-flash (3.3.3-1) unstable; urgency=low
+
+  * merged patches from customers scope Bug #17116
+
+ -- Felix Botner <botner@univention.de>  Mon, 25 Jan 2010 15:32:02 +0100
+
 univention-thin-client-flash (3.3.2-1) unstable; urgency=low
 
   * updated copyright Bug #17222 
