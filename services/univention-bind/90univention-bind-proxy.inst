@@ -79,7 +79,7 @@ fi
 update-rc.d -f bind9 remove >/dev/null 2>&1
 update-rc.d -f bind remove >/dev/null 2>&1
 
-if [ ! -h /etc/runit/univention/univention-bind-proxy ] || [ ! -e /etc/runit/univention/univention-bind-proxy ]; then
+if [ ! -e /etc/runit/univention/univention-bind-proxy ]; then
 	ln -s /etc/runit/univention-bind-proxy /etc/runit/univention/univention-bind-proxy
 fi
 
