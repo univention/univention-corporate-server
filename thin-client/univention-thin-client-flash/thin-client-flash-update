@@ -159,6 +159,7 @@ if [ "$version" -lt "$new_version" ]; then
     PATH_SYNC=/bin/sync
     PATH_UMOUNT=/bin/umount
     PATH_REBOOT=/sbin/reboot
+    PATH_MBR=/usr/lib/syslinux/mbr.bin
 
     if [ "$FLAGNFSBOOT" = "0" ] ; then
     # FLASH BOOT
@@ -172,10 +173,12 @@ if [ "$version" -lt "$new_version" ]; then
 	cp /usr/bin/wget /ramdisk
 	cp /bin/umount /ramdisk
 	cp /sbin/reboot /ramdisk
+	cp /usr/lib/syslinux/mbr.bin /ramdisk
 	PATH_WGET=/ramdisk/wget
 	PATH_SYNC=/ramdisk/sync
 	PATH_UMOUNT=/ramdisk/umount
 	PATH_REBOOT=/ramdisk/reboot
+	PATH_MBR=/ramdisk/mbr.bin
     fi
 
     echo "default linux initrd=initrd.splash root=$rootpart DNSSERVER=$nameserver $vga $quiet splash=silent $ldapserver $ldapport" > $PATH_EXTLINUX
@@ -224,7 +227,7 @@ if [ "$version" -lt "$new_version" ]; then
     $PATH_UMOUNT $PATH_BASE
     $PATH_SYNC
     # create MBR on flash disk
-    cat /usr/lib/syslinux/mbr.bin > ${disk}
+    cat $PATH_MBR > ${disk}
     echo
     echo "The update was successful. Rebooting the system."
     log_action_end_msg 0
