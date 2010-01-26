@@ -39,7 +39,7 @@ def handler(dn, new, old):
 	if not new and old:
 		pass
 	else:
-		if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0] and new['mailPrimaryAddress'][0].lower() != listener.baseConfig['mail/antispam/globalfolder'].lower():
+		if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0] and new['mailPrimaryAddress'][0].lower() != listener.baseConfig.get('mail/antispam/globalfolder', '').lower():
 
 			if new.has_key( 'univentionKolabDisableSieve' ) and new[ 'univentionKolabDisableSieve' ][0].lower( ) in [ 'true', 'yes' ]:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Do not not write a  sieve script for user: %s' % new['mailPrimaryAddress'][0])
