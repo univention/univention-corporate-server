@@ -1,3 +1,12 @@
+univention-thin-client-flash (3.3.3-2) unstable; urgency=low
+
+  * Umount the boot partition before writing to it. If the thin
+    client was operated with another OS before, this can lead to
+    a situation in which mk2efs skips the writing of the boot
+    partition. (Bug #17364)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 28 Jan 2010 09:10:37 +0100
+
 univention-thin-client-flash (3.3.3-1) unstable; urgency=low
 
   * merged patches from customers scope Bug #17116

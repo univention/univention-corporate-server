@@ -125,6 +125,7 @@ EOF
 	fi
 
 	echo -n "  setting up boot partition ..."
+	umount $bootpart || true
 	mkfs -t ext2 $bootpart
 	mount -t ext2 $bootpart /mnt
 	extlinux --install /mnt
