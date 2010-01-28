@@ -13,6 +13,16 @@ eval $(univention-config-registry shell) >>"$UPDATER_LOG" 2>&1
 function cleanup() {
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 	killall univention-updater
+
+	# remove statoverride for UMC and apache in case of error during preup script
+	if [ -e /usr/sbin/univention-management-console-server ]; then
+		dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
+		chmod +x /usr/sbin/univention-management-console-server 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
+	fi
+	if [ -e /usr/sbin/apache2 ]; then
+		dpkg-statoverride --remove /usr/sbin/apache2 >/dev/null 2>&1
+		chmod +x /usr/sbin/apache2 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
+	fi
 }
 trap cleanup EXIT
 
