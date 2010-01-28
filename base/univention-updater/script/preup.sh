@@ -61,63 +61,6 @@ check_cyrus21 cyrus21-common
 check_cyrus21 cyrus21-admin
 check_cyrus21 cyrus21-clients
 
-# Bug #16331 add temporary sources.list for unmaintained if neccessary
-# only required during update UCS 2.2-2 ==> 2.3-0
-if [ "$repository_online_unmaintained" = "yes" -o "$repository_online_unmaintained" = "true" -o "$repository_online_unmaintained" = "1" ] ; then
-	echo "repository branch 'unmaintained' is in use." >> "$UPDATER_LOG"
-	if [ -e "/etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list" ]; then
-		rm -f /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
-	fi
-
-	architecture=$(dpkg-architecture -qDEB_BUILD_ARCH 2>/dev/null)
-
-	# test for "local" or "net" update
-	if grep -q "^deb file:" /etc/apt/sources.list.d/00_ucs_temporary_installation.list 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
-		# univention-updater is called in "local" mode
-
-		if [ -z "$repository_mirror_basepath" ] ; then
-			repo_path="/var/lib/univention-repository"
-		else
-			repo_path="$repository_mirror_basepath"
-		fi
-
-		for arch in all $architecture extern ; do
-			if [ -d "${repo_path}/mirror/2.3/unmaintained/2.3-0/${arch}" ] ; then
-				echo "deb file:${repo_path}/mirror/2.3/unmaintained/ 2.3-0/${arch}/" >> /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
-			fi
-		done
-	else
-		# univention-updater is called in "net" mode
-
-		repo_server=$(python2.4 -c 'import univention.updater; updater=univention.updater.UniventionUpdater(); print "%s:%s" % (updater.repository_server,updater.repository_port)')
-		repo_prefix=$(python2.4 -c 'import univention.updater; updater=univention.updater.UniventionUpdater(); print updater.repository_prefix')
-		for arch in all $architecture extern ; do
-			netpath="2.3/unmaintained/2.3-0/${arch}/"
-			netpath_exists=$(python2.4 -c "import univention.updater; updater=univention.updater.UniventionUpdater(); print updater.net_path_exists('$netpath')")
-			echo "netpath $netpath available: $netpath_exists" >> "$UPDATER_LOG"
-			if [ "$netpath_exists" = "True" ] ; then
-				if [ -n "$repo_prefix" ] ; then
-					echo "deb http://${repo_server}/${repo_prefix}/2.3/unmaintained/ 2.3-0/${arch}/" >> /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
-				else
-					echo "deb http://${repo_server}/2.3/unmaintained/ 2.3-0/${arch}/" >> /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
-				fi
-			fi
-		done
-	fi
-else
-	echo "repository branch 'unmaintained' is not in use." >> "$UPDATER_LOG"
-fi
-
-
-# Bug 16371: add temporary apt.conf template to activate force-overwrite
-# only recommended for update to UCS 2.3-0
-if [ -e "/etc/apt/apt.conf.d/02univentionupdate" ]; then
-	rm -f /etc/apt/apt.conf.d/02univentionupdate
-fi
-echo 'DPkg::Options { "--force-overwrite";"--force-overwrite-dir" }' > /etc/apt/apt.conf.d/02univentionupdate
-
-
-
 # call custom preup script if configured
 if [ ! -z "$update_custom_preup" ]; then
 	if [ -f "$update_custom_preup" ]; then
@@ -163,9 +106,10 @@ mv /boot/*.bak /var/backups/univention-initrd.bak/ &>/dev/null
 if [ ! "$update23_checkfilesystems" = "no" ]
 then
 
-	check_space "/var/cache/apt/archives" "1600000" "1,6 GB"
-	check_space "/boot" "40000" "40 MB"
-	check_space "/" "2800000" "2,8 GB"
+	check_space "/var/cache/apt/archives" "250000" "250 MB"
+	# UCS 2.3-1 does not include a new kernel
+	# check_space "/boot" "40000" "40 MB"
+	check_space "/" "40000" "40 MB"
 
 else
     echo "WARNING: skipped disk-usage-test as requested"

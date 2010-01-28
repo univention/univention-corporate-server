@@ -1,3 +1,9 @@
+univention-updater (5.0.65-1) unstable; urgency=low
+
+  * adapt preup.sh/post.sh for UCS 2.3-1 release. (Bug #17135)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 28 Jan 2010 12:17:27 +0100
+
 univention-updater (5.0.64-8) unstable; urgency=low
 
   * Fix s/dprint/print/ in univention-actualise. (Bug #17122)
