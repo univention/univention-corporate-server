@@ -52,17 +52,6 @@ if [ -x /usr/bin/univention-thin-client-apt ]; then
 	DEBIAN_FRONTEND=noninteractive univention-thin-client-apt dist-upgrade  >>"$UPDATER_LOG" 2>&1
 fi
 
-# install locate if findutils has been installed in UCR 2.2-2 (Bug: #15992)
-if dpkg -l findutils 2>> "$UPDATER_LOG" | grep ^ii >> "$UPDATER_LOG" ; then
-	echo "findutils has been installed in UCS 2.2-2 ... installing locate" >> "$UPDATER_LOG"
-	$update_commands_install locate >>"$UPDATER_LOG" 2>&1
-	if [ ! $? = 0 ]; then
-		echo "findutils has been installed in UCS 2.2-2 ... installing locate"
-	    echo "WARNING: post-installation of 'locate' failed!"
-	    echo "         Please run 'dpkg --configure -a' manually."
-	fi
-fi
-
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update
 if [ -e /usr/sbin/univention-management-console-server ]; then
 	dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
@@ -77,9 +66,6 @@ univention-config-registry unset repository/local/old >>"$UPDATER_LOG" 2>&1
 
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
-fi
-if [ -e "/etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list" ]; then
-	rm -f /etc/apt/sources.list.d/01_ucs_temporary_installation_unmaintained_repo.list
 fi
 
 # Enable usplash after update (Bug #16363)
@@ -104,12 +90,6 @@ if [ ! -z "$update_custom_postup" ]; then
 	else
 		echo "Custom postupdate script $update_custom_postup not found" >>"$UPDATER_LOG" 2>&1
 	fi
-fi
-
-# Bug 16371: remove temporary apt.conf template to activate force-overwrite
-# only recommended for update to UCS 2.3-0
-if [ -e "/etc/apt/apt.conf.d/02univentionupdate" ]; then
-	rm -f /etc/apt/apt.conf.d/02univentionupdate
 fi
 
 echo "done."
