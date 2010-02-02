@@ -1,0 +1,5 @@
+drbd-2.6.30 (1.0-0) unstable; urgency=low
+
+  * Based on 8.3.7-1 from unstable (Bug #16957)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 02 Feb 2010 11:51:22 +0100
