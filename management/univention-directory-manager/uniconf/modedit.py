@@ -5345,7 +5345,7 @@ class modedit(unimodule.unimodule):
 				elif mitem[0].get_input() and mitem[6].get_input():
 					new = mitem[0].get_input() + mitem[6].get_input()
 					if new.startswith('file://'):
-						new = new.replace("file://", "file:/")
+						new = re.sub(r':/+', ":/", new)
 				elif not multiedit or key in overwrite_fields:
 					invalid[key]=new
 
