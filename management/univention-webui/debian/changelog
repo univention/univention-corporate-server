@@ -1,3 +1,9 @@
+univention-webui (3.0.32-1) unstable; urgency=low
+
+  * send form if the button icon was pressed. Bug #17470
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Feb 2010 12:06:00 +0100
+
 univention-webui (3.0.31-1) unstable; urgency=low
 
   * reenable readonly widgets in UMC (Bug #17335)
