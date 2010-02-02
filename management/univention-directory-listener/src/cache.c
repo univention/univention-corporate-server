@@ -475,22 +475,23 @@ int cache_delete_entry_lower_upper(NotifierID id, char *dn)
 {
 	char *lower_dn;
 	bool mixedcase = false;
-	int	 rv;
+	int	 rv, rv2;
 
 	// convert to a lowercase dn
 	lower_dn = _convert_to_lower(dn);
-	if (strcmp(dn, lower_dn) != 0) {
-		mixedcase = true;
-	}
-
 	rv=cache_delete_entry(id, lower_dn);
-	if (rv == DB_NOTFOUND && mixedcase ) {
+	if (strcmp(dn, lower_dn) != 0) {
+		mixedcase = true
 		// try again with original dn
-		rv=cache_delete_entry(id, dn);
+		rv2=cache_delete_entry(id, dn);
 	}
 
 	free(lower_dn);
-	return rv;
+	if ( mixedcase ) {
+		return rv?rv2:rv;	// if rv was bad (!=0) return rv2, otherwise return rv
+	} else {
+		return rv;
+	}
 }
 
 int cache_update_or_deleteifunused_entry(NotifierID id, char *dn, CacheEntry *entry)
