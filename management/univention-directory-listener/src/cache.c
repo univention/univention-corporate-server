@@ -481,7 +481,7 @@ int cache_delete_entry_lower_upper(NotifierID id, char *dn)
 	lower_dn = _convert_to_lower(dn);
 	rv=cache_delete_entry(id, lower_dn);
 	if (strcmp(dn, lower_dn) != 0) {
-		mixedcase = true
+		mixedcase = true;
 		// try again with original dn
 		rv2=cache_delete_entry(id, dn);
 	}
