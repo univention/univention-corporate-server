@@ -1,3 +1,9 @@
+univention-updater (5.0.67-1) unstable; urgency=low
+
+  * increased estimate for required disk space to 300MB; (Bug #17135)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 02 Feb 2010 11:03:15 +0100
+
 univention-updater (5.0.66-1) unstable; urgency=low
 
   * remove statoverride for UMC and apache in case of error during preup
