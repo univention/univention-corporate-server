@@ -655,7 +655,7 @@ class button extends extra{
 
 				$href .= ' title="'.$this->basket['helptext'].'" ';
 
-				$img = '<input src="'.$this->attribute['icon'].'" tabindex="'.$this->tabindex.'" name="usrinput['.$this->byteindex.']" type="image" value="pressed" class="button_icon" title="'.$this->basket['helptext'].'"></input>';
+				$img = '<input src="'.$this->attribute['icon'].'" tabindex="'.$this->tabindex.'" name="usrinput['.$this->byteindex.']" type="image" value="pressed" class="button_icon" onClick="sendForm('.$this->byteindex.')" title="'.$this->basket['helptext'].'"></input>';
 
 				$link = $href.'>
 <span class="'.$class.'">'.$this->basket['text'].'</span></a>
