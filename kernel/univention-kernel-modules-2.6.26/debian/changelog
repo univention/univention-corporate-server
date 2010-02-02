@@ -1,3 +1,9 @@
+univention-kernel-modules-2.6.26 (3.0.6-3) unstable; urgency=low
+
+  * Adapt to new DRBD 2.6.26 source package (Bug #16957)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 02 Feb 2010 14:09:29 +0100
+
 univention-kernel-modules-2.6.26 (3.0.6-2) unstable; urgency=low
 
   * The on-disk format of Squasifs has changed, drop 2.6.26
