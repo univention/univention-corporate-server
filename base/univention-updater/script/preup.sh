@@ -116,7 +116,7 @@ mv /boot/*.bak /var/backups/univention-initrd.bak/ &>/dev/null
 if [ ! "$update23_checkfilesystems" = "no" ]
 then
 
-	check_space "/var/cache/apt/archives" "250000" "250 MB"
+	check_space "/var/cache/apt/archives" "300000" "300 MB"
 	# UCS 2.3-1 does not include a new kernel
 	# check_space "/boot" "40000" "40 MB"
 	check_space "/" "40000" "40 MB"
