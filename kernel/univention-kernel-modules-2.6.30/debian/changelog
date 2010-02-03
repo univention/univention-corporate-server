@@ -1,3 +1,9 @@
+univention-kernel-modules-2.6.30 (1.0.0-5) unstable; urgency=low
+
+  * Add missing build dep on dpatch (Bug #16957)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 03 Feb 2010 10:39:29 +0100
+
 univention-kernel-modules-2.6.30 (1.0.0-4) unstable; urgency=low
 
   * Adapt to new separate DRBD module for 2.6.30 (Bug #16957)
