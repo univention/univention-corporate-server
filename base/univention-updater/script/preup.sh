@@ -51,9 +51,10 @@ check_space(){
 if [ "$update22_checkfilesystems" != "no" ]
 then
 
-	check_space "/var/cache/apt/archives" "400000" "400 MB"
-	check_space "/boot" "20000" "20 MB"
-	check_space "/" "600000" "600 MB"
+	check_space "/var/cache/apt/archives" "50000" "50 MB"
+	# UCS 2.2-3 does not ship a new kernel
+	# check_space "/boot" "20000" "20 MB"
+	check_space "/" "100000" "100 MB"
 
 else
     echo "WARNING: skipped disk-usage-test as you requested"

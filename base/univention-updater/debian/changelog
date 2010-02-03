@@ -1,3 +1,9 @@
+univention-updater (4.0.81-1) unstable; urgency=low
+
+  * updated preup.sh for UCS 2.2-3 (Bug #17525)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 02 Feb 2010 17:08:40 +0100
+
 univention-updater (4.0.80-1) unstable; urgency=low
 
   * use utf8 in the ucr variable definitions otherwise we got an UMC
