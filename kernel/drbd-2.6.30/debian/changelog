@@ -1,3 +1,9 @@
+drbd-2.6.30 (1.0-3) unstable; urgency=low
+
+  * Fix compatility with SKB callbacks (Bug #16957)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 03 Feb 2010 10:24:20 +0100
+
 drbd-2.6.30 (1.0-2) unstable; urgency=low
 
   * Fix compatibility with 2.6.30 (Bug #16957)
