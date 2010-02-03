@@ -134,7 +134,8 @@ class access:
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
 
 		ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, self.ca_certfile )
-		self.lo=ldap.ldapobject.SmartLDAPObject(uri="ldap://"+str(self.host)+":"+str(self.port), who=self.binddn, cred=self.__encode_pwd(self.bindpw), start_tls=self.start_tls, tls_cacertfile=self.ca_certfile)
+		self.lo=ldap.ldapobject.SmartLDAPObject(uri="ldap://"+str(self.host)+":"+str(self.port), start_tls=self.start_tls, tls_cacertfile=self.ca_certfile)
+		self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
 
 	def __open(self):
 		_d=univention.debug.function('uldap.__open host=%s port=%d base=%s' % (self.host, self.port, self.base))
