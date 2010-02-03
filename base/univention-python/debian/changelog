@@ -1,3 +1,9 @@
+univention-python (3.0.3-1) unstable; urgency=low
+
+  * ensure that TLS is activated before the bind request (Bug #17285)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 03 Feb 2010 16:12:01 +0100
+
 univention-python (3.0.2-1) unstable; urgency=low
 
   * use ldap:// instead of LDAP:// as prefix for LDAP URIs, otherwise TLS
