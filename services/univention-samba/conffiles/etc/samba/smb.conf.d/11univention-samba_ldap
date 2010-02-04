@@ -9,6 +9,12 @@ if baseConfig.has_key('server/role') and baseConfig['server/role'] != 'memberser
 	print '\tpassdb backend = ldapsam:"ldap://%s"' % ' ldap://'.join(ldapserver)
 	print '\tauth methods = guest sam winbind'
 
+if configRegistry.get('server/role') == 'memberserver' and configRegistry.get('samba/memberserver/passdb/ldap','').lower() in ('yes', 'true'):
+	ldapserver = baseConfig['ldap/server/name'].split(' ')
+	if baseConfig.get('ldap/server/addition',''):
+		ldapserver.extend( baseConfig.get('ldap/server/addition').split(' ') )
+	print '\tpassdb backend = ldapsam:"ldap://%s"' % ' ldap://'.join(ldapserver)
+
 if len(baseConfig.get('samba/ldap/timeout','')):
 	print '\tldap timeout = %s' % baseConfig.get('samba/ldap/timeout')
 

@@ -303,3 +303,9 @@ Description[de]=Weist Samba an, nur die in samba/interfaces aufgeführten Interf
 Description[en]=Limits Samba to listen only on the interfaces listed in samba/interfaces.
 Type=str
 Categories=service-samba
+
+[samba/memberserver/passdb/ldap]
+Description[de]=LDAPSAM Passdb Backend auch auf diesem Memberserver verwenden
+Description[en]=Use the LDAPSAM passdb backend also on this memberserver
+Type=str
+Categories=service-samba
