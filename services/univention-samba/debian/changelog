@@ -1,3 +1,10 @@
+univention-samba (4.0.12-1) unstable; urgency=low
+
+  * Allow using the ldapsam passdb backend on memberservers by setting
+    samba/memberserver/passdb/ldap to yes (optional) (Bug #17573)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 04 Feb 2010 17:57:41 +0100
+
 univention-samba (4.0.11-1) unstable; urgency=low
 
   * ignore share "homes" while setting "invalid users" for all other
