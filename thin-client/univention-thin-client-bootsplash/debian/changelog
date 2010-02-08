@@ -1,3 +1,9 @@
+univention-thin-client-bootsplash (0.0.5-3) unstable; urgency=low
+
+  * fixed udev hook in initramfs dir Bug #16290 
+
+ -- Felix Botner <botner@univention.de>  Mon, 08 Feb 2010 11:48:47 +0100
+
 univention-thin-client-bootsplash (0.0.5-2) unstable; urgency=low
 
   * added kernel modules to init ramfs Bug #16291 
