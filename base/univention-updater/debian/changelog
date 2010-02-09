@@ -1,3 +1,9 @@
+univention-updater (5.0.68-1) unstable; urgency=low
+
+  * increased estimate for required disk space to 500MB; (Bug #17135)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 09 Feb 2010 13:22:22 +0100
+
 univention-updater (5.0.67-1) unstable; urgency=low
 
   * increased estimate for required disk space to 300MB; (Bug #17135)
