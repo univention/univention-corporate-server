@@ -1,3 +1,10 @@
+univention-samba (4.0.12-2) unstable; urgency=low
+
+  * Add support for a new UCR variable to control whether symbolic
+    links are being followed (Bug #17526)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 09 Feb 2010 11:15:08 +0100
+
 univention-samba (4.0.12-1) unstable; urgency=low
 
   * Allow using the ldapsam passdb backend on memberservers by setting
