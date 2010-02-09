@@ -103,6 +103,7 @@ Variables: samba/store_dos_attributes
 Variables: samba/preserve_case
 Variables: samba/short_preserve_case
 Variables: samba/time_server
+Variables: samba/wide_links
 
 Type: subfile
 Multifile: etc/samba/smb.conf

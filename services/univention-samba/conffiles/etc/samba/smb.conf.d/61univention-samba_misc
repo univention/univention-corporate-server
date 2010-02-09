@@ -8,6 +8,8 @@ print '\twrite raw = %s' % baseConfig.get('samba/write_raw', 'yes')
 print '\tmax xmit = %s' % baseConfig.get('samba/max_xmit', '65535')
 print '\tgetwd cache = %s' % baseConfig.get('samba/getwd_cache', 'yes')
 
+print '\twide links = %s' % baseConfig.get('samba/wide_links', 'yes')
+
 print '\tstore dos attributes = %s' % baseConfig.get('samba/store_dos_attributes', 'yes')
 
 if baseConfig['server/role'] != 'memberserver':

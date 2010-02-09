@@ -70,6 +70,12 @@ Description[en]=Username for unauthenticated services (guest ok)
 Type=str
 Categories=service-samba
 
+[samba/wide_links]
+Description[de]=Konfiguriert, ob symbolische Links verfolgt werden
+Description[en]=Configures, whether symbolic links are followed
+Type=str
+Categories=service-samba
+
 [samba/homedirletter]
 Description[de]=Laufwerk für das Heimatverzeichnis des Benutzers
 Description[en]=Drive for the home directory
