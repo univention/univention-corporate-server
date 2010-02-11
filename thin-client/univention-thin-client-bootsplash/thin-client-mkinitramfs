@@ -85,8 +85,8 @@ if [ -n "$supported_host_version" ] || [ -n "$supported_target_version" ]; then
 fi
 
 # For dependency ordered mkinitramfs hook scripts.
-. /usr/share/initramfs-tools/scripts/functions
-. /usr/share/initramfs-tools/hook-functions
+. ${THINCLIENT_CHROOT}/usr/share/initramfs-tools/scripts/functions
+. ${THINCLIENT_CHROOT}/usr/share/initramfs-tools/hook-functions
 
 . "${CONFDIR}/initramfs.conf"
 EXTRA_CONF=''
@@ -247,8 +247,8 @@ esac
 # symlinks.
 
 # klibc
-ln -s /usr/lib/klibc/bin/* ${DESTDIR}/bin
-ln -s /lib/klibc-*.so ${DESTDIR}/lib
+ln -s ${THINCLIENT_CHROOT}/usr/lib/klibc/bin/* ${DESTDIR}/bin
+ln -s ${THINCLIENT_CHROOT}/lib/klibc-*.so ${DESTDIR}/lib
 rm -f ${DESTDIR}/bin/kinit* ${DESTDIR}/bin/gzip
 
 # UNIVENTION-FORK: use the correct architecture
@@ -305,6 +305,8 @@ else
 fi
 
 # Modutils
+copy_exec ${THINCLIENT_CHROOT}/lib/libselinux.so.1 /lib
+
 copy_exec ${THINCLIENT_CHROOT}/sbin/modprobe /sbin
 copy_exec ${THINCLIENT_CHROOT}/sbin/depmod /sbin
 copy_exec ${THINCLIENT_CHROOT}/sbin/rmmod /sbin
@@ -319,6 +321,12 @@ fi
 # UNIVENTION-FORK: don't use global hooks for thin clients
 # run_scripts /usr/share/initramfs-tools/hooks
 run_scripts "${CONFDIR}"/hooks
+
+# use the files directly from the thin client chroot, otherwise it is a problem on amd64 systems
+rm ${DESTDIR}/lib/ld-linux.so.2
+cp ${THINCLIENT_CHROOT}/lib/ld-2.7.so ${DESTDIR}/lib/
+cp ${THINCLIENT_CHROOT}/lib/ld-linux.so.2 ${DESTDIR}/lib/
+cp ${THINCLIENT_CHROOT}/lib/libx86.so.1 ${DESTDIR}/lib/
 
 # Apply DSDT to initramfs
 if [ -e "${CONFDIR}/DSDT.aml" ]; then
