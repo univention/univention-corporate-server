@@ -1,3 +1,11 @@
+univention-thin-client-bootsplash (0.0.6-1) unstable; urgency=low
+
+  * copy the files directly from the thin client chroot during the
+    initramfs generation, otherwise we have a initrd with amd64 programs
+    on a i386 thin client chroot. Bug #16290
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Feb 2010 11:05:05 +0100
+
 univention-thin-client-bootsplash (0.0.5-3) unstable; urgency=low
 
   * fixed udev hook in initramfs dir Bug #16290 
