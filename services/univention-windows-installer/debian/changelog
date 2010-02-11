@@ -1,3 +1,10 @@
+univention-windows-installer (3.0.1-0) unstable; urgency=low
+
+  * update for 5.8.9 release of ActiveState Perl (Bug #17621)
+  * basic code for a new UCR Variable windowsinstaller/perl/msi, not registered yet
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Feb 2010 16:08:39 +0100
+
 univention-windows-installer (3.0.0-3) unstable; urgency=low
 
   * update debian/copyright to include linux (Bug #14825)
