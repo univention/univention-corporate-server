@@ -71,7 +71,8 @@ install: build
 	mv $(INST)/var/lib/univention-windows-installer/tmp/unattended-4.6/install/site/sample-config.pl \
 	   $(INST)/var/lib/univention-windows-installer/tmp/unattended-4.6/install/site/config.pl
 	rm $(INST)/var/lib/univention-windows-installer/tmp/unattended-4.6/install/site/unattend.csv
-	patch $(INST)/var/lib/univention-windows-installer/tmp/unattended-4.6/install/scripts/perl.bat < perl.bat.patch
+	mv $(INST)/var/lib/univention-windows-installer/tmp/unattended-4.6/install/scripts/perl.bat conffiles/var/lib/univention-windows-installer/install/scripts/
+	patch conffiles/var/lib/univention-windows-installer/install/scripts/perl.bat < perl.bat-template.patch
 	mv $(INST)/var/lib/univention-windows-installer/tmp/unattended-4.6/install $(INST)/var/lib/univention-windows-installer
 	rm -rf $(INST)/var/lib/univention-windows-installer/tmp
 

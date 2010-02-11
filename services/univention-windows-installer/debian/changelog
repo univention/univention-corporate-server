@@ -1,3 +1,12 @@
+univention-windows-installer (3.0.1-1) unstable; urgency=low
+
+  * fix PERL_URL as well (Bug #17621)
+  * generate perl.bat UCR-Template in debian/rules and register windowsinstaller/perl/msi
+    on it to make the ActivePerl msi filename configurable
+  * set windowsinstaller/perl/msi?ActivePerl-5.8.9.827-MSWin32-x86-291969.msi in postinst
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Feb 2010 19:06:30 +0100
+
 univention-windows-installer (3.0.1-0) unstable; urgency=low
 
   * update for 5.8.9 release of ActiveState Perl (Bug #17621)

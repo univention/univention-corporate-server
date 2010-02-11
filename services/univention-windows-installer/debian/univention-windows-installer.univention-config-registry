@@ -6,3 +6,7 @@ File: var/lib/univention-windows-installer/install/site/unattend.txt
 
 Type: file
 File: var/lib/univention-windows-installer/install/bin/mapznrun.bat
+
+Type: file
+File: var/lib/univention-windows-installer/install/scripts/perl.bat
+Variables: windowsinstaller/perl/msi

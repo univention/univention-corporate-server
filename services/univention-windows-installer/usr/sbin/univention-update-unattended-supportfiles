@@ -96,7 +96,7 @@ fi
 if [ ! -z "$windowsinstaller_perl_url" ]; then
 	PERL_URL="$windowsinstaller_perl_url"
 else
-	PERL_URL="http://downloads.activestate.com/ActivePerl/Windows/5.8.9.827"
+	PERL_URL="http://downloads.activestate.com/ActivePerl/releases/5.8.9.827"
 fi
 
 if [ ! -z "$windowsinstaller_perl_msi" ]; then
