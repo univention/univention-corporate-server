@@ -12,9 +12,12 @@ errors_to="2>/dev/null"
 BUSYBOXDIR="/bin"
 
 # UNIVENTION-FORK: for thin clients:
-MODULEBASEDIR="/var/lib/univention-client-root/lib/modules/"
+THINCLIENT_CHROOT="/var/lib/univention-client-root"
+MODULEBASEDIR="${THINCLIENT_CHROOT}/lib/modules/"
+BUSYBOXDIR="${THINCLIENT_CHROOT}/bin"
 
 OPTIONS=`getopt -o d:ko:r:v --long supported-host-version:,supported-target-version: -n "$0" -- "$@"`
+
 
 # Check for non-GNU getopt
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
@@ -172,7 +175,9 @@ fi
 DESTDIR="$(mktemp -t -d mkinitramfs_XXXXXX)" || exit 1
 __TMPCPIOGZ="$(mktemp -t mkinitramfs-OL_XXXXXX)" || exit 1
 
-DPKG_ARCH=`dpkg --print-installation-architecture`
+# UNIVENTION-FORK: the thin client chroot is always i386
+# DPKG_ARCH=`dpkg --print-installation-architecture`
+DPKG_ARCH="i386"
 
 # Export environment for hook scripts.
 #
@@ -246,14 +251,19 @@ ln -s /usr/lib/klibc/bin/* ${DESTDIR}/bin
 ln -s /lib/klibc-*.so ${DESTDIR}/lib
 rm -f ${DESTDIR}/bin/kinit* ${DESTDIR}/bin/gzip
 
-copy_exec /usr/share/initramfs-tools/init /init
+# UNIVENTION-FORK: use the correct architecture
+# copy_exec /usr/share/initramfs-tools/init /init
+copy_exec ${THINCLIENT_CHROOT}/usr/share/initramfs-tools/init /init
 
 # add existant boot scripts
-for b in $(cd /usr/share/initramfs-tools/scripts/ && find . \
+# UNIVENTION-FORK: use the correct architecture
+# for b in $(cd /usr/share/initramfs-tools/scripts/ && find . \
+for b in $(cd ${THINCLIENT_CHROOT}/usr/share/initramfs-tools/scripts/ && find . \
 	-regextype posix-extended -regex '.*/[[:alnum:]_]+$' -type f); do
 	[ -d "${DESTDIR}/scripts/$(dirname "${b}")" ] \
 		|| mkdir -p "${DESTDIR}/scripts/$(dirname "${b}")"
-	cp -p "/usr/share/initramfs-tools/scripts/${b}" \
+	# cp -p "/usr/share/initramfs-tools/scripts/${b}" \
+	cp -p "${THINCLIENT_CHROOT}/usr/share/initramfs-tools/scripts/${b}" \
 		"${DESTDIR}/scripts/$(dirname "${b}")/"
 done
 for b in $(cd "${CONFDIR}/scripts" && find . \
@@ -268,8 +278,8 @@ copy_exec "${CONFDIR}/initramfs.conf" /conf
 for i in ${EXTRA_CONF}; do
 	if [ -e "${CONFDIR}/conf.d/${i}" ]; then
 		copy_exec "${CONFDIR}/conf.d/${i}" /conf/conf.d
-	elif [ -e "/usr/share/initramfs-tools/conf.d/${i}" ]; then
-		copy_exec "/usr/share/initramfs-tools/conf.d/${i}" /conf/conf.d
+	elif [ -e "${THINCLIENT_CHROOT}/usr/share/initramfs-tools/conf.d/${i}" ]; then
+		copy_exec "${THINCLIENT_CHROOT}/usr/share/initramfs-tools/conf.d/${i}" /conf/conf.d
 	fi
 done
 
@@ -295,9 +305,9 @@ else
 fi
 
 # Modutils
-copy_exec /sbin/modprobe /sbin
-copy_exec /sbin/depmod /sbin
-copy_exec /sbin/rmmod /sbin
+copy_exec ${THINCLIENT_CHROOT}/sbin/modprobe /sbin
+copy_exec ${THINCLIENT_CHROOT}/sbin/depmod /sbin
+copy_exec ${THINCLIENT_CHROOT}/sbin/rmmod /sbin
 mkdir -p "${DESTDIR}/etc/modprobe.d"
 cp -a /etc/modprobe.d/* "${DESTDIR}/etc/modprobe.d/"
 
