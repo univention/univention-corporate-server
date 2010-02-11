@@ -1081,7 +1081,7 @@ def handler_search( args, opts = {} ):
  	for key, scope_value in b.items( getscope = True ):
  		var_triple = all_vars.get ( key )
  		if var_triple:
- 			all_vars [ key ] = ( scope_value[1], var_triple[2], scope_value[0] )
+ 			all_vars [ key ] = ( scope_value[1], var_triple[1], scope_value[0] )
 		elif not category:
  			all_vars [ key ] = ( scope_value[1], None, scope_value[0] )
 
