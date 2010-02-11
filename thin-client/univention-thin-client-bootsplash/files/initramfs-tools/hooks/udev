@@ -1,0 +1,42 @@
+#!/bin/sh -e
+
+PREREQS=""
+
+prereqs() { echo "$PREREQS"; }
+
+case "$1" in
+    prereqs)
+    prereqs
+    exit 0
+    ;;
+esac
+
+. /usr/share/initramfs-tools/hook-functions
+
+THINCLIENT_CHROOT="/var/lib/univention-client-root"
+
+# udevd uses unix domain sockets for communication
+force_load unix
+
+cp -a /etc/udev/ $DESTDIR/etc/
+rm -f $DESTDIR/etc/udev/rules.d/75-cd-aliases-generator.rules
+if [ -e /etc/scsi_id.config ]; then
+  cp /etc/scsi_id.config $DESTDIR/etc/
+fi
+
+copy_exec ${THINCLIENT_CHROOT}/sbin/udevd      /sbin
+copy_exec ${THINCLIENT_CHROOT}/sbin/udevadm    /sbin
+copy_exec ${THINCLIENT_CHROOT}/sbin/udevsettle /sbin
+
+mkdir -p $DESTDIR/lib/udev/
+cp ${THINCLIENT_CHROOT}/lib/udev/hotplug.functions $DESTDIR/lib/udev/
+for program in ${THINCLIENT_CHROOT}/lib/udev/*_id; do
+  copy_exec $program /lib/udev
+done
+
+copy_exec /var/lib/univention-client-root/lib/libc.so.6 /lib
+copy_exec /var/lib/univention-client-root/lib/libm.so.6 /lib
+copy_exec /var/lib/univention-client-root/lib/libc-2.7.so /lib
+copy_exec /var/lib/univention-client-root/lib/libm-2.7.so /lib
+copy_exec /var/lib/univention-client-root/lib/ld-linux.so.2 /lib
+copy_exec /var/lib/univention-client-root/lib/libdl.so.2 /lib
