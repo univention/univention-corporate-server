@@ -38,5 +38,4 @@ copy_exec /var/lib/univention-client-root/lib/libc.so.6 /lib
 copy_exec /var/lib/univention-client-root/lib/libm.so.6 /lib
 copy_exec /var/lib/univention-client-root/lib/libc-2.7.so /lib
 copy_exec /var/lib/univention-client-root/lib/libm-2.7.so /lib
-copy_exec /var/lib/univention-client-root/lib/ld-linux.so.2 /lib
 copy_exec /var/lib/univention-client-root/lib/libdl.so.2 /lib
