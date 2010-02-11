@@ -1,3 +1,9 @@
+univention-config-registry (5.0.73-1) unstable; urgency=low
+
+  * fixed a typo that caused the suppression of the variable description; Bug #16711
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 11 Feb 2010 09:46:11 +0100
+
 univention-config-registry (5.0.72-3) unstable; urgency=low
 
   * get and search in shell mode: do not print anything if variable does
