@@ -1,3 +1,10 @@
+univention-thin-client-bootsplash (0.0.7-1) unstable; urgency=low
+
+  * copy more files from the thin client chroot into the ramdisk. Bug
+    #16290
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Feb 2010 15:25:01 +0100
+
 univention-thin-client-bootsplash (0.0.6-1) unstable; urgency=low
 
   * copy the files directly from the thin client chroot during the
