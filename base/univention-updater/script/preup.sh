@@ -117,8 +117,7 @@ if [ ! "$update23_checkfilesystems" = "no" ]
 then
 
 	check_space "/var/cache/apt/archives" "250000" "250 MB"
-	# UCS 2.3-1 does not include a new kernel
-	# check_space "/boot" "40000" "40 MB"
+	check_space "/boot" "40000" "40 MB"
 	check_space "/" "500000" "500 MB"
 
 else
