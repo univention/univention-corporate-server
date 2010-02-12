@@ -251,9 +251,7 @@ ln -s ${THINCLIENT_CHROOT}/usr/lib/klibc/bin/* ${DESTDIR}/bin
 ln -s ${THINCLIENT_CHROOT}/lib/klibc-*.so ${DESTDIR}/lib
 rm -f ${DESTDIR}/bin/kinit* ${DESTDIR}/bin/gzip
 
-# UNIVENTION-FORK: use the correct architecture
-# copy_exec /usr/share/initramfs-tools/init /init
-copy_exec ${THINCLIENT_CHROOT}/usr/share/initramfs-tools/init /init
+copy_exec /usr/share/initramfs-tools/init /init
 
 # add existant boot scripts
 # UNIVENTION-FORK: use the correct architecture

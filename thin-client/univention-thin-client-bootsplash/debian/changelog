@@ -1,3 +1,9 @@
+univention-thin-client-bootsplash (0.0.11-1) unstable; urgency=low
+
+  * readded the initrd generation. Bug #16290 and Bug #16291
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Feb 2010 09:08:51 +0100
+
 univention-thin-client-bootsplash (0.0.9-1) unstable; urgency=low
 
   * do not install ld-linux.so.2 in udev hook. Bug #16290
