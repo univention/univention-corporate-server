@@ -7,7 +7,7 @@ Standards-Version: 3.5.2
 
 Package: univention-thin-client-bootsplash
 Architecture: all
-Depends: univention-thin-client-basesystem, bootsplash, univention-bootsplash
+Depends: univention-thin-client-basesystem, bootsplash, univention-bootsplash, initramfs-tools
 Description: UCS - bootsplash thin client
  Univention Bootsplash manages splashimages on thin client bootup.
  .
