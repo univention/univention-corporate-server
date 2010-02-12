@@ -52,13 +52,6 @@ install: build
 	dh_installdirs
 	
 	install -m 0755 thin-client-bootsplash debian/univention-thin-client-bootsplash-config/etc/init.d/
-	install -m 0755 thin-client-mkinitramfs debian/univention-thin-client-bootsplash/usr/share/univention-thin-client-bootsplash/initramfs-tools
-	install -m 0644 files/initramfs-tools/modules debian/univention-thin-client-bootsplash/usr/share/univention-thin-client-bootsplash/initramfs-tools
-	install -m 0644 files/initramfs-tools/initramfs.conf debian/univention-thin-client-bootsplash/usr/share/univention-thin-client-bootsplash/initramfs-tools
-	install -m 0755 files/initramfs-tools/hooks/bootsplash debian/univention-thin-client-bootsplash/usr/share/univention-thin-client-bootsplash/initramfs-tools/hooks/
-	install -m 0755 files/initramfs-tools/hooks/udev debian/univention-thin-client-bootsplash/usr/share/univention-thin-client-bootsplash/initramfs-tools/hooks/
-	install -m 0644 files/bootsplash.cfg debian/univention-thin-client-bootsplash/usr/share/univention-thin-client-bootsplash/
-
 	
 	univention-install-baseconfig
 	

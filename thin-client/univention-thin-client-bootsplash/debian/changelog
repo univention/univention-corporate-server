@@ -1,84 +1,9 @@
-univention-thin-client-bootsplash (0.0.9-1) unstable; urgency=low
+univention-thin-client-bootsplash (0.0.10-1) unstable; urgency=low
 
-  * do not install ld-linux.so.2 in udev hook. Bug #16290
+  * undo the initrd changes. As I understand the initrd can be generate
+    for nfs or a local boot, not for both. Bug #16290 and Bug #16291
 
- -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Feb 2010 16:17:29 +0100
-
-univention-thin-client-bootsplash (0.0.8-1) unstable; urgency=low
-
-  * added the udev hook file. Bug #16290
-
- -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Feb 2010 16:01:03 +0100
-
-univention-thin-client-bootsplash (0.0.7-1) unstable; urgency=low
-
-  * copy more files from the thin client chroot into the ramdisk. Bug
-    #16290
-
- -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Feb 2010 15:25:01 +0100
-
-univention-thin-client-bootsplash (0.0.6-1) unstable; urgency=low
-
-  * copy the files directly from the thin client chroot during the
-    initramfs generation, otherwise we have a initrd with amd64 programs
-    on a i386 thin client chroot. Bug #16290
-
- -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Feb 2010 11:05:05 +0100
-
-univention-thin-client-bootsplash (0.0.5-3) unstable; urgency=low
-
-  * fixed udev hook in initramfs dir Bug #16290 
-
- -- Felix Botner <botner@univention.de>  Mon, 08 Feb 2010 11:48:47 +0100
-
-univention-thin-client-bootsplash (0.0.5-2) unstable; urgency=low
-
-  * added kernel modules to init ramfs Bug #16291 
-  * added udev hook to initramfs dir Bug #16291
-
- -- Felix Botner <botner@univention.de>  Wed, 20 Jan 2010 11:02:54 +0100
-
-univention-thin-client-bootsplash (0.0.5-1) unstable; urgency=low
-
-  * updated copyright Bug #17222 
-
- -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 15:33:43 +0100
-
-univention-thin-client-bootsplash (0.0.4-3) unstable; urgency=low
-
-  * fixed rules file Bug #16290 
-
- -- Felix Botner <botner@univention.de>  Tue, 05 Jan 2010 10:21:18 +0100
-
-univention-thin-client-bootsplash (0.0.4-2) unstable; urgency=low
-
-  * merged from customer branch Bug #16290 
-
- -- Felix Botner <botner@univention.de>  Tue, 05 Jan 2010 10:00:57 +0100
-
-univention-thin-client-bootsplash (0.0.4-1) unstable; urgency=low
-
-  * bumped version Ticket #2009110910000142
-
- -- Felix Botner <botner@univention.de>  Mon, 04 Jan 2010 08:54:17 +0100
-
-univention-thin-client-bootsplash (0.0.3-4) unstable; urgency=low
-
-  * create bootsplash file while creating initrd Ticket #2009110910000142
-
- -- Felix Botner <botner@univention.de>  Wed, 30 Dec 2009 16:53:16 +0100
-
-univention-thin-client-bootsplash (0.0.3-3) unstable; urgency=low
-
-  * append image, don't overwrite whole initrd
-
- -- Ingo Steuwer <steuwer@univention.de>  Wed, 16 Dec 2009 15:51:56 +0100
-
-univention-thin-client-bootsplash (0.0.3-2) unstable; urgency=low
-
-  * create correct initrd-image bevore appending splash
-
- -- Ingo Steuwer <steuwer@univention.de>  Wed, 16 Dec 2009 15:25:19 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Feb 2010 06:27:51 +0100
 
 univention-thin-client-bootsplash (0.0.3-1) unstable; urgency=low
 
