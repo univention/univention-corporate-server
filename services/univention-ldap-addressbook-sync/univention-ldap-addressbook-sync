@@ -32,6 +32,7 @@ from optparse import OptionParser
 import copy
 import datetime
 import fnmatch
+import grp
 import xml.dom
 import imaplib
 import email.MIMEMultipart
@@ -190,7 +191,7 @@ http://www.kolab.org/kolab2-clients.html
 		return self.as_string()
 
 class IMAP_Client( object ):
-	def __init__( self ):
+	def __init__( self, folder = None, groups = None ):
 		try:
 			fd = open( '/etc/cyrus.secret', 'r' )
 		except:
@@ -199,10 +200,20 @@ class IMAP_Client( object ):
 		password = fd.readline().rstrip('\n')
 		fd.close()
 
-		# check for IMAP folder
-		self.folder = cfgRegistry.get( 'ldap/addressbook/sync/folder', '' )
-		if not self.folder:
-			raise RuntimeError( 'Global IMAP folder for synchronisation is not set!' )
+		if not folder:
+			# check for IMAP folder
+			self.folder = cfgRegistry.get( 'ldap/addressbook/sync/folder', '' )
+			if not self.folder:
+				raise RuntimeError( 'Global IMAP folder for synchronisation is not set!' )
+		else:
+			self.folder = folder
+
+		if not groups:
+			self.groups = cfgRegistry.get( 'ldap/addressbook/sync/groups', [] )
+			if self.groups:
+				self.groups = self.groups.split( ';' )
+		else:
+			self.groups = groups
 
 		# try to connect
 		try:
@@ -266,20 +277,54 @@ class IMAP_Client( object ):
 		# expunge
 		self.imap4.expunge()
 
-	def add( self, message ):
+	def add( self, message, uid = None ):
+		if self.groups and uid:
+			for group in self.groups:
+				ud.debug( ud.ADMIN, ud.INFO, 'IMAP_Client: check if %s is in group %s' % ( uid, group ) )
+				try:
+					name, pw, id, members = grp.getgrnam( group )
+				except Exception, e:
+					ud.debug( ud.ADMIN, ud.ERROR, 'IMAP_Client: error retrieving group info (%s): %s' % ( group, str( e ) ) )
+					continue
+				if uid in members:
+					ud.debug( ud.ADMIN, ud.INFO, 'IMAP_Client: %s is member of group %s' % ( uid, group ) )
+					break
+			else:
+				ud.debug( ud.ADMIN, ud.INFO, 'IMAP_Client: do NOT add %s to folder %s' % ( uid, self.folder ) )
+				return False
+
 		# add new message
 		self.imap4.append( self.folder, None, None, message )
 
+
 class Synchronisation( object ):
 	def __init__( self ):
-		self.imap = IMAP_Client()
 		self.display_user = cfgRegistry.get( 'ldap/addressbook/sync/display/user',
 											 '%(sn)s, %(givenName)s' )
 		self.display_group = cfgRegistry.get( 'ldap/addressbook/sync/display/group',
 											  '%(cn)s (Gruppe)' )
 		self.display_list = cfgRegistry.get( 'ldap/addressbook/sync/display/list',
 											 '%(cn)s (Liste)' )
+		self.imap_clients = [ IMAP_Client(), ]
+		self._check_additional_folders()
 
+	def _check_additional_folders( self ):
+		ud.debug( ud.ADMIN, ud.INFO, 'Synchronisation: search for additional folders' )
+		for key in cfgRegistry.keys():
+			if key.startswith( 'ldap/addressbook/sync/additional/folder/' ):
+				folder = cfgRegistry[ key ]
+				name = key[ key.rfind( '/' ) + 1 : ]
+				ud.debug( ud.ADMIN, ud.INFO, 'Synchronisation: found additional folder %s' % name )
+				groups = cfgRegistry.get( 'ldap/addressbook/sync/additional/groups/' + name, [] )
+				if groups:
+					groups = groups.split( ';' )
+				ud.debug( ud.ADMIN, ud.INFO, 'IMAP_Client: folder: %s / groups:  %s' % ( folder, groups ) )
+				self.imap_clients.append( IMAP_Client( folder, groups ) )
+
+	def remove_all( self ):
+		for client in self.imap_clients:
+			client.remove_all()
+		
 	def process( self, dn , old, new ):
 		if old and new:
 			self.modify( dn, old, new )
@@ -316,7 +361,6 @@ class Synchronisation( object ):
 		contact = KolabContact( dn )
 		obj_classes = new.get( 'objectClass', [] )
 		# user contact
-		ud.debug( ud.ADMIN, ud.INFO, 'IMAP: add object: %s' % str( new ) )
 		if 'inetOrgPerson' in obj_classes:
 			homeAddress = new.get( 'homePostalAddress', False)
 			addresses = copy.deepcopy( new.get( 'mail', [] ) )
@@ -361,11 +405,14 @@ class Synchronisation( object ):
 			ud.debug( ud.ADMIN, ud.INFO, 'IMAP: add message: %s' % str( contact ) )
 			return
 
-		self.imap.add( str( contact ) )
+		contact_text = str( contact )
+		for client in self.imap_clients:
+			client.add( contact_text, new.get( 'uid', None ) )
 
 	def remove( self, dn ):
 		ud.debug( ud.ADMIN, ud.INFO, 'IMAP: remove message: %s' % dn )
-		self.imap.remove( dn )
+		for client in self.imap_clients:
+			client.remove( dn )
 
 def read_changes( dirname ):
 	sync = Synchronisation()
@@ -428,9 +475,10 @@ def main():
 	# clean up mode?
 	if _options.remove_all_contacts:
 		ud.debug(ud.ADMIN, ud.ERROR, 'remove all existing contacts')
+
 		try:
-			imap = IMAP_Client()
-			imap.remove_all()
+			sync = Synchronisation()
+			sync.remove_all()
 		except RuntimeError, e:
 			ud.debug( ud.ADMIN, ud.ERROR, str( e ) )
 			print >> sys.stderr, str( e )

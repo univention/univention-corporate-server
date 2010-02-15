@@ -1,3 +1,11 @@
+univention-ldap-addressbook-sync (4.0.0-1) unstable; urgency=low
+
+  * support additional addressbook folders
+  * restrict synchronisation of contacts by group membership
+  * remove debug message that may cause a segmentation fault; Bug #17589
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 01 Feb 2010 16:10:01 +0100
+
 univention-ldap-addressbook-sync (3.0.6-1) unstable; urgency=low
 
   * print errors to stderr (Bug #16785)
