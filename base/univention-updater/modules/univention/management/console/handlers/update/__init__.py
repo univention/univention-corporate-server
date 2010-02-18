@@ -668,7 +668,7 @@ class handler(umch.simpleHandler):
 
 		if res.options['type'] == 'security':
 			command = 'update/install_security_updates'
-			self.logfile = '/var/log/univention/security-update.log'
+			self.logfile = '/var/log/univention/security-updates.log'
 		else:
 			command = 'update/install_release_updates'
 			self.logfile = '/var/log/univention/updater.log'
