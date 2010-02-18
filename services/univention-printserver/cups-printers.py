@@ -43,6 +43,10 @@ filter='(|(objectClass=univentionPrinter)(objectClass=univentionPrinterGroup))'
 attributes=['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName','univentionPrinterPricePerPage','univentionPrinterPricePerJob','univentionPrinterQuotaSupport','univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype',]
 
 def lpadmin(args):
+
+	args = map(lambda x: '%s' % x.replace('"', '').strip(), args)
+	args = map(lambda x: '%s' % x.replace("'", '').strip(), args)
+
 	# Show this info message by default
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "cups-printers: info: univention-lpadmin %s" % string.join(args, ' '))
 
@@ -53,7 +57,7 @@ def lpadmin(args):
 		f=open(filename, 'w+')
 		os.chmod(filename, 0755)
 		print >>f, '#!/bin/sh'
-		print >>f, '/usr/sbin/univention-lpadmin %s' % string.join(args, ' ')
+		print >>f, '/usr/sbin/univention-lpadmin ' + ' '.join(map(lambda x: "'%s'" % x, args))
 		f.close()
 
 def pkprinters(args):
