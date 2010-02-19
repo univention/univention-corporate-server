@@ -181,6 +181,22 @@ static int _ulckpwdf( void )
   return 0;
 }
 
+static int _set_shadow_permissions( const char *filename)
+{
+	struct group *grp_shadow;
+	gid_t grp_id = 0;
+
+	grp_shadow = getgrnam("shadow");
+	if ( grp_shadow != NULL ) {
+		grp_id = grp_shadow->gr_gid;
+	}
+
+	chown( filename, 0, grp_id );
+	chmod( filename, 0640 );
+
+	return 0;
+}
+
 /* -------------------------------------------------------------------------------- */
 /* some syslogging                                                                  */
 /* -------------------------------------------------------------------------------- */
@@ -1003,6 +1019,8 @@ static int _delete_user_in_cache( const char *user )
   rename( PW_DATAFILE_TMP, PW_DATAFILE );
   rename( SP_DATAFILE_TMP, SP_DATAFILE );
 
+  _set_shadow_permissions(SP_DATAFILE);
+
   #ifdef DEBUG
   fprintf( stderr, "Debug: _delete_user_in_cache() user \"%s\" deleted from cache\n", user );
   #endif
@@ -1109,8 +1127,8 @@ static int _insert_new_user( const char *user, char *pw )
   }
 
   fclose( ucs_spfile );
-  chown( SP_DATAFILE, 0, 0 );
-  chmod( SP_DATAFILE, 0640 );
+
+  _set_shadow_permissions(SP_DATAFILE);
 
   return PAM_SUCCESS;
 }
