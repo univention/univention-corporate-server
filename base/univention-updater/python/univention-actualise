@@ -35,6 +35,8 @@ import subprocess
 
 import univention.config_registry as ucr
 
+LOGNAME = '/var/log/univention/actualise.log'
+
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
@@ -64,7 +66,7 @@ class Tee( object ):
 			if self.filter:
 				tee = subprocess.Popen( tee_command, stdin = p.stdout, stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
 				egrep = subprocess.Popen( [ 'egrep', self.filter ], stdin = tee.stdout )
-				return egrep.wait()
+				ret = egrep.wait()
 			else:
 				tee = subprocess.Popen( tee_command, stdin = p.stdout )
 		else:
@@ -72,7 +74,9 @@ class Tee( object ):
 			tee = subprocess.Popen( tee_command, stdin = p.stdout, stdout = devnull )
 			devnull.close()
 
+		# Must wait for exit from back to front, only the exit status of p is relevant
 		ret = tee.wait()
+		ret = p.wait()
 		if devnull:
 			devnull.close()
 
@@ -110,7 +114,7 @@ def getUpdate( configRegistry ):
 	print "Running apt-get update"
 	waitForLock()
 	createLock()
-	logfile = open( '/var/log/univention/actualise.log', 'a' )
+	logfile = open( LOGNAME, 'a' )
 	res = subprocess.call( cmd_update.split( ' ' ), stdout = logfile, stderr = logfile )
 	logfile.close()
 	if os.path.exists('/var/run/apt-get.lock'):
@@ -138,7 +142,7 @@ def deactivateSourcesListMethods( methods = [ 'cdrom' ] ):
 		f.write( '\n'.join( lines ) )
 		f.write( '\n' )
 		f.close()
-		debug_file=open('/var/log/univention/actualise.log', 'a+')
+		debug_file=open(LOGNAME, 'a+')
 		debug_file.write('Hint: deactivated %d lines in /etc/apt/sources.list:\n' % cnt)
 		debug_file.write( '   %s\n' % '\n   '.join(deactivated_lines) )
 		debug_file.close()
@@ -241,49 +245,47 @@ def main():
 	dist_upgrade = False
 	check_only = False
 
+	# parse arguments
+	for arg in sys.argv[1:]:
+		if arg == "--silent":
+			silent = True
+		elif arg == "-?" or arg=="--help":
+			print_usage = True
+		elif arg == "--dist-upgrade":
+			dist_upgrade = True
+		elif arg == '--check':
+			check_only = True
+		else:
+			# unknown parameter
+			print_usage=True
+
+	if print_usage:
+		usage()
+		sys.exit(0)
+
+	if silent:
+		# redirect stdout to /dev/null
+		sys.stdout = open("/dev/null", "w")
+
 	try:
+		if check_only:
+			# Only probe for packages to add/remove
+			res=check(configRegistry, dist_upgrade)
+			sys.exit(res)
+
 		if configRegistry.has_key('ldap/hostdn') and configRegistry['ldap/hostdn']:
-
-			# parse arguments
-			for arg in sys.argv[1:]:
-				if arg == "--silent":
-					silent = True
-				elif arg == "-?" or arg=="--help":
-					print_usage = True
-				elif arg == "--dist-upgrade":
-					dist_upgrade = True
-				elif arg == '--check':
-					check_only = True
-				else:
-					# unknown parameter
-					print_usage=True
-
-			if print_usage:
-				usage()
-				sys.exit(0)
-
-			if silent:
-				# redirect stdout to /dev/null
-				sys.stdout = open("/dev/null", "w")
-
-			if check_only:
-				# Only probe for packages to add/remove
-				res=check(configRegistry, dist_upgrade)
-				sys.exit(res)
-
-
-			logfile = open( '/var/log/univention/actualise.log', 'a' )
+			logfile = open( LOGNAME, 'a' )
 			logfile.write('***** Starting univention-actualise at %s\n' % time.ctime())
 
 			deactivateSourcesListMethods( methods = [ 'cdrom' ] )
 
 			getUpdate( configRegistry )
 
+			# temporarily disable pkgdb
 			if configRegistry.has_key('pkgdb/scan') and configRegistry['pkgdb/scan']:
 				pkgdb=configRegistry['pkgdb/scan']
-
-			if pkgdb:
-				ucr.handler_set(['pkgdb/scan=no'])
+				if pkgdb:
+					ucr.handler_set(['pkgdb/scan=no'])
 
 			rem_packages=getPackageList(configRegistry, 'remove')
 			for package in rem_packages:
@@ -305,8 +307,6 @@ def main():
 					os.unlink('/var/run/apt-get.lock')
 				if res != 0:
 					print >>sys.stderr, "E: failed to remove %s" % package
-					if pkgdb:
-						ucr.handler_set(['pkgdb/scan=%s' % pkgdb])
 					sys.exit(res)
 
 
@@ -329,8 +329,6 @@ def main():
 					os.unlink('/var/run/apt-get.lock')
 				if res != 0:
 					print >>sys.stderr, "E: failed to install %s" % package
-					if pkgdb:
-						ucr.handler_set(['pkgdb/scan=%s' % pkgdb])
 					sys.exit(res)
 
 			waitForLock()
@@ -352,29 +350,29 @@ def main():
 
 		createLock()
 		os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
-		tee = Tee( [ '/var/log/univention/actualise.log' ], stdout = not silent  )
+		tee = Tee( [ LOGNAME ], stdout = not silent  )
 		res = tee.call( cmd_config.split( ' ' ) )
-		if res == 0:
-			tee = Tee( [ '/var/log/univention/actualise.log' ], stdout = not silent, filter = '(^Get|^Unpacking|^Preparing|^Setting up|packages upgraded)' )
+		if res != 0:
+			print >>sys.stderr, "E: failed to configure packets, see %s for details." % LOGNAME
+		else:
+			tee = Tee( [ LOGNAME ], stdout = not silent, filter = '(^Get|^Unpacking|^Preparing|^Setting up|packages upgraded)' )
 			res = tee.call( cmd.split( ' ' ) )
+			if res != 0:
+				print >>sys.stderr, "E: failed to upgrade, see %s for details." % LOGNAME
 
 		if os.path.exists('/var/run/apt-get.lock'):
 			os.unlink('/var/run/apt-get.lock')
 
-		if configRegistry.has_key('ldap/hostdn') and configRegistry['ldap/hostdn']:
-			if res != 0:
-				print >>sys.stderr, "E: failed to upgrade"
-				if pkgdb:
-					ucr.handler_set(['pkgdb/scan=%s' % pkgdb])
-				sys.exit(res)
+		sys.exit(res)
 
 	finally:
 		if pkgdb:
 			ucr.handler_set(['pkgdb/scan=%s' % pkgdb])
-			if not silent:
-				os.system('/usr/sbin/univention-pkgdb-scan')
-			else:
-				os.system('/usr/sbin/univention-pkgdb-scan > /dev/null')
+			if str(pkgdb).lower() in ("yes","enable","enabled","true","1"):
+				if not silent:
+					os.system('/usr/sbin/univention-pkgdb-scan')
+				else:
+					os.system('/usr/sbin/univention-pkgdb-scan > /dev/null')
 
 if __name__ == '__main__':
 	failure = '/var/lib/univention-updater/update-failed'

@@ -1,3 +1,13 @@
+univention-updater (5.0.71-1) unstable; urgency=low
+
+  * univetion-actualise now reports errors (Bug #7229)
+  * univetion-actualise handles parameters on Basissystems (Bug #15476)
+  * univetion-actualise mentions log-file on errors (Bug #6949)
+  * univetion-actualise only updates pkgdb if configured (Bug #9353)
+  * univetion-actualise reports success if already up-to-date (Bug #15704)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 19 Feb 2010 11:58:35 +0100
+
 univention-updater (5.0.70-1) unstable; urgency=low
 
   * Add missing 's' in "security-update{s}.log" (Bug #17626)
