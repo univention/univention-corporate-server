@@ -1,3 +1,9 @@
+univention-passwd-cache (1.0.2-1) unstable; urgency=low
+
+  * be sure the shadow file can be read by the group shadow. Bug #8481
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Feb 2010 14:38:43 +0100
+
 univention-passwd-cache (1.0.1-1) unstable; urgency=low
 
   * link against libpam (Bug #15952)
