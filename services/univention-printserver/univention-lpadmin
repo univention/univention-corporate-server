@@ -65,6 +65,7 @@ attempt=0
 rc = 0
 
 while not i == 3:
+	print "expect:"
 	i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s\?' % baseConfig['hostname'], 'localhost\?', EOF], timeout=timeout)
 	if i in [0,1,2]:
 		child.sendline(machine_password)
@@ -76,33 +77,39 @@ while not i == 3:
 		print 'Please check the machine account or the PAM configuration.'
 		sys.exit(1)
 		
-	if child.exitstatus and child.exitstatus != 0:
-		print 'The command "%s %s" returned %d' % (lpadminexec, string.join(args, ' ') , child.exitstatus)
-		sys.exit(child.exitstatus)
+if child.isalive():
+	child.close()
+if child.exitstatus and child.exitstatus != 0:
+	print 'The command "%s %s" returned %d' % (lpadminexec, string.join(args, ' ') , child.exitstatus)
+	sys.exit(child.exitstatus)
 
 if '-c' in args:
 	groupname = args[args.index('-c')+1]
 	#print 'found %s' % groupname
 	i = 0
-	child = spawn('%s %s' % (enableexec, groupname))
+	child = spawn(enableexec, [groupname])
 	while not i == 3:
 		i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s\?' % baseConfig['hostname'], 'localhost\?', EOF], timeout=timeout)
 		#print "enable %s" % i
 		if i in [0,1,2]:
 			child.sendline(machine_password)
 
+	if child.isalive():
+		child.close()
 	if child.exitstatus and child.exitstatus != 0:
 		print 'The command "%s %s" returned %d' % (enableexec, groupname, cild.exitstatus)
 		sys.exit(child.exitstatus)
 
 	i = 0
-	child = spawn('%s %s' % (acceptexec, groupname))
+	child = spawn(acceptexec, [groupname])
 	while not i == 3:
 		i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s\?' % baseConfig['hostname'], 'localhost\?', EOF], timeout=timeout)
 		#print "accept %s" % i
 		if i in [0,1,2]:
 			child.sendline(machine_password)
 
+	if child.isalive():
+		child.close()
 	if child.exitstatus and child.exitstatus != 0:
 		print 'The command "%s %s" returned %d' % (acceptexec, groupname, child.exitstatus)
 		sys.exit(child.exitstatus)
