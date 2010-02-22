@@ -65,7 +65,6 @@ attempt=0
 rc = 0
 
 while not i == 3:
-	print "expect:"
 	i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s\?' % baseConfig['hostname'], 'localhost\?', EOF], timeout=timeout)
 	if i in [0,1,2]:
 		child.sendline(machine_password)
