@@ -1,3 +1,9 @@
+univention-webui (4.0.0-1) unstable; urgency=low
+
+  * add handling for a new button type 'linkbutton'; Bug #17750
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 24 Feb 2010 19:13:24 +0100
+
 univention-webui (3.0.32-1) unstable; urgency=low
 
   * send form if the button icon was pressed. Bug #17470

@@ -644,7 +644,70 @@ class button extends extra{
 			return $this->search_result_button($this->basket['text'], $this->attribute['icon'], $this->byteindex, $this->basket['content'], $this->attribute['defaultbutton']); 
 		}
 
-		if($this->js && $class != 'notebook' && $class != 'categoryitem' && isset($this->attribute['icon'])){
+		if( $this->js && $class == 'linkbutton' ){
+			// define form-contens
+			if(!isset($this->attribute['passive'])){
+				if($this->status == 'content')
+					$href = '<a class="'.$class.'" onClick="sendForm('.$this->byteindex.')"';
+				else
+					$href = '<a class="'.$class.'" onClick="sendForm2('.$this->byteindex.')"';
+
+				$href .= ' title="'.$this->basket['helptext'].'" ';
+
+				if ( isset( $this->attribute[ 'icon' ] ) ) {
+					$img = '<input src="'.$this->attribute['icon'].'" tabindex="'.$this->tabindex.'" name="usrinput['.$this->byteindex.']" type="image" value="pressed" class="button_icon" onClick="sendForm('.$this->byteindex.')" title="'.$this->basket['helptext'].'"></input>';
+				}
+
+				$link = $href.'>
+<span class="'.$class.'">'.$this->basket['text'].'</span></a>
+';
+
+				$inp = '<input type="hidden" id="'.$this->byteindex.'" name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';
+				if(isset($this->attribute['defaultbutton'])){
+					$inp .= '<div style="position:absolute;top:-1000px;left:-1000px;"><input type="submit" name="usrinput['.$this->byteindex.']" id="defaultbutton"></div>';
+				//if(isset($this->attribute['nodefault'])){
+				$inp .= '<script type="text/javascript">';
+				$inp .= 'dojo.addOnLoad(function(stopReturn){';
+				$inp .= 'submitform = document.getElementById( "form" );';
+				$inp .= 'dojo.connect(submitform, "onkeypress",function(evt) {';
+				$inp .= 'var b = document.getElementById("defaultbutton");';
+				$inp .= 'var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);';
+				$inp .= 'if ((evt.keyCode == 13 && b != null)) {dojo.stopEvent(evt);';
+				$inp .= 'b.click();}})});';
+				$inp .= '</script>';
+				//}
+				}
+			}
+			else
+		    {
+				if ( isset( $this->attribute[ 'icon' ] ) ) {
+					$img = '<img class="'.$class.'" src="'.$this->attribute['icon'].'" alt=""></img>';
+				}
+				$link = '<span class="'.$class.'">'.$this->basket['text'].'</span>';
+				$inp = '';
+		    }
+
+			if (isset($this->attribute['class'])) {
+				$class = $this->attribute['class'];
+			} else {
+				$class = "button";
+			}
+					
+			$str .= '<table class="'.$class.'"><tr>';
+			$text_col = '<td class="button_link">'.$link.'</td>';
+		
+			$btn_row = '';
+			if ( isset( $img ) ) {
+				$icon_col = '<td class="button_icon">'.$inp.$img.'</td>';
+				$btn_row = $icon_col;
+				if(trim($this->basket['text']) != '')
+					$btn_row .= $text_col;
+			} else {
+				$btn_row = $text_col;
+			}
+			$str .= $btn_row.'</tr>
+</table>';
+		} elseif ($this->js && $class != 'notebook' && $class != 'categoryitem' && isset($this->attribute['icon'])){
 
 			// define form-contens
 			if(!isset($this->attribute['passive'])){
