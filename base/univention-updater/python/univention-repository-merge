@@ -41,6 +41,7 @@ p_remove=[]
 destination_dir=''
 
 def usage(fd=sys.stdout):
+	""" Print usage information """
 	print >>fd, 'univention-repository-merge: tool for merging packages directories'
 	print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
 	print >>fd, ''
@@ -54,12 +55,13 @@ def usage(fd=sys.stdout):
 
 
 def compare(version1, version2):
+	""" Test if version1 is newer than version2 """
 	resultCode=os.system('dpkg --compare-versions %s gt %s >/dev/null 2>&1' % (version1, version2))
 	return resultCode == 0
 	
 
 def walking(arg, dirname, names):
-	counter=0
+	""" Update l_package hash with new and p_remove hash with obsolete .deb files """
 	for f in names:
 		file=os.path.join(dirname, f)
 
@@ -90,6 +92,7 @@ def walking(arg, dirname, names):
 	
 
 def cleanup_repository( directory ):
+	""" Remove all .deb files recursively from directory """
 	def _walk( fp_debug, dirname, names ):
 		for name in names:
 			filename = os.path.join( dirname, name )
@@ -100,8 +103,10 @@ def cleanup_repository( directory ):
 					fp_debug.write('Warning: failed to remove %s\n' % i)
 
 	fp_debug = open( '/var/log/univention/repository.log', 'a+' )
-	os.path.walk( directory, _walk, fp_debug )
-	fp_debug.close()
+	try:
+		os.path.walk( directory, _walk, fp_debug )
+	finally:
+		fp_debug.close()
 
 # parse options
 if __name__ == '__main__':
@@ -150,11 +155,15 @@ if __name__ == '__main__':
 	if not os.path.exists(packages_dir):
 		os.mkdir(packages_dir)
 
+	fp_debug=open('/var/log/univention/repository.log', 'a+')
 	for k in l_package.keys():
 		if l_package[k][2] == 0: #if not dest dir
-			shutil.copy(l_package[k][0], os.path.join( packages_dir, k[ 1 ] ) )
+			try:
+				dest = os.path.join( packages_dir, k[ 1 ] )
+				shutil.copy(l_package[k][0], dest )
+			except:
+				fp_debug.write('Error: faild to copy %s\n' % dest )
 
-	fp_debug=open('/var/log/univention/repository.log', 'a+')
 	for f in p_remove:
 		try:
 			os.remove(f)
@@ -174,4 +183,3 @@ if __name__ == '__main__':
 	os.chdir(packages_dir)
 	urepo.update_indexes( packages_dir, stdout = fp_debug, stderr = fp_debug )
 	fp_debug.close()
-

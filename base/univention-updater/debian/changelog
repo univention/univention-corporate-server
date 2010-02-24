@@ -1,3 +1,12 @@
+univention-updater (5.0.72-1) unstable; urgency=low
+
+  * Handle errors during repository creation/updates (Bug #15056)
+  * Mention log file in univention-updater (Bug #6949)
+  * Umount /cdrom in all error cases (Bug #17686)
+  * Fix "umount /cdrom" test (Bug #17739)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 23 Feb 2010 16:19:34 +0100
+
 univention-updater (5.0.71-1) unstable; urgency=low
 
   * univetion-actualise now reports errors (Bug #7229)

@@ -54,6 +54,7 @@ _current_version = '%s-%s' % ( configRegistry.get( 'version/version' ), configRe
 _repo_base = os.path.join( _mirror_base, 'mirror', configRegistry.get( 'version/version' ), 'maintained', '%s-0' % configRegistry.get( 'version/version' ) )
 
 def copy_repository( options, source, version ):
+	""" Copy packages and scripts belonging to version from source directory into local repository """
 	print >>options.teefile, 'Copying packages. Please be patient ...',
 	sys.stdout.flush()
 
@@ -62,7 +63,7 @@ def copy_repository( options, source, version ):
 
 	# check if repository already exists
 	if os.path.isdir( os.path.join( dest_repo ) ):
-		print >> options.teefile, 'Warning: repository for UCS version %(major)s.%(minor)s-%(patch)s already exists' % version
+		print >> options.teefile, '\nWarning: repository for UCS version %(major)s.%(minor)s-%(patch)s already exists' % version,
 	else:
 		# create directory structure
 		for arch in urepo.ARCHITECTURES:
@@ -77,8 +78,10 @@ def copy_repository( options, source, version ):
 	for script in ('preup.sh', 'postup.sh'):
 		if os.path.exists(os.path.join(source, script)):
 			shutil.copy2(os.path.join(source, script), os.path.join(dest_repo, 'all', script))
+	print >>sys.stdout
 
 def update_cdrom( options ):
+	""" Copy repository from local DVD or ISO image """
 	# try to mount update ISO image or DVD
 	if options.iso_file:
 		ret = subprocess.call( [ 'mount', '-o', 'loop',  options.iso_file, options.mount_point ], stdout = options.logfile, stderr = options.logfile )
@@ -95,35 +98,39 @@ def update_cdrom( options ):
 			print >> options.teefile, 'Error: Failed to mount CD-ROM device at %s' % options.mount_point
 		sys.exit( 1 )
 
-	# check update medium
-	if not os.path.exists( os.path.join( options.mount_point, 'ucs-updates' ) ):
-		print >> options.teefile, 'Error: This is not a valid UCS update medium'
+	try:
+		# check update medium
+		if not os.path.exists( os.path.join( options.mount_point, 'ucs-updates' ) ):
+			print >> options.teefile, 'Error: This is not a valid UCS update medium'
+			sys.exit( 1 )
+
+		# find UCS version
+		for entry in os.listdir( os.path.join( options.mount_point, 'ucs-updates' ) ):
+			directory = os.path.join( options.mount_point, 'ucs-updates', entry )
+			if os.path.isdir( directory ) and _exp_version.match( entry ):
+				# copy repository
+				try:
+					copy_repository( options, directory, entry )
+				except (IOError, os.error), why:
+					print >> options.teefile, '\nError: while copying %s: %s' % (entry, why)
+					sys.exit( 1 )
+	finally:
 		ret = subprocess.call( [ 'umount', options.mount_point ], stdout = options.logfile, stderr = options.logfile )
 		if ret != 0:
 			print >> options.teefile, 'Error: Failed to umount %s' % options.mount_point
 			sys.exit( ret )
-		sys.exit( 1 )
-		if not os.path.exists( os.path.join( options.mount_point, 'ucs-updates', 'ucs_%s-%s.txt' % _current_version ) ):
-			print >> options.teefile, 'Error: This is not the correct UCS update medium for version %s' % _current_version
-			sys.exit( 1 )
-
-	# find UCS version
-	for entry in os.listdir( os.path.join( options.mount_point, 'ucs-updates' ) ):
-		directory = os.path.join( options.mount_point, 'ucs-updates', entry )
-		if os.path.isdir( directory ) and _exp_version.match( entry ):
-			# copy repository
-			copy_repository( options, directory, entry )
-
-	ret = subprocess.call( [ 'umount', options.mount_point ], stdout = options.logfile, stderr = options.logfile )
-	if ret != 0:
-		print >> options.teefile, 'Error: Failed to umount %s' % options.mount_point
-		sys.exit( ret )
 
 def update_net( options ):
+	""" Copy packages and scripts from remote mirror into local repository """
 	mirror = UniventionMirror()
 	# update local repository if available
 	if not configRegistry.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' ):
 		print >> options.teefile, 'Error: The local repository is not activated. Set the Univention Configuration Registry variable local/repository to yes'
+		sys.exit( 1 )
+	# mirror.run calls "apt-mirror", which needs /etc/apt/mirror.conf, which is
+	# only generated with repository/mirror=true
+	if not configRegistry.get( 'repository/mirror', 'no' ).lower() in ( 'yes', 'true' ):
+		print >> options.teefile, 'Error: Mirroring for the local repository is disabled. Set the Univention Configuration Registry variable repository/mirror to yes.'
 		sys.exit( 1 )
 
 	# create mirror_base and symbolic link "univention-repository" if missing

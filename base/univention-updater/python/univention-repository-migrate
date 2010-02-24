@@ -49,6 +49,7 @@ REPO_BASE_OLD = '/var/lib/univention-server-cdrom/'
 REPO_BASE_NEW = '/var/lib/univention-repository/'
 
 def _copy_repository( options, source, dest, version ):
+	""" Recursively copy repository from source directory to dest directory """
 	print >> options.teefile, 'Copying repository of UCS version %s ...' % version,
 	# create directory structure if required
 	if not os.path.isdir( dest ):
@@ -63,6 +64,7 @@ def _copy_repository( options, source, dest, version ):
 	print >> options.teefile, "done."
 
 def _remove_repository( options, dirname, message = None, complete = False ):
+	""" Remove file or directory 'dirname' """
 	if options.remove_immediately or ( complete and options.remove ):
 		if message:
 			print >> options.teefile, message,
@@ -79,6 +81,7 @@ def _remove_repository( options, dirname, message = None, complete = False ):
 		print >> options.teefile, 'done.'
 
 def migrate_repository( options ):
+	""" Copy repository from old layout to new layout, optionally deleting old repository. """
 	index_file = os.path.join( REPO_BASE_OLD, 'ucs-updates', 'index.list' )
 	if not os.path.isfile( index_file ):
 		print >> options.teefile, 'Error: Could not find the index.list file.'
