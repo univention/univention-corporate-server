@@ -1881,6 +1881,44 @@ td.umc_list_element_part_right {
 	padding-bottom: 5px;
 }
 
+.umc_tree_item_current {
+	background: #eeeeee;
+	padding: 2px;
+	border: 1px solid #dddddd;
+}
+
+td.umc_tree_view_item_level1 {
+	align: baseline;
+	text-align: left;
+	padding-left: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	line-height: 6px;
+}
+
+td.umc_tree_view_item_level2 {
+	align: baseline;
+	text-align: left;
+	padding-left: 20px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	line-height: 6px;
+}
+
+td.umc_tree_view_item_level3 {
+	align: baseline;
+	text-align: left;
+	padding-left: 40px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	line-height: 6px;
+}
+
+td.umc_tree_table_separator {
+	background: #eeeeee;
+	width: 5px;
+}
+
 .umc_infobox_col {
         font-weight: normal;
         padding: 5px;
