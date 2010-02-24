@@ -122,8 +122,10 @@ def list_map( storage, umcp_part ):
 
 mapper.add( umcd.List, list_map )
 mapper.add( umcd.SearchForm, list_map )
+mapper.add( umcd.SimpleTreeTable, list_map )
 
 def wizard_map( storage, umcp_part ):
 	return storage.to_uniparts( umcp_part.setup() )
 
 mapper.add( umcd.Wizard, wizard_map )
+

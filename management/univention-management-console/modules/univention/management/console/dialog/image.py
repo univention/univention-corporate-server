@@ -48,6 +48,9 @@ class Image( base.Element ):
 	def get_size( self ):
 		return self.__size
 
+	def set_size( self, size ):
+		self.__size = size
+
 	def get_image( self ):
 		return umct.image_get( self.__tag, self.__size )
 

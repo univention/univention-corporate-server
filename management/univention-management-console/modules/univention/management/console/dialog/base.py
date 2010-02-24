@@ -153,6 +153,12 @@ class Row( Element, list ):
 		Element.__init__( self, attributes )
 		list.__init__( self, _verify_list_items( sequence ) )
 
+	def set_cell( self, no, content ):
+		list.__setitem__( self, no, content )
+
+	def get_cell( self, no ):
+		return list.__getitem__( self, no )
+
 class List( Element ):
 	def __init__( self, header = None, content = None, sec_header = None, attributes = {} ):
 		Element.__init__( self, attributes )
@@ -165,14 +171,14 @@ class List( Element ):
 		else:
 			self.set_second_header( sec_header )
 
-		self.__content = []
+		self._content = []
 		if content:
 			for line in content:
 				self.add_row( line )
 
 	def __str__( self ):
 		content = ''
-		for line in self.__content:
+		for line in self._content:
 			content += _str_list( line ) + ', '
 		return "%s:\n  header: %s\n  content: %s" % \
 			( Element.__str__( self ), _str_list( self.__header ),
@@ -191,23 +197,23 @@ class List( Element ):
 		return self.__sec_header
 
 	def add_row( self, row, attributes = {} ):
-		self.__content.append( Row( row, attributes ) )
+		self._content.append( Row( row, attributes ) )
 
 	def remove_row( self, i ):
 		try:
-			self.__content.pop( i )
+			self._content.pop( i )
 		except:
 			pass
 
 	def get_row( self, i ):
-		return self.__content[ i ]
+		return self._content[ i ]
 
 	def clear_content( self ):
-		del self.__content
-		self.__content = []
+		del self._content
+		self._content = []
 
 	def get_content( self ):
-		return self.__content
+		return self._content
 
 	def num_columns( self ):
 		return len( self.__header )
@@ -218,4 +224,23 @@ def _str_list( lst ):
 		text += '%s,' % unicode( i )
 	return text[ : -1 ] + ' ]'
 
-ListTypes = ( type( Frame() ), type( List() ), type( Row() ), type( Cell() ) )
+class SimpleTreeView( Element ):
+	def __init__( self, tree_data = None, attributes = {} ):
+		self._tree_data = tree_data
+		Element.__init__( self, attributes )
+
+class SimpleTreeTable( List ):
+	def __init__( self, tree_data = None, dialog = '', attributes = {} ):
+		attributes.update( { 'type' : 'umc_tree_view_table' } )
+		List.__init__( self, attributes = attributes )
+
+		self._separator_col = Cell( item = Text( '' ), attributes = { 'type' : 'umc_tree_table_separator' } )
+		self.add_row( [ SimpleTreeView( tree_data ), self._separator_col, dialog ] )
+
+	def set_dialog( self, dialog ):
+		self._content[ 0 ].set_cell( 2, dialog )
+
+	def set_tree_data( self, tree_data ):
+		self._content[ 0 ].get_cell( 0 )._tree_data = tree_data
+		
+ListTypes = ( type( Frame() ), type( List() ), type( Row() ), type( Cell() ), type( SimpleTreeTable() ), type( SimpleTreeView() ) )

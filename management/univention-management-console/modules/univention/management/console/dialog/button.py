@@ -33,6 +33,7 @@ import base
 import image
 
 import univention.management.console.locales as locales
+import univention.management.console.tools as umct
 
 _ = locales.Translation( 'univention.management.console.dialog' ).translate
 
@@ -97,6 +98,15 @@ class SelectionButton( Button ):
 	def __init__( self, label = '', choices = [], actions = [], attributes = {}, close_dialog = True ):
 		Button.__init__( self, label, actions = actions, attributes = attributes, close_dialog = close_dialog )
 		self.choices = choices
+
+class LinkButton( Button ):
+	def __init__( self, label = '', tag = None, actions = [], attributes = {}, close_dialog = True, helptext = None, current = False ):
+		attributes[ 'class' ] = 'linkbutton'
+		if current:
+			attributes[ 'class' ] += ' umc_tree_item_current'
+			
+		Button.__init__( self, label, tag, actions = actions, attributes = attributes, close_dialog = close_dialog, helptext = helptext )
+		self.set_size( umct.SIZE_TINY )
 
 # choices = [ { 'description': ... ,
 # 	        'actions': ( umcd.Action ( umcp.Command( args = [], opts= {} ), ... )
@@ -221,7 +231,7 @@ combination with confirmation dialogs)"""
 		self.fields = fields
 
 ButtonTypes = ( type( Button() ), type( SelectionButton() ), type( ChoiceButton() ),
-				type( CancelButton() ), type( CloseButton() ),
+				type( CancelButton() ), type( CloseButton() ), type( LinkButton() ), 
 				type( ErrorButton() ), type( ResetButton() ), type( ReturnButton() ), type( SearchButton() ),
 				type( SetButton() ), type( AddButton() ), type( NextButton() ), type( PrevButton() ),
 				type( FilteringSelectButton() ), type( ComboboxButton() ) )

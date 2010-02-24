@@ -117,15 +117,15 @@ class ButtonMap( IButtonMap, mapper.IMapper ):
 		IButtonMap.__init__( self )
 		mapper.IMapper.__init__( self )
 
-	def layout( self, storage, umcp_part ):
-		attributes = utils.attributes( umcp_part )
+	def layout( self, storage, umcp_part, attributes = {} ):
+		attributes.update( utils.attributes( umcp_part ) )
 		if umcp_part.get_tag():
 			icon = umcp_part.get_image()
 			attributes.update( { 'icon' : icon } )
-		if umcp_part.icon_right:
-			attributes.update( { 'icon_side' : 'right' } )
-		else:
-			attributes.update( { 'icon_side' : 'left' } )
+			if umcp_part.icon_right:
+				attributes.update( { 'icon_side' : 'right' } )
+			else:
+				attributes.update( { 'icon_side' : 'left' } )
 		
 		but = button( unicode( umcp_part ), attributes, { 'helptext' : unicode( umcp_part ) } )
 		storage[ umcp_part.id() ] = ( but, umcp_part )
@@ -144,6 +144,15 @@ mapper.add( umcd.PrevButton, ButtonMap() )
 mapper.add( umcd.NextButton, ButtonMap() )
 mapper.add( umcd.AddButton, ButtonMap() )
 mapper.add( umcd.SearchButton, ButtonMap() )
+
+class LinkButtonMap( ButtonMap ):
+	def __init__( self ):
+		ButtonMap.__init__( self )
+
+	def layout( self, storage, umcp_part ):
+		return ButtonMap.layout( self, storage, umcp_part, { 'link' : 'yes', 'type' : 'umc_link_button' } )
+
+mapper.add( umcd.LinkButton, LinkButtonMap() )
 
 class SelectionButtonMap( IButtonMap, mapper.IMapper ):
 	def __init__( self ):
@@ -483,3 +492,40 @@ class ResetButtonMap( ButtonMap, mapper.IMapper ):
 			return []
 
 mapper.add( umcd.ResetButton, ResetButtonMap() )
+
+def __tree_level_indent( level ):
+	txt = ''
+	for i in range( level ):
+		txt += '&nbsp;'
+
+	return text( '', {}, { 'text' : [ txt, ] } )
+
+def __rewrite_tree( storage, data, level = 0 ):
+	rows = []
+	for item in data:
+		if not type( item ) in ( list, tuple ):
+			args = utils.layout_attrs( storage, item )
+			unipart = storage.to_uniparts( item )
+			ud.debug( ud.ADMIN, ud.ERROR, 'TreeView unipart: %s' % str( unipart ) )
+
+			args[ 'type' ] = 'umc_tree_view_item_level%d' % level
+			col = tablecol( '', args, { 'obs' : [ __tree_level_indent( level ), unipart ] } )
+			ud.debug( ud.ADMIN, ud.ERROR, 'TreeView col: %s' % str( col ) )
+			row = tablerow( '', {}, { 'obs' : [ col, ] } )
+			rows.append( row )
+			ud.debug( ud.ADMIN, ud.ERROR, 'TreeView row: %s' % str( row ) )
+		else:
+			rows.extend( __rewrite_tree( storage, item, level + 1 ) )
+
+	return rows
+
+import univention.debug as ud
+
+def simple_treeview_map( storage, umcp_part ):
+	tablerows = __rewrite_tree( storage, umcp_part._tree_data )
+	args = { 'type' : 'umc_tree_view' }
+	args.update( utils.layout_attrs( storage, umcp_part ) )
+	ud.debug( ud.ADMIN, ud.ERROR, 'TreeView data: %s' % str( tablerows ) )
+	return table( '', args, { 'obs' : tablerows } )
+
+mapper.add( umcd.SimpleTreeView, simple_treeview_map )
