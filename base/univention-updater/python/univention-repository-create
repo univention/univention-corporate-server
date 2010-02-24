@@ -46,6 +46,7 @@ _mirror_base = configRegistry.get( 'repository/mirror/basepath', '/var/lib/unive
 _repo_base = os.path.join( _mirror_base, 'mirror', configRegistry.get( 'version/version' ), 'maintained', '%s-0' % configRegistry.get( 'version/version' ) )
 
 def check_preconditions( options ):
+	""" Check for already existing mirror and for debmirror package """
 	# check directories
 	if os.path.exists( os.path.join( _mirror_base, 'mirror' ) ):
 		print >> sys.stderr, 'Warning: The path %s/mirror already exists.' % _mirror_base
@@ -63,6 +64,7 @@ def check_preconditions( options ):
 		sys.exit( 1 )
 
 def  prepare( options ):
+	""" Set local/repository and create directory structure """
 	# set local/repository
 	if configRegistry.get( 'local/repository', 'no' ) != 'yes':
 		ucr.handler_set( [ 'local/repository=yes' ] )
@@ -86,6 +88,7 @@ def  prepare( options ):
 				raise e
 
 def copy_repository( options ):
+	""" Copy version info, kernels, grub configuration, profiles, packages and dists """
 	print 'Copying data. Please be patient ...'
 
 	print '  copying version information ...',
@@ -140,6 +143,7 @@ def copy_repository( options ):
 		print 'done.'
 
 def mount( options ):
+	""" Mount CDROM and check for valid medium """
 	if options.interactive:
 		# ask user to insert cdrom
 		print 'Please insert a UCS installation medium and press <Enter>',
@@ -166,6 +170,7 @@ def mount( options ):
 	return True
 
 def setup_repository( options ):
+	""" Update indexes """
 	urepo.update_indexes( _repo_base, dists = True )
 
 def setup_pxe( options ):
@@ -206,12 +211,13 @@ if __name__ == '__main__':
 		print >>sys.stderr, "Error: Failed to mount CD-ROM device at %s" % options.mount_point
 		sys.exit( 1 )
 
-	copy_repository( options )
-	setup_repository( options )
-	setup_pxe( options )
-
-	if options.mount:
-		subprocess.call( [ 'umount', options.mount_point ] )
+	try:
+		copy_repository( options )
+		setup_repository( options )
+		setup_pxe( options )
+	finally:
+		if options.mount:
+			subprocess.call( [ 'umount', options.mount_point ] )
 
 	# set repository server to local system
 	fqdn = '%s.%s' % ( configRegistry.get( 'hostname' ), configRegistry.get( 'domainname' ) )

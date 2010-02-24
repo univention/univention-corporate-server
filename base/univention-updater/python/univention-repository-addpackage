@@ -39,6 +39,7 @@ import univention_baseconfig
 import  univention.updater.repository as urepo
 
 def usage(fd=sys.stdout):
+	""" Print usage message """
 	print >>fd, 'univention-repository-addpackage: tool for adding packages to local repository'
 	print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
 	print >>fd, ''
@@ -51,6 +52,7 @@ def usage(fd=sys.stdout):
 	print >>fd, ''
 
 def rewrite_url(url):
+    """ Replace illegal characters in url with underscores """
     tmp = url
     illegal_chars = [',', '%', ' ']
 
@@ -90,7 +92,7 @@ if __name__ == '__main__':
 			files.append(i)
 
 	if not packages_dir:
-		usage()
+		print >> sys.stderr, "Error: Destination directory not specified."
 		sys.exit(1)
 
 	# check if destination directory exists
@@ -99,14 +101,14 @@ if __name__ == '__main__':
 		sys.exit(1)
 
 	if len(files) < 1:
-		usage()
+		print >> sys.stderr, "Error: No Debian packages specified."
 		sys.exit(1)
 
 	baseConfig=univention_baseconfig.baseConfig()
 	baseConfig.load()
 
 	if baseConfig.get('local/repository', 'no').lower() in [ 'no', 'false' ]:
-		print 'Error: The local repository is diabled. Check if univention-debmirror ist installed.'
+		print >> sys.stderr, 'Error: The local repository is disabled. Check if univention-debmirror ist installed.'
 		sys.exit(1)
 
 	packages_path = urepo.get_repo_basedir( packages_dir )
