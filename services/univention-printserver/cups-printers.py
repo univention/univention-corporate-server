@@ -136,7 +136,7 @@ def handler(dn, new, old):
 			printer_name = old['cn'][0]
 			printer_list = listener.baseConfig.get('cups/restrictedprinters', '').split()
 			printer_is_restricted = printer_name in printer_list
-			if printer_is_restricted:
+			if printer_is_restricted and listener.baseConfig.get('cups/automaticrestrict', "true") in ['true','yes']:
 				printer_list.remove (printer_name)
 				keyval = 'cups/restrictedprinters="%s"' % string.join(printer_list, ' ')
 				listener.setuid (0)
@@ -187,7 +187,7 @@ def handler(dn, new, old):
 			printer_list.append (printer_name)
 			update_restricted_printers = True
 
-		if update_restricted_printers:
+		if update_restricted_printers and listener.baseConfig.get('cups/automaticrestrict', "true") in ['true','yes']:
 			keyval = 'cups/restrictedprinters=%s' % string.join (printer_list, ' ')
 			listener.setuid (0)
 			try:

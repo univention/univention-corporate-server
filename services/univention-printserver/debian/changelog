@@ -1,3 +1,10 @@
+univention-printserver (3.0.28-2) unstable; urgency=low
+
+  * make printer restrictions (cups/restrictedprinters) optional via
+    cups/automaticrestrict Bug #17773 
+
+ -- Felix Botner <botner@univention.de>  Mon, 01 Mar 2010 15:09:35 +0100
+
 univention-printserver (3.0.28-1) unstable; urgency=low
 
   * close expect connection in univention-lpadmin Bug #17656

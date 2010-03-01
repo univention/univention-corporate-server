@@ -45,3 +45,9 @@ Description[de]=CUPS-Drucker mit Zugriffsbeschränkung
 Description[en]=CUPS-Printers with restricted access
 Type=str
 Categories=service-cups
+
+[cups/automaticrestrict]
+Description[de]=Wenn diese Variable auf true gesetzt ist, wird die Druckerliste in cups/restrictedprinters automatisch verwaltet.
+Description[en]=If this variable is set to true the printer list in cups/restrictedprinters will be managed automatically.
+Type=str
+Categories=service-cups
