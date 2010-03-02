@@ -134,9 +134,10 @@ def handler(dn, new, old):
 		if 'cn' in changes or not filter_match(new):
 			#Deletions done via UCR-Variables
 			printer_name = old['cn'][0]
+			listener.baseConfig.load()
 			printer_list = listener.baseConfig.get('cups/restrictedprinters', '').split()
 			printer_is_restricted = printer_name in printer_list
-			if printer_is_restricted and listener.baseConfig.get('cups/automaticrestrict', "true") in ['true','yes']:
+			if printer_is_restricted and not listener.baseConfig.get('cups/automaticrestrict', "true") in ['false','no']:
 				printer_list.remove (printer_name)
 				keyval = 'cups/restrictedprinters="%s"' % string.join(printer_list, ' ')
 				listener.setuid (0)
@@ -175,6 +176,7 @@ def handler(dn, new, old):
 	if filter_match(new):
 		#Modifications done via UCR-Variables
 		printer_name = new['cn'][0]
+		listener.baseConfig.load()
 		printer_list = listener.baseConfig.get('cups/restrictedprinters', '').split()
 		printer_is_restricted = printer_name in printer_list
 		restrict_printer = (new.get('univentionPrinterACLUsers', []) or new.get('univentionPrinterACLGroups', [])) and not (new['univentionPrinterACLtype'][0] == 'allow all')
@@ -187,7 +189,7 @@ def handler(dn, new, old):
 			printer_list.append (printer_name)
 			update_restricted_printers = True
 
-		if update_restricted_printers and listener.baseConfig.get('cups/automaticrestrict', "true") in ['true','yes']:
+		if update_restricted_printers and not listener.baseConfig.get('cups/automaticrestrict', "true") in ['false','no']:
 			keyval = 'cups/restrictedprinters=%s' % string.join (printer_list, ' ')
 			listener.setuid (0)
 			try:

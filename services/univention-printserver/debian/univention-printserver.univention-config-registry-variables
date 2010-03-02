@@ -47,7 +47,7 @@ Type=str
 Categories=service-cups
 
 [cups/automaticrestrict]
-Description[de]=Wenn diese Variable auf true gesetzt ist, wird die Druckerliste in cups/restrictedprinters automatisch verwaltet.
-Description[en]=If this variable is set to true the printer list in cups/restrictedprinters will be managed automatically.
+Description[de]=Wenn diese Variable auf false oder no gesetzt ist, wird die Druckerliste in cups/restrictedprinters nicht automatisch verwaltet (default true).
+Description[en]=If this variable is set to false or no the printer list in cups/restrictedprinters will not be managed automatically (default true).
 Type=str
 Categories=service-cups
