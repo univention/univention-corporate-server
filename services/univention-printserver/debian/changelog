@@ -1,3 +1,10 @@
+univention-printserver (3.0.28-3) unstable; urgency=low
+
+  * changed default for cups/automaticrestrict Bug #17773
+  * reload configRegistry in listener module  Bug #17773 and Bug #15273
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Mar 2010 14:58:14 +0100
+
 univention-printserver (3.0.28-2) unstable; urgency=low
 
   * make printer restrictions (cups/restrictedprinters) optional via
