@@ -1,3 +1,10 @@
+univention-ad-connector (4.1.11-1) unstable; urgency=low
+
+  * be sure univention-adsearch uses an encrypted communication. Bug
+    #17768
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Mar 2010 19:58:38 +0100
+
 univention-ad-connector (4.1.10-1) unstable; urgency=low
 
   * create a new CAcert file, which contains the UCS CA and the AD CA.

@@ -145,8 +145,6 @@ if baseConfig.has_key('%s/ad/ldap/ssl' % CONFIGBASENAME) and baseConfig['%s/ad/l
 
 ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_file )
 lo = ldap.ldapobject.SmartLDAPObject(uri=ldapuri,
-                                     who = login_dn,
-                                     cred = login_pw,
                                      start_tls = start_tls,
                                      tls_cacertfile = ca_file)
 
@@ -155,7 +153,7 @@ lo = ldap.ldapobject.SmartLDAPObject(uri=ldapuri,
 
 lo.set_option(ldap.OPT_REFERRALS,0)
 
-#lo.simple_bind_s(login_dn, login_pw)
+lo.simple_bind_s(login_dn, login_pw)
 
 # LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
 lc1 = LDAPControl('1.2.840.113556.1.4.417',criticality=1)
