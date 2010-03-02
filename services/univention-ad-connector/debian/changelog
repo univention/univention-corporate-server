@@ -1,3 +1,10 @@
+univention-ad-connector (4.1.10-1) unstable; urgency=low
+
+  * create a new CAcert file, which contains the UCS CA and the AD CA.
+    Bug #17768
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Mar 2010 16:26:50 +0100
+
 univention-ad-connector (4.1.9-1) unstable; urgency=low
 
   * fixed ad-connector umc service configuration Bug #17311 
