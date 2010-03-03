@@ -15,16 +15,14 @@ auth     [success=<succ> new_authtok_reqd=ok \
          service_err=<unavail> authinfo_unavail=<unavail> \
          default=<unknown>]                         pam_winbind.so use_first_pass'''
 
-if baseConfig.has_key('auth/passwdcache/max_user') and baseConfig['auth/passwdcache/max_user']:
-        value=baseConfig['auth/passwdcache/max_user'].strip('"')
-else:
-        value=3
+value=baseConfig.get('auth/passwdcache/max_user', '3')
+
 pam_cache='''
 # cache password (on successful authentification)
 auth     [success=done new_authtok_reqd=ok \
 	ignore=ignore default=bad]         pam_passwdcache.so try_first_pass insert max_user=%s
 # remove password from cache (on failed authentification)
-auth     required                           pam_passwdcache.so try_first_pass delete max_user=%s
+# auth     required                           pam_passwdcache.so try_first_pass delete max_user=%s
 # authenticate against cache (if a service fails)
 auth     required                         pam_passwdcache.so try_first_pass'''%(value, value)
 
@@ -43,9 +41,9 @@ def pam_section(template, index, last):
 		if succ == '0':
 			succ = 'ok'
 		fail=str(index)
-		unavail=str(index+1)
+		unavail=str(index)
 	if index == 1:
-		unknown=str(index)
+		unknown='die'
 	elif last == 1:
 		unknown='die'
 	else:

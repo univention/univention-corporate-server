@@ -30,9 +30,9 @@ auth     [success=<succ> new_authtok_reqd=ok \
 pam_cache='''
 # cache password (on successful authentification)
 auth     [success=done new_authtok_reqd=ok \
-         ignore=ignore default=bad]         pam_passwdcache.so try_first_pass insert max_user=3
+         ignore=ignore default=bad]         pam_passwdcache.so try_first_pass insert max_user=@%@"%s" % baseConfig.get('auth/passwdcache/max_user', '3')@%@
 # remove password from cache (on failed authentification)
-auth     required                           pam_passwdcache.so try_first_pass delete max_user=3
+# auth     required                           pam_passwdcache.so try_first_pass delete max_user=@%@baseConfig.get('auth/passwdcache/max_user', '3')@%@
 # authenticate against cache (if a service fails)
 auth     required                         pam_passwdcache.so try_first_pass'''
 
@@ -51,9 +51,9 @@ def pam_section(template, index, last):
 		if succ == '0':
 			succ = 'ok'
 		fail=str(index)
-		unavail=str(index+1)
+		unavail=str(index)
 	if index == 1:
-		unknown=str(index)
+		unknown='die'
 	elif last == 1:
 		unknown='die'
 	else:

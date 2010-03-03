@@ -59,6 +59,7 @@ Variables: auth/admin/methods
 Type: file
 File: etc/pam.d/admin-auth
 Variables: auth/admin/methods
+Variables: auth/passwdcache/max_user
 
 Type: file
 File: etc/pam.d/admin-auth-nowrite
