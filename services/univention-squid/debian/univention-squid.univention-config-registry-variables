@@ -63,3 +63,15 @@ Description[de]=iptables-Regeln für transparenten Proxy aktivieren
 Description[en]=Activate iptables rules for transparent proxy
 Type=str
 Categories=service-webproxy
+
+[squid/ntlmauth/children]
+Description[de]=Zahl der ntlm_auth Prozesse
+Description[en]=Number of ntlm_auth processes
+Type=str
+Categories=service-webproxy
+
+[squid/ntlmauth/keepalive]
+Description[de]=keep_alive Option für ntlm_auth 
+Description[en]=keep_alive option for ntlm_auth
+Type=str
+Categories=service-webproxy
