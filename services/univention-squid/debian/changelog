@@ -1,3 +1,9 @@
+univention-squid (3.0.8-2) unstable; urgency=low
+
+  * fix default for squid/ntlmauth/keepalive (Bug #17790)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Mar 2010 14:58:23 +0100
+
 univention-squid (3.0.8-1) unstable; urgency=low
 
   * new ucr variable squid/ntlmauth/keepalive
