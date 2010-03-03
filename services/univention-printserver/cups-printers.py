@@ -139,7 +139,7 @@ def handler(dn, new, old):
 			printer_is_restricted = printer_name in printer_list
 			if printer_is_restricted and not listener.baseConfig.get('cups/automaticrestrict', "true") in ['false','no']:
 				printer_list.remove (printer_name)
-				keyval = 'cups/restrictedprinters="%s"' % string.join(printer_list, ' ')
+				keyval = 'cups/restrictedprinters=%s' % string.join(printer_list, ' ')
 				listener.setuid (0)
 				try:
 					univention.config_registry.handler_set( [ keyval.encode() ] )
