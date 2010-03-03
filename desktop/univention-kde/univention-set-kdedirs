@@ -70,7 +70,7 @@ else
 		export univentionDesktopProfile="$profile"
 		if [ -n "$profile" ]; then
 			for i in $profile; do
-				KDEDIRS="$KDEDIRS:$profile/.kde"
+				KDEDIRS="$KDEDIRS:$i/.kde"
 			done
 		fi
 	fi

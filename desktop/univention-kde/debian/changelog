@@ -1,3 +1,10 @@
+univention-kde (4.0.3-1) unstable; urgency=low
+
+  * fixed a typo in univention-set-kdedirs which avoids the use of an
+    KDE profile in a disconnected mobile client session. Bug #12493
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Mar 2010 09:13:24 +0100
+
 univention-kde (4.0.2-2) unstable; urgency=low
 
   * added ucs 2.3 theme screenshot (Bug: #14425)
