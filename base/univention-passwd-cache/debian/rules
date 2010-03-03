@@ -70,6 +70,7 @@ install: build
 	install -d ${D_PAM}/etc/univention/passwdcache
 	install -d ${D_PAM}/lib/security
 	install -m644 pam_passwdcache/pam_passwdcache.so ${D_PAM}/lib/security
+	install -m 0755 passwdcache.py ${D_PAM}/usr/lib/univention-directory-listener/system
 
 binary-arch: build install
 
