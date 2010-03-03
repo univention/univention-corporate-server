@@ -1,6 +1,6 @@
-univention-printserver (3.0.28-4) unstable; urgency=low
+univention-printserver (3.0.29-1) unstable; urgency=low
 
-  * fixed setting of cups/restrictedprinters for removed printers Bug #15273
+  * fixed setting of cups/restrictedprinters for removed printers Bug #17785
 
  -- Felix Botner <botner@univention.de>  Wed, 03 Mar 2010 09:44:30 +0100
 
