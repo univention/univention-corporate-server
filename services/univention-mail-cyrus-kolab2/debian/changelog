@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (2.0.8-1) unstable; urgency=low
+
+  * be sure the sieve script for the user will be written, even if the
+    user is a standard mail user on a kolab system. Bug #17811
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 08 Mar 2010 15:00:01 +0100
+
 univention-mail-cyrus-kolab2 (2.0.7-2) unstable; urgency=low
 
   * fix traceback in cyrus-sieve Listener for unset mail/antispam/globalfolder (Bug #16770)
