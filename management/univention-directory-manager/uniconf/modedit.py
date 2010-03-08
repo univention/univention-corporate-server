@@ -1785,7 +1785,7 @@ class modedit(unimodule.unimodule):
 						if value:
 							for v in value:
 								try:
-									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
+									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v).split('/')[-1]})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
 									pass
 								i+=1
@@ -1799,7 +1799,7 @@ class modedit(unimodule.unimodule):
 						if profiles.has_key('univentionDefaultKdeProfiles'):
 							for pn in profiles['univentionDefaultKdeProfiles']:
 								univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, ('pn: %s' % pn))
-								profile_choicelist.append({'name': pn, 'description': pn})
+								profile_choicelist.append({'name': pn, 'description': pn.split('/')[-1]})
 
 						self.minput[name].append(question_select(property.short_description,atts,{'choicelist':profile_choicelist,'helptext':_('select profile')}))
 
