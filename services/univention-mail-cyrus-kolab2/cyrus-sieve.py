@@ -35,6 +35,16 @@ name='cyrus-sieve'
 description='Create sieve mail filters'
 filter='(|(objectClass=kolabInetOrgPerson)(objectClass=univentionMail))'
 
+def create_cyrus_mailbox(new):
+	if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0]:
+		try:
+			listener.setuid(0)
+
+			p = os.popen('/usr/sbin/univention-cyrus-mkdir %s' % (string.lower(new['mailPrimaryAddress'][0])))
+			p.close()
+		finally:
+			listener.unsetuid()
+
 def handler(dn, new, old):
 	if not new and old:
 		pass
@@ -44,6 +54,8 @@ def handler(dn, new, old):
 			if new.has_key( 'univentionKolabDisableSieve' ) and new[ 'univentionKolabDisableSieve' ][0].lower( ) in [ 'true', 'yes' ]:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Do not not write a  sieve script for user: %s' % new['mailPrimaryAddress'][0])
 				return
+
+			create_cyrus_mailbox(new)
 
 			cyrus_id=pwd.getpwnam('cyrus')[2]
 			mail_id=grp.getgrnam('mail')[2]
