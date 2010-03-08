@@ -1,3 +1,9 @@
+univention-directory-listener (4.0.4-1) unstable; urgency=low
+
+  * fixed wrong path in join-script (Bug #17527)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 08 Mar 2010 14:34:50 +0100
+
 univention-directory-listener (4.0.3-3) unstable; urgency=low
 
   * remove mixedcase as well in cache_delete_entry_lower_upper (Bug #16098) 

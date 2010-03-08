@@ -109,8 +109,8 @@ if [ $exit_status != 0 ]; then
 	exit 1
 fi
 
-if test -e "/var/lib/univention-directory-listener/handler/replication"; then
-	res=`cat /var/lib/univention-directory-listener/handler/replication`
+if test -e "/var/lib/univention-directory-listener/handlers/replication"; then
+	res=`cat /var/lib/univention-directory-listener/handlers/replication`
 	if [ $res != "1" -a "$res" != "3" ]; then
 		exit 1
 	fi
