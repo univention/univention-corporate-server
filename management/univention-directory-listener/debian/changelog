@@ -1,3 +1,9 @@
+univention-directory-listener (4.0.5-1) unstable; urgency=low
+
+  * remove obsolete preinst (Bug #17837)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 08 Mar 2010 14:59:33 +0100
+
 univention-directory-listener (4.0.4-1) unstable; urgency=low
 
   * fixed wrong path in join-script (Bug #17527)
