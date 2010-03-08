@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.51-1) unstable; urgency=low
+
+  * remove redundant path in KDE profile selection. Bug #17563
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 08 Mar 2010 11:14:49 +0100
+
 univention-directory-manager (7.0.50-3) unstable; urgency=low
 
   * remove redundant backslash while creating printer with file:/ uri Bug #16776 
