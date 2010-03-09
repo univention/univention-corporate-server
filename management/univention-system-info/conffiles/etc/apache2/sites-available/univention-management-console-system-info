@@ -1,3 +1,5 @@
+@%@BCWARNING=# @%@
+
 <Directory /var/www/univention-management-console/system-info/>
         Options -Indexes
 </Directory>

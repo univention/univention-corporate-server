@@ -1,3 +1,9 @@
+univention-system-info (0.1.12-1) unstable; urgency=low
+
+  * added UCR Header, Bug #17816
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 09 Feb 2010 09:23:02 +0100
+
 univention-system-info (0.1.11-1) unstable; urgency=low
 
   * support umlauts
