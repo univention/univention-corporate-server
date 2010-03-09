@@ -1,3 +1,5 @@
+@%@BCWARNING=# @%@
+
 #!/bin/sh
 
 exit 0
