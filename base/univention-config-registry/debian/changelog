@@ -1,3 +1,9 @@
+univention-config-registry (5.0.75-1) unstable; urgency=low
+
+  * added another UCR Header, Bug #17816
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 09 Mar 2010 10:18:11 +0100
+
 univention-config-registry (5.0.74-1) unstable; urgency=low
 
   * added UCR Header, Bug #17816
