@@ -1,4 +1,6 @@
+/*
 @%@BCWARNING=# @%@
+*/
 
 @!@
 def print_proxy(proxy):

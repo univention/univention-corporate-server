@@ -1,5 +1,6 @@
+/*
 @%@BCWARNING=# @%@
-
+*/
 @!@
 if baseConfig.has_key('update/secure_apt'):
 	if baseConfig['update/secure_apt'].lower() in ['true', 'yes']:
