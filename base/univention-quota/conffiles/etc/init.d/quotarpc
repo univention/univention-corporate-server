@@ -1,3 +1,5 @@
+@%@BCWARNING=# @%@
+
 #!/bin/sh
 #
 # Univention Quota
