@@ -1,3 +1,5 @@
+@%@BCWARNING=# @%@
+
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 @%@ldap/connection/check@%@ root /usr/share/univention-managed-client/check_connection
 @reboot root /usr/share/univention-managed-client/check_connection
