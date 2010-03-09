@@ -1,3 +1,5 @@
+@%@BCWARNING=# @%@
+
 @!@
 def print_proxy(proxy):
 	print 'Acquire'

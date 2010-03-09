@@ -1,3 +1,5 @@
+@%@BCWARNING=# @%@
+
 @!@
 if configRegistry.has_key('pkgdb/scan') and configRegistry['pkgdb/scan'] == 'yes':
 	print 'DPkg'
