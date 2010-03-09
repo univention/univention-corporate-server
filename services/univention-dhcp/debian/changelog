@@ -1,3 +1,9 @@
+univention-dhcp (4.0.4-1) unstable; urgency=low
+
+  * added UCR Header, Bug #17816
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 09 Mar 2010 10:08:49 +0100
+
 univention-dhcp (4.0.3-1) unstable; urgency=low
 
   * updated copyright Bug #17222
