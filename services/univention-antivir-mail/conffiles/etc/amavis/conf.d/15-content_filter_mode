@@ -1,3 +1,4 @@
+@%@BCWARNING=# @%@
 use strict;
 
 # You can modify this file to re-enable SPAM checking through spamassassin
