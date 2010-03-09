@@ -1,3 +1,9 @@
+univention-directory-reports (2.0.4-1) unstable; urgency=low
+
+  * added UCR Header, Bug #17816
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 09 Mar 2010 10:23:53 +0100
+
 univention-directory-reports (2.0.3-2) unstable; urgency=low
 
   * delete char ` in tex reports because "Unicode char \u8:´ not set up for use with LaTeX" (Bug: #15618)
