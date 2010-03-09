@@ -1,3 +1,9 @@
+univention-ldap (5.0.14-1) unstable; urgency=low
+
+  * added ldap indices, Bug #17232
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 09 Mar 2010 11:33:35 +0100
+
 univention-ldap (5.0.13-1) unstable; urgency=low
 
   * fixed typo in schema/mail.schema Bug #17226 
