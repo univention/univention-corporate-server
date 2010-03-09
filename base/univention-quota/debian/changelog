@@ -1,3 +1,9 @@
+univention-quota (4.0.2-0) unstable; urgency=low
+
+  * added UCR Header, Bug #17816
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 09 Mar 2010 10:14:04 +0200
+
 univention-quota (4.0.1-0) unstable; urgency=low
 
   * fixed pyshared path (Bug: #14667)
