@@ -1,3 +1,9 @@
+univention-gdm (5.0.14-2) unstable; urgency=low
+
+  * added UCR Header to gdm-autologin #17816
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 08 Feb 2010 16:28:26 +0100
+
 univention-gdm (5.0.14-1) unstable; urgency=low
 
   * updated copyright Bug #17222 

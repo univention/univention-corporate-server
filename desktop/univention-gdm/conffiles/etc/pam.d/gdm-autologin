@@ -1,3 +1,4 @@
+@%@BCWARNING=# @%@
 #%PAM-1.0
 
 auth		required	pam_nologin.so
