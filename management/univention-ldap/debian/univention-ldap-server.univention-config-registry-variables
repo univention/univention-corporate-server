@@ -119,3 +119,8 @@ Description[en]=LDAP indices for attributes checked for substring matches
 Type=str
 Categories=service-ldap
 
+[ldap/index/autorebuild]
+Description[de]=LDAP-Indizes bei Updates automatisch anpassen und neu erzeugen
+Description[en]=Adjust and rebuild LDAP indices automatically during updates
+Type=str
+Categories=service-ldap
