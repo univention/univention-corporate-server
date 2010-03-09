@@ -1,3 +1,9 @@
+univention-directory-manager (7.0.52-1) unstable; urgency=low
+
+  * added UCR Header, Bug #17816
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 09 Mar 2010 09:45:49 +0100
+
 univention-directory-manager (7.0.51-1) unstable; urgency=low
 
   * remove redundant path in KDE profile selection. Bug #17563
