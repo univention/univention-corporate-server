@@ -1,3 +1,6 @@
+@%@BCWARNING=# @%@
+
+
 #!/bin/sh
 
 echo "The init script /etc/init.d/bind9 was disabled."

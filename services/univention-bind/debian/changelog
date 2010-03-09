@@ -1,3 +1,9 @@
+univention-bind (4.0.6-1) unstable; urgency=low
+
+  * added UCR Header, Bug #17816
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 09 Mar 2010 10:04:19 +0100
+
 univention-bind (4.0.5-4) unstable; urgency=low
 
   * changed test to existing symlink in univention-bind-proxy (Bug #16583)
