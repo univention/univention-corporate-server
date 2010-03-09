@@ -30,54 +30,19 @@
 
 set -e
 
-touch /etc/ldap/rootpw.conf
-
-test -f /var/lib/univention-ldap/replog/replog || \
-	touch /var/lib/univention-ldap/replog/replog
-chmod 0600 /var/lib/univention-ldap/replog/replog
-test -f /var/lib/univention-ldap/replog/replog.lock || \
-	touch /var/lib/univention-ldap/replog/replog.lock
-
-
-univention-config-registry set ldap/autostart?yes
-
-#DEBHELPER#
-
-eval `univention-config-registry shell server/role`
-
-univention-config-registry set ldap/debug/level?0
-univention-config-registry set ldap/port?389
-univention-config-registry set ldap/database/type?bdb
-# UDM Property Attributes
-udm_prop_attrs="univentionUDMPropertyVersion,univentionUDMPropertyModule,univentionUDMPropertyShortDescription,univentionUDMPropertyLongDescription,univentionUDMPropertySyntax,univentionUDMPropertyMultivalue,univentionUDMPropertyDefault,univentionUDMPropertyLdapMapping,univentionUDMPropertyObjectClass,univentionUDMPropertyDeleteObjectClass,univentionUDMPropertyValueMayChange,univentionUDMPropertyLayoutTabName,univentionUDMPropertyLayoutOverwriteTab,univentionUDMPropertyLayoutOverwritePosition,univentionUDMPropertyLayoutPosition,univentionUDMPropertyCLIName,univentionUDMPropertyTranslationShortDescription,univentionUDMPropertyTranslationLongDescription,univentionUDMPropertyTranslationTabName,univentionUDMPropertyOptions,univentionUDMPropertyLayoutTabAdvanced,univentionUDMPropertyValueRequired,univentionUDMPropertyHook,univentionUDMPropertyDoNotSearch"
-univention-config-registry set ldap/index/eq?"objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,sambaSID,sambaPrimaryGroupSID,sambaDomainName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,relativeDomainName,pTRRecord,zoneName,mailPrimaryAddress,mailAlternativeAddress,univentionServerRole,univentionService,kolabHomeServer,automountInformation,sambaAcctFlags,univentionPolicyReference,homeDirectory,$udm_prop_attrs,univentionLicenseModule,cNAMERecord,univentionNagiosHostname,univentionLicenseObject"
-univention-config-registry set ldap/index/pres?"objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,mailPrimaryAddress,mailAlternativeAddress,kolabHomeServer,univentionPolicyReference,homeDirectory,automountInformation,$udm_prop_attrs"
-univention-config-registry set ldap/index/sub?"uid,cn,sn,givenName,mail,description,displayName,mailPrimaryAddress,mailAlternativeAddress,default,zoneName,sambaSID,automountInformation"
-univention-config-registry set ldap/index/approx?"none"
-univention-config-registry set ldap/sizelimit?400000
-univention-config-registry set ldap/cachesize?20000
-univention-config-registry set ldap/idlcachesize?20000
-univention-config-registry set ldap/idletimeout?0
-univention-config-registry set ldap/threads?16
-univention-config-registry set ldap/acl/user/kolab2/change?yes
-univention-config-registry set ldap/acl/user/password/change?no
-univention-config-registry set ldap/acl/slavepdc?yes
-univention-config-registry set ldap/acl/nestedgroups?yes
-
-univention-config-registry set ldap/database/bdb/db_config_options?"set_flags"
-univention-config-registry set ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE"
-
-
-if [ "$server_role" = "domaincontroller_master" ]; then
-	univention-config-registry set ldap/translogfile?"/var/lib/univention-ldap/listener/listener"
+# check for running slapd first
+if [ -n "$(pidof slapd)" ]; then
+	slapd_was_running=yes
 fi
 
-test -f /var/lib/univention-ldap/ldap/DB_CONFIG || univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
-
-if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/01univention-ldap-server-init.inst || true
-	/usr/lib/univention-install/10univention-ldap-server.inst || true
-fi
+# { # function definitions
+stop_slapd ()
+{
+	if test -x /etc/init.d/slapd; then
+		/etc/init.d/slapd stop
+		sleep 1
+	fi
+}
 
 restart_slapd ()
 {
@@ -93,6 +58,90 @@ restart_slapd ()
 	fi
 	/etc/init.d/slapd start
 }
+# } # end of function definitions
+
+touch /etc/ldap/rootpw.conf
+
+test -f /var/lib/univention-ldap/replog/replog || \
+	touch /var/lib/univention-ldap/replog/replog
+chmod 0600 /var/lib/univention-ldap/replog/replog
+test -f /var/lib/univention-ldap/replog/replog.lock || \
+	touch /var/lib/univention-ldap/replog/replog.lock
+
+
+univention-config-registry set ldap/autostart?yes
+
+#DEBHELPER#
+
+eval `univention-config-registry shell server/role`
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+	univention-config-registry set ldap/translogfile?"/var/lib/univention-ldap/listener/listener"
+fi
+
+univention-config-registry set ldap/debug/level?0
+univention-config-registry set ldap/port?389
+univention-config-registry set ldap/database/type?bdb
+univention-config-registry set ldap/sizelimit?400000
+univention-config-registry set ldap/cachesize?20000
+univention-config-registry set ldap/idlcachesize?20000
+univention-config-registry set ldap/idletimeout?0
+univention-config-registry set ldap/threads?16
+univention-config-registry set ldap/acl/user/kolab2/change?yes
+univention-config-registry set ldap/acl/user/password/change?no
+univention-config-registry set ldap/acl/slavepdc?yes
+univention-config-registry set ldap/acl/nestedgroups?yes
+univention-config-registry set ldap/database/bdb/db_config_options?"set_flags"
+univention-config-registry set ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE"
+
+# this update-block used to be called much later, now it is just here for documentation
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.11-1; then
+	eval `univention-config-registry shell ldap/cachesize`
+	if [ "$ldap_cachesize" = "10000000" ]; then
+		# adjust to a more moderate setting, other cache layers need memory too
+		univention-config-registry set ldap/cachesize=20000
+	fi
+fi
+
+# UDM Property Attributes
+udm_prop_attrs="univentionUDMPropertyVersion,univentionUDMPropertyModule,univentionUDMPropertyShortDescription,univentionUDMPropertyLongDescription,univentionUDMPropertySyntax,univentionUDMPropertyMultivalue,univentionUDMPropertyDefault,univentionUDMPropertyLdapMapping,univentionUDMPropertyObjectClass,univentionUDMPropertyDeleteObjectClass,univentionUDMPropertyValueMayChange,univentionUDMPropertyLayoutTabName,univentionUDMPropertyLayoutOverwriteTab,univentionUDMPropertyLayoutOverwritePosition,univentionUDMPropertyLayoutPosition,univentionUDMPropertyCLIName,univentionUDMPropertyTranslationShortDescription,univentionUDMPropertyTranslationLongDescription,univentionUDMPropertyTranslationTabName,univentionUDMPropertyOptions,univentionUDMPropertyLayoutTabAdvanced,univentionUDMPropertyValueRequired,univentionUDMPropertyHook,univentionUDMPropertyDoNotSearch"
+# recommended index settings
+recommended_ldap_index_eq="objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,sambaSID,sambaPrimaryGroupSID,sambaDomainName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,relativeDomainName,pTRRecord,zoneName,mailPrimaryAddress,mailAlternativeAddress,univentionServerRole,univentionService,kolabHomeServer,automountInformation,sambaAcctFlags,univentionPolicyReference,homeDirectory,$udm_prop_attrs,univentionLicenseModule,cNAMERecord,univentionNagiosHostname,univentionLicenseObject"
+recommended_ldap_index_pres="objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,mailPrimaryAddress,mailAlternativeAddress,kolabHomeServer,univentionPolicyReference,homeDirectory,automountInformation,$udm_prop_attrs"
+recommended_ldap_index_sub="uid,cn,sn,givenName,mail,description,displayName,mailPrimaryAddress,mailAlternativeAddress,default,zoneName,sambaSID,automountInformation"
+recommended_ldap_index_approx="uid,mail,alias,cn,sn,givenName"
+
+univention-config-registry set ldap/index/autorebuild?yes
+eval $(univention-config-registry shell ldap/index/autorebuild)
+
+if ! shopt -q nocasematch; then
+	RESTORE_NOCASEMATCH=yes
+	shopt -s nocasematch
+fi
+if [[ "$ldap_index_autorebuild" =~ ^("true"|"yes")$ ]]; then
+	stop_slapd
+	univention-config-registry set ldap/index/eq="$recommended_ldap_index_eq" \
+                                   ldap/index/pres="$recommended_ldap_index_pres" \
+                                   ldap/index/sub="$recommended_ldap_index_sub" \
+                                   ldap/index/approx="$recommended_ldap_index_approx"
+	# run slapindex and selectively filter out this unsettling warning from stderr
+	{ /usr/sbin/slapindex  2>&1 >&3 | sed -e "/Runnig as root\!/,/There's a fair chance slapd will fail to start./d" >&2; } 3>&1
+else
+	univention-config-registry set ldap/index/eq?"$recommended_ldap_index_eq" \
+                                   ldap/index/pres?"$recommended_ldap_index_pres" \
+                                   ldap/index/sub?"$recommended_ldap_index_sub" \
+                                   ldap/index/approx?"$recommended_ldap_index_approx"
+fi
+[ -n "$RESTORE_NOCASEMATCH" ] && shopt -u nocasematch
+
+test -f /var/lib/univention-ldap/ldap/DB_CONFIG || univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
+
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/01univention-ldap-server-init.inst || true
+	/usr/lib/univention-install/10univention-ldap-server.inst || true
+fi
+
+## after this line slapd.conf is expected to be updated properly and slapd may restart
 
 if [ "$1" = "configure" -a -n "$2" ];
 	then
@@ -104,7 +153,7 @@ if [ "$1" = "configure" -a -n "$2" ];
 			restart_slapd
 		else
 			#/etc/init.d/slapd crestart
-			if [ -n "$(pidof slapd)" ]; then
+			if [ -n "$slapd_was_running" ]; then
 				restart_slapd
 			fi
 		fi
@@ -117,11 +166,6 @@ else
 			/etc/init.d/slapd start
 		fi
 	fi
-fi
-
-if [ "$1" = configure -a -z "$2" ]; then
-	# only set this for new installations
-	univention-config-registry set ldap/index/approx="uid,mail,alias,cn,sn,givenName"
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.12; then
@@ -417,14 +461,6 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1; t
 		univention-directory-manager groups/group modify  --ignore_exists \
 			--dn "cn=Domain Users,cn=groups,$ldap_base" \
 			--append users="uid=Administrator,cn=users,$ldap_base" || true
-	fi
-fi
-
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.11-1; then
-	eval `univention-config-registry shell ldap/cachesize`
-	if [ "$ldap_cachesize" = "10000000" ]; then
-		# adjust to a more moderate setting, other cache layers need memory too
-		univention-config-registry set ldap/cachesize=20000
 	fi
 fi
 

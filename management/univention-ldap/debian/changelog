@@ -1,3 +1,10 @@
+univention-ldap (5.0.14-2) unstable; urgency=low
+
+  * update UCR:ldap/index/* and run slapindex if ldap/index/autorebuild
+    is not set to something other than yes or true (Bug #6700)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Mar 2010 17:03:27 +0100
+
 univention-ldap (5.0.14-1) unstable; urgency=low
 
   * added ldap indices, Bug #17232
