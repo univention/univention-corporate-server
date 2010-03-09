@@ -1,3 +1,5 @@
+@%@BCWARNING=# @%@
+
 # /etc/cron.d/univention-home-mounter: crontab fragment to unmount home directories
 
 # Run queue every 10 minutes
