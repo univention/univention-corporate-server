@@ -1,3 +1,10 @@
+univention-directory-listener (4.0.6-1) unstable; urgency=low
+
+  * check and fix file ownership beneath standard listener directories
+    in runit run script (Bug #3196 and  Bug #11224)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Mar 2010 18:48:45 +0100
+
 univention-directory-listener (4.0.5-1) unstable; urgency=low
 
   * remove obsolete preinst (Bug #17837)
