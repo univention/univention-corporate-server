@@ -1,3 +1,9 @@
+univention-fax-server (3.0.2-1) unstable; urgency=low
+
+  * added UCR Header, Bug #17816
+
+ -- Tim Petersen <petersen@univention.de>  Wed, 10 Mar 2010 09:04:44 +0200
+
 univention-fax-server (3.0.1-1) unstable; urgency=low
 
   * added UCR Header, Bug #17816
