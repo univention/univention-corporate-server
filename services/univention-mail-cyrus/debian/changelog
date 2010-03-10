@@ -1,3 +1,9 @@
+univention-mail-cyrus (2.0.6-1) unstable; urgency=low
+
+  * add auth_ldap_group configuration (Bug 1667) to resolve group ACLs (Bug #17216)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 25 Jan 2010 18:14:07 +0100
+
 univention-mail-cyrus (2.0.5-1) unstable; urgency=low
 
   * added UCR Header, Bug #17816
