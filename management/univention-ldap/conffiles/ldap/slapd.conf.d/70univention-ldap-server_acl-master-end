@@ -149,9 +149,6 @@ else:
 print '   by dn.base="uid=root,cn=users,%s" %s' % (ldap_base, usr)
 print '   by * read'
 
-
-if baseConfig['ldap/server/type']=="master":
-	print "replogfile /var/lib/univention-ldap/replog/replog"
-elif baseConfig.has_key('ldap/replog') and (baseConfig['ldap/replog'].lower == 'true' or baseConfig['ldap/replog'].lower == 'yes'):
+if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
 	print "replogfile /var/lib/univention-ldap/replog/replog"
 @!@

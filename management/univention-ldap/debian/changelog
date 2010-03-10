@@ -1,3 +1,10 @@
+univention-ldap (5.0.14-6) unstable; urgency=low
+
+  * configure obsolete replogfile only if ldap/replog is set
+    (Bug #9847 and Bug #16261)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Mar 2010 11:03:32 +0100
+
 univention-ldap (5.0.14-5) unstable; urgency=low
 
   * typo fixed 'matichingRuleUse' (Bug #12294)

@@ -60,13 +60,6 @@ restart_slapd ()
 
 touch /etc/ldap/rootpw.conf
 
-test -f /var/lib/univention-ldap/replog/replog || \
-	touch /var/lib/univention-ldap/replog/replog
-chmod 0600 /var/lib/univention-ldap/replog/replog
-test -f /var/lib/univention-ldap/replog/replog.lock || \
-	touch /var/lib/univention-ldap/replog/replog.lock
-
-
 univention-config-registry set ldap/autostart?yes
 
 #DEBHELPER#
@@ -110,12 +103,21 @@ recommended_ldap_index_sub="uid,cn,sn,givenName,mail,description,displayName,mai
 recommended_ldap_index_approx="uid,mail,alias,cn,sn,givenName"
 
 univention-config-registry set ldap/index/autorebuild?yes
-eval $(univention-config-registry shell ldap/index/autorebuild)
+eval $(univention-config-registry shell ldap/index/autorebuild ldap/replog)
 
 if ! shopt -q nocasematch; then
 	RESTORE_NOCASEMATCH=yes
 	shopt -s nocasematch
 fi
+
+if [[ "$ldap_replog" =~ ^("true"|"yes")$ ]]; then
+	test -f /var/lib/univention-ldap/replog/replog || \
+		touch /var/lib/univention-ldap/replog/replog
+	chmod 0600 /var/lib/univention-ldap/replog/replog
+	test -f /var/lib/univention-ldap/replog/replog.lock || \
+		touch /var/lib/univention-ldap/replog/replog.lock
+fi
+
 if [[ "$ldap_index_autorebuild" =~ ^("true"|"yes")$ ]]; then
 	stop_slapd
 	univention-config-registry set ldap/index/eq="$recommended_ldap_index_eq" \
