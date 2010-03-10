@@ -1,3 +1,9 @@
+univention-mail-cyrus (2.0.5-1) unstable; urgency=low
+
+  * added UCR Header, Bug #17816
+  
+ -- Tim Petersen <petersen@univention.de>  Wed, 10 Mar 2010 10:57:39 +0200
+
 univention-mail-cyrus (2.0.4-1) unstable; urgency=low
 
   * fixed wrong behaviour of univention-cyrus-set-quota if user's mail
