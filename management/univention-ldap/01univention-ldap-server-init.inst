@@ -54,6 +54,11 @@ if [ "$server_role" = "domaincontroller_slave" ]; then
 	touch /etc/ldap/rootpw.conf
 fi
 
+if [ "$ldap_server_type" = "slave" -a ! -f /var/lib/univention-ldap/schema.conf ]; then
+	# schema.conf is included by slapd.conf, slapadd complains if it's not readable
+	touch /var/lib/univention-ldap/schema.conf
+fi
+
 # initialize ldap
 
 files=`find /var/lib/univention-ldap/ldap/ -name "id2entry.*" -type f`

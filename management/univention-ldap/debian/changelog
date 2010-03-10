@@ -1,3 +1,10 @@
+univention-ldap (5.0.14-8) unstable; urgency=low
+
+  * touch schema.conf file on LDAP-slaves to avoid slapadd error message
+    (Bug #9987)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Mar 2010 11:49:27 +0100
+
 univention-ldap (5.0.14-7) unstable; urgency=low
 
   * register slapd.conf for ldap/base and ldap/hostdn in
