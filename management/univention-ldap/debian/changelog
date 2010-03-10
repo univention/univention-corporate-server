@@ -1,3 +1,9 @@
+univention-ldap (5.0.15-1) unstable; urgency=low
+
+  * added univentionServerInstallationOption to univention.schema, Bug #13244
+
+ -- Tim Petersen <petersen@univention.de>  Wed, 10 Mar 2010 15:53:27 +0100
+
 univention-ldap (5.0.14-8) unstable; urgency=low
 
   * touch schema.conf file on LDAP-slaves to avoid slapadd error message
