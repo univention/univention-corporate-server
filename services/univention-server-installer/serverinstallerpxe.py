@@ -34,7 +34,7 @@ baseConfig=univention.config_registry.baseConfig()
 name='serverinstallerpxe'
 description='PXE configuration for the Server installer'
 filter='(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)(objectClass=univentionClient)(objectClass=univentionMobileClient))'
-attributes=['univentionServerReinstall', 'aRecord', 'univentionServerInstallationProfile', 'univentionServerInstallationText']
+attributes=['univentionServerReinstall', 'aRecord', 'univentionServerInstallationProfile', 'univentionServerInstallationText', 'univentionServerInstallationOption']
 
 import listener
 import os, re, ldap, string, univention.debug
@@ -105,6 +105,8 @@ LABEL linux
 					f.write(' use_text ')
 				if new.has_key('univentionServerInstallationProfile') and new['univentionServerInstallationProfile'][0]:
 					f.write('profile=%s \n' % new['univentionServerInstallationProfile'][0])
+				if new.has_key('univentionServerInstallationOption') and new['univentionServerInstallationOption'][0]:
+					f.write(new['univentionServerInstallationOption'][0])
 				else:
 					f.write('\n')
 				f.write(pxeconfig_end)
