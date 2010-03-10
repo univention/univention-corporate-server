@@ -17,6 +17,10 @@ test ! -f /etc/nologin || exit 0
 cachedir=/var/lib/univention-directory-listener
 moduledir=/usr/lib/univention-directory-listener/system
 
+for dir in "$cachedir" /var/lib/univention-ldap/listener; do
+	find "$dir" ! -user listener -exec chown listener {} \;
+done
+
 eval `univention-baseconfig shell`
 
 if [ "$server_role" != "domaincontroller_master" ]; then
