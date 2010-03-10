@@ -238,6 +238,17 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'reinstalloption': univention.admin.property(
+            short_description=_('additional start options'),
+            long_description='',
+            syntax=univention.admin.syntax.string,
+            multivalue=0,
+            options=[],
+            required=0,
+            may_change=1,
+            identifies=0
+        ),
+
 	'instprofile': univention.admin.property(
 			short_description=_('Name of installation profile'),
 			long_description='',
@@ -296,7 +307,7 @@ layout=[
 		]),
 	univention.admin.tab(_('Deployment'),_('Deployment'),[
 			[univention.admin.field("reinstall"), univention.admin.field('reinstalltext')],
-			[univention.admin.field("instprofile")]
+			[univention.admin.field("instprofile"), univention.admin.field('reinstalloption')]
 		], advanced = True),
 	univention.admin.tab(_('Groups'),_('Group memberships'),[
 			[univention.admin.field("groups")],
@@ -312,6 +323,7 @@ mapping.register('mac', 'macAddress' )
 mapping.register('ip', 'aRecord' )
 mapping.register('reinstall', 'univentionServerReinstall', None, univention.admin.mapping.ListToString)
 mapping.register('instprofile', 'univentionServerInstallationProfile', None, univention.admin.mapping.ListToString)
+mapping.register('reinstalloption', 'univentionServerInstallationOption', None, univention.admin.mapping.ListToString)
 mapping.register('reinstalltext', 'univentionServerInstallationText', None, univention.admin.mapping.ListToString)
 mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
 mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
