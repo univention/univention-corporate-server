@@ -78,7 +78,7 @@ check_subschema ()
     res=1
 	count=0
     while [ $res != 0 ] ; do
-        ldapsearch -x -s base -b cn=Subschema 'objectClass=subschema' objectClasses attributeTypes matchingRules matichingRuleUse dITStructureRules dITContentRules nameForms ldapSyntaxes >$tmpfile
+        ldapsearch -x -s base -b cn=Subschema 'objectClass=subschema' objectClasses attributeTypes matchingRules matchingRuleUse dITStructureRules dITContentRules nameForms ldapSyntaxes >$tmpfile
 		res=$?
         if [ $res != 0 ]; then
 			count=$((count+1))
