@@ -1,3 +1,9 @@
+univention-server-installer (3.0.3-1) unstable; urgency=low
+
+  * added start option feature, Bug #13244
+
+ -- Tim Petersen <petersen@univention.de>  Wed, 10 Mar 2010 15:58:35 +0100
+
 univention-server-installer (3.0.2-1) unstable; urgency=low
 
   * updated copyright Bug #17222 
