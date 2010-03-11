@@ -27,6 +27,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ucs_role=$(ucr get server/role)
 
 if [ -e /etc/sasldb2 ]; then
 	chown root.sasl /etc/sasldb2
@@ -134,8 +135,21 @@ if [ ! -e /etc/cyrus.secret ]; then
 	rm -f $TMP
 	usermod -p "$PASSWD_CRYPT" cyrus
 	echo "$PASSWD" >/etc/cyrus.secret
+	chown cyrus /etc/cyrus.secret
 	chmod 600  /etc/cyrus.secret
 fi
+
+if [ -e /etc/cyrus.secret ] && dpkg --compare-versions "$2" lt "2.0.7-1"; then
+	TMP=$(tempfile)
+	cat /etc/cyrus.secret > $TMP
+	PASSWD=$(cat $TMP)
+	PASSWD_CRYPT=$(mkpasswd --hash=md5 -s < $TMP)
+	rm -f $TMP
+	usermod -p "$PASSWD_CRYPT" cyrus
+	chown cyrus /etc/cyrus.secret
+	chmod 600  /etc/cyrus.secret
+fi
+
 
 if [ ! -d /var/spool/cyrus/jobs/mailbox/create/user ]; then
 	mkdir -p /var/spool/cyrus/jobs/mailbox/create/user
