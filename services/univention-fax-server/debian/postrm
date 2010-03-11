@@ -34,5 +34,7 @@ if [ "$1" = "purge" ] ; then
 	update-rc.d capi4hylafax remove >/dev/null || exit 0
 fi
 
-dpkg-divert --rename --remove /etc/hylafax/faxcover.ps
+# dpkg-divert --rename --remove /etc/hylafax/faxcover.ps
+
+exit 0
 
