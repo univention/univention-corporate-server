@@ -1,3 +1,45 @@
+[nscd/hosts/size]
+Description[de]=Wert sollte größer oder gleich der Anzahl aller im DNS verfügbarer Hosts sein.
+Description[en]=Value should be greater or equal as number of all hosts reachable via DNS.
+Type=int
+Categories=system-base
+
+[nscd/passwd/size]
+Description[de]=Wert sollte größer oder gleich der Anzahl aller Benutzer sein.
+Description[en]=Value should be greater or equal as number of all users.
+Type=int
+Categories=system-base
+
+[nscd/group/size]
+Description[de]=Sinnvoller Wert ist: (Anzahl aller  Gruppen * 2 + Anzahl aller Gruppenmitglieder) * 2
+Description[en]=Useful value is (number of all groups * 2 + number of all groupmembers) * 2
+Type=int
+Categories=system-base
+
+[nscd/hosts/maxdbsize]
+Description[de]:Maximal erlaubte Größe für hosts-service in Bytes.
+Description[en]:The maximum allowable size for the hosts-service.
+Type=int
+Categories=system-base
+
+[nscd/passwd/maxdbsize]
+Description[de]:Maximal erlaubte Größe für passwd-service in Bytes.
+Description[en]:The maximum allowable size for the passwd-service.
+Type=int
+Categories=system-base
+
+[nscd/group/maxdbsize]
+Description[de]:Maximal erlaubte Größe für group-service in Bytes.
+Description[en]:The maximum allowable size for the group-service.
+Type=int
+Categories=system-base
+
+[nscd/debug/level]
+Description[de]=nscd Debug-Level
+Description[en]=nscd Debug-Level
+Type=int
+Categories=system-base
+
 [nscd/group/invalidate_cache_on_changes]
 Description[de]=NSCD Gruppen Cache invalidieren, sobald Gruppenzugehörigkeiten verändert wurden? (yes/no).
 Description[en]=Invalidate NSCD group cache whenever a group membership has been modified? (yes/no).

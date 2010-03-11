@@ -1,3 +1,11 @@
+univention-pam (3.0.10-1) unstable; urgency=low
+
+  * added nscd/debug/level, Bug #17708
+  * set max-db-size in relation to nscd/$service/size, Bug #17707
+  * updated copyright
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 11 Mar 2010 09:01:42 +0100
+
 univention-pam (3.0.9-1) unstable; urgency=low
 
   * save more then tree users in passwd cache. It is configurable via
