@@ -1,3 +1,10 @@
+univention-fax-server (3.0.3-1) unstable; urgency=low
+
+  * remove the dpkg-divert remove call in postrm and added an exit 0. I
+    don't think the remove call is necessary. Bug #17854
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Mar 2010 21:22:24 +0100
+
 univention-fax-server (3.0.2-1) unstable; urgency=low
 
   * added UCR Header, Bug #17816
