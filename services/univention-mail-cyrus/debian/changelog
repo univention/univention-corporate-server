@@ -1,3 +1,9 @@
+univention-mail-cyrus (2.0.7-1) unstable; urgency=low
+
+  * added dependency on whois, generate new /etc/cyrus.secret only for this update, (Bug #17859)
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 11 Mar 2010 15:40:07 +0100
+
 univention-mail-cyrus (2.0.6-1) unstable; urgency=low
 
   * add auth_ldap_group configuration (Bug 1667) to resolve group ACLs (Bug #17216)
