@@ -1,0 +1,66 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Sample debian/rules that uses debhelper.
+#
+# This file was originally written by Joey Hess and Craig Small.
+# As a special exception, when this file is copied by dh-make into a
+# dh-make output file, you may use that output file without restriction.
+# This special exception was added by Craig Small in version 0.37 of dh-make.
+#
+# Modified to make a template file for a multi-binary package with separated
+# build-arch and build-indep targets  by Bill Allombert 2001
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+#export DH_OPTIONS
+
+PYVERS=$(shell pyversions -vr)
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+#Architecture 
+build: build-stamp
+
+build-stamp: configure-stamp 
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	dh_clean 
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k 
+	dh_installdirs 
+
+	univention-install-config-registry
+	install -m 0644 ip-phone.py debian/univention-directory-manager-module-example/usr/lib/python2.4/site-packages/univention/admin/handlers/test/
+	install -m 0644 ip-phone.schema debian/univention-directory-manager-module-example/usr/share/univention-ldap/schema/
+
+	dh_install
+
+
+binary-indep: build install
+	dh_testdir -i
+	dh_testroot -i
+	dh_installchangelogs -i
+	dh_pycentral
+	dh_shlibdeps
+	dh_md5sums
+	dh_gencontrol
+	dh_installdeb
+	dh_builddeb
+
+binary-arch: build install
+
+binary: binary-arch binary-indep
+.PHONY: build clean binary-indep binary-arch binary install configure
