@@ -5,7 +5,7 @@
  :skipinstaller3
  
 -set perl_msi=%Z%\packages\ActivePerl-5.8.4.810-MSWin32-x86.msi
-+set perl_msi=%Z%\packages\ActivePerl-5.8.8.819-MSWin32-x86-267479.msi
++set perl_msi=%Z%\packages\@%@windowsinstaller/perl/msi@%@
  
  :retry
  if exist %perl_msi% goto have_perl

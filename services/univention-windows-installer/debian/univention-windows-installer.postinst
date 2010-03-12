@@ -43,6 +43,8 @@ createLogfile () {
 
 createLogfile /var/log/univention/windows-installer.log "root:adm" 640
 
+univention-config-registry set windowsinstaller/perl/msi?ActivePerl-5.8.9.827-MSWin32-x86-291969.msi
+
 /usr/sbin/univention-update-unattended-supportfiles  || \
   ( echo Warning: Failed to download required additional components.;
     echo Please re-run /usr/sbin/univention-update-unattended-supportfiles later on. )

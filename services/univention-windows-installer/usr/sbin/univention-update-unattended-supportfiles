@@ -28,7 +28,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
 get_file() {
         file="$1"
         shift
@@ -52,7 +51,7 @@ get_file() {
 }
 md5_test() {
 	MDWERT="$1"
-	MDPROBE=`md5sum $SHARE/install/packages/ActivePerl-5.8.8.819-MSWin32-x86-267479.msi | awk '{print$1}'`
+	MDPROBE=`md5sum "$SHARE/install/packages/$PERL_MSI" | awk '{print$1}'`
 
 	if [ "$MDWERT" = "$MDPROBE" ]
         then
@@ -97,7 +96,13 @@ fi
 if [ ! -z "$windowsinstaller_perl_url" ]; then
 	PERL_URL="$windowsinstaller_perl_url"
 else
-	PERL_URL="http://downloads.activestate.com/ActivePerl/Windows/5.8"
+	PERL_URL="http://downloads.activestate.com/ActivePerl/releases/5.8.9.827"
+fi
+
+if [ ! -z "$windowsinstaller_perl_msi" ]; then
+	PERL_MSI="$windowsinstaller_perl_msi"
+else
+	PERL_MSI='ActivePerl-5.8.9.827-MSWin32-x86-291969.msi'
 fi
 
 if [ ! -z "$windowsinstaller_djgpp_url" ]; then
@@ -128,18 +133,18 @@ fi
 # Perlumgebung herunterladen (ist zwingend notwendig für die weitere Abarbeitung der unattended Inst.!)
 # Hier werden MD5-Summen verglichen
 if get_file "MD5SUM" $PERL_URL > "$SHARE/install/packages/MD5SUM"; then
-        MDSUM=`grep ActivePerl-5.8.8.819-MSWin32-x86-267479.msi $SHARE/install/packages/MD5SUM | awk '{print$1}'`
+        MDSUM=`grep "$PERL_MSI" $SHARE/install/packages/MD5SUM | awk '{print$1}'`
 	        echo "fetched MD5SUM"
 fi
-if [ ! -e "$SHARE/install/packages/ActivePerl-5.8.8.819-MSWin32-x86-267479.msi" ]; then
+if [ ! -e "$SHARE/install/packages/$PERL_MSI" ]; then
         AP=0
 	echo -n "Downloading ActivePerl..."
-	if get_file "ActivePerl-5.8.8.819-MSWin32-x86-267479.msi" $PERL_URL > "$SHARE/install/packages/ActivePerl-5.8.8.819-MSWin32-x86-267479.msi" && md5_test "$MDSUM" ; then
+	if get_file "$PERL_MSI" $PERL_URL > "$SHARE/install/packages/$PERL_MSI" && md5_test "$MDSUM" ; then
 		echo "done."
                 rm -f "$SHARE/install/packages/MD5SUM"
         else
                 echo "Download failed."
-                rm -f "$SHARE/install/packages/ActivePerl-5.8.8.819-MSWin32-x86-267479.msi"
+                rm -f "$SHARE/install/packages/$PERL_MSI"
                 rm -f "$SHARE/install/packages/MD5SUM"
                 echo "Process aborted!!!"
                 exit 1
