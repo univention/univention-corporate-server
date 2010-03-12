@@ -1,0 +1,14 @@
+Source: univention-directory-manager-module-example
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev, python2.4, python-all-dev, python-central
+Standards-Version: 3.7.2
+
+Package: univention-directory-manager-module-example
+Architecture: all
+Depends: univention-config-registry, univention-directory-manager-tools
+Description: Univention Directory Manager example module to manage IP phones
+ This package contains an Univention Directory Manager module that
+ demonstrates how custom LDAP objects can be managed with the 
+ Univention Directory Manager.

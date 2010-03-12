@@ -1,0 +1,32 @@
+# univention owns the namespace 10176.
+attributetype ( 1.3.6.1.4.1.10176.9999.1.1 NAME 'testPhoneActive'
+	DESC 'state of the IP phone'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.9999.1.2 NAME 'testPhoneProtocol'
+	DESC 'The supported VoIP protocol'
+	EQUALITY caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.9999.1.3 NAME 'testPhoneIP'
+	DESC 'The IP address of the phone'
+	EQUALITY caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.9999.1.4 NAME 'testPhonePrimaryUser'
+	DESC 'The primary user of the phone'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.9999.1.5 NAME 'testPhoneUsers'
+	DESC 'A list of other users allowed to use the phone'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass	( 1.3.6.1.4.1.10176.9999.2.1 NAME 'testPhone'
+	DESC 'IP Phone'
+	SUP top  STRUCTURAL	
+	MUST ( cn $ testPhoneActive $ testPhoneProtocol $ testPhoneIP $ testPhonePrimaryUser )
+	MAY ( testPhoneUsers )
+	)
