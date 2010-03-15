@@ -1,3 +1,9 @@
+univention-printserver (3.0.29-2) unstable; urgency=low
+
+  * adjusted service description (Bug #13469)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Mar 2010 19:14:30 +0100
+
 univention-printserver (3.0.29-1) unstable; urgency=low
 
   * fixed setting of cups/restrictedprinters for removed printers Bug #17785
