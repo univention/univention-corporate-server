@@ -1,31 +1,64 @@
 # bash-completion for univention-config-registry
+have univention-config-registry && {
 
 _uniucr () {
-	local cur prev opts
+	local cur opts
 	COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
+	cur=`_get_cword`	# current word till cursor position
+	#cur="$2"	# current word as split by readline
+	#cur="${COMP_WORDS[COMP_CWORD]}" # current full word
 
-	case "${prev}" in
-		get|unset)
-			COMPREPLY=( $(compgen -W "$(/usr/sbin/univention-config-registry dump | sed -e 's/: .*$//')" -- ${cur}) )
+	if [ "$COMP_CWORD" -eq 1 ]
+	then
+		COMPREPLY=( $(compgen -W "set get unset commit search filter shell dump --help --version --shell --keys-only" -- "${cur}") )
+		return 0
+	fi
+
+	case "${COMP_WORDS[1]}" in
+		--keys-only)
+			if [[ "${COMP_WORDS[COMP_CWORD-1]}" != "search"  ]]; then
+				COMPREPLY=( $(compgen -W "search" -- "${cur}" ) )
+			fi
+			;;
+		--shell)
+			if [[ "${COMP_WORDS[COMP_CWORD-1]}" != "search"  ]]; then
+				COMPREPLY=( $(compgen -W "search" -- "${cur}" ) )
+			fi
+			;;
+		search)
+			if [[ "${COMP_WORDS[COMP_CWORD-1]}" != "--key"  ]] && [[ "${COMP_WORDS[COMP_CWORD-1]}" != "--value"  ]]; then
+				COMPREPLY=( $(compgen -W "--key --value" -- "${cur}") )
+			fi
+			;;
+		get)
+			COMPREPLY=( $(compgen -W "$(/usr/sbin/univention-config-registry dump | sed -e 's/: .*$//')" -- "${cur}") )
+			;;
+		unset)
+			COMPREPLY=( $(compgen -W "--forced $(/usr/sbin/univention-config-registry dump | sed -e 's/: .*$//')" -- "${cur}") )
+			;;
+		shell)
+			COMPREPLY=( $(compgen -W "$(/usr/sbin/univention-config-registry dump | sed -e 's/: .*$//')" -- "${cur}") )
 			;;
 		set)
 			# switch IFS to newline so UCR values containing a whitespace won't get split
 			local IFS=$'\n'
-			COMPREPLY=( $(IFS=$'\n' compgen -W "$(/usr/sbin/univention-config-registry dump | sed -re 's/: (.*)$/=\\"\1\\"/')" -- ${cur}) )
+			if [[ "$cur" == *=* ]]; then
+				opts="$( /usr/sbin/univention-config-registry get "${cur%%=*}" )"
+				COMPREPLY=( $(IFS=$'\n' compgen -P\" -S\" -W "$opts" -- "${cur#*=}") )
+			else
+				COMPREPLY=( $(IFS=$'\n' compgen -W "--forced
+ $(/usr/sbin/univention-config-registry dump | sed -re 's/: (.*)$/=\\"\1\\"/')" -- "${cur}") )
+			fi
 			;;
 		commit)
-			local templates=$(cat /etc/univention/templates/info/*.info | egrep 'Multifile: |File: ' | sed -re 's/(Multif|F)ile: /\//')
-			COMPREPLY=($(compgen -W "$templates" -- ${cur}))
-			;;
-		ucr|univention-config-registry|univention-baseconfig)
-			COMPREPLY=($(compgen -W "set get unset commit search" -- ${cur}))
+			opts=$(sed -nre 's/(Multif|F)ile: /\//p' /etc/univention/templates/info/*.info)
+			COMPREPLY=( $(compgen -W "$opts" -- "${cur}") )
 			;;
 	esac
 	return 0
 }
-complete -F _uniucr ucr
-complete -F _uniucr univention-config-registry
-complete -F _uniucr univention-baseconfig
+complete -F _uniucr ucr univention-config-registry univention-baseconfig
+
+}
+# vim:set ft=sh:
 
