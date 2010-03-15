@@ -1,3 +1,15 @@
+univention-dhcp (4.0.4-3) unstable; urgency=low
+
+  * service description adjusted (Bug #13469)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Mar 2010 18:40:26 +0100
+
+univention-dhcp (4.0.4-2) unstable; urgency=low
+
+  * service description adjusted (Bug #13469)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Mar 2010 18:40:19 +0100
+
 univention-dhcp (4.0.4-1) unstable; urgency=low
 
   * added UCR Header, Bug #17816

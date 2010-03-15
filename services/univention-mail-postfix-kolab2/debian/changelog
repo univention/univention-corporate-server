@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (3.0.2-3) unstable; urgency=low
+
+  * service description adjusted (Bug #13469)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Mar 2010 18:38:02 +0100
+
 univention-mail-postfix-kolab2 (3.0.2-2) unstable; urgency=low
 
   * updated UCR variable description of mail/postfix/ldap/timeout (Bug 14208)

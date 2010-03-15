@@ -1,6 +1,6 @@
 [spamassassin]
-Description[de]=Mailfilter Dienst
-Description[en]=Mail filter daemon
+Description[de]=Mail-Filter Dienst
+Description[en]=Mail Filter Daemon
 icon=service/spamd
 programs=/usr/sbin/spamd
 start_type=mail/antispam/autostart

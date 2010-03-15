@@ -1,3 +1,9 @@
+univention-spamassassin (2.0.2-2) unstable; urgency=low
+
+  * service description adjusted (Bug #13469)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Mar 2010 18:43:07 +0100
+
 univention-spamassassin (2.0.2-1) unstable; urgency=low
 
   * make spamassassin learn daily from all user's Spam and Ham-folders (Bug #15313)

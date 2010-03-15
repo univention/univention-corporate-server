@@ -1,3 +1,9 @@
+univention-management-console (2.0.41-1) unstable; urgency=low
+
+  * Evaluate locale.LC_MESSAGES in UMC services module (Bug #13469)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Mar 2010 19:09:49 +0100
+
 univention-management-console (2.0.40-1) unstable; urgency=low
 
   * UMC design updates. Bug #17368

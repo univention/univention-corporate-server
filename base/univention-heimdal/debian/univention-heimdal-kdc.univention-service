@@ -1,5 +1,5 @@
 [heimdal-kdc]
-description[de]=Kerberos-Dienst
+description[de]=Kerberos Dienst
 description[en]=Kerberos Service
 icon=service/kerberos
 programs=/usr/lib/heimdal-servers/kdc,/usr/lib/heimdal-servers/kpasswdd
