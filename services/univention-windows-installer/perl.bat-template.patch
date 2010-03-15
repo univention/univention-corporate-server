@@ -1,6 +1,11 @@
---- perl.bat.orig	Fri Oct 28 13:12:30 2005
-+++ perl.bat	Fri Oct 28 13:13:35 2005
-@@ -24,7 +24,7 @@
+--- perl.bat.orig	2010-03-15 09:25:08.000000000 +0100
++++ perl.bat	2010-03-15 09:32:49.000000000 +0100
+@@ -1,3 +1,4 @@
++@%@UCRWARNING=:: @%@
+ :: Yuck; I *hate* random delays.  But without this, Perl installation
+ :: hangs on some (fast) systems.  I wish I knew what we were really
+ :: waiting for.  See
+@@ -24,7 +25,7 @@
  %Z%\packages\windowsinstaller\WindowsInstaller-KB884016-v2-x86.exe /passive /norestart
  :skipinstaller3
  
