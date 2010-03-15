@@ -1,3 +1,9 @@
+univention-management-console (3.0.1-1) unstable; urgency=low
+
+  * remove import of non-existing module dialog.ajax; Bug #17750
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 15 Mar 2010 15:53:58 +0100
+
 univention-management-console (3.0.0-1) unstable; urgency=low
 
   * add three new classes for the tree view widget: SimpleTreeTable,
