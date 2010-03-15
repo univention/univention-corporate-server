@@ -39,7 +39,6 @@ from widget import *
 from input import *
 from helper import *
 from wizard import *
-from ajax import *
 
 DynamicElementTypes = DynamicTypes
 StructuralTypes = DialogTypes + ListTypes + WizardTypes

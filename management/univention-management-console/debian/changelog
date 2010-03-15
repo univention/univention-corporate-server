@@ -1,4 +1,4 @@
-univention-management-console (3.0.1-1) unstable; urgency=low
+univention-management-console (3.0.1-2) unstable; urgency=low
 
   * remove import of non-existing module dialog.ajax; Bug #17750
 
