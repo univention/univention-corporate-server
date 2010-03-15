@@ -29,6 +29,16 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import string
+import locale
+from univention.config_registry_info import ConfigRegistryInfo, set_language
+
+locale_language_code=locale.getlocale(locale.LC_MESSAGES)[0]
+if locale_language_code and len(locale_language_code) >= 2:
+	locale_language_code=locale_language_code[:2] # get ISO 3166-1 alpha-2 code
+	set_language(locale_language_code)
+else:
+	set_language('en')
+del locale_language_code
 
 import univention.management.console as umc
 import univention.management.console.tools as umct

@@ -1,6 +1,6 @@
 [univention-dhcp]
 description[de]=DHCP-Server
-description[en]=DHCP server
+description[en]=DHCP Server
 icon=service/dhcpd
 programs=/usr/sbin/dhcpd3
 start_type=dhcpd/autostart

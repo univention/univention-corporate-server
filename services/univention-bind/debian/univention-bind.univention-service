@@ -1,5 +1,6 @@
 [univention-bind]
-description[de]=DNS Dienst
+description[de]=DNS-Server
+description[en]=DNS Server
 icon=service/bind
 programs=/usr/sbin/named -c /etc/bind/named.conf
 start_type=bind/autostart

@@ -1,6 +1,6 @@
 [postfix]
-Description[de]=Dienst zum Versenden und annehmen von E-Mails
-Description[en]=Service for Sending and Receiving E-Mails
+Description[de]=Mail-Server
+Description[en]=Mail Server
 icon=service/postfix
 programs=/usr/lib/postfix/master
 start_type=postfix/autostart

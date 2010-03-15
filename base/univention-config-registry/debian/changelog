@@ -1,3 +1,9 @@
+univention-config-registry (5.0.77-2) unstable; urgency=low
+
+  * service description for cron adjusted (Bug #13469)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Mar 2010 18:29:32 +0100
+
 univention-config-registry (5.0.77-1) unstable; urgency=low
 
   * updated bashcompletion, Bug #17253

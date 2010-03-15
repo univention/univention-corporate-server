@@ -1,3 +1,9 @@
+univention-bind (4.0.6-2) unstable; urgency=low
+
+  * service description adjusted (Bug #13469)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Mar 2010 18:42:05 +0100
+
 univention-bind (4.0.6-1) unstable; urgency=low
 
   * added UCR Header, Bug #17816

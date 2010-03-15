@@ -1,3 +1,9 @@
+univention-management-console (3.0.2-1) unstable; urgency=low
+
+  * Evaluate locale.LC_MESSAGES in UMC services module (Bug #13469)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Mar 2010 18:44:17 +0100
+
 univention-management-console (3.0.1-2) unstable; urgency=low
 
   * remove import of non-existing module dialog.ajax; Bug #17750
