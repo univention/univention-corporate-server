@@ -852,6 +852,10 @@ class object(univention.admin.handlers.simpleLdap):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
+		
+		if self['path'] == "/proc":
+			raise univention.admin.uexceptions.invalidOptions, _('It is not valid to set /proc as a share.')
+
 		ocs = ['top', 'univentionShare']
 		if not ( 'samba' in self.options or 'nfs' in self.options):
 			raise univention.admin.uexceptions.invalidOptions, _('Need  %s or %s in options to create a share.')%(

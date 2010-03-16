@@ -1,3 +1,10 @@
+univention-directory-manager-modules (5.0.53-1) unstable; urgency=low
+
+  * deny share for /proc, Bug #5392
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 16 Mar 2010 09:35:57 +0100
+
+
 univention-directory-manager-modules (5.0.52-1) unstable; urgency=low
 
   * added bootoption for reinstallation at computers tab, Bug #13244
