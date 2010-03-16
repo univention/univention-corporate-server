@@ -120,7 +120,7 @@ def handler(dn, new, old):
 			if not os.access(path,os.F_OK):
 				os.makedirs(path,int('0755',0))
 
-			deniedpaths = ["/tmp", "/root", "/proc", "/dev"]			
+			deniedpaths = ["/tmp", "/root", "/proc", "/dev", "/sys"]			
 
 			if path in deniedpaths:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,

@@ -1,3 +1,9 @@
+univention-nfs (2.0.2-1) unstable; urgency=low
+
+  * also added /sys to list of shares, whose priviledges will not be affected :) Bug #5392 
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 16 Mar 2010 10:01:59 +0200
+
 univention-nfs (2.0.1-1) unstable; urgency=low
 
   * added /proc, /root and /dev to list of shares, whose priviledges will not be affected Bug #5392 
