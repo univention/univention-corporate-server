@@ -140,7 +140,7 @@ def handler(dn, new, old):
 				except:
 					pass
 				# List for denied Shares
-				deniedpaths = ["/tmp", "/root", "/proc", "/dev"]
+				deniedpaths = ["/tmp", "/root", "/proc", "/dev", "/sys"]
 
 				if new['univentionSharePath'][0] in deniedpaths:
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
