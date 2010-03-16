@@ -119,7 +119,10 @@ def handler(dn, new, old):
 
 			if not os.access(path,os.F_OK):
 				os.makedirs(path,int('0755',0))
-			if path == '/tmp':
+
+			deniedpaths = ["/tmp", "/root", "/proc", "/dev"]			
+
+			if path in deniedpaths:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
 						       "Custom permissions for share `%s' not allowed, overriding." % path)
 			else:
