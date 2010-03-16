@@ -1,3 +1,9 @@
+univention-samba (4.0.13-1) unstable; urgency=low
+
+  * added /proc, /root and /dev to list of shares, whose priviledges will not be affected Bug #5392
+
+ -- Tim Petersen <requate@univention.de>  Mon, 16 Mar 2010 09:39:04 +0100
+
 univention-samba (4.0.12-3) unstable; urgency=low
 
   * service description adjusted (Bug #13469)
