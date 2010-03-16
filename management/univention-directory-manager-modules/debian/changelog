@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.55-1) unstable; urgency=low
+
+  * allow resetting 'Change password on next login' to False (Bug #17875)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 16 Mar 2010 15:55:29 +0100
+
 univention-directory-manager-modules (5.0.54-1) unstable; urgency=low
 
   * deny share for /sys and /sys/* and /proc/*, Bug #5392

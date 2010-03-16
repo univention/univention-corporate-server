@@ -2212,6 +2212,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		pwd_change_next_login=0
 		if self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1':
 			pwd_change_next_login=1
+		elif self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0':
+			pwd_change_next_login=2
 
 		if self.modifypassword:
 			# if the password is going to be changed in ldap and account is not disabled
@@ -2303,7 +2305,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						ml.append(('krb5PasswordEnd',self.oldattr.get('krb5PasswordEnd', [''])[0], krb5PasswordEnd))
 				if pwd_change_next_login == 1:
 					pwd_change_next_login=0
-			else:
+			else: # no pwhistoryPolicy['expiryInterval']
 				if 'posix' in self.options or 'mail' in self.options:
 					ml.append(('shadowMax',self.oldattr.get('shadowMax', [''])[0], ''))
 					shadowLastChangeValue = ''
@@ -2364,7 +2366,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						ml.append(('krb5MaxRenew', '', '604800'))
 						ml.insert(0, ('objectClass', '', ['krb5Principal', 'krb5KDCEntry']))
 
-		elif self.hasChanged('disabled') and self['disabled'] == "1":
+		elif self.hasChanged('disabled') and self['disabled'] == "1": #!self.modifypassword
 			# disable password:
 			#                             FIXME: required for join user root
 			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root') or 'mail' in self.options:
@@ -2444,7 +2446,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 
 
-		if pwd_change_next_login == 1:
+		if pwd_change_next_login == 1:	# ! self.modifypassword or no pwhistoryPolicy['expiryInterval']
 			if 'posix' in self.options or 'mail' in self.options:
 				pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
 				if pwhistoryPolicy != None and pwhistoryPolicy['expiryInterval'] != None and len(pwhistoryPolicy['expiryInterval']) > 0:
@@ -2488,6 +2490,62 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				old_krb5PasswordEnd=self.oldattr.get('krb5PasswordEnd', '')
 				if old_krb5PasswordEnd != krb5PasswordEnd:
 					ml.append(('krb5PasswordEnd',self.oldattr.get('krb5PasswordEnd', [''])[0], krb5PasswordEnd))
+		elif pwd_change_next_login == 2:	# pwdChangeNextLogin changed from 1 to 0
+			# 1. determine expiryInterval (could be done once before "if self.modifypassword" above)
+			pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
+			if pwhistoryPolicy != None and pwhistoryPolicy['expiryInterval'] != None and len(pwhistoryPolicy['expiryInterval']) > 0:
+				try:
+					expiryInterval=int(pwhistoryPolicy['expiryInterval'])
+				except:
+					# expiryInterval is empty or no legal int-string
+					pwhistoryPolicy['expiryInterval']=''
+					expiryInterval=-1
+			else: # no pwhistoryPolicy['expiryInterval']
+				expiryInterval=-1
+
+			# 2. set posix attributes
+			if 'posix' in self.options or 'mail' in self.options:
+				if expiryInterval==-1:
+					shadowMax=''
+				else:
+					shadowMax="%d" % expiryInterval
+
+				now=(long(time.time())/3600/24)
+				shadowLastChangeValue = str(int(now))
+
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'shadowMax: %s' % shadowMax)
+				old_shadowMax=self.oldattr.get('shadowMax', [''])[0]
+				if old_shadowMax != shadowMax:
+					ml.append(('shadowMax', old_shadowMax, shadowMax))
+
+			# 3. set samba attributes
+			if 'samba' in self.options:
+				sambaPwdLastSetValue = str(long(time.time()))
+				# transfered into ml below
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaPwdLastSetValue: %s' % sambaPwdLastSetValue)
+
+				# obsolete code: Bug #13199
+				if expiryInterval==-1 or expiryInterval == 0:
+					sambaPwdMustChange=''
+				else:
+					sambaPwdMustChange="%d" % long(time.time()+(expiryInterval*3600*24))
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaPwdMustChange: %s' % sambaPwdMustChange)
+				old_sambaPwdMustChange=self.oldattr.get('sambaPwdMustChange', [''])[0]
+				if old_sambaPwdMustChange != sambaPwdMustChange:
+					ml.append(('sambaPwdMustChange', old_sambaPwdMustChange, sambaPwdMustChange))
+
+			# 4. set kerberos attribute
+			if 'kerberos' in self.options:
+				if expiryInterval==-1 or expiryInterval == 0:
+					krb5PasswordEnd=''
+				else:
+					expiry=time.strftime("%d.%m.%y",time.gmtime((long(time.time()) + (expiryInterval*3600*24))))
+					krb5PasswordEnd="%s" % "20"+expiry[6:8]+expiry[3:5]+expiry[0:2]+"000000Z"
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
+				old_krb5PasswordEnd=self.oldattr.get('krb5PasswordEnd', [''])[0]
+				if old_krb5PasswordEnd != krb5PasswordEnd:
+					ml.append(('krb5PasswordEnd',old_krb5PasswordEnd, krb5PasswordEnd))
+
 
 		if (self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress']) or (self.hasChanged('mailAlternativeAddress') and self['mailAlternativeAddress']):
 			if 'mail' in self.options and not self.mail_active:
