@@ -20,12 +20,15 @@ if not (configRegistry.has_key('timeserver') and configRegistry['timeserver'] ==
 			for i in range(0,len(backup)):
 				if backup[i] != fqdn:
 					servers+=' '+backup[i]
-	if configRegistry.has_key('timeserver') and configRegistry['timeserver']:
-		servers+=' '+configRegistry['timeserver']
-	if configRegistry.has_key('timeserver2') and configRegistry['timeserver2']:
-		servers+=' '+configRegistry['timeserver2']
-	if configRegistry.has_key('timeserver3') and configRegistry['timeserver3']:
-		servers+=' '+configRegistry['timeserver3']
+	if configRegistry.has_key('timeserver') and configRegistry['timeserver'] != configRegistry['ldap/master']:
+		if configRegistry['timeserver'] != configRegistry['ldap/backup']:
+			servers+=' '+configRegistry['timeserver']
+	if configRegistry.has_key('timeserver2') and configRegistry['timeserver2'] != configRegistry['ldap/master']:
+		if configRegistry['timeserver2'] != configRegistry['ldap/backup']:
+			servers+=' '+configRegistry['timeserver2']
+	if configRegistry.has_key('timeserver3') and configRegistry['timeserver3'] != configRegistry['ldap/master']:
+		if configRegistry['timeserver3'] != configRegistry['ldap/backup']:
+			servers+=' '+configRegistry['timeserver3']
 if servers:
 	print 'NTPSERVERS="%s"' % servers
 @!@
