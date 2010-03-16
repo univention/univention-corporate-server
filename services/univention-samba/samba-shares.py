@@ -139,8 +139,10 @@ def handler(dn, new, old):
 						mode=new['univentionShareDirectoryMode'][0]
 				except:
 					pass
+				# List for denied Shares
+				deniedpaths = ["/tmp", "/root", "/proc", "/dev"]
 
-				if new['univentionSharePath'][0] == '/tmp':
+				if new['univentionSharePath'][0] in deniedpaths:
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
 								"Custom permissions for share `%s' not allowed, overriding." % new['univentionSharePath'][0])
 				else:
