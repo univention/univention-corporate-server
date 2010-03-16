@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, string, copy
+import sys, string, copy, re
 import univention.admin.uldap
 import univention.admin.syntax
 import univention.admin.filter
@@ -853,8 +853,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		
-		if self['path'] == "/proc":
-			raise univention.admin.uexceptions.invalidOptions, _('It is not valid to set /proc as a share.')
+		if re.search(r"/proc[/]?$", self['path']) or re.search(r"/proc[/]+.*", self['path']) or re.search(r"/sys[/]?$", self['path']) or re.search(r"/sys[/]+.*", self['path']):
+			raise univention.admin.uexceptions.invalidOptions, _('It is not valid to set %s as a share.')%self['path']
 
 		ocs = ['top', 'univentionShare']
 		if not ( 'samba' in self.options or 'nfs' in self.options):
