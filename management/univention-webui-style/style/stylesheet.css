@@ -1914,9 +1914,22 @@ td.umc_tree_view_item_level3 {
 	line-height: 6px;
 }
 
+table.umc_tree_view_table {
+	width: 100%;
+}
+
+td.umc_tree_table_treeview {
+	width: 10px;
+}
+
 td.umc_tree_table_separator {
 	background: #eeeeee;
 	width: 5px;
+}
+
+.umc_tree_table_dialog {
+	vertical-align: top;
+	width: 100%;
 }
 
 .umc_infobox_col {

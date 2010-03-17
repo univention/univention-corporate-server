@@ -1,3 +1,9 @@
+univention-webui-style (5.0.1-1) unstable; urgency=low
+
+  * add more style definitions for the tree view table; Bug #17750
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 17 Mar 2010 09:33:51 +0100
+
 univention-webui-style (5.0.0-1) unstable; urgency=low
 
   * add stylesheet definition for the treeview widget; Bug #17750
