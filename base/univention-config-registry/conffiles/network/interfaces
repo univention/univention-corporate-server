@@ -13,6 +13,29 @@ auto lo
 iface lo inet loopback
 
 @!@
+
+def uniquify(seq, id=None): 
+	if id is None:
+		def id(x): return x
+	seen = {}
+	result = []
+	for item in seq:
+		marker = id(item)
+		if marker in seen:
+			continue
+ 		seen[marker] = 1
+		result.append(item)
+	return result
+
+seq=[]
+
+for key,value in configRegistry.items():
+	if key.startswith('interfaces/eth') and not key.find('fallback') != -1:
+		k = key.split("/")[1:2]
+		seq += k
+eth_devices = uniquify(seq)
+eth_devices.sort()
+
 def check_gateway (ip, netmask, gateway):
 	if not gateway:
 		return 0
@@ -30,61 +53,44 @@ gateway=False
 configExists=False
 ifhandler=configRegistry.get('interfaces/handler','ifplugd')
 
-for i in range(0,4):
+
+for i in eth_devices:
 	configExists=False
-	if configRegistry.has_key('interfaces/eth%s/type' % i) and configRegistry['interfaces/eth%s/type' % i] == 'dhcp':
-		if ifhandler == 'ifplugd' and configRegistry.get('interfaces/eth%s/ifplugd' % i, 'yes' ).lower() in ( 'yes', 'true', '1' ):
-			print 'auto eth%s' % i
-			print 'iface eth%s inet dhcp' % i
+	if configRegistry.has_key('interfaces/%s/type' % i) and configRegistry['interfaces/%s/type' % i] == 'dhcp':
+		if ifhandler == 'ifplugd' and configRegistry.get('interfaces/%s/ifplugd' % i, 'yes' ).lower() in ( 'yes', 'true', '1' ):
+			print 'auto %s' % i
+			print 'iface %s inet dhcp' % i
 			configExists=True
-		elif ifhandler == 'networkmanager' and configRegistry.get('interfaces/eth%s/networkmanager' % i, 'yes' ).lower() in ( 'no', 'false', '0' ):
-			print 'auto eth%s' % i
-			print 'iface eth%s inet dhcp' % i
+		elif ifhandler == 'networkmanager' and configRegistry.get('interfaces/%s/networkmanager' % i, 'yes' ).lower() in ( 'no', 'false', '0' ):
+			print 'auto %s' % i
+			print 'iface %s inet dhcp' % i
 			configExists=True
-	elif  configRegistry['interfaces/eth%s/address' % i]:
-		print 'auto eth%s' % i
-		print 'iface eth%s inet static' % i
-		print 'address '+configRegistry['interfaces/eth%s/address' % i]
-		if configRegistry['interfaces/eth%s/network' % i]:
-			print 'network '+configRegistry['interfaces/eth%s/network' % i]
-		if configRegistry['interfaces/eth%s/netmask' % i]:
-			print 'netmask '+configRegistry['interfaces/eth%s/netmask' % i]
-		if configRegistry['interfaces/eth%s/broadcast' % i]:
-			print 'broadcast '+configRegistry['interfaces/eth%s/broadcast' % i]
-		if configRegistry['interfaces/eth%s/address' % i] and configRegistry['interfaces/eth%s/netmask' % i] and configRegistry['gateway'] and not gateway:
-			if check_gateway(configRegistry['interfaces/eth%s/address' % i].split('.'), configRegistry['interfaces/eth%s/netmask' % i].split('.'), configRegistry['gateway'].split('.')):
+	elif  configRegistry['interfaces/%s/address' % i]:
+		x = i.replace("_", ":")
+		print 'auto %s' % x
+		print 'iface %s inet static' % x
+		
+		print 'address '+configRegistry['interfaces/%s/address' % i]
+		if configRegistry['interfaces/%s/network' % i]:
+			print 'network '+configRegistry['interfaces/%s/network' % i]
+		if configRegistry['interfaces/%s/netmask' % i]:
+			print 'netmask '+configRegistry['interfaces/%s/netmask' % i]
+		if configRegistry['interfaces/%s/broadcast' % i]:
+			print 'broadcast '+configRegistry['interfaces/%s/broadcast' % i]
+		if configRegistry['interfaces/%s/address' % i] and configRegistry['interfaces/%s/netmask' % i] and configRegistry['gateway'] and not gateway:
+			if check_gateway(configRegistry['interfaces/%s/address' % i].split('.'), configRegistry['interfaces/%s/netmask' % i].split('.'), configRegistry['gateway'].split('.')):
 				print 'gateway '+configRegistry['gateway']
 				gateway=True
 		configExists=True
 
-	for j in range(0,4):
-		if configRegistry.has_key('interfaces/eth%s_%s/type' % (i,j)) and configRegistry['interfaces/eth%s_%s/type' % (i,j) ] == 'dhcp':
-			if ifhandler == 'networkmanager':
-				if configRegistry.get('interfaces/eth%s_%s/networkmanager' % ( i, j ), 'yes' ).lower() in ( 'no', 'false', '0' ):
-					print 'auto eth%s:%s' % (i,j)
-				print 'iface eth%s:%s inet dchp' % (i,j)
-		elif configRegistry['interfaces/eth%s_%s/address' % (i,j) ]:
-			print 'auto eth%s:%s' % (i,j)
-			print 'iface eth%s:%s inet static' % (i,j)
-			print 'address '+configRegistry['interfaces/eth%s_%s/address' % (i,j) ]
-			if configRegistry['interfaces/eth%s_%s/network' % (i,j) ]:
-				print 'network '+configRegistry['interfaces/eth%s_%s/network' % (i,j) ]
-			if configRegistry['interfaces/eth%s_%s/netmask' % (i,j) ]:
-				print 'netmask '+configRegistry['interfaces/eth%s_%s/netmask' % (i,j) ]
-			if configRegistry['interfaces/eth%s_%s/broadcast' % (i,j) ]:
-				print 'broadcast '+configRegistry['interfaces/eth%s_%s/broadcast' % (i,j) ]
-			if configRegistry['interfaces/eth%s_%s/address' % (i,j)] and configRegistry['interfaces/eth%s_%s/netmask' % (i,j)] and configRegistry['gateway'] and not gateway:
-				if check_gateway(configRegistry['interfaces/eth%s_%s/address' % (i,j)].split('.'), configRegistry['interfaces/eth%s_%s/netmask' % (i,j)].split('.'), configRegistry['gateway'].split('.')):
-					print 'gateway '+configRegistry['gateway']
-					gateway=True
-
 	if configExists:
 		for key,value in configRegistry.items():
-			if key.startswith('interfaces/eth%s/route/' % i):
+			if key.startswith('interfaces/%s/route/' % i):
 				if value.startswith('host ') or value.startswith('net '):
-					print 'up route add -%s dev eth%d' % (value, i)
+					print 'up route add -%s dev %s' % (value, i)
 
 		for key,value in configRegistry.items():
-			if key.startswith('interfaces/eth%s/options/' % i):
+			if key.startswith('interfaces/%s/options/' % i):
 				print value
+
 @!@
