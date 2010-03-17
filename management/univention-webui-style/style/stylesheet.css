@@ -1919,6 +1919,7 @@ table.umc_tree_view_table {
 }
 
 td.umc_tree_table_treeview {
+	vertical-align: top;
 	width: 10px;
 }
 

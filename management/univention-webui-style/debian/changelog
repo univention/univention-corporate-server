@@ -1,3 +1,10 @@
+univention-webui-style (5.0.2-1) unstable; urgency=low
+
+  * ensure that treeview table is aligned at the top (vertically) of the
+    table; Bug #17750
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 17 Mar 2010 15:08:15 +0100
+
 univention-webui-style (5.0.1-1) unstable; urgency=low
 
   * add more style definitions for the tree view table; Bug #17750
