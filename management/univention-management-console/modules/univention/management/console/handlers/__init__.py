@@ -216,13 +216,17 @@ class simpleHandler( signals.Provider ):
 
 	def __verify_dialog( self, dialog ):
 		if isinstance( dialog, umcd.DialogTypes ):
-			return dialog
+			dlg = dialog
 		else:
 			if isinstance( dialog, ( tuple, list ) ) and \
 				   not isinstance( dialog, umcd.ListTypes ):
-				return umcd.Dialog( dialog )
+				dlg = umcd.Dialog( dialog )
 			else:
-				return umcd.Dialog( [ dialog ] )
+				dlg = umcd.Dialog( [ dialog ] )
+
+		dlg[ 'width' ] = '100%'
+
+		return dlg
 
 	def __execution_failed( self, object, text ):
 		res = umcp.Response( object )

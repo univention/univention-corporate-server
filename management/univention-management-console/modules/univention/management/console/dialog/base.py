@@ -235,12 +235,15 @@ class SimpleTreeTable( List ):
 		List.__init__( self, attributes = attributes )
 
 		self._separator_col = Cell( item = Text( '' ), attributes = { 'type' : 'umc_tree_table_separator' } )
-		self.add_row( [ SimpleTreeView( tree_data ), self._separator_col, dialog ] )
+		self.add_row( [ Cell( item = SimpleTreeView( tree_data ), attributes = { 'type' : 'umc_tree_table_treeview' } ), self._separator_col, '' ] )
+		self.set_dialog( dialog )
 
 	def set_dialog( self, dialog ):
+		if isinstance( dialog, Element ):
+			dialog[ 'type' ] = 'umc_tree_table_dialog'
 		self._content[ 0 ].set_cell( 2, dialog )
 
 	def set_tree_data( self, tree_data ):
-		self._content[ 0 ].get_cell( 0 )._tree_data = tree_data
+		self._content[ 0 ].get_cell( 0 ).item._tree_data = tree_data
 		
 ListTypes = ( type( Frame() ), type( List() ), type( Row() ), type( Cell() ), type( SimpleTreeTable() ), type( SimpleTreeView() ) )

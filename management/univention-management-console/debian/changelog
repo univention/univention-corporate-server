@@ -1,3 +1,10 @@
+univention-management-console (3.0.3-1) unstable; urgency=low
+
+  * modified layout of treeview widget
+  * ensure that the most top frame uses the full width of the area; Bug #17750
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 17 Mar 2010 09:37:37 +0100
+
 univention-management-console (3.0.2-1) unstable; urgency=low
 
   * Evaluate locale.LC_MESSAGES in UMC services module (Bug #13469)

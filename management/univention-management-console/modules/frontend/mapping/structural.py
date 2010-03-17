@@ -83,7 +83,9 @@ def frame_map( storage, umcp_part ):
 		rows.append( tablerow( '', { 'type' : 'umc_frame_row' },
 							   { 'obs' : [ col ] } ) )
 
-	return table( '', { 'type' : 'umc_frame' }, { 'obs' : rows } )
+	attrs = utils.layout_attrs( storage, umcp_part )
+	attrs[ 'type' ] = 'umc_frame'
+	return table( '', attrs, { 'obs' : rows } )
 
 mapper.add( umcd.Frame, frame_map )
 mapper.add( umcd.Dialog, frame_map )
