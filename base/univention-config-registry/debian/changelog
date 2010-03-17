@@ -1,8 +1,14 @@
+univention-config-registry (5.0.79-1) unstable; urgency=low
+
+  * removed limited number of net-interfaces for ucr, now unlimited, Bug #15762
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 17 Mar 2010 13:43:32 +0100
+
 univention-config-registry (5.0.78-1) unstable; urgency=low
 
   * updated ntp handling, no multiple entries, Bug #4342
 
- -- Tim Petersen <petersen@univention.de>  Tue, 17 Mar 2010 12:35:32 +0100
+ -- Tim Petersen <petersen@univention.de>  Tue, 16 Mar 2010 12:35:32 +0100
 
 univention-config-registry (5.0.77-2) unstable; urgency=low
 
