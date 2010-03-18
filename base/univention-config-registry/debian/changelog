@@ -1,8 +1,14 @@
+univention-config-registry (5.0.80-1) unstable; urgency=low
+
+  * removed unique function, made it easier now, Bug #15762
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 18 Mar 2010 09:41:56 +0100
+
 univention-config-registry (5.0.79-1) unstable; urgency=low
 
   * removed limited number of net-interfaces for ucr, now unlimited, Bug #15762
 
- -- Tim Petersen <petersen@univention.de>  Tue, 17 Mar 2010 13:43:32 +0100
+ -- Tim Petersen <petersen@univention.de>  Wed, 17 Mar 2010 13:43:32 +0100
 
 univention-config-registry (5.0.78-1) unstable; urgency=low
 
