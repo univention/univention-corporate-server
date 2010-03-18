@@ -116,6 +116,7 @@ class Manager( object ):
 				self.__commands[ module ][ 'short_description' ] = self._modules[ module ].short_description
 				self.__commands[ module ][ 'long_description' ] = self._modules[ module ].long_description
 				self.__commands[ module ][ 'categories' ] = self._modules[ module ].categories
+				self.__commands[ module ][ 'hide_tabs' ] = getattr( self._modules[ module ], 'hide_tabs', False )
 
 		return self.__commands
 

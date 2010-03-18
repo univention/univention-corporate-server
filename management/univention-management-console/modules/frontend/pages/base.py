@@ -47,6 +47,7 @@ class Page( object ):
 		self.closed = False
 		self.categories = []
 		self.categorylist = None
+		self.categorylist_hide = False
 		self.report = ''
 		self.icon = None
 		self._refresh = False
@@ -62,6 +63,10 @@ class Page( object ):
 
 	def layout( self ):
 		rows = []
+
+		if self.categorylist_hide:
+			return rows
+
 		category_elements = []
 
 		for category in self.categories:
@@ -91,14 +96,20 @@ class Page( object ):
 		notebook tabs'''
 
 	def apply( self ):
-		selected = self.categorylist.getselected()
-		# check if the current category is re-selected
-		if getattr( self.categorylist, 'bpressed', 0 ) and self.selected == selected:
-			self.reselected = True
+		selected = 0
+		if self.categorylist:
+			selected = self.categorylist.getselected()
+			# check if the current category is re-selected
+			if getattr( self.categorylist, 'bpressed', 0 ) and self.selected == selected:
+				self.reselected = True
+			else:
+				self.reselected = False
+
+			self.closedPage = self.categorylist.getclosed()
 		else:
-			self.reselected = False
+			selected = 0
+			self.closedPage = -1
 
 		self.selection_changed = ( self.selected != selected )
 		self.selected = selected
 
-		self.closedPage = self.categorylist.getclosed()

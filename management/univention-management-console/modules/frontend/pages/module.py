@@ -100,6 +100,9 @@ class Module( base.Page ):
 		self.__restore_referrer = False
 		self.__operation_is_progress = False
 
+		if module[ 'hide_tabs' ]:
+			self.categorylist_hide = True
+			
 		# check for icon
 		if self.__module.has_key( 'icon' ) and self.__module[ 'icon' ]:
 			self.icon = umc_tools.image_get( self.__module[ 'icon' ],
