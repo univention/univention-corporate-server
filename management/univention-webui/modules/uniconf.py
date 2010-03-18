@@ -78,7 +78,7 @@ class uniconf:
 		for i in self.atts.keys():
 			if not type(self.atts[i]) in [types.StringType, types.UnicodeType]:
 				if not self.atts[i]==None:
-					raise Exception,"attributes must be strings"
+					raise Exception,"attributes must be strings: %s" % str(i)
 
 	def findlongestfit(self,st,stlist,oldfitlen):
 		stlist.sort()
