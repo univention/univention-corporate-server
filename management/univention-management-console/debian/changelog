@@ -1,3 +1,10 @@
+univention-management-console (3.0.5-1) unstable; urgency=low
+
+  * add optional attribute 'label' to progressbar widget; Bug #17750
+
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 18 Mar 2010 15:00:20 +0100
+
 univention-management-console (3.0.4-1) unstable; urgency=low
 
   * add widget Progressbar; Bug #17904

@@ -75,9 +75,10 @@ class Element( object ):
 		return self.__class__.__name__
 
 class Progressbar( Element ):
-	def __init__( self, percentage = 0.0, attributes = {} ):
+	def __init__( self, percentage = 0.0, label = None, attributes = {} ):
 		Element.__init__( self, attributes )
 		self.percentage = str( percentage )
+		self.label = label
 
 class Text( Element ):
 	def __init__( self, text = '', attributes = {} ):

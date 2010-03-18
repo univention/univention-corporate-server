@@ -57,6 +57,9 @@ mapper.add( umcd.HTML, html_map )
 def progressbar_map( storage, umcp_part ):
 	attrs = utils.layout_attrs( storage, umcp_part )
 	attrs[ 'percentage' ] = umcp_part.percentage
+	if umcp_part.label:
+		attrs[ 'label' ] = umcp_part.label
+		
 	return progressbar( '', attrs, {} )
 
 mapper.add( umcd.Progressbar, progressbar_map )
