@@ -37,7 +37,7 @@ class SynVoIP_Protocols(univention.admin.syntax.select):
 	name=u'VoIP_Protocol'
 	# die Liste der Auswahlmöglichkeiten: Jedes der Elemente enthält einen eindeutigen Schlüssel und den anzuzeigenden Text
 	choices=[ ( 'sip', u'SIP'), ( 'h323', u'H.323' ), ('skype', u'Skype' ) ]
-		
+
 class SynVoIP_Address(univention.admin.syntax.simple):
 	"""Diese Klasse dient als Syntax für VoIP Adresse. Der Aufbau ist einer E-Mail Adresse ähnlich,
 	kann aber als Präfix noch ein Schema gefolgt von einem ':' enthalten. Valide Schemta sind: sip, h323 und skype"""
@@ -45,12 +45,12 @@ class SynVoIP_Address(univention.admin.syntax.simple):
 	min_length=4
 	max_length=256
 	_re = re.compile('((^(sip|h323|skype):)?([a-zA-Z])[a-zA-Z0-9._-]+)@[a-zA-Z0-9._-]+$')
-	
+
 	def parse(self, text):
 		if self._re.match(text) != None:
 			return text
 		raise univention.admin.uexceptions.valueError, u'Keine gültige VoIP Adresse'
-												
+
 # interner Name des Moduls
 module = 'test/ip-phone'
 # dieses Objekt kann keine Kindsobjekte enthalten
@@ -92,7 +92,7 @@ property_descriptions={
 			may_change=0,								# darf nach Erstellung nicht verändert werden
 			identifies=1
 		),
-	# 
+	#
 	'active': univention.admin.property(
 			short_description= u'freigeschaltet',
 			long_description= u'Ein IP-Telefon kann gesperrt werden',
@@ -149,11 +149,11 @@ property_descriptions={
 # definiert das Layout für das Web-Frontend
 # 'univention.admin.tab entspricht einem Reiter:
 #    Der erste Parameter ist der Name des Reiters und der zweite Parameter ist eine Beschreibung der Einstellungsmöglich für diesen Reiter
-#    Die folgende Liste definiert die Anordnung der einzelnen Eigenschaftsfelder. 
-layout=[ 
+#    Die folgende Liste definiert die Anordnung der einzelnen Eigenschaftsfelder.
+layout=[
 	univention.admin.tab( u'Allgemein', u'Grundeinstellungen',
 			[ [ univention.admin.field( "name" ), univention.admin.field( "active" ) ],
-			[ univention.admin.field( "ip" ), univention.admin.field( "protocol" ) ], 
+			[ univention.admin.field( "ip" ), univention.admin.field( "protocol" ) ],
 			[ univention.admin.field( "priuser" ) ] ] ),
 	univention.admin.tab( u'Erweiterungen', u'Erweiterte Einstellungen',
 			[ [ univention.admin.field( "users" ) ] ] )	]
@@ -164,7 +164,7 @@ def boolToString(value):
 		return 'yes'
 	else:
 		return 'no'
-		
+
 def stringToBool(value):
 	if value[0].lower() == 'yes':
 		return '1'
@@ -213,11 +213,11 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def exists(self):
 		return self._exists
-	
+
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 		self.save()
-						
+
 	def _ldap_pre_create(self):
 		"""Wird vor dem Anlegen des LDAP Objektes aufgerufen."""
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
@@ -244,11 +244,11 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _update_policies(self):
 		pass
-		
+
 	def _ldap_addlist(self):
 		"""Diese Funktion muss definiert werden und gibt die 'objectClass' Definition zurück."""
 		return [ ('objectClass', ['top', 'testPhone' ] ) ]
-																				
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 	"""Diese Function sucht nach Objekten, die dem in diesem Modul verwalteten Typ und die den angegebenen Suchkriterien entsprechen.

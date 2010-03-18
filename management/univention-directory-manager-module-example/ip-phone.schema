@@ -26,7 +26,7 @@ attributetype ( 1.3.6.1.4.1.10176.9999.1.5 NAME 'testPhoneUsers'
 
 objectclass	( 1.3.6.1.4.1.10176.9999.2.1 NAME 'testPhone'
 	DESC 'IP Phone'
-	SUP top  STRUCTURAL	
+	SUP top  STRUCTURAL
 	MUST ( cn $ testPhoneActive $ testPhoneProtocol $ testPhoneIP $ testPhonePrimaryUser )
 	MAY ( testPhoneUsers )
 	)

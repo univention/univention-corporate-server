@@ -18,36 +18,23 @@
 
 PYVERS=$(shell pyversions -vr)
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch configure-stamp
-
-#Architecture 
-build: build-stamp
-
-build-stamp: configure-stamp 
-	dh_testdir
-	touch build-stamp
+build:
 
 clean:
 	dh_testdir
-	dh_testroot
-	rm -f build-stamp
-	dh_clean 
+	dh_clean
 
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k 
-	dh_installdirs 
+	dh_clean -k
+	dh_installdirs
 
 	univention-install-config-registry
 	install -m 0644 ip-phone.py debian/univention-directory-manager-module-example/usr/lib/python2.4/site-packages/univention/admin/handlers/test/
 	install -m 0644 ip-phone.schema debian/univention-directory-manager-module-example/usr/share/univention-ldap/schema/
 
 	dh_install
-
 
 binary-indep: build install
 	dh_testdir -i
@@ -63,4 +50,4 @@ binary-indep: build install
 binary-arch: build install
 
 binary: binary-arch binary-indep
-.PHONY: build clean binary-indep binary-arch binary install configure
+.PHONY: build clean binary-indep binary-arch binary install

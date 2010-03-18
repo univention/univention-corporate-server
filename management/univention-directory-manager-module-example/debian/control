@@ -10,5 +10,5 @@ Architecture: all
 Depends: univention-config-registry, univention-directory-manager-tools
 Description: Univention Directory Manager example module to manage IP phones
  This package contains an Univention Directory Manager module that
- demonstrates how custom LDAP objects can be managed with the 
+ demonstrates how custom LDAP objects can be managed with the
  Univention Directory Manager.
