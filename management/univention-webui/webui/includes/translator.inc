@@ -132,6 +132,7 @@ class webui_translator{
 				case 'reset':  $this->extra = new reset($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
 				case 'button':  $this->extra = new button($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
 				case 'link': $this->extra = new link($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
+				case 'progressbar': $this->extra = new progressbar($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
 				case 'question_bool': $this->extra = new question_bool($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
 				case 'question_secure': $this->extra = new question_secure($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;
 				case 'question_date': $this->extra = new question_dojo_date_widget($tag, $this->conti_ref, $this->config, $attribute, $this->warn);return;

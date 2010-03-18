@@ -941,6 +941,25 @@ class link extends extra{
 	}
 }
 
+class progressbar extends extra{
+	function show(){
+		$width = '300px';
+		if (isset($this->attribute['width']))
+			$width = $this->attribute['width'];
+		$str .= '<script type="text/javascript">dojo.require("dijit.ProgressBar");
+dojo.addOnLoad(function(){
+jsProgress'.$this->tabindex.'.update({
+            maximum: 100,
+            progress: '.$this->attribute['percentage'].'
+        });
+	});
+</script>
+<div dojoType="dijit.ProgressBar" style="width:'.$width.'" jsId="jsProgress'.$this->tabindex.'"
+id="Progressbar'.$this->tabindex.'">
+</div>';
+	  	return $str;
+	}
+}
 
 // single select drop-down
 class question_select extends extra_multi{

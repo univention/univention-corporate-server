@@ -44,5 +44,6 @@ from logout import *
 from categorylist import *
 from notebook import *
 from icon import *
+from progressbar import *
 from waitdialog import waitstatus
 from tabbing import Tabbing
