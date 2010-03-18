@@ -1,3 +1,9 @@
+univention-webui (4.0.2-1) unstable; urgency=low
+
+  * add optional attribute label to progressbar widget; Bug #17750
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 18 Mar 2010 14:59:13 +0100
+
 univention-webui (4.0.1-2) unstable; urgency=low
 
   * add missing file progressbar.py; Bug #17750

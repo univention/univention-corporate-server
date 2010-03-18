@@ -946,8 +946,15 @@ class progressbar extends extra{
 		$width = '300px';
 		if (isset($this->attribute['width']))
 			$width = $this->attribute['width'];
+		$report_func = '';
+		if (isset($this->attribute['label']))
+			$report_func = '
+jsProgress'.$this->tabindex.'["report"] = function( percent ) {
+    return "'.$this->attribute['label'].'";
+};';
 		$str .= '<script type="text/javascript">dojo.require("dijit.ProgressBar");
 dojo.addOnLoad(function(){
+'.$report_func.'
 jsProgress'.$this->tabindex.'.update({
             maximum: 100,
             progress: '.$this->attribute['percentage'].'
