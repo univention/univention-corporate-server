@@ -54,6 +54,13 @@ def html_map( storage, umcp_part ):
 
 mapper.add( umcd.HTML, html_map )
 
+def progressbar_map( storage, umcp_part ):
+	attrs = utils.layout_attrs( storage, umcp_part )
+	attrs[ 'percentage' ] = umcp_part.percentage
+	return progressbar( '', attrs, {} )
+
+mapper.add( umcd.Progressbar, progressbar_map )
+
 def icon_map( storage, umcp_part ):
 	# FIXME: the following try-except-block is rather hacky but currently the best solution.
 	# umcp_part.has_attributes() sometimes throws an exception if umcp_part.__attributes

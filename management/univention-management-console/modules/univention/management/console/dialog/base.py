@@ -74,6 +74,11 @@ class Element( object ):
 	def type( self ):
 		return self.__class__.__name__
 
+class Progressbar( Element ):
+	def __init__( self, percentage = 0.0, attributes = {} ):
+		Element.__init__( self, attributes )
+		self.percentage = str( percentage )
+
 class Text( Element ):
 	def __init__( self, text = '', attributes = {} ):
 		Element.__init__( self, attributes )
@@ -109,7 +114,7 @@ class Fill( Text ):
 		else:
 			Text.__init__( self, text, { 'rowspan' : str( columns ) } )
 
-TextTypes = ( type( Text() ), type( Date() ), type( Number() ), type( HTML() ),
+TextTypes = ( type( Progressbar() ), type( Text() ), type( Date() ), type( Number() ), type( HTML() ),
 			  type( Fill() ) )
 
 def _verify_list_items( sequence ):
