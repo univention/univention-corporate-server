@@ -169,14 +169,15 @@ print '\t</item>'
 print ''
 print '\t<!-- login -->'
 print '\t<item type="rect">'
-print '\t\t<pos x="50%%" y="53.5%%" width="box" height="box" anchor="c" />' % pos[res]
+print '\t\t<pos x="56%%" y="53.5%%" width="box" height="box" anchor="c" />' % pos[res]
 print '\t\t<box spacing="%(button_gap)s" orientation="horizontal">' % pos[res]
 print '\t\t\t<item type="rect">'
-print '\t\t\t\t<pos width="box" height="box" y="58%%" />' % pos[res]
-print '\t\t\t\t<box orientation="horizontal">'
+print '\t\t\t\t<pos height="box" y="58%%" />' % pos[res]
+print '\t\t\t\t<box orientation="vertical">'
 print '\t\t\t\t\t<item type="label" id="pam-prompt">'
 print '\t\t\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
 print '\t\t\t\t\t\t<stock type="username-label"/>'
+print '\t\t\t\t\t\t<pos anchor="ne" x="100%" />'
 print '\t\t\t\t\t</item>'
 print '\t\t\t\t</box>'
 print '\t\t\t</item>'

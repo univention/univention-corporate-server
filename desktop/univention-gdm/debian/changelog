@@ -1,3 +1,9 @@
+univention-gdm (5.0.15-1) unstable; urgency=low
+
+  * fixed theme Bug #16757 
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 Mar 2010 11:08:45 +0100
+
 univention-gdm (5.0.14-2) unstable; urgency=low
 
   * added UCR Header to gdm-autologin #17816
