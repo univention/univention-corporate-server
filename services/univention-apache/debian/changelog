@@ -1,3 +1,9 @@
+univention-apache (3.0.5-1) unstable; urgency=low
+
+  * replaced pam_heimdal.so with pam_krb5.so, Bug #17901
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 18 Mar 2010 11:28:49 +0200
+
 univention-apache (3.0.4-1) unstable; urgency=low
 
   * add ucr-variable apache2/documentroot (Bug: #11789)
