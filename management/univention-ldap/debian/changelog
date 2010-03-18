@@ -1,3 +1,9 @@
+univention-ldap (5.0.17-1) unstable; urgency=low
+
+  * replaced pam_heimdal.so with pam_krb5.so, Bug #17901
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 18 Mar 2010 11:21:27 +0100
+
 univention-ldap (5.0.16-1) unstable; urgency=low
 
   * changed description for unattended installation in univention.schema, Bug #13244
