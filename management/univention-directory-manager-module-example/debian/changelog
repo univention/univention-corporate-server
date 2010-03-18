@@ -1,7 +1,13 @@
+univention-directory-manager-module-example (1.0-2) unstable; urgency=low
+
+  * debian/*.univention-config-registry must not include Multifile-entry
+    again. (Bug #16644)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 18 Mar 2010 12:21:53 +0100
+
 univention-directory-manager-module-example (1.0-1) unstable; urgency=low
 
   * Initial Release, based on previous univention-admin-module-example
     package
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 11 Mar 2010 16:33:49 +0100
-
