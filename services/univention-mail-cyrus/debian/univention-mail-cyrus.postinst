@@ -139,7 +139,7 @@ if [ ! -e /etc/cyrus.secret ]; then
 	chmod 600  /etc/cyrus.secret
 fi
 
-if [ -e /etc/cyrus.secret ] && dpkg --compare-versions "$2" lt "2.0.7-1"; then
+if [ -e /etc/cyrus.secret ] && [ "$1" = configure ]&& dpkg --compare-versions "$2" lt "2.0.7-1"; then
 	TMP=$(tempfile)
 	cat /etc/cyrus.secret > $TMP
 	PASSWD=$(cat $TMP)
