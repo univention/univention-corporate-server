@@ -1,3 +1,9 @@
+univention-mail-cyrus (2.0.9-1) unstable; urgency=low
+
+  * replaced every pam_heimdal.so with pam_krb5.so, (Bug #17901)
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 18 Mar 2010 11:18:07 +0100
+
 univention-mail-cyrus (2.0.8-1) unstable; urgency=low
 
   * generate new /etc/cyrus.secret only for this update and if $1 == configure, (Bug #17859)
