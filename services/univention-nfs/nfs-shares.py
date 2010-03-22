@@ -124,7 +124,7 @@ def handler(dn, new, old):
 
 			if path in deniedpaths:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
-					"Custom permissions for share '%s' not allowed, overriding." % path)
+					"Custom permissions for share '%s' not allowed, skip." % path)
 			elif os.path.isdir(path):
 				try:
 					os.chmod(path,int(mode,0))
@@ -133,7 +133,7 @@ def handler(dn, new, old):
 					pass
 			else:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
-					"'%s': Custom permissions for files not allowed, overriding." % path)	
+					"'%s': Custom permissions for files not allowed, skip." % path)	
 
 		finally:
 			listener.unsetuid()
