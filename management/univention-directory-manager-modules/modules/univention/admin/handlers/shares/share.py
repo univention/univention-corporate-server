@@ -854,7 +854,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_addlist(self):
 		
 		if re.search(r"/proc[/]?$", self['path']) or re.search(r"/proc[/]+.*", self['path']) or re.search(r"/sys[/]?$", self['path']) or re.search(r"/sys[/]+.*", self['path']):
-			raise univention.admin.uexceptions.invalidOptions, _('It is not valid to set %s as a share.')%self['path']
+			raise univention.admin.uexceptions.invalidOperation, _('It is not valid to set %s as a share.')%self['path']
 
 		ocs = ['top', 'univentionShare']
 		if not ( 'samba' in self.options or 'nfs' in self.options):
