@@ -1,3 +1,9 @@
+univention-samba (4.0.16-1) unstable; urgency=low
+
+  * only touch priviledges, if share is a directory Bug #17929
+
+ -- Tim Petersen <petersen@univention.de>  Mon, 22 Mar 2010 11:02:04 +0100
+
 univention-samba (4.0.15-1) unstable; urgency=low
 
   * do not touch file priviledges, when sharing single file Bug #17929

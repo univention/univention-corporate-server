@@ -145,15 +145,16 @@ def handler(dn, new, old):
 				if path in deniedpaths:
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
 						"Custom permissions for share '%s' not allowed, overriding." % new['univentionSharePath'][0])
-				elif os.path.isfile(path):
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
-						"'%s': Custom permissions for files not allowed, overriding." % path)
-				else:
+				elif os.path.isdir(path):
 					try:
 						os.chmod(directory,int(mode,0))
 						os.chown(directory,uid,gid)
 					except:
 						pass
+				else:
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
+						"'%s': Custom permissions for files not allowed, overriding." % path)
+
 			if new.has_key('univentionShareSambaCustomSetting') and new['univentionShareSambaCustomSetting']:
 				for setting in new['univentionShareSambaCustomSetting']:
 					print >>fp, setting
