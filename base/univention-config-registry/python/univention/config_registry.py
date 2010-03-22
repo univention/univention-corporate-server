@@ -975,10 +975,8 @@ def handler_randpw( args, opts = {} ):
 	print randpw()
 
 def replaceDict(line, dict):
-	result = line
-	for key in dict:
-		result = result.replace(key, dict[key])
-	return result
+	''' Map any character from line to its value from dict '''
+	return ''.join(map(lambda c: dict.get(c, c), line))
 
 def replaceUmlaut(line):
 	umlauts = { 'Ä': 'Ae',
@@ -1004,10 +1002,13 @@ def keyShellEscape(line):
 	return ''.join (new_line)
 
 def valueShellEscape(line):
-	escapes = { '*':'"*"',
-		    '?':'"?"',
-		    #'"': '"""',
-		    '"': '\\\"', }
+	escapes = {
+		'"': '\\"',
+		'$': '\\$',
+		'\\': '\\\\',
+		'`': '\\`',
+	}
+
 	return replaceDict(line, escapes)
 
 def validateKey(k):
