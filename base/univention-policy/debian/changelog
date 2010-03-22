@@ -1,3 +1,9 @@
+univention-policy (3.0.2-1) unstable; urgency=low
+
+  * shell escaping in ucr Bug #8417 
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 Mar 2010 22:06:08 +0100
+
 univention-policy (3.0.1-1) unstable; urgency=low
 
   * use explicit automake 1.4 otherwise the UCS 2.3 build on amd64 will

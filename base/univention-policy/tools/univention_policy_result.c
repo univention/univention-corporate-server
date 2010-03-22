@@ -124,7 +124,20 @@ int main(int argc, char* argv[])
 								printf("%c", attribute->name[j]);
 							}
 						}
-						printf("=\"%s\"\n", attribute->values->values[i]);
+						char *c;
+						printf("=\"");
+						for (c = attribute->values->values[i]; *c; c++) {
+							switch (*c) {
+								case '"':
+								case '$':
+								case '\\':
+								case '`':
+									putchar('\\');
+								default:
+									putchar(*c);
+							}
+						}
+						printf("\"\n");
 					}
 				} else { /* output == OUTPUT_BASECONFIG */
 					if (attribute != policy->attributes)
