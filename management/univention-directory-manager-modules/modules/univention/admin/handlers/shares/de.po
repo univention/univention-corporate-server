@@ -900,6 +900,11 @@ msgstr "Erweiterte Einstellungen für Samba-Freigaben"
 
 #: share.py:857
 #, python-format
+msgid "It is not valid to set %s as a share."
+msgstr "Es ist nicht erlaubt, %s als Freigabe einzutragen"
+
+#: share.py:857
+#, python-format
 msgid "Need  %s or %s in options to create a share."
 msgstr "%s oder %s wird in den Optionen benötigt, um eine Freigabe anzulegen."
 
