@@ -1,3 +1,9 @@
+univention-ldap (5.0.18-1) unstable; urgency=low
+
+  * added sambaSIDList and sambaGroupType to ldap/index/eq, Bug #17232
+
+ -- Tim Petersen <petersen@univention.de>  Mon, 22 Mar 2010 09:49:27 +0100
+
 univention-ldap (5.0.17-1) unstable; urgency=low
 
   * replaced pam_heimdal.so with pam_krb5.so, Bug #17901
