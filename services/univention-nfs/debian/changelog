@@ -1,3 +1,9 @@
+univention-nfs (2.0.3-1) unstable; urgency=low
+
+  * do not touch file priviledges, when sharing single file Bug #17929
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 16 Mar 2010 10:01:59 +0200
+
 univention-nfs (2.0.2-1) unstable; urgency=low
 
   * also added /sys to list of shares, whose priviledges will not be affected :) Bug #5392 
