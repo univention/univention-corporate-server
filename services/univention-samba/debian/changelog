@@ -1,3 +1,9 @@
+univention-samba (4.0.17-1) unstable; urgency=low
+
+  * edit Logmessage for forbidden share priviledge changes, Bug #17929
+
+ -- Tim Petersen <petersen@univention.de>  Mon, 22 Mar 2010 11:29:04 +0100
+
 univention-samba (4.0.16-1) unstable; urgency=low
 
   * only touch priviledges, if share is a directory Bug #17929
