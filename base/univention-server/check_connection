@@ -32,7 +32,7 @@
 
 LOCKFILE=/tmp/.univention_check_connection
 # create lock file
-if ! lockfile-create --retry 0 $LOCKFILE; then
+if ! lockfile-create -q --retry 0 $LOCKFILE; then
 	exit 0
 fi
 
