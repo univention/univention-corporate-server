@@ -1,3 +1,15 @@
+univention-config-registry (5.0.82-1) unstable; urgency=low
+
+  * allow '#' in ucr values Bug #8417 
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Mar 2010 10:20:28 +0100
+
+univention-config-registry (5.0.81-1) unstable; urgency=low
+
+  * shell escaping in ucr Bug #8417
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 Mar 2010 16:48:58 +0100
+
 univention-config-registry (5.0.80-1) unstable; urgency=low
 
   * removed unique function, made it easier now, Bug #15762

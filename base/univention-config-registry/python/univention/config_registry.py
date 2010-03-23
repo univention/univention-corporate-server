@@ -231,9 +231,7 @@ class _ConfigRegistry( dict ):
 
 		fp.seek(0)
 		for line in fp.readlines():
-			comment = line.find('#')
-			if comment != -1:
-				line = line[:comment]
+			line = re.sub(r'^[^:]*#.*$', "", line)
 			if line == '':
 				continue
 			if line.find(': ') == -1:
@@ -975,10 +973,8 @@ def handler_randpw( args, opts = {} ):
 	print randpw()
 
 def replaceDict(line, dict):
-	result = line
-	for key in dict:
-		result = result.replace(key, dict[key])
-	return result
+	''' Map any character from line to its value from dict '''
+	return ''.join(map(lambda c: dict.get(c, c), line))
 
 def replaceUmlaut(line):
 	umlauts = { 'Ä': 'Ae',
@@ -1004,10 +1000,13 @@ def keyShellEscape(line):
 	return ''.join (new_line)
 
 def valueShellEscape(line):
-	escapes = { '*':'"*"',
-		    '?':'"?"',
-		    #'"': '"""',
-		    '"': '\\\"', }
+	escapes = {
+		'"': '\\"',
+		'$': '\\$',
+		'\\': '\\\\',
+		'`': '\\`',
+	}
+
 	return replaceDict(line, escapes)
 
 def validateKey(k):
