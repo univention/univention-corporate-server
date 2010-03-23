@@ -231,9 +231,7 @@ class _ConfigRegistry( dict ):
 
 		fp.seek(0)
 		for line in fp.readlines():
-			comment = line.find('#')
-			if comment != -1:
-				line = line[:comment]
+			line = re.sub(r'^[^:]*#.*$', "", line)
 			if line == '':
 				continue
 			if line.find(': ') == -1:
