@@ -55,6 +55,7 @@ class AdminConnection( object ):
 		self._format = format
 		self._bc = ub.baseConfig()
 		self._bc.load()
+		self.__reverse = {}
 		if not base:
 			self._base = self._bc[ 'ldap/base' ]
 		else:
@@ -75,6 +76,17 @@ class AdminConnection( object ):
 		self._cached = {}
 
 	def get_object( self, module, dn ):
+		if dn in self.__reverse: # this value has been escaped => use <self.__reverse> to unescape
+			possible_real_DNs = set()
+			for possible_real_DN_set in self.__reverse[dn].values():
+				possible_real_DNs |= possible_real_DN_set # collect every distinct possible value
+			possible_real_DNs = tuple(possible_real_DNs)
+			if not len(possible_real_DNs) == 1:
+				raise ValueError('ambiguous DNs, cannot unescape %s (possibilities: %s)' % (repr(dn), repr(possible_real_DNs)))
+			dn = possible_real_DNs[0]
+		return self.get_object_real(module, dn)
+
+	def get_object_real( self, module, dn ):
 		if self._cached.has_key( dn ):
 			return self._cached[ dn ]
 		if isinstance( module, basestring ):
@@ -125,7 +137,29 @@ class AdminConnection( object ):
 				return mods[ 0 ]
 		return None
 
-	def format_property( self, props, key, value ):
+	# store the old value of every attribute (if it is a string) in <self.__reverse> to enable <get_object()> to reverse the escaping
+	def format_property(self, props, oldkey, oldvalue):
+		(newkey, newvalue) = self.format_property_real(props, oldkey, oldvalue)
+		assert newkey == oldkey
+		key = oldkey
+		if type(newvalue) in (list, tuple): # multivalue => unpack
+			for (newv, oldv) in zip(newvalue, oldvalue):
+				if type(oldv) is str and newv != oldv: # only consider strings, because DNs are always strings
+					if newv not in self.__reverse:
+						self.__reverse[newv] = {}
+					oldvalues = self.__reverse[newv].get(key, set())
+					oldvalues.add(oldv)
+					self.__reverse[newv][key] = oldvalues
+		else:
+			if type(oldvalue) is str and newvalue != oldvalue: # only consider strings, because DNs are always strings
+				if newvalue not in self.__reverse:
+					self.__reverse[newvalue] = {}
+				oldvalues = self.__reverse[newvalue].get(key, set())
+				oldvalues.add(oldvalue)
+				self.__reverse[newvalue][key] = oldvalues
+		return (key, newvalue)
+
+	def format_property_real( self, props, key, value ):
 		prop = props.get( key, None )
 
 		def texClean(string):
