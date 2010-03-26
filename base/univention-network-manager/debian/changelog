@@ -1,3 +1,10 @@
+univention-network-manager (0.4.11-1) unstable; urgency=low
+
+  * the if-up event script resolvconf will be started as the first script
+    to create a working DNS configuration for all other scripts; Bug #17602
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 26 Mar 2010 14:42:50 +0100
+
 univention-network-manager (0.4.10-1) unstable; urgency=low
 
   * added UCR Header, Bug #17816
