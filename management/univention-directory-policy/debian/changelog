@@ -1,3 +1,9 @@
+univention-directory-policy (3.0.2-1) unstable; urgency=low
+
+  * fixed typo in the cron job file; Bug #9981
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 26 Mar 2010 16:07:06 +0100
+
 univention-directory-policy (3.0.1-1) unstable; urgency=low
 
   * if there is no connection to the LDAP server the cron job will not try
