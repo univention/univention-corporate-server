@@ -173,4 +173,3 @@ class Interpreter( object ):
 				token.value = ''
 				if token.attrs.has_key( 'default' ):
 					token.value = token.attrs[ 'default' ]
-			token.value = token.value.replace( '_', '\\_' )
