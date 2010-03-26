@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Directory Policy
-#  postinst script for the debian package
+#  cron job script
 #
-# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+# Copyright (C) 2010 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,16 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-univention-config-registry set ldap/policy/cron?"5 * * * *"
-
-#DEBHELPER#
-
-if [ ! -e /var/log/univention/ldap-policy.log ] ; then
-	touch /var/log/univention/ldap-policy.log
-	chown root:adm /var/log/univention/ldap-policy.log
-	chmod 640 /var/log/univention/ldap-policy.log
-fi
-
-if [ -n "$2" ]; then
-	update-rc.d -f univention-directory-policy remove || true
+if /usr/sbin/univention-ldap-server-available; then
+	if [ -d /usr/lib/univention-directory-policy ]; then
+		/usr/sbin/jitter 300 run-parts /usr/lib/univention-directory-policy > /dev/null
+	fi
 fi
