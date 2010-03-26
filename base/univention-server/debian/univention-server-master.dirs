@@ -6,3 +6,4 @@ etc/network/if-down.d/
 etc/univention/daemons
 etc/bootsplash/themes/domaincontroller_master/images
 etc/bootsplash/themes/domaincontroller_master/config
+usr/sbin

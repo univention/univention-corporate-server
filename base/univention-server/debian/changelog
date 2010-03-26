@@ -1,3 +1,9 @@
+univention-server (5.0.17-2) unstable; urgency=low
+
+  * really add script univention-ldap-server-available; Bug #9981
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 26 Mar 2010 16:03:09 +0100
+
 univention-server (5.0.17-1) unstable; urgency=low
 
   * add a script univention-ldap-server-available to check if a connection
