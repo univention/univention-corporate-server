@@ -1,6 +1,7 @@
 etc/init.d
 etc/cron.d
 usr/bin
+usr/sbin
 etc/network/if-up.d/
 etc/network/if-down.d/
 etc/bootsplash/themes/managedclient/images

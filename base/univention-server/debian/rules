@@ -86,9 +86,13 @@ install: build
 
 	install -m 755 univention-directory-policy/univention-set-ldap-server debian/univention-mobile-client/usr/lib/univention-directory-policy/
 
-	for role in master backup slave member managed-client mobile-client; do \
+	@for role in master backup slave member; do \
 		install -d debian/univention-server-$$role/usr/sbin/; \
-		install -m 0755 univention-ldap-server-available debian/univention-server-$$role/usr/sbin/;	\
+		install -m 0755 -t debian/univention-server-$$role/usr/sbin/ univention-ldap-server-available; \
+	done
+	@for role in managed-client mobile-client; do \
+		install -d debian/univention-$$role/usr/sbin/; \
+		install -m 0755 -t debian/univention-$$role/usr/sbin/ univention-ldap-server-available; \
 	done
 
 	univention-install-baseconfig
