@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# Univention System Role Package
+#  helper script: checks the connection to the LDAP server.
+#
+# Copyright (C) 2010 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+export PATH=$PATH:/sbin:/usr/sbin
+
+eval $(univention-config-registry shell)
+
+exit_code=1
+
+if [ -n "$ldap_server_name" ]; then
+	if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
+		exit_code=0
+	fi
+fi
+
+if [ -n "$ldap_server_addition" ] && [ $exit_code = 1 ]; then
+	for h in  $ldap_server_addition; do
+		if /bin/netcat -q0 -w4 $h 389 </dev/null >/dev/null 2>&1; then
+			exit_code=0
+			break
+		fi
+	done
+fi
+
+exit $exit_code
