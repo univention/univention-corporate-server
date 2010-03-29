@@ -1,3 +1,12 @@
+univention-system-setup (3.0.34-1) unstable; urgency=low
+
+  * block sieve port (2000) in security/profile=strict (Bug #16670)
+  * treat sieve port like imap port in clients and basesystems in
+    security/profile=normal, i.e. block it as well
+  * block UMC server port (6670) in security/profile=strict (Bug #13993)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Mar 2010 15:26:44 +0200
+
 univention-system-setup (3.0.33-1) unstable; urgency=low
 
   * updated copyright Bug #17222 
