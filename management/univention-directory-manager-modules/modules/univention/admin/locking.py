@@ -33,12 +33,16 @@ import univention.debug
 import univention.admin.uexceptions
 
 def lockDn(lo, position, type, value, scope):
-	dn='cn=%s,cn=%s,cn=temporary,cn=univention,' % (value, type)
+	dn = [ [('cn', value,        ldap.AVA_STRING)],
+	       [('cn', type,         ldap.AVA_STRING)],
+	       [('cn', 'temporary',  ldap.AVA_STRING)],
+	       [('cn', 'univention', ldap.AVA_STRING)],
+	       ]
 	if scope == 'domain':
-		dn+=position.getDomain()
+		dn += ldap.dn.str2dn(position.getDomain())
 	else:
-		dn+=position.getBase()
-	return dn
+		dn += ldap.dn.str2dn(position.getBase())
+	return ldap.dn.dn2str(dn)
 
 def lock(lo, position, type, value, scope='domain', timeout=300):
 

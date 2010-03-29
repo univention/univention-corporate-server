@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.58-1) unstable; urgency=low
+
+  * locking.py: properly escape lock name (Bug #17852)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 29 Mar 2010 13:16:46 +0200
+
 univention-directory-manager-modules (5.0.57-1) unstable; urgency=low
 
   * updated share handlers de.po (Bug #5392)
