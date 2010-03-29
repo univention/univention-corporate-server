@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (6.0.31-1) unstable; urgency=low
+
+  * fixed typo in changes of version 6.0.30-1; Bug #16359
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 29 Mar 2010 17:07:47 +0200
+
 univention-thin-client-basesystem (6.0.30-1) unstable; urgency=low
 
   * create empty udev rules files in RAM disk for persistent CD/DVD and
