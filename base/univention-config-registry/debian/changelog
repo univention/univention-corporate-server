@@ -1,3 +1,10 @@
+univention-config-registry (5.0.82-2) unstable; urgency=low
+
+  * ensure that ConfigRegistryInfo.get_variables does not raise a
+    traceback when a variable description has no categories; Bug #17464
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 29 Mar 2010 10:45:53 +0200
+
 univention-config-registry (5.0.82-1) unstable; urgency=low
 
   * allow '#' in ucr values Bug #8417 
