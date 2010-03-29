@@ -1,3 +1,9 @@
+univention-printserver (3.0.29-3) unstable; urgency=low
+
+  * remove reference to legacy UCR variable samba/ha/master (Bug #17462)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Mar 2010 13:08:04 +0200
+
 univention-printserver (3.0.29-2) unstable; urgency=low
 
   * adjusted service description (Bug #13469)

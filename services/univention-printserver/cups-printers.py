@@ -394,10 +394,7 @@ def postrun():
 		for f in os.listdir('/etc/samba/printers.conf.d'):
 			print >>fp, 'include = %s' % os.path.join('/etc/samba/printers.conf.d', f)
 		fp.close()
-		if listener.baseConfig.has_key('samba/ha/master') and listener.baseConfig['samba/ha/master']:
-			initscript='/etc/heartbeat/resource.d/samba'
-		else:
-			initscript='/etc/init.d/samba'
+		initscript='/etc/init.d/samba'
 		os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])
 	finally:
 		listener.unsetuid()
