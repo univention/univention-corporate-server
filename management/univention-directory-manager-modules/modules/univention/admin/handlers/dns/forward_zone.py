@@ -73,7 +73,7 @@ property_descriptions={
 	'contact': univention.admin.property(
 			short_description=_('Contact person'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.emailAddress,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -236,12 +236,44 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
 
+	def unescapeSOAemail(self, email):
+		ret = ''
+		i = 0
+		while i < len(email):
+			if email[i] == '\\':
+				i += 1
+				if i >= len(email):
+					raise ValueError()
+			elif email[i] == '.':
+				i += 1
+				if i >= len(email):
+					raise ValueError()
+				ret += '@'
+				ret += email[i:]
+				return ret
+			ret += email[i]
+			i += 1
+		raise ValueError()
+
+	def escapeSOAemail(self, email):
+		SPECIAL_CHARACTERS = set('"(),.:;<>@[\\]')
+		if not '@' in email:
+			raise ValueError()
+		(local, domain, ) = email.rsplit('@', 1)
+		tmp = ''
+		for c in local:
+			if c in SPECIAL_CHARACTERS:
+				tmp += '\\'
+			tmp += c
+		local = tmp
+		return local + '.' + domain
+
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
 		soa=self.oldattr.get('sOARecord',[''])[0].split(' ')
 		if len(soa) > 6:
-			self['contact']=soa[1].replace('.','@',1)
+			self['contact']=self.unescapeSOAemail(soa[1])
 			self['serial']=soa[2]
 			self['refresh']=soa[3]
 			self['retry']=soa[4]
@@ -265,6 +297,8 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		if self.hasChanged(['nameserver', 'contact', 'serial', 'refresh', 'retry', 'expire', 'ttl']):
+			if self['contact'] and not self['contact'].endswith('.'):
+				self['contact'] = '%s.' % self['contact']
 			ipaddr = re.compile ('^([0-9]{1,3}\.){3}[0-9]{1,3}$') # matches ip addresses - they shouldn't end with a dot!
 			if len (self['nameserver'][0]) > 0 \
 				and ipaddr.match (self['nameserver'][0]) == None \
@@ -272,7 +306,7 @@ class object(univention.admin.handlers.simpleLdap):
 				and self['nameserver'][0].find ('.') != -1 \
 				and not self['nameserver'][0][-1] == '.':
 				self['nameserver'][0] = '%s.' % self['nameserver'][0]
-			soa='%s %s %s %s %s %s %s' % (self['nameserver'][0], self['contact'].replace('@','.',1), self['serial'], self['refresh'], self['retry'], self['expire'], self['ttl'])
+			soa='%s %s %s %s %s %s %s' % (self['nameserver'][0], self.escapeSOAemail(self['contact']), self['serial'], self['refresh'], self['retry'], self['expire'], self['ttl'])
 			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), [soa]))
 		return ml
 
