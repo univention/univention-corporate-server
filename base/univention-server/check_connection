@@ -51,6 +51,7 @@ fi
 
 action () {
 	dir="/etc/network/if-$1.d"
+	export MODE=$1
 
 	if [ -d "$dir" ]; then
 		run-parts "$dir" >/dev/null

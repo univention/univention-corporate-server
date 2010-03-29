@@ -1,3 +1,10 @@
+univention-server (5.0.18-1) unstable; urgency=low
+
+  * check_connection: export environment variable MODE; required by some
+    network event scripts; Bug #17781
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 29 Mar 2010 13:45:48 +0200
+
 univention-server (5.0.17-2) unstable; urgency=low
 
   * really add script univention-ldap-server-available; Bug #9981
