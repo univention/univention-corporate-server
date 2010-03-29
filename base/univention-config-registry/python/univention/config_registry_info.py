@@ -241,7 +241,7 @@ class ConfigRegistryInfo( object ):
 			return self.variables
 		temp = {}
 		for name, var in self.variables.items():
-			if not var[ 'categories' ]: continue
+			if not var.get( 'categories' ): continue
 			if category in map( lambda x: string.lower( x ), var[ 'categories' ].split( ',' ) ):
 				temp[ name ] = var
 		return temp
