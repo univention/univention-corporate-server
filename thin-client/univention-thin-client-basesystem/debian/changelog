@@ -1,6 +1,13 @@
+univention-thin-client-basesystem (6.0.30-1) unstable; urgency=low
+
+  * create empty udev rules files in RAM disk for persistent CD/DVD and
+    network device names; Bug #16359
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 29 Mar 2010 16:43:15 +0200
+
 univention-thin-client-basesystem (6.0.29-1) unstable; urgency=low
 
-  * the names of udev rules files for peristent names of CD/DVD and
+  * the names of udev rules files for persistent names of CD/DVD and
     network devices have changed; Bug #16359
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 29 Mar 2010 15:51:16 +0200
