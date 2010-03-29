@@ -1,3 +1,12 @@
+univention-installer (5.0.60-1) unstable; urgency=low
+
+  * block sieve port (2000) in security/profile=strict (Bug #16670)
+  * treat sieve port like imap port in clients and basesystems in
+    security/profile=normal, i.e. block it as well
+  * block UMC server port (6670) in security/profile=strict (Bug #13993)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Mar 2010 14:38:45 +0200
+
 univention-installer (5.0.59-1) unstable; urgency=low
 
   * remove entires from package-list for mobile client and managed client (Bug #16405)
