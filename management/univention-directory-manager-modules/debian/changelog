@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.59-1) unstable; urgency=low
+
+  * extend email address validation (Bug #17429)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 29 Mar 2010 13:45:50 +0200
+
 univention-directory-manager-modules (5.0.58-1) unstable; urgency=low
 
   * locking.py: properly escape lock name (Bug #17852)

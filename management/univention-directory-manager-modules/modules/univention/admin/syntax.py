@@ -564,20 +564,60 @@ class absolutePath(simple):
 
 class emailAddress(simple):
 	name='emailAddress'
-	min_length=4
-	max_length=256
-	_re = re.compile('((^[a-zA-Z0-9])[a-zA-Z0-9._-]*)@[a-zA-Z0-9._-]+$')
+	valid_localpart_characters = set("abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'*+-/=?^`{|}~.")
+	valid_domainpart_label_characters = set("abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-")
+
+	def validate_localpart(self, localpart):
+		# quoted local parts are not allowed by this function, for example "John Doe"@example.com
+		# escaping via \ is also not allowed by this function, for example  John\@Doe@example.com
+		if not localpart:
+			raise univention.admin.uexceptions.valueError,_('Not a valid email address! (local-part is empty)')
+		if len(localpart) > 64:
+			raise univention.admin.uexceptions.valueError,_('Not a valid email address! (local-part longer than 64 characters)')
+		for char in localpart:
+			if not char in self.valid_localpart_characters:
+				raise univention.admin.uexceptions.valueError,_('Not a valid email address! (invalid character "%s")') % char
+		if localpart[0] == '.' or localpart[-1] == '.':
+			raise univention.admin.uexceptions.valueError,_('Not a valid email address! ("." may not be the first or last character of local-part)')
+		if localpart.find('..') != -1:
+			raise univention.admin.uexceptions.valueError,_('Not a valid email address! (multiple consecutive "." not allowed in local-part)')
+		return localpart
+
+	def validate_domainpart(self, domainpart):
+		# only DNS-domain-names are allowed
+		if not domainpart:
+			raise univention.admin.uexceptions.valueError,_('Not a valid email address! (domain-part is empty)')
+		if len(domainpart) > 255:
+			raise univention.admin.uexceptions.valueError,_('Not a valid email address! (domain-part longer than 255 characters)')
+		labels = domainpart.split('.')
+		if '' in labels[:-1]: # ignore last part because a domain may end with a '.'
+			raise univention.admin.uexceptions.valueError,_('Not a valid email address! (empty domain-part labels are not allowed)')
+		for label in labels:
+			if len(label) > 63:
+				raise univention.admin.uexceptions.valueError,_('Not a valid email address! (domain-part labels may not be longer than 63 characters)')
+			for char in label:
+				if not char in self.valid_domainpart_label_characters:
+					raise univention.admin.uexceptions.valueError,_('Not a valid email address! (invalid character "%s" in domain-part label)') % char
+			if label.startswith('-') or label.endswith('-'):
+				raise univention.admin.uexceptions.valueError,_('Not a valid email address! (domain-part labels may not start or end with a "-")')
+		return '.'.join(labels)
 
 	def parse(self, text):
-		if self._re.match(text) != None:
-			return text
-		raise univention.admin.uexceptions.valueError,_("Not a valid email address!")
+		if len(text) > 256:
+			raise univention.admin.uexceptions.valueError,_('Not a valid email address! (may not be longer than 256 characters)')
+		number_of_at_chars = len([x for x in text if x == '@'])
+		if number_of_at_chars == 0:
+			raise univention.admin.uexceptions.valueError,_('Not a valid email address! (No "@"-character to separate local-part and domain-part)')
+		if number_of_at_chars > 1:
+			raise univention.admin.uexceptions.valueError,_('Not a valid email address! (No more than 1 "@"-character allowed)')
+		(localpart, domainpart) = text.split('@')
+		return '@'.join((self.validate_localpart(localpart), self.validate_domainpart(domainpart)))
 
 class emailAddressTemplate(simple):
 	name='emailAddress'
 	min_length=4
 	max_length=0
-	_re = re.compile('((^[a-zA-Z<>\[\]:])[a-zA-Z0-9<>\[\]:._-]*)@[a-zA-Z0-9._-]+$')
+	_re = re.compile("((^[-!#$%'*+/=?^`{|}~a-zA-Z<>\[\]:])[-!#$%'*+/=?^`{|}~a-zA-Z0-9<>\[\]:._-]*)@[a-zA-Z0-9._-]+$")
 
 	def parse(self, text):
 		if self._re.match(text) != None:
