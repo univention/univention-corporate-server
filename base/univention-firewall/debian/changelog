@@ -1,3 +1,9 @@
+univention-firewall (2.0.5-1) unstable; urgency=low
+
+  * add security/services/sieve for TCP port 2000 (Bug #16670)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Mar 2010 14:32:20 +0200
+
 univention-firewall (2.0.4-1) unstable; urgency=low
 
   * updated copyright Bug #17222 
