@@ -254,7 +254,7 @@ fi
 
 echo -n "Search LDAP binddn "
 binddn=""
-for i in `ldapsearch -x -h $DCNAME -LLL -b $ldap_base "(&(uid=$DCACCOUNT)(objectClass=person))" | grep ^dn | sed -e 's|dn: ||'`; do
+for i in `ldapsearch -x -h $DCNAME -LLL -b $ldap_base "(&(uid=$DCACCOUNT)(objectClass=person))" | ldapsearch-wrapper | grep ^dn | sed -e 's|dn: ||'`; do
 	if [ -n "$binddn" ]; then
 		failed_message "binddn for user $DCACCOUNT not unique, $i and $binddn"
 	fi
