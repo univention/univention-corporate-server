@@ -38,7 +38,7 @@ univention-config-registry set \
 	nscd/group/invalidate_cache_on_changes?"false" \
 	nscd/debug/level?0 \
 	auth/user/methods?"krb5 ldap unix" \
-	auth/user/services?"chfn chsh kde kscreensaver kcheckpass rsh ssh su sudo passwd cron" \
+	auth/user/services?"chfn chsh kde kscreensaver kcheckpass rsh ssh su sudo passwd cron screen" \
 	auth/admin/methods?"krb5 ldap unix" \
 	auth/admin/services?"ftp gdm login other ppp rlogin screen" \
 	nssldap/tls/checkpeer?no
@@ -66,6 +66,12 @@ fi
 
 if [ -x "/etc/init.d/univention-directory-listener" ] ; then
 	/etc/init.d/univention-directory-listener crestart
+fi
+
+# Bug #4630
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.11-1; then
+	eval $(univention-config-registry shell auth/user/services)
+	univention-config-registry set auth/user/services="$(echo $auth_user_services | sed '/\<screen\>/ ! s/$/ screen/')"
 fi
 
 #DEBHELPER#

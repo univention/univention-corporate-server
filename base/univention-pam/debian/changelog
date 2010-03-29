@@ -1,3 +1,9 @@
+univention-pam (3.0.11-1) unstable; urgency=low
+
+  * add service screen to UCR variable auth/user/services; Bug #4630
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 29 Mar 2010 15:02:44 +0200
+
 univention-pam (3.0.10-1) unstable; urgency=low
 
   * added nscd/debug/level, Bug #17708
