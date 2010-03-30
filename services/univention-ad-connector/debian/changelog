@@ -1,3 +1,9 @@
+univention-ad-connector (4.1.12-1) unstable; urgency=low
+
+  * replace os.system with subprocess.call in UMC module; Bug #17045
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 30 Mar 2010 13:49:59 +0200
+
 univention-ad-connector (4.1.11-1) unstable; urgency=low
 
   * be sure univention-adsearch uses an encrypted communication. Bug
