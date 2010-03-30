@@ -1,3 +1,13 @@
+univention-config-registry (5.0.82-3) unstable; urgency=low
+
+  * Reset permissions of /var/log/mail.[log|err|warn|info] and
+    /var/log/apache2/other_vhosts_access.log to 640 root:adm
+    in univention-set-logfile-permissions, since they may
+    potentially contain sensitive data (Bug #17795) and 
+    (Bug #17796) 	 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 30 Mar 2010 09:55:16 +0200
+
 univention-config-registry (5.0.82-2) unstable; urgency=low
 
   * ensure that ConfigRegistryInfo.get_variables does not raise a
