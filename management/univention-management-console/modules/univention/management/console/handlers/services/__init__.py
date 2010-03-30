@@ -34,7 +34,7 @@ import univention.management.console.handlers as umch
 import univention.management.console.dialog as umcd
 import univention.management.console.tools as umct
 
-import os
+import subprocess
 
 import notifier.popen
 
@@ -130,7 +130,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 	def _run_it( self, services, action ):
 		failed = []
 		for srv in services:
-			if os.system( '/etc/init.d/%s %s' % ( srv, action ) ):
+			if subprocess.call( ( 'invoke-rc.d', srv, action ) ):
 				failed.append( srv )
 		return failed
 

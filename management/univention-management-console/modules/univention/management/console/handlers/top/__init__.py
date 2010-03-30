@@ -34,7 +34,7 @@ import univention.management.console.handlers as umch
 import univention.management.console.dialog as umcd
 import univention.management.console.tools as umct
 
-import os
+import subprocess
 
 import notifier.popen
 
@@ -125,14 +125,14 @@ class handler( umch.simpleHandler, _revamp.Web ):
 						   report = _( 'You are not permitted to run this command.' ),
 						   success = False )
 			return
-		cmd = 'kill '
+		cmd = [ 'kill' ]
 		if object.options[ 'signal' ] == 'kill':
-			cmd += '-9 '
+			cmd.append( '-9' )
 		else:
-			cmd += '-15 '
+			cmd.append( '-15' )
 
 		for pid in object.options[ 'pid' ]:
-			cmd += '%d ' % pid
+			cmd.append( str( pid ) )
 
-		os.system( cmd )
+		subprocess.call( cmd )
 		self.finished( object.id(), None )

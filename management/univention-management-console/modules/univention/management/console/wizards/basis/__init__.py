@@ -41,7 +41,7 @@ import univention_baseconfig as ub
 import notifier
 import notifier.popen
 
-import os, re
+import os, re, subprocess
 
 import _revamp
 
@@ -105,7 +105,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			filename = os.path.join( _path, script )
 			ud.debug( ud.ADMIN, ud.INFO, 'run script: %s' % filename )
 			if os.path.isfile( filename ):
-				if os.system( filename ):
+				if subprocess.call( ( filename, ) ):
 					failed.append( script )
 		return failed
 
