@@ -41,7 +41,7 @@ import univention_baseconfig as ub
 import notifier
 import notifier.popen
 
-import os, re
+import subprocess, re
 
 import _revamp
 
@@ -108,7 +108,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 	def _run_it( self, services, action ):
 		failed = []
 		for srv in services:
-			if os.system( '/etc/init.d/%s %s' % ( srv, action ) ):
+			if subprocess.call( ( 'invoke-rc.d',  srv, action ) ):
 				failed.append( srv )
 		return failed
 

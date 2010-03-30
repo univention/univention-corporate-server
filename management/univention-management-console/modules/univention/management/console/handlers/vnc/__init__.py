@@ -37,7 +37,7 @@ import univention.debug as ud
 
 import univention.service_info as usi
 
-import os
+import os, subprocess
 
 import notifier.popen
 
@@ -143,7 +143,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		res = 0
 
 		if not running:
-			res = os.system( 'su - %s -c "vncserver -geometry 800x600"' % self._username )
+			res = subprocess.call( ( 'su', '-',  self._username, '-c', 'vncserver -geometry 800x600' ) )
 
 		self.finished( object.id(), res == 0 )
 
@@ -154,7 +154,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			if '-rfbport' in args:
 				port = args[ args.index( '-rfbport' ) + 1 ]
 				port = int( port ) - 5900
-				os.system( 'su - %s -c "vncserver -kill :%d"' % ( self._username, port ) )
+				subprocess.call( ( 'su', '-', self._username, '-c', 'vncserver -kill :%d' % port ) )
 
 		self.finished( object.id(), True )
 
@@ -164,8 +164,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 						   report = _( 'You are not permitted to run this command.' ),
 						   success = False )
 			return
-		cmd = 'su - %s -c "/usr/share/univention-management-console/univention-vnc-setpassword %s"' % \
-			  ( self._username, object.options[ 'password' ] )
+		cmd = ( 'su', '-', self._username, '-c', '/usr/share/univention-management-console/univention-vnc-setpassword %s' % object.options[ 'password' ] )
 
-		os.system( cmd )
+		subprocess.call( cmd )
 		self.finished( object.id(), None )

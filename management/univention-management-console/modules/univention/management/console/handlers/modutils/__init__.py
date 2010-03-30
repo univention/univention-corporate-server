@@ -34,7 +34,7 @@ import univention.management.console.handlers as umch
 import univention.management.console.dialog as umcd
 import univention.management.console.tools as umct
 
-import os, re
+import subprocess, re
 
 import notifier.popen
 
@@ -133,11 +133,11 @@ class handler( umch.simpleHandler, _revamp.Web ):
 
 	def modutils_load( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'modprobe %s' % object.options[ 'module' ] )
-		os.system( 'modprobe %s' % object.options[ 'module' ] )
+		subprocess.call( ( 'modprobe', object.options[ 'module' ] ) )
 		self.finished( object.id(), None )
 
 	def modutils_unload( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'rmmod -f %s' % object.options[ 'module' ] )
-		os.system( 'rmmod -f %s' % object.options[ 'module' ] )
+		subprocess.call( ( 'rmmod', '-f', object.options[ 'module' ] ) )
 		self.finished( object.id(), None )
 

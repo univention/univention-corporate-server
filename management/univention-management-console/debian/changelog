@@ -1,3 +1,9 @@
+univention-management-console (3.0.7-1) unstable; urgency=low
+
+  * replace os.system with subprocess.call in serveral modules; Bug #17045
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 30 Mar 2010 13:42:04 +0200
+
 univention-management-console (3.0.6-1) unstable; urgency=low
 
   * add boolean module option 'hide_tabs' to hide the second tab row; Bug #17919

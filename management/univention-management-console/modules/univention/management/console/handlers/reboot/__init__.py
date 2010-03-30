@@ -36,7 +36,7 @@ import univention.management.console.tools as umct
 
 import univention.debug as ud
 
-import os
+import subprocess
 
 import notifier.popen
 
@@ -85,10 +85,12 @@ class handler( umch.simpleHandler, _revamp.Web ):
 				target=_( 'The system is going down for reboot NOW with following message: ' )
 
 			object.options['message']= target + object.options['message']
-			shellescaped_message = object.options['message'].replace('"', '\\"')
+			# shellescaped_message = object.options['message'].replace('"', '\\"')
 
 			self.finished( object.id(), object.options['message'] )
-			os.system('logger -f /var/log/syslog -t UMC "%s" && shutdown -%s now "%s"' %(shellescaped_message, do, shellescaped_message))
+			ret = subprocess.call( ( 'logger', '-f', '/var/log/syslog', '-t', 'UMC', object.options[ 'message' ] ) )
+			if not ret:
+				subprocess.call( ( 'shutdown', '-%s' % do, 'now', object.options[ 'message' ] ) )
 
 		else:	
 			self.finished( object.id(), None)
