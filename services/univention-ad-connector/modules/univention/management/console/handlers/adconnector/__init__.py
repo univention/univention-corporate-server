@@ -394,7 +394,7 @@ class handler(umch.simpleHandler):
 
 	def _run_it( self, action ):
 		_d = ud.function('adconnector.handler._run_it')
-		return os.system( '/etc/init.d/univention-ad-connector %s' % action )
+		return subprocess.call( ( 'invoke-rc.d', 'univention-ad-connector', action ) )
 
 
 	def _state_changed( self, thread, result, obj ):
