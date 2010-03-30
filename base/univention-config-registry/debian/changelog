@@ -1,3 +1,10 @@
+univention-config-registry (5.0.83-1) unstable; urgency=low
+
+  * ensure that only UTF-8 encoded strings are written and read from the
+    UCR files; Bug #16637
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 30 Mar 2010 11:02:39 +0200
+
 univention-config-registry (5.0.82-3) unstable; urgency=low
 
   * Reset permissions of /var/log/mail.[log|err|warn|info] and
