@@ -1,3 +1,9 @@
+univention-quota (4.0.2-1) unstable; urgency=low
+
+  * replace os.system with subprocess.call in UMC module; Bug #17045
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 30 Mar 2010 14:05:34 +0200
+
 univention-quota (4.0.2-0) unstable; urgency=low
 
   * added UCR Header, Bug #17816

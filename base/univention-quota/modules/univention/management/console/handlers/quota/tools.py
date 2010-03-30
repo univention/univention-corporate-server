@@ -29,7 +29,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os
+import subprocess
 import re
 import math
 
@@ -158,23 +158,23 @@ def _do_activate_quota( partitions, activate ):
 	return failed
 
 def _activate_quota_xfs( partition ):
-	if os.system( 'umount %s' % partition.spec ):
+	if subprocess.call( ( 'umount', partition.spec ) ):
 		return ( False, _( 'Unmounting the partition has failed' ) )
-	if os.system( 'mount %s' % partition.spec ):
+	if subprocess.call( ( 'mount', partition.spec ) ):
 		return ( False, _( 'Mounting the partition has failed' ) )
-	if os.system( '/etc/init.d/quota restart' ):
+	if subprocess.call( ( 'invoke-rc.d', 'quota', 'restart' ) ):
 		return ( False, _( 'Restarting the quota services has failed' ) )
 
 	return ( True, _( 'Operation was successful' ) )
 
 def _activate_quota_ext( partition, create ):
-	if os.system( 'mount -o remount %s' % partition.spec ):
+	if subprocess.call( ( 'mount', '-o', 'remount', partition.spec ) ):
 		return ( False, _( 'Remounting the partition has failed' ) )
 	if create:
-		if os.system( '/sbin/quotacheck -u %s' % partition.mount_point ):
+		if subprocess.call( ( '/sbin/quotacheck', '-u', partition.mount_point ) ):
 			return ( False,
 					 _( 'Generating the quota information file failed' ) )
-	if os.system( '/etc/init.d/quota restart' ):
+	if subprocess.call( ( 'invoke-rc.d', 'quota', 'restart' ) ):
 		return ( False, _( 'Restarting the quota services has failed' ) )
 
 	return ( True, _( 'Operation was successful' ) )
