@@ -37,3 +37,13 @@ for fn in $FNLIST ; do
 		chmod 640 $fn
 	fi
 done
+
+STRICTLIST="/var/log/mail.err /var/log/mail.warn /var/log/mail.ingo /var/log/mail.log /var/log/apache2/other_vhosts_access.log"
+
+for fn in $STRICTLIST ; do
+	if [ -f "$fn" ] ; then
+		chown root:adm $fn
+		chmod 640 $fn
+	fi
+done
+
