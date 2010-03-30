@@ -239,10 +239,15 @@ class _ConfigRegistry( dict ):
 
 			key, value = line.split(': ', 1)
 			value = value.strip()
-			if len(value) == 0: #if variable was set without an value
-				value = ''
+			# check encoding
+			try:
+				utf8_value = value.decode()
+			except UnicodeDecodeError:
+				utf8_value = value.decode( 'latin1' )
+			if len(utf8_value) == 0: #if variable was set without an value
+				utf8_value = ''
 
-			self[key] = value
+			self[key] = utf8_value
 		fp.close()
 
 		if import_failed:
@@ -292,6 +297,14 @@ class _ConfigRegistry( dict ):
 			return dict.__getitem__( self, key )
 		except KeyError:
 			return ''
+
+	def __setitem__( self, key, value ):
+		try:
+			utf8_value = value.decode()
+		except UnicodeDecodeError:
+			utf8_value = value.decode( 'latin1' )
+
+		return dict.__setitem__( self, key, utf8_value )
 
 	def removeInvalidChars (self, seq):
 		for letter in invalid_value_chars:
