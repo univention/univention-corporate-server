@@ -1,4 +1,5 @@
 #!/bin/sh
+# NOTE: please add a note and a bug number to each code snippet!
 
 UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_LAST_VERSION="$1"
@@ -16,14 +17,7 @@ echo -n "Running postup.sh script:"
 echo >> "$UPDATER_LOG"
 date >>"$UPDATER_LOG" 2>&1
 
-# remove old cache file
-rm -f /var/cache/univention-config/cache
-
 eval $(univention-config-registry shell) >>"$UPDATER_LOG" 2>&1
-
-for p in univention-client-kernel-image; do
-	check_and_install $p
-done
 
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-basesystem >>"$UPDATER_LOG" 2>&1
@@ -43,16 +37,12 @@ fi
 
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes dist-upgrade >>"$UPDATER_LOG" 2>&1
 
+# updates init ram disks (always required)
 if [ -x /usr/sbin/update-initramfs ]; then
 	update-initramfs -u -k all >>"$UPDATER_LOG" 2>&1
 fi
 
-# update the thin client chroot
-if [ -x /usr/bin/univention-thin-client-apt ]; then
-	DEBIAN_FRONTEND=noninteractive univention-thin-client-apt dist-upgrade  >>"$UPDATER_LOG" 2>&1
-fi
-
-# remove statoverride for UMC; required to ensure that UCM is not restarted during update
+# remove statoverride for UMC; required to ensure that UCM is not restarted during update (always required)
 if [ -e /usr/sbin/univention-management-console-server ]; then
 	dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
 	chmod +x /usr/sbin/univention-management-console-server 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
@@ -62,22 +52,17 @@ if [ -e /usr/sbin/apache2 ]; then
 	chmod +x /usr/sbin/apache2 2>> "$UPDATER_LOG"  >> "$UPDATER_LOG"
 fi
 
-univention-config-registry unset repository/local/old >>"$UPDATER_LOG" 2>&1
-
+# removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 fi
 
-# Enable usplash after update (Bug #16363)
+# Enable usplash after update (Bug #16363) (always required)
 if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
 	dpkg-divert --rename --divert /usr/share/initramfs-tools/bootsplash.debian --remove /usr/share/initramfs-tools/hooks/bootsplash 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
 fi
 
-# fix ldap-backup.secret permissions
-if [ -e "/etc/ldap-backup.secret" ]; then
-	chgrp "DC Backup Hosts" /etc/ldap-backup.secret 2>&1
-fi
-
+# executes custom postup script (always required)
 if [ ! -z "$update_custom_postup" ]; then
 	if [ -f "$update_custom_postup" ]; then
 		if [ -x "$update_custom_postup" ]; then

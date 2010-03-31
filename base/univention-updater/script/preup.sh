@@ -1,4 +1,5 @@
 #!/bin/sh
+# NOTE: please add a note and a bug number to each code snippet!
 
 UPDATER_LOG="/var/log/univention/updater.log"
 UPDATE_LAST_VERSION="$1"
