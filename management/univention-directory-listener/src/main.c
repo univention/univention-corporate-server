@@ -461,7 +461,7 @@ int main(int argc, char* argv[])
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server (%s)", lp->host);
 		free(lp->host);
 		if ( lp->ld != NULL ) {
-			ldap_unbind_ext(lp->ld, NULL, NULL);
+			ldap_unbind(lp->ld);
 		}
 		lp->ld = NULL;
 

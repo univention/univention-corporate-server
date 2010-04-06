@@ -134,7 +134,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 		   other handlers that use the entry since it might have changed.
 		   It's not a problem that a newer entry is possibly available;
 		   we'll update it later anyway */
-		if ((rv =  ldap_search_ext_s(lp->ld, (*f)->base, (*f)->scope, (*f)->filter, NULL, 1,  NULL /*serverctrls*/, NULL /*clientctrls*/, NULL /*timeout*/, 0 /*sizelimit*/, &res)) != LDAP_SUCCESS) {
+		if ((rv = ldap_search_s(lp->ld, (*f)->base, (*f)->scope, (*f)->filter, NULL, 1, &res)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get DNs when initializing %s: %s", handler->name, ldap_err2string(rv));
 			return rv;
 		}
@@ -169,7 +169,7 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 
 			if ((rv=cache_get_entry_lower_upper(0, dns[i].dn, &cache_entry)) == DB_NOTFOUND) { /* XXX */
 				LDAPMessage *res2, *first;
-				if ((rv = ldap_search_ext_s(lp->ld, dns[i].dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, NULL /*timeout*/, 0 /*sizelimit*/, &res2)) == LDAP_SUCCESS) {
+				if ((rv = ldap_search_s(lp->ld, dns[i].dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, &res2)) == LDAP_SUCCESS) {
 					first = ldap_first_entry(lp->ld, res2);
 					cache_new_entry_from_ldap(NULL, &cache_entry, lp->ld, first);
 					ldap_msgfree(res2);
@@ -334,7 +334,7 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 #else
 	if (new_id > id) {
 #endif
-		if ((rv=ldap_search_ext_s(lp->ld, "cn=Subschema", LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res)) == LDAP_SUCCESS) {
+		if ((rv=ldap_search_st(lp->ld, "cn=Subschema", LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, &timeout, &res)) == LDAP_SUCCESS) {
 			if ((cur=ldap_first_entry(lp->ld, res)) == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "got no entry for schema");
 				return LDAP_OTHER;
@@ -371,7 +371,7 @@ int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, 
 	timeout.tv_sec = 300;
 	timeout.tv_usec = 0;
 
-	if ((rv=ldap_search_ext_s(lp->ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res)) == LDAP_NO_SUCH_OBJECT) {
+	if ((rv=ldap_search_st(lp->ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, &timeout, &res)) == LDAP_NO_SUCH_OBJECT) {
 		rv = change_delete_dn(id, dn, command);
 	} else if (rv == LDAP_SUCCESS) {
 		

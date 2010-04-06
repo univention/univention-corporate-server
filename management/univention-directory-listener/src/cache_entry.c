@@ -176,12 +176,12 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 		struct berval **val, **v;
 	
 		if ((cache_entry->attributes = realloc(cache_entry->attributes, (cache_entry->attribute_count+2)*sizeof(CacheEntryAttribute*))) == NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of attributes array failed");
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 			rv = 1;
 			goto result;
 		}
 		if ((cache_entry->attributes[cache_entry->attribute_count] = malloc(sizeof(CacheEntryAttribute))) == NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: malloc for CacheEntryAttribute failed");
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "malloc failed");
 			rv = 1;
 			goto result;
 		}
@@ -197,38 +197,23 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 			goto result;
 		}
 		for (v = val; *v != NULL; v++) {
-			if ( (*v)->bv_val == NULL ) {
-				// check here, strlen behavior might be undefined in this case
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: ignoring bv_val of NULL with bv_len=%ld, ignoring, check attribute: %s of DN: %s", (*v)->bv_len, cache_entry->attributes[cache_entry->attribute_count]->name, *dn);
-				continue;
-			}
 			if ((cache_entry->attributes[cache_entry->attribute_count]->values = realloc(cache_entry->attributes[cache_entry->attribute_count]->values, (cache_entry->attributes[cache_entry->attribute_count]->value_count+2)*sizeof(char*))) == NULL) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of values array failed");
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 				rv = 1;
 				goto result;
 			}
 			if ((cache_entry->attributes[cache_entry->attribute_count]->length = realloc(cache_entry->attributes[cache_entry->attribute_count]->length, (cache_entry->attributes[cache_entry->attribute_count]->value_count+2)*sizeof(int))) == NULL) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of length array failed");
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 				rv = 1;
 				goto result;
 			}
-			if ((*v)->bv_len == strlen((*v)->bv_val)) {
-				if ((cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count]=strdup((*v)->bv_val)) == NULL) {
-					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: strdup of value failed");
-					rv = 1;
-					goto result;
-				}
-				cache_entry->attributes[cache_entry->attribute_count]->length[cache_entry->attributes[cache_entry->attribute_count]->value_count]=strlen(cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count])+1;
-			} else {	// in this case something is strange about the string in bv_val, maybe contains a '\0'
-				// the legacy approach is to copy bv_len bytes, let's stick with this and just terminate to be safe
-				if ((cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count]=malloc(((*v)->bv_len+1)*sizeof(char))) == NULL) {
-					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: malloc for value failed");
-					rv = 1;
-					goto result;
-				}
+			if ((*v)->bv_len != strlen((*v)->bv_val)) {
+				cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count]=malloc(((*v)->bv_len+1)*sizeof(char));
 				memcpy(cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count],(*v)->bv_val,(*v)->bv_len);
-				cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count][(*v)->bv_len]='\0'; // terminate the string to be safe
 				cache_entry->attributes[cache_entry->attribute_count]->length[cache_entry->attributes[cache_entry->attribute_count]->value_count]=(*v)->bv_len+1;
+			} else {
+				cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count]=strdup((*v)->bv_val);
+				cache_entry->attributes[cache_entry->attribute_count]->length[cache_entry->attributes[cache_entry->attribute_count]->value_count]=strlen(cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count])+1;
 			}
 			cache_entry->attributes[cache_entry->attribute_count]->values[cache_entry->attributes[cache_entry->attribute_count]->value_count+1]=NULL;
 			cache_entry->attributes[cache_entry->attribute_count]->value_count++;
