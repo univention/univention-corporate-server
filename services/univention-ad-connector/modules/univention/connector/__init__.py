@@ -293,8 +293,6 @@ class ucs:
 	def close_debug(self):
 		_d=ud.function('ldap.close_debug')
 		ud.debug(ud.LDAP, ud.INFO, "close debug")
-		ud.end('/var/log/univention/%s.log' % self.CONFIGBASENAME)
-		ud.exit('/var/log/univention/%s.log' % self.CONFIGBASENAME)
 
 	def _get_config_option(self, section, option):
 		_d=ud.function('ldap._get_config_option')
