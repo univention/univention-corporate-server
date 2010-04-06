@@ -1,3 +1,10 @@
+univention-server (5.0.19-1) unstable; urgency=low
+
+  * check_connection: pipe stdin and stderr to new logfile 
+    /var/log/univention/check_connection.log, Bug#17879
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 06 Apr 2010 11:43:48 +0200
+
 univention-server (5.0.18-1) unstable; urgency=low
 
   * check_connection: export environment variable MODE; required by some
