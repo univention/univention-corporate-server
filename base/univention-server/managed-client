@@ -75,7 +75,7 @@ case $1 in
 		eval `univention-baseconfig shell`
 
 		if [ -x /usr/share/univention-fat-client/check_connection ]; then
-			/usr/share/univention-fat-client/check_connection
+			/usr/share/univention-fat-client/check_connection >/var/log/univention/check_connection.log 2>&1
 		fi
 
 		# check configuration
