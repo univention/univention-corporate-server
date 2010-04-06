@@ -84,7 +84,7 @@ void compare_entries(char *dn, CacheEntry *entry, LDAP *ld, LDAPMessage *ldap_en
 
 	for (cur = changes; cur != NULL && *cur != NULL; cur++) {
 		int	  i;
-		char	**values;
+		struct berval	**values;
 		
 		if (changes-cur == 0)
 			printf("E: %s:\n", dn);
@@ -208,7 +208,7 @@ int main(int argc, char* argv[])
 		cred.bv_val=bindpw;
 		cred.bv_len=strlen(bindpw);
 	}
-	if (ldap_sasl_bind_s(ld, binddn, , LDAP_SASL_SIMPLE, &cred, NULL, NULL, NULL) != LDAP_SUCCESS) {
+	if (ldap_sasl_bind_s(ld, binddn, LDAP_SASL_SIMPLE, &cred, NULL, NULL, NULL) != LDAP_SUCCESS) {
 		fprintf(stderr, "E: Could not bind to LDAP server\n");
 		exit(1);
 	}
