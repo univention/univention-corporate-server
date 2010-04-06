@@ -1,3 +1,9 @@
+univention-ad-connector (4.1.13-1) unstable; urgency=low
+
+  * remove calls to old univention-debug methods (Bug #13053)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 06 Apr 2010 16:27:43 +0200
+
 univention-ad-connector (4.1.12-1) unstable; urgency=low
 
   * replace os.system with subprocess.call in UMC module; Bug #17045
