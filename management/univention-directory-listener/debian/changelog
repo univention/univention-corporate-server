@@ -1,3 +1,10 @@
+univention-directory-listener (4.0.7-2) unstable; urgency=low
+
+  * return with rv!=0 if bv_val is NULL, single-values might cause trouble otherwise
+    (Bug #15517)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Apr 2010 15:42:11 +0200
+
 univention-directory-listener (4.0.7-1) unstable; urgency=low
 
   * add some checks to cache_new_entry_from_ldap for NULL in malloc and bv_val (Bug #15517)
