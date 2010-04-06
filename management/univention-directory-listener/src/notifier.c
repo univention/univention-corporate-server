@@ -133,7 +133,7 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 					notifier_resend_get_dn(NULL, msgid, id+1);
 				} else {
 					if (lp->ld != NULL) {
-						ldap_unbind(lp->ld);
+						ldap_unbind_ext(lp->ld, NULL, NULL);
 						lp->ld = NULL;
 					}
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "running postrun handlers");
