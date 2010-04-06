@@ -108,11 +108,11 @@ void compare_entries(char *dn, CacheEntry *entry, LDAP *ld, LDAPMessage *ldap_en
 		}
 		
 		printf("E:         LDAP = [");
-		values = ldap_get_values(ld, ldap_entry, *cur);
-		for (i=0; values != NULL && values[i] != NULL; i++) {
-			printf(i == 0 ? "%s" : ", %s", values[i]);
+		values = ldap_get_values_len(ld, ldap_entry, *cur);
+		for (i=0; values != NULL && values[i] != NULL && values[i]->bv_val != NULL; i++) {
+			printf(i == 0 ? "%s" : ", %s", values[i]->bv_val);
 		}
-		ldap_value_free(values);
+		ldap_value_free_len(values);
 		printf("]\n");
 
 	}
@@ -144,6 +144,7 @@ int main(int argc, char* argv[])
 	LDAP		*ld;
 	LDAPMessage	*res;
 	char		*attrs[]={"*", "+", NULL};
+	struct berval cred;
 
 	univention_debug_init("stderr", 1, 1);
 
@@ -196,9 +197,18 @@ int main(int argc, char* argv[])
 
 	if (ldap_initialize(&ld, "ldapi:///") != LDAP_SUCCESS) {
 		fprintf(stderr, "E: Could not connect to ldapi:///\n");
+		ldap_unbind_ext(ld, NULL, NULL);
 		exit(1);
 	}
-	if (ldap_simple_bind_s(ld, binddn, bindpw) != LDAP_SUCCESS) {
+
+	if (bindpw == NULL) {
+		cred.bv_val=NULL;
+		cred.bv_len=0;
+	} else {
+		cred.bv_val=bindpw;
+		cred.bv_len=strlen(bindpw);
+	}
+	if (ldap_sasl_bind_s(ld, binddn, , LDAP_SASL_SIMPLE, &cred, NULL, NULL, NULL) != LDAP_SUCCESS) {
 		fprintf(stderr, "E: Could not bind to LDAP server\n");
 		exit(1);
 	}
@@ -215,8 +225,8 @@ int main(int argc, char* argv[])
 			printf("E: duplicate entry: %s\n", dn);
 		}
 		
-		if ((rv=ldap_search_s(ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)",
-				attrs, 0, &res)) == LDAP_NO_SUCH_OBJECT) {
+		if ((rv=ldap_search_ext_s(ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)",
+				attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, NULL /*timeout*/, 0 /*sizelimit*/, &res)) == LDAP_NO_SUCH_OBJECT) {
 			printf("W: %s only in cache\n", dn);
 		} else if(rv != LDAP_SUCCESS) {
 			printf("E: could not receive %s from LDAP\n", dn);
@@ -230,8 +240,8 @@ int main(int argc, char* argv[])
 	}
 	cache_free_cursor(cur);
 
-	if ((rv=ldap_search_s(ld, basedn, LDAP_SCOPE_SUBTREE, "(objectClass=*)",
-			attrs, 0, &res)) != LDAP_SUCCESS) {
+	if ((rv=ldap_search_ext_s(ld, basedn, LDAP_SCOPE_SUBTREE, "(objectClass=*)",
+			attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, NULL /*timeout*/, 0 /*sizelimit*/, &res)) != LDAP_SUCCESS) {
 		printf("E: ldapsearch failed\n");
 		exit(1);
 	} else {
