@@ -111,9 +111,9 @@ $backends['expect'] = array(
     'password policy' => array(),
     'driver' => 'expect',
     'params' => array(
-        'program' => '/usr/bin/expect',
-        'script' => dirname(__FILE__) . '/../scripts/kpasswd_expect',
-        'params' => '',
+	'program' => '/usr/bin/expect',
+	'script' => '/usr/share/horde3/passwd/scripts/kpasswd_expect',
+	'params' => '',
     )
 );
 
