@@ -1,3 +1,13 @@
+univention-webui (4.0.4-1) unstable; urgency=low
+
+  * be sure the mmselect elements will be selected if the return key
+    event was triggered. Bug #17999
+  * avoid the default submit while the return key event is triggered if
+    the focus is set to a longtext widget or a combobox. Bug #18007 and
+    Bug #17644
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Apr 2010 07:32:12 +0200
+
 univention-webui (4.0.3-1) unstable; urgency=low
 
   * add stylesheet class to progressbar widget; Bug #17904
