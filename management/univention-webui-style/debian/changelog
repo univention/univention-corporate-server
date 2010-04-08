@@ -1,3 +1,9 @@
+univention-webui-style (5.0.3-1) unstable; urgency=low
+
+  * reduce font size for labels of progressbars; Bug #17904
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 08 Apr 2010 11:29:29 +0200
+
 univention-webui-style (5.0.2-1) unstable; urgency=low
 
   * ensure that treeview table is aligned at the top (vertically) of the

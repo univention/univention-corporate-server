@@ -1940,6 +1940,10 @@ td.umc_tree_table_separator {
         white-space: normal;
 }
 
+div.umc_progressbar {
+	font-size: 12px;
+}
+
 #tools_overview  {
         position:absolute;
         top: 120px;
