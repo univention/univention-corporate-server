@@ -1,3 +1,11 @@
+univention-directory-manager (7.0.53-1) unstable; urgency=low
+
+  * mark the search button in the userDN isyntax as default button, so
+    the form will not be submitted if the return key event is triggered.
+    Bug #17999
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Apr 2010 07:28:00 +0200
+
 univention-directory-manager (7.0.52-1) unstable; urgency=low
 
   * added UCR Header, Bug #17816

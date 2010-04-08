@@ -4396,7 +4396,7 @@ class modedit(unimodule.unimodule):
 						search_input=self.search_input
 
 						self.search_type_button=button('go',{},{'helptext':_('go ahead')})
-						self.search_button=button(_('show'),{'icon':'/style/ok.gif'},{'helptext':_('show')})
+						self.search_button=button(_('show'),{'icon':'/style/ok.gif', 'class': 'search_button'},{'helptext':_('show')})
 
 						searchcols.append(tablecol('',{},{'obs':[search_property_select]}))
 						searchcols.append(tablecol('',{'type':'leftright'},{'obs':[]}))
