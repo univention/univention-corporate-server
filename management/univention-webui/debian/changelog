@@ -1,3 +1,9 @@
+univention-webui (4.0.3-1) unstable; urgency=low
+
+  * add stylesheet class to progressbar widget; Bug #17904
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 08 Apr 2010 11:28:52 +0200
+
 univention-webui (4.0.2-1) unstable; urgency=low
 
   * add optional attribute label to progressbar widget; Bug #17750

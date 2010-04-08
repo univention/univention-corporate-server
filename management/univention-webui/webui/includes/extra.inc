@@ -961,7 +961,7 @@ jsProgress'.$this->tabindex.'.update({
         });
 	});
 </script>
-<div dojoType="dijit.ProgressBar" style="width:'.$width.'" jsId="jsProgress'.$this->tabindex.'"
+<div class="umc_progressbar" dojoType="dijit.ProgressBar" style="width:'.$width.'" jsId="jsProgress'.$this->tabindex.'"
 id="Progressbar'.$this->tabindex.'">
 </div>';
 	  	return $str;
