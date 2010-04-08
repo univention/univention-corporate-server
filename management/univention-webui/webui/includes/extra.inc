@@ -529,11 +529,58 @@ class button extends extra{
 		$defaultbutton .= 'if ( submitform == undefined) { submitform=document.getElementById( "component-menuless" ); };';
 		$defaultbutton .= 'if ( submitform == undefined) { submitform=document.getElementById( "login" ); };';
 		$defaultbutton .= 'dojo.connect(submitform, "onkeypress",function(evt) {';
-		$defaultbutton .= 'var b = document.getElementById("defaultbutton");';
-		$defaultbutton .= 'var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);';
-		$defaultbutton .= 'if ((evt.keyCode == 13 && b != null)) {dojo.stopEvent(evt);';
-		$defaultbutton .= 'b.click();}})});';
+
+		# check if an element is selected which should get the return key event, for example longtext areas and combobox
+		$defaultbutton .= '	var skipEvent = false;';
+		$defaultbutton .= '	var foundSearchProperty = false;';
+		$defaultbutton .= '	var allElements = document.getElementsByTagName("*");';
+		$defaultbutton .= '	for (var i = 0; (element = allElements[i]) != null; i++) {';
+		$defaultbutton .= '		var elementClass = element.className;';
+		$defaultbutton .= '		if (elementClass && ( (elementClass.indexOf("longtext") != -1 && elementClass.indexOf("dijitTextAreaFocused") != -1) || elementClass.indexOf("dijitComboBoxFocused") != -1) ) {';
+		$defaultbutton .= '			skipEvent = true;';
+		$defaultbutton .= '			break;';
+		$defaultbutton .= '		}';
+
+		# if the focus is set to a userDN and groupDn syntax we overwrite the defaultbutton
+		$defaultbutton .= '		if ( elementClass && elementClass.indexOf("search_property") != -1 ) {';
+		$defaultbutton .= '			for (var j = 0; (childNode = element.childNodes[j]) != null; j++) {';
+		$defaultbutton .= '				var childClass = childNode.className;';
+		$defaultbutton .= '				if ( childClass && childClass.indexOf("dijitTextBoxFocused") != -1) {';
+		$defaultbutton .= '					skipEvent = true;';
+		$defaultbutton .= '					foundSearchProperty = true;';
+		$defaultbutton .= '					break;';
+		$defaultbutton .= '				}';
+		$defaultbutton .= '			}';
+		$defaultbutton .= '		}';
+
+		$defaultbutton .= '		if ( elementClass && foundSearchProperty == true && elementClass.indexOf("search_button") != -1 ) {';
+		$defaultbutton .= '			button=element.childNodes[0].childNodes[0].childNodes[1].childNodes[0];';
+		$defaultbutton .= '			for ( var j = 0; (button=element.childNodes[0].childNodes[0].childNodes[0].childNodes[j]) != null; j++) {';
+		$defaultbutton .= '				if (button.className == "button_icon" ) break;';
+		$defaultbutton .= '			}';
+		$defaultbutton .= '			if ((evt.keyCode == 13 && button != null)) {';
+		$defaultbutton .= '	     		dojo.stopEvent(evt);';
+		$defaultbutton .= '				button.click();';
+		$defaultbutton .= '			}';
+		$defaultbutton .= '		}';
+		$defaultbutton .= '	}';
+
+		$defaultbutton .= '	if ( skipEvent ==  false ) {';
+		$defaultbutton .= '	var b = document.getElementById("defaultbutton");';
+		$defaultbutton .= '	var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);';
+		$defaultbutton .= '	if ((evt.keyCode == 13 && b != null)) {dojo.stopEvent(evt);';
+		$defaultbutton .= '		mmselect_objects=document.getElementsByTagName("div");';
+		$defaultbutton .= '		for (var i = 0; i < mmselect_objects.length; i++) {';
+		$defaultbutton .= '			if (mmselect_objects[i].id=="mmselect") {';
+		$defaultbutton .= '				box = mmselect_objects[i].getElementsByTagName("select")[0];';
+		$defaultbutton .= '				for (var j = 0; j < box.options.length; j++) {';
+		$defaultbutton .= '					box.options[j].selected = true;';
+		$defaultbutton .= '				}';
+		$defaultbutton .= '			}';
+		$defaultbutton .= '		}';
+		$defaultbutton .= '		b.click();}}})});';
 		$defaultbutton .= '</script>';
+
 		return $defaultbutton;
 
 	}
