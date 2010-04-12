@@ -1,3 +1,13 @@
+univention-pkgdb (3.0.4-1) unstable; urgency=low
+
+  * add service entry 'Software Monitor'
+  * add listener module that activates the pkgdb scan if the software
+    monitor service is available
+  * suppress error messages of univention-pkgdb-scan if the service is not
+    available; Bug #12482
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 12 Apr 2010 14:29:11 +0200
+
 univention-pkgdb (3.0.3-2) unstable; urgency=low
 
   * Fix spelling errors in univention_pkgdb.py (Bug #16948)
