@@ -81,7 +81,6 @@ install-ext-%:
 	install -m 0755 conffiles/etc/cron.weekly/univention-pkgdb-clean ${D}/etc/cron.weekly
 	install -m 0755 50univention-pkgdb.inst ${D}/usr/lib/univention-install
 	install -m 0755 pkgdb.py ${D}/usr/lib/univention-directory-listener/system
-	install -m 0755 pkgdb-watch.py ${D}/usr/lib/univention-directory-listener/system
 
 	# install Univention Management Console Module
 	install -d debian/$(PACKAGE_UMCMOD)/usr/share/pyshared
@@ -118,6 +117,7 @@ install-ext-%:
 
 	install -m 0700 univention-pkgdb-scan ${DT}/usr/sbin
 	install -m 0755 98univention-pkgdb-tools.inst ${DT}/usr/lib/univention-install
+	install -m 0755 pkgdb-watch.py ${DT}/usr/lib/univention-directory-listener/system
 
 	univention-install-config-registry
 	univention-install-config-registry-info

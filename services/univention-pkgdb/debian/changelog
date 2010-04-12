@@ -1,3 +1,11 @@
+univention-pkgdb (3.0.4-2) unstable; urgency=low
+
+  * add postinst for univention-pkgdb-tools to restart listener
+  * remove preinst of univention-pkgdb-tools (settings pkgdb/scan to yes
+    is not required anymore); Bug #12482
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 12 Apr 2010 15:08:03 +0200
+
 univention-pkgdb (3.0.4-1) unstable; urgency=low
 
   * add service entry 'Software Monitor'

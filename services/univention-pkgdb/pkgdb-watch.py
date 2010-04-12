@@ -29,7 +29,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import listener
-import univention.debug as ud
 import univention.config_registry as ucr
 import univention.pkgdb
 
@@ -39,13 +38,8 @@ filter='(|(objectClass=univentionDomainController)(objectClass=univentionMemberS
 attributes=['univentionService']
 
 def handler( dn, new, old ):
-	fd = open( '/tmp/pkgdb', 'w' )
 	if univention.pkgdb.is_service_available():
 		listener.setuid( 0 )
-		fd.write( 'pkgdb-watch: activating pkgdb scan\n' )
 		ucr.handler_set( ( 'pkgdb/scan?yes', ) )
 		listener.unsetuid()
-	else:
-		fd.write( 'pkgdb-watch: deactivation of pkgdb not yet implemented\n' )
-	fd.close()
 
