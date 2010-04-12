@@ -1,3 +1,9 @@
+univention-config-registry (5.0.83-2) unstable; urgency=low
+
+  * reverted patch from version 5.0.83-1; Bug #16637
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 12 Apr 2010 11:00:26 +0200
+
 univention-config-registry (5.0.83-1) unstable; urgency=low
 
   * ensure that only UTF-8 encoded strings are written and read from the
