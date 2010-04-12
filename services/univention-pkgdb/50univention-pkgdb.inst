@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-VERSION=1
+VERSION=2
 
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
@@ -87,6 +87,13 @@ univention-admin policies/console_access modify $@ --ignore_exists \
 if [ -x /usr/sbin/univention-pkgdb-check ] && [ -e /usr/share/pyshared/univention/pkgdb.py ]; then
 	/usr/share/pyshared/univention/pkgdb.py --db-server $hostname.$domainname --add $hostname\$
 	univention-pkgdb-scan --db-server $hostname.$domainname
+fi
+
+# add service entry
+univention-directory-manager settings/service create $@ --ignore_exists --position cn=services,cn=univention,$ldap_base --set name="Software Monitor"
+
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
+    univention-directory-manager computers/$server_role modify $@ --ignore_exists --dn $ldap_hostdn --append service="Software Monitor"
 fi
 
 test -n "`grep "univention-pkgdb v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-pkgdb v${VERSION} successful" >>/usr/lib/univention-install/.index.txt

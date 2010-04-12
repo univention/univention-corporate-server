@@ -33,6 +33,7 @@ import sys, os, string, getopt, DNS, time, tempfile, os.path
 import apt_pkg
 import pgdb, commands
 import univention.baseconfig
+import univention.uldap
 
 def usage():
 	print 'univention-pkgdb-scan: Scan all packages in the local system and send this data to the database pkgdb.'
@@ -114,6 +115,19 @@ def log( message ):
 	except:
 		# no log, no real problem
 		pass
+
+def is_service_available():
+	'''checks if the software monitor service ist available'''
+	baseConfig = univention.baseconfig.baseConfig()
+	baseConfig.load()
+	ldap_base = baseConfig.get( 'ldap/base' )
+	if not ldap_base:
+		return False
+	ldap_conn = univention.uldap.access( base = ldap_base )
+	res = ldap_conn.search( '(univentionService=Software Monitor)' )
+	ldap_conn.lo.unbind()
+
+	return len( res ) > 0
 
 # ------------------------------------------------------------------------------
 # translate sysrole names
@@ -478,8 +492,9 @@ def sql_check_packages_in_systems( pkgdbhdl, pkgdbcur ):
 def sql_select( db_connect_string, sqlcmd ):
 	try:
 		dbhdl = pgdb.connect(db_connect_string)
-    	except:
-		log( 'Cannot create a handle to the database.' )
+	except:
+		if is_service_available():
+			log( 'Cannot create a handle to the database.' )
 		return []
 
 	try:
@@ -772,7 +787,8 @@ def main(args):
 			try:
 				pkgdbhdl = pgdb.connect(pkgdb_connect_string)
 			except:
-				print 'PKGDB: cannot create a handle to the database pkgdb in %s' %(dbsrvname)
+				if is_service_available():
+					print 'PKGDB: cannot create a handle to the database pkgdb in %s' %(dbsrvname)
 				sys.exit(1)
 
 		try:
@@ -937,7 +953,8 @@ def main(args):
 			try:
 				pkgdbhdl = pgdb.connect(pkgdb_connect_string)
 			except:
-				print 'PKGDB: cannot create a handle to the database pkgdb in %s' %(dbsrvname)
+				if is_service_available():
+					print 'PKGDB: cannot create a handle to the database pkgdb in %s' %(dbsrvname)
 				sys.exit(1)
 
 		try:
