@@ -1,3 +1,9 @@
+univention-network-manager (0.4.11-2) unstable; urgency=low
+
+  * move 99_resolvconf to 00_resolvconf if it exists; Bug #16582
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 13 Apr 2010 14:09:14 +0200
+
 univention-network-manager (0.4.11-1) unstable; urgency=low
 
   * the if-up event script resolvconf will be started as the first script
