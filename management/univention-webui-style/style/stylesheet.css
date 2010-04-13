@@ -1931,6 +1931,12 @@ td.umc_tree_table_separator {
 .umc_tree_table_dialog {
 	vertical-align: top;
 	width: 100%;
+	padding-left: 6px;
+}
+
+.umc_module_description {
+	padding-left: 8px;
+	padding-right: 15px;
 }
 
 .umc_infobox_col {
@@ -1938,6 +1944,12 @@ td.umc_tree_table_separator {
         padding: 5px;
         vertical-align: middle;
         white-space: normal;
+}
+
+.umc_title {
+	font-size: 16px;
+	font-weight: bold;
+	padding: 11px 10px 10px 0;
 }
 
 div.umc_progressbar {

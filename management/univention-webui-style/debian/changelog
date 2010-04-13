@@ -1,3 +1,10 @@
+univention-webui-style (5.0.4-1) unstable; urgency=low
+
+  * modify styles for tree view dialog; Bug #17750
+  * add style for module description widget; Bug #18122
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 13 Apr 2010 13:27:22 +0200
+
 univention-webui-style (5.0.3-1) unstable; urgency=low
 
   * reduce font size for labels of progressbars; Bug #17904
