@@ -32,7 +32,12 @@
 # http://www.ibiblio.org/pub/Linux/docs/HOWTO/other-formats/html_single/SSL-Certificates-HOWTO.html
 # http://www.pca.dfn.de/dfnpca/certify/ssl/handbuch/ossl092/
 
-SSL_BASE=/etc/univention/ssl
+if [ -n "$sslbase" ]; then
+        SSLBASE="$sslbase"
+else
+        SSLBASE=/etc/univention/ssl
+fi
+
 CA=ucsCA
 DEFAULT_DAYS=$(/usr/sbin/univention-baseconfig get ssl/default/days)
 if [ -z "$DEFAULT_DAYS" ]; then
@@ -43,8 +48,8 @@ if [ -z "$DEFAULT_DAYS" ]; then
 	DEFAULT_MD=sha1
 fi
 
-if test -e /etc/univention/ssl/password; then
-	PASSWD=`cat /etc/univention/ssl/password`
+if test -e "$SSLBASE/password"; then
+	PASSWD=`cat "$SSLBASE/password"`
 else
 	PASSWD=""
 fi
@@ -74,7 +79,7 @@ mk_config () {
 # [ new_oids ]
 #
 
-path		= $SSL_BASE
+path		= $SSLBASE
 
 [ ca ]
 default_ca	= CA_default
@@ -223,9 +228,12 @@ move_cert () {
     local count=0;
     local linkname;
     local hash;
+    local OPWD=`pwd`;
+    cd "$SSLBASE";
+
     for i; do
 	if [ -f "$i" ]; then
-	    new="${CA}/certs/"`basename $i`;
+	    new="${SSLBASE}/${CA}/certs/"`basename $i`;
 	    mv "$i" "$new";
 	    hash=`openssl x509 -hash -noout -in "$new"`;
 	    while :; do
@@ -240,27 +248,28 @@ move_cert () {
 	    done;
 	fi;
     done;
+    cd "$OPWD"
 }
 
 init () {
 	# remove old stuff
-	rm -rf "$SSL_BASE"
+	rm -rf "$SSLBASE"
 
 	# create the base directory
-	mkdir -p "$SSL_BASE"
+	mkdir -p "$SSLBASE"
 
 	# make sure we have a password, generate one if we don't
-	if ! test -e /etc/univention/ssl/password; then
-		touch /etc/univention/ssl/password
-		chmod 600 /etc/univention/ssl/password
-		makepasswd > /etc/univention/ssl/password
+	if ! test -e "$SSLBASE/password"; then
+		touch "$SSLBASE/password"
+		chmod 600 "$SSLBASE/password"
+		makepasswd > "$SSLBASE/password"
 	fi
-	PASSWD=`cat /etc/univention/ssl/password`
+	PASSWD=`cat "$SSLBASE/password"`
 
 	local OPWD=`pwd`;
 
 	# create directory infrastructure
-	cd "$SSL_BASE"
+	cd "$SSLBASE"
 	mkdir -m 700 -p ${CA};
 	mkdir -p ${CA}/{certs,crl,newcerts,private};
 	echo "01" > ${CA}/serial;
@@ -292,11 +301,13 @@ init () {
 	openssl ca -config openssl.cnf -gencrl -out ${CA}/crl/crl.pem -passin pass:"$PASSWD"
 	openssl crl -in ${CA}/crl/crl.pem -out /var/www/${CA}.crl -inform pem -outform der
 
-	cd $OPWD
+	cd "$OPWD"
 }
 
 
 list_cert_names () {
+   local OPWD=`pwd`
+   cd "$SSLBASE"
    awk 'BEGIN { FS="\t"; }
     { if ( $1 == "V" )
 	{
@@ -309,6 +320,7 @@ list_cert_names () {
 	    }
 	}
     }'< ${CA}/index.txt
+    cd "$OPWD"
 }
 
 
@@ -378,7 +390,7 @@ gencert () {
 	local cn="$2"
 
 	local OPWD=`pwd`
-	cd "$SSL_BASE"
+	cd "$SSLBASE"
 	if has_valid_cert "$2"; then
 	    revoke_cert "$2";
 	fi;
@@ -401,5 +413,5 @@ gencert () {
 
 	find $name -type f | xargs chmod 600
 	find $name -type d | xargs chmod 700
-	cd $OPWD;
+	cd "$OPWD"
 }
