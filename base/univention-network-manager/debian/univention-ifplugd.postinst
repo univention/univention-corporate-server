@@ -3,7 +3,7 @@
 # Univention ifplugd
 #  postinst script
 #
-# Copyright (C) 2009 Univention GmbH
+# Copyright (C) 2009-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -53,5 +53,11 @@ for i in $(seq 0 4); do
 		univention-config-registry unset "${!var}"
 	fi
 done
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.4.11-1; then
+	if [ -e /etc/network/if-up.d/99_resolvconf ]; then
+		mv /etc/network/if-up.d/99_resolvconf /etc/network/if-up.d/00_resolvconf
+	fi
+fi
 
 exit 0
