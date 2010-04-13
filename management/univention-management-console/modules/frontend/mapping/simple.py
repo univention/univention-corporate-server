@@ -54,6 +54,12 @@ def html_map( storage, umcp_part ):
 
 mapper.add( umcd.HTML, html_map )
 
+def moduledescription_map( storage, umcp_part ):
+	html = '<div class="umc_module_description"><p class="umc_title">%s</p>%s</div>' % ( umcp_part.title, umcp_part.get_text() )
+	return htmltext( '', utils.layout_attrs( storage, umcp_part ), { 'htmltext' : [ html ] } )
+
+mapper.add( umcd.ModuleDescription, moduledescription_map )
+
 def progressbar_map( storage, umcp_part ):
 	attrs = utils.layout_attrs( storage, umcp_part )
 	attrs[ 'percentage' ] = umcp_part.percentage

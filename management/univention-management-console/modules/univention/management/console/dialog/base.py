@@ -115,8 +115,12 @@ class Fill( Text ):
 		else:
 			Text.__init__( self, text, { 'rowspan' : str( columns ) } )
 
-TextTypes = ( type( Progressbar() ), type( Text() ), type( Date() ), type( Number() ), type( HTML() ),
-			  type( Fill() ) )
+class ModuleDescription( Text ):
+	def __init__( self, title = '', text = '', attributes = {} ):
+		Text.__init__( self, text, attributes )
+		self.title = title
+
+TextTypes = ( type( ModuleDescription() ), type( Progressbar() ), type( Text() ), type( Date() ), type( Number() ), type( HTML() ), type( Fill() ) )
 
 def _verify_list_items( sequence ):
 	# map strings to umcd.Text
