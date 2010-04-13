@@ -103,9 +103,6 @@ case "$command" in
 	"new")
 		echo "Creating certificate: $name"
 		gencert "/etc/univention/ssl/$name" "$name"
-		if [ -n "$days" ]; then
-			renew_cert "$name" "$days"
-		fi
 		getent group "DC Backup Hosts" 2>&1 >/dev/null
 		if [ $? = 0 ]; then
 			chgrp -R "DC Backup Hosts" "/etc/univention/ssl/$name"
