@@ -1893,7 +1893,7 @@ td.umc_tree_view_item_level1 {
 	padding-left: 0px;
 	padding-top: 0px;
 	padding-bottom: 0px;
-	line-height: 6px;
+	line-height: 10px;
 }
 
 td.umc_tree_view_item_level2 {
@@ -1902,7 +1902,7 @@ td.umc_tree_view_item_level2 {
 	padding-left: 20px;
 	padding-top: 0px;
 	padding-bottom: 0px;
-	line-height: 6px;
+	line-height: 10px;
 }
 
 td.umc_tree_view_item_level3 {
@@ -1911,7 +1911,7 @@ td.umc_tree_view_item_level3 {
 	padding-left: 40px;
 	padding-top: 0px;
 	padding-bottom: 0px;
-	line-height: 6px;
+	line-height: 10px;
 }
 
 table.umc_tree_view_table {

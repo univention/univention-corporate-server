@@ -1,3 +1,9 @@
+univention-webui-style (5.0.6-1) unstable; urgency=low
+
+  * adapt styles of tree view widget for the Internet Explorer; Bug #17750
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 14 Apr 2010 14:39:32 +0200
+
 univention-webui-style (5.0.5-1) unstable; urgency=low
 
   * add styles for the new UMC widget Section; Bug #18127
