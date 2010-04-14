@@ -1,3 +1,10 @@
+univention-webui (4.0.5-1) unstable; urgency=low
+
+  * add javascript function section_hide_show to dynamically change
+    visibility of a section; Bug #18127
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 14 Apr 2010 08:44:04 +0200
+
 univention-webui (4.0.4-1) unstable; urgency=low
 
   * be sure the mmselect elements will be selected if the return key

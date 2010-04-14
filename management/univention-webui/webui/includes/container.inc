@@ -144,7 +144,21 @@ class webui_container{
 		 hideLoader();
 });
 </script>
-
+<script type="text/javascript">
+function section_hide_show(name,img_show,img_hide) {
+	if (document.getElementsByName) {
+		sec = document.getElementsByName(name)[0];
+		image = document.getElementsByName("Button"+name)[0];
+		if (sec.className == "umc_visible") {
+			sec.className = "umc_hidden";
+			image.src = img_hide;
+		} else {
+			sec.className = "umc_visible";		
+			image.src = img_show;
+		}
+	}
+}
+</script>
 </head>
 ';
 
