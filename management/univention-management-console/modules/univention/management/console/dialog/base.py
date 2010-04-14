@@ -255,5 +255,13 @@ class SimpleTreeTable( List ):
 
 	def set_tree_data( self, tree_data ):
 		self._content[ 0 ].get_cell( 0 ).item._tree_data = tree_data
-		
-ListTypes = ( type( Frame() ), type( List() ), type( Row() ), type( Cell() ), type( SimpleTreeTable() ), type( SimpleTreeView() ) )
+
+class Section( Element ):
+	def __init__( self, title = '', body = '', hideable = False, hidden = False, attributes = {} ):
+		Element.__init__( self )
+		self.title = title
+		self.body = body
+		self.hideable = hideable
+		self.hidden = hidden
+
+ListTypes = ( type( Section() ), type( Frame() ), type( List() ), type( Row() ), type( Cell() ), type( SimpleTreeTable() ), type( SimpleTreeView() ) )

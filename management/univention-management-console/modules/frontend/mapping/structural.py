@@ -90,6 +90,39 @@ def frame_map( storage, umcp_part ):
 mapper.add( umcd.Frame, frame_map )
 mapper.add( umcd.Dialog, frame_map )
 
+def section_map( storage, umcp_part ):
+	rows = []
+
+	if umcp_part.hideable:
+		items = { 'id' : umcp_part.id(), 'title' : umcp_part.title, 'up' : umc_tools.image_get( 'actions/up', umc_tools.SIZE_TINY ), 'down' : umc_tools.image_get( 'actions/down', umc_tools.SIZE_TINY ) }
+		if umcp_part.hidden:
+			items[ 'current' ] = items[ 'down' ]
+		else:
+			items[ 'current' ] = items[ 'up' ]
+			
+		title = '<p class="umc_title">%(title)s&nbsp;<a href="javascript:section_hide_show(\'%(id)s\',\'%(up)s\',\'%(down)s\')"><img style="border: 0px" name="Button%(id)s" src="%(current)s"/></a></p>' % items
+	else:
+		title = '<p class="umc_title">%s</p>' % umcp_part.title
+	
+	elem = htmltext( '', {}, { 'htmltext' : [ title ] } )
+	col = tablecol( '', { 'type' : 'umc_section_title' }, { 'obs' : [ elem ] } )
+	rows.append( tablerow( '', {}, { 'obs' : [ col ] } ) )
+
+	body = storage.to_uniparts( umcp_part.body )
+	col = tablecol( '', {}, { 'obs' : [ body ] } )
+	if umcp_part.hidden:
+		css_class = 'umc_hidden'
+	else:
+		css_class = 'umc_visible'
+	rows.append( tablerow( '', { 'type' : css_class, 'name' : umcp_part.id() }, { 'obs' : [ col ] } ) )
+
+	attrs = utils.layout_attrs( storage, umcp_part )
+	attrs[ 'type' ] = 'umc_section'
+	
+	return table( '', attrs, { 'obs' : rows } )
+
+mapper.add( umcd.Section, section_map )
+
 def list_map( storage, umcp_part ):
 	headers = []
 	for col in umcp_part.get_header():
