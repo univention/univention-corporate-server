@@ -1939,6 +1939,19 @@ td.umc_tree_table_separator {
 	padding-right: 15px;
 }
 
+.umc_section {
+	margin: 0px;
+	padding: 0px;
+}
+
+.umc_hidden {
+	visibility: collapse;
+}
+
+.umc_visible {
+	visibility: visible;
+}
+
 .umc_infobox_col {
         font-weight: normal;
         padding: 5px;
