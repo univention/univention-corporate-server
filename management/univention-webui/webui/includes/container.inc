@@ -146,9 +146,9 @@ class webui_container{
 </script>
 <script type="text/javascript">
 function section_hide_show(name,img_show,img_hide) {
-	if (document.getElementsByName) {
-		sec = document.getElementsByName(name)[0];
-		image = document.getElementsByName("Button"+name)[0];
+	if (document.getElementById) {
+		sec = document.getElementById(name);
+		image = document.getElementById("Button"+name);
 		if (sec.className == "umc_visible") {
 			sec.className = "umc_hidden";
 			image.src = img_hide;

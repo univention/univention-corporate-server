@@ -1,3 +1,10 @@
+univention-webui (4.0.6-1) unstable; urgency=low
+
+  * js function section_hide_show: need to identify objects via id
+    attribute (required for Internet Explorer); Bug #18127
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 14 Apr 2010 11:36:45 +0200
+
 univention-webui (4.0.5-1) unstable; urgency=low
 
   * add javascript function section_hide_show to dynamically change

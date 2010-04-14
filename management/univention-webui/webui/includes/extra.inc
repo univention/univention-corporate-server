@@ -2275,8 +2275,8 @@ class row extends webui_translator{
 		}
 		if(isset($this->attribute['type']))
 			$attrib_str = 'class="'.$this->attribute['type'].'"';
-		if(isset($this->attribute['name']))
-			$attrib_str .= ' name="'.$this->attribute['name'].'"';
+		if(isset($this->attribute['webui-id']))
+			$attrib_str .= ' id="'.$this->attribute['webui-id'].'"';
 		$row='<tr '.$attrib_str.'>'.$this->conti_ref->show_all().'</tr>';
 		return $row;
 	}
