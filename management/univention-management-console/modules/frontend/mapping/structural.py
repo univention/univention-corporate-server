@@ -100,7 +100,7 @@ def section_map( storage, umcp_part ):
 		else:
 			items[ 'current' ] = items[ 'up' ]
 			
-		title = '<p class="umc_title">%(title)s&nbsp;<a href="javascript:section_hide_show(\'%(id)s\',\'%(up)s\',\'%(down)s\')"><img style="border: 0px" name="Button%(id)s" src="%(current)s"/></a></p>' % items
+		title = '<p class="umc_title">%(title)s&nbsp;<a href="javascript:section_hide_show(\'%(id)s\',\'%(up)s\',\'%(down)s\')"><img style="border: 0px" id="Button%(id)s" src="%(current)s"/></a></p>' % items
 	else:
 		title = '<p class="umc_title">%s</p>' % umcp_part.title
 	
@@ -114,7 +114,7 @@ def section_map( storage, umcp_part ):
 		css_class = 'umc_hidden'
 	else:
 		css_class = 'umc_visible'
-	rows.append( tablerow( '', { 'type' : css_class, 'name' : umcp_part.id() }, { 'obs' : [ col ] } ) )
+	rows.append( tablerow( '', { 'type' : css_class, 'webui-id' : umcp_part.id() }, { 'obs' : [ col ] } ) )
 
 	attrs = utils.layout_attrs( storage, umcp_part )
 	attrs[ 'type' ] = 'umc_section'

@@ -1,3 +1,10 @@
+univention-management-console (3.0.9-2) unstable; urgency=low
+
+  * pass attribute webui-id (mapped to id in HTML) to the section as Internet
+    Explorer requires an identification via the id attribute; Bug #18127
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 14 Apr 2010 11:41:34 +0200
+
 univention-management-console (3.0.9-1) unstable; urgency=low
 
   * add new widget Section that can dynamically change visibility; Bug #18127
