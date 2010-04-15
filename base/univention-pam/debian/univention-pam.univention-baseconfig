@@ -19,13 +19,23 @@ File: etc/nscd.conf
 Variables: nscd/passwd/size
 Variables: nscd/group/size
 Variables: nscd/hosts/size
+Variables: nscd/restart
+Variables: nscd/restart/interval
 Variables: nscd/passwd/positive_time_to_live
 Variables: nscd/group/positive_time_to_live
 Variables: nscd/hosts/positive_time_to_live
-Variables: nscd/debug/level
+Variables: nscd/passwd/negative_time_to_live
+Variables: nscd/group/negative_time_to_live
+Variables: nscd/hosts/negative_time_to_live
 Variables: nscd/passwd/maxdbsize
 Variables: nscd/group/maxdbsize
 Variables: nscd/hosts/maxdbsize
+Variables: nscd/passwd/persistent
+Variables: nscd/group/persistent
+Variables: nscd/hosts/persistent
+Variables: nscd/debug/level
+Variables: nscd/logfile
+Variables: nscd/threads
 
 Type: file
 File: etc/libnss-ldap.conf

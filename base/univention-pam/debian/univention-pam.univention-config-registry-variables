@@ -40,6 +40,24 @@ Description[en]=nscd Debug-Level
 Type=int
 Categories=system-base
 
+[nscd/.*/negative_time_to_live]
+Description[de]=Definiert die Zeit in Sekunden bis ein Cache-Eintrag, der als nicht existierend markiert ist, wieder entfernt wird
+Description[en]=Defines a period of time in seconds. A cache entry that is marked as "non existent" will be removed after this period.
+Type=int
+Categories=system-base
+
+[nscd/.*/positive_time_to_live]
+Description[de]=Definiert die Zeit in Sekunden nach der ein Eintrag aus dem Cache gelöscht wird
+Description[en]=Defines a period of time in seconds after that an entry is removed from the cache
+Type=int
+Categories=system-base
+
+[nscd/logfile]
+Description[de]=Gibt den Dateiname für die Log-Datei an
+Description[en]=Specifies the name of the log-file
+Type=int
+Categories=system-base
+
 [nscd/group/invalidate_cache_on_changes]
 Description[de]=NSCD Gruppen Cache invalidieren, sobald Gruppenzugehörigkeiten verändert wurden? (yes/no).
 Description[en]=Invalidate NSCD group cache whenever a group membership has been modified? (yes/no).
