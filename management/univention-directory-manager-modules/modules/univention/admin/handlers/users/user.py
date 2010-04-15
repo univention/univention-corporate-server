@@ -1829,8 +1829,18 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		uids = self.lo.getAttr( group, 'memberUid' )
 		if not members:
 			members = self.lo.getAttr( group, 'uniqueMember' )
-		new = map( lambda x: x[ x.find( '=' ) + 1 : x.find( ',' ) ], members )
-		self.lo.modify(group, [ ( 'memberUid', uids, new ) ] )
+		new_uids = []
+		for memberDNstr in members:
+			memberDN = ldap.dn.str2dn(memberDNstr)
+			if memberDN[0][0][0] == 'uid': # UID is stored in DN --> use UID directly
+				new_uids.append(memberDN[0][0][1])
+			else:
+				UIDs = self.lo.getAttr(memberDNstr, 'uid')
+				if UIDs:
+					new_uids.append(UIDs[0])
+					if len(UIDs) > 1:
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'users/user: A groupmember has multiple UIDs (%s %s)' % (memberDNstr, repr(uid_list)))
+		self.lo.modify(group, [ ( 'memberUid', uids, new_uids ) ] )
 
 	def __primary_group(self):
 		self.newPrimaryGroupDn=0

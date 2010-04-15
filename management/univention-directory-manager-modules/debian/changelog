@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.61-1) unstable; urgency=low
+
+  * users/user.py: fix UID extraction (Bug #18012)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 15 Apr 2010 12:57:58 +0200
+
 univention-directory-manager-modules (5.0.60-1) unstable; urgency=low
 
   * dns: forward-zone: contact: (Bug #16592)
