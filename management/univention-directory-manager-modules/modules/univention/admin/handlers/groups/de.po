@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-12 09:32+0100\n"
-"PO-Revision-Date: 2009-10-20 21:17+0200\n"
+"POT-Creation-Date: 2010-04-15 13:51+0200\n"
+"PO-Revision-Date: 2010-04-15 13:46+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -40,8 +40,8 @@ msgid "Search group object(s)"
 msgstr "Suche Gruppen Objekt(e)"
 
 #: group.py:49
-msgid "Group: Group"
-msgstr "Gruppe: Gruppe"
+msgid "Group"
+msgstr "Gruppe"
 
 #: group.py:53
 msgid "Posix group"
@@ -83,7 +83,7 @@ msgstr "enthaltene Rechner"
 msgid "Mail address"
 msgstr "Mail-Adresse"
 
-#: group.py:153 group.py:195
+#: group.py:153 group.py:191
 msgid "Member of"
 msgstr "Mitglied von"
 
@@ -91,41 +91,44 @@ msgstr "Mitglied von"
 msgid "Nested group"
 msgstr "enthaltene Gruppe"
 
-#: group.py:181
+#: group.py:177
 msgid "General"
 msgstr "Allgemein"
 
-#: group.py:181
+#: group.py:177
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: group.py:186
+#: group.py:182
 msgid "Members"
 msgstr "Mitglieder"
 
-#: group.py:186
+#: group.py:182
 msgid "Members of this Group"
 msgstr "Mitglieder dieser Gruppe"
 
-#: group.py:189
+#: group.py:185
 msgid "Host members"
 msgstr "enthaltene Rechner"
 
-#: group.py:189
+#: group.py:185
 msgid "Host members of this group"
 msgstr "in dieser Gruppe enthaltene Rechner"
 
-#: group.py:192
+#: group.py:188
 msgid "Nested groups"
 msgstr "enthaltene Gruppen"
 
-#: group.py:192
+#: group.py:188
 msgid "Membership of other groups"
 msgstr "Mitgliedschaft von weiteren Gruppen"
 
-#: group.py:195
+#: group.py:191
 msgid "Membership in other groups"
 msgstr "Mitgliedschaft in weiteren Gruppen"
+
+#~ msgid "Group: Group"
+#~ msgstr "Gruppe: Gruppe"
 
 #~ msgid "memberOf"
 #~ msgstr "Mitgliedschaft in"
