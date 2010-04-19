@@ -1,3 +1,9 @@
+univention-config-registry (5.0.83-3) unstable; urgency=low
+
+  * Fix typo in STRICTLIST (Bug #17795)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 19 Apr 2010 12:04:05 +0200
+
 univention-config-registry (5.0.83-2) unstable; urgency=low
 
   * reverted patch from version 5.0.83-1; Bug #16637
