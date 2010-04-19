@@ -38,7 +38,7 @@ for fn in $FNLIST ; do
 	fi
 done
 
-STRICTLIST="/var/log/mail.err /var/log/mail.warn /var/log/mail.ingo /var/log/mail.log /var/log/apache2/other_vhosts_access.log"
+STRICTLIST="/var/log/mail.err /var/log/mail.warn /var/log/mail.info /var/log/mail.log /var/log/apache2/other_vhosts_access.log"
 
 for fn in $STRICTLIST ; do
 	if [ -f "$fn" ] ; then
