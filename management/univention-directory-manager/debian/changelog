@@ -1,3 +1,11 @@
+univention-directory-manager (7.0.54-1) unstable; urgency=low
+
+  * DNS reverse entry list: ensure that last selected reverse zone entry
+    is reselected
+  * select a reverse zone entry that matches the given IP address; Bug #10761
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Apr 2010 16:35:53 +0200
+
 univention-directory-manager (7.0.53-1) unstable; urgency=low
 
   * mark the search button in the userDN isyntax as default button, so

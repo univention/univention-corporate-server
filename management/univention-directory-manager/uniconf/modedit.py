@@ -106,6 +106,16 @@ def get_leftbutton(attributes, helptext):
 def get_rightbutton(attributes, helptext):
 	return get_iconbutton(attributes, helptext, '/style/right.gif')
 
+def ip_addr_matches_reverse_zone( zoneDn, ip_address ):
+	if not ip_address:
+		return False
+	subnet = ldap.explode_dn( zoneDn, 1 )[ 0 ].replace( '.in-addr.arpa', '' ).split( '.' )
+	subnet.reverse( )
+	subnet = string.join( subnet, '.' ) + '.'
+	ipPart = ip_address.replace( subnet, '' )
+
+	return not ( ipPart == ip_address )
+
 class modedit(unimodule.unimodule):
 	def mytype(self):
 		return "dialog"
@@ -1049,12 +1059,22 @@ class modedit(unimodule.unimodule):
 									if self.save.get('x_choice_value_of_%s'%name) == group:
 										dns_entry_reverse_choicelist[-1]['selected']='1'
 										found = True
-								if not found:
-									if i > 0:
-										self.save.put('x_choice_value_of_%s'%name, dns_entry_reverse_choicelist[ 0 ][ 'name' ] )
 
 								dns_entry_reverse_choicelist.sort(compare_dicts_by_two_attr('item','description'))
 
+								if not found and i > 0:
+									if current_object.info.has_key( 'ip' ) and len( current_object[ 'ip' ] ) == 1:
+										for group in groups:
+											if ip_addr_matches_reverse_zone( group, current_object[ 'ip' ][ 0 ] ):
+												for choice in dns_entry_reverse_choicelist:
+													if choice[ 'name' ] == group:
+														choice[ 'selected' ] = '1'
+												self.save.put( 'x_choice_value_of_%s' % name, group )
+												break
+										else:
+											self.save.put( 'x_choice_value_of_%s' % name, dns_entry_reverse_choicelist[ 0 ][ 'name' ] )
+									else:
+										self.save.put( 'x_choice_value_of_%s' % name, dns_entry_reverse_choicelist[ 0 ][ 'name' ] )
 								atts=copy.deepcopy(attributes)
 
 							if value:
