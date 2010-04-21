@@ -125,6 +125,13 @@ def handler(dn, new, old):
 			if path in deniedpaths:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
 					"Custom permissions for share '%s' not allowed, skip." % path)
+			
+			elif os.path.islink(path):
+				for i in deniedpaths:
+					if os.path.islink(path) and os.path.isdir(path) and os.path.realpath(path) == i:
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
+							"Custom permissions for share '%s' not allowed, skip." % new['univentionSharePath'][0])
+
 			elif os.path.isdir(path):
 				try:
 					os.chmod(path,int(mode,0))
