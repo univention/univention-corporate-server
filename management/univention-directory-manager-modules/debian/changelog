@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.63-1) unstable; urgency=low
+
+  * added check for symlinks to forbidden paths, Bug #5392
+
+ -- Tim Petersen <petersen@univention.de>  Wed, 21 Apr 2010 08:18:21 +0200
+
 univention-directory-manager-modules (5.0.62-1) unstable; urgency=low
 
   * groups/group.py: fix translation (Bug #17472)
