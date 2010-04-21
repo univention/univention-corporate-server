@@ -1,3 +1,9 @@
+univention-x-core (3.0.9-1) unstable; urgency=low
+
+  * add UCR variable xorg/display/virtual to set virtual display size; Bug #16024
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Apr 2010 14:11:14 +0200
+
 univention-x-core (3.0.8-2) unstable; urgency=low
 
   * Keyboard InputDevice layout currently must be selected explicitely
