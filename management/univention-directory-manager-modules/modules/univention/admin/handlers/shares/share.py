@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, string, copy, re
+import sys, string, copy, re, os
 import univention.admin.uldap
 import univention.admin.syntax
 import univention.admin.filter
@@ -853,8 +853,12 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		
-		if re.search(r"/proc[/]?$", self['path']) or re.search(r"/proc[/]+.*", self['path']) or re.search(r"/sys[/]?$", self['path']) or re.search(r"/sys[/]+.*", self['path']):
+		if re.match(r"^/proc[/]?$", self['path']) or re.match(r"^/proc[/]+.*", self['path']) or re.match(r"^/sys[/]?$", self['path']) or re.match(r"^/sys[/]+.*", self['path']):
 			raise univention.admin.uexceptions.invalidOperation, _('It is not valid to set %s as a share.')%self['path']
+		elif os.path.isdir(self['path']) and os.path.islink(self['path']):
+			linkpath = os.path.realpath(self['path'])
+			if re.match(r"^/proc[/]?$", linkpath) or re.match(r"^/proc[/]+.*", linkpath) or re.match(r"^/sys[/]?$", linkpath) or re.match(r"^/sys[/]+.*", linkpath):
+				raise univention.admin.uexceptions.invalidOperation, _('It is not valid to set %s as a share.')%self['path']
 
 		ocs = ['top', 'univentionShare']
 		if not ( 'samba' in self.options or 'nfs' in self.options):
