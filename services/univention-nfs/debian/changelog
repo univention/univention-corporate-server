@@ -1,3 +1,9 @@
+univention-nfs (2.0.6-1) unstable; urgency=low
+
+  * added check for symlinks to forbidden paths, Bug #5392
+
+ -- Tim Petersen <petersen@univention.de>  Wed, 21 Apr 2010 09:16:59 +0200
+
 univention-nfs (2.0.5-1) unstable; urgency=low
 
   * edit Logmessage for forbidden share priviledge changes, Bug #17929
