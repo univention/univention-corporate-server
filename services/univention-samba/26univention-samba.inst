@@ -63,6 +63,15 @@ if /etc/init.d/winbind status >/dev/null 2>&1; then
 		fi
 	done
 	/etc/init.d/winbind stop
+
+	# parse binddn and bindpwd from command line arguments into shell variables
+	eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
+	# map binddn back to uid, returns nothing if no binddn or binddn= cn=admin,..
+	dcaccount=$(ldapsearch -x -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: \(.*\)$/\1/p')
+	if [ -n "$dcaccount" -a -n "$bindpwd" ]; then
+		# create samba machine account for this machine
+		net rpc join -U${dcaccount}%${bindpwd}
+	fi
 fi
 
 # stop samba
