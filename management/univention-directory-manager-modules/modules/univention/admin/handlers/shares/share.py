@@ -852,14 +852,11 @@ class object(univention.admin.handlers.simpleLdap):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		
-		splitpath = os.path.split(self['path'])
-		if splitpath[0] == "/sys" or splitpath[0] == "/proc":
+		if re.match("(^/sys)$|(^/sys/)", self['path']) or re.match("(^/proc)$|(^/proc/)", self['path']):
 			raise univention.admin.uexceptions.invalidOperation, _('It is not valid to set %s as a share.')%self['path']
 		elif os.path.islink(self['path']):
 			realpath = os.path.realpath(self['path'])
-			splitlinkpath = os.path.split(realpath)
-			if splitlinkpath[0] == "/sys" or splitrealpath[0] == "/proc":
+			if re.match("(^/sys)$|(^/sys/)", realpath) or re.match("(^/proc)$|(^/proc/)", realpath):
 				raise univention.admin.uexceptions.invalidOperation, _('It is not valid to set %s as a share.')%self['path']
 
 		ocs = ['top', 'univentionShare']
