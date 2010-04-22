@@ -120,17 +120,17 @@ def handler(dn, new, old):
 			if not os.access(path,os.F_OK):
 				os.makedirs(path,int('0755',0))
 
-			deniedpaths = ["/tmp", "/root", "/proc", "/dev", "/sys"]			
-
-			if path in deniedpaths:
+			#deniedpaths = ["/tmp", "/root", "/proc", "/dev", "/sys"]			
+			path = new['univentionSharePath'][0]
+			if re.match("(^/tmp)$|(^/tmp/)", path) or re.match("(^/root)$|(^/root/)", path) or re.match("(^/proc)$|(^/proc/)", path) or re.match("(^/dev)$|(^/dev/)", path) or re.match("(^/sys)$|(^/sys/)", path):
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
-					"Custom permissions for share '%s' not allowed, skip." % path)
-			
+					"Custom permissions for share '%s' not allowed, skip." % new['univentionSharePath'][0])
+
 			elif os.path.islink(path):
-				for i in deniedpaths:
-					if os.path.islink(path) and os.path.isdir(path) and os.path.realpath(path) == i:
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
-							"Custom permissions for share '%s' not allowed, skip." % new['univentionSharePath'][0])
+				realpath = os.path.realpath(path)
+				if re.match("(^/tmp)$|(^/tmp/)", realpath) or re.match("(^/root)$|(^/root/)", realpath) or re.match("(^/proc)$|(^/proc/)", realpath) or re.match("(^    /dev)$|(^/dev/)", realpath) or re.match("(^/sys)$|(^/sys/)", realpath):
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
+						"Custom permissions for share '%s' not allowed, skip." % new['univentionSharePath'][0])
 
 			elif os.path.isdir(path):
 				try:

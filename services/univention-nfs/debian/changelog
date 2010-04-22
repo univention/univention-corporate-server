@@ -1,3 +1,9 @@
+univention-nfs (2.0.7-1) unstable; urgency=low
+
+  * fixed check for forbidden paths, Bug #5392
+
+ -- Tim Petersen <petersen@univention.de>  Wed, 22 Apr 2010 11:17:59 +0200
+
 univention-nfs (2.0.6-1) unstable; urgency=low
 
   * added check for symlinks to forbidden paths, Bug #5392
