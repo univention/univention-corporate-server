@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.64-1) unstable; urgency=low
+
+  * improved check for symlinks to forbidden paths, Bug #5392
+
+ -- Tim Petersen <petersen@univention.de>  Wed, 22 Apr 2010 09:56:21 +0200
+
 univention-directory-manager-modules (5.0.63-1) unstable; urgency=low
 
   * added check for symlinks to forbidden paths, Bug #5392
