@@ -1,0 +1,126 @@
+pwdump6 - Windows NT/2000/XP/2003 NTLM and LanMan Password Grabber
+
+By fizzgig and the foofus.net Team
+
+Web Site:
+http://www.foofus.net/fizzgig/pwdump
+
+
+DESCRIPTION:
+
+A significantly modified version of pwdump3e, this program is able to extract NTLM
+and LanMan hashes from a Windows target, regardless of whether Syskey is turned on.
+It is also capable of displaying password histories if they are available. It outputs 
+the data in L0phtcrack-compatible form, and can write to an output file. 
+
+
+USAGE:
+
+pwdump [-h][-o][-u][-p][-n] machineName
+  where -h prints the usage message and exits
+  where -o specifies a file to which to write the output
+  where -u specifies the user name used to connect to the target
+  where -p specifies the password used to connect to the target
+  where -s specifies the share to be used on the target, rather than searching for one
+  where -n skips password histories
+
+Install the executable files (pwdump.exe, lsaext.dll, and pwservice.exe) in a 
+single directory.  Running pwdump with no parameters causes the usage information 
+to be displayed. The target machine name is the only required parameter.
+
+-o specifies a file to which hash data should be written. Messages will still be
+written to the console.
+
+-u/-p specifies the user name and password used to establish a connection with the
+target. This is necessary if you haven't already established the connection via, say,
+an IPC$ bind. The credentials used MUST have administrator-level privileges. If no 
+password is specified with -p, the program will prompt for the password at the console.
+
+-s tells pwdump to use the share specified, rather than trying to find one on its own
+
+-n instructs pwdump to not dump the password histories (if available)
+
+
+Running pwdump against target machines with many user accounts takes time.  We 
+have measured approximately ten minutes for 20,000 user accounts.  Please be patient 
+and let the program terminate itself.
+
+WARNING TO ANTI-VIRUS USERS!! (Particularly McAfee)
+
+Certain AV programs, notably McAfee, react poorly to pwdump. McAfee in particular has
+a nasty habit of consuming 100% of the CPU when pwdump is run sometimes. Therefore,
+it is HIGHLY recommended you stop any AV on the target before pwdump'ing it. If not,
+you might need to reboot it, which will be bad if you are working remotely. You have
+been warned.
+
+If remembering to do this escapes you (I forget frequently), I would suggest looking at
+fgdump (http://www.foofus.net/fizzgig/fgdump). It is, among other things, a wrapper
+around pwdump and will take care of stopping and starting AV control as needed.
+
+
+HOW IT WORKS:
+
+(This is partly from the original pwdump3e README)
+
+Remote access to a machine is accomplished be by running the hash extraction 
+program as a service, because Windows NT-ish OSes allow services to be installed and 
+started remotely.  PWDUMP first connects to an available, writable share and copies the 
+service executable files there.  It then requests the Service Control Manager to 
+install and then run the service program.  The extracted hash data is then sent
+to the client via a named pipe. Cleanup consists of uninstalling the service, 
+and deleting the executable files from the remote machine.
+
+Once the service is running, it follows the methodology used by Todd Sabin in his 
+PWDUMP2 program to access the password hashes.  The idea is to use Windows internal 
+function calls to fetch the data.  Since these functions require privileged access, 
+it is first necessary to gain the appropriate access priveleges.  The Local Security 
+Authority Subsystem (LSASS) runs with the necessary access privilege, so PWDUMP 
+uses a technique known as DLL injection to run under the LSASS process, and thereby 
+attain privileged access to the hash information.
+
+DLL injection involves running a thread under an external process.  The thread runs 
+with all the access privileges of that process.  The thread's executable code must 
+first be copied to the address space of the external process.  The PWSERVICE 
+program, running on the remote machine with administrative rights, adjusts its 
+access privilege to Debug level.  This allows it to open and write to the memory 
+space of the LSASS process.  It copies a simple thread function into the LSASS 
+address space, and then runs the thread under the external process.  The thread 
+loads the LSAEXT DLL and runs a function that performs the privileged hash 
+extraction routine.  This routine uses undocumented, internal Windows function 
+calls to enumerate the users on the system and obtain the password hashes in 
+unencrypted form for each user.
+
+The hash information must be made available to the machine from which PWDUMP is 
+running. This is accomplished by shipping data over a named pipe back to the client
+(the LSASS process acts as the named pipe server). 
+
+As of version 1.2, data is encrypted as it is sent over the pipe. This is *not* what
+most purists would consider strong encryption. The encryption itself is sound - it uses
+the Blowfish algorithm, but the key generation and transmission is not completely secure.
+
+Before you panic, let me explain the design goals here. The goals are really two-fold:
+
+- Prevent simple unauthorized sniffing of traffic
+- Evade simple IDS/IPS signatures
+
+As such, the encryption is really more of an obfuscation layer. The key is generated
+using successive calls to rand(), while reseeding after each byte using the contents
+of a performance counter. The total key length resulting from this operation is 96 bits.
+The key is sent as a remote command-line parameter to the pwservice.exe service when
+it starts, which in turn relays the key to lsaext.dll as it is injected into LSASS.exe.
+Given this, if a person were able to intercept this key, the resulting data streams
+could be decoded and decrypted.
+
+The goal is not to provide world-class security, only to reduce the risk of casual 
+eavesdropping. Lets face it - if someone really goes to all the trouble of locating
+the key and decrypting the stream by hand, they can probably run the tool themselves. :)
+
+Of important note here as well is that I am not using Microsoft's CryptoAPI, which
+I loathe almost as much as clowns. The Blowfish implementation is readily available
+on a number of websites, and has been used successfully in other commercial tools.
+
+COMPILING PWDUMP:
+
+Source code and Visual C++ 6.0 project and workspace files are included. I have
+successfully compiled this under Visual Studio 2003 as well with minor modifications.
+
