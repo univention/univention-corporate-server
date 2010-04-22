@@ -50,8 +50,13 @@ fi
 # determine the list of trusted nonlocal domains and stop winbind
 winbind_was_running=0
 trusted_domains_including_mydomain=''
-if /etc/init.d/winbind status >/dev/null 2>&1; then
-	winbind_was_running=1
+if COLUMNS=200 dpkg -l winbind | grep "^ii  winbind"; then
+	if /etc/init.d/winbind status >/dev/null 2>&1; then
+		winbind_was_running=1
+	else
+		/etc/init.d/winbind start
+	fi
+
 	wbinfo_trusted_domains="$(wbinfo --trusted-domains)"
 	for candidate in $wbinfo_trusted_domains; do
 		if [ "$candidate" != "BUILTIN" ]; then
@@ -94,7 +99,7 @@ else
 	# adjust samba/idmap/domains for UCS 2.3-2 update
 	# 1. add mydomain to samba/idmap/domains for idmap_ldap ldap_user_dn config
 	mydomain=$(echo "$windows_domain" | tr '[:lower:]' '[:upper:]')
-	if ! grep -q "\b${mydomain}\b" "$samba_idmap_domains";
+	if ! grep -q "\b${mydomain}\b" "$samba_idmap_domains"; then
 		samba_idmap_domains="$mydomain $samba_idmap_domains"
 	fi
 	# 2. cosmetic: remove local machine name from samba/idmap/domains again
