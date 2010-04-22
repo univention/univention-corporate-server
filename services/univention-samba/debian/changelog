@@ -1,3 +1,9 @@
+univention-samba (4.0.21-2) unstable; urgency=low
+
+  * improve winbind detection (Bug #17448)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Apr 2010 18:17:43 +0200
+
 univention-samba (4.0.21-1) unstable; urgency=low
 
   * create machine account in join script if winbind detected (Bug #14638)
