@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-VERSION=3
+VERSION=4
 
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
@@ -47,9 +47,13 @@ if [ -n "$nfsd_pid" ]; then
 	test -x /etc/init.d/nfs-kernel-server && /etc/init.d/nfs-kernel-server stop
 fi
 
-# determine the list of trusted nonlocal domains and stop winbind
+eval `univention-baseconfig shell`
+local_machine=$(echo $hostname | tr '[:lower:]' '[:upper:]')
+mydomain=$(echo "$windows_domain" | tr '[:lower:]' '[:upper:]')
+
 winbind_was_running=0
-trusted_domains_including_mydomain=''
+trusted_domains_including_mydomain="$mydomain"	# all domains that need an idmap_ldap config block
+# determine the list of additional trusted nonlocal domains and stop winbind
 if COLUMNS=200 dpkg -l winbind | grep "^ii  winbind"; then
 	if /etc/init.d/winbind status >/dev/null 2>&1; then
 		winbind_was_running=1
@@ -59,12 +63,8 @@ if COLUMNS=200 dpkg -l winbind | grep "^ii  winbind"; then
 
 	wbinfo_trusted_domains="$(wbinfo --trusted-domains)"
 	for candidate in $wbinfo_trusted_domains; do
-		if [ "$candidate" != "BUILTIN" ]; then
-			if [ -z "$trusted_domains_including_mydomain" ]; then
-				trusted_domains_including_mydomain="$candidate"
-			else
-				trusted_domains_including_mydomain="$trusted_domains_including_mydomain $candidate"
-			fi
+		if [ "$candidate" != "BUILTIN" -a "$candidate" != "$local_machine" -a "$candidate" != "$mydomain" ]; then
+			trusted_domains_including_mydomain="$trusted_domains_including_mydomain $candidate"
 		fi
 	done
 	/etc/init.d/winbind stop
@@ -87,8 +87,6 @@ if [ -n "$samba_pid" ]; then
 	killall smbd nmbd >/dev/null 2>&1
 fi
 
-eval `univention-baseconfig shell`
-
 if [ -z "$samba_idmap_domains" ]; then
 	# inititalize samba/idmap/domains for UCS 2.3-0 update
 	if [ -n "$trusted_domains_including_mydomain" ]; then
@@ -96,16 +94,14 @@ if [ -z "$samba_idmap_domains" ]; then
 	samba_idmap_domains="$trusted_domains_including_mydomain"
 	fi
 else
-	# adjust samba/idmap/domains for UCS 2.3-2 update
+	# filter samba/idmap/domains for UCS 2.3-2 update
 	# 1. add mydomain to samba/idmap/domains for idmap_ldap ldap_user_dn config
-	mydomain=$(echo "$windows_domain" | tr '[:lower:]' '[:upper:]')
-	if ! grep -q "\b${mydomain}\b" "$samba_idmap_domains"; then
+	if ! echo "$samba_idmap_domains" | grep -q "\b${mydomain}\b"; then
 		samba_idmap_domains="$mydomain $samba_idmap_domains"
 	fi
 	# 2. cosmetic: remove local machine name from samba/idmap/domains again
-	local_machine=$(echo $hostname | tr '[:lower:]' '[:upper:]')
-	if grep -q "\b${local_machine}\b" "$samba_idmap_domains"; then
-		samba_idmap_domains=$(echo "$samba_idmap_domains" | sed "s/ *\b${local_machine}\b *//")
+	if echo "$samba_idmap_domains" | grep -q "\b${local_machine}\b"; then
+		samba_idmap_domains=$(echo "$samba_idmap_domains" | sed "s/\b${local_machine}\b *//;s/ $//")
 	fi
 	# the unconditional ucr set commits the new smb.conf to activate the adjusted idmap config
 	univention-config-registry set samba/idmap/domains="$samba_idmap_domains"
