@@ -34,6 +34,7 @@
 #include <ldap.h>
 
 #include <univention/debug.h>
+#include <univention/config.h>
 
 #include "cache_entry.h"
 #include "base64.h"
@@ -164,6 +165,10 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 	char *_dn;
 	int rv = 0;
 
+	int memberUidMode = 0;
+	int duplicateMemberUid = 0;
+	int i;
+
 	/* convert LDAP entry to cache entry */
 	memset(cache_entry, 0, sizeof(CacheEntry));
 	if (dn != NULL) {
@@ -191,6 +196,11 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 		cache_entry->attributes[cache_entry->attribute_count]->value_count=0;
 		cache_entry->attributes[cache_entry->attribute_count+1]=NULL;
 		
+		if ( !strncmp(cache_entry->attributes[cache_entry->attribute_count]->name, "memberUid", strlen("memberUid")) ) {
+			memberUidMode=1;
+		} else {
+			memberUidMode=0;
+		}
 		if ((val=ldap_get_values_len(ld, ldap_entry, attr)) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ldap_get_values failed");
 			rv = 1;
@@ -202,6 +212,31 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: ignoring bv_val of NULL with bv_len=%ld, ignoring, check attribute: %s of DN: %s", (*v)->bv_len, cache_entry->attributes[cache_entry->attribute_count]->name, *dn);
 				rv = 1;
 				goto result;
+			}
+			if ( memberUidMode == 1 ) {
+				/* avoid duplicate memberUid entries https://forge.univention.org/bugzilla/show_bug.cgi?id=17998 */
+				duplicateMemberUid = 0;
+				for (i=0; i<cache_entry->attributes[cache_entry->attribute_count]->value_count; i++) {
+					if (!memcmp(cache_entry->attributes[cache_entry->attribute_count]->values[i], (*v)->bv_val, (*v)->bv_len+1) ) {
+						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Found a duplicate memberUid entry:");
+						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s",  *dn);
+						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "memberUid: %s", cache_entry->attributes[cache_entry->attribute_count]->values[i]);
+						duplicateMemberUid = 1;
+						break;
+					}
+				}
+			} else {
+				duplicateMemberUid = 0;
+			}
+			if ( duplicateMemberUid == 1) {
+				/* skip this memberUid entry if listener/memberuid/skip is set to yes */
+				char *skipMemberUid;
+
+				skipMemberUid = univention_config_get_string("listener/memberuid/skip");
+
+				if ( !strncmp(skipMemberUid, "yes", strlen("yes")) || !strncmp(skipMemberUid, "true", strlen("true")) ) {
+					continue;
+				}
 			}
 			if ((cache_entry->attributes[cache_entry->attribute_count]->values = realloc(cache_entry->attributes[cache_entry->attribute_count]->values, (cache_entry->attributes[cache_entry->attribute_count]->value_count+2)*sizeof(char*))) == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of values array failed");
