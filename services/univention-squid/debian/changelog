@@ -1,3 +1,10 @@
+univention-squid (3.0.8-3) unstable; urgency=low
+
+  * change template defaults for squid/ntlmauth/children to 10
+    and for squid/ntlmauth/keepalive to true (Bug #18149)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 23 Apr 2010 11:55:24 +0200
+
 univention-squid (3.0.8-2) unstable; urgency=low
 
   * fix default for squid/ntlmauth/keepalive (Bug #17790)
