@@ -1,3 +1,10 @@
+univention-heimdal (3.0.13-3) unstable; urgency=low
+
+  * adjust service desciptions (Bug #13469)
+  * Evaluate locale.LC_MESSAGES in UMC services module
+
+ -- Arvid Requate <requate@univention.de>  Fri, 23 Apr 2010 13:33:02 +0200
+
 univention-heimdal (3.0.13-2) unstable; urgency=low
 
   * also create a symlink for kadmind.acl (Bug #16462)
