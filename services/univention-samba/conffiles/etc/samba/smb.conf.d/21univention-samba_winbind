@@ -31,7 +31,7 @@ print '\tidmap alloc config : ldap_url = ldap://%s' % (ldap_server_name)
 idmap_domains=baseConfig.get('samba/idmap/domains')
 if idmap_domains:
 	mydomain=baseConfig['windows/domain'].upper()
-	for domain in idmap_domains.replace('"','').split(' '):
+	for domain in idmap_domains.replace('"','').strip().split(' '):
 		domain = domain.upper() # canonicalize to uppercase
 		if domain == mydomain:
 			defaultrange = '1000-64000'
