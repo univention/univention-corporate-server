@@ -1,3 +1,9 @@
+univention-ldap (5.0.19-2) unstable; urgency=low
+
+  * register ldap/replog for init script (Bug #9847)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 23 Apr 2010 17:52:05 +0200
+
 univention-ldap (5.0.19-1) unstable; urgency=low
 
   * merge recomended values into UCR:ldap/index/* instead of

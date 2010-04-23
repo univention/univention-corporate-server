@@ -3,6 +3,7 @@ File: etc/init.d/slapd
 Variables: ldap/server/type
 Variables: ldap/database/type
 Variables: ldap/schema/export
+Variables: ldap/replog
 
 Type: file
 File: var/lib/univention-ldap/ldap/DB_CONFIG
