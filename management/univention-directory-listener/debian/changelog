@@ -1,3 +1,11 @@
+univention-directory-listener (4.0.9-1) unstable; urgency=low
+
+  * if we found a duplicate memberUid entry we skip this memberUid
+    entry if the UCR variable listener/memberuid/skip is set to yes.
+    This should help for Bug #17998
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Apr 2010 09:58:32 +0200
+
 univention-directory-listener (4.0.8-2) unstable; urgency=low
 
   * fix casualties in verify.c (Bug #18011)

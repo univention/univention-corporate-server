@@ -36,11 +36,11 @@ CFLAGS=-g -Wall -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS)
 LDADD=-g -luniventiondebug
 LISTENER_LDADD=$(LDADD) -luniventionpolicy -lldap -lpython2.4 $(DB_LDADD)
 LISTENER_OBJS=main.o notifier.o transfile.o handlers.o cache.o cache_entry.o cache_lowlevel.o change.o network.o filter.o signals.o base64.o select_server.o
-DUMP_LDADD=$(LDADD) -lldap $(DB_LDADD)
+DUMP_LDADD=$(LDADD) -lldap -luniventionpolicy $(DB_LDADD)
 DUMP_OBJS=dump.o dump_signals.o $(DB_OBJS)
 DEMO_LDADD=$(LDADD)
 DEMO_OBJS=demo.o network.o
-VERIFY_LDADD=$(LDADD) -lldap $(DB_LDADD)
+VERIFY_LDADD=$(LDADD) -lldap -luniventionpolicy $(DB_LDADD)
 VERIFY_OBJS=verify.o dump_signals.o $(DB_OBJS)
 
 
