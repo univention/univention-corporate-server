@@ -1,8 +1,14 @@
+univention-server (5.0.20-3) unstable; urgency=low
+
+  * add script univention-ldap-server-available to univention-basesystem; Bug #9981
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 26 Apr 2010 14:55:44 +0200
+
 univention-server (5.0.20-2) unstable; urgency=low
 
   * merge missing fix in univention-ldap-server-available; Bug #9981
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 26 Apr 2010 14:55:44 +0200
+ -- Andreas Büsching <buesching@univention.de>  Mon, 26 Apr 2010 15:03:47 +0200
 
 univention-server (5.0.20-1) unstable; urgency=low
 
