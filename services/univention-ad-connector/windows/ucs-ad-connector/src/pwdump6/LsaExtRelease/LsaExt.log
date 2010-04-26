@@ -1,0 +1,32 @@
+﻿Build started 26.04.2010 11:11:55.
+Project "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\LsaExt.vcxproj" on node 2 (build target(s)).
+InitializeBuildStatus:
+  Creating ".\LsaExtRelease\LsaExt.unsuccessfulbuild" because "AlwaysCreate" was specified.
+ClCompile:
+  All outputs are up-to-date.
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Ob1 /Oy- /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D LSAEXT_EXPORTS /D UNICODE /D _VC80_UPGRADE=0x0710 /D _WINDLL /D _UNICODE /D UNICODE /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\LsaExtRelease/" /Fd".\LsaExtRelease/vc100.pdb" /Gd /TC /analyze- /errorReport:prompt blowfish.c
+  blowfish.c
+  All outputs are up-to-date.
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Ob1 /Oy- /D WIN32 /D NDEBUG /D _WINDOWS /D _MBCS /D _USRDLL /D LSAEXT_EXPORTS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\LsaExtRelease/" /Fd".\LsaExtRelease/vc100.pdb" /Gd /TC /analyze- /errorReport:prompt LsaExt.c
+  LsaExt.c
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\LsaExtRelease\LsaExt.dll) does not match the Linker's OutputFile property value (\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\LsaExtRelease\lsremora.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(LsaExt) does not match the Linker's OutputFile property value (lsremora). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+Link:
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:".\LsaExtRelease/lsremora.dll" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib netapi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST:NO /PDB:".\LsaExtRelease/LsaExt.pdb" /TLBID:1 /DYNAMICBASE:NO /IMPLIB:".\LsaExtRelease\lsremora.lib" /MACHINE:X86 /DLL .\LsaExtRelease/blowfish.obj
+  .\LsaExtRelease/LsaExt.obj
+     Creating library .\LsaExtRelease\lsremora.lib and object .\LsaExtRelease\lsremora.exp
+  LsaExt.vcxproj -> \\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\LsaExtRelease\LsaExt.dll
+PostBuildEvent:
+  copy LsaExtRelease\*.dll PwDumpRelease
+  :VCEnd
+  LsaExtRelease\lsremora64.dll
+  LsaExtRelease\lsremora.dll
+          2 Datei(en) kopiert.
+FinalizeBuildStatus:
+  Deleting file ".\LsaExtRelease\LsaExt.unsuccessfulbuild".
+  Touching ".\LsaExtRelease\LsaExt.lastbuildstate".
+Done Building Project "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\LsaExt.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.68
