@@ -1,9 +1,7 @@
 #!/bin/sh
 #
 # Univention System Role Package
-#  helper script: checks the connection to the LDAP server. If the
-#  connection fails 'ldap' is removed from the list of possible
-#  authentication methods
+#  helper script: checks the connection to the LDAP server.
 #
 # Copyright (C) 2010 Univention GmbH
 #
@@ -42,7 +40,7 @@ if [ -n "$ldap_server_name" ]; then
 	fi
 fi
 
-if [ -n "$ldap_server_addition" ] && [ $connection_okay = 0 ]; then
+if [ -n "$ldap_server_addition" ] && [ $exit_code = 1 ]; then
 	for h in  $ldap_server_addition; do
 		if /bin/netcat -q0 -w4 $h 389 </dev/null >/dev/null 2>&1; then
 			exit_code=0
