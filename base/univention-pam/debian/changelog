@@ -1,3 +1,9 @@
+univention-pam (3.0.14-1) unstable; urgency=low
+
+  * add description for nscd/autostart; Bug #18129
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 26 Apr 2010 16:25:31 +0200
+
 univention-pam (3.0.13-1) unstable; urgency=low
 
   * add descriptions for several UCR variables; Bug #18129

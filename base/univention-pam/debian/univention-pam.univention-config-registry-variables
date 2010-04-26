@@ -76,6 +76,12 @@ Description[en]=Activates the paranod mode. Thereby	the nscd restarts itself per
 Type=bool
 Categories=system-base
 
+[nscd/autostart]
+Description[de]=Automatischer Start des nscd beim Booten
+Description[en]=Automatically start nscd during system boot
+Type=bool
+Categories=system-base
+
 [nscd/restart/interval]
 Description[de]=Definiert das Intervall in dem sich der nscd im Paranoid-Modus neustartet
 Description[en]=Defines the period of time for the restarts in paranoid mode
