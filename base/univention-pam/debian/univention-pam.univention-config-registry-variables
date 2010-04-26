@@ -58,6 +58,30 @@ Description[en]=Specifies the name of the log-file
 Type=int
 Categories=system-base
 
+[nscd/threads]
+Description[de]=Gibt die Anzahl der zu startenden Threads für parallele Verarbeitung an
+Description[en]=Specifies the number threads to start for parallel processing of requests
+Type=bool
+Categories=system-base
+
+[nscd/.*/persistent]
+Description[de]=Definiert, ob die Cache-Daten bei einem Neustart erhalten bleiben sollen
+Description[en]=Specifies if the content of the cache should be kept over restarts
+Type=bool
+Categories=system-base
+
+[nscd/restart]
+Description[de]=Aktiviert den Paranoid-Modus. Dabei startet sich nscd periodisch selbst neu
+Description[en]=Activates the paranod mode. Thereby	the nscd restarts itself periodically
+Type=bool
+Categories=system-base
+
+[nscd/restart/interval]
+Description[de]=Definiert das Intervall in dem sich der nscd im Paranoid-Modus neustartet
+Description[en]=Defines the period of time for the restarts in paranoid mode
+Type=int
+Categories=system-base
+
 [nscd/group/invalidate_cache_on_changes]
 Description[de]=NSCD Gruppen Cache invalidieren, sobald Gruppenzugehörigkeiten verändert wurden? (yes/no).
 Description[en]=Invalidate NSCD group cache whenever a group membership has been modified? (yes/no).
