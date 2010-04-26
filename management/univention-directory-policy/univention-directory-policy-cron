@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-if /usr/sbin/univention-ldap-server-available; then
+if [ -x /usr/sbin/univention-ldap-server-available ] && /usr/sbin/univention-ldap-server-available; then
 	if [ -d /usr/lib/univention-directory-policy ]; then
 		/usr/sbin/jitter 300 run-parts /usr/lib/univention-directory-policy > /dev/null
 	fi
