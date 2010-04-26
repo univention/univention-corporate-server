@@ -1,17 +1,10 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LsaExt", "LsaExt.vcproj", "{16F5281C-D477-4E53-B7F5-D70FA9FADA37}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LsaExt", "LsaExt.vcxproj", "{16F5281C-D477-4E53-B7F5-D70FA9FADA37}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PwDump6", "PwDump6.vcproj", "{884B65BD-D984-4DF2-BBC2-97443A780460}"
-	ProjectSection(ProjectDependencies) = postProject
-		{16F5281C-D477-4E53-B7F5-D70FA9FADA37} = {16F5281C-D477-4E53-B7F5-D70FA9FADA37}
-		{BA33D673-2030-4B18-8EE9-C0210B1E6787} = {BA33D673-2030-4B18-8EE9-C0210B1E6787}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PwDump6", "PwDump6.vcxproj", "{884B65BD-D984-4DF2-BBC2-97443A780460}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwservice", "pwservice.vcproj", "{BA33D673-2030-4B18-8EE9-C0210B1E6787}"
-	ProjectSection(ProjectDependencies) = postProject
-		{16F5281C-D477-4E53-B7F5-D70FA9FADA37} = {16F5281C-D477-4E53-B7F5-D70FA9FADA37}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwservice", "pwservice.vcxproj", "{BA33D673-2030-4B18-8EE9-C0210B1E6787}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

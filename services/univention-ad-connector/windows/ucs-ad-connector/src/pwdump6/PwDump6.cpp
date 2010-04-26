@@ -101,12 +101,13 @@ BLOWFISH_CTX ctx;
 
 void Usage(char* szProgramName)
 {
-	fprintf(stderr, "Usage: %s [-x][-n][-h][-o output_file][-u user][-p password][-s share] machineName\n", szProgramName);
+	fprintf(stderr, "Usage: %s [-x][-n][-h][-o output_file][-u user][-p password][-s share][-i input_file] machineName\n", szProgramName);
 	fprintf(stderr, "  where -h prints this usage message and exits\n");
 	fprintf(stderr, "  where -o specifies a file to which to write the output\n");
 	fprintf(stderr, "  where -u specifies the user name used to connect to the target\n");
 	fprintf(stderr, "  where -p specifies the password used to connect to the target\n");
 	fprintf(stderr, "  where -s specifies the share to be used on the target, rather than searching for one\n");
+	fprintf(stderr, "  where -i specifies the input file for setting a hash for the specified user\n");
 	fprintf(stderr, "  where -n skips password histories\n");
 	fprintf(stderr, "  where -x targets a 64-bit host\n");
 }
@@ -170,7 +171,7 @@ int main(int argc, char* argv[])
 	char szDestinationServicePath[MAX_PATH];
 	char szDestinationDllPath[MAX_PATH];
 	char* szSelectedShareName = NULL;
-    char* varg[6];
+    char* varg[7];
 	char dwLen;
 	SERVICE_STATUS statusService;
 	BOOL bSkipHistories = FALSE;
@@ -181,6 +182,7 @@ int main(int argc, char* argv[])
 	ResourceLoader rlLsaExt, rlPwServ;
 	char szCurrentDir[MAX_PATH];
 	bool bIsLocalRun = false;
+	bool setPasswordHash = false;
 
 	//OutputDebugString("PWDump Starting");
 
@@ -203,7 +205,7 @@ int main(int argc, char* argv[])
     fprintf(stderr, "PROGRAM.  Please see the COPYING file included with this program\n");
     fprintf(stderr, "and the GNU GPL for further details.\n\n" );
 
-	while ((c = getopt(argc, argv, "xnhu:o:p:s:")) != EOF)
+	while ((c = getopt(argc, argv, "xnhu:o:p:s:i:")) != EOF)
 	{
 		switch(c)
 		{
@@ -236,6 +238,9 @@ int main(int argc, char* argv[])
 		case 'n':
 			// Do not dump password histories
 			bSkipHistories = true;
+			break;
+		case 'i':
+			setPasswordHash = true;
 			break;
 		case 'x':
 			// Target x64
@@ -577,6 +582,11 @@ int main(int argc, char* argv[])
 		varg[4] = szServiceFileName;
 		varg[5] = szRemoteLsaExtPath;
 
+		if (setPasswordHash) {
+			varg[6] = "set";
+		} else {
+			varg[6] = "dump";
+		}
 		memcpy(szTemp1, &dwLen, 1);
 		varg[2] = szTemp1;
 		
@@ -585,7 +595,7 @@ int main(int argc, char* argv[])
 
 		Blowfish_Init(&ctx, pEncryptionKey, dwLen);
 
-		if(!StartService(hsvc, 6, (const char**)varg))
+		if(!StartService(hsvc, 7, (const char**)varg))
 		{
             sprintf(errMsg, "Service start failed: %d (%s/%s)\n", GetLastError(), szRemoteServicePath, szGUIDServiceName);
             throw errMsg;
