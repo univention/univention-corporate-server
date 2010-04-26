@@ -90,7 +90,7 @@ install: build
 		install -d debian/univention-server-$$role/usr/sbin/; \
 		install -m 0755 -t debian/univention-server-$$role/usr/sbin/ univention-ldap-server-available; \
 	done
-	@for role in managed-client mobile-client; do \
+	@for role in managed-client mobile-client basesystem; do \
 		install -d debian/univention-$$role/usr/sbin/; \
 		install -m 0755 -t debian/univention-$$role/usr/sbin/ univention-ldap-server-available; \
 	done
