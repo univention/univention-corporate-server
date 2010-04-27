@@ -104,7 +104,7 @@ fi
 univention-config-registry set samba/debug/level?0
 univention-config-registry set samba/os/level?65
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+if [ "$server_role" = "domaincontroller_master" ]; then
 	/usr/lib/univention-install/26univention-samba.inst || true
 fi
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.17; then
