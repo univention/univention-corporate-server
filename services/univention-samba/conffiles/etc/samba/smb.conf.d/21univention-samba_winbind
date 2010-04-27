@@ -33,7 +33,7 @@ if idmap_domains:
 	mydomain=baseConfig['windows/domain'].upper()
 	defaultrange = '1000-54999'
 	# try uppercase domain, then allow for lowercase, otherwise use defaultrange
-	range = baseConfig.get('samba/idmap/%s/range' % domain, baseConfig.get('samba/idmap/%s/range' % domain.lower(), defaultrange))
+	range = baseConfig.get('samba/idmap/%s/range' % mydomain, baseConfig.get('samba/idmap/%s/range' % mydomain.lower(), defaultrange))
 	print '\tidmap config %s : backend = nss' % (mydomain, )
 	print '\tidmap config %s : range = %s' % (mydomain, range)
 	for domain in idmap_domains.replace('"','').strip().split(' '):
