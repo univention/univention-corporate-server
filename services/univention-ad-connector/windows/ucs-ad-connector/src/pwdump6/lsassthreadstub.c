@@ -75,7 +75,7 @@ static DWORD __stdcall LsaThreadFunc(struct ThreadData* pData)
 		{
 			sz[1] = 0x32;
 			//pData->pOutputDebugString(sz);
-            rc = pGetHash(pData->szPipeName, pData->byteKey, pData->dwKeyLength, pData->bSkipHistories);
+            rc = pGetHash(pData->szPipeName, pData->szCurrentDirectory, pData->byteKey, pData->dwKeyLength, pData->bSkipHistories);
 		}
 		sz[1] = 0x33;
 		//pData->pOutputDebugString(sz);

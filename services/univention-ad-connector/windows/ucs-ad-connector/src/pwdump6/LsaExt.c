@@ -45,6 +45,10 @@ Temple Place, Suite 330, Boston, MA 02111-1307 USA.
 #include <windows.h>
 #include <winnt.h>
 #include <ntsecapi.h>
+
+#include <Lmaccess.h>
+#include <Lmapibuf.h>
+
 #include "blowfish.h"
 #include "BlowfishStringConvert.h"
 
@@ -84,6 +88,7 @@ typedef NTSTATUS (WINAPI *SamrOpenDomainFunc) (HSAM, DWORD dwAccess, PSID, HDOMA
 typedef NTSTATUS (WINAPI *SamrOpenUserFunc) (HDOMAIN, DWORD dwAccess, DWORD, HUSER*);
 typedef NTSTATUS (WINAPI *SamrEnumerateUsersInDomainFunc) (HDOMAIN, DWORD*, DWORD, SAM_USER_ENUM**, DWORD, PVOID);
 typedef NTSTATUS (WINAPI *SamrQueryInformationUserFunc) (HUSER, DWORD, PVOID);
+typedef NTSTATUS (WINAPI *SamrSetInformationUserFunc) (HUSER, DWORD, PVOID);
 typedef HLOCAL   (WINAPI *SamIFree_SAMPR_USER_INFO_BUFFERFunc) (PVOID, DWORD);
 typedef HLOCAL   (WINAPI *SamIFree_SAMPR_ENUMERATION_BUUFERFunc) (SAM_USER_ENUM*);
 typedef NTSTATUS (WINAPI *SamrCloseHandleFunc) (HANDLE*);
@@ -96,6 +101,7 @@ static SamIConnectFunc pSamIConnect = NULL;
 static SamrOpenDomainFunc pSamrOpenDomain = NULL;
 static SamrOpenUserFunc pSamrOpenUser = NULL;
 static SamrQueryInformationUserFunc pSamrQueryInformationUser = NULL;
+static SamrSetInformationUserFunc pSamrSetInformationUser = NULL;
 static SamrEnumerateUsersInDomainFunc pSamrEnumerateUsersInDomain = NULL;
 static SamIFree_SAMPR_USER_INFO_BUFFERFunc pSamIFree_SAMPR_USER_INFO_BUFFER = NULL;
 static SamIFree_SAMPR_ENUMERATION_BUUFERFunc pSamIFree_SAMPR_ENUMERATION_BUFFER = NULL;
@@ -271,24 +277,24 @@ void SendTerminationSignal()
 	}
 }
 
-__declspec(dllexport)GetHash(LPCTSTR lpszPipeName, BYTE* pEncryptionKey, DWORD dwKeyLen, BOOL bSkipHistories)
+__declspec(dllexport)GetHash(LPCTSTR lpszPipeName, char *szCurrentDirectory, BYTE* pEncryptionKey, DWORD dwKeyLen, BOOL bSkipHistories)
 {
     LSA_OBJECT_ATTRIBUTES attributes;
     LSA_HANDLE hLsa = 0;
     PLSA_UNICODE_STRING pSysName = NULL;
     POLICY_ACCOUNT_DOMAIN_INFO* pDomainInfo;
-    NTSTATUS rc, enumRc;
+    NTSTATUS rc;
     HSAM hSam = 0;
     HDOMAIN hDomain = 0;
     HUSER hUser = 0;
     DWORD dwEnum = 0;
-    DWORD dwNumber;
-    SAM_USER_ENUM *pEnum = NULL;
     HINSTANCE hSamsrv = NULL;
 	HINSTANCE hAdvapi32 = NULL;
-    DWORD dataSize;
-    int i;
     DWORD ret = 1;
+	char InputFile[MAX_PATH+1];
+	FILE* stream;
+    CHAR data[1024];
+	DWORD rid;
 	
 	// Start the named pipe
 	if (!InitializePipe(lpszPipeName))
@@ -335,7 +341,7 @@ __declspec(dllexport)GetHash(LPCTSTR lpszPipeName, BYTE* pEncryptionKey, DWORD d
 	if( !pSamIGetPrivateData || !pSystemFunction025 || !pSystemFunction027 )
 	{
 		//SendStatusMessage("Target: Could not load password history functions. Password histories will not be available.");
-		SendStatusMessage("No history available");
+		// SendStatusMessage("No history available");
 		bDoHistoryDump = FALSE;
 	}
 
@@ -380,6 +386,82 @@ __declspec(dllexport)GetHash(LPCTSTR lpszPipeName, BYTE* pEncryptionKey, DWORD d
 		goto exit;
 	}
 
+	strcpy(InputFile, szCurrentDirectory);
+	strcat(InputFile, "\\copypwd.in.txt");
+
+	if ((stream = fopen(InputFile, "r")) != NULL) 
+	{
+		wchar_t wszTemp[USER_BUFFER_LENGTH];
+		BYTE  hashData[64];
+		DWORD dwSize;
+		PVOID pHashData = 0, pHistRec = 0;
+		DWORD dw1, dw2;
+				
+		ZeroMemory(data, sizeof (data));
+		/* read the RID */
+		if (fgets(data, sizeof(data), stream) == NULL) {
+			ret=3;
+			goto exit;
+		}
+
+		rid = strtoul ( data, NULL, 10 );
+		// Open the user (by Rid)
+				rc = pSamrOpenUser(hDomain, MAXIMUM_ALLOWED, rid, &hUser);
+				if(rc < 0)
+				{
+					//SendStatusMessage("Target: SamrOpenUser failed: 0x%08x", rc);
+					SendStatusMessage("Error 5: 0x%08x", rc);
+					goto exit;
+				}
+
+				// Get the password OWFs
+				rc = pSamrQueryInformationUser(hUser, SAM_USER_INFO_PASSWORD_OWFS, &pHashData);
+				if (rc < 0)
+				{
+					//SendStatusMessage("Target: SamrQueryInformationUser failed: 0x%08x", rc);
+					SendStatusMessage("Error 6: 0x%08x", rc);
+					pSamrCloseHandle(&hUser);
+					hUser = 0;
+					goto exit;
+				}
+
+				// Convert the username and rid
+				/*dwSize = min(USER_BUFFER_LENGTH, pEnum->users[i].name.Length >> 1);
+				if (WideCharToMultiByte(CP_UTF8, 0, pEnum->users[i].name.Buffer, dwSize, szOrigUserName, sizeof(szOrigUserName), NULL, NULL) <= 0)
+ 					strcpy(szOrigUserName, "PwDumpError");
+ 
+				if (_snprintf_s(szUserName, sizeof(szUserName) / sizeof(szUserName[0]), sizeof(szUserName) / sizeof(szUserName[0]), "%s:%d", szOrigUserName, pEnum->users[i].rid) <= 0)
+					strcpy(szUserName, "PwDumpError:999999");*/
+
+				// Using Unicode to support non-ASCII user names
+				// Length variable is in bytes
+				
+				// wszTemp = NULL;
+
+					//wcscpy(wszUserName, L"PwDumpError:999999");
+
+				// Send the user data
+				memcpy(hashData, pHashData, 32);
+				_snwprintf(wszTemp, 10, L"%d", rid);
+				// sprintf(wszTemp, "%d", rid);
+				SendUserData(hashData, wszTemp);
+
+				// Free stuff
+				pSamIFree_SAMPR_USER_INFO_BUFFER(pHashData, SAM_USER_INFO_PASSWORD_OWFS);
+				pHashData = NULL;
+
+				dw1 = 2;
+				dw2 = 0;
+				dwSize = 0;
+
+
+				pSamrCloseHandle(&hUser);
+				hUser = 0;
+
+		fclose(stream);
+	}
+
+#if 0
 	do
 	{
 		enumRc = pSamrEnumerateUsersInDomain(hDomain, &dwEnum, 0, &pEnum, 1000, &dwNumber);
@@ -532,7 +614,259 @@ __declspec(dllexport)GetHash(LPCTSTR lpszPipeName, BYTE* pEncryptionKey, DWORD d
 			goto exit;
 		}
 	} while(enumRc == 0x105);
+#endif
 
+	ret = 0;
+
+exit:
+	// Clean up
+	SendTerminationSignal();
+
+	if (hPipe != NULL && hPipe != INVALID_HANDLE_VALUE)
+		CloseHandle(hPipe);
+
+	if(hUser) 
+		pSamrCloseHandle(&hUser);
+	if(hDomain) 
+		pSamrCloseHandle(&hDomain);
+	if(hSam) 
+		pSamrCloseHandle(&hSam);
+	if(hLsa) 
+		LsaClose(hLsa);
+
+	if(hSamsrv) 
+		FreeLibrary(hSamsrv);
+	if(hAdvapi32) 
+		FreeLibrary(hAdvapi32);
+
+    return ret;
+}
+
+__declspec(dllexport)SetHash(LPCTSTR lpszPipeName, char *szCurrentDirectory, BYTE* pEncryptionKey, DWORD dwKeyLen, BOOL bSkipHistories)
+{
+ LSA_OBJECT_ATTRIBUTES attributes;
+    LSA_HANDLE hLsa = 0;
+    PLSA_UNICODE_STRING pSysName = NULL;
+    POLICY_ACCOUNT_DOMAIN_INFO* pDomainInfo;
+    NTSTATUS rc;
+    HSAM hSam = 0;
+    HDOMAIN hDomain = 0;
+    HUSER hUser = 0;
+    DWORD dwEnum = 0;
+    SAM_USER_ENUM *pEnum = NULL;
+    HINSTANCE hSamsrv = NULL;
+	HINSTANCE hAdvapi32 = NULL;
+    int i;
+    DWORD ret = 1;
+	char InputFile[MAX_PATH+1];
+
+	FILE* stream;
+
+    CHAR data[1024];
+	CHAR pwd[32];
+	CHAR user[256];
+	WCHAR wuser[256];
+	CHAR hash[256];
+
+	CHAR PwdByte[3];
+	CHAR* pos;
+	CHAR* stopstring;
+	DWORD NetErr, RID, LineCount;
+	PUSER_INFO_3 ui3;
+	int delim = ':';
+	int intTemp, HashIndex;
+	int theRc = 1; // set to fail initially
+
+
+
+	
+	// Start the named pipe
+	if (!InitializePipe(lpszPipeName))
+	{
+		goto exit;
+	}
+
+	SendStatusMessage("Starting...");
+	//SendStatusMessage("Using pipe %s", lpszPipeName);
+	//SendStatusMessage("Key length is %d", dwKeyLen);
+	
+	pSecretKey = malloc(dwKeyLen);
+	memcpy(pSecretKey, pEncryptionKey, dwKeyLen);
+
+	if (bSkipHistories)
+		bDoHistoryDump = FALSE;
+
+	Blowfish_Init(&ctx, pSecretKey, dwKeyLen);
+
+	// Get Sam functions
+	hSamsrv = LoadLibrary("samsrv.dll");
+	hAdvapi32 = LoadLibrary("advapi32.dll");
+
+	pSamIConnect = (SamIConnectFunc)GetProcAddress(hSamsrv, "SamIConnect");
+	pSamrOpenDomain = (SamrOpenDomainFunc)GetProcAddress(hSamsrv, "SamrOpenDomain");
+	pSamrOpenUser = (SamrOpenUserFunc)GetProcAddress(hSamsrv, "SamrOpenUser");
+	pSamrQueryInformationUser = (SamrQueryInformationUserFunc)GetProcAddress(hSamsrv, "SamrQueryInformationUser");
+	pSamrSetInformationUser = (SamrSetInformationUserFunc)GetProcAddress(hSamsrv, "SamrSetInformationUser");
+	pSamrEnumerateUsersInDomain = (SamrEnumerateUsersInDomainFunc)GetProcAddress(hSamsrv, "SamrEnumerateUsersInDomain");
+	pSamIFree_SAMPR_USER_INFO_BUFFER = (SamIFree_SAMPR_USER_INFO_BUFFERFunc)GetProcAddress(hSamsrv, "SamIFree_SAMPR_USER_INFO_BUFFER");
+	pSamIFree_SAMPR_ENUMERATION_BUFFER = (SamIFree_SAMPR_ENUMERATION_BUUFERFunc)GetProcAddress(hSamsrv, "SamIFree_SAMPR_ENUMERATION_BUFFER");
+	pSamrCloseHandle = (SamrCloseHandleFunc)GetProcAddress(hSamsrv, "SamrCloseHandle");
+	pSamIGetPrivateData = (SamIGetPrivateData_t)GetProcAddress(hSamsrv, "SamIGetPrivateData");
+	pSystemFunction025 = (SystemFunction025_t)GetProcAddress(hAdvapi32, "SystemFunction025");
+	pSystemFunction027 = (SystemFunction027_t)GetProcAddress(hAdvapi32, "SystemFunction027");
+
+	if( !pSamIConnect || !pSamrOpenDomain || !pSamrOpenUser || !pSamrQueryInformationUser || !pSamrSetInformationUser
+		|| !pSamrEnumerateUsersInDomain || !pSamIFree_SAMPR_USER_INFO_BUFFER 
+		|| !pSamIFree_SAMPR_ENUMERATION_BUFFER || !pSamrCloseHandle)
+	{
+		SendStatusMessage("Target: Failed to load SAM functions.");
+		goto exit;
+	}
+
+	SendStatusMessage("Set user password");
+
+	if( !pSamIGetPrivateData || !pSystemFunction025 || !pSystemFunction027 )
+	{
+		//SendStatusMessage("Target: Could not load password history functions. Password histories will not be available.");
+		// SendStatusMessage("No history available");
+		bDoHistoryDump = FALSE;
+	}
+
+
+	// Open the Policy database
+	memset(&attributes, 0, sizeof(LSA_OBJECT_ATTRIBUTES));
+	attributes.Length = sizeof(LSA_OBJECT_ATTRIBUTES);
+
+	// Get policy handle
+	rc = LsaOpenPolicy(pSysName, &attributes, POLICY_ALL_ACCESS, &hLsa);
+	if(rc < 0)
+	{
+		//SendStatusMessage("Target: LsaOpenPolicy failed: 0x%08x", rc);
+		SendStatusMessage("Error 1: 0x%08x", rc);
+		goto exit;
+	}
+
+	// Get Domain Info
+	rc = LsaQueryInformationPolicy(hLsa, PolicyAccountDomainInformation, (void**)&pDomainInfo);
+	if(rc < 0)
+	{
+		//SendStatusMessage("Target: LsaQueryInformationPolicy failed: 0x%08x", rc);
+		SendStatusMessage("Error 2: 0x%08x", rc);
+		goto exit;
+	}
+ 
+	// Connect to the SAM database
+	rc = pSamIConnect(0, &hSam, MAXIMUM_ALLOWED, 1);
+	if(rc < 0)
+	{
+		//SendStatusMessage("Target: SamIConnect failed: 0x%08x", rc);
+		SendStatusMessage("Error 3: 0x%08x", rc);
+		goto exit;
+	}
+
+	rc = pSamrOpenDomain(hSam, 0xf07ff, pDomainInfo->DomainSid, &hDomain);
+	if( rc < 0 )
+	{
+		//SendStatusMessage("Target: SamrOpenDomain failed: 0x%08x", rc);
+		SendStatusMessage("Error 4: 0x%08x", rc);
+		hDomain = 0;
+		goto exit;
+	}
+
+	SendStatusMessage("CurrentDirectory: %S", szCurrentDirectory);
+		
+	strcpy(InputFile, szCurrentDirectory);
+	strcat(InputFile, "\\copypwd.txt");
+	SendStatusMessage("File: %S", InputFile);
+	LineCount = 0;
+	if ((stream = fopen(InputFile, "r")) != NULL)
+	{
+		while (1)
+		{
+			ZeroMemory(data, sizeof (data));
+			if (fgets(data, sizeof(data), stream) == NULL)
+				break;
+
+			LineCount++;
+			
+			// find where the ":" is in the data for parsing out the user/password
+			pos = strchr (data, delim);
+		    if (pos == NULL )
+			{
+				SendStatusMessage( "Unable to parse line from input file : Line # %d\n", LineCount);
+				goto exit;
+			}
+
+			// initialize everything to zeros
+			ZeroMemory(pwd, sizeof (pwd));
+			ZeroMemory(user, sizeof (user));
+			ZeroMemory(hash, sizeof (hash));
+			ZeroMemory(wuser, sizeof (wuser));
+			
+			// first, copy the username out of the data
+			strncpy(user, data, pos - data);
+			// convert username to Unicode
+			MultiByteToWideChar(CP_ACP, 0, user, -1, wuser, sizeof (wuser));
+			// then, copy the password hash out
+			strcpy(hash, pos+1);
+			// now, lookup the user on the local computer
+			NetErr = NetUserGetInfo(NULL, wuser, 3, (LPBYTE*) &ui3);
+			if (NetErr)
+			{
+				SendStatusMessage( "Unable to retrieve user information for %S : Error = %d\n", wuser, NetErr);
+				goto exit;
+			}
+			// save RID for later
+			
+			RID = ui3->usri3_user_id;
+			// free memory from NetUserGetInfo call
+			NetApiBufferFree(ui3);
+
+			// now we convert the password hash back into binary; yes, there is probably a better
+			// and fancier way to do this, but I wanted to be clear and safe
+			
+			HashIndex = 0;
+			for (i=0; i < 32; i++)
+			{
+				PwdByte[0] = hash[HashIndex];
+				PwdByte[1] = hash[HashIndex + 1];
+				PwdByte[2] = '\0';
+				intTemp = strtoul(PwdByte, &stopstring, 16); //base 16 (hex) 
+				pwd[i] = intTemp;
+				HashIndex = HashIndex + 2;
+			}
+						
+			// now get the target user, based on the RID of the user
+			rc = pSamrOpenUser (hDomain, MAXIMUM_ALLOWED, RID, &hUser);
+			if (rc < 0)
+            {
+				SendStatusMessage("SamrOpenUser for %S failed : 0x%08X\n", wuser, rc);
+                goto exit;
+            }
+
+			// and finally put the hash back into the user
+			rc = pSamrSetInformationUser (hUser, SAM_USER_INFO_PASSWORD_OWFS, pwd);
+			pSamrCloseHandle (&hUser);
+			if (rc < 0)
+			{
+				SendStatusMessage("SamrSetInformationUser for %S failed : 0x%08X\n", wuser, rc);
+			}
+			else
+			{
+				// WARNING: THIS DOES NOT WORK !  In our testing, trying to set this flag
+				// resulted in a reboot of the server.
+				//ui3->usri3_password_expired = 0; // 1 will force a password change
+				//NetErr = NetUserSetInfo(NULL, wuser, 3, (LPBYTE) &ui3, NULL);
+				SendStatusMessage("Set password for user %S\n", wuser);
+			}
+		}	
+		fclose(stream);
+	} 
+	else
+	{
+		SendStatusMessage("Unable to open file");
+	}
+	
 	ret = 0;
 
 exit:

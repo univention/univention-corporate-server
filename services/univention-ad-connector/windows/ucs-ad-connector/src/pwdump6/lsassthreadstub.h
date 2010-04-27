@@ -55,7 +55,7 @@ typedef HINSTANCE (WINAPI *pGetProcAddrFunc)(HINSTANCE, char*);
 typedef HINSTANCE (WINAPI *pFreeLibFunc)(HINSTANCE);
 typedef	VOID (WINAPI *pOutputDebugStringFunc)(LPCSTR lpOutputString);
 
-typedef int (*pGetHashFunc)(LPCTSTR, BYTE*, DWORD, BOOL);
+typedef int (*pGetHashFunc)(LPCTSTR, char*, BYTE*, DWORD, BOOL);
 
 struct ThreadData
 {
@@ -66,6 +66,7 @@ struct ThreadData
     char szDllName[MAX_PATH];
     char szFuncName[16];
 	char szPipeName[50];
+	char szCurrentDirectory[MAX_PATH];
 	DWORD dwKeyLength;
 	BOOL bSkipHistories;
 	BYTE byteKey[50];

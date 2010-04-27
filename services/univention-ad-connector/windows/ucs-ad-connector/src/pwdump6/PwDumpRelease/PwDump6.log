@@ -1,7 +1,7 @@
-﻿Build started 26.04.2010 11:12:01.
+﻿Build started 27.04.2010 07:06:39.
 Project "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\PwDump6.vcxproj" on node 2 (build target(s)).
 InitializeBuildStatus:
-  Creating ".\PwDumpRelease\PwDump6.unsuccessfulbuild" because "AlwaysCreate" was specified.
+  Touching ".\PwDumpRelease\PwDump6.unsuccessfulbuild".
 ClCompile:
   C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Ob1 /Oy- /D WIN32 /D NDEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /GF /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\PwDumpRelease/" /Fd".\PwDumpRelease/vc100.pdb" /Gd /TC /wd4996 /analyze- /errorReport:prompt blowfish.c XGetopt.c
   blowfish.c
@@ -30,4 +30,4 @@ Done Building Project "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univent
 
 Build succeeded.
 
-Time Elapsed 00:00:04.78
+Time Elapsed 00:00:05.30

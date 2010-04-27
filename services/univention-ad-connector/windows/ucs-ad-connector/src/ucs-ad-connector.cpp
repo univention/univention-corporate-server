@@ -433,7 +433,8 @@ void thread (LPVOID data)
 		fclose(fp);
 
 
-		wsprintf(cmd, "copypwd.exe dump> %s", path_copypwd_out);
+		// wsprintf(cmd, "copypwd.exe dump> %s", path_copypwd_out);
+		wsprintf(cmd, "PwDump.exe -x localhost> %s", path_copypwd_out);
 		//wsprintf(cmd, "\"%s\" dump> %s", path_copypwd_exe, path_copypwd_out);
 
 		fprintf ( packet->logfile, "Starting command: %s\n", cmd);fflush ( packet->logfile );
@@ -452,7 +453,7 @@ void thread (LPVOID data)
 		fp = fopen(path_copypwd_out, "w");
 		fprintf(fp, "%s:%s\n", packet->user_data, packet->pwd_data );
 		fclose(fp);
-		wsprintf(cmd, "copypwd.exe set");
+		wsprintf(cmd, "PwDump.exe -i copypwd.in.txt -x localhost");
 		fprintf( packet->logfile, "Starting command: %s\n", cmd);fflush ( packet->logfile );
 		system(cmd);
 		fprintf( packet->logfile, "Exiting command: %s\n", cmd);fflush ( packet->logfile );

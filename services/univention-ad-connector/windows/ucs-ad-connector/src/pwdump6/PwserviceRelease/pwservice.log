@@ -1,19 +1,20 @@
-﻿Build started 26.04.2010 11:11:58.
+﻿Build started 27.04.2010 07:07:45.
 Project "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\pwservice.vcxproj" on node 2 (build target(s)).
 InitializeBuildStatus:
   Creating ".\PwserviceRelease\pwservice.unsuccessfulbuild" because "AlwaysCreate" was specified.
 ClCompile:
   All outputs are up-to-date.
-  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Ob1 /Oy- /D WIN32 /D NDEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\PwserviceRelease/" /Fd".\PwserviceRelease/vc100.pdb" /Gd /TC /analyze- /errorReport:prompt lsassthreadstub.c
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Ob1 /D WIN32 /D NDEBUG /D _CONSOLE /D _WIN64 /D _VC80_UPGRADE=0x0710 /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\PwserviceRelease/" /Fd".\PwserviceRelease/vc100.pdb" /Gd /TC /errorReport:prompt lsassthreadstub.c
   lsassthreadstub.c
   All outputs are up-to-date.
-  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Ob1 /Oy- /D WIN32 /D NDEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\PwserviceRelease/" /Fd".\PwserviceRelease/vc100.pdb" /Gd /TP /analyze- /errorReport:prompt pwservice.cpp
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Ob1 /D WIN32 /D NDEBUG /D _CONSOLE /D _WIN64 /D _VC80_UPGRADE=0x0710 /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\PwserviceRelease/" /Fd".\PwserviceRelease/vc100.pdb" /Gd /TP /errorReport:prompt pwservice.cpp
   pwservice.cpp
-C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\PwserviceRelease\pwservice.exe) does not match the Linker's OutputFile property value (\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\PwserviceRelease\servpw.exe). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
-C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(pwservice) does not match the Linker's OutputFile property value (servpw). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\PwserviceRelease\pwservice.exe) does not match the Linker's OutputFile property value (\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\PwserviceRelease\servpw64.exe). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(pwservice) does not match the Linker's OutputFile property value (servpw64). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
 Link:
-  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:".\PwserviceRelease/servpw.exe" /INCREMENTAL:NO /NOLOGO odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST:NO /PDB:".\PwserviceRelease/servpw.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE:NO /IMPLIB:".\PwserviceRelease\pwservice.lib" /MACHINE:X86 .\PwserviceRelease/lsassthreadstub.obj
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:".\PwserviceRelease/servpw64.exe" /INCREMENTAL:NO /NOLOGO odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST:NO /PDB:".\PwserviceRelease/servpw64.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE:NO /IMPLIB:".\PwserviceRelease\pwservice.lib" /MACHINE:X64 .\PwserviceRelease/lsassthreadstub.obj
   .\PwserviceRelease/pwservice.obj
+  "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\LsaExtRelease\lsremora64.lib"
      Creating library .\PwserviceRelease\pwservice.lib and object .\PwserviceRelease\pwservice.exp
   pwservice.vcxproj -> \\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\PwserviceRelease\pwservice.exe
 PostBuildEvent:
@@ -29,4 +30,4 @@ Done Building Project "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univent
 
 Build succeeded.
 
-Time Elapsed 00:00:02.80
+Time Elapsed 00:00:03.47
