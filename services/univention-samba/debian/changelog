@@ -1,3 +1,9 @@
+univention-samba (4.0.21-4) unstable; urgency=low
+
+  * postinst now starts joinscript only on master and backup (Bug #14638)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Apr 2010 13:57:02 +0200
+
 univention-samba (4.0.21-3) unstable; urgency=low
 
   * increase join script version for samba/idmap/domains adjustment
