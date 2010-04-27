@@ -31,12 +31,14 @@ print '\tidmap alloc config : ldap_url = ldap://%s' % (ldap_server_name)
 idmap_domains=baseConfig.get('samba/idmap/domains')
 if idmap_domains:
 	mydomain=baseConfig['windows/domain'].upper()
+	defaultrange = '1000-54999'
+	# try uppercase domain, then allow for lowercase, otherwise use defaultrange
+	range = baseConfig.get('samba/idmap/%s/range' % domain, baseConfig.get('samba/idmap/%s/range' % domain.lower(), defaultrange))
+	print '\tidmap config %s : backend = nss' % (mydomain, )
+	print '\tidmap config %s : range = %s' % (mydomain, range)
 	for domain in idmap_domains.replace('"','').strip().split(' '):
 		domain = domain.upper() # canonicalize to uppercase
-		if domain == mydomain:
-			defaultrange = '1000-64000'
-		else:
-			defaultrange = '55000-64000'
+		defaultrange = '55000-64000'
 		# try uppercase domain, then allow for lowercase, otherwise use defaultrange
 		range = baseConfig.get('samba/idmap/%s/range' % domain, baseConfig.get('samba/idmap/%s/range' % domain.lower(), defaultrange))
 		print '\tidmap config %s : backend = ldap' % (domain, )
