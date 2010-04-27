@@ -7,7 +7,7 @@ if [ $UID != 0 ]; then sudo $0 "$@"; exit; fi
 help_and_exit () {
 	local RC=0;
 	if [ "$1" ]; then RC="$1"; fi; 
-	echo "$0" [-d datespec] [-a maxaccounts] [-c maxclients] [-g maxgroupwareaccounts] [-u maxuniventiondesktops] [-p product\(s\)] [-o] [-i] [-e] [-H ldap-server]\\ 
+	echo "$0" [-d datespec] [-a maxaccounts] [-c maxclients] [-g maxgroupwareaccounts] [-u maxuniventiondesktops] [-p product\(s\)] [ -O oemproductt\(s\)] [-o] [-i] [-e] [-H ldap-server]\\ 
 	echo "     " -f outputfilename -D ldapbinddn -w ldappwd -t tempdn -k masterkeydir customername dn
 	echo "use -o to create an old license (for systems before UGS/1.3-1)"
 	exit $RC;
@@ -119,6 +119,11 @@ for i; do
 			PRODUCTS="$2";
 			shift; shift;
 			;;
+		"-O")
+			if [ -z "$2" ]; then help_and_exit 1; fi;
+			OEMPRODUCTS="$2";
+			shift; shift;
+			;;
 		"-o")
 			OLDLICENSE="1";
 			shift;
@@ -211,6 +216,12 @@ cd "$MASTERKEYDIR"
 	      do
 	      echo univentionLicenseType: "$product"
 	    done
+		if [ -n "$OEMPRODUCTS" ]; then
+			for oemproduct in `echo "$OEMPRODUCTS"|sed -e 's|,| |'`
+			do
+				echo univentionLicenseOEMProduct: "$oemproduct"
+			done
+		fi;
 	fi;
 		
 ) | ldapadd -x $LDAPSERVER -D "$LDAPBINDDN" -w "$LDAPPWD" 1>/dev/null 
