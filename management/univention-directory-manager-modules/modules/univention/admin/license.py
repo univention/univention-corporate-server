@@ -291,6 +291,12 @@ class License( object ):
 				'License Type', 'Type attribute not found' )
 		if not isinstance( self.types, ( list, tuple ) ):
 			self.types = [ self.types ]
+		self.oemProductTypes = self.__getValue( 'univentionLicenseOEMProduct', [ ],
+				'License Type', 'univentionLicenseOEMProduct attribute not found' )
+		if not isinstance( self.oemProductTypes, ( list, tuple ) ):
+			self.oemProductTypes = [ self.oemProductTypes ]
+		self.types=list(self.types)
+		self.types.extend(self.oemProductTypes)
 
 _license = License()
 

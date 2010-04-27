@@ -160,6 +160,16 @@ property_descriptions={
 			may_change=0,
 			identifies=0,
 		),
+	'oemProductTypes': univention.admin.property(
+			short_description=_('Valid OEM product types'),
+			long_description=_('OEM Product types this license allows.'),
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=0,
+			identifies=0,
+		),
 }
 layout=[
 	univention.admin.tab(_('License'),_('Licensing Information'), [
@@ -168,6 +178,7 @@ layout=[
 		[univention.admin.field('accounts'), univention.admin.field('groupwareaccounts')],
 		[univention.admin.field('clients'), univention.admin.field('desktops')],
 		[univention.admin.field('productTypes'), univention.admin.field('filler')],
+		[univention.admin.field('oemProductTypes'), univention.admin.field('filler')],
 		[univention.admin.field('signature'), univention.admin.field('filler')],
 	]),
 ]
@@ -183,6 +194,7 @@ mapping.register('groupwareaccounts', 'univentionLicenseGroupwareAccounts', None
 mapping.register('clients', 'univentionLicenseClients', None, univention.admin.mapping.ListToString)
 mapping.register('desktops', 'univentionLicenseuniventionDesktops', None, univention.admin.mapping.ListToString)
 mapping.register('productTypes', 'univentionLicenseType')
+mapping.register('oemProductTypes', 'univentionLicenseOEMProduct')
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module

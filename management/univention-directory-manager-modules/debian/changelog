@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.66-1) unstable; urgency=low
+
+  * map oemProductTypes to univentionLicenseOEMProduct (Bug #18212)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Apr 2010 19:38:26 +0200
+
 univention-directory-manager-modules (5.0.65-1) unstable; urgency=low
 
   * fixed check for forbidden paths, Bug #5392
