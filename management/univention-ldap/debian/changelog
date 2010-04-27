@@ -1,3 +1,9 @@
+univention-ldap (5.0.20-1) unstable; urgency=low
+
+  * add attributetype univentionLicenseOEMProduct (Bug #18212)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Apr 2010 19:41:46 +0200
+
 univention-ldap (5.0.19-2) unstable; urgency=low
 
   * register ldap/replog for init script (Bug #9847)
