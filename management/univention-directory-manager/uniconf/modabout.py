@@ -237,7 +237,15 @@ class modabout(unimodule.unimodule):
 			for t in object['productTypes']:
 				productTypes += ", " + t
 
-			self.__add_row(object.descriptions['productTypes'].short_description, productTypes[2:])
+			oemProductTypes = ""
+			for t in filter(object['oemProductTypes']):
+				if t:
+					oemProductTypes += ", " + t
+
+			if oemProductTypes:
+				self.__add_row(object.descriptions['oemProductTypes'].short_description, oemProductTypes[2:])
+			else:
+				self.__add_row(object.descriptions['productTypes'].short_description, productTypes[2:])
 
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "check for personal use: %s" % self.save.get( 'personal_use' ))
 			if self.save.get( 'personal_use' ) == '1':
@@ -293,14 +301,22 @@ class modabout(unimodule.unimodule):
 		self.subobjs.append(htmltext ('', {}, {'htmltext': ['</div><br class="clear" />']}))
 
 		self.div_stop('form-wrapper about')
-		self.subobjs.append(htmltext ('', {}, {'htmltext': ['<h3 class="about">%s</h3>' % _('Contact')]}))
-		self.div_start('form-wrapper about', divtype='class')
 
+		if oemProductTypes:
 
-		self.__add_row('Univention GmbH', '<a href=http://www.univention.de target=parent>www.univention.de</a>')
-		self.__add_row( _('ALL RIGHTS RESERVED'), '<a href="mailto:info@univention.de">info@univention.de</a>')
-
-		self.div_stop('form-wrapper about')
+			feedback_description=baseConfig.get('directory/manager/web/feedback/description')
+			feedback_mail=baseConfig.get('directory/manager/web/feedback/mail')
+			if feedback_description and feedback_mail:
+				self.subobjs.append(htmltext ('', {}, {'htmltext': ['<h3 class="about">%s</h3>' % _('Contact')]}))
+				self.div_start('form-wrapper about', divtype='class')
+				self.__add_row( '%s', '<a href="mailto:%s">%s</a>' % (feedback_description, feedback_mail, feedback_mail) )
+				self.div_stop('form-wrapper about')
+		else:
+			self.subobjs.append(htmltext ('', {}, {'htmltext': ['<h3 class="about">%s</h3>' % _('Contact')]}))
+			self.div_start('form-wrapper about', divtype='class')
+			self.__add_row('Univention GmbH', '<a href=http://www.univention.de target=parent>www.univention.de</a>')
+			self.__add_row( _('ALL RIGHTS RESERVED'), '<a href="mailto:info@univention.de">info@univention.de</a>')
+			self.div_stop('form-wrapper about')
 
 		self.div_stop('content')
 
