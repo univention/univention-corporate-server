@@ -48,6 +48,11 @@ attributetype ( 1.3.6.1.4.1.10176.1710 NAME ( 'univentionLicenseType' )
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
 
+attributetype ( 1.3.6.1.4.1.10176.1711 NAME ( 'univentionLicenseOEMProduct' )
+	DESC 'OEM License type containing the OEM products this license is used for'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
+
 
 
 objectclass ( 1.3.6.1.4.1.10176.1799 NAME ( 'univentionLicense' )
@@ -58,4 +63,5 @@ objectclass ( 1.3.6.1.4.1.10176.1799 NAME ( 'univentionLicense' )
 		univentionLicenseBaseDN $ univentionLicenseSignature )
 	MAY (	univentionLicenseAccounts $ univentionLicenseClients $
 		univentionLicenseGroupwareAccounts $
-		univentionLicenseUniventionDesktops $ univentionLicenseType ) )
+		univentionLicenseUniventionDesktops $ univentionLicenseType $
+		univentionLicenseOEMProduct ) )
