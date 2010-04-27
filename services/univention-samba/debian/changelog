@@ -1,3 +1,9 @@
+univention-samba (4.0.21-6) unstable; urgency=low
+
+  * fix typo in 21univention-samba_winbind (Bug #17448)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Apr 2010 20:12:32 +0200
+
 univention-samba (4.0.21-5) unstable; urgency=low
 
   * use idmap_nss for UCS windows/domain, as idmap_ldap does not lookup
