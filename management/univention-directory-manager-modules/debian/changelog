@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.68-1) unstable; urgency=low
+
+  * adjust short_description for oem licenses (Bug #18212)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Apr 2010 17:32:25 +0200
+
 univention-directory-manager-modules (5.0.67-1) unstable; urgency=low
 
   * changed sharePath syntax (path may not start with /tmp, /sys, ...) Bug #17929

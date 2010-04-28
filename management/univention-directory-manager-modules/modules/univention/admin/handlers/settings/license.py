@@ -161,7 +161,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'oemProductTypes': univention.admin.property(
-			short_description=_('Valid OEM product types'),
+			short_description=_('Valid product types'),
 			long_description=_('OEM Product types this license allows.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
