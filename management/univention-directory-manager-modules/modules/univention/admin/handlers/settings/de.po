@@ -470,10 +470,6 @@ msgstr "Gültige Produkttypen"
 msgid "Product types this license allows."
 msgstr "Produkttypen, für die die vorliegenden Lizenz gültig ist."
 
-#: license.py:157
-msgid "Valid OEM product types"
-msgstr "Gültige OEM-Produkttypen"
-
 #: license.py:158
 msgid "OEM Product types this license allows."
 msgstr "OEM-Produkttypen, für die die vorliegenden Lizenz gültig ist."
