@@ -395,6 +395,9 @@ class sharePath(simple):
 	def parse(self, text):
 		if not text[0] == '/':
 			raise univention.admin.uexceptions.valueInvalidSyntax, _(', a path must begin with "/"!')
+		for path in ["tmp", "root", "proc", "dev", "sys"]:
+			if re.match("(^/%s$)|(^/%s/)" % (path, path), text):
+				raise univention.admin.uexceptions.valueError, _('Path may not start with /%s/ !' % path)
 		if self._re.match(text) == None:
 			return text
 		else:

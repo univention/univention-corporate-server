@@ -277,6 +277,10 @@ msgstr "Nur der erste Buchstabe des Benutzernames darf groß geschrieben sein!"
 msgid ", a path must begin with \"/\"!"
 msgstr ", eine Pfadangabe muss mit \\\"/\\\" beginnen."
 
+#: syntax.py:389
+msgid "Path may not start with /%s/ !"
+msgstr "Pfadname darf nicht mit /%s/ beginnen!"
+
 #: syntax.py:392
 msgid "Value may not contain double quotes (\")!"
 msgstr "Der Wert darf kein Anführungszeichen (\") enthalten!"
