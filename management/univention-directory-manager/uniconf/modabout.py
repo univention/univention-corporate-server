@@ -238,7 +238,7 @@ class modabout(unimodule.unimodule):
 				productTypes += ", " + t
 
 			oemProductTypes = ""
-			for t in filter(object['oemProductTypes']):
+			for t in object['oemProductTypes']:
 				if t:
 					oemProductTypes += ", " + t
 
@@ -309,7 +309,7 @@ class modabout(unimodule.unimodule):
 			if feedback_description and feedback_mail:
 				self.subobjs.append(htmltext ('', {}, {'htmltext': ['<h3 class="about">%s</h3>' % _('Contact')]}))
 				self.div_start('form-wrapper about', divtype='class')
-				self.__add_row( '%s', '<a href="mailto:%s">%s</a>' % (feedback_description, feedback_mail, feedback_mail) )
+				self.__add_row( '%s' % feedback_description, '<a href="mailto:%s">%s</a>' % (feedback_mail, feedback_mail) )
 				self.div_stop('form-wrapper about')
 		else:
 			self.subobjs.append(htmltext ('', {}, {'htmltext': ['<h3 class="about">%s</h3>' % _('Contact')]}))
