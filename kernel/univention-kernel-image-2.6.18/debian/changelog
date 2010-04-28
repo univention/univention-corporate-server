@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.18 (3.0.1-9) unstable; urgency=low
+
+  * Update kernel image (Bug #14571)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Apr 2010 16:27:01 +0200
+
 univention-kernel-image-2.6.18 (3.0.1-8) unstable; urgency=low
 
   * Update kernel image (Bug #16266)
