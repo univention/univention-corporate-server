@@ -28,14 +28,18 @@ ldap_server_name=baseConfig.get('ldap/server/name', 'localhost')
 print '\tidmap alloc backend = ldap'
 print '\tidmap alloc config : ldap_user_dn = %s' % (admindn)
 print '\tidmap alloc config : ldap_url = ldap://%s' % (ldap_server_name)
+# the range for the aloc backend is given by idmap uid/gid above
+
+# replacement for deprecated samba/winbind/trusted/domains/only=yes
+mydomain=baseConfig['windows/domain'].upper()
+defaultrange = '1000-54999'
+# try uppercase domain, then allow for lowercase, otherwise use defaultrange
+range = baseConfig.get('samba/idmap/%s/range' % mydomain, baseConfig.get('samba/idmap/%s/range' % mydomain.lower(), defaultrange))
+print '\tidmap config %s : backend = nss' % (mydomain, )
+print '\tidmap config %s : range = %s' % (mydomain, range)
+
 idmap_domains=baseConfig.get('samba/idmap/domains')
 if idmap_domains:
-	mydomain=baseConfig['windows/domain'].upper()
-	defaultrange = '1000-54999'
-	# try uppercase domain, then allow for lowercase, otherwise use defaultrange
-	range = baseConfig.get('samba/idmap/%s/range' % mydomain, baseConfig.get('samba/idmap/%s/range' % mydomain.lower(), defaultrange))
-	print '\tidmap config %s : backend = nss' % (mydomain, )
-	print '\tidmap config %s : range = %s' % (mydomain, range)
 	for domain in idmap_domains.replace('"','').strip().split(' '):
 		domain = domain.upper() # canonicalize to uppercase
 		defaultrange = '55000-64000'
@@ -47,7 +51,8 @@ if idmap_domains:
 		print '\tidmap config %s : ldap_url = ldap://%s' % (domain, ldap_server_name)
 ### </idmap config v5 for Samba 3.3.0>
 
-print '\twinbind trusted domains only = %s' % baseConfig.get('samba/winbind/trusted/domains/only', 'yes')	
+if baseConfig.get('samba/winbind/trusted/domains/only', 'no') in ('yes', 'true'):
+	print '\twinbind trusted domains only = yes'	# deprecated legacy setting
 
 if baseConfig.has_key('samba/winbind/nested/groups') and baseConfig['samba/winbind/nested/groups']:
 	print '\twinbind nested groups = %s' % baseConfig['samba/winbind/nested/groups']
