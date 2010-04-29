@@ -120,27 +120,25 @@ def handler(dn, new, old):
 			if not os.access(path,os.F_OK):
 				os.makedirs(path,int('0755',0))
 
-			#deniedpaths = ["/tmp", "/root", "/proc", "/dev", "/sys"]			
+			# deny chmod for dirs in dirBlackList and files
+			dirBlackList = ["sys", "proc", "dev", "tmp", "root"]
 			path = new['univentionSharePath'][0]
-			if re.match("(^/tmp)$|(^/tmp/)", path) or re.match("(^/root)$|(^/root/)", path) or re.match("(^/proc)$|(^/proc/)", path) or re.match("(^/dev)$|(^/dev/)", path) or re.match("(^/sys)$|(^/sys/)", path):
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
-					"Custom permissions for share '%s' not allowed, skip." % new['univentionSharePath'][0])
+			dirOnBlackList = False
+			if os.path.islink(path):
+				path = os.path.realpath(path)
+			for dir in dirBlackList:
+				if re.match("^/%s$|^/%s/" % (dir, dir), path):
+					dirOnBlackList = True
 
-			elif os.path.islink(path):
-				realpath = os.path.realpath(path)
-				if re.match("(^/tmp)$|(^/tmp/)", realpath) or re.match("(^/root)$|(^/root/)", realpath) or re.match("(^/proc)$|(^/proc/)", realpath) or re.match("(^    /dev)$|(^/dev/)", realpath) or re.match("(^/sys)$|(^/sys/)", realpath):
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
-						"Custom permissions for share '%s' not allowed, skip." % new['univentionSharePath'][0])
-
-			elif os.path.isdir(path):
+			if os.path.isdir(path) and not dirOnBlackList:
 				try:
-					os.chmod(path,int(mode,0))
-					os.chown(path,uid,gid)
+					os.chmod(directory,int(mode,0))
+					os.chown(directory,uid,gid)
 				except:
 					pass
 			else:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
-					"'%s': Custom permissions for files not allowed, skip." % path)	
+					"'%s': Custom permissions for files not allowed, skip." % path)
 
 		finally:
 			listener.unsetuid()
