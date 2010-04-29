@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.69-2) unstable; urgency=low
+
+  * check invalid dirs fix Bug #17929 
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Apr 2010 09:41:02 +0200
+
 univention-directory-manager-modules (5.0.69-1) unstable; urgency=low
 
   * check invalid dirs (proc, sys, dev) in share.py Bug #17929
