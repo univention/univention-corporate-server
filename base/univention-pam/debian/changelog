@@ -1,3 +1,10 @@
+univention-pam (3.0.16-1) unstable; urgency=low
+
+  * really fixed a syntax error in admin-auth while writing the
+    pam_passwdcache.so line. Bug #17502
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Apr 2010 20:03:49 +0200
+
 univention-pam (3.0.15-1) unstable; urgency=low
 
   * fixed a syntax error in admin-auth while writing the
