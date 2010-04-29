@@ -11,17 +11,18 @@
 127.0.0.1	localhost
 
 @!@
-for i in range(0,4):
-	if configRegistry['interfaces/eth%s/address' % i]:
-		name = configRegistry.get('interfaces/eth%s/hosts' % (i), '%s.%s %s' % (configRegistry['hostname'],configRegistry['domainname'],configRegistry['hostname']))
-		if name:
-			print '%s\t%s' % (configRegistry['interfaces/eth%s/address' % i],name)
+eth_devices=[]
 
-for i in range(0,4):
-	for j in range(0,4):
-		if configRegistry['interfaces/eth%s_%s/address' % (i,j)]:
-			name = configRegistry.get('interfaces/eth%s_%s/hosts' % (i,j), '%s.%s %s' % (configRegistry['hostname'],configRegistry['domainname'],configRegistry['hostname']))
-			if name:
-				print '%s\t%s' % (configRegistry['interfaces/eth%s_%s/address' % (i,j)],name)
+for key,value in configRegistry.items():
+	if key.startswith('interfaces/eth') and not key.find('fallback') != -1:
+		k = key.split("/")[1:2][0]
+		if k not in eth_devices:
+			eth_devices.append(k)
+
+for i in eth_devices:
+	if configRegistry['interfaces/%s/address' % i]:
+		name = configRegistry.get('interfaces/%s/hosts' % (i), '%s.%s %s' % (configRegistry['hostname'],configRegistry['domainname'],configRegistry['hostname']))
+		if name:
+			print '%s\t%s' % (configRegistry['interfaces/%s/address' % i],name)
 
 @!@
