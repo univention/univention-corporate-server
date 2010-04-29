@@ -44,19 +44,19 @@ ifhandler=configRegistry.get('interfaces/handler','ifplugd')
 
 for i in eth_devices:
 	configExists=False
+	iface = i.replace("_", ":")
 	if configRegistry.has_key('interfaces/%s/type' % i) and configRegistry['interfaces/%s/type' % i] == 'dhcp':
 		if ifhandler == 'ifplugd' and configRegistry.get('interfaces/%s/ifplugd' % i, 'yes' ).lower() in ( 'yes', 'true', '1' ):
-			print 'auto %s' % i
-			print 'iface %s inet dhcp' % i
+			print 'auto %s' % iface
+			print 'iface %s inet dhcp' % iface
 			configExists=True
 		elif ifhandler == 'networkmanager' and configRegistry.get('interfaces/%s/networkmanager' % i, 'yes' ).lower() in ( 'no', 'false', '0' ):
-			print 'auto %s' % i
-			print 'iface %s inet dhcp' % i
+			print 'auto %s' % iface
+			print 'iface %s inet dhcp' % iface
 			configExists=True
 	elif  configRegistry['interfaces/%s/address' % i]:
-		x = i.replace("_", ":")
-		print 'auto %s' % x
-		print 'iface %s inet static' % x
+		print 'auto %s' % iface
+		print 'iface %s inet static' % iface
 		
 		print 'address '+configRegistry['interfaces/%s/address' % i]
 		if configRegistry['interfaces/%s/network' % i]:
