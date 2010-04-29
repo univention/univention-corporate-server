@@ -1,3 +1,9 @@
+univention-nfs (2.0.8-1) unstable; urgency=low
+
+  * invalid dirs check in samba-shares.py Bug #17929 
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Apr 2010 09:55:43 +0200
+
 univention-nfs (2.0.7-1) unstable; urgency=low
 
   * fixed check for forbidden paths, Bug #5392
