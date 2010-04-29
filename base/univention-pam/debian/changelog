@@ -1,3 +1,10 @@
+univention-pam (3.0.15-1) unstable; urgency=low
+
+  * fixed a syntax error in admin-auth while writing the
+    pam_passwdcache.so line. Bug #17502
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Apr 2010 19:51:14 +0200
+
 univention-pam (3.0.14-1) unstable; urgency=low
 
   * add description for nscd/autostart; Bug #18129
@@ -32,7 +39,7 @@ univention-pam (3.0.10-1) unstable; urgency=low
 
 univention-pam (3.0.9-1) unstable; urgency=low
 
-  * save more then tree users in passwd cache. It is configurable via
+  * save more then three users in passwd cache. It is configurable via
     auth/passwdcache/max_user. Bug #17502
   * do not remove users from the cache file if the authentication fails.
     As from now this will be done by the passwdcache listener module.
