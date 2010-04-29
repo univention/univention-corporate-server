@@ -855,7 +855,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		dirBlackList = ["sys", "proc", "dev"]
 		for dir in dirBlackList:
-			if re.match("^/%s$|^/%s/" % (self['path'], self['path'])):
+			if re.match("^/%s$|^/%s/" % (dir, dir), self['path']):
 				raise univention.admin.uexceptions.invalidOperation, _('It is not valid to set %s as a share.')%self['path']
 
 		ocs = ['top', 'univentionShare']
