@@ -60,6 +60,10 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.8-1; t
 	mkdir -p /etc/univention/skel/windows-profiles/{Win95,WinNT,Win2k,WinXP,Win2K3,Vista,Vista.V2}
 fi
 
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.22-1; then
+	univention-config-registry unset samba/idmap/domains
+	# if set, domain specific idmap config is written to smb.conf
+fi
 
 univention-config-registry set samba/share/home?yes
 univention-config-registry set samba/share/groups?no

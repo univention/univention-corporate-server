@@ -48,29 +48,13 @@ if [ -n "$nfsd_pid" ]; then
 fi
 
 eval `univention-baseconfig shell`
-local_machine=$(echo $hostname | tr '[:lower:]' '[:upper:]')
-mydomain=$(echo "$windows_domain" | tr '[:lower:]' '[:upper:]')
 
 winbind_was_running=0
-trusted_domains_without_mydomain=""	# all domains that need an idmap_ldap config block
-# determine the list of additional trusted nonlocal domains and stop winbind
 if COLUMNS=200 dpkg -l winbind | grep "^ii  winbind"; then
 	if /etc/init.d/winbind status >/dev/null 2>&1; then
 		winbind_was_running=1
-	else
-		/etc/init.d/winbind start
 	fi
 
-	wbinfo_trusted_domains="$(wbinfo --trusted-domains)"
-	for candidate in $wbinfo_trusted_domains; do
-		if [ "$candidate" != "BUILTIN" -a "$candidate" != "$local_machine" -a "$candidate" != "$mydomain" ]; then
-			if [ -z "$trusted_domains_without_mydomain" ]; then
-				trusted_domains_without_mydomain="$candidate"
-			else:
-				trusted_domains_without_mydomain="$trusted_domains_without_mydomain $candidate"
-			fi
-		fi
-	done
 	/etc/init.d/winbind stop
 
 	# parse binddn and bindpwd from command line arguments into shell variables
@@ -89,26 +73,6 @@ samba_pid=`pidof smbd`
 if [ -n "$samba_pid" ]; then
 	/etc/init.d/samba stop >/dev/null 2>&1
 	killall smbd nmbd >/dev/null 2>&1
-fi
-
-if [ -z "$samba_idmap_domains" ]; then
-	# inititalize samba/idmap/domains for UCS 2.3-0 update
-	if [ -n "$trusted_domains_without_mydomain" ]; then
-	univention-config-registry set samba/idmap/domains?"$trusted_domains_without_mydomain"
-	samba_idmap_domains="$trusted_domains_without_mydomain"
-	fi
-else
-	# filter samba/idmap/domains for UCS 2.3-2 update
-	# 1. filter out mydomain in case it is in the list for idmap_ldap
-	if echo "$samba_idmap_domains" | grep -q "\b${mydomain}\b"; then
-		samba_idmap_domains=$(echo "$samba_idmap_domains" | sed "s/\b${mydomain}\b *//;s/ $//")
-	fi
-	# 2. filter out local_machine in case it is in the list for idmap_ldap
-	if echo "$samba_idmap_domains" | grep -q "\b${local_machine}\b"; then
-		samba_idmap_domains=$(echo "$samba_idmap_domains" | sed "s/\b${local_machine}\b *//;s/ $//")
-	fi
-	# the unconditional ucr set commits the new smb.conf to activate the adjusted idmap config
-	univention-config-registry set samba/idmap/domains="$samba_idmap_domains"
 fi
 
 if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
