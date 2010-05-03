@@ -146,9 +146,9 @@ def handler(dn, new, old):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'User was removed: uid: %s' % old['uid'][0])
 		_remove_user(old['uid'][0])
 
-	elif new and old:
+	else:
 		# if the user was disabled he should be removed from the cache
-		if new.has_key('sambaAcctFlags'):
+		if new and new.has_key('sambaAcctFlags'):
 			if new['sambaAcctFlags'][0].find('D') > 0:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'User was disabled: uid: %s' % new['uid'][0])
 				_remove_user(new['uid'][0])
