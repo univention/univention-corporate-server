@@ -217,10 +217,12 @@ cd "$MASTERKEYDIR"
 	      echo univentionLicenseType: "$product"
 	    done
 		if [ -n "$OEMPRODUCTS" ]; then
-			for oemproduct in `echo "$OEMPRODUCTS"|sed -e 's|,| |'`
+			IFS=$','
+			for oemproduct in $OEMPRODUCTS
 			do
 				echo univentionLicenseOEMProduct: "$oemproduct"
 			done
+			unset IFS
 		fi;
 	fi;
 		
