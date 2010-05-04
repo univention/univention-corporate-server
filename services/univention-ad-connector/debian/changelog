@@ -1,3 +1,10 @@
+univention-ad-connector (4.1.14-1) unstable; urgency=low
+
+  * also use the new CAcert file which contains the UCS CA and the AD CA
+    for univention-connector-list-rejected. Bug #18242
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 04 May 2010 08:38:20 +0200
+
 univention-ad-connector (4.1.13-1) unstable; urgency=low
 
   * remove calls to old univention-debug methods (Bug #13053)
