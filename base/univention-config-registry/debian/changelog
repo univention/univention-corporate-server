@@ -1,3 +1,9 @@
+univention-config-registry (5.0.84-3) unstable; urgency=low
+
+  * removed unnecessarily "fallback" test while getting interfaces Bug #15762
+
+ -- Felix Botner <botner@univention.de>  Tue, 04 May 2010 11:55:24 +0200
+
 univention-config-registry (5.0.84-2) unstable; urgency=low
 
   * fixed interfaces limitation in /etc/hosts Bug #15762
