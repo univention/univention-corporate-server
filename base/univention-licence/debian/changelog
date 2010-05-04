@@ -1,3 +1,9 @@
+univention-licence (2.0.8-2) unstable; urgency=low
+
+  * allow Spaces in univentionLicenseOEMProduct (Bug #18212)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 May 2010 10:00:51 +0200
+
 univention-licence (2.0.8-1) unstable; urgency=low
 
   * add -O switch to make_license.sh for univentionLicenseOEMProduct
