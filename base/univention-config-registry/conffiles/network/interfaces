@@ -17,7 +17,7 @@ iface lo inet loopback
 eth_devices=[]
 
 for key,value in configRegistry.items():
-	if key.startswith('interfaces/eth') and not key.find('fallback') != -1:
+	if key.startswith('interfaces/eth'):
 		k = key.split("/")[1:2][0]
 		if k not in eth_devices:
 			eth_devices.append(k)
