@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.70-1) unstable; urgency=low
+
+  * extend email address validation (Bug #17429)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 04 May 2010 14:42:46 +0200
+
 univention-directory-manager-modules (5.0.69-2) unstable; urgency=low
 
   * check invalid dirs fix Bug #17929 
