@@ -1,3 +1,9 @@
+univention-directory-manager-modules (5.0.71-1) unstable; urgency=low
+
+  * check for the realpath in share syntax. Bug #5392
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 May 2010 06:34:07 +0200
+
 univention-directory-manager-modules (5.0.70-1) unstable; urgency=low
 
   * extend email address validation (Bug #17429)

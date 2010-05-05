@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-04 14:17+0200\n"
+"POT-Creation-Date: 2010-05-05 06:35+0200\n"
 "PO-Revision-Date: 2010-05-04 14:40+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -279,8 +279,8 @@ msgstr ", eine Pfadangabe muss mit \\\"/\\\" beginnen."
 
 #: syntax.py:400
 #, python-format
-msgid "Path may not start with /%s/ !"
-msgstr "Pfadname darf nicht mit /%s/ beginnen!"
+msgid "Path may not start with \"%s\" !"
+msgstr "Pfadname darf nicht mit \"%s\" beginnen!"
 
 #: syntax.py:404
 msgid "Value may not contain double quotes (\")!"
@@ -338,7 +338,9 @@ msgstr "Keine absolute Pfadangabe"
 msgid ""
 "Not a valid email address! (No \"@\"-character to separate local-part and "
 "domain-part)"
-msgstr "Keine gültige E-Mail-Adresse! (Kein \"@\"-Zeichen zum Trennen der Adressteile vorhanden)"
+msgstr ""
+"Keine gültige E-Mail-Adresse! (Kein \"@\"-Zeichen zum Trennen der "
+"Adressteile vorhanden)"
 
 #: syntax.py:585
 msgid "Not a valid email address!"
