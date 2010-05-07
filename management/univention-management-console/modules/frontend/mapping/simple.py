@@ -53,6 +53,7 @@ def html_map( storage, umcp_part ):
 					 { 'htmltext' : [ umcp_part.get_text() ] } )
 
 mapper.add( umcd.HTML, html_map )
+mapper.add( umcd.RefreshFrame, html_map )
 
 def moduledescription_map( storage, umcp_part ):
 	html = '<div class="umc_module_description"><p class="umc_title">%s</p>%s</div>' % ( umcp_part.title, umcp_part.get_text() )
