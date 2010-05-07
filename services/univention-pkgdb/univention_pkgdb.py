@@ -117,17 +117,12 @@ def log( message ):
 		pass
 
 def is_service_available():
-	'''checks if the software monitor service ist available'''
+	'''Checks if the software monitor service is available.'''
 	baseConfig = univention.baseconfig.baseConfig()
 	baseConfig.load()
-	ldap_base = baseConfig.get( 'ldap/base' )
-	if not ldap_base:
-		return False
-	ldap_conn = univention.uldap.access( base = ldap_base )
-	res = ldap_conn.search( '(univentionService=Software Monitor)' )
-	ldap_conn.lo.unbind()
+	pkgdb = baseConfig.get( 'pkgdb/scan', 'no' )
 
-	return len( res ) > 0
+	return pkgdb.lower() in ( 'yes', 'true', '1' )
 
 # ------------------------------------------------------------------------------
 # translate sysrole names
@@ -941,7 +936,7 @@ def main(args):
 
 		if baseConfig['pkgdb/scan'] != 'yes':
 			log( 'univention-baseconfig pkgdb/scan != yes' )
-			print 'In univention-baseconfig pkgdb/scan is not set to yes.'
+			print 'The Univention Configuration Registry variable pkgdb/scan is not set to yes.'
 			sys.exit(0)
 
 		# ------------------------------------------------------------------------------
