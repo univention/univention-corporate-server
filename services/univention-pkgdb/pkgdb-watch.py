@@ -38,7 +38,7 @@ filter='(|(objectClass=univentionDomainController)(objectClass=univentionMemberS
 attributes=['univentionService']
 
 def handler( dn, new, old ):
-	if univention.pkgdb.is_service_available():
+	if new and 'Software Monitor' in new.get( 'univentionService', () ):
 		listener.setuid( 0 )
 		ucr.handler_set( ( 'pkgdb/scan?yes', ) )
 		listener.unsetuid()
