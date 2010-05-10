@@ -145,6 +145,7 @@ class webui_container{
 });
 </script>
 <script type="text/javascript">
+<!--
 dojo.require("dojo.cookie");
 function section_hide_show(name,img_show,img_hide) {
 	if (document.getElementById) {
@@ -171,21 +172,23 @@ function umc_tree_hide_show( itemId, minus, plus ) {
 				table.className = "umc_visible";		
 				icon.src = minus;
 			}
-			dojo.cookie( itemId, table.className );
+			dojo.cookie( "univention.umc.uvmm." + itemId, table.className );
 		}
 	}
 }
 function umc_tree_restore( tree_items, minus, plus ) {
 	if (document.getElementById) {
-		for each ( var itemId in tree_items ) {
-			item = document.getElementById( itemId );
+		// IE 8 does not support for each; variable may not be named "item"
+		for ( var i = 0; i < tree_items.length; i++ ) {
+			itemId = tree_items[ i ];
+			itema = document.getElementById( itemId );
 			icon = document.getElementById( itemId + ".button" );
-			if ( item == null ) continue;
-			class_name = dojo.cookie( itemId );
+			if ( itema == null ) continue;
+			class_name = dojo.cookie( "univention.umc.uvmm." + itemId );
 			if ( class_name == null ) {
 				class_name = "umc_visible";
 			}
-			item.className = class_name;
+			itema.className = class_name;
 			if ( class_name == "umc_hidden" ) {
 				icon.src = plus;
 			} else {
@@ -194,6 +197,7 @@ function umc_tree_restore( tree_items, minus, plus ) {
 		}
 	}
 }
+//-->
 </script>
 </head>
 ';

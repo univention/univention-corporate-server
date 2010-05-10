@@ -1,3 +1,9 @@
+univention-webui (4.0.8-1) unstable; urgency=low
+
+  * tree view widget: implement compatibility for IE; Bug #17750
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 May 2010 18:05:29 +0200
+
 univention-webui (4.0.7-1) unstable; urgency=low
 
   * add support for hide and show subtrees of the tree view widget (state
