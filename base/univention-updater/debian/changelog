@@ -1,3 +1,9 @@
+univention-updater (5.0.74-1) unstable; urgency=low
+
+  * Fix logfile redirection in univention-updater (Bug #6949, #17739)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 10 May 2010 09:59:00 +0200
+
 univention-updater (5.0.73-1) unstable; urgency=low
 
   * clean up postup.sh script; Bug #17789
