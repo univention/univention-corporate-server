@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-eval `/usr/sbin/univention-baseconfig shell`
+eval `/usr/sbin/univention-config-registry shell ldap/server/name ldap/port ldap/base`
 
 touch $HOME/.univention-environment
 
