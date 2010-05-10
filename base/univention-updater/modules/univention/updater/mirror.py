@@ -57,13 +57,15 @@ class UniventionMirror( UniventionUpdater ):
 		self.online_repository = self.configRegistry.get( 'repository/mirror', 'yes' )
 		self.repository_server = self.configRegistry.get( 'repository/mirror/server', 'apt.univention.de' )
 		self.repository_port = self.configRegistry.get( 'repository/mirror/port', '80' )
-		self.repository_prefix = self.configRegistry.get( 'repository/mirror/prefix', '' )
+		self.repository_prefix = self.configRegistry.get( 'repository/mirror/prefix', '' ).strip('/')
+		self.sources = self.configRegistry.get( 'repository/mirror/sources', 'no' ).lower() in ( 'true', 'yes' )
+		self.http_method = self.configRegistry.get('repository/mirror/httpmethod', 'GET').upper()
 
 	def retrieve_url( self, path ):
 		'''downloads the given path from the repository server'''
 		# path MUST NOT contain the schema and hostname
 		proxy_headers = self.open_connection()
-		site = '%s/%s/%s' % (self.proxy_prefix, self.repository_prefix, path)
+		site = '%s/%s' % (self.proxy_prefix, path)
 
 		replace_slash = re.compile ('[/]{2,}')
 		site = replace_slash.sub ('/', site)

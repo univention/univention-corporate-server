@@ -40,7 +40,7 @@ def write_cron_job(baseConfig, cron, updateto, reboot):
 	file.write('# cron job for update\n')
 	if cron != '* * * * * ':
 		file.write('%s root ' % cron)
-		if baseConfig.has_key('local/repository') and (baseConfig['local/repository'] == 'yes' or baseConfig['local/repository'] == 'true'):
+		if baseConfig.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' ):
 			target='local'
 		else:
 			target='net'
