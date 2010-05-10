@@ -12,7 +12,7 @@ Depends: xen-tools,
  wget,
  xen-3.4,
  libc6-xen [i386],
- univention-kernel-image-2.6.18-xen.org,
+ univention-kernel-image-2.6.32-xen || univention-kernel-image-2.6.18-xen.org,
  bridge-utils
 Description: UCS - Xen configuration and management subsystem
  This packages provides the basic configuration for the

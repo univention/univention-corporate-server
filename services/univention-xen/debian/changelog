@@ -1,3 +1,11 @@
+univention-xen (3.0.0-1) unstable; urgency=low
+
+  * updates for UCS 2.4 and Xen 3.4.3. Bug #18356
+  * No longer disable GDM on Xen based kernel. Remove workaround for Bug
+    #13432.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 May 2010 20:40:25 +0200
+
 univention-xen (2.1.0-1) unstable; urgency=low
 
   * Bump version above 2.0.1-1 from UCS 2.3. (Bug #17475)
