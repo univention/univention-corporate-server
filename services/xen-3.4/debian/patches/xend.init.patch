@@ -1,7 +1,7 @@
-Index: xen-3.4-3.4.2/xen-3.4.2/tools/hotplug/Linux/init.d/xend
+Index: xen-3.4-3.4.3~rc6/xen-3.4.3~rc6/tools/hotplug/Linux/init.d/xend
 ===================================================================
---- xen-3.4-3.4.2.orig/xen-3.4.2/tools/hotplug/Linux/init.d/xend	2010-03-26 17:15:36.000000000 +0100
-+++ xen-3.4-3.4.2/xen-3.4.2/tools/hotplug/Linux/init.d/xend	2010-03-26 17:15:42.000000000 +0100
+--- xen-3.4-3.4.3~rc6.orig/xen-3.4.3~rc6/tools/hotplug/Linux/init.d/xend	2010-03-26 17:15:36.000000000 +0100
++++ xen-3.4-3.4.3~rc6/xen-3.4.3~rc6/tools/hotplug/Linux/init.d/xend	2010-03-26 17:15:42.000000000 +0100
 @@ -28,10 +28,21 @@
  	mount -t xenfs xenfs /proc/xen
  fi
