@@ -1,3 +1,12 @@
+univention-updater (5.0.76-1) unstable; urgency=low
+
+  * Indent univention-actualise (Bug #17755)
+  * Reset architecture before probing for next component version (Bug #15368)
+  * Default to all minor versions of major release for components (Bug #15368)
+  * Fix evaluation of online/repository/clean (Bug #17428)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 10 May 2010 16:14:17 +0200
+
 univention-updater (5.0.75-1) unstable; urgency=low
 
   * Allow components to block release upgrades (Bug #17293)

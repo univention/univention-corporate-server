@@ -226,14 +226,14 @@ class UniventionUpdater:
 	def config_repository( self ):
 		'''Retrieve configuration to access repository. Overridden in UniventionMirror.'''
 		self.online_repository = self.configRegistry.get('repository/online', 'True')
-		if self.online_repository.lower() in ['true', 'yes', '1']:
+		if self.online_repository.lower() in ('yes', 'true', 'enabled', '1'):
 			self.online_repository = True
 		else:
 			self.online_repository = False
 		self.repository_server = self.configRegistry.get('repository/online/server', 'apt.univention.de')
 		self.repository_port = self.configRegistry.get('repository/online/port', '80')
 		self.repository_prefix = self.configRegistry.get('repository/online/prefix', '').strip('/')
-		self.sources = self.configRegistry.get('repository/online/sources', 'no' ).lower() in ( 'true', 'yes' )
+		self.sources = self.configRegistry.get('repository/online/sources', 'no' ).lower() in ('yes', 'true', 'enabled', '1')
 		self.http_method = self.configRegistry.get('repository/online/httpmethod', 'GET').upper()
 
 	def open_connection(self, server=None, port=None):
@@ -297,11 +297,11 @@ class UniventionUpdater:
 		self.parts = []
 
 		maintained = self.configRegistry.get('repository/online/maintained', 'True')
-		if maintained.lower() in ['true', 'yes', '1']:
+		if maintained.lower() in ('yes', 'true', 'enabled', '1'):
 			self.parts.append('maintained')
 
 		unmaintained = self.configRegistry.get('repository/online/unmaintained', 'False')
-		if unmaintained.lower() in ['true', 'yes', '1']:
+		if unmaintained.lower() in ('yes', 'true', 'enabled', '1'):
 			self.parts.append('unmaintained')
 
 		#UCS version
@@ -311,7 +311,7 @@ class UniventionUpdater:
 		self.version_major, self.version_minor = map(int, self.ucs_version.split('.'))
 
 		# should hotfixes be used
-		self.hotfixes = self.configRegistry.get( 'repository/online/hotfixes', 'no' ).lower() in ( 'true', 'yes' )
+		self.hotfixes = self.configRegistry.get('repository/online/hotfixes', 'no' ).lower() in ('yes', 'true', 'enabled', '1')
 
 		# UniventionMirror needs to provide its own settings
 		self.config_repository()
@@ -466,7 +466,7 @@ class UniventionUpdater:
 		for key in self.configRegistry.keys():
 			if key.startswith('repository/online/component/'):
 				component_part = key.split('repository/online/component/')[1]
-				if component_part.find('/') == -1 and self.configRegistry[key].lower() in [ 'true', 'yes', 'enabled', '1']:
+				if component_part.find('/') == -1 and self.configRegistry[key].lower() in ('yes', 'true', 'enabled', '1'):
 					components.append(component_part)
 		return components
 
@@ -546,7 +546,7 @@ class UniventionUpdater:
 			return ''
 
 		if clean:
-			clean = self.configRegistry.get( 'online/repository/clean', False )
+			clean = self.configRegistry.get('online/repository/clean', 'False').lower() in ('yes', 'true', 'enabled', '1')
 
 		if not start:
 			start = UCS_Version( ( self.version_major, 0, 0 ) )
@@ -586,7 +586,7 @@ class UniventionUpdater:
 			return ''
 
 		if clean:
-			clean = self.configRegistry.get( 'online/repository/clean', False )
+			clean = self.configRegistry.get('online/repository/clean', 'False').lower() in ('yes', 'true', 'enabled', '1')
 
 		if start:
 			start = copy.copy(start)
@@ -644,7 +644,7 @@ class UniventionUpdater:
 		netConf['password'] = self.configRegistry.get('repository/online/component/%s/password' % component, None)
 		cleanComponent = False
 		if clean:
-			cleanComponent = self.configRegistry.get( 'repository/online/component/%s/clean' % component, False )
+			cleanComponent = self.configRegistry.get('repository/online/component/%s/clean' % component, 'False').lower() in ('yes', 'true', 'enabled', '1')
 
 		repo.prefix = "http://"
 		if netConf['username'] and netConf['password']:
@@ -690,6 +690,7 @@ class UniventionUpdater:
 						repo.arch = "source"
 						if self.net_path_exists(repo.path("Sources.gz")):
 							result.append( repo.deb("deb-src") )
+					del repo.arch
 
 		return result
 
@@ -701,12 +702,12 @@ class UniventionUpdater:
 			return ''
 
 		if clean:
-			clean = self.configRegistry.get( 'online/repository/clean', False )
+			clean = self.configRegistry.get('online/repository/clean', 'False').lower() in ('yes', 'true', 'enabled', '1')
 
 		result = []
 
 		for component in self.get_components():
-			str = self.configRegistry.get('repository/online/component/%s/version' % component, self.ucs_version)
+			str = self.configRegistry.get('repository/online/component/%s/version' % component, '')
 			versions = set()
 			for version in str.split(','):
 				if version in ('current', ''): # all from same major
