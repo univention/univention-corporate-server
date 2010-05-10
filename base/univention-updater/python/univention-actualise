@@ -88,10 +88,10 @@ def usage():
 	print ""
 	print "usage: univention-actualise [-? || --help] [--dist-upgrade] [--silent] [--check]"
 	print ""
-	print "-?, --help	Show this message"
-	print "--dist-upgrade	Perform a dist-upgrade instead of a regular update"
-	print "--silent	Don't show normal output, but error messages only"
-	print "--check	Don't do anything, just check if there is an update"
+	print "-?, --help       Show this message"
+	print "--dist-upgrade   Perform a dist-upgrade instead of a regular update"
+	print "--silent         Don't show normal output, but error messages only"
+	print "--check          Don't do anything, just check if updates are available"
 
 def waitForLock():
 	# Wait for /var/run/apt-get.lock to vanish
