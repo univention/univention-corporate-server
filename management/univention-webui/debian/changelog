@@ -1,3 +1,10 @@
+univention-webui (4.0.7-1) unstable; urgency=low
+
+  * add support for hide and show subtrees of the tree view widget (state
+    is stored in cookies); Bug #17750
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 May 2010 13:32:53 +0200
+
 univention-webui (4.0.6-1) unstable; urgency=low
 
   * js function section_hide_show: need to identify objects via id

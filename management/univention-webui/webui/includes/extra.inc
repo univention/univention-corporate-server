@@ -2209,6 +2209,9 @@ class table extends webui_translator
 		if(isset($this->attribute['align'])) {
 			$attrib_str .= ' align="'.$this->attribute['align'].'"';
 		}
+		if(isset($this->attribute['webui-id'])) {
+			$attrib_str .= ' id="'.$this->attribute['webui-id'].'"';
+		}
 
 		if($this->attribute['width'])
 		{

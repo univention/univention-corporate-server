@@ -145,6 +145,7 @@ class webui_container{
 });
 </script>
 <script type="text/javascript">
+dojo.require("dojo.cookie");
 function section_hide_show(name,img_show,img_hide) {
 	if (document.getElementById) {
 		sec = document.getElementById(name);
@@ -155,6 +156,41 @@ function section_hide_show(name,img_show,img_hide) {
 		} else {
 			sec.className = "umc_visible";		
 			image.src = img_show;
+		}
+	}
+}
+function umc_tree_hide_show( itemId, minus, plus ) {
+	if (document.getElementById) {
+		table = document.getElementById( itemId );
+		icon = document.getElementById( itemId + ".button" );
+		if ( table ) {
+			if (table.className == "umc_visible") {
+				table.className = "umc_hidden";
+				icon.src = plus;
+			} else {
+				table.className = "umc_visible";		
+				icon.src = minus;
+			}
+			dojo.cookie( itemId, table.className );
+		}
+	}
+}
+function umc_tree_restore( tree_items, minus, plus ) {
+	if (document.getElementById) {
+		for each ( var itemId in tree_items ) {
+			item = document.getElementById( itemId );
+			icon = document.getElementById( itemId + ".button" );
+			if ( item == null ) continue;
+			class_name = dojo.cookie( itemId );
+			if ( class_name == null ) {
+				class_name = "umc_visible";
+			}
+			item.className = class_name;
+			if ( class_name == "umc_hidden" ) {
+				icon.src = plus;
+			} else {
+				icon.src = minus;
+			}
 		}
 	}
 }
