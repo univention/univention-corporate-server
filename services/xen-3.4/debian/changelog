@@ -1,3 +1,10 @@
+xen-3.4 (3.4.3~rc6-2) unstable; urgency=low
+
+  * added git-core to build dependencies to build qemu from
+    xenbits.xensource.com repository. Bug #18356
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 May 2010 20:34:53 +0200
+
 xen-3.4 (3.4.3~rc6-1) unstable; urgency=low
 
   * update to xen 3.4.3~rc6. Bug #18356
