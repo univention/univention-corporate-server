@@ -215,7 +215,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 
 			resultCode=os.system('mount -o loop %s %s' % ( iso, cdrom_mount_point))
 			if resultCode not in (0,32):
-				res=os.system('mount -l 2>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
+				res=os.system('mount -l 2>>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
 				if res != 0:
 					raise UpdateError('Failed to mount %s' % iso)
 		else:
@@ -225,7 +225,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 
 			resultCode=os.system('mount %s' % ( cdrom_mount_point))
 			if resultCode not in (0,32):
-				res=os.system('mount -l 2>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
+				res=os.system('mount -l 2>>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
 				if res != 0:
 					raise UpdateError('Failed to mount cdrom')
 		try:
@@ -242,7 +242,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 		finally:
 			resultCode=subprocess.call(['umount', cdrom_mount_point])
 			if resultCode != 0:
-				res=os.system('mount -l 2>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
+				res=os.system('mount -l 2>>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
 				if res == 0:
 					dprint('Warning: Failed to unmount %s' % device_name)
 
