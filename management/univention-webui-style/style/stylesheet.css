@@ -1899,7 +1899,7 @@ td.umc_tree_view_item_level1 {
 td.umc_tree_view_item_level2 {
 	align: baseline;
 	text-align: left;
-	padding-left: 20px;
+	padding-left: 15px;
 	padding-top: 0px;
 	padding-bottom: 0px;
 	line-height: 10px;
@@ -1908,7 +1908,7 @@ td.umc_tree_view_item_level2 {
 td.umc_tree_view_item_level3 {
 	align: baseline;
 	text-align: left;
-	padding-left: 40px;
+	padding-left: 30px;
 	padding-top: 0px;
 	padding-bottom: 0px;
 	line-height: 10px;
@@ -1935,6 +1935,7 @@ td.umc_tree_table_separator {
 }
 
 .umc_module_description {
+	margin-bottom: 10px;
 	padding-left: 8px;
 	padding-right: 15px;
 }
