@@ -29,6 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import base
+import univention.management.console.tools as umct
 
 class Link( base.Text ):
 	def __init__( self, description = '', link = '', icon = None, icon_and_text = False, attributes = {} ):
@@ -36,12 +37,19 @@ class Link( base.Text ):
 		self._link = link
 		self._icon = icon
 		self._icon_and_text = icon_and_text
+		self._icon_size = umct.SIZE_MEDIUM
 
 	def show_icon_and_text( self ):
 		return self._icon_and_text
 
 	def get_icon( self ):
 		return self._icon
+
+	def get_icon_size( self ):
+		return self._icon_size
+
+	def set_icon_size( self, size ):
+		self._icon_size = size
 
 	def get_link( self ):
 		return self._link

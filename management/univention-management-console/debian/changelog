@@ -1,3 +1,9 @@
+univention-management-console (3.0.11-1) unstable; urgency=low
+
+  * support hide and show of subtrees in treeview widget; Bug #17750
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 May 2010 18:09:13 +0200
+
 univention-management-console (3.0.10-1) unstable; urgency=low
 
   * added umcd.RefreshFrame() (Bug #17666)

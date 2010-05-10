@@ -493,39 +493,67 @@ class ResetButtonMap( ButtonMap, mapper.IMapper ):
 
 mapper.add( umcd.ResetButton, ResetButtonMap() )
 
-def __tree_level_indent( level ):
-	txt = ''
-	for i in range( level ):
-		txt += '&nbsp;'
+_img_minus = umc_tools.image_get( 'actions/minus', umc_tools.SIZE_TINY )
+_img_plus = umc_tools.image_get( 'actions/plus', umc_tools.SIZE_TINY )
 
-	return text( '', {}, { 'text' : [ txt, ] } )
-
-def __rewrite_tree( storage, data, level = 0 ):
+def __rewrite_tree( storage, data, level = 0, parent = None, collapsible = None, name = 'default', items = [] ):
 	rows = []
+	prev = None
 	for item in data:
 		if not type( item ) in ( list, tuple ):
 			args = utils.layout_attrs( storage, item )
 			unipart = storage.to_uniparts( item )
-			ud.debug( ud.ADMIN, ud.ERROR, 'TreeView unipart: %s' % str( unipart ) )
-
 			args[ 'type' ] = 'umc_tree_view_item_level%d' % level
-			col = tablecol( '', args, { 'obs' : [ __tree_level_indent( level ), unipart ] } )
-			ud.debug( ud.ADMIN, ud.ERROR, 'TreeView col: %s' % str( col ) )
-			row = tablerow( '', {}, { 'obs' : [ col, ] } )
+			col_unipart = tablecol( '', {}, { 'obs' : [ unipart, ] } )
+			if level <= collapsible:
+				if parent:
+					item_id = name + '.' + parent + '.' + item.get_text()
+				else:
+					item_id = name + '.' + item.get_text()
+				items.append( '"%s"' % item_id )
+				link_button = '<a href="javascript:umc_tree_hide_show(\'%(id)s\', \'%(minus)s\', \'%(plus)s\')"><img style="border: 0px" id="%(id)s.button" src="%(current)s"/></a>' % { 'id' : item_id, 'minus' : _img_minus, 'plus' : _img_plus, 'current' : _img_minus }
+				col_toggle = tablecol( '', {}, { 'obs' : [ htmltext( '', {}, { 'htmltext' : [ link_button, ] } ), ] } )
+				row = tablerow( '', {}, { 'obs' : [ col_toggle, col_unipart ] } )
+			else:
+				row = tablerow( '', {}, { 'obs' : [ col_unipart ] } )
+
+			col = tablecol( '', args, { 'obs' : [ table( '', {}, { 'obs' : [ row, ] } ), ] } )
+			if parent:
+				row = tablerow( '', {}, { 'obs' : [ col, ] } )
+			else:
+				row = tablerow( '', {}, { 'obs' : [ col, ] } )
 			rows.append( row )
-			ud.debug( ud.ADMIN, ud.ERROR, 'TreeView row: %s' % str( row ) )
 		else:
-			rows.extend( __rewrite_tree( storage, item, level + 1 ) )
-
-	return rows
-
-import univention.debug as ud
+			if prev:
+				if parent:
+					new_parent = parent + '.' + prev.get_text()
+				else:
+					new_parent = prev.get_text()
+			else:
+				new_parent = None
+			rows.extend( __rewrite_tree( storage, item, level + 1, parent = new_parent, collapsible = collapsible, name = name, items = items ) )
+		prev = item
+	if not rows:
+		return []
+	else:
+		if parent:
+			return [ tablerow( '', {}, { 'obs' : [ tablecol( '', {}, { 'obs' :  [ table( '', { 'webui-id' : name + '.' + parent }, { 'obs' : rows } ), ] } ), ] } ), ]
+		else:
+			return [ tablerow( '', {}, { 'obs' : [ tablecol( '', {}, { 'obs' :  [ table( '', { 'webui-id' : name + '.' }, { 'obs' : rows } ), ] } ), ] } ), ]
 
 def simple_treeview_map( storage, umcp_part ):
-	tablerows = __rewrite_tree( storage, umcp_part._tree_data )
-	args = { 'type' : 'umc_tree_view' }
+	items = []
+	tablerows = __rewrite_tree( storage, umcp_part._tree_data, collapsible = umcp_part.collapsible, name = umcp_part.name, items = items )
+	args = { 'type' : 'umc_tree_view', 'webui-id' : umcp_part.name }
 	args.update( utils.layout_attrs( storage, umcp_part ) )
-	ud.debug( ud.ADMIN, ud.ERROR, 'TreeView data: %s' % str( tablerows ) )
+	on_load = htmltext( '', {}, { 'htmltext' : [ '''
+<script type="text/javascript">
+dojo.addOnLoad(function(){
+	var items = new Array( %s );
+	umc_tree_restore( items, "%s", "%s" );
+});
+</script>''' % ( ', '.join( items ), _img_minus, _img_plus ) ] } )
+	tablerows.append( on_load )
 	return table( '', args, { 'obs' : tablerows } )
 
 mapper.add( umcd.SimpleTreeView, simple_treeview_map )

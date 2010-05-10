@@ -56,7 +56,10 @@ mapper.add( umcd.HTML, html_map )
 mapper.add( umcd.RefreshFrame, html_map )
 
 def moduledescription_map( storage, umcp_part ):
-	html = '<div class="umc_module_description"><p class="umc_title">%s</p>%s</div>' % ( umcp_part.title, umcp_part.get_text() )
+	lines = umcp_part.get_text().split( '\n' )
+	doc = '</p><p class="umc_module_description">'.join( lines )
+	doc = '<p class="umc_module_description">' + doc + '</p>'
+	html = '<div class="umc_module_description"><p class="umc_title">%s</p>%s</div>' % ( umcp_part.title, doc )
 	return htmltext( '', utils.layout_attrs( storage, umcp_part ), { 'htmltext' : [ html ] } )
 
 mapper.add( umcd.ModuleDescription, moduledescription_map )
@@ -100,10 +103,11 @@ def link_map( storage, umcp_part ):
 
 	html =  ' <table class="button_icon_link"><tr>\n'
 	if umcp_part.get_icon():
-		html += '<td class="button_icon"><a href="%s" target="_blank" class="nounderline"><img class="button_icon" src="%s" alt="%s" %s></a></td>\n' % ( umcp_part.get_link(),
-																																						 umc_tools.image_get( umcp_part.get_icon(), umc_tools.SIZE_MEDIUM ),
-																																						 umcp_part.get_text(),
-																																						 attrstr)
+		if umcp_part.get_link().startswith( 'javascript:' ):
+			target = ''
+		else:
+			target = 'target="_blank"'
+		html += '<td class="button_icon"><a href="%s" %s class="nounderline"><img class="button_icon" src="%s" alt="%s" %s></a></td>\n' % ( umcp_part.get_link(), target, umc_tools.image_get( umcp_part.get_icon(), umcp_part.get_icon_size() ), umcp_part.get_text(), attrstr)
 	if not umcp_part.get_icon() or umcp_part.show_icon_and_text():
 		html += '<td class="button_link"><a href="%s" target="_blank" class="nounderline" %s><span class="content">%s</span></a></td>\n' % ( umcp_part.get_link(),
 																																			 attrstr,

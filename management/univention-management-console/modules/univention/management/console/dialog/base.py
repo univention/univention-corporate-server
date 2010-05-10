@@ -235,17 +235,19 @@ def _str_list( lst ):
 	return text[ : -1 ] + ' ]'
 
 class SimpleTreeView( Element ):
-	def __init__( self, tree_data = None, attributes = {} ):
+	def __init__( self, tree_data = None, attributes = {}, collapsible = 0, name = 'treeview-table' ):
 		self._tree_data = tree_data
+		self.collapsible = collapsible
+		self.name = name
 		Element.__init__( self, attributes )
 
 class SimpleTreeTable( List ):
-	def __init__( self, tree_data = None, dialog = '', attributes = {} ):
+	def __init__( self, tree_data = None, dialog = '', attributes = {}, collapsible = 0, name = 'treeview-table' ):
 		attributes.update( { 'type' : 'umc_tree_view_table' } )
 		List.__init__( self, attributes = attributes )
 
 		self._separator_col = Cell( item = Text( '' ), attributes = { 'type' : 'umc_tree_table_separator' } )
-		self.add_row( [ Cell( item = SimpleTreeView( tree_data ), attributes = { 'type' : 'umc_tree_table_treeview' } ), self._separator_col, '' ] )
+		self.add_row( [ Cell( item = SimpleTreeView( tree_data, collapsible = collapsible, name = name ), attributes = { 'type' : 'umc_tree_table_treeview' } ), self._separator_col, '' ] )
 		self.set_dialog( dialog )
 
 	def set_dialog( self, dialog ):
