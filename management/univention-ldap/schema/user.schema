@@ -58,7 +58,7 @@ objectclass ( 1.3.6.1.4.1.10176.8 NAME 'univentionPerson'
 objectclass ( 1.3.6.1.4.1.10176.9 NAME 'univentionGroup'
 	DESC 'Additional univention-vars for Groups'
 	SUP top AUXILIARY
-	MAY ( quotablocksoft $ quotablockhard $ quotafilesoft $ quotafilehard $ groupDirectory $ uniqueMember $ mailPrimaryAddress $ univentionAssignedPrinter )
+	MAY ( quotablocksoft $ quotablockhard $ quotafilesoft $ quotafilehard $ groupDirectory $ uniqueMember $ mailPrimaryAddress $ univentionAssignedPrinter $ univentionAllowedEmailUsers $ univentionAllowedEmailGroups)
 	)
 
 attributetype ( 1.3.6.1.4.1.10176.13 NAME 'pwhistory'

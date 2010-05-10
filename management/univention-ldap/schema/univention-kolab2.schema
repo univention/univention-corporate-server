@@ -93,7 +93,7 @@ objectclass ( 1.3.6.1.4.1.10176.1013.2.1
   DESC 'Univention mailinglist'
   SUP top STRUCTURAL
   MUST ( cn )
-  MAY (mailPrimaryAddress $ description $ univentionKolabMember) )
+  MAY (mailPrimaryAddress $ description $ univentionKolabMember $ univentionAllowedEmailGroups $ univentionAllowedEmailUsers) )
 
 # use namespace 'user' for shared folders
 attributetype ( 1.3.6.1.4.1.10176.1014.1.1

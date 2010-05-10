@@ -99,3 +99,13 @@ objectclass ( 1.3.6.1.4.1.10176.1010.2.70 NAME 'univentionMailserverList'
 	DESC 'data for routing mails'
 	SUP top AUXILIARY
 	MAY ( univentionMailserverFQDN ) )
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.80 NAME 'univentionAllowedEmailUsers'
+	DESC 'Users that are allowed to send e-mails'
+	EQUALITY distinguishedNameMatch
+	SUP distinguishedName )
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.81 NAME 'univentionAllowedEmailGroups'
+	DESC 'Groups that are allowed to send e-mails'
+	EQUALITY distinguishedNameMatch
+	SUP distinguishedName )

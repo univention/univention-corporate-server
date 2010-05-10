@@ -1,3 +1,9 @@
+univention-ldap (5.0.21-1) unstable; urgency=low
+
+  * merged changes for allowed email groups/users from svn+ssh://fbotner@billy.knut.univention.de/var/svn/dev/branches/ucs-2.2/customers/9801_ict-basler-schulen/univention-ldap (Bug #17954)
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 May 2010 12:51:13 +0200
+
 univention-ldap (5.0.20-1) unstable; urgency=low
 
   * add attributetype univentionLicenseOEMProduct (Bug #18212)
