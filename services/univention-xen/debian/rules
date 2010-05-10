@@ -27,20 +27,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch configure-stamp
-
-build: configure-stamp build-stamp
-build-stamp:
-	dh_testdir
-	touch build-stamp
+build:
 
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp configure-stamp
 	dh_clean
 
 install: build
@@ -50,12 +41,11 @@ install: build
 	dh_installdirs
 
 	cp -a usr debian/univention-xen
+	find debian/univention-xen/ -regex '.*/.svn' -print0 | xargs -0 rm -rf
 
 	univention-install-config-registry
 	univention-install-config-registry-info
 	univention-install-service-info
-
-	find debian/univention-xen/ -regex '.*/.svn' -print0 | xargs -0 rm -rf
 
 binary-arch: build install
 

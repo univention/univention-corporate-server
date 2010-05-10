@@ -1,3 +1,10 @@
+univention-xen (2.1.0-1) unstable; urgency=low
+
+  * Bump version above 2.0.1-1 from UCS 2.3. (Bug #17475)
+  * Merge updated copyright (Bug #16818)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 25 Feb 2010 15:34:50 +0100
+
 univention-xen (2.0.1-1) unstable; urgency=low
 
   * updated copyright Bug #16818 
@@ -15,6 +22,62 @@ univention-xen (2.0.0-0) unstable; urgency=low
   * bump version for UCS 2.3
 
  -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
+
+univention-xen (1.1.7-1) unstable; urgency=low
+
+  * Fix missing parenthesis in conffiles/etc/xen/xend-config.sxp (Bug #16165)
+  * Adopt basis-vmx.cfg to xen-3.4 standards.
+  * debian/rules: remove unused targets.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 26 Nov 2009 09:18:23 +0100
+
+univention-xen (1.1.6-1) unstable; urgency=low
+
+  * Add more UCR variables. (Bug #16551)
+  * Rename existing variables to better group them.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 26 Nov 2009 08:16:59 +0100
+
+univention-xen (1.1.5-1) unstable; urgency=low
+
+  * etc/xen/xend-config.sxp: Change xen/bridge/interface to 'none'.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 25 Nov 2009 17:07:19 +0100
+
+univention-xen (1.1.4-1) unstable; urgency=low
+
+  * etc/xen/xend-config.sxp: 'disable' collides with other option.
+  * debian/univention-xen.univention-config-registry-variables: add new
+    variables.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 25 Nov 2009 16:43:51 +0100
+
+univention-xen (1.1.3-1) unstable; urgency=low
+
+  * debian/postrm: Remove unneded script.
+  * debian/control: Only depend on xen.org-kernel. (Bug #16165)
+  * etc/xen/xend-config.sxp: Support disablig network-script. (Bug #16552)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 25 Nov 2009 15:54:38 +0100
+
+univention-xen (1.1.2-1) unstable; urgency=low
+
+  * added some ucr variables for the Xen live migration
+    xen/relocation/... Bug #16165
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Nov 2009 11:25:30 +0100
+
+univention-xen (1.1.1-2) unstable; urgency=low
+
+  * depend on the xen.org kernel image. Bug #16165
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Nov 2009 14:03:05 +0100
+
+univention-xen (1.1.1-1) unstable; urgency=low
+
+  * update to Xen 3.4.1. Bug #16165
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Nov 2009 10:32:17 +0100
 
 univention-xen (1.0.3-3) unstable; urgency=low
 

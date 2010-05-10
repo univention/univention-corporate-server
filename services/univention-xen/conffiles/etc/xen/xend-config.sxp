@@ -23,9 +23,12 @@
 #(logfile /var/log/xen/xend.log)
 #(loglevel DEBUG)
 
-# The Xen-API server configuration.  (Please note that this server is
-# available as an UNSUPPORTED PREVIEW in Xen 3.0.4, and should not be relied
-# upon).
+# Uncomment the line below.  Set the value to flask, acm, or dummy to 
+# select a security module.
+
+#(xsm_module_name dummy)
+
+# The Xen-API server configuration.
 #
 # This value configures the ports, interfaces, and access controls for the
 # Xen-API server.  Each entry in the list starts with either unix, a port
@@ -61,20 +64,28 @@
 #
 # Default:
 #   (xen-api-server ((unix)))
+@!@
+print '(xen-api-server (%s))' % ( baseConfig.get('xen/server/api', '(unix)'), )
+@!@
 
 
 #(xend-http-server no)
 #(xend-unix-server no)
-#(xend-tcp-xmlrpc-server no)
-#(xend-unix-xmlrpc-server yes)
-#(xend-relocation-server no)
+@!@
+print '(xend-unix-xmlrpc-server %s)' % ( baseConfig.get('xen/server/xmlrpc_unix', 'yes'), )
+print '(xend-tcp-xmlrpc-server %s)' % ( baseConfig.get('xen/server/xmlrpc_tcp', 'no'), )
+print '(xend-relocation-server %s)' % ( baseConfig.get('xen/server/relocation', 'no'), )
+print '(xend-relocation-ssl-server %s)' % ( baseConfig.get('xen/server/relocation_ssl', 'no'), )
+@!@
+#(xend-udev-event-server no)
 
 #(xend-unix-path /var/lib/xend/xend-socket)
 
+
 # Address and port xend should use for the legacy TCP XMLRPC interface, 
-# if xen-tcp-xmlrpc-server is set.
-#(xen-tcp-xmlrpc-server-address 'localhost')
-#(xen-tcp-xmlrpc-server-port 8006)
+# if xend-tcp-xmlrpc-server is set.
+#(xend-tcp-xmlrpc-server-address 'localhost')
+#(xend-tcp-xmlrpc-server-port 8006)
 
 # SSL key and certificate to use for the legacy TCP XMLRPC interface.
 # Setting these will mean that this port serves only SSL connections as
@@ -88,7 +99,29 @@
 
 # Port xend should use for the relocation interface, if xend-relocation-server
 # is set.
-#(xend-relocation-port 8002)
+@!@
+if baseConfig.get('xen/server/relocation', 'no') == 'yes':
+	print '(xend-relocation-port %s)' % ( baseConfig.get('xen/relocation/port', '8002'), )
+else:
+	print '#(xend-relocation-port 8002)'
+@!@
+
+# Port xend should use for the ssl relocation interface, if
+# xend-relocation-ssl-server is set.
+@!@
+if baseConfig.get('xen/server/relocation_ssl', 'no') == 'yes':
+	print '(xend-relocation-ssl-port %s)' % ( baseConfig.get('xen/relocation/port_ssl', '8003'), )
+else:
+	print '#(xend-relocation-ssl-port 8003)'
+@!@
+
+# SSL key and certificate to use for the ssl relocation interface, if
+# xend-relocation-ssl-server is set.
+#(xend-relocation-server-ssl-key-file  /etc/xen/xmlrpc.key)
+#(xend-relocation-server-ssl-cert-file  /etc/xen/xmlrpc.crt)
+
+# Whether to use ssl as default when relocating.
+#(xend-relocation-ssl no)
 
 # Address xend should listen on for HTTP connections, if xend-http-server is
 # set.
@@ -114,6 +147,11 @@
 #  (xend-relocation-hosts-allow '^localhost$ ^.*\\.example\\.org$')
 #
 #(xend-relocation-hosts-allow '')
+#(xend-relocation-hosts-allow '^localhost$ ^localhost\\.localdomain$')
+@!@
+if baseConfig.get('xen/relocation/hosts_allow'):
+    print '(xend-relocation-hosts-allow \'%s\')' % ( baseConfig.get('xen/relocation/hosts_allow'), )
+@!@
 
 # The limit (in kilobytes) on the size of the console buffer
 #(console-limit 1024)
@@ -121,22 +159,22 @@
 ##
 # To bridge network traffic, like this:
 #
-# dom0: fake eth0 -> vif0.0 -+
-#                            |
-#                          bridge -> real eth0 -> the network
+# dom0: ----------------- bridge -> real eth0 -> the network
 #                            |
 # domU: fake eth0 -> vifN.0 -+
 #
 # use
 #
-
-(network-script network-bridge)
-
+# (network-script network-bridge)
+#
 # Your default ethernet device is used as the outgoing interface, by default. 
 # To use a different one (e.g. eth1) use
+#
+# (network-script 'network-bridge netdev=eth1')
+#
 
 @!@
-if baseConfig.has_key('xen/bridge/interface') and not baseConfig['xen/bridge/interface'] == '':
+if baseConfig.get('xen/bridge/interface', '').lower() not in ('', 'none'):
     print "(network-script 'network-bridge netdev=@%@xen/bridge/interface@%@')"
 @!@
 
@@ -149,7 +187,13 @@ if baseConfig.has_key('xen/bridge/interface') and not baseConfig['xen/bridge/int
 # two fake interfaces per guest domain.  To do things like this, write
 # yourself a wrapper script, and call network-bridge from it, as appropriate.
 #
-#(network-script network-dummy)
+
+@!@
+if baseConfig.get('xen/bridge/interface', '') == '':
+    print "(network-script network-bridge)"
+else:
+    print "#(network-script network-bridge)"
+@!@
 
 # The script used to control virtual interfaces.  This can be overridden on a
 # per-vif basis when creating a domain or a configuring a new vif.  The
@@ -164,22 +208,28 @@ if baseConfig.has_key('xen/bridge/interface') and not baseConfig['xen/bridge/int
 # If you are using only one bridge, the vif-bridge script will discover that,
 # so there is no need to specify it explicitly.
 #
-#(vif-script vif-bridge)
+(vif-script vif-bridge)
+
 
 ## Use the following if network traffic is routed, as an alternative to the
 # settings for bridged networking given above.
 #(network-script network-route)
 #(vif-script     vif-route)
 
+
 ## Use the following if network traffic is routed with NAT, as an alternative
 # to the settings for bridged networking given above.
 #(network-script network-nat)
 #(vif-script     vif-nat)
 
-# Dom0 will balloon out when needed to free memory for domU.
-# dom0-min-mem is the lowest memory level (in MB) dom0 will get down to.
-# If dom0-min-mem=0, dom0 will never balloon out.
+# dom0-min-mem is the lowest permissible memory level (in MB) for dom0.
+# This is a minimum both for auto-ballooning (as enabled by
+# enable-dom0-ballooning below) and for xm mem-set when applied to dom0.
 (dom0-min-mem 196)
+
+# Whether to enable auto-ballooning of dom0 to allow domUs to be created.
+# If enable-dom0-ballooning = no, dom0 will never balloon out.
+(enable-dom0-ballooning yes)
 
 # In SMP system, dom0 will use dom0-cpus # of CPUS
 # If dom0-cpus = 0, dom0 will take all cpus available
@@ -196,10 +246,56 @@ if baseConfig.has_key('xen/bridge/interface') and not baseConfig['xen/bridge/int
 # set this to 0.0.0.0
 
 @!@
-if baseConfig.has_key('xen/vnc/listen') and not baseConfig['xen/vnc/listen'] == '':
+if baseConfig.get('xen/vnc/listen', '') != '':
     print "(vnc-listen '@%@xen/vnc/listen@%@')"
 @!@
 
 # The default password for VNC console on HVM domain.
 # Empty string is no authentication.
-(vncpasswd '')
+@!@
+print '(vncpasswd \'%s\')' % ( baseConfig.get('xen/vnc/password', ''), )
+@!@
+
+# The VNC server can be told to negotiate a TLS session
+# to encryption all traffic, and provide x509 cert to
+# clients enalbing them to verify server identity. The
+# GTK-VNC widget, virt-viewer, virt-manager and VeNCrypt
+# all support the VNC extension for TLS used in QEMU. The
+# TightVNC/RealVNC/UltraVNC clients do not.
+#
+# To enable this create x509 certificates / keys in the
+# directory /etc/xen/vnc
+#
+#  ca-cert.pem       - The CA certificate
+#  server-cert.pem   - The Server certificate signed by the CA
+#  server-key.pem    - The server private key
+#
+# and then uncomment this next line
+# (vnc-tls 1)
+
+# The certificate dir can be pointed elsewhere..
+#
+# (vnc-x509-cert-dir /etc/xen/vnc)
+
+# The server can be told to request & validate an x509
+# certificate from the client. Only clients with a cert
+# signed by the trusted CA will be able to connect. This
+# is more secure the password auth alone. Passwd auth can
+# used at the same time if desired. To enable client cert
+# checking uncomment this:
+#
+# (vnc-x509-verify 1)
+
+# The default keymap to use for the VM's virtual keyboard
+# when not specififed in VM's configuration
+#(keymap 'en-us')
+
+# Script to run when the label of a resource has changed.
+#(resource-label-change-script '')
+
+# Rotation count of qemu-dm log file.
+#(qemu-dm-logrotate-count 10)
+
+# Path where persistent domain configuration is stored.
+# Default is /var/lib/xend/domains/
+#(xend-domains-path /var/lib/xend/domains)
