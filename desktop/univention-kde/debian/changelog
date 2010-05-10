@@ -1,3 +1,10 @@
+univention-kde (4.0.4-1) unstable; urgency=low
+
+  * be sure univentionDesktopProfile is not evaluated from UCR. Bug
+    #12493
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 May 2010 09:20:21 +0200
+
 univention-kde (4.0.3-1) unstable; urgency=low
 
   * fixed a typo in univention-set-kdedirs which avoids the use of an
