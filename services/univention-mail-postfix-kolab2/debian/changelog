@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (4.0.0-1) unstable; urgency=low
+
+  * bumped version for UCS 2.4 Bug #17954
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 May 2010 13:29:14 +0200
+
 univention-mail-postfix-kolab2 (3.0.3-1) unstable; urgency=low
 
   * merged changes for postfix policy script to restrict mailgroups and distlists from svn+ssh://fbotner@billy.knut.univention.de/var/svn/dev/branches/ucs-2.2/customers/9801_ict-basler-schulen/univention-mail-postfix-kolab2 Bug #17954
