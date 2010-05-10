@@ -1,0 +1,6 @@
+@!@
+if baseConfig.get("mail/postfix/policy/listfilter", "no").lower() in ['yes', 'true']:
+	print "listfilter     unix  -       n       n       -       %s       spawn user=cyrus argv=/usr/share/univention-mail-postfix-kolab2/listfilter.py"
+% baseConfig.get("mail/postfix/policy/listfilter/maxproc", "30")
+	print "    -b %s " % baseConfig["ldap/base"]
+@!@
