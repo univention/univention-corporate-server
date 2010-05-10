@@ -148,3 +148,14 @@ Description[en]=Timeout for ldap requests given in seconds (default: 15)
 Type=str
 Categories=service-mail
 
+[mail/postfix/policy/listfilter]
+Description[de]=Falls diese Variable auf "yes" oder "true" gesetzt ist, wird das Postfix Policy Skript zur Beschränkung von Mailgruppen und Mailverteilerlisten verwendet
+Description[en]=If true or yes, the postfix policy listfiler for restriction of mailgroups and distributions lists is used
+Type=str
+Categories=service-mail
+
+[mail/postfix/policy/listfilter/maxproc]
+Description[de]=Anzahl der maximalen Prozesse für das Postfix policy Skript listfilter
+Description[en]=Number of processes for the postfix policy script listfilter
+Type=str
+Categories=service-mail

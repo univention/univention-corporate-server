@@ -1,2 +1,3 @@
 usr/lib/univention-install/
 etc/univention/daemons/
+usr/share/univention-mail-postfix-kolab2

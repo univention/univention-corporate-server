@@ -3,7 +3,7 @@
 # Univention mail Postfix Kolab2
 #  listener module: creates mailboxes
 #
-# Copyright (C) 2005, 2006 Univention GmbH
+# Copyright (C) 2005-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
