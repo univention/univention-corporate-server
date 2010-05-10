@@ -1,3 +1,21 @@
+univention-updater (5.0.75-1) unstable; urgency=low
+
+  * Allow components to block release upgrades (Bug #17293)
+  * Add all minor versions of components (Bug #15368)
+  * Fix missing security updates (Bug #16673)
+  * Added repository/online/sources and repository/mirror/sources to control
+    adding Debian source package statements. (Bug #17200)
+  * Fix username/password quoting (Bug #17691)
+    [@:/] don't work because of http://bugs.debian.org/500560
+  * Fix wrong format string with online/repository/clean=true (Bug #17428)
+  * Fix duplicate repository_prefix. (Bug #18040)
+  * Fix spelling mistake in univention-actualise (Bug #17755)
+  * Can use HTTP-HEAD instead of HTTP-GET when checking for repositories
+  	(Bug #18366)
+  * Add documentation for UCR variables.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 10 Mar 2010 18:03:27 +0100
+
 univention-updater (5.0.74-1) unstable; urgency=low
 
   * Fix logfile redirection in univention-updater (Bug #6949, #17739)
@@ -143,7 +161,7 @@ univention-updater (5.0.61-2) unstable; urgency=low
 univention-updater (5.0.61-1) unstable; urgency=low
 
   * For proxy-access, Host:-header must match the real host and port, not the
-    proxy's name and port. httplib is clever enougth to extract the host-name
+    proxy's name and port. httplib is clever enough to extract the host-name
     and port from the URI itself, also correctly handling idna. (Bug #15653)
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 11 Jan 2010 10:26:30 +0100

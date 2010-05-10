@@ -1,19 +1,19 @@
-[update/server]
-Description[de]=Server, auf dem das Repository vorgehalten wird
-Description[en]=Server holding the Repository
+[repository/online/server]
+Description[de]=Server, auf dem das Repository vorgehalten wird [apt.univention.de]
+Description[en]=Server holding the Repository [apt.univention.de]
 Type=str
 Categories=service-software-management
 
-[update/directory]
-Description[de]=Updateverzeichnis auf dem Repository Server
-Description[en]=Update directory on the repository server
+[repository/online/prefix]
+Description[de]=Updateverzeichnis auf dem Repository Server [univention-repository]
+Description[en]=Update directory on the repository server [univention-repository]
 Type=str
 Categories=service-software-management
 
 [local/repository]
 Description[de]=Aktiviere/Deaktiviere das lokale Repository
 Description[en]=Enable/Disable the local repository
-Type=str
+Type=bool
 Categories=service-software-management
 
 [update/security/server]
@@ -29,7 +29,7 @@ Type=str
 Categories=service-software-management
 
 [update/security/prefix]
-Description[de]=Verzeichnisspräfix für Security Updates
+Description[de]=Verzeichnispräfix für Security Updates
 Description[en]=Directory prefix for security updates
 Type=str
 Categories=service-software-management
@@ -37,13 +37,13 @@ Categories=service-software-management
 [update/warning]
 Description[de]=Aktiviere/deaktiviere Warnmeldungen vor automatischen Updates
 Description[en]=Enable/Disable warning messages before automatic updates
-Type=str
+Type=bool
 Categories=service-software-management
 
 [update/warning/coloured]
 Description[de]=Aktiviere/deaktiviere farbige Warnmeldungen
 Description[en]=Enable/Disable colors in warning messages
-Type=str
+Type=bool
 Categories=service-software-management
 
 [update/warning/lang]
@@ -61,7 +61,7 @@ Categories=service-software-management
 [update/umc/nextversion]
 Description[de]=Das Release Update per UMC wird nach der Aktualisierung auf die nächste Version angehalten
 Description[en]=The release update via UMC will stop after the update to the next version
-Type=boolean
+Type=bool
 Categories=service-software-management
 
 [update/custom/preup]
@@ -73,5 +73,125 @@ Categories=service-software-management
 [update/custom/postup]
 Description[de]=Pfad zu einem ausführbaren Shell-Skript, welches nach jedem Update ausgeführt wird
 Description[en]=Path to an executable shell-script which is executed after every update
+Type=str
+Categories=service-software-management
+
+[online/repository/clean]
+Description[de]=Skript zum Löschen nicht länger benötigter Pakete aus dem lokalen Repository erzeugen [no]
+Description[en]=Create script to delete obsolete packages from the local repository [no]
+Type=bool
+Categories=service-software-management
+
+[repository/online]
+Description[de]=Aktiviere/Deaktiviere die Verwendung des online Repository Servers [yes]
+Description[en]=Enable/Disable the use of the online repository servers [yes]
+Type=bool
+Categories=service-software-management
+
+[repository/online/port]
+Description[de]=TCP-Portnummer des online Repository Servers [80]
+Description[en]=TCP port number of the online repository servers [80]
+Type=int
+Categories=service-software-management
+
+[repository/online/sources]
+Description[de]=Quellcodedateien auf lokalem Rechner verfügbar machen [no]
+Description[en]=Make source code files available on local host [no]
+Type=bool
+Categories=service-software-management
+
+[repository/online/maintained]
+Description[de]=Pakete aus dem Maintained-Bereich verwenden [yes]
+Description[en]=Use packages from the maintained section [yes]
+Type=bool
+Categories=service-software-management
+
+[repository/online/unmaintained]
+Description[de]=Pakete aus dem Unmaintained-Bereich verwenden [no]
+Description[en]=Use packages from the maintained section [no]
+Type=bool
+Categories=service-software-management
+
+[repository/online/hotfixes]
+Description[de]=hotfix-Pakete für Sicherheitsupdates verwenden [no]
+Description[en]=Use hotfix packages for security updates [no]
+Type=bool
+Categories=service-software-management
+
+[repository/online/httpmethod]
+Description[de]=HTTP-Methode zum Testen der Verfügbarkeit von Updates [GET]
+Description[en]=HTTP methode for testing the availability of updates [GET]
+Type=str
+Categories=service-software-management
+
+[repository/mirror]
+Description[de]=Aktiviere/Deaktiviere das Spiegeln der Pakete in das lokale Repository [yes]
+Description[en]=Enable/Disable mirroring packages into the local repository [yes]
+Type=bool
+Categories=service-software-management
+
+[repository/mirror/server]
+Description[de]=Server, von dem die Pakete für das lokale Repository bezogen werden [apt.univention.de]
+Description[en]=Server, from which packages are copied for the local repository [apt.univention.de]
+Type=str
+Categories=service-software-management
+
+[repository/mirror/port]
+Description[de]=TCP-Portnummer des Repository Servers [80]
+Description[en]=TCP port number of the repository servers [80]
+Type=int
+Categories=service-software-management
+
+[repository/mirror/prefix]
+Description[de]=Updateverzeichnis auf dem Repository Server [univention-repository]
+Description[en]=Update directory on the repository server [univention-repository]
+Type=str
+Categories=service-software-management
+
+[repository/mirror/sources]
+Description[de]=Quellcodedateien in das lokales Repository spiegeln
+Description[en]=Mirror source code files to local repository
+Type=bool
+Categories=service-software-management
+
+[repository/mirror/architectures]
+Description[de]=Liste der zu spiegelnden Architekturen für das lokale Repository, durch Leerzeichen getrennt
+Description[en]=List of architectures copied to the local repository, space separated
+Type=str
+Categories=service-software-management
+
+[repository/mirror/basepath]
+Description[de]=Verzeichnispräfix für das lokale Repository [/var/lib/univention-repository]
+Description[en]=Directory prefix of the local repository [/var/lib/univention-repository]
+Type=str
+Categories=service-software-management
+
+[repository/mirror/recreate_packages]
+Description[de]=Paketliste nach jeder Aktualisierung des lokalen Repositories neu generieren, anstatt sie zu kopieren [yes]
+Description[en]=Re-create list of packages in local repository after updates, instead of copying it [yes]
+Type=bool
+Categories=service-software-management
+
+[repository/mirror/threads]
+Description[de]=Maximale Anzahl der gleichzeitigen Downloads [10]
+Description[en]=Maximum number of parallel downloads [10]
+Type=int
+Categories=service-software-management
+
+[repository/mirror/version/start]
+Description[de]=Niedrigste Version für das lokale Repository
+Description[en]=Lowest version for the local repository
+Type=str
+Categories=service-software-management
+
+[repository/mirror/version/end]
+Description[de]=Höchste Version im lokalen Repository
+Description[en]=Highest version in the local repository
+Type=str
+Categories=service-software-management
+
+[repository/mirror/httpmethod]
+Description[de]=HTTP-Methode zum Testen der Verfügbarkeit von Updates [GET]
+Description[en]=HTTP methode for testing the availability of updates [GET]
 Type=str
 Categories=service-software-management
