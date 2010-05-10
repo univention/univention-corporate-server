@@ -1,0 +1,5 @@
+univention-kernel-modules-2.6.32 (1.0.0-1) unstable; urgency=low
+
+  * Initial release. Bug #18323
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 May 2010 20:55:07 +0200
