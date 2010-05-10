@@ -1,0 +1,117 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Sample debian/rules that uses debhelper.
+#
+# This file was originally written by Joey Hess and Craig Small.
+# As a special exception, when this file is copied by dh-make into a
+# dh-make output file, you may use that output file without restriction.
+# This special exception was added by Craig Small in version 0.37 of dh-make.
+#
+# Modified to make a template file for a multi-binary package with separated
+# build-arch and build-indep targets  by Bill Allombert 2001
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+export DESTDIR=$(CURDIR)/debian/xen-3.4
+PYVERS=$(shell pyversions -vr)
+
+CFLAGS = -Wall -g
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	tar xzf xen-3.4.2.tar.gz
+	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
+	touch $@
+
+#Architecture
+build: build-arch build-indep
+
+build-arch: build-arch-stamp
+build-arch-common: configure-stamp
+	$(MAKE) -C xen-3.4.2/xen build
+	$(MAKE) -C xen-3.4.2/tools all
+build-python%: build-arch-common
+	$(MAKE) -C xen-3.4.2/tools/pygrub build PYTHON=/usr/bin/python$*
+	$(MAKE) -C xen-3.4.2/tools/python build PYTHON=/usr/bin/python$*
+
+build-indep: build-indep-stamp
+build-indep-stamp: configure-stamp
+	$(MAKE) -C xen-3.4.2/docs
+	touch $@
+build-arch-stamp: build-arch-common $(PYVERS:%=build-python%)
+	touch $@
+
+clean:
+	dh_testdir
+	$(RM) build-arch-stamp build-indep-stamp
+	rm -Rf xen-3.4.2 .pc
+	-$(MAKE) clean
+	dh_clean  --exclude ./debian.orig
+
+install: install-indep install-arch
+install-indep:
+	dh_testdir
+	dh_testroot
+	dh_installdirs -i
+	$(MAKE) -C xen-3.4.2/docs         install
+	dh_install -i
+
+install-arch-common:
+	dh_testdir
+	dh_testroot
+	dh_installdirs -s
+	$(MAKE) -C xen-3.4.2/xen          install
+	$(MAKE) -C xen-3.4.2/tools        install
+install-python%: install-arch-common
+	$(MAKE) -C xen-3.4.2/tools/pygrub install PYTHON=/usr/bin/python$*
+	$(MAKE) -C xen-3.4.2/tools/python install PYTHON=/usr/bin/python$*
+	#$(MAKE) -C xen-3.4.2/tools/security install PYTHON=/usr/bin/python$*
+install-arch: install-arch-common $(PYVERS:%=install-python%)
+	dh_install -s
+
+# Must not depend on anything. This is to be called by
+# binary-arch/binary-indep
+# in another 'make' thread.
+binary-common:
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_installexamples
+	dh_pycentral
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+# Build architecture independant packages using the common target.
+ifdef SPLIT_ARCH_FROM_INDEP
+binary-indep: build-indep install-indep
+	$(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
+else
+binary-arch: build-indep install-indep
+endif
+
+# Build architecture dependant packages using the common target.
+binary-arch: build-arch install-arch
+	$(MAKE) -f debian/rules DH_OPTIONS=-s binary-common
+
+binary: binary-arch binary-indep
+.PHONY: build clean binary-indep binary-arch binary install install-indep install-arch configure

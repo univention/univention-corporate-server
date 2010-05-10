@@ -1,0 +1,49 @@
+Source: xen-3.4
+Section: misc
+Priority: extra
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.7.2.0
+Build-Depends: debhelper (>> 7), lsb-release, quilt,
+ python-all-dev (>= 2.3), python-central (>= 0.5),
+ bcc, e2fslibs-dev, libgnutls-dev, pkg-config,
+ libjpeg62-dev | libjpeg-dev,
+ libncurses5-dev, libsdl1.2-dev, libvncserver-dev, zlib1g-dev, libpci-dev, libssl-dev, transfig, graphviz, gs-common,
+ texlive-latex-base,
+ texlive-fonts-recommended,
+ texlive-latex-recommended,
+ udev
+XS-Python-Version: all
+
+Package: xen-3.4
+Architecture: any
+Depends: ${shlibs:Depends}, ${python:Depends}, iproute, udev
+Provides: xen-hypervisor,
+ xen-hypervisor-3,
+ xen-hypervisor-3.4,
+ xen-hypervisor-3.2-1-i386,
+ xen-hypervisor-3.2-1-amd64,
+ xen-utils-3.2-1,
+ xen-utils-common,
+ xenstore-utils
+Replaces: xen-hypervisor-3.2-1-i386,
+ xen-hypervisor-3.2-1-amd64,
+ xen-utils-3.2-1,
+ xen-utils-common,
+ xenstore-utils,
+ libxenstore3.0
+Conflicts: xen-hypervisor-3.2-1-i386,
+ xen-hypervisor-3.2-1-amd64,
+ xen-utils-3.2-1,
+ xen-utils-common,
+ xenstore-utils,
+ libxenstore3.0 (<< 3.4)
+Description: Xen Hypervisor
+ Server Virtualization with the Xen Hypervisor
+XB-Python-Version: ${python:Versions}
+
+Package: libxenstore3.0
+Architecture: all
+Section: libs
+Depends: xen-3.4 (= ${Source-Version})
+Description: Xenstore communications library for Xen
+ Dummy-Transition package for the public libxenstore.

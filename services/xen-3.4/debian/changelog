@@ -1,0 +1,64 @@
+xen-3.4 (3.4.2-9) unstable; urgency=low
+
+  * Fix old build dependencies. (Bug #17982)
+  * Build Python bindings for Python2.4 and Python2.5.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 26 Mar 2010 16:21:55 +0100
+
+xen-3.4 (3.4.2-8) unstable; urgency=low
+
+  * Fix bad dh_link interaction between -pxen-3.4 and DH_OPTIONS=-i. Bug #16165
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Jan 2010 12:51:10 +0100
+
+xen-3.4 (3.4.2-7) unstable; urgency=low
+
+  * Create symbolic link only in xen-3.4 package. Bug #16165
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Jan 2010 11:27:19 +0100
+
+xen-3.4 (3.4.2-6) unstable; urgency=low
+
+  * Re-introduce dummy libxenstore3.0 package needed by libvirt. Bug #17137
+  * Fix compatibility link /usr/lib/xen-3.2-1. Bug #16165
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Jan 2010 10:19:04 +0100
+
+xen-3.4 (3.4.2-5) unstable; urgency=low
+
+  * debian/control: s/libx*s*enstore3.0/libxenstore3.0/. Bug #16165
+  * debian/rules: provide compatibility link /usr/lib/xen-3.2.1 for easier
+    upgrade. Bug #16165
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 25 Nov 2009 15:02:01 +0100
+
+xen-3.4 (3.4.2-4) unstable; urgency=low
+
+  * replace libxsenstore3.0. Bug #16165
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Nov 2009 11:02:57 +0100
+
+xen-3.4 (3.4.2-3) unstable; urgency=low
+
+  * call /usr/sbin/update-grub instead of /sbin/update-grub. Bug #16165
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Nov 2009 15:38:52 +0100
+
+xen-3.4 (3.4.2-2) unstable; urgency=low
+
+  * added udev to the build dependencies. Bug #16165
+
+ -- Stefan Gohmann <stefan@omar.knut.univention.de>  Tue, 17 Nov 2009 08:31:38 +0100
+
+xen-3.4 (3.4.2-1) unstable; urgency=low
+
+  * new upstream release Xen 3.4.2. Bug #16165
+  * restart udev in postinst. Bug #16165
+
+ -- Stefan Gohmann <stefan@omar.knut.univention.de>  Tue, 17 Nov 2009 06:54:38 +0100
+
+xen-3.4 (3.4.1-1) unstable; urgency=low
+
+  * Initial release upstream version
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Nov 2009 12:10:54 +0100
