@@ -85,6 +85,26 @@ property_descriptions={
 			may_change=1,
 			dontsearch=0,
 			identifies=0
+		),
+	'allowedEmailUsers': univention.admin.property(
+			short_description=_('Allowed e-mail users'),
+			long_description='',
+			syntax=univention.admin.syntax.userDn,
+			multivalue=1,
+			required=0,
+			may_change=1,
+			dontsearch=1,
+			identifies=0
+		),
+	'allowedEmailGroups': univention.admin.property(
+			short_description=_('Allowed e-mail groups'),
+			long_description='',
+			syntax=univention.admin.syntax.groupDn,
+			multivalue=1,
+			required=0,
+			may_change=1,
+			dontsearch=1,
+			identifies=0
 		)
 }
 
@@ -94,6 +114,12 @@ layout=[
 	[univention.admin.field("mailAddress")],
 	[univention.admin.field("members")]
 	] ),
+	univention.admin.tab(_('Allowed users'),_('Users that are allowed to send e-mails to the list'),[
+		[univention.admin.field("allowedEmailUsers")]
+	], advanced = True ),
+	univention.admin.tab(_('Allowed groups'),_('Groups that are allowed to send e-mails to the list'),[
+		[univention.admin.field("allowedEmailGroups")]
+	], advanced = True )
 ]
 
 mapping=univention.admin.mapping.mapping()
@@ -125,6 +151,16 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 
 		univention.admin.handlers.simpleLdap.open(self)
+
+		self['allowedEmailUsers'] = []
+		if self.oldattr.has_key('univentionAllowedEmailUsers'):
+			self['allowedEmailUsers'] = self.oldattr['univentionAllowedEmailUsers']
+
+		self['allowedEmailGroups'] = []
+		if self.oldattr.has_key('univentionAllowedEmailGroups'):
+			self['allowedEmailGroups'] = self.oldattr['univentionAllowedEmailGroups']
+
+		self.save()
 
 	def exists(self):
 		return self._exists
@@ -166,7 +202,20 @@ class object(univention.admin.handlers.simpleLdap):
 				except:
 					univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailAddress' ] )
 					raise univention.admin.uexceptions.mailAddressUsed
-		return univention.admin.handlers.simpleLdap._ldap_modlist( self )
+
+		ml = univention.admin.handlers.simpleLdap._ldap_modlist( self )
+
+		oldEmailUsers = self.oldinfo.get( 'allowedEmailUsers', [] )
+		newEmailUsers = self.info.get( 'allowedEmailUsers', [] )
+		if oldEmailUsers != newEmailUsers:
+			ml.append( ('univentionAllowedEmailUsers', oldEmailUsers, newEmailUsers) )
+
+		oldEmailGroups = self.oldinfo.get( 'allowedEmailGroups', [] )
+		newEmailGroups = self.info.get( 'allowedEmailGroups', [] )
+		if oldEmailGroups != newEmailGroups:
+			ml.append( ('univentionAllowedEmailGroups', oldEmailGroups, newEmailGroups) )
+
+		return ml
 
 	
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):

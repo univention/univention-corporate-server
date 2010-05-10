@@ -170,6 +170,28 @@ property_descriptions={
 			may_change=1,
 			dontsearch=1,
 			identifies=0
+		),
+	'allowedEmailUsers': univention.admin.property(
+			short_description=_('Allowed e-mail users'),
+			long_description='',
+			syntax=univention.admin.syntax.userDn,
+			multivalue=1,
+			options=['posix'],
+			required=0,
+			may_change=1,
+			dontsearch=1,
+			identifies=0
+		),
+	'allowedEmailGroups': univention.admin.property(
+			short_description=_('Allowed e-mail groups'),
+			long_description='',
+			syntax=univention.admin.syntax.groupDn,
+			multivalue=1,
+			options=['posix'],
+			required=0,
+			may_change=1,
+			dontsearch=1,
+			identifies=0
 		)
 }
 
@@ -190,6 +212,12 @@ layout=[
 	], advanced = True ),
 	univention.admin.tab(_('Member of'),_('Membership in other groups'),[
 			[univention.admin.field("memberOf")]
+	], advanced = True ),
+	univention.admin.tab(_('Allowed users'),_('Users that are allowed to send e-mails to the group'),[
+		[univention.admin.field("allowedEmailUsers")]
+	], advanced = True ),
+	univention.admin.tab(_('Allowed groups'),_('Groups that are allowed to send e-mails to the group'),[
+		[univention.admin.field("allowedEmailGroups")]
 	], advanced = True )
 ]
 
@@ -269,8 +297,15 @@ class object(univention.admin.handlers.simpleLdap):
 					if not saved:
 						self['users'].append(i)
 
-			self.save()
+			self['allowedEmailUsers'] = []
+			if self.oldattr.has_key('univentionAllowedEmailUsers'):
+				self['allowedEmailUsers'] = self.oldattr['univentionAllowedEmailUsers']
 
+			self['allowedEmailGroups'] = []
+			if self.oldattr.has_key('univentionAllowedEmailGroups'):
+				self['allowedEmailGroups'] = self.oldattr['univentionAllowedEmailGroups']
+
+			self.save()
 
 	def exists(self):
 		return self._exists
@@ -406,6 +441,17 @@ class object(univention.admin.handlers.simpleLdap):
 						if len(uid_list) > 1:
 							univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'groups/group: A groupmember has multiple UIDs (%s %s)' % (member, str(uid_list)))
 			ml.append( ( 'memberUid', uids, new_uids ) )
+
+		oldEmailUsers = self.oldinfo.get( 'allowedEmailUsers', [] )
+		newEmailUsers = self.info.get( 'allowedEmailUsers', [] )
+		if oldEmailUsers != newEmailUsers:
+			ml.append( ('univentionAllowedEmailUsers', oldEmailUsers, newEmailUsers) )
+
+		oldEmailGroups = self.oldinfo.get( 'allowedEmailGroups', [] )
+		newEmailGroups = self.info.get( 'allowedEmailGroups', [] )
+		if oldEmailGroups != newEmailGroups:
+			ml.append( ('univentionAllowedEmailGroups', oldEmailGroups, newEmailGroups) )
+
 		return ml
 
 	def _ldap_post_create(self):

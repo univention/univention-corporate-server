@@ -118,5 +118,29 @@ msgstr "Suchen"
 msgid "Search mail object(s)"
 msgstr "Mail-Objekt(e) suchen"
 
+#: list.py:
+msgid "Allowed groups"
+msgstr "Berechtigte Gruppen"
+
+#: list.py:
+msgid "Allowed users"
+msgstr "Berechtigte Benutzer"
+
+#: list.py:
+msgid "Users that are allowed to send e-mails to the list"
+msgstr "Benutzer die berechtigt sind E-Mails an diese Liste zu versenden"
+
+#: list.py:
+msgid "Groups that are allowed to send e-mails to the list"
+msgstr "Gruppen die berechtigt sind E-Mails an diese Liste zu versenden"
+
+#: list.py:
+msgid "Allowed e-mail users"
+msgstr "Berechtigte E-Mail Benutzer"
+
+#: list.py:
+msgid "Allowed e-mail groups"
+msgstr "Berechtigte E-Mail Gruppen"
+
 #~ msgid "Mail Address"
 #~ msgstr "Mail-Adresse"

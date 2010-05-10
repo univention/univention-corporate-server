@@ -75,6 +75,30 @@ msgstr "Beschreibung"
 msgid "Users"
 msgstr "Benutzer"
 
+#: group.py:
+msgid "Allowed groups"
+msgstr "Berechtigte Gruppen"
+
+#: group.py:
+msgid "Allowed users"
+msgstr "Berechtigte Benutzer"
+
+#: group.py:
+msgid "Users that are allowed to send e-mails to the group"
+msgstr "Benutzer die berechtigt sind E-Mails an diese Gruppe zu versenden"
+
+#: group.py:
+msgid "Groups that are allowed to send e-mails to the group"
+msgstr "Gruppen die berechtigt sind E-Mails an diese Gruppe zu versenden"
+
+#: group.py:
+msgid "Allowed e-mail users"
+msgstr "Berechtigte E-Mail Benutzer"
+
+#: group.py:
+msgid "Allowed e-mail groups"
+msgstr "Berechtigte E-Mail Gruppen"
+
 #: group.py:130
 msgid "Hosts"
 msgstr "enthaltene Rechner"
