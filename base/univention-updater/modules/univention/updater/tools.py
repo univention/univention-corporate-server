@@ -238,13 +238,13 @@ class UniventionUpdater:
 
 	def open_connection(self, server=None, port=None):
 		'''Open http-connection to server:port'''
-
-		if not self.nameserver_available:
-			raise socket.gaierror, (socket.EAI_NONAME, 'The repository server %s could not be resolved.' % server)
 		if not server:
 			server = self.repository_server
 		if port in (None, ''):
 			port = self.repository_port
+
+		if not self.nameserver_available:
+			raise socket.gaierror, (socket.EAI_NONAME, 'The repository server %s could not be resolved.' % server)
 
 		if self.proxy and self.proxy != '':
 			self.proxy_prefix = "%s:%s" % (server, port)
