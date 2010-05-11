@@ -403,7 +403,7 @@ class UniventionUpdater:
 					mm_version = UCS_Version.FORMAT % ver
 					if not self.get_component_repositories(component, [mm_version], False):
 						print >>sys.stderr, "# Required component '%s' not available for version %s" % (component, mm_version)
-						break
+						return None
 				else:
 					return UCS_Version.FULLFORMAT % ver
 		return None
