@@ -94,13 +94,13 @@ def section_map( storage, umcp_part ):
 	rows = []
 
 	if umcp_part.hideable:
-		items = { 'id' : umcp_part.id(), 'title' : umcp_part.title, 'up' : umc_tools.image_get( 'actions/up', umc_tools.SIZE_TINY ), 'down' : umc_tools.image_get( 'actions/down', umc_tools.SIZE_TINY ) }
+		items = { 'id' : umcp_part.id(), 'title' : umcp_part.title, 'minus' : umc_tools.image_get( 'actions/minus', umc_tools.SIZE_TINY ), 'plus' : umc_tools.image_get( 'actions/plus', umc_tools.SIZE_TINY ) }
 		if umcp_part.hidden:
-			items[ 'current' ] = items[ 'down' ]
+			items[ 'current' ] = items[ 'plus' ]
 		else:
-			items[ 'current' ] = items[ 'up' ]
+			items[ 'current' ] = items[ 'minus' ]
 			
-		title = '<p class="umc_title">%(title)s&nbsp;<a href="javascript:section_hide_show(\'%(id)s\',\'%(up)s\',\'%(down)s\')"><img style="border: 0px" id="Button%(id)s" src="%(current)s"/></a></p>' % items
+		title = '<p class="umc_title">%(title)s&nbsp;<a href="javascript:section_hide_show(\'%(id)s\',\'%(minus)s\',\'%(plus)s\')"><img style="border: 0px" id="Button%(id)s" src="%(current)s"/></a></p>' % items
 	else:
 		title = '<p class="umc_title">%s</p>' % umcp_part.title
 	
