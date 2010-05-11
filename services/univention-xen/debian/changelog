@@ -1,3 +1,9 @@
+univention-xen (3.0.1-1) unstable; urgency=low
+
+  * append xen-evtchn to kernel/modules. Bug #18356
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 May 2010 08:14:38 +0200
+
 univention-xen (3.0.0-2) unstable; urgency=low
 
   * fixed syntax error in debian/control. Bug #18356
