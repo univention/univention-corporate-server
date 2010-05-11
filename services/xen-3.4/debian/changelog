@@ -1,3 +1,9 @@
+xen-3.4 (3.4.3~rc6-6) unstable; urgency=low
+
+  * removed xenfs /proc/filesystems check in init.d/xend. Bug #18356
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 May 2010 09:41:26 +0200
+
 xen-3.4 (3.4.3~rc6-5) unstable; urgency=low
 
   * fixed /proc/filesystems check in init.d/xend. Bug #18356

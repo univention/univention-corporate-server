@@ -2,12 +2,11 @@ Index: xen-3.4-3.4.3~rc6/xen-3.4.3~rc6/tools/hotplug/Linux/init.d/xend
 ===================================================================
 --- xen-3.4-3.4.3~rc6.orig/xen-3.4.3~rc6/tools/hotplug/Linux/init.d/xend	2010-03-26 17:15:36.000000000 +0100
 +++ xen-3.4-3.4.3~rc6/xen-3.4.3~rc6/tools/hotplug/Linux/init.d/xend	2010-03-26 17:15:42.000000000 +0100
-@@ -22,16 +22,27 @@
+@@ -22,16 +22,26 @@
  if   test "x$1" = xstart && \
       test -d /proc/xen && \
     ! test -d /proc/xen/capabilities && \
 -     grep '	xenfs$' /proc/filesystems >/dev/null && \
-+     grep 'xenfs$' /proc/filesystems >/dev/null && \
     ! grep '^xenfs ' /proc/mounts >/dev/null;
  then
  	mount -t xenfs xenfs /proc/xen
@@ -31,7 +30,7 @@ Index: xen-3.4-3.4.3~rc6/xen-3.4.3~rc6/tools/hotplug/Linux/init.d/xend
  # Wait for Xend to be up
  function await_daemons_up
  {
-@@ -48,14 +59,32 @@
+@@ -48,14 +58,32 @@
  
  case "$1" in
    start)
@@ -64,7 +63,7 @@ Index: xen-3.4-3.4.3~rc6/xen-3.4.3~rc6/tools/hotplug/Linux/init.d/xend
  	;;
    status)
  	xend status
-@@ -64,8 +93,10 @@
+@@ -64,8 +92,10 @@
          xend reload
          ;;
    restart|force-reload)
