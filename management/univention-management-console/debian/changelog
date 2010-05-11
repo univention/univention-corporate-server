@@ -1,3 +1,9 @@
+univention-management-console (3.0.13-1) unstable; urgency=low
+
+  * show subtree of currently selected item in treeview; Bug #17750
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 11 May 2010 17:01:40 +0200
+
 univention-management-console (3.0.12-1) unstable; urgency=low
 
   * modify style of hideable sections; Bug #18127

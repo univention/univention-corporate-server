@@ -104,6 +104,7 @@ class LinkButton( Button ):
 		attributes[ 'class' ] = 'linkbutton'
 		if current:
 			attributes[ 'class' ] += ' umc_tree_item_current'
+		self.current = current
 			
 		Button.__init__( self, label, tag, actions = actions, attributes = attributes, close_dialog = close_dialog, helptext = helptext )
 		self.set_size( umct.SIZE_TINY )

@@ -510,7 +510,8 @@ def __rewrite_tree( storage, data, level = 0, parent = None, collapsible = None,
 					item_id = name + '.' + parent + '.' + item.get_text()
 				else:
 					item_id = name + '.' + item.get_text()
-				items.append( '"%s"' % item_id )
+				if not item.current:
+					items.append( '"%s"' % item_id )
 				link_button = '<a href="javascript:umc_tree_hide_show(\'%(id)s\', \'%(minus)s\', \'%(plus)s\')"><img style="border: 0px" id="%(id)s.button" src="%(current)s"/></a>' % { 'id' : item_id, 'minus' : _img_minus, 'plus' : _img_plus, 'current' : _img_minus }
 				col_toggle = tablecol( '', {}, { 'obs' : [ htmltext( '', {}, { 'htmltext' : [ link_button, ] } ), ] } )
 				row = tablerow( '', {}, { 'obs' : [ col_toggle, col_unipart ] } )
