@@ -22,9 +22,4 @@ if [ -x "/etc/init.d/xendomains" ]; then
 	update-rc.d xendomains defaults 21 20 >/dev/null || exit $?
 fi
 
-grep "/proc/xen" /etc/fstab >/dev/null
-if [ $? = 1 ]; then
-	echo "none /proc/xen xenfs defaults 0 0" >>/etc/fstab
-fi
-
 exit 0

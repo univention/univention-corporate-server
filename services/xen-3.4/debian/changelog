@@ -1,3 +1,10 @@
+xen-3.4 (3.4.3~rc6-4) unstable; urgency=low
+
+  * the fstab entry is not needed, the xen init script will fix this.
+    Bug #18356
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 May 2010 08:07:30 +0200
+
 xen-3.4 (3.4.3~rc6-3) unstable; urgency=low
 
   * remove git-core from build dependencies and include the qemu
