@@ -1,3 +1,9 @@
+univention-updater (5.0.79-1) unstable; urgency=low
+
+  * Also allow components to block local upgrades (Bug #17293)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 11 May 2010 13:13:53 +0200
+
 univention-updater (5.0.78-1) unstable; urgency=low
 
   * Fix error message showing unresolvable server. (Bug #15205)
@@ -32,7 +38,7 @@ univention-updater (5.0.75-1) unstable; urgency=low
   * Fix duplicate repository_prefix. (Bug #18040)
   * Fix spelling mistake in univention-actualise (Bug #17755)
   * Can use HTTP-HEAD instead of HTTP-GET when checking for repositories
-  	(Bug #18366)
+    (Bug #18366)
   * Add documentation for UCR variables.
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 10 Mar 2010 18:03:27 +0100

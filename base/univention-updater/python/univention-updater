@@ -69,6 +69,16 @@ class UpToDateNoError(Exception):
 		Exception.__init__(self, value)
 		self.reboot = value
 
+class LocalUpdater(UniventionUpdater):
+	"""Direct access to local repository."""
+	def __init__(self):
+		UniventionUpdater.__init__(self)
+		self.repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
+	def net_path_exists(self, path, server='', port='', prefix='', username='', password='', debug=False):
+		return os.path.exists("%s/mirror/%s/%s" % (self.repository_path, prefix, path))
+	def open_connection(self, server=None, port=None):
+		raise NotImplemented()
+
 def log(str):
 	""" Log message to LOGNAME. """
 	print >>fd_log, str
@@ -192,16 +202,9 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 	if mode == 'local':
 		dprint('Checking local repository')
 
-		repository_path = baseConfig.get( 'repository/mirror/basepath', '/var/lib/univention-repository')
-
-		if os.path.exists( repository_path ):
-			repo_base = '%s/mirror/' % repository_path
-			if os.path.exists( os.path.join( repo_base, vv, 'maintained', '%s-%d' % ( vv, int( vp ) + 1 ) ) ): #check for x.y-(z+1)
-				nextversion = '%s-%d' % (vv, int(vp)+1)
-			elif os.path.exists( os.path.join( repo_base, '%s.%d' % ( version_major, int( version_minor ) + 1 ), 'maintained', '%s.%d-0' % ( version_major, int( version_minor ) + 1 ) ) ): #check for x.(y+1)-0
-				nextversion = '%s.%d-0' % (version_major, int(version_minor)+1)
-			elif os.path.exists(os.path.join( repo_base, '%d.0' % ( int( version_major ) + 1 ), 'maintained', '%d.0-0' % ( int( version_major ) + 1 ) ) ): #check for (x+1).0-0
-				nextversion = '%d.0-0' % (int(version_major)+1)
+		updater = LocalUpdater()
+		if updater.net_path_exists(''):
+			nextversion = updater.release_update_available()
 		else:
 			raise UpdateError('A local repository was not found.\n' +
 					'       Please check the UCR variable repository/mirror/basepath\n' +
