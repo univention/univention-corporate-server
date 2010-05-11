@@ -1883,7 +1883,6 @@ td.umc_list_element_part_right {
 
 .umc_tree_item_current {
 	background: #eeeeee;
-	padding: 2px;
 	border: 1px solid #dddddd;
 }
 
@@ -1908,7 +1907,7 @@ td.umc_tree_view_item_level2 {
 td.umc_tree_view_item_level3 {
 	align: baseline;
 	text-align: left;
-	padding-left: 38px;
+	padding-left: 44px;
 	padding-top: 0px;
 	padding-bottom: 0px;
 	line-height: 10px;

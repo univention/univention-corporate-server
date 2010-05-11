@@ -1,4 +1,4 @@
-univention-webui-style (5.0.8-2) unstable; urgency=low
+univention-webui-style (5.0.8-3) unstable; urgency=low
 
   * adapt style for tree view; Bug #17750
 
