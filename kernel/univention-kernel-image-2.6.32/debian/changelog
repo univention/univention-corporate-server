@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.32 (1.0.1-1) unstable; urgency=low
+
+  * update to latest amd64 kernel version. Bug #18323
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 May 2010 06:12:53 +0200
+
 univention-kernel-image-2.6.32 (1.0.0-1) unstable; urgency=low
 
   * Initial Release. Bug #18323
