@@ -1,3 +1,10 @@
+xen-3.4 (3.4.3~rc6-3) unstable; urgency=low
+
+  * remove git-core from build dependencies and include the qemu
+    repository directly into the xen tar archive. Bug #18356
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 May 2010 06:09:02 +0200
+
 xen-3.4 (3.4.3~rc6-2) unstable; urgency=low
 
   * added git-core to build dependencies to build qemu from
