@@ -99,3 +99,28 @@ Description[de]=Soll eine Überprüfung des Server-Zeritifikats durchgeführt we
 Description[en]=If a verification of the server certificate should be done
 Type=bool
 Categories=system-base
+
+[security/limits/user/.*/hard/.*]
+Description[de]=Definiert den maximalen Wert auf den der Benutzer das entsprechende Limit setzen kann.
+Description[en]=Specifies the maximum value the user can change the corresponding limit to.
+Type=str
+Categories=system-base
+
+[security/limits/user/.*/soft/.*]
+Description[de]=Definiert den anfänglichen Wert für das entsprechende Limit für den Benutzer.
+Description[en]=Specifies the initial value of the corresponding limit for the user.
+Type=str
+Categories=system-base
+
+[security/limits/group/.*/hard/.*]
+Description[de]=Definiert den maximalen Wert auf den ein Benutzer der Gruppe das entsprechende Limit setzen kann.
+Description[en]=Specifies the maximalen value users in the group can change the corresponding limit to.
+Type=str
+Categories=system-base
+
+[security/limits/group/.*/soft/.*]
+Description[de]=Definiert den anfänglichen Wert für das entsprechende Limit für die Benutzer der Gruppe.
+Description[en]=Specifies the initial value of the corresponding limit for users in the group.
+Type=str
+Categories=system-base
+
