@@ -77,6 +77,11 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.11-1; 
 	univention-config-registry set auth/user/services="$(echo $auth_user_services | sed '/\<screen\>/ ! s/$/ screen/')"
 fi
 
+# Bug #12928
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.17-1; then
+	univention-config-registry set 'security/limits/group/Domain Users/hard/nproc?1000'
+fi
+
 #DEBHELPER#
 
 exit 0

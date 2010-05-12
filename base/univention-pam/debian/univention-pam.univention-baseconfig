@@ -58,6 +58,7 @@ Variables: ldap/server/addition
 
 Type: file
 File: etc/security/limits.conf
+Variables: security/limits(/[^/]+){4}
 
 Type: file
 File: etc/security/access-admin.conf

@@ -1,3 +1,9 @@
+univention-pam (3.0.17-1) unstable; urgency=low
+
+  * make /etc/security/limits.conf configurable via UCR. (Bug #12928)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 12 May 2010 14:16:18 +0200
+
 univention-pam (3.0.16-1) unstable; urgency=low
 
   * really fixed a syntax error in admin-auth while writing the
