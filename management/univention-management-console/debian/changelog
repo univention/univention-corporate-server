@@ -1,3 +1,9 @@
+univention-management-console (3.0.14-1) unstable; urgency=low
+
+  * fixed naming of ajax code (Bug #17666)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 12 May 2010 10:27:57 +0200
+
 univention-management-console (3.0.13-1) unstable; urgency=low
 
   * show subtree of currently selected item in treeview; Bug #17750

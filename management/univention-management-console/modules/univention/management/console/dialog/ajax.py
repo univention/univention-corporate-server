@@ -84,8 +84,9 @@ class RefreshFrame( base.HTML ):
 		txt_javascript = """
 <script type='text/javascript'>
 var umc = {};
-umc.update = {};
-umc.update.updateData = function(refreshurl, wndid, dataid, maxlen) {
+umc.ajax = {};
+umc.ajax.refreshframe = {};
+umc.ajax.refreshframe.updateData = function(refreshurl, wndid, dataid, maxlen) {
     var xhrArgs = {
             url: refreshurl,
             handleAs: 'json',
@@ -105,8 +106,8 @@ dojo.addOnLoad (function() {
     url = 'ajax.py?session_id=%(sessionid)s&umcpcmd=%(command)s&%(options)s';
 	wndid = 'wnd%(identifier)s';
 	dataid = 'data%(identifier)s';
-	umc.update.updateData(url, wndid, dataid, %(maxlen)d);
-    window.setInterval( function() { umc.update.updateData(url, wndid, dataid, %(maxlen)d);}, %(interval)s);
+	umc.ajax.refreshframe.updateData(url, wndid, dataid, %(maxlen)d);
+    window.setInterval( function() { umc.ajax.refreshframe.updateData(url, wndid, dataid, %(maxlen)d);}, %(interval)s);
 });
 </script>
 """ % { 'sessionid': sessionid,
