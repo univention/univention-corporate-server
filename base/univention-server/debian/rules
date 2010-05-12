@@ -76,7 +76,6 @@ install: build
 	install -m 0755 univention-directory-policy/univention-set-ldap-server debian/univention-server-member/usr/lib/univention-directory-policy/
 
 	install -m 755 managed-client debian/univention-managed-client/etc/init.d/
-	install -m 755 univention-domain-connection debian/univention-managed-client/usr/bin/
 
 	install -m 755 univention-directory-policy/univention-set-ldap-server debian/univention-managed-client/usr/lib/univention-directory-policy/
 	install -m 755 check_connection debian/univention-managed-client/usr/share/univention-managed-client/
