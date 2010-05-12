@@ -144,35 +144,6 @@ static int converse(pam_handle_t * pamh, int ctrl, int nargs
 	return retval;		/* propagate error status */
 }
 
-/* Ask the application to display a short text string for us. */
-static int make_remark(pam_handle_t * pamh, int ctrl, const char *remark)
-{
-	int retval;
-
-	if ((ctrl & RUNASROOT_QUIET) != RUNASROOT_QUIET)
-	{
-		struct pam_message msg[1], *mesg[1];
-		struct pam_response *resp = NULL;
-
-		mesg[0] = &msg[0];
-		msg[0].msg_style = PAM_TEXT_INFO;
-		msg[0].msg = remark;
-
-		retval = converse(pamh, ctrl, 1, mesg, &resp);
-
-		msg[0].msg = NULL;
-		if (resp)
-		{
-			_pam_drop_reply(resp, 1);
-		}
-	}
-	else
-	{
-		retval = PAM_SUCCESS;
-	}
-	return retval;
-}
-
 static int sigchld_blocked = 0;
 static sigset_t sigchldblock_mask, sigchldblock_oldmask;
 
@@ -233,25 +204,11 @@ sigterm_block_pop (void)
 int run_program(pam_handle_t * pamh, int ctrl, char *prog, const char * user, unsigned int pw,
 		const char * password, const int run_in_user_context )
 {
-	char *remark;
 	pid_t pid;
 	int status, i;
 	extern char **environ;
 	const struct passwd *pwd;
 
-	/* Some scratch space */
-	remark = malloc(BUFSIZ);
-	if (remark == NULL)
-	{
-		return PAM_BUF_ERR;
-	}
-
-	/* Mention what is happening, if the notification fails that is OK */
-	if (snprintf(remark,BUFSIZ,"executing: %s.",
-				prog ) == -1)
-		return PAM_PERM_DENIED;
-
-	make_remark(pamh, ctrl, remark);
 
 	sigchld_block_push ();
 	sigterm_block_push ();
