@@ -1,3 +1,9 @@
+univention-updater (5.0.81-1) unstable; urgency=low
+
+  * Escape non-ascii characters in proxy authentication (Bug #17691)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 13 May 2010 16:17:39 +0200
+
 univention-updater (5.0.80-1) unstable; urgency=low
 
   * Include blocking components in local temporary sources.list (Bug #17293)
