@@ -1,3 +1,11 @@
+univention-updater (5.0.80-1) unstable; urgency=low
+
+  * Include blocking components in local temporary sources.list (Bug #17293)
+  * Mirror components before upgrade.
+  * Fix authentication for sources of components (Bug #17200)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 12 May 2010 21:07:26 +0200
+
 univention-updater (5.0.79-1) unstable; urgency=low
 
   * Also allow components to block local upgrades (Bug #17293)

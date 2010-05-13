@@ -46,6 +46,7 @@ import datetime
 import univention_baseconfig
 
 from univention.updater import UniventionUpdater, UCS_Version
+from univention.updater.tools import LocalUpdater
 
 # TODO:
 #   * check the local repository path /var/lib/univention-reposiotry
@@ -68,16 +69,6 @@ class UpToDateNoError(Exception):
 	def __init__(self, value=None):
 		Exception.__init__(self, value)
 		self.reboot = value
-
-class LocalUpdater(UniventionUpdater):
-	"""Direct access to local repository."""
-	def __init__(self):
-		UniventionUpdater.__init__(self)
-		self.repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
-	def net_path_exists(self, path, server='', port='', prefix='', username='', password='', debug=False):
-		return os.path.exists("%s/mirror/%s/%s" % (self.repository_path, prefix, path))
-	def open_connection(self, server=None, port=None):
-		raise NotImplemented()
 
 def log(str):
 	""" Log message to LOGNAME. """
@@ -248,6 +239,14 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 				res=os.system('mount -l 2>>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
 				if res == 0:
 					dprint('Warning: Failed to unmount %s' % device_name)
+			if nextversion:
+				ver = UCS_Version(nextversion)
+				mm_version = UCS_Version.FORMAT % ver
+				updater = LocalUpdater()
+				components = filter(lambda c: 'current' in baseConfig.get('repository/online/component/%s/version' % c, '').split(','), updater.get_components())
+				for component in components:
+					if not updater.get_component_repositories(component, [mm_version], False):
+						raise UpdateError('The required component %s is missing for version %s.' % (component, mm_version))
 
 	elif mode == 'net':
 		try:
@@ -389,19 +388,13 @@ def main():
 
 		dprint('Update to = %s' % nextversion)
 
-		repository_path = baseConfig.get( 'repository/mirror/basepath', '/var/lib/univention-repository')
-
+		updater = LocalUpdater()
+		temporary_sources_list = updater.release_update_temporary_sources_list(nextversion)
 		remove_temporary_sources_list()
-		new_version = UCS_Version( nextversion )
+		add_temporary_sources_list('\n'.join(temporary_sources_list))
 
-		maintained_state_list = [ 'maintained' ]
-		if baseConfig.get( 'repository/online/unmaintained', 'no').lower() in ('yes', 'true', '1'):
-			maintained_state_list.append('unmaintained')
-
-		for maintained in maintained_state_list:
-			for arch in ['all', architecture, 'extern']:
-				if os.path.exists('%s/mirror/%d.%d/%s/%s/%s' % ( repository_path, new_version.major, new_version.minor, maintained, nextversion, arch ) ):
-					add_temporary_sources_list ( 'deb file:%s/mirror/%d.%d/%s/ %s/%s/' % ( repository_path, new_version.major, new_version.minor, maintained, nextversion, arch ) )
+		repository_path = baseConfig.get('repository/mirror/basepath', '/var/lib/univention-repository')
+		new_version = UCS_Version(nextversion)
 		scriptPath = '%s/mirror/%d.%d/maintained/%s/all/' % ( repository_path, new_version.major, new_version.minor, nextversion )
 
 	elif command == 'cdrom':

@@ -38,7 +38,7 @@ class UniventionMirror( UniventionUpdater ):
 	def __init__( self ):
 		UniventionUpdater.__init__( self )
 		self.repository_path =  self.configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
-			
+
 		if self.configRegistry.has_key( 'repository/mirror/version/end' ):
 			self.version_end = UCS_Version( self.configRegistry.get( 'repository/mirror/version/end' ) )
 		else:
@@ -54,7 +54,7 @@ class UniventionMirror( UniventionUpdater ):
 	
 	def config_repository( self ):
 		""" Retrieve configuration to access repository. Overrides UniventionUpdater. """
-		self.online_repository = self.configRegistry.get( 'repository/mirror', 'yes' )
+		self.online_repository = self.configRegistry.get('repository/mirror', 'yes').lower() in ('yes', 'true', 'enabled', '1')
 		self.repository_server = self.configRegistry.get( 'repository/mirror/server', 'apt.univention.de' )
 		self.repository_port = self.configRegistry.get( 'repository/mirror/port', '80' )
 		self.repository_prefix = self.configRegistry.get( 'repository/mirror/prefix', '' ).strip('/')
