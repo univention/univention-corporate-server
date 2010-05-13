@@ -215,10 +215,6 @@ class UniventionUpdater:
 	def __init__(self):
 		self.connection = None
 		self.proxy_prefix = None
-		self.proxy_username = None
-		self.proxy_password = None
-		self.proxy_server = None
-		self.proxy_port = None
 		self.architectures = [ os.popen('dpkg-architecture -qDEB_BUILD_ARCH 2>/dev/null').readline()[:-1] ]
 
 		self.ucr_reinit()
@@ -246,29 +242,36 @@ class UniventionUpdater:
 		if not self.nameserver_available:
 			raise socket.gaierror, (socket.EAI_NONAME, 'The repository server %s could not be resolved.' % server)
 
-		if self.proxy and self.proxy != '':
+		if self.proxy not in (None, ''):
 			self.proxy_prefix = "%s:%s" % (server, port)
 
-			location = self.proxy
-			if location.find ('@') != -1:
-				user_pwd, location = location.split ('@')
-				self.proxy_username, self.proxy_password = user_pwd.split(':')
-
-			if location.find (':') != -1:
-				location, pport = location.split (':')
-				self.proxy_port = int (pport)
+			if '://' in self.proxy:
+				from urlparse import urlsplit
+				r = urlsplit(self.proxy)
+				if r[0] != 'http':
+					raise NotImplemented('Scheme %s not supported' % r[0])
+				netloc = r[1]
 			else:
-				self.proxy_port = HTTP_PROXY_DEFAULT_PORT
-			self.proxy_server   = location
+				netloc = self.proxy
 
-			#print "# %s:%d %s" % (self.proxy_server, self.proxy_port, self.proxy_prefix)
-			self.connection = httplib.HTTPConnection(self.proxy_server, self.proxy_port)
 			proxy_headers = {}
+			# re-implementation of urlparse for Python < 2.5
+			if "@" in netloc:
+				userinfo, netloc = netloc.rsplit("@", 1)
+				if ":" in userinfo:
+					from urllib import unquote
+					username, password = map(unquote, userinfo.split(":", 1))
+					# setup basic authentication
+					user_pass = base64.encodestring('%s:%s' % (username, password))
+					proxy_headers['Proxy-Authorization'] = string.strip ('Basic %s' % user_pass)
+			if ":" in netloc:
+				hostname, port = netloc.rsplit(":", 1)
+			else:
+				hostname, port = netloc, HTTP_PROXY_DEFAULT_PORT
 
-			if self.proxy_username and self.proxy_password:
-				#setup basic authentication
-				user_pass = base64.encodestring('%s:%s' % (self.proxy_username, self.proxy_password))
-				proxy_headers['Proxy-Authorization'] = string.strip ('Basic %s' % user_pass)
+			#print "# %s:%s %s" % (hostname, port, self.proxy_prefix)
+			self.connection = httplib.HTTPConnection(hostname, int(port))
+
 			return proxy_headers
 		else:
 			#print "# %s:%s" % (server, port)
@@ -286,9 +289,9 @@ class UniventionUpdater:
 		self.is_repository_server = self.configRegistry.get( 'local/repository', 'no' ) in ( 'yes', 'true' )
 
 		if self.configRegistry.has_key('proxy/http') and self.configRegistry['proxy/http']:
-			self.proxy = self.configRegistry['proxy/http'].lower().replace('http://','')
+			self.proxy = self.configRegistry['proxy/http']
 		elif os.environ.has_key('http_proxy') and os.environ['http_proxy']:
-			self.proxy = os.environ['http_proxy'].lower().replace('http://','')
+			self.proxy = os.environ['http_proxy']
 		else:
 			self.proxy = None
 		self.proxy_prefix = ''
