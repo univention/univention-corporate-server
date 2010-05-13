@@ -418,7 +418,7 @@ class UniventionUpdater:
 		return self.get_next_version(UCS_Version(ucs_version), components)
 
 	def release_update_temporary_sources_list(self, version, components=None):
-		'''Return list of Debian repository statements for the release update including blocking components.'''
+		'''Return list of Debian repository statements for the release update including all enabled components.'''
 		if components == None:
 			components = self.get_components()
 
@@ -634,9 +634,10 @@ class UniventionUpdater:
 		netConf = {'prefix':''}
 		if not self.is_repository_server:
 			netConf['server'] = self.configRegistry.get('repository/online/component/%s/server' % component, self.repository_server)
+			netConf['port'] = self.configRegistry.get('repository/online/component/%s/port' % component, self.repository_port)
 		else:
 			netConf['server'] = self.repository_server
-		netConf['port'] = self.configRegistry.get('repository/online/component/%s/port' % component, self.repository_port)
+			netConf['port'] = self.repository_port
 		repository_prefix = self.configRegistry.get( 'repository/online/component/%s/prefix' % component, '' )
 
 		parts = self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained').split(',')
@@ -688,13 +689,37 @@ class UniventionUpdater:
 						result.append( repo.clean() )
 					if self.sources:
 						repo.arch = "source"
-						if self.net_path_exists(repo.path("Sources.gz")):
+						if self.net_path_exists(repo.path("Sources.gz"), **netConf):
 							result.append( repo.deb("deb-src") )
 					del repo.arch
 
 		return result
 
-	def print_component_repositories( self, clean = False ):
+	def _releases_in_range(self, start=None, end=None):
+		'''Find all $major.$minor releases between start [$major.0] and end [$major.$minor] including.'''
+		if not start:
+			start = UCS_Version((self.version_major, 0, 0))
+
+		if not end:
+			end = UCS_Version((self.version_major, self.version_minor, self.patchlevel))
+
+		result = []
+
+		version = UCSRepoPool()
+		version.minor = start.minor
+		foundFirst = False
+		for version.major in range(start.major, end.major + 1):
+			while (version.major, version.minor) <= (end.major, end.minor):
+				if self.net_path_exists(version.path()):
+					result.append(UCS_Version.FORMAT % version)
+				elif foundFirst or version.minor > 99:
+					break
+				version.minor += 1
+			version.minor = 0
+
+		return result
+
+	def print_component_repositories(self, clean=False, start=None, end=None):
 		'''Return a string of Debian repository statements for all enabled components.
 		With clean=True, repository/online/component/%s/clean controls if additional clean statements for apt-mirror are added.
 		'''
@@ -710,15 +735,33 @@ class UniventionUpdater:
 			str = self.configRegistry.get('repository/online/component/%s/version' % component, '')
 			versions = set()
 			for version in str.split(','):
-				if version in ('current', ''): # all from same major
-					version = {'major': self.version_major}
-					for version['minor'] in range(self.version_minor + 1):
-						versions.add(UCS_Version.FORMAT % version)
+				if version in ('current', ''): # all from start to end, defaults to same major
+					try: mm_versions
+					except NameError:
+						mm_versions = self._releases_in_range(start, end)
+					versions |= set(mm_versions)
 				else:
 					versions.add(version)
 			result += self.get_component_repositories(component, versions, clean)
 
 		return '\n'.join(result)
+
+class LocalUpdater(UniventionUpdater):
+	"""Direct file access to local repository."""
+	def __init__(self):
+		UniventionUpdater.__init__(self)
+		self.repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
+	def net_path_exists(self, path, server='', port='', prefix='', username='', password='', debug=False):
+		if path.strip('/') == 'univention-repository':
+			return False
+		return os.path.exists("%s/mirror/%s/%s" % (self.repository_path, prefix, path))
+	def open_connection(self, server=None, port=None):
+		raise NotImplemented()
+	def _iterate_versions(self, ver, start, end, parts, archs, **netConf):
+		prefix = "file://%s/mirror/" % self.repository_path
+		for v in UniventionUpdater._iterate_versions(self, ver, start, end, parts, archs, **netConf):
+			v.prefix = prefix
+			yield v
 
 if __name__ == '__main__':
 	import doctest
