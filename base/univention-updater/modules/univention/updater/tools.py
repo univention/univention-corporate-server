@@ -380,14 +380,14 @@ class UniventionUpdater:
 
 		if debug:
 			if response.status == httplib.NOT_FOUND: # 404
-				print >>sys.stderr, '# The site http://%s:%s%s was not found' % (server, port, site)
+				print '# The site http://%s:%s%s was not found' % (server, port, site)
 			elif response.status == httplib.UNAUTHORIZED: # 401
 				if username and password:
-					print >>sys.stderr, '# Authentication failure for http://%s:%s@%s:%s%s' % (username, password, server, port, site)
+					print '# Authentication failure for http://%s:%s@%s:%s%s' % (username, password, server, port, site)
 				else:
-					print >>sys.stderr, '# Username and password are requiered for http://%s:%s%s' % (server, port, site)
+					print '# Username and password are requiered for http://%s:%s%s' % (server, port, site)
 			else:
-				print >>sys.stderr, '# The http error code (%d) was returned for the site http://%s:%s%s' % (response.status, server, port, site)
+				print '# The http error code (%d) was returned for the site http://%s:%s%s' % (response.status, server, port, site)
 
 		self.close_connection()
 		return False
@@ -405,7 +405,7 @@ class UniventionUpdater:
 				for component in components:
 					mm_version = UCS_Version.FORMAT % ver
 					if not self.get_component_repositories(component, [mm_version], False):
-						print >>sys.stderr, "# Required component '%s' not available for version %s" % (component, mm_version)
+						print >>sys.stderr, "An update to UCS %s without the component '%s' is not possible because the component '%s' is marked as required." % (mm_version, component, component)
 						return None
 				else:
 					return UCS_Version.FULLFORMAT % ver

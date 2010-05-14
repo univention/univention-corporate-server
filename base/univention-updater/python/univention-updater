@@ -58,6 +58,7 @@ TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
 
 LOGNAME = '/var/log/univention/updater.log'
 fd_log = sys.stderr
+stdout_orig=sys.stdout
 
 class UpdateError(Exception):
 	""" Exception to signal errors on update """
@@ -77,7 +78,7 @@ def log(str):
 
 def dprint(str):
 	""" Print message to stdout and LOGNAME. """
-	for fd in (sys.stdout, fd_log):
+	for fd in (stdout_orig, fd_log):
 		print >>fd, str
 		fd.flush()
 
@@ -275,10 +276,15 @@ def main():
 	cdrom_mount_point='/cdrom'
 	iso=None
 
+	fp_debug=open('/var/log/univention/updater.log', 'a+')
+	stdout_orig=sys.stdout
+	sys.stdout=fp_debug
+
 	log('**** Starting univention-updater with parameter=%s' % sys.argv)
 
 	if len(sys.argv) < 2:
 		usage(sys.stderr)
+		fp_debug.close()
 		sys.exit(2)
 
 	if sys.argv[1] == 'net':
@@ -289,6 +295,7 @@ def main():
 		command='local'
 	else:
 		usage(sys.stderr)
+		fp_debug.close()
 		sys.exit(2)
 
 	updateto=None
@@ -301,6 +308,7 @@ def main():
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
 		dprint(msg)
+		fp_debug.close()
 		sys.exit(2)
 
 	baseConfig=univention_baseconfig.baseConfig()
@@ -359,6 +367,7 @@ def main():
 	if updateto:
 		if UCS_Version(updateto) <= UCS_Version(lastversion):
 			dprint('System is up to date (UCS %s)' % lastversion)
+			fp_debug.close()
 			raise UpToDateNoError(reboot)
 		updateto_args = [ '--updateto', updateto ]
 
@@ -384,6 +393,7 @@ def main():
 		nextversion = update_available('local', baseConfig, cdrom_mount_point, iso=iso)
 		if not nextversion:
 			dprint('System is up to date (UCS %s)' % lastversion)
+			fp_debug.close()
 			raise UpToDateNoError(reboot)
 
 		dprint('Update to = %s' % nextversion)
@@ -408,6 +418,7 @@ def main():
 
 		if not nextversion:
 			dprint('System is up to date (UCS %s)' % lastversion)
+			fp_debug.close()
 			raise UpToDateNoError(reboot)
 
 		dprint('Update to = %s' % nextversion)
@@ -420,6 +431,7 @@ def main():
 				resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'cdrom', '--cdrom', cdrom_mount_point ] + updateto_args )
 
 			if resultCode != 0:
+				fp_debug.close()
 				raise UpdateError('Failed to execute "univention-repository-update cdrom"')
 
 			calllocal = [sys.argv[0], 'local']
@@ -442,6 +454,7 @@ def main():
 			log('local/repository active, copy from net and start local mode')
 			resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'net' ] + updateto_args )
 			if resultCode != 0:
+				fp_debug.close()
 				raise UpdateError('Failed to execute "univention-repository-update net"')
 
 			calllocal = [sys.argv[0], 'local']
@@ -456,6 +469,7 @@ def main():
 		nextversion = update_available('net', baseConfig, cdrom_mount_point, iso=iso, updater=updater)
 		if not nextversion:
 			dprint('System is up to date (UCS %s)' % lastversion)
+			fp_debug.close()
 			raise UpToDateNoError(reboot)
 
 		dprint('Update to = %s' % nextversion)

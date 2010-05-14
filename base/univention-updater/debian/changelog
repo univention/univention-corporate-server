@@ -1,3 +1,9 @@
+univention-updater (5.0.82-1) unstable; urgency=low
+
+  * redirect status messages into the sources.list file. Bug #17293
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 May 2010 09:09:59 +0200
+
 univention-updater (5.0.81-1) unstable; urgency=low
 
   * Escape non-ascii characters in proxy authentication (Bug #17691)
