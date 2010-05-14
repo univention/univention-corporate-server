@@ -200,14 +200,15 @@ function umc_tree_restore( tree_items, minus, plus ) {
 var confirmDlg;
 function umc_popup_confirm( title, question, yes, no, send, byteindex ) {
 	dojo.require("dijit.Dialog");
-	content = "<p>" + question + "</p>";
-	content += "<table><tr>";
-	content += "<td><button dojoType=\"dijit.form.Button\" onClick=\"" + send + "(" + byteindex + ")\">" + yes + "</button></td>";
-	content += "<td><button dojoType=\"dijit.form.Button\" onClick=\"confirmDlg.hide();\">" + no + "</button></td>";
-	content += "<td></td></tr></table>";
+	// variable named "content" can not be used as it does not work with IE8
+	mycontent = "<p>" + question + "</p>";
+	mycontent += "<table><tr>";
+	mycontent += "<td><button dojoType=\"dijit.form.Button\" onClick=\"" + send + "(" + byteindex + ")\">" + yes + "</button></td>";
+	mycontent += "<td><button dojoType=\"dijit.form.Button\" onClick=\"confirmDlg.hide();\">" + no + "</button></td>";
+	mycontent += "<td></td></tr></table>";
 	confirmDlg = new dijit.Dialog({
 		title: title,
-		content: content,
+		content: mycontent,
 		style: "width: 300px"
 	});
 	confirmDlg.show();

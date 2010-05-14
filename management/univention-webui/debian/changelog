@@ -1,3 +1,10 @@
+univention-webui (4.0.10-1) unstable; urgency=low
+
+  * confirmation dialog: rename variable content to mycontent as IE8 does
+    not support local variables with the name content; Bug #18400
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 14 May 2010 18:59:33 +0200
+
 univention-webui (4.0.9-1) unstable; urgency=low
 
   * button: if the attribute webui-confirm-title exists, a Dojo dialog is
