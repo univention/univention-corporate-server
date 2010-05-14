@@ -1,3 +1,9 @@
+univention-management-console (3.0.15-1) unstable; urgency=low
+
+  * use a Dojo dialog for confirmation dialogs; Bug #18400
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 14 May 2010 18:03:19 +0200
+
 univention-management-console (3.0.14-1) unstable; urgency=low
 
   * fixed naming of ajax code (Bug #17666)

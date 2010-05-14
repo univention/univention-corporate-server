@@ -111,6 +111,8 @@ class Manager( object ):
 									 self._modules[ module ].command_description[ command ].caching
 					self.__commands[ module ][ 'commands' ][ command ][ 'priority' ] = \
 									 self._modules[ module ].command_description[ command ].priority
+					self.__commands[ module ][ 'commands' ][ command ][ 'confirm' ] = \
+									 self._modules[ module ].command_description[ command ].confirm
 			if self.__commands.has_key( module ):
 				self.__commands[ module ][ 'icon' ] = self._modules[ module ].icon
 				self.__commands[ module ][ 'short_description' ] = self._modules[ module ].short_description

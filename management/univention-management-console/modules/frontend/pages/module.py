@@ -91,7 +91,7 @@ class Module( base.Page ):
 	def __init__( self, module_name, module ):
 		base.Page.__init__( self, module_name, module[ 'short_description' ], closeable = True )
 		self.__module = module
-		self.__storage = mapping.Storage()
+		self.__storage = mapping.Storage( module )
 		self.__layout = None
 		# TODO: partial response
 		self.__layout_in_progress = None
@@ -99,7 +99,7 @@ class Module( base.Page ):
 		self.__dialog = None
 		self.__restore_referrer = False
 		self.__operation_is_progress = False
-
+		
 		if module[ 'hide_tabs' ]:
 			self.categorylist_hide = True
 			

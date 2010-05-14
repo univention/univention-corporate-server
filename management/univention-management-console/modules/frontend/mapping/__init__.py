@@ -32,8 +32,6 @@
 import univention.management.console.dialog as umcd
 import univention.management.console.tools as umc_tools
 
-import univention.debug as ud
-
 from uniparts import *
 from syntax import *
 
@@ -48,9 +46,22 @@ from mapper import *
 
 # Convert UMCP dialog elements to frontend uniparts
 class Storage( dict ):
-	def __init__( self ):
+	def __init__( self, module ):
 		dict.__init__( self )
+		self.__module = module
 
+	def get_command( self, command ):
+		for name, cmd in self.__module[ 'commands' ].items():
+			if name == command:
+				return cmd
+
+	def confirmation_required( self, command ):
+		cmd = self.get_command( command.arguments[ 0 ] )
+		if cmd and cmd[ 'confirm' ]:
+			return cmd[ 'confirm' ]
+
+		return None
+			
 	def to_uniparts( self, umcp_parts ):
 		if type( umcp_parts ) in umcd.DynamicElementTypes:
 			return self.__convert_dynamics( umcp_parts )

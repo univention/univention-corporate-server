@@ -142,33 +142,10 @@ class simpleHandler( signals.Provider ):
 		self._stop_response_timer( id )
 
 		return False
-
-	def _confirmation_required( self, object ):
-		# command is already confirmed
-		if '::confirmed' in object.options:
-			return False
-
-		cmd = self.__commands.get( object.arguments[ 0 ] )
-		return ( cmd and cmd.confirm )
-
-	def _confirmation_response( self, object ):
-		res = umcp.Response( object )
-		new_req = copy.deepcopy( object )
-		new_req.recreate_id()
-		new_req.options[ '::confirmed' ] = 'yes'
-		cmd = self.__commands.get( object.arguments[ 0 ] )
-
-		res.dialog = [ umcd.YesNoQuestion( cmd.confirm.title, cmd.confirm.question, [ umcd.Action( new_req ) ], cmd.confirm.yes, cmd.confirm.no, cmd.confirm.icon ) ]
-		res.status( 200 )
-		self.result( res )
 		
 	def execute( self, method, object ):
 # 		self._start_response_timer( object.id(), self.__message )
 		self.__requests[ object.id() ] = ( object, method )
-		# needs confirmation
-		if not object.incomplete and self._confirmation_required( object ):
-			self._confirmation_response( object )
-			return
 
 		ret = self._exec_if( '_pre', method, object )
 		if isinstance( ret, basestring ):
