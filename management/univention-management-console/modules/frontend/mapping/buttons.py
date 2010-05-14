@@ -39,6 +39,8 @@ import mapper
 import utils
 import copy
 
+import univention.debug as ud
+
 _ = umc.Translation( 'univention.management.console.frontend' ).translate
 
 class IButtonMap( object ):

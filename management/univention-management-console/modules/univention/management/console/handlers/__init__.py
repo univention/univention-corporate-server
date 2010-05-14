@@ -147,6 +147,7 @@ class simpleHandler( signals.Provider ):
 # 		self._start_response_timer( object.id(), self.__message )
 		self.__requests[ object.id() ] = ( object, method )
 
+		ud.debug( ud.ADMIN, ud.INFO, 'Execute: %s' % str( object.arguments ) )
 		ret = self._exec_if( '_pre', method, object )
 		if isinstance( ret, basestring ):
 			self.__execution_failed( object, ret )
