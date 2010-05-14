@@ -197,6 +197,21 @@ function umc_tree_restore( tree_items, minus, plus ) {
 		}
 	}
 }
+var confirmDlg;
+function umc_popup_confirm( title, question, yes, no, send, byteindex ) {
+	dojo.require("dijit.Dialog");
+	content = "<p>" + question + "</p>";
+	content += "<table><tr>";
+	content += "<td><button dojoType=\"dijit.form.Button\" onClick=\"" + send + "(" + byteindex + ")\">" + yes + "</button></td>";
+	content += "<td><button dojoType=\"dijit.form.Button\" onClick=\"confirmDlg.hide();\">" + no + "</button></td>";
+	content += "<td></td></tr></table>";
+	confirmDlg = new dijit.Dialog({
+		title: title,
+		content: content,
+		style: "width: 300px"
+	});
+	confirmDlg.show();
+}
 //-->
 </script>
 </head>

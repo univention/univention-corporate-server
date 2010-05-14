@@ -691,14 +691,23 @@ class button extends extra{
 			return $this->search_result_button($this->basket['text'], $this->attribute['icon'], $this->byteindex, $this->basket['content'], $this->attribute['defaultbutton']); 
 		}
 
+		if($this->status == 'content') {
+			$onclick = ' onClick="sendForm('.$this->byteindex.')"';
+			$onclick_func = "sendForm";
+		} else {
+			$onclick = ' onClick="sendForm2('.$this->byteindex.')"';
+			$onclick_func = "sendForm2";
+		}
+
+		if(isset($this->attribute['webui-confirm-title']))
+			$onclick = ' onClick="umc_popup_confirm( \''.$this->attribute['webui-confirm-title'].'\', \''.$this->attribute['webui-confirm-question'].'\', \''.$this->attribute['webui-confirm-yes'].'\', \''.$this->attribute['webui-confirm-no'].'\', \''.$onclick_func.'\', '.$this->byteindex.')"';
+			
 		if( $this->js && $class == 'linkbutton' ){
 			// define form-contens
 			if(!isset($this->attribute['passive'])){
-				if($this->status == 'content')
-					$href = '<a class="'.$class.'" onClick="sendForm('.$this->byteindex.')"';
-				else
-					$href = '<a class="'.$class.'" onClick="sendForm2('.$this->byteindex.')"';
+				$href = '<a class="'.$class.'"';
 
+				$href .= $onclick;	
 				$href .= ' title="'.$this->basket['helptext'].'" ';
 
 				if ( isset( $this->attribute[ 'icon' ] ) ) {
@@ -831,11 +840,11 @@ class button extends extra{
 			/* no icon */
 		}elseif($this->js && isset($this->attribute['link'])){
 			if (isset($this->attribute['type'])) {
-				$str .= '<a class="'.$this->attribute['type'].'" onClick="sendForm('.$this->byteindex.')"';
+				$str .= '<a class="'.$this->attribute['type'].'"'.$onclick;
 			} elseif ($this->status == 'content') {
-				$str .= '<a class="'.$class.'" onClick="sendForm('.$this->byteindex.')"';
+				$str .= '<a class="'.$class.'"'.$onclick;
 			} else {
-				$str .= '<a class="'.$class.'" onClick="sendForm2('.$this->byteindex.')"';
+				$str .= '<a class="'.$class.'"'.$onclick;
 			}
 			$str .= ' title="'.$this->basket['helptext'].'">'.$this->basket['text'].'</a>
 <input type="hidden" id="'.$this->byteindex.'" name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';

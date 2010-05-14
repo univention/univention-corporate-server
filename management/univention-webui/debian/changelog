@@ -1,3 +1,10 @@
+univention-webui (4.0.9-1) unstable; urgency=low
+
+  * button: if the attribute webui-confirm-title exists, a Dojo dialog is
+    used to ask for confirmation before the commands are invoked; Bug #18400
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 14 May 2010 18:04:55 +0200
+
 univention-webui (4.0.8-1) unstable; urgency=low
 
   * tree view widget: implement compatibility for IE; Bug #17750
