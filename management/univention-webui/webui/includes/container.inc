@@ -213,6 +213,21 @@ function umc_popup_confirm( title, question, yes, no, send, byteindex ) {
 	});
 	confirmDlg.show();
 }
+var infoDialog;
+function umc_info_dialog( title, message ) {
+	dojo.require("dijit.Dialog");
+	// variable named "content" can not be used as it does not work with IE8
+	mycontent = "<p>" + message + "</p>";
+	mycontent += "<table><tr>";
+	mycontent += "<td><button dojoType=\"dijit.form.Button\" onClick=\"infoDialog.hide();\">OK</button></td>";
+	mycontent += "<td></td></tr></table>";
+	infoDialog = new dijit.Dialog({
+		title: title,
+		content: mycontent,
+		style: "width: 300px"
+	});
+	infoDialog.show();
+}
 //-->
 </script>
 </head>
