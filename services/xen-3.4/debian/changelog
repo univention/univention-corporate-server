@@ -1,3 +1,9 @@
+xen-3.4 (3.4.3~rc6-7) unstable; urgency=low
+
+  * fixed xendomains init script Bug #18403 
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 May 2010 13:43:42 +0200
+
 xen-3.4 (3.4.3~rc6-6) unstable; urgency=low
 
   * removed xenfs /proc/filesystems check in init.d/xend. Bug #18356
