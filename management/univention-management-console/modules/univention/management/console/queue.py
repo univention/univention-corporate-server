@@ -114,8 +114,14 @@ class RequestGroup( object ):
 	def pop( self ):
 		if self.__requests:
 			req = self.__requests.pop( 0 )
+			status_range = req.options.get( '_range' )
+			if status_range and len( self.__responses ):
+				exitcode = self.__responses[ -1 ].status()
+				if exitcode < status_range[ 0 ] or exitcode > status_range[ 1 ]:
+					return None
 			self.__ids.append( req.id() )
 			return RequestContainer( req )
+
 		return None
 
 	def isComplete( self ):
@@ -262,7 +268,12 @@ class RequestQueue( list ):
 					if grp.isMember( response.id() ):
 						grp.append( response )
 						if not grp.isComplete():
-							self.append( grp.pop() )
+							new_req = grp.pop()
+							if not new_req:
+								grp.finished = True
+								wakeup = grp.event
+							else:
+								self.append( new_req )
 						else:
 							grp.finished = True
 							wakeup = grp.event

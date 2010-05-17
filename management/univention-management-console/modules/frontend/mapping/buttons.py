@@ -98,6 +98,9 @@ class IButtonMap( object ):
 			self._parse_dynamics( req, opt )
 			self._parse_inputs( req, opt )
 
+		if action.exitcode_range:
+			req.options[ '_range' ] = action.exitcode_range
+
 		return req
 
 	def apply( self, storage, umcp_part, parameters, *args ):
@@ -121,6 +124,7 @@ class ButtonMap( IButtonMap, mapper.IMapper ):
 
 	def confirm_attributes( self, storage, umcp_part, attributes ):
 		for action in umcp_part.actions:
+			if isinstance( action, basestring ): continue
 			confirm = storage.confirmation_required( action.command )
 			if confirm:
 				attributes.update( { 'webui-confirm-title' : str( confirm.title ), 'webui-confirm-question' : str( confirm.question ), 'webui-confirm-yes' : str( confirm.yes ), 'webui-confirm-no' : str( confirm.no ) } )

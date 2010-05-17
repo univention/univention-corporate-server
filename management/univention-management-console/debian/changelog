@@ -1,3 +1,12 @@
+univention-management-console (3.0.16-1) unstable; urgency=low
+
+  * commannds may return a report that does not interrupt the normal
+    processing of responses
+  * the invocation of actions can depend on the status code of the previous
+    response; Bug #18409
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 17 May 2010 17:24:41 +0200
+
 univention-management-console (3.0.15-1) unstable; urgency=low
 
   * use a Dojo dialog for confirmation dialogs; Bug #18400

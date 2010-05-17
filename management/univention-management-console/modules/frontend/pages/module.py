@@ -202,12 +202,16 @@ class Module( base.Page ):
 # 				self.__layout_in_progress = None
 			# check if any of the repsonses is an error:
 			reports = []
+			popup_infos = []
 			error_dialog = None
 			exception = False
 			for response in responses:
 				# module asks for shutdown; notebook widget knows what to do in that case
 				if response.status() == 250:
 					return None
+				# we should display a report dialog and continue with the normal processing of responses
+				elif response.status() in ( 201, 301 ):
+					popup_infos.append( response.report )
 				elif response.status() != 200:
 					reports.append( response.report )
 					if response.status() == 500:
@@ -220,7 +224,6 @@ class Module( base.Page ):
 				cur.cache = copy.deepcopy( self.__layout )
 				error_dialog = cur.error_message( '\n'.join( reports ), exception = exception )
 				self.active.reset()
-
 			# received a _final_ response
 			if not self.active:
 				self._refresh = False
@@ -268,6 +271,15 @@ class Module( base.Page ):
 
 				self.__storage.clear()
 				self.__dialog = self.__storage.to_uniparts( self.__layout )
+				if popup_infos:
+					js = '''<script type="text/javascript">
+dojo.addOnLoad( function () {
+umc_info_dialog( '%s', '%s' );
+} );
+</script>
+''' % ( self._title, '<br>'.join( popup_infos ) )
+					row = uniparts.tablerow( '', {}, { 'obs' : [ uniparts.htmltext( '', {}, { 'htmltext' : [ js ] } ) ] } )
+					rows.append( row )
 				col = uniparts.tablecol( '', {}, { 'obs' : [ self.__dialog ] } )
 				row = uniparts.tablerow( '', {}, { 'obs' : [ col ] } )
 				rows.append( row )

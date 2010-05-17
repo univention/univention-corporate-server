@@ -51,9 +51,11 @@ COMMANDS = {
 
 STATUSINFORMATION = {
 	200 : _( 'OK, operation successful' ),
+	201 : _( 'OK, containing report message' ),
 	210 : _( 'OK, partial response' ),
 	250 : _( 'OK, operation successful ask for shutdown of connection' ),
 	300 : _( 'Command currently not available/possible' ),
+	301 : _( 'non-fatal error, processing may continue' ),
 	400 : _( 'Invalid UMCP message' ),
 	401 : _( 'Unknown command or not permitted to run' ),
 	402 : _( 'Invalid command arguments' ),

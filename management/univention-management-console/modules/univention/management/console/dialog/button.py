@@ -52,10 +52,18 @@ class Action( object ):
 	'command_selection' must be set to the ID of the selection input
 	field. The key of the selected value is used for the request command
 	name."""
-	def __init__( self, command = None, options = [], selection = False ):
+	SUCCESS, FAILURE = range( 2 )
+	def __init__( self, command = None, options = [], selection = False, status_range = None ):
 		self.command = command
 		self.options = options
 		self.selection = selection
+		if not type( status_range ) in ( list, tuple ):
+			if status_range == Action.SUCCESS:
+				self.status_range = ( 200, 299 )
+			else:
+				self.status_range = ( 300, 399 )
+		else:
+			self.status_range = status_range
 
 class Button( base.Text, image.Image ):
 	"""Represents a button of any kind. The argument actions contains a

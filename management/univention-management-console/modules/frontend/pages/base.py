@@ -38,7 +38,7 @@ _ = umc.Translation( 'univention.management.console.frontend' ).translate
 
 class Page( object ):
 	def __init__( self, id, title, closeable = False ):
-		self.__title = title
+		self._title = title
 		self.id = id
 		self.selected = 0
 		self.selection_changed = True
@@ -58,8 +58,8 @@ class Page( object ):
 				status = umc_tools.image_get( 'actions/progress-active', umc_tools.SIZE_SMALL )
 			else:
 				status = umc_tools.image_get( 'actions/progress', umc_tools.SIZE_SMALL )
-			return ( self.__title, self.__title, self.icon, status, self.page_closeable )
-		return ( self.__title, self.__title, self.icon, None, self.page_closeable )
+			return ( self._title, self._title, self.icon, status, self.page_closeable )
+		return ( self._title, self._title, self.icon, None, self.page_closeable )
 
 	def layout( self ):
 		rows = []
