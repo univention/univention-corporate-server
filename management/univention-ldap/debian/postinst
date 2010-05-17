@@ -119,7 +119,12 @@ if [[ "$ldap_replog" =~ ^("true"|"yes")$ ]]; then
 fi
 
 merge_csv_unique_sorted() {
-	echo -n "$(echo  -n "$1,$2" | tr "," "\n" | egrep -v "^$" | sort -u  | tr "\n" "," | sed -e 's/,$//')"
+	if [ "$(echo $1)" == "none" ]; then
+		old=''
+	else
+		old="$1"
+	fi
+	echo -n "$(echo  -n "$old,$2" | tr "," "\n" | egrep -v "^$" | sort -u  | tr "\n" "," | sed -e 's/,$//')"
 }
 
 if [[ "$ldap_index_autorebuild" =~ ^("true"|"yes")$ ]]; then
