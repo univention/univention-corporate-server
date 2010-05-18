@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-08 10:35+0100\n"
+"POT-Creation-Date: 2010-05-18 10:43+0200\n"
 "PO-Revision-Date: 2008-06-16 13:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgstr "Über UMC"
 msgid "You are logged in as"
 msgstr "Sie sind angemeldet als"
 
-#: modconsole.py:171 modconsole.py:321 modconsole.py:333 modconsole.py:432
+#: modconsole.py:171 modconsole.py:322 modconsole.py:334 modconsole.py:433
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -74,9 +74,10 @@ msgid ""
 "will be transmitted in plain text. Please follow <a href=https://%s/"
 "univention-management-console/ >this link</a> to use a secure SSL connection."
 msgstr ""
-"Die Netzwerkverbindung ist nicht verschlüsselt. Alle persönlichen und sensiblen "
-"Daten werden im Klartext übertragen. Bitte verwenden Sie <a href=https://%s/"
-"univention-management-console/ >diesen Link</a> für eine verschlüsselte SSL-Verbindung."
+"Die Netzwerkverbindung ist nicht verschlüsselt. Alle persönlichen und "
+"sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie <a "
+"href=https://%s/univention-management-console/ >diesen Link</a> für eine "
+"verschlüsselte SSL-Verbindung."
 
 #: modconsole.py:258
 msgid "Language:"
@@ -94,7 +95,7 @@ msgstr "Benutzername"
 msgid "Please enter your uid."
 msgstr "Bitte geben Sie Ihren Benutzernamen ein."
 
-#: modconsole.py:261 modconsole.py:322
+#: modconsole.py:261 modconsole.py:323
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -114,55 +115,55 @@ msgstr "Bitte geben Sie Ihr Passwort ein."
 msgid "Login"
 msgstr "Anmeldung"
 
-#: modconsole.py:322
+#: modconsole.py:323
 msgid "Abort logout"
 msgstr "Anmeldung abbrechen"
 
-#: modconsole.py:326
+#: modconsole.py:327
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
-#: modconsole.py:360
+#: modconsole.py:361
 msgid "About Univention Management Console"
 msgstr "Über Univention Management Console"
 
-#: modconsole.py:366
+#: modconsole.py:367
 msgid "Version"
 msgstr "Version"
 
-#: modconsole.py:371
+#: modconsole.py:372
 msgid "Build"
 msgstr "Build"
 
-#: modconsole.py:381
+#: modconsole.py:382
 msgid "Hostname"
 msgstr "Rechnername"
 
-#: modconsole.py:394
+#: modconsole.py:395
 msgid "Local installation"
 msgstr "Lokale Installation"
 
-#: modconsole.py:395
+#: modconsole.py:396
 msgid "UCS version"
 msgstr "UCS Version"
 
-#: modconsole.py:405
+#: modconsole.py:406
 msgid "Contact"
 msgstr "Kontakt"
 
-#: modconsole.py:417
+#: modconsole.py:418
 msgid "ALL RIGHTS RESERVED"
 msgstr "ALL RIGHTS RESERVED"
 
-#: modconsole.py:432
+#: modconsole.py:433
 msgid "Ok"
 msgstr "Ok"
 
-#: modconsole.py:453
+#: modconsole.py:454
 msgid "Update status"
 msgstr "Status aktualisieren"
 
-#: modconsole.py:505
+#: modconsole.py:506
 msgid ""
 "Authentication failed: A connection to the UMC daemon could not be "
 "established."
@@ -170,16 +171,16 @@ msgstr ""
 "Authentisierungfehler: Eine Verbindung zum UMC-Dämon konnte nicht "
 "hergestellt werden"
 
-#: modconsole.py:563
+#: modconsole.py:564
 msgid "The UMC server did not responed to the authentication request"
 msgstr "Der UMC-Server hat auf die Authentisierungsanfrage nicht geantwortet"
 
-#: modconsole.py:616
+#: modconsole.py:617
 #, python-format
 msgid "Authentication failed: %s"
 msgstr "Authentisierungsfehler: %s"
 
-#: modconsole.py:631
+#: modconsole.py:632
 msgid "Logout successful."
 msgstr "Abmeldung erfolgreich"
 
@@ -188,31 +189,31 @@ msgstr "Abmeldung erfolgreich"
 msgid "error while modifying: %s %s"
 msgstr "Während des Bearbeitens ist ein Fehler aufgetreten: %s %s"
 
-#: mapping/buttons.py:154
+#: mapping/buttons.py:177
 msgid "Execute"
 msgstr "Ausführen"
 
-#: mapping/buttons.py:155
+#: mapping/buttons.py:178
 msgid "Perform action on selected objects."
 msgstr "Aktion mit ausgewählten Objekten ausführen"
 
-#: mapping/buttons.py:157
+#: mapping/buttons.py:180
 msgid "Invert selection"
 msgstr "Auswahl umkehren"
 
-#: mapping/buttons.py:158
+#: mapping/buttons.py:181
 msgid "Select all"
 msgstr "Alle auswählen"
 
-#: mapping/buttons.py:165 mapping/buttons.py:167
+#: mapping/buttons.py:188 mapping/buttons.py:190
 msgid "Selected objects ..."
 msgstr "Ausgewählte Objekte ..."
 
-#: mapping/buttons.py:229 mapping/buttons.py:319 mapping/buttons.py:387
+#: mapping/buttons.py:252 mapping/buttons.py:342 mapping/buttons.py:410
 msgid "Select"
 msgstr "Auswählen"
 
-#: mapping/buttons.py:230 mapping/buttons.py:320 mapping/buttons.py:388
+#: mapping/buttons.py:253 mapping/buttons.py:343 mapping/buttons.py:411
 msgid "Select entry"
 msgstr "Auswählen eines Eintrags"
 
@@ -289,13 +290,17 @@ msgstr "Entfernen"
 msgid "Delete file"
 msgstr "Datei entfernen"
 
-#: pages/module.py:131
+#: pages/module.py:134
 msgid "Operation still in progress. Please wait ..."
 msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte gedulden Sie sich ..."
 
-#: pages/module.py:132 pages/startup.py:109
+#: pages/module.py:135 pages/startup.py:109
 msgid "Information"
 msgstr "Hinweis"
+
+#: pages/module.py:280
+msgid "Messages"
+msgstr "Meldungen"
 
 #: pages/overview.py:50
 msgid "Overview"

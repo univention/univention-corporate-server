@@ -55,6 +55,9 @@ class Storage( dict ):
 			if name == command:
 				return cmd
 
+	def get_module_name( self ):
+		return self.__module.get( 'short_description', '' )
+
 	def confirmation_required( self, command ):
 		cmd = self.get_command( command.arguments[ 0 ] )
 		if cmd and cmd[ 'confirm' ]:

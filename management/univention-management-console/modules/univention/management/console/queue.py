@@ -118,7 +118,7 @@ class RequestGroup( object ):
 			if status_range and len( self.__responses ):
 				exitcode = self.__responses[ -1 ].status()
 				if exitcode < status_range[ 0 ] or exitcode > status_range[ 1 ]:
-					return None
+					return self.pop()
 			self.__ids.append( req.id() )
 			return RequestContainer( req )
 

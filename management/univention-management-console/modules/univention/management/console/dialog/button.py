@@ -57,11 +57,10 @@ class Action( object ):
 		self.command = command
 		self.options = options
 		self.selection = selection
-		if not type( status_range ) in ( list, tuple ):
-			if status_range == Action.SUCCESS:
-				self.status_range = ( 200, 299 )
-			else:
-				self.status_range = ( 300, 399 )
+		if status_range == Action.SUCCESS:
+			self.status_range = ( 200, 299 )
+		elif status_range == Action.FAILURE:
+			self.status_range = ( 300, 399 )
 		else:
 			self.status_range = status_range
 

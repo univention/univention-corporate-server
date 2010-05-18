@@ -277,7 +277,7 @@ dojo.addOnLoad( function () {
 umc_info_dialog( '%s', '%s' );
 } );
 </script>
-''' % ( self._title, '<br>'.join( popup_infos ) )
+''' % ( ' %s - %s' % ( self._title, _( 'Messages' ) ), '<br>'.join( popup_infos ) )
 					row = uniparts.tablerow( '', {}, { 'obs' : [ uniparts.htmltext( '', {}, { 'htmltext' : [ js ] } ) ] } )
 					rows.append( row )
 				col = uniparts.tablecol( '', {}, { 'obs' : [ self.__dialog ] } )
