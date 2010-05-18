@@ -2392,6 +2392,11 @@ class object(content):
 									self.parent.debug('edit!')
 									self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 									self.sub.draw()
+							if self.resolve_type(type) in ['lvm_lv']:
+								self.parent.debug('edit lvm!')
+								self.sub=self.edit_lvm_lv(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
+								self.sub.draw()
+								
 					elif self.get_elem('BT_create').get_status():#create
 						if self.resolve_type(type) is 'free' and self.possible_type(self.container['disk'][disk],part):
 							self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
