@@ -205,6 +205,8 @@ touch /instmnt/.log
 
 if [ -n "$bootloader_record" ]; then
 	python2.4 /sbin/univention-config-registry set grub/boot?$bootloader_record
+elif [ -n "$bootloader_device" ]; then
+	python2.4 /sbin/univention-config-registry set grub/boot?$bootloader_device
 else
 	python2.4 /sbin/univention-config-registry set grub/boot?$grub_boot_fallback
 fi
