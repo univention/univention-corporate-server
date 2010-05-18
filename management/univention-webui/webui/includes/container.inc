@@ -202,14 +202,13 @@ function umc_popup_confirm( title, question, yes, no, send, byteindex ) {
 	dojo.require("dijit.Dialog");
 	// variable named "content" can not be used as it does not work with IE8
 	mycontent = "<p>" + question + "</p>";
-	mycontent += "<table><tr>";
-	mycontent += "<td><button dojoType=\"dijit.form.Button\" onClick=\"" + send + "(" + byteindex + ")\">" + yes + "</button></td>";
-	mycontent += "<td><button dojoType=\"dijit.form.Button\" onClick=\"confirmDlg.hide();\">" + no + "</button></td>";
-	mycontent += "<td></td></tr></table>";
+	mycontent += "<br/><p class=\"umc_dialog_button\">";
+	mycontent += "<button dojoType=\"dijit.form.Button\" onClick=\"" + send + "(" + byteindex + ")\">" + yes + "</button>&nbsp;";
+	mycontent += "<button dojoType=\"dijit.form.Button\" onClick=\"confirmDlg.hide();\">" + no + "</button></p>";
 	confirmDlg = new dijit.Dialog({
 		title: title,
 		content: mycontent,
-		style: "width: 300px"
+		style: "width: 400px"
 	});
 	confirmDlg.show();
 }
@@ -218,13 +217,12 @@ function umc_info_dialog( title, message ) {
 	dojo.require("dijit.Dialog");
 	// variable named "content" can not be used as it does not work with IE8
 	mycontent = "<p>" + message + "</p>";
-	mycontent += "<table><tr>";
-	mycontent += "<td><button dojoType=\"dijit.form.Button\" onClick=\"infoDialog.hide();\">OK</button></td>";
-	mycontent += "<td></td></tr></table>";
+	mycontent += "<br/><p class=\"umc_dialog_button\">";
+	mycontent += "<button dojoType=\"dijit.form.Button\" onClick=\"infoDialog.hide();\">OK</button></p>";
 	infoDialog = new dijit.Dialog({
 		title: title,
 		content: mycontent,
-		style: "width: 300px"
+		style: "width: 400px"
 	});
 	infoDialog.show();
 }
