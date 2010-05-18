@@ -1,3 +1,9 @@
+univention-webui-style (5.0.9-1) unstable; urgency=low
+
+  * styles for the dojo popup dialogs; Bug #18409
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 18 May 2010 13:47:45 +0200
+
 univention-webui-style (5.0.8-3) unstable; urgency=low
 
   * adapt style for tree view; Bug #17750

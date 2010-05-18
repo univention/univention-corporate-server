@@ -1969,6 +1969,10 @@ div.umc_progressbar {
 	font-size: 12px;
 }
 
+p.umc_dialog_button {
+	width: 100%;
+	text-align: right;
+}
 #tools_overview  {
         position:absolute;
         top: 120px;
@@ -1989,4 +1993,13 @@ div.umc_progressbar {
 p.online_help {
 		margin: 10px;
 		text-align: justify;
+}
+
+.dijitDialogTitleBar {
+	color: white;
+	background: none repeat scroll 0 0 #CC0033 !important;
+}
+
+.dijitDialog {
+	border: 1px solid #CDCDC8 !important;
 }
