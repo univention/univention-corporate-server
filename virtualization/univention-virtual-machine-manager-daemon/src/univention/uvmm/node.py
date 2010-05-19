@@ -135,6 +135,33 @@ class Graphic( object ):
 	def __str__( self ):
 		return 'Graphic(%s): %s, %s' % ( Graphic.map_type( id = self.type ), self.port, self.keymap )
 
+class DomainTemplate(object):
+	'''Container for node capability.'''
+	@staticmethod
+	def list_from_xml(xml):
+		doc = parseString(xml)
+		result = []
+		for guest in doc.getElementsByTagName('guest'):
+			os_type = guest.getElementsByTagName('os_type')[0].firstChild.nodeValue
+			for arch in guest.getElementsByTagName('arch'):
+				dom = DomainTemplate(os_type, arch)
+				result.append(dom)
+		return result
+
+	def __init__(self, os_type, arch):
+		self.os_type = os_type
+		self.arch = arch.getAttribute('name')
+		self.emulator = arch.getElementsByTagName('emulator')[0].firstChild.nodeValue
+		try:
+			self.loader = arch.getElementsByTagName('loader')[0].firstChild.nodeValue
+		except:
+			self.loader = None
+		self.machines = [m.firstChild.nodeValue for m in arch.getElementsByTagName('machine')]
+		self.domains = [d.getAttribute('type') for d in arch.getElementsByTagName('domain')]
+
+	def __str__(self):
+		return 'DomainTemplate(type=%s arch=%s): %s, %s, %s, %s' % (self.os_type, self.arch, self.emulator, self.loader, self.machines, self.domains)
+
 class Domain(object):
 	"""Container for domain statistics."""
 	CPUTIMES = (10, 60, 5*60) # 10s 60s 5m
@@ -319,6 +346,8 @@ class Node(object):
 		self.phyMem = long(info[1]) << 20 # MiB
 		self.cpus = info[2]
 		self.cores = info[4:8]
+		xml = self.conn.getCapabilities()
+		self.capabilities = DomainTemplate.list_from_xml(xml)
 
 		def domain_callback(conn, dom, event, detail, node):
 			"""Handle domain addition, update and removal."""
@@ -398,7 +427,6 @@ class Node(object):
 		self.curMem = curMem
 		self.maxMem = maxMem
 
-
 class Nodes(dict):
 	"""Handle registered nodes."""
 	IDLE_FREQUENCY = 60*1000; # ms
@@ -440,8 +468,8 @@ def node_remove(uri):
 		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
 	logger.debug("Hypervisor '%s' removed." % (uri,))
 
-def node_query(uri=None):
-	"""Query all known nodes."""
+def node_query(uri):
+	"""Get domain data from node."""
 	global nodes
 	try:
 		return nodes[uri]
@@ -470,25 +498,6 @@ def group_list():
 	"""Return list of groups for nodes."""
 	return ['default'] # FIXME
 
-# def domain_define(uri, domain):
-# 	"""Define new domain on node."""
-# 	try:
-# 		node = nodes[uri]
-# 		conn = node.conn
-# 		template = """<domain type="%(type)s">
-# 			<name>test</name>
-# 				<os>
-# 					<type>linux</type>
-# 				</os>
-# 				<memory>%(memory)d</memory>
-# 			</domain>"""
-# 		fill_in = {
-# 				"type": conn.getType().lower(),
-# 				"memory": 256*1024,
-# 				}
-# 		conn.defineXML(template % fill_in)
-# 	except KeyError:
-# 		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
 
 def domain_define( uri, domain ):
 	"""Convert python object to an XML document."""
@@ -591,8 +600,8 @@ def domain_define( uri, domain ):
 		conn = node.conn
 		logger.error( doc.toxml() )
 		conn.defineXML( doc.toxml() )
- 	except KeyError:
- 		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
+	except KeyError:
+		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
 
 def domain_state(uri, domain, state):
 	"""Change running state of domain on node."""
@@ -603,28 +612,25 @@ def domain_state(uri, domain, state):
 		dom_state = dom.info()[0]
 		if "RUN" == state:
 			if dom_state == libvirt.VIR_DOMAIN_PAUSED:
-				dom.resume()
+				return dom.resume()
 			elif dom_state in (libvirt.VIR_DOMAIN_SHUTDOWN, libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
-				dom.create()
-			else:
-				raise NodeError("Unsupported state transition %d to %s" % (dom_state, state))
+				return dom.create()
 		elif "PAUSE" == state:
 			if dom_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED):
-				dom.suspend()
-			else:
-				raise NodeError("Unsupported state transition %d to %s" % (dom_state, state))
+				return dom.suspend()
 		elif "SHUTDOWN" == state:
 			if dom_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED):
-				dom.destroy()
-			else:
-				raise NodeError("Unsupported state transition %d to %s" % (dom_state, state))
+				return dom.destroy()
 		elif "RESTART" == state:
 			if dom_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED):
-				dom.reboot(None)
-			else:
-				raise NodeError("Unsupported state transition %d to %s" % (dom_state, state))
-		else:
-			raise NodeError("Unsupported state transition %s" % (state,))
+				return dom.reboot(None)
+
+		try:
+			STATES = ['NOSTATE', 'RUNNING', 'BLOCKED', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED']
+			cur_state = STATES[dom_state]
+		except IndexError:
+			cur_state = str(dom_state)
+		raise NodeError("Unsupported state transition %s to %s" % (cur_state, state))
 	except KeyError, key:
 		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
 	except libvirt.libvirtError, e:

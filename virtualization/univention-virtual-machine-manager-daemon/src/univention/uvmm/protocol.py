@@ -235,6 +235,7 @@ class Data_Node(object):
 		self.cores = [None, None, None, None]
 		self.storages = []
 		self.domains = []
+		self.capabilities = {}
 	def _json(self):
 		return {
 			'name':self.name,
@@ -245,4 +246,5 @@ class Data_Node(object):
 			'cores':self.cores,
 			'storages':[s._json() for s in self.storages],
 			'domains':[d._json() for d in self.domains],
+			'capabilities':[str(tmp) for tmp in self.capabilities],
 			}

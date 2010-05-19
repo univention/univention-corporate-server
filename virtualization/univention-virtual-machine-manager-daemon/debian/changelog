@@ -1,6 +1,14 @@
+univention-virtual-machine-manager-daemon (0.9.7-1) unstable; urgency=low
+
+  * Export capabilities (Bug #18289)
+  * Update documentation, more renaming changes.
+  * Improved error messages von state transition.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 19 May 2010 16:26:40 +0200
+
 univention-virtual-machine-manager-daemon (0.9.6-1) unstable; urgency=low
 
-  * update german translation
+  * update German translation
   * split source code into several files
   * error handling
   * support removing of domains; Bug #18190

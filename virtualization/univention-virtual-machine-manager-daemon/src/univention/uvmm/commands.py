@@ -78,6 +78,8 @@ class _Commands:
 
 		try:
 			local_data = node.node_query(request.uri)
+			if local_data is None:
+				raise CommandError('NODE_QUERY: unknown node %s' % (request.uri,))
 
 			pkg_data = protocol.Data_Node()
 			pkg_data.name = local_data.name
@@ -111,6 +113,7 @@ class _Commands:
 				domain_data.disks = domain.disks
 				domain_data.graphics = domain.graphics
 				pkg_data.domains.append(domain_data)
+			pkg_data.capabilities = local_data.capabilities
 
 			res = protocol.Response_DUMP()
 			res.data = pkg_data

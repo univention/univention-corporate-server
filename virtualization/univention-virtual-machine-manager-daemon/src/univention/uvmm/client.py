@@ -28,7 +28,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
-"""UCS-Virt client using a unix-socket."""
+"""UVMM client using a unix-socket."""
 
 import socket
 from univention.uvmm import protocol
@@ -38,7 +38,7 @@ class ClientError(Exception):
 	pass
 
 class UVMM_ClientSocket:
-	"""UCS-Virt client socket."""
+	"""UVMM client socket."""
 	def __init__(self, socket_path):
 		"""Open new UNIX socket to socket_path."""
 		try:
