@@ -1,3 +1,9 @@
+xen-3.4 (3.4.3~rc6-8) unstable; urgency=low
+
+  * added python-xml to dependencies. Bug #17774
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 May 2010 22:00:08 +0200
+
 xen-3.4 (3.4.3~rc6-7) unstable; urgency=low
 
   * fixed xendomains init script Bug #18403 

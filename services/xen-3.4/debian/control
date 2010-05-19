@@ -16,7 +16,7 @@ XS-Python-Version: all
 
 Package: xen-3.4
 Architecture: any
-Depends: ${shlibs:Depends}, ${python:Depends}, iproute, udev
+Depends: ${shlibs:Depends}, ${python:Depends}, python-xml, iproute, udev
 Provides: xen-hypervisor,
  xen-hypervisor-3,
  xen-hypervisor-3.4,
