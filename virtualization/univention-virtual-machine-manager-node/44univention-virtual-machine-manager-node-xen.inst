@@ -1,0 +1,52 @@
+#!/bin/bash
+#
+# Univention Virtual Machine Manager Node
+#  join script
+#
+# Copyright (C) 2010 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+VERSION=1
+
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+eval "$(univention-config-registry shell)"
+NAME="XEN Host"
+
+univention-directory-manager container/cn      create "$@" --ignore_exists \
+	--set name=services \
+	--position             "cn=univention,$ldap_base"
+univention-directory-manager  settings/service create "$@" --ignore_exists \
+	--set name="$NAME" \
+	--position "cn=services,cn=univention,$ldap_base"
+univention-directory-manager "computers/$server_role" modify "$@" \
+	--dn "$ldap_hostdn" \
+	--append service="$NAME"
+
+joinscript_save_current_version
+
+exit 0
+# vim:set ft=sh ts=4 sw=4 noet:

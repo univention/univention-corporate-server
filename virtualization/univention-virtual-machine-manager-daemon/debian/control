@@ -1,0 +1,21 @@
+Source: univention-virtual-machine-manager-daemon
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Uploaders: Philipp Hahn <hahn@univention.de>,
+ Andreas Büsching <buesching@univention.de>,
+Standards-Version: 3.5.5
+Build-Depends: debhelper,
+ python-all-dev, python-central,
+ univention-config-dev
+XS-Python-Version: 2.4
+
+Package: univention-virtual-machine-manager-daemon
+Architecture: all
+Depends: libvirt-bin, python-libvirt,
+ univention-ssl, ${python:Depends}
+XB-Python-Version: ${python:Versions}
+Description: Univention Virtual Machine Manager Daemon
+ This package contains the Univention Virtual Machine Manager Daemon
+ used to collect informations from a farm of virtualization servers. It
+ is used by the UMC module UVMM for managing virtualization servers.

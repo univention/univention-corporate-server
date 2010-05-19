@@ -1,0 +1,74 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+#
+# Univention Virtual Machine Manager Node
+#  rules file
+#
+# Copyright (C) 2010 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+build:
+
+clean:
+	dh_testdir
+	dh_testroot
+	dh_clean
+	$(RM) debian/univention-virtual-machine-manager-node-*{pre,post}{inst,rm}.debhelper
+	$(RM) debian/univention-virtual-machine-manager-node-*.conffiles
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	install -m 0644 uvmm-node.py debian/univention-virtual-machine-manager-node-common/usr/lib/univention-directory-listener/system/
+	@for virttech in xen kvm; do \
+		install -m 0755 44univention-virtual-machine-manager-node-$$virttech.inst debian/univention-virtual-machine-manager-node-$$virttech/usr/lib/univention-install/; \
+	done
+
+# Build architecture-independent files here.
+binary-indep: build install
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+#	dh_install
+	univention-install-config-registry
+	univention-install-config-registry-info
+	dh_link
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

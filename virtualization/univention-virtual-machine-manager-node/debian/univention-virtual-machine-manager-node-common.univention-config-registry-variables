@@ -1,0 +1,5 @@
+[uvmm/managers]
+Description[de]=Liste der Hostnamen, die die virtuellen Instanzen dieses Knotens verwalten dürfen
+Description[en]=List of host names allowed to manage the virtual instances of this node
+Type=str
+Categories=uvmm

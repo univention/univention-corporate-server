@@ -1,0 +1,164 @@
+univention-virtual-machine-manager-daemon (0.9.6-1) unstable; urgency=low
+
+  * update german translation
+  * split source code into several files
+  * error handling
+  * support removing of domains; Bug #18190
+  * show information about physical server on overview page; Bug #18234
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 18 May 2010 13:53:49 +0200
+
+univention-virtual-machine-manager-daemon (0.9.5-1) unstable; urgency=low
+
+  * Fix traceback on first install (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 17 May 2010 14:11:16 +0200
+
+univention-virtual-machine-manager-daemon (0.9.4-1) unstable; urgency=low
+
+  * add refresh button; Bug #18159
+  * group overview: the physical server name is now a link to the overview; Bug #18232
+  * button for adding virtual instances is shown in the treeview widget; Bug #18359
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 11 May 2010 17:00:02 +0200
+
+univention-virtual-machine-manager-daemon (0.9.3-1) unstable; urgency=low
+
+  * updated terms and definitions; Bug #18162
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 11 May 2010 11:37:06 +0200
+
+univention-virtual-machine-manager-daemon (0.9.2-1) unstable; urgency=low
+
+  * new icons; Bug #18163
+  * use new tree view widget
+  * modified module description; Bug #18231
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 May 2010 18:14:53 +0200
+
+univention-virtual-machine-manager-daemon (0.9.1-1) unstable; urgency=low
+
+  * remove Domain-0 from list of virtual instances; Bug #18161
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 27 Apr 2010 17:56:14 +0200
+
+univention-virtual-machine-manager-daemon (0.9.0-1) unstable; urgency=low
+
+  * rename package from ucsvirtd to
+    univention-virtual-machine-manager-daemon; Bug #18162
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 27 Apr 2010 11:30:31 +0200
+
+univention-virtual-machine-manager-daemon (0.8.9-1) unstable; urgency=low
+
+  * Fix import of ldap. (Bug #17733)
+  * Fix traceback on failed auto-reconnect.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Apr 2010 15:19:22 +0200
+
+univention-virtual-machine-manager-daemon (0.8.8-1) unstable; urgency=low
+
+  * Add forgotten setsid() during daemonize. (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Apr 2010 19:24:10 +0200
+
+univention-virtual-machine-manager-daemon (0.8.7-1) unstable; urgency=low
+
+  * On start load nodes from LDAP. (Bug #17733)
+  * Rename files to ucsvirt-management.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Apr 2010 18:33:42 +0200
+
+univention-virtual-machine-manager-daemon (0.8.6-2) unstable; urgency=low
+
+  * first steps in supporting modification and creation of domains; Bug #17733
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 08 Apr 2010 17:40:32 +0200
+
+univention-virtual-machine-manager-daemon (0.8.6-1) unstable; urgency=low
+
+  * Implement re-connect on errors. (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Apr 2010 14:06:28 +0200
+
+univention-virtual-machine-manager-daemon (0.8.5-1) unstable; urgency=low
+
+  * Handle exception on connect. (Bug #17733)
+  * Add init.d script.
+  * Add Service info file.
+  * Create /etc/pki/ hierarchy on install.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Apr 2010 13:08:10 +0200
+
+univention-virtual-machine-manager-daemon (0.8.4-1) unstable; urgency=low
+
+  * Calculate nodes memory usage summary. (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 07 Apr 2010 17:38:48 +0200
+
+univention-virtual-machine-manager-daemon (0.8.3-1) unstable; urgency=low
+
+  * Add CPU usage calculation. (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Apr 2010 18:20:12 +0200
+
+univention-virtual-machine-manager-daemon (0.8.2-1) unstable; urgency=low
+
+  * Add support for save, restore, set_state and migrate (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Apr 2010 13:37:08 +0200
+
+univention-virtual-machine-manager-daemon (0.8.1-1) unstable; urgency=low
+
+  * fix mapping of disks, interfaces and graphics items in XML description
+    of domains (Bug #17733)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 01 Apr 2010 19:23:31 +0200
+
+univention-virtual-machine-manager-daemon (0.8.0-1) unstable; urgency=low
+
+  * Methods for domain management (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 01 Apr 2010 18:18:10 +0200
+
+univention-virtual-machine-manager-daemon (0.7.0-1) unstable; urgency=low
+
+  * read information about domains from libvirt XML structures (Bug #17733)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 01 Apr 2010 17:41:14 +0200
+
+univention-virtual-machine-manager-daemon (0.6.0-1) unstable; urgency=low
+
+  * Fix maxMem of xen:///#Domain-0. (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 31 Mar 2010 18:47:46 +0200
+
+univention-virtual-machine-manager-daemon (0.5.0-1) unstable; urgency=low
+
+  * Daemonize, {min,max}Mem, README. (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 31 Mar 2010 17:49:38 +0200
+
+univention-virtual-machine-manager-daemon (0.4.0-1) unstable; urgency=low
+
+  * Rename things to be consistent with libvirts naming (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 31 Mar 2010 12:27:22 +0200
+
+univention-virtual-machine-manager-daemon (0.3.0-1) unstable; urgency=low
+
+  * Implement WATCH_LIST (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 31 Mar 2010 11:40:19 +0200
+
+univention-virtual-machine-manager-daemon (0.2.0-1) unstable; urgency=low
+
+  * Add support for regularly polling hosts (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 30 Mar 2010 15:47:07 +0200
+
+univention-virtual-machine-manager-daemon (0.1.0-1) unstable; urgency=low
+
+  * Inital release (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 29 Mar 2010 10:49:37 +0200

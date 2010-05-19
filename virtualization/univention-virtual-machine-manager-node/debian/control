@@ -1,0 +1,36 @@
+Source: univention-virtual-machine-manager-node
+Section: univention
+Priority: extra
+Maintainer: Univention GmbH <packages@univention.de>
+Uploaders: Philipp Hahn <hahn@univention.de>,
+ Andreas Büsching <buesching@univention.de>,
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.7.3
+Homepage: http://www.univention.de/
+
+Package: univention-virtual-machine-manager-node-common
+Architecture: all
+Depends: ${misc:Depends},
+ libvirt-bin,
+ univention-ssl,
+ univention-virtual-machine-manager-node-xen | univention-virtual-machine-manager-node
+Description: UCS - Univention Virtual Machine Manager node
+ This meta-package provides basic configuration for virtualization nodes.
+
+Package: univention-virtual-machine-manager-node-xen
+Architecture: all
+Depends: ${misc:Depends},
+ univention-virtual-machine-manager-node-common,
+ xen-3.4 | xen-hypervisor,
+Provides: univention-virtual-machine-manager-node
+Description: UCS - Univention Virtual Machine Manager node using xen
+ This meta-package provides basic configuration for virtualization nodes using
+ the xen hypervisor.
+
+Package: univention-virtual-machine-manager-node-kvm
+Architecture: all
+Depends: ${misc:Depends}, univention-virtual-machine-manager-node-common, qemu-kvm
+Provides: univention-virtual-machine-manager-node
+Description: UCS - Univention Virtual Machine Manager node using kvm
+ This meta-package provides basic configuration for virtualization nodes using
+ kvm.

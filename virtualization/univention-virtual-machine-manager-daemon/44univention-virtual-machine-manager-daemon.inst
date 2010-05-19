@@ -1,0 +1,73 @@
+#!/bin/bash
+#
+# Univention Management Console UCSvirt
+#  join script
+#
+# Copyright (C) 2010 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+VERSION="1"
+
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+eval $(univention-config-registry shell ldap/base server/role ldap/hostdn)
+NAME="Virtual Machine Manager"
+
+# add service
+univention-directory-manager container/cn      create "$@" --ignore_exists \
+	--set name=services \
+	--position             "cn=univention,$ldap_base"
+univention-directory-manager  settings/service create "$@" --ignore_exists \
+	--set name="$NAME" \
+	--position "cn=services,cn=univention,$ldap_base"
+univention-directory-manager "computers/$server_role" modify "$@" \
+	--dn "$ldap_hostdn" \
+	--append service="$NAME"
+
+# create operations
+univention-directory-manager settings/console_operation create $@ --ignore_exists \
+	--position cn="operations,cn=console,cn=univention,$ldap_base" \
+	--set name="uvmm" \
+	--set description="Univention Virtual Machine Manager" \
+	--append operation="uvmm/*"
+
+# create acls
+univention-directory-manager settings/console_acl create $@ --ignore_exists \
+	--position cn="acls,cn=console,cn=univention,$ldap_base" \
+	--set name="uvmm-all" \
+	--set category="Virtualization" \
+	--set ldapbase="$ldap_base" \
+	--set command="uvmm/*" \
+	--set description="All UVMM Operations"
+
+# default policies
+univention-directory-manager policies/console_access modify $@ --ignore_exists \
+	--dn cn="default-admin,cn=console,cn=policies,$ldap_base" \
+	--append allow="cn=uvmm-all,cn=acls,cn=console,cn=univention,$ldap_base"
+
+joinscript_save_current_version
+
+exit 0

@@ -1,0 +1,9 @@
+Type: file
+File: etc/libvirt/libvirtd.conf
+Variables: hostname
+Variables: domainname
+Variables: ssl/*
+Variables: uvmm/managers
+
+Type: file
+File: etc/default/libvirt-bin
