@@ -121,6 +121,7 @@ install: build
 	install -m755 scripts/83_filter_udev_rules.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/85_postinst_hook.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/87_locales.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/88_clock.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/89_tests.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/90_cleanup.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/99_reboot.sh ${D}/lib/univention-installer-scripts.d/
