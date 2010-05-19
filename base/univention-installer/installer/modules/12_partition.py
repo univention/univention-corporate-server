@@ -570,6 +570,7 @@ class object(content):
 		self.container['lvm']['warnedlvm1'] = False
 		self.container['lvm']['ucsvgname'] = None
 		self.container['lvm']['lvmconfigread'] = False
+		self.container['disk_checked'] = False
 
 	def profile_autopart(self, disklist_blacklist = [], part_delete = 'all' ):
 		self.debug('PROFILE BASED AUTOPARTITIONING: full_disk')
@@ -1450,7 +1451,7 @@ class object(content):
 		diskList={}
 		_re_warning=re.compile('^Warning: Unable to open .*')
 		_re_error=re.compile('^Error: .* unrecognised disk label')
-		devices_remove=[]
+		devices_remove={}
 		for dev in devices:
 			dev=dev.strip()
 			p = os.popen('/sbin/parted -s %s unit B p 2>&1 | grep [a-z]'% dev)
@@ -1460,7 +1461,7 @@ class object(content):
 			if _re_warning.match(first_line):
 				self.debug('Firstline starts with warning')
 				self.debug('Remove device: %s' % dev)
-				devices_remove.append(dev)
+				devices_remove[dev] = 1
 				continue
 			elif _re_error.match(first_line):
 				os.system('/sbin/install-mbr -f %s' % dev)
@@ -1469,7 +1470,7 @@ class object(content):
 				if _re_error.match(first_line):
 					self.debug('Firstline starts with error')
 					self.debug('Remove device %s' % dev)
-					devices_remove.append(dev)
+					devices_remove[dev] = 1
 					continue
 
 			# get CHS geometry
@@ -1512,7 +1513,7 @@ class object(content):
 					if _re_error.match(line):
 						self.debug('Line starts with Error: [%s]' % line)
 						self.debug('Remove device %s' % dev)
-						devices_remove.append(dev)
+						devices_remove[dev] = 1
 					continue
 				line=line.strip()
 
@@ -1545,7 +1546,7 @@ class object(content):
 					self.debug('ERROR: parted returned no valid partition type')
 					self.debug('ERROR: line = "%s"' % line)
 					self.debug('Removing device %s' % dev)
-					devices_remove.append(dev)
+					devices_remove[dev] = 1
 					continue
 
 				fstype=''
@@ -1755,6 +1756,9 @@ class object(content):
 		def __init__(self,parent,pos_y,pos_x,width,height):
 			self.part_objects = {}
 			subwin.__init__(self,parent,pos_y,pos_x,width,height)
+			if not self.container["disk"] and not self.container['disk_checked']:
+				self.container['disk_checked'] = True
+				self.no_devices_msg()
 			self.check_lvm_msg()
 			self.ERROR = False
 
@@ -1967,7 +1971,15 @@ class object(content):
 		def ask_lvm_enable_callback(self, result):
 			self.parent.set_lvm( (result == 'BT_YES') )
 
-
+		def no_devices_msg(self):
+			if not hasattr(self,'sub'):
+				msglist = [ 	_('WARNING: No devices or valid partitions found!'),
+						_('Please check your harddrive or partitioning.'),
+						_('Further information can be found in the'),
+						_('Support & Knowledge Base: http://sdb.univention.de.')
+						]
+				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
+				self.draw()
 		def check_lvm_msg(self):
 			# check if LVM config has to be read
 			if not self.container['lvm']['lvmconfigread']:

@@ -1314,6 +1314,18 @@ msgstr "und USB-Sticks. Es werden alle LVM LV und LVM VG"
 msgid "will be deleted!"
 msgstr "gelöscht!"
 
+#: installer/modules/12_partition.py:1990 WARNUNG: Es konnten keine Festplatten oder validen Partitionen gefunden werden!
+msgid "WARNING: No devices or valid partitions found!"
+msgstr "WARNUNG: Es konnten keine Festplatten oder validen Partitionen"
+
+#: installer/modules/12_partition.py:1990
+msgid "Please check your harddrive or partitioning."
+msgstr "gefunden werden! Bitte überprüfen Sie die Festplatte oder"
+
+#: installer/modules/12_partition.py:1990
+msgid "Further information can be found in the"
+msgstr "Partitionierung. Weiter Informationen finden Sie in der"
+
 #: installer/modules/12_partition.py:1871
 #: installer/modules/12_partition.py:1931
 msgid "Not enough disk space found for /boot!"
