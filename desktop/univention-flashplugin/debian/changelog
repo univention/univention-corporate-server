@@ -1,3 +1,9 @@
+univention-flashplugin (5.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 2.4
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 19 May 2010 16:08:39 +0200
+
 univention-flashplugin (4.0.2-2) unstable; urgency=low
 
   * Trigger reinitialisation of Flash plugin
