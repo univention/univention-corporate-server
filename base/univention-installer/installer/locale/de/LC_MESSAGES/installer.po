@@ -646,6 +646,10 @@ msgstr "Lade Modul %s"
 msgid "Additional modules to load:"
 msgstr "Weitere zu ladende Module:"
 
+#: installer/modules/01_modules.py:355
+msgid "Waiting for drivers to settle down"
+msgstr "Warte auf Treiber-Initialisierung"
+
 #: installer/modules/01_modules.py:124 installer/modules/03_hardware.py:259
 #: installer/modules/03_hardware.py:293 installer/modules/04_profile.py:55
 #: installer/modules/12_partition.py:3644

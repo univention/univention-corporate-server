@@ -46,6 +46,8 @@ KERNEL2_4_MODUL_LIST={}
 
 KERNEL2_6_MODUL_LIST={}
 
+WAIT_FOR_DRIVERS = 5
+
 # read kernel modules lists from file
 def __read_kernel_modules( version, hash ):
 	try:
@@ -349,6 +351,10 @@ class object(content):
 				self.sub.action='loadmodule'
 				self.sub.loadmodule=m
 				self.sub.draw()
+		# wait for usb devices
+		self.sub = self.active(self,_('Waiting for drivers to settle down'),_('Please wait ...'))
+		self.sub.action='wait'
+		self.sub.draw()
 		if os.path.exists('/lib/univention-installer/network.sh'):
 			os.system('/lib/univention-installer/network.sh >/dev/null')
 
@@ -420,6 +426,8 @@ class object(content):
 				if self.action == 'loadmodule':
 					os.system('/sbin/modprobe %s >/dev/null 2>&1' % self.loadmodule.split('/')[-1])
 					time.sleep(0.5)
+				elif self.action == 'wait':
+					time.sleep(WAIT_FOR_DRIVERS)
 				else:
 					self._scan_hardware()
 			else:
