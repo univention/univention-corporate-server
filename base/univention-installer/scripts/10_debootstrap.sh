@@ -54,6 +54,24 @@ else
 	repo_dir="file:/mnt/mirror/${version}/maintained/${version}-0/"
 fi
 
+if [ -n "$to_scan" ] || [ -n "$scan" ]; then
+	for ts in $to_scan $scan; do
+		if [ "$ts" = "hostname" ]; then
+			ipcmd=`cat /proc/cmdline | grep ip | sed -e 's/.*ip=//g'`
+			myip=`echo $ipcmd | awk -F ':' '{print $1}'`
+			if [ -n "$nameserver1" ]; then
+				host=`host $myip $nameserver1 |tail -1 | awk '{print $5}' | awk -F '.' '{print \$1}'`
+			elif [ -n "$nameserver_1" ]; then
+				host=`host $myip $nameserver_1 |tail -1 | awk '{print $5}' | awk -F '.' '{print \$1}'`
+			fi
+		fi
+	done
+fi
+
+if [ -n "$host" ]; then
+	hostname $host
+fi
+
 if [ -n "$hostname" ]; then
 	hostname $hostname
 fi

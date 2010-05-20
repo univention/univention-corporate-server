@@ -1,3 +1,9 @@
+univention-installer (6.0.5-1) unstable; urgency=low
+
+  * get hostname via host from nameserver for dhcp profiles Bug #17271
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 May 2010 12:08:04 +0200
+
 univention-installer (6.0.4-1) unstable; urgency=low
 
   * setting hwclock to system time in scripts/88_clock.sh Bug #12815
