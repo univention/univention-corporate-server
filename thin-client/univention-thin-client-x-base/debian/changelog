@@ -1,3 +1,9 @@
+univention-thin-client-x-base (5.0.0-1) unstable; urgency=low
+
+  * bump version for UCS 2.4
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 May 2010 14:00:58 +0200
+
 univention-thin-client-x-base (4.0.7-1) unstable; urgency=low
 
   * install univention-xnumlock before updating univention-gdm because a
