@@ -105,17 +105,6 @@ function thinclient() {
 		echo ""
 	fi
 
-	# start sound server
-	if [ -e "/usr/bin/artswrapper" ]; then
- 		if [ -e "/dev/dsp" ] || [ -e "/dev/sndstat" ]; then
-			#be sure the directory exists, otherwise the artsd on the thinclient isn't able to start
-			mkdir -p "/tmp/ksocket-${USERNAME}"
-			/usr/bin/artswrapper -n -F 5 -S 8192 -u -p 1601 &
-			artspid="$!"
-		fi
-	fi
-
-
 	if test -e /tmp/passwd; then
 		rm -rf /tmp/passwd
 	fi
