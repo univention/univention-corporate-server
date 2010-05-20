@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
-eval $(univention-baseconfig shell univentionSoundEnabled thinclient/sound/daemon)
+eval $(univention-baseconfig shell univentionSoundEnabled thinclient/sound/daemon thinclient/sound/pulseaudio/resample thinclient/sound/pulseaudio/authentication)
 
 if [ -z "$univentionSoundEnabled" -o "$univentionSoundEnabled" = "0" ]; then
 	exit 0
@@ -40,6 +40,37 @@ if [ "$thinclient_sound_daemon" = "esd" ]; then
 		/usr/bin/esd -tcp -public -nobeeps -port 1601 &
 		echo "setenv ESPEAKER $HOSTNAME.$(dnsdomainname):1601" >> ~/.univention-thin-client-session
 	fi
+elif [ "$thinclient_sound_daemon" = "pulseaudio" ]; then
+
+	if [ -z "$thinclient_sound_pulseaudio_resample" ]; then
+		resample=trivial
+	else
+		resample=$thinclient_sound_pulseaudio_resample
+	fi
+
+	if [ -z "$thinclient_sound_pulseaudio_authentication" ]; then
+		auth="auth-anonymous=1"
+	else
+		auth=$thinclient_sound_pulseaudio_authentication
+	fi
+
+	# pulseaudio config
+	alsaConfig=/tmp/${USER}-alsa.conf
+	pulseConfig=/tmp/${USER}-pulse.pa
+	echo "#!/usr/bin/pulseaudio -nF" > $pulseConfig
+	echo "load-module module-native-protocol-tcp $auth" >> $pulseConfig
+	echo "load-module module-alsa-sink device=hw:0" >> $pulseConfig
+	echo "load-module module-alsa-source device=hw:0" >> $pulseConfig
+
+	pulseaudio -D --resample-method=$resample --high-priority=1 --system -nF $pulseConfig
+	
+	# new pulse alsa config on terminal server
+	echo "run /usr/share/univention-thin-client-sound/univention-thin-client-alsa-config ${USER}" >> ~/.univention-thin-client-session
+	
+	# alsa and pulse setup
+	echo "setenv PULSE_SERVER $HOSTNAME.$(dnsdomainname)" >> ~/.univention-thin-client-session
+	echo "setenv ALSA_CONFIG_PATH /tmp/${USER}-tc-alsa.conf" >> ~/.univention-thin-client-session
+
 else
 	if test -e "/usr/bin/artswrapper" -a -e "/dev/dsp"; then
 		# be sure .mcoprc exists

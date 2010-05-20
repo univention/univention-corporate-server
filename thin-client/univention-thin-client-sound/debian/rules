@@ -47,10 +47,12 @@ clean:
 install: build
 	dh_testdir
 	dh_testroot
+	dh_installdirs
 	install -D -m 755 etc/init.d/thin-client-sound debian/univention-thin-client-sound-config/etc/init.d/thin-client-sound
+	install -D -m 755 univention-thin-client-alsa-config debian/univention-thin-client-sound/usr/share/univention-thin-client-sound/
 	univention-install-config-registry
-
-	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-sound/var/lib/univention-client-root/thin-client-archive/sound -p esound alsa-utils
+	
+	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-sound/var/lib/univention-client-root/thin-client-archive/sound -p esound alsa-utils pulseaudio
 
 binary-indep: build install
 
