@@ -1,3 +1,9 @@
+univention-gnome (0.0.1-4) unstable; urgency=low
+
+  * fixed dbus problem while gnome-session startup Bug #18439
+
+ -- Tim Petersen <petersen@univention.de>  Thu,  20 May 2010 14:56:58 +0200
+
 univention-gnome (0.0.1-3) unstable; urgency=low
 
   * new gnome background (Bug: #15596)

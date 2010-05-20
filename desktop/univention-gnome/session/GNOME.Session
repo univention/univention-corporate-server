@@ -99,7 +99,7 @@ case "$1" in
 		echo "unsetenv PASSWD"
     fi
     echo "timeout baseconfig thinclient/session/default"
-    echo "start gnome-session"
+    echo "start gnome-session.thinclient"
     ;;
 
     "stop" )
