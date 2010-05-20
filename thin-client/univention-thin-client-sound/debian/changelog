@@ -1,4 +1,4 @@
-univention-thin-client-sound (4.0.0-1) unstable; urgency=low
+univention-thin-client-sound (4.0.1-1) unstable; urgency=low
 
   * bump version for UCS 2.3 
   * merged pulseaudio changes from ucd ucs2.3 branch Bug #17824
