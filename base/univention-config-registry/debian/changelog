@@ -1,3 +1,10 @@
+univention-config-registry (6.0.0-1) unstable; urgency=low
+
+  * version bump for UCS 2.4
+  * set p2p route to default gw if eth0 netmask is 32 Bug #16659
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 May 2010 12:49:03 +0200
+
 univention-config-registry (5.0.84-3) unstable; urgency=low
 
   * removed unnecessarily "fallback" test while getting interfaces Bug #15762

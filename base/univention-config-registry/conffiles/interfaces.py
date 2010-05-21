@@ -43,16 +43,25 @@ def start_iface(iface):
 	if iface:
 		os.system('ifup %s' % iface)
 
-def restore_gateway(gateway):
+def point2point(old, new, netmask):
+	if netmask == "255.255.255.255":
+		os.system('ip route del %s' % old)
+		if new:
+			os.system('ip route add %s/32 dev eth0 ' % new)
+
+def restore_gateway(gateway, netmask):
 	if type ( gateway ) == type ( () ):
 		old, new = gateway
 		if new:
+			point2point(old, new, netmask)
 			os.system('route del default >/dev/null 2>&1')
 			os.system('route add default gw %s' % new)
    		else:
+			point2point(old, False, netmask)
 			os.system('route del default >/dev/null 2>&1')
 	else:
 		if gateway:
+			point2point(gateway, gateway, netmask)
 			os.system('route del default >/dev/null 2>&1')
 			os.system('route add default gw %s' % gateway)
 
@@ -65,5 +74,8 @@ def postinst(baseConfig, changes):
 	for iface in set(changes):
 		if baseConfig.has_key(iface):
 			start_iface(interface(iface))
-	if 'gateway' in set(changes):
-		restore_gateway(changes['gateway'])
+	if 'gateway' in set(changes) or 'interfaces/eth0/netmask' in set(changes):
+		if 'gateway' in set(changes):
+			restore_gateway(changes['gateway'], baseConfig.get("interfaces/eth0/netmask", False))
+		else:
+			restore_gateway(baseConfig.get("gateway", False), baseConfig.get("interfaces/eth0/netmask", False))

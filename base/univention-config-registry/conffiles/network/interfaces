@@ -80,5 +80,9 @@ for i in eth_devices:
 		for key,value in configRegistry.items():
 			if key.startswith('interfaces/%s/options/' % i):
 				print value
+		if i == "eth0":
+			if configRegistry.get('interfaces/eth0/netmask', "") == "255.255.255.255" and configRegistry.get('gateway', False):
+				print "up ip route add %s/32 dev eth0" % configRegistry["gateway"]
+				print "up route add default gw %s" % configRegistry["gateway"]
 
 @!@
