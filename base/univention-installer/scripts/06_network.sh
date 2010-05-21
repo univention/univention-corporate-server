@@ -113,6 +113,13 @@ done
 
 if [ -n "$gateway" ]; then
 	python2.4 /sbin/univention-config-registry set gateway=$gateway
+
+	nm=$(python2.4 /sbin/univention-config-registry get interfaces/eth0/netmask)
+	if [ -n "$nm" ]; then
+		if [ "$nm" = "255.255.255.255" ]; then
+			ip route add $gateway/32 dev eth0
+		fi
+	fi
 	route add default gw $gateway
 fi
 
