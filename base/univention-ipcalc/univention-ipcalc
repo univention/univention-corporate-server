@@ -80,6 +80,7 @@ if len(netmask_list) != 4:
 	sys.exit(1)
 
 net=[]
+reverse=[]
 wildcard=[]
 pointerok=0
 broadcast=[]
@@ -90,6 +91,9 @@ if not calcdns:
 			net.append(ip_list[i])
 			wildcard.append(0)
 			broadcast.append(ip_list[i])
+			if i == 3:
+				pointer=ip_list[3:]
+				pointerok=1
 		else:
 			net.append(str(int(ip_list[i]) & int(netmask_list[i])))
 			if not pointerok:
@@ -110,6 +114,9 @@ else:
 		#TODO: check for other values
 		if netmask_list[i] == '255':
 			net.append(ip_list[i])
+			if i == 3:
+				pointer=ip_list[3:]
+				pointerok=1
 		else:
 			pointer=ip_list[i:]
 			pointer.reverse()
@@ -118,10 +125,14 @@ else:
 	while len(broadcast) < 4:
 		broadcast.append('255')
 
+reverse = net
+if netmask == "255.255.255.255":
+	reverse = net[:-1]
+
 if output == 'all':
 	print 'Network: %s' % string.join(net,'.')
 	net.reverse()
-	print 'Reverse: %s' % string.join(net,'.')
+	print 'Reverse: %s' % string.join(reverse,'.')
 	print 'Pointer: %s' % string.join(pointer,'.')
 	net.reverse()
 	if full:
@@ -138,7 +149,7 @@ elif output == 'network':
 	else:
 		print '%s' % string.join(net,'.')
 elif output == 'reverse':
-	print '%s' % string.join(net,'.')
+	print '%s' % string.join(reverse,'.')
 elif output == 'pointer':
 	print '%s' % string.join(pointer,'.')
 elif output == 'broadcast':

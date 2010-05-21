@@ -1,3 +1,10 @@
+univention-ipcalc (2.0.0-1) unstable; urgency=low
+
+  * version bump for UCS 2.4
+  * add 32 netmask "support" (uses 24 netmask reverse zone names) Bug #17413
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 May 2010 12:58:43 +0200
+
 univention-ipcalc (1.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
