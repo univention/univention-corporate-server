@@ -80,7 +80,7 @@ if ! test -d /usr/share/univention-directory-manager/uniconf/messages; then
 	chmod 770 /usr/share/univention-directory-manager/uniconf/messages
 fi
 
-/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --stoptls --ignore-exists $domainname add zone root.$domainname 1 28 72 60 86 $hostname.$domainname
+/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --stoptls --ignore-exists $domainname add zone root@$domainname. 1 28 72 60 86 $hostname.$domainname
 if [ $? != 0 ]; then exit 1; fi
 
 /usr/share/univention-directory-manager-tools/univention-dnsedit $@ --stoptls $domainname add cname univention-directory-manager $hostname 2>/dev/null || true

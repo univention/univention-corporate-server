@@ -1,3 +1,10 @@
+univention-directory-manager (8.0.0-1) unstable; urgency=low
+
+  * version bump for UCS 2.4
+  * use email address syntax for contact address in dns zone Bug #18461
+
+ -- Felix Botner <botner@univention.de>  Tue, 25 May 2010 11:09:08 +0200
+
 univention-directory-manager (7.0.55-2) unstable; urgency=low
 
   * fix syntax in modabout.py (Bug #18212)
