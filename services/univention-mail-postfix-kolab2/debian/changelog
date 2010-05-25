@@ -1,6 +1,6 @@
-univention-mail-postfix-kolab2 (4.0.1-2) unstable; urgency=low
+univention-mail-postfix-kolab2 (4.0.2-1) unstable; urgency=low
 
-  * made smtpd_sender_restrictions customizable (Bug #18471)
+  * made smtpd_recipient_restrictions customizable (Bug #18471)
 
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 25 May 2010 09:41:18 +0200
 

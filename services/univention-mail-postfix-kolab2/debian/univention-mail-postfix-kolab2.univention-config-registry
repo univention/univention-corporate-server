@@ -31,7 +31,7 @@ Variables: mail/postfix/softbounce
 Variables: mail/postfix/dnslookups
 Variables: mail/postfix/ldap/timeout
 Variables: mail/postfix/policy/listfilter
-Variables: mail/postfix/smtpd/restrictions/sender/.*
+Variables: mail/postfix/smtpd/restrictions/recipient/.*
 
 Type: subfile
 Multifile: etc/postfix/main.cf

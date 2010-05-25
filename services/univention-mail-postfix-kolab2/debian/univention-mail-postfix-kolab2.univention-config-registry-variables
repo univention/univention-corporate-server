@@ -160,8 +160,8 @@ Description[en]=Number of processes for the postfix policy script listfilter
 Type=str
 Categories=service-mail
 
-[mail/postfix/smtpd/restrictions/sender/.*]
-Description[de]=Einträge für die Postfix-Option smtpd_sender_restrictions
-Description[en]=Entries for postfix option smtpd_sender_restrictions
+[mail/postfix/smtpd/restrictions/recipient/.*]
+Description[de]=Einträge für die Postfix-Option smtpd_recipient_restrictions
+Description[en]=Entries for postfix option smtpd_recipient_restrictions
 Type=str
 Categories=service-mail
