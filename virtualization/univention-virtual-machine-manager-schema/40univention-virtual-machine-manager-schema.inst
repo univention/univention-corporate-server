@@ -45,8 +45,8 @@ univention-directory-manager container/cn create $@ \
 
 univention-directory-manager settings/extended_attribute create $@ --ignore_exists \
     --position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
-	--set objectClass="univentionVirtualMachine" \
-	--set ldapMapping="univentionVirtualMachineGroupOC" \
+	--set objectClass="univentionVirtualMachineGroupOC" \
+	--set ldapMapping="univentionVirtualMachineGroup" \
 	--set module="groups/group" \
 	--set overwritePosition="0" \
 	--set overwriteTab="0" \
