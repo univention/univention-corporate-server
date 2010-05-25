@@ -8,7 +8,7 @@ if configRegistry.get("mail/postfix/policy/listfilter", "no").lower() in ['yes',
 ucrlist.sort()
 recipient_restrictions = [ x[1] for x in ucrlist ]
 
-print "smtpd_recipient_restrictions = %s" % ", ".join(recipient_restrictions)
+print "smtpd_recipient_restrictions = %s" % ",\n        ".join(recipient_restrictions)
 @!@
 smtpd_sender_restrictions = permit_mynetworks, check_policy_service unix:private/kolabpolicy
 kolabpolicy_time_limit = 3600
