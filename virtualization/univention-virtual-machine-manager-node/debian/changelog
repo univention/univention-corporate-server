@@ -1,6 +1,11 @@
-univention-virtual-machine-manager-node (0.1.1-4.1) unstable; urgency=low
+univention-virtual-machine-manager-node (0.1.2-2) unstable; urgency=low
 
-  * Non-maintainer upload.
+  * added dependency to univention-config-dev. Bug #18110
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 May 2010 11:03:34 +0200
+
+univention-virtual-machine-manager-node (0.1.2-1) unstable; urgency=low
+
   * depend on univention-virtual-machine-manager-schema and create a
     UVMM default group. Bug #18437
 
