@@ -137,9 +137,15 @@ if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, '')
 
 	parser = OptionParser( usage="usage: %prog [options] command" )
-	parser.add_option( '-s', '--socket',
+	parser.add_option( '-u', '--unix',
 			action='store', dest='socket', default="/var/run/uvmm.socket",
 			help='Path to the UNIX socket' )
+	parser.add_option('-t', '--tcp',
+			action='store', dest='tcp', default=None,
+			help='Host and port number of the TCP socket')
+	parser.add_option('-s', '--ssl',
+			action='store', dest='ssl', default=None,
+			help='Host and port number of the SSL encrypted TCP socket')
 	parser.add_option( '-l', '--log',
 			action='store', dest='logfile', default="/var/log/univention/virtual-machine-manager-daemon.log",
 			help='Path to the log-file' )

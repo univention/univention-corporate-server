@@ -662,13 +662,24 @@ def domain_restore(uri, statefile):
 		logger.error(e)
 		raise NodeError("Error restoring domain '%s': %s" % (domain, e))
 
-def domain_undefine(uri, domain):
-	"""Undefine a domain on a node."""
+def domain_undefine(uri, domain, volumes=[]):
+	"""Undefine a domain and its volumes on a node."""
 	try:
 		node = nodes[uri]
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
+		if volumes is None:
+			volumes = []
+			doc = parseString(dom.XMLDesc(0))
+			devices = doc.getElementsByTagName('devices')[0]
+			disks = devices.getElementsByTagName('disk')
+			for disk in disks:
+				source = disk.getElementsByTagName('source')[0]
+				volumes.append(source.getAttribute('file'))
 		dom.undefine()
+		for vol_name in volumes:
+			vol = conn.storageVolLookupByKey(vol_name)
+			vol.delete(0)
 	except KeyError, key:
 		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
 	except libvirt.libvirtError, e:

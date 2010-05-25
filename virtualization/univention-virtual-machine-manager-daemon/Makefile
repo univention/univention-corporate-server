@@ -21,19 +21,15 @@ install: install-modules install-locales install-images
 	install -m 0755 -t $(DESTDIR)/usr/sbin src/univention-virtual-machine-manager-daemon
 	install -m 0755 -t $(DESTDIR)/usr/sbin src/univention-virtual-machine-manager
 	ln -s univention-virtual-machine-manager $(DESTDIR)/usr/sbin/uvmm
-	ln -s univention-virtual-machine-manager $(DESTDIR)/usr/sbin/uvmm-add
-	ln -s univention-virtual-machine-manager $(DESTDIR)/usr/sbin/uvmm-remove
 	ln -s univention-virtual-machine-manager $(DESTDIR)/usr/sbin/univention-virtual-machine-manager-add
 	ln -s univention-virtual-machine-manager $(DESTDIR)/usr/sbin/univention-virtual-machine-manager-remove
 
 .PHONY: uninstall
 uninstall:
-	$(RM) $(DESTDIR)/usr/sbin/univention-virtual-machine-manager-add
-	$(RM) $(DESTDIR)/usr/sbin/univention-virtual-machine-manager-remove
 	$(RM) $(DESTDIR)/usr/sbin/univention-virtual-machine-manager
 	$(RM) $(DESTDIR)/usr/sbin/uvmm-add
 	$(RM) $(DESTDIR)/usr/sbin/uvmm-remove
-	$(RM) $(DESTDIR)/usr/sbin/uvmm 
+	$(RM) $(DESTDIR)/usr/sbin/uvmm
 	$(RM) $(DESTDIR)/usr/sbin/univention-virtual-machine-manager-daemon
 	-rmdir -p $(DESTDIR)/usr/sbin
 	$(RM) $(DESTDIR)/usr/share/pyshared/univention/uvmm/*
@@ -45,7 +41,7 @@ uninstall:
 clean:
 	find -name \*.pyc -exec $(RM) {} +
 	$(RM) src/virtual-machine-manager-daemon.log
-	@find umc/modules/ -name '*.mo' -exec rm \{\} \;
+	find umc/modules/ -name '*.mo' -exec $(RM) {} +
 
 modules: $(MODULES)
 

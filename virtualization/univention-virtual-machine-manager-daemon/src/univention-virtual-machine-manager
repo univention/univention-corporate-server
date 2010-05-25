@@ -39,10 +39,23 @@ from univention.uvmm import protocol, client
 def request(options, req):
 	"""Send request and wait for answer."""
 	try:
+		if options.ssl:
+			if ':' in options.ssl:
+				host, port = options.ssl.rsplit(':', 1)
+			else:
+				host, port = options.ssl, 2106
+			sock = client.UVMM_ClientSSLSocket(host, int(port))
+		elif options.tcp:
+			if ':' in options.tcp:
+				host, port = options.tcp.rsplit(':', 1)
+			else:
+				host, port = options.tcp, 2105
+			sock = client.UVMM_ClientTCPSocket(host, int(port))
+		else:
+			sock = client.UVMM_ClientUnixSocket(options.socket)
 		if options.verbose:
-			print >>sys.stderr, "socket=%s" % (options.socket,)
+			print >>sys.stderr, "sock=%s" % (sock,)
 			print >>sys.stderr, "request=%s" % (req,)
-		sock = client.UVMM_ClientSocket(options.socket)
 		res = sock.send(req)
 		if isinstance(res, protocol.Response_DUMP):
 			try:
@@ -95,13 +108,20 @@ def from_ldap(options):
 
 	return result
 
-modes = ('add', 'remove', 'query', 'frequency', 'nodes', 'groups', 'bye', 'save', 'restore', 'migrate', 'state', 'ldap')
+# Daemon
+modes = ['bye']
+# Groups
+modes += ['groups', 'nodes']
+# Nodes
+modes += ['add', 'remove', 'frequency', 'nodes', 'query', 'ldap']
+# Domain
+modes += ['save', 'restore', 'migrate', 'state', 'undefine']
 
 if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, '')
 
 	progname = os.path.basename(sys.argv[0])
-	if progname in ['univention-virtual-machine-manager-%s' % mode for mode in modes]:
+	if progname[len('univention-virtual-machine-manager-'):] in modes:
 		mode = progname[len('univention-virtual-machine-manager-'):]
 		usage="usage: %prog [options] uri"
 	else:
@@ -109,22 +129,32 @@ if __name__ == '__main__':
 		usage="usage: %%prog [options] {%s} uri" % (','.join(modes),)
 
 	parser = OptionParser( usage=usage )
-	parser.add_option('-s', '--socket',
+	parser.add_option('-u', '--unix',
 			action='store', dest='socket', default="/var/run/uvmm.socket",
 			help='Path to the UNIX socket')
+	parser.add_option('-t', '--tcp',
+			action='store', dest='tcp', default=None,
+			help='Host and port number of the TCP socket')
+	parser.add_option('-s', '--ssl',
+			action='store', dest='ssl', default=False,
+			help='Host and port number of the SSL encrypted TCP socket')
 	parser.add_option( '-v', '--verbose',
 			action='store_true', dest='verbose', default=False,
 			help='Print additional information' )
 
 	(options, arguments) = parser.parse_args()
 
-	if mode == None:
-		if len(arguments) >= 1 and arguments[0] in modes:
+	if mode is None:
+		try:
 			mode = arguments.pop(0)
-		else:
-			print >>sys.stderr, 'Error: A mode is required'
+		except IndexError:
+			print >>sys.stderr, 'Error: No mode specified'
 			parser.print_usage()
 			sys.exit(2)
+	if mode not in modes:
+		print >>sys.stderr, 'Error: Unknown mode "%s"' % (mode,)
+		parser.print_usage()
+		sys.exit(2)
 
 	if options.verbose:
 		print >>sys.stderr, "mode=%s" % (mode,)
@@ -170,6 +200,10 @@ if __name__ == '__main__':
 			domain = arguments.pop(0)
 			state = arguments.pop(0)
 			req = protocol.Request_DOMAIN_STATE(uri=uri, domain=domain, state=state)
+		elif mode == 'undefine':
+			uri = arguments.pop(0)
+			domain = arguments.pop(0)
+			req = protocol.Request_DOMAIN_UNDEFINE(uri=uri, domain=domain, volumes=arguments)
 		else:
 			print >>sys.stderr, 'Error: Unknown mode "%s"' % (mode,)
 			parser.print_usage()

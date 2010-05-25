@@ -40,30 +40,29 @@ import protocol
 from commands import commands, CommandError
 from node import Nodes, node_frequency
 import socket
+import select
 import logging
+from OpenSSL import SSL
 
 logger = logging.getLogger('uvmmd.unix')
 
-client_count = 0
-def client_add():
-	global client_count
-	if False and client_count == 0:
-		node_frequency(Nodes.USED_FREQUENCY)
-	client_count += 1
-def client_remove():
-	global client_count
-	client_count -= 1
-	if False and client_count == 0:
-		node_frequency(Nodes.IDLE_FREQUENCY)
+class StreamHandler(SocketServer.StreamRequestHandler):
+	"""Handle one client connection."""
 
-class HandlerUNIX(SocketServer.StreamRequestHandler):
-	"""Send collected information."""
+	active_count = 0 # Number of active clients.
+	client_count = 0 # Number of instances.
+
 	def setup(self):
 		"""Initialize connection."""
-		logger.info('New connection.')
-		#super(HandlerUNIX,self).setup()
+		StreamHandler.client_count += 1
+		self.client_id = StreamHandler.client_count
+		logger.info('[%d] New connection.' % (self.client_id,))
+		#super(StreamHandler,self).setup()
 		SocketServer.StreamRequestHandler.setup(self)
-		client_add()
+		if False and StreamHandler.active_count == 0:
+			node_frequency(Nodes.USED_FREQUENCY)
+		StreamHandler.active_count += 1
+
 	def handle(self):
 		"""Handle protocol."""
 		try:
@@ -77,7 +76,7 @@ class HandlerUNIX(SocketServer.StreamRequestHandler):
 						continue
 					else:
 						raise
-				logger.debug('Data recveived: %d' % len(data))
+				logger.debug('[%d] Data recveived: %d' % (self.client_id, len(data)))
 				if data == '':
 					self.eos = True
 				else:
@@ -87,27 +86,27 @@ class HandlerUNIX(SocketServer.StreamRequestHandler):
 					if packet == None:
 						continue # waiting
 				except protocol.PacketError, (msg,):
-					logger.error("Invalid packet received: %s" % (msg,))
+					logger.error("[%d] Invalid packet received: %s" % (self.client_id, msg,))
 					break
 
-				logger.debug('Received packet.')
+				logger.debug('[%d] Received packet.' % (self.client_id,))
 				(length, command) = packet
 				buffer = buffer[length:]
 
 				if not isinstance(command, protocol.Request):
-					logger.error('Packet is no UVMM Request. Ignored.')
-				logger.info('Request "%s" received' % (command.command,))
+					logger.error('[%d] Packet is no UVMM Request. Ignored.' % (self.client_id,))
+				logger.info('[%d] Request "%s" received' % (self.client_id, command.command,))
 
 				try:
 					res = commands[command.command](self, command)
 					if res == None:
 						res = protocol.Response_OK()
 				except KeyError:
-					logger.warning('Unknown command "%s".' % (command.command,))
+					logger.warning('[%d] Unknown command "%s".' % (self.client_id, command.command,))
 					res = protocol.Response_ERROR()
-					res.msg = 'Unknown command "%s".' % (command.command,)
+					res.msg = '[%d] Unknown command "%s".' % (self.client_id, command.command,)
 				except CommandError, (msg):
-					logger.warning('Error doing command "%s": %s' % (command.command, msg))
+					logger.warning('[%d] Error doing command "%s": %s' % (self.client_id, command.command, msg))
 					res = protocol.Response_ERROR()
 					res.msg = msg
 				except:
@@ -115,27 +114,57 @@ class HandlerUNIX(SocketServer.StreamRequestHandler):
 					res = protocol.Response_ERROR()
 					res.msg = traceback.print_exc()
 
-				logger.debug('Sending response.')
+				logger.debug('[%d] Sending response.' % (self.client_id,))
 				packet = res.pack()
 				self.wfile.write(packet)
 				self.wfile.flush()
-				logger.debug('Done.')
+				logger.debug('[%d] Done.' % (self.client_id,))
 		except EOFError:
 			pass
 		except socket.error, (err, msg):
 			if err != errno.ECONNRESET:
 				raise
+
 	def finish(self):
 		"""Perform cleanup."""
-		logger.info('Connection closed.')
-		client_remove()
-		#super(HandlerUNIX,self).finish()
+		logger.info('[%d] Connection closed.' % (self.client_id,))
+		StreamHandler.active_count -= 1
+		if False and StreamHandler.active_count == 0:
+			node_frequency(Nodes.IDLE_FREQUENCY)
+		#super(StreamHandler,self).finish()
 		SocketServer.StreamRequestHandler.finish(self)
 
-class ThreadedUnixStreamServer(SocketServer.ThreadingMixIn, SocketServer.UnixStreamServer):
-	pass
+class SecureStreamHandler(StreamHandler):
+	def setup(self):
+		"""SSL connection doesn't support makefile, wrap it."""
+		request = self.request
+		class SslConnection:
+			def makefile(this, mode, size):
+				return socket._fileobject(request, mode, size)
+		self.request = SslConnection()
+		StreamHandler.setup(self)
+		self.connection = self.request = request
 
-def unix(options, server_class=ThreadedUnixStreamServer, handler_class=HandlerUNIX):
+class ThreadingSSLServer(SocketServer.ThreadingTCPServer):
+	"""SSL encrypted TCP server."""
+	allow_reuse_address = True
+	privatekey = '/etc/univention/ssl/%s/private.key' % socket.getfqdn()
+	certificate = '/etc/univention/ssl/%s/cert.pem' % socket.getfqdn()
+	cas = '/etc/univention/ssl/ucsCA/CAcert.pem'
+
+	def __init__(self, server_address, handler_class):
+		SocketServer.ThreadingTCPServer.__init__(self, server_address, handler_class)
+
+		ctx = SSL.Context(SSL.SSLv23_METHOD)
+		ctx.set_options(SSL.OP_NO_SSLv2)
+		#ctx.set_verify(SSL.VERIFY_PEER|SSL.VERIFY_FAIL_IF_NO_PEER_CERT, verify_cb)
+		ctx.use_privatekey_file(ThreadingSSLServer.privatekey)
+		ctx.use_certificate_file(ThreadingSSLServer.certificate)
+		ctx.load_verify_locations(ThreadingSSLServer.cas)
+
+		self.socket = SSL.Connection(ctx, self.socket)
+
+def unix(options):
 	"""Run UNIX SOCKET server."""
 	try:
 		if os.path.exists(options.socket):
@@ -143,18 +172,55 @@ def unix(options, server_class=ThreadedUnixStreamServer, handler_class=HandlerUN
 	except OSError, (err, errmsg):
 		logger.error("Failed to delete old socket '%s': %s" % (options.socket, errmsg))
 		sys.exit(1)
-	unixd = server_class(options.socket, handler_class)
+
+	sockets = {}
+	if options.socket:
+		try:
+			unixd = SocketServer.ThreadingUnixStreamServer(options.socket, StreamHandler)
+			unixd.daemon_threads = True
+			sockets[unixd.fileno()] = unixd
+		except Exception, e:
+			logger.error("Could not create UNIX server: %s" % (e,))
+	if options.tcp:
+		try:
+			if ':' in options.tcp:
+				host, port = options.tcp.rsplit(':', 1)
+			else:
+				host, port = options.tcp, 2105
+			tcpd = SocketServer.ThreadingTCPServer((host, int(port)), StreamHandler)
+			tcpd.daemon_threads = True
+			tcpd.allow_reuse_address = True
+			sockets[tcpd.fileno()] = tcpd
+		except Exception, e:
+			logger.error("Could not create TCP server: %s" % (e,))
+	if options.ssl:
+		try:
+			if ':' in options.ssl:
+				host, port = options.ssl.rsplit(':', 1)
+			else:
+				host, port = options.ssl, 2106
+			ssld = ThreadingSSLServer((host, int(port)), SecureStreamHandler)
+			ssld.daemon_threads = True
+			ssld.allow_reuse_address = True
+			sockets[ssld.fileno()] = ssld
+		except Exception, e:
+			logger.error("Could not create SSL server: %s" % (e,))
+	if not sockets:
+		logger.error("Neither UNIX, TCP, nor SSL server.")
+		return
+
 	logger.info('Server is ready.')
 	if hasattr(options, 'callback_ready'):
 		options.callback_ready()
 
-	unixd.keep_running = True
-	while unixd.keep_running:
+	keep_running = True
+	while keep_running:
 		try:
-			#unixd.serve_forever()
-			unixd.handle_request()
+			rlist, wlist, xlist = select.select(sockets.keys(), [], [], None)
+			for socket in rlist:
+				sockets[socket].handle_request()
 		except KeyboardInterrupt:
-			unixd.keep_running = False
+			keep_running = False
 
 	logger.info('Server is terminating.')
 	try:

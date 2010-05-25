@@ -13,7 +13,10 @@ XS-Python-Version: 2.4
 Package: univention-virtual-machine-manager-daemon
 Architecture: all
 Depends: libvirt-bin, python-libvirt,
- univention-ssl, ${python:Depends}
+ python-univention-management-console (>= 3.0.16),
+ univention-ssl,
+ python-openssl,
+ ${python:Depends}
 XB-Python-Version: ${python:Versions}
 Description: Univention Virtual Machine Manager Daemon
  This package contains the Univention Virtual Machine Manager Daemon

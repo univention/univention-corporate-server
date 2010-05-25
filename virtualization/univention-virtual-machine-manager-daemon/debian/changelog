@@ -1,3 +1,13 @@
+univention-virtual-machine-manager-daemon (0.9.8-1) unstable; urgency=low
+
+  * Fix format of vnc://-link in UMC module (Bug #18346)
+  * Implement domain-undefine in cli-tool (Bug #18190)
+  * Depends on newer python-univention-management-console.
+  * Terminate all connections when main thread exits (Bug #18387)
+  * Implement (encrypted) TCP-Listener on port 2105(2106) (Bug #18450)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 25 May 2010 08:11:31 +0200
+
 univention-virtual-machine-manager-daemon (0.9.7-1) unstable; urgency=low
 
   * Export capabilities (Bug #18289)

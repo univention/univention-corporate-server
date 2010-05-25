@@ -43,6 +43,7 @@ import univention.uvmm.protocol as uuv_proto
 
 import copy
 import os
+import socket
 
 import notifier.popen
 
@@ -292,8 +293,21 @@ class handler( umch.simpleHandler ):
 
 		# VNC? if running and activated
 		if domain.state in ( 1, 2 ) and domain.graphics and domain.graphics[ 0 ].port != -1:
+			host = node.name
+			try:
+				VNC_LINK_BY_NAME, VNC_LINK_BY_IPV4, VNC_LINK_BY_IPV6 = range(3)
+				vnc_link_format = VNC_LINK_BY_IPV4
+				if vnc_link_format == VNC_LINK_BY_IPV4:
+					addrs = socket.getaddrinfo(host, None, socket.AF_INET)
+					(family, socktype, proto, canonname, sockaddr) = addrs[0]
+					host = sockaddr[0]
+				elif vnc_link_format == VNC_LINK_BY_IPV6:
+					addrs = socket.getaddrinfo(host, None, socket.AF_INET6)
+					(family, socktype, proto, canonname, sockaddr) = addrs[0]
+					host = '[%s]' % sockaddr[0]
+			except: pass
 			vnc = domain.graphics[ 0 ]
-			uri = 'vnc://%s:%s/' % ( node.name, vnc.port )
+			uri = 'vnc://%s:%s' % (host, vnc.port)
 			buttons.append( umcd.Link( 'VNC', uri ) )
 
 		return buttons

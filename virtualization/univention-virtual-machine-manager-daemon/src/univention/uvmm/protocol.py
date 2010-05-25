@@ -152,6 +152,7 @@ class Request_DOMAIN_UNDEFINE(Request):
 		self.command = 'DOMAIN_UNDEFINE'
 		self.uri = None
 		self.domain = None
+		self.volumes = []
 class Request_DOMAIN_MIGRATE(Request):
 	"""Migrate domain."""
 	def _default(self):
