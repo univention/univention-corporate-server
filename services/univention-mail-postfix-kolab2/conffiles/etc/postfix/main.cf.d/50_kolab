@@ -12,9 +12,16 @@ if baseConfig.get("mail/postfix/policy/listfilter", "no").lower() in ['yes', 'tr
 	recipient_restrictions.insert(0, "check_policy_service unix:private/listfilter")
 
 print "smtpd_recipient_restrictions = %s" % ", ".join(recipient_restrictions)
+
+keylist = [ x for x in configRegistry.keys() if x.startswith('mail/postfix/smtpd/restrictions/sender/') ]
+keylist.sort()
+sender_restrictions = []
+for key in keylist:
+	sender_restrictions.append( configRegistry.get(key) )
+
+print 'smtpd_sender_restrictions = %s' % ',\n        '.join(sender_restrictions)
 @!@
 
-smtpd_sender_restrictions = permit_mynetworks, check_policy_service unix:private/kolabpolicy
 kolabpolicy_time_limit = 3600
 kolabpolicy_max_idle = 20
 

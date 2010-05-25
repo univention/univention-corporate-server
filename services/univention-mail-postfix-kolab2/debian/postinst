@@ -33,10 +33,18 @@
 univention-config-registry set postfix/autostart?yes \
                                postfix/allow-unauth?yes
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 if [ -n "$mail_cyrus" ]; then
-univention-config-registry unset mail/cyrus
+	univention-config-registry unset mail/cyrus
+fi
+
+# set UCR variables only on fresh installation or during update from older version
+if [ "$1" = "configure" ] ; then
+	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1 || [ -z "$2" ] ; then
+		univention-config-registry set mail/postfix/smtpd/restrictions/sender/30="permit_mynetworks" \
+										mail/postfix/smtpd/restrictions/sender/60="check_policy_service unix:private/kolabpolicy"
+	fi
 fi
 
 univention-config-registry set postfix/masquerade/domains?"\$mydomain" \
