@@ -30,6 +30,10 @@
 
 eval $(univention-config-registry shell server/role)
 
+if [ "$1" = "configure" ] && [ -z "$2" ]; then
+	univention-config-registry set xen/server/unix_server?yes
+fi
+
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]
 then
     /usr/lib/univention-install/44univention-virtual-machine-manager-node-xen.inst || true
