@@ -3,13 +3,28 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.6.2
-Build-Depends: debhelper, univention-config-dev
+Build-Depends: debhelper, univention-config-dev, python2.4, python-all-dev, python-central
+XS-Python-Version: 2.4
 
 Package: univention-virtual-machine-manager-schema
 Architecture: all
+Depends: python-univention-directory-manager-uvmm
 Description: UCS - Univention Virtual Machine Manager schema definitions
  This package contains the OpenLDAP schema definitions for
  the UVMM (Univention Virtual Machine Manager).
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python-univention-directory-manager-uvmm
+Architecture: all
+Depends: python (>= 2.4), python-univention
+Provides: ${python:Provides}, python2.4-univention-directory-manager-opendvdi
+XB-Python-Version: 2.4
+Description: UCS - Univention Virtual Machine Manager UDM extensions
+ This package contains the UDM extensions for UVMM (Univention Virtual
+ Machine Manager).
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,

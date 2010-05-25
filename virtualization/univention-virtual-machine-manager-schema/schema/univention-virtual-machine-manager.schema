@@ -1,15 +1,33 @@
 
 # Virtual Machine Manager OID: 1.3.6.1.4.1.10176.4101
 
-attributetype ( 1.3.6.1.4.1.10176.4101.1.1 NAME 'UVMMGroup'
-	DESC 'Univention Virtual Machine Manager group'
+attributetype ( 1.3.6.1.4.1.10176.4101.1.1 NAME 'univentionVirtualMachineGroup'
+	DESC 'Is this group an Univention Virtual Machine Group'
 	EQUALITY caseIgnoreIA5Match
 	SUBSTR caseIgnoreIA5SubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
-objectclass ( 1.3.6.1.4.1.10176.4101.2.1 NAME 'UVMM'
-	DESC 'Univention Virtual Machine Manager object'
+objectclass ( 1.3.6.1.4.1.10176.4101.2.1 NAME 'univentionVirtualMachineGroupOC'
+	DESC 'Univention Virtual Machine group objectclass'
 	SUP top AUXILIARY
-	MAY ( UVMMGroup ) )
+	MAY ( univentionVirtualMachineGroup ) )
 
+attributetype ( 1.3.6.1.4.1.10176.4101.1.10 NAME 'univentionVirtualMachineUUID'
+	DESC 'UUID of this Virtual Machine'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4101.1.11 NAME 'univentionVirtualMachineOS'
+	DESC 'Operation system of this Virtual Machine'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.10176.4101.2.10 NAME 'univentionVirtualMachine'
+	DESC 'Univention Virtual Machine objectclass'
+	STRUCTURAL
+	MUST ( univentionVirtualMachineUUID )
+	MAY ( description $ univentionVirtualMachineOS )
+    )
 

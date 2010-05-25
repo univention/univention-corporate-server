@@ -45,8 +45,8 @@ univention-directory-manager container/cn create $@ \
 
 univention-directory-manager settings/extended_attribute create $@ --ignore_exists \
     --position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
-	--set objectClass="UVMM" \
-	--set ldapMapping="UVMMGroup" \
+	--set objectClass="univentionVirtualMachine" \
+	--set ldapMapping="univentionVirtualMachineGroupOC" \
 	--set module="groups/group" \
 	--set overwritePosition="0" \
 	--set overwriteTab="0" \
@@ -71,6 +71,10 @@ if [ $? != 0 ]; then exit 1; fi
 
 # kill running UDM daemon
 ps -ef | grep "/usr/bin/python.*univention-cli-server$" | awk '{print $2}' | while read clipid; do kill $clipid >/dev/null 2>&1; done
+
+univention-directory-manager container/cn create $@ --ignore_exists \
+	--position "$ldap_base" \
+	--set name="Virtual Machine Manager"
 
 joinscript_save_current_version
 
