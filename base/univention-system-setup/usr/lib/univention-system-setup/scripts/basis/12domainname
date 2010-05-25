@@ -386,7 +386,7 @@ if [ "$ldap_available" = 1 ]; then
 
 		if [ -z "$res" ]; then
 			echo `date` : "Add DNS zone: " $new_domainname >> /var/log/univention/setup.log
-			$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists $new_domainname add zone root.$new_domainname. 1 28800 7200 604800 10800 $hostname.$new_domainname.
+			$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists $new_domainname add zone root@$new_domainname. 1 28800 7200 604800 10800 $hostname.$new_domainname.
 
 			univention-directory-manager dns/host_record list --binddn "$binddn" --bindpwd "$bindpwd"  --superordinate="zoneName=$old_domainname,cn=dns,$ldap_base" | grep ^DN | sed -e 's|^DN: ||' | while read hostrecord_dn; do
 				ldapsearch -x -D  "$binddn" -w "$bindpwd" -b "$hostrecord_dn"  -LLL | ldapsearch-wrapper | sed -e "s|zoneName: $old_domainname|zoneName: $new_domainname|;s|zoneName=$old_domainname|zoneName=$new_domainname|" | ldapadd -x -D  "$binddn" -w "$bindpwd"
@@ -416,7 +416,7 @@ if [ "$ldap_available" = 1 ]; then
 		else
 			# create the new dns zone
 			echo `date` : "Create new DNS zone:" $new_domainname  >> /var/log/univention/setup.log
-			$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists $new_domainname add zone root.$new_domainname. 1 28800 7200 604800 10800 $hostname.$new_domainname.
+			$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists $new_domainname add zone root@$new_domainname. 1 28800 7200 604800 10800 $hostname.$new_domainname.
 
 			# Create a new A record for the name of the host, which has been changed
 			for interface in eth0 eth1 eth2 eth3; do
