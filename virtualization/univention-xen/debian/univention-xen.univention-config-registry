@@ -18,5 +18,7 @@ Variables: xen/server/relocation
 Variables: xen/server/relocation_ssl
 Variables: xen/server/xmlrpc_tcp
 Variables: xen/server/xmlrpc_unix
+Variables: xen/server/http_server
+Variables: xen/server/unix_server
 Variables: xen/vnc/listen
 Variables: xen/vnc/password

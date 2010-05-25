@@ -69,9 +69,9 @@ print '(xen-api-server (%s))' % ( baseConfig.get('xen/server/api', '(unix)'), )
 @!@
 
 
-#(xend-http-server no)
-#(xend-unix-server no)
 @!@
+print '(xend-http-server %s)' % baseconfig.get('xen/server/http_server', 'no'), )
+print '(xend-unix-server %s)' % baseconfig.get('xen/server/unix_server', 'no'), )
 print '(xend-unix-xmlrpc-server %s)' % ( baseConfig.get('xen/server/xmlrpc_unix', 'yes'), )
 print '(xend-tcp-xmlrpc-server %s)' % ( baseConfig.get('xen/server/xmlrpc_tcp', 'no'), )
 print '(xend-relocation-server %s)' % ( baseConfig.get('xen/server/relocation', 'no'), )

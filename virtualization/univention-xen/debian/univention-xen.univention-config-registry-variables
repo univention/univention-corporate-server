@@ -52,6 +52,18 @@ Description[en]=Enable/Disable the encrypted Xen service for (live-)migration [n
 Type=bool
 Categories=service-xen
 
+[xen/server/http_server]
+Description[de]=Aktiviert/Deaktiviert den Zugriff zum Xen-Dienst via HTTP [no]
+Description[en]=Enable/Disable access to xend via http [no]
+Type=bool
+Categories=service-xen
+
+[xen/server/unix_server]
+Description[de]=Aktiviert/Deaktiviert den Zugriff zum Xen-Dienst via Unix Socket [no]
+Description[en]=Enable/Disable access to xend via unix socket [no]
+Type=bool
+Categories=service-xen
+
 [xen/server/api]
 Description[de]=Konfiguration der Zugrifskontrolle auf die Xen-Dienste [(unix)]
 Description[en]=Configuration of access control to Xen services [(unix)]
