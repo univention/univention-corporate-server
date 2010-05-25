@@ -1,0 +1,5 @@
+univention-virtual-machine-manager-schema (1.0.1-1) unstable; urgency=low
+
+  * Initial release. Bug #18437
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 May 2010 09:25:38 +0200

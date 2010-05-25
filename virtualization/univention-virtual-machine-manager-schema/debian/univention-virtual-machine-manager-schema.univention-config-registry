@@ -1,0 +1,21 @@
+Type: multifile
+Multifile: etc/ldap/slapd.conf
+Variables: ldap/server/type
+Variables: ldap/master
+Variables: ldap/base
+Variables: ldap/database/type
+Variables: ldap/database/bdb/checkpoint
+Variables: ldap/database/ldbm/dbsync
+Variables: ldap/index/eq
+Variables: ldap/index/pres
+Variables: ldap/index/sub
+Variables: ldap/index/approx
+Variables: ldap/replog
+Variables: ldap/translogfile
+Variables: ldap/timeout
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/13univention-virtual-machine-manager_schema
+Variables: ldap/server/type
+Variables: ldap/master

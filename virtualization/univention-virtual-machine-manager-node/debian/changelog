@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-node (0.1.1-4.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * depend on univention-virtual-machine-manager-schema and create a
+    UVMM default group. Bug #18437
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 May 2010 10:55:58 +0200
+
 univention-virtual-machine-manager-node (0.1.1-4) unstable; urgency=low
 
   * Enable TCP-listening in etc/default/libvirt-bin (Bug #18110)

@@ -1,0 +1,17 @@
+Source: univention-virtual-machine-manager-schema
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.6.2
+Build-Depends: debhelper, univention-config-dev
+
+Package: univention-virtual-machine-manager-schema
+Architecture: all
+Description: UCS - Univention Virtual Machine Manager schema definitions
+ This package contains the OpenLDAP schema definitions for
+ the UVMM (Univention Virtual Machine Manager).
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+

@@ -48,6 +48,7 @@ install: build
 	@for virttech in xen kvm; do \
 		install -m 0755 44univention-virtual-machine-manager-node-$$virttech.inst debian/univention-virtual-machine-manager-node-$$virttech/usr/lib/univention-install/; \
 	done
+	install -m 0755 43univention-virtual-machine-manager-node-common.inst debian/univention-virtual-machine-manager-node-common/usr/lib/univention-install/
 
 # Build architecture-independent files here.
 binary-indep: build install

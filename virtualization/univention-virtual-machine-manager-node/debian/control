@@ -13,6 +13,7 @@ Architecture: all
 Depends: ${misc:Depends},
  libvirt-bin,
  univention-ssl,
+ univention-virtual-machine-manager-schema,
  univention-virtual-machine-manager-node-xen | univention-virtual-machine-manager-node
 Description: UCS - Univention Virtual Machine Manager node
  This meta-package provides basic configuration for virtualization nodes.
