@@ -1,3 +1,12 @@
+univention-ldap (7.0.0-1) unstable; urgency=low
+
+  * version bump for UCS 2.4
+  * use reverse instead of network from univention-ipcalc for adding/editing reverse zone 
+  * use fqdn with . at the and as nameserver for creating dns zone Bug #17413
+  * use email address syntax for contact address in dns zone Bug #18461
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 May 2010 14:51:55 +0200
+
 univention-ldap (6.0.0-2) unstable; urgency=low
 
   * ldap/index/autorebuild: handle special 'none' value in ldap/index/* (Bug #6700)

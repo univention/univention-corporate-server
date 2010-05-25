@@ -42,6 +42,7 @@ test -n "`grep "univention-ldap-server v${VERSION} successful" /usr/lib/univenti
 eval `univention-baseconfig shell`
 
 subnet=`univention-ipcalc --netmask $interfaces_eth0_netmask --ip $interfaces_eth0_address --output network --calcdns`
+reverse=`univention-ipcalc --netmask $interfaces_eth0_netmask --ip $interfaces_eth0_address --output reverse --calcdns`
 
 sleep 5
 if [ "$server_role" != "domaincontroller_master" ]; then
@@ -54,7 +55,7 @@ sleep 5
 if [ "$server_role" != "domaincontroller_master" ]; then
 	continue=1; while [ $continue == "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
 fi
-/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists --reverse $subnet add zone root.$domainname 1 28800 10800 604800 108001 $hostname.$domainname
+/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists --reverse $reverse add zone root@$domainname. 1 28800 10800 604800 108001 $hostname.$domainname.
 if [ $? != 0 ]; then exit 1; fi
 sleep 5
 if [ "$server_role" != "domaincontroller_master" ]; then
@@ -63,7 +64,7 @@ fi
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	forwardZone=`univention-admin dns/forward_zone list $@ --filter zone=$domainname | grep DN | head -1 | sed -e 's/DN: //g'`
-	reverseZone=`univention-admin dns/reverse_zone list $@ --filter subnet=$subnet | grep DN | head -1 | sed -e 's/DN: //g'`
+	reverseZone=`univention-admin dns/reverse_zone list $@ --filter subnet=$reverse | grep DN | head -1 | sed -e 's/DN: //g'`
 
 	if [ -z "$forwardZone" ]; then echo "DNS forward zone not found"; exit 1; fi
 	if [ -z "$reverseZone" ]; then echo "DNS reverse zone not found"; exit 1; fi
