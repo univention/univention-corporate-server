@@ -8,7 +8,7 @@ Standards-Version: 3.5.2
 Package: univention-kernel-image-2.6.26
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersion}, xfsprogs
+Depends: univention-kernel-image-2.6.32
 Conflicts: univention-kernel-image-2.6 (<<1.0.1), univention-kernel-image (<<1.0.1)
 Description: UCS - Linux kernel
  This meta-package installs the current kernel image.
@@ -21,7 +21,7 @@ Description: UCS - Linux kernel
 Package: univention-kernel-image-2.6.26-xen
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersionXen}, xfsprogs
+Depends: univention-kernel-image-2.6.32-xen
 Description: UCS - Linux kernel
  This meta-package installs the current kernel image.
  .
@@ -33,7 +33,7 @@ Description: UCS - Linux kernel
 Package: univention-kernel-image-2.6.26-64gb
 Architecture: any
 Pre-Depends: univention-initrd
-Depends: linux-image-${F:KernelVersion64}, xfsprogs
+Depends: univention-kernel-image-2.6.32-64gb
 Conflicts: univention-kernel-image-2.6-64gb (<<1.0.1), univention-kernel-image-64gb (<<1.0.1)
 Description: UCS - Linux kernel
  This meta-package installs the current kernel image.
@@ -45,7 +45,7 @@ Description: UCS - Linux kernel
 
 Package: univention-kernel-headers-2.6.26
 Architecture: any
-Depends: linux-headers-${F:KernelVersion}
+Depends: univention-kernel-headers-2.6.32
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
  .
@@ -56,7 +56,7 @@ Description: UCS - Linux kernel headers
 
 Package: univention-kernel-headers-2.6.26-64gb
 Architecture: any
-Depends: linux-headers-${F:KernelVersion64}
+Depends: univention-kernel-headers-2.6.32-64gb
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
  .
@@ -67,7 +67,7 @@ Description: UCS - Linux kernel headers
 
 Package: univention-kernel-headers-2.6.26-xen
 Architecture: any
-Depends: linux-headers-${F:KernelVersionXen}
+Depends: univention-kernel-headers-2.6.32-xen
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
  .
@@ -78,7 +78,7 @@ Description: UCS - Linux kernel headers
 
 Package: univention-kernel-source-2.6.26
 Architecture: any
-Depends: linux-source-${F:KernelVersion}
+Depends: univention-kernel-source-2.6.32
 Description: UCS - Linux kernel source
  This meta-package installs the current kernel source.
  .
@@ -89,7 +89,7 @@ Description: UCS - Linux kernel source
 
 Package: univention-kernel-source-2.6.26-64gb
 Architecture: any
-Depends: linux-source-${F:KernelVersion64}
+Depends: univention-kernel-source-2.6.32-64gb
 Description: UCS - Linux kernel source
  This meta-package installs the current kernel source.
  .
@@ -100,7 +100,7 @@ Description: UCS - Linux kernel source
 
 Package: univention-avm-capi-fcpci-modules-2.6.26
 Architecture: any
-Depends: avm-capi-fcpci-modules-${F:KernelVersion}
+Depends: univention-avm-capi-fcpci-modules-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current AVM CAPI fcpci modules.
  .
@@ -111,7 +111,7 @@ Description: UCS - Linux kernel
 
 Package: univention-cpqhealth-modules-2.6.26
 Architecture: any
-Depends: cpqhealth-modules-${F:KernelVersion}
+Depends: univention-cpqhealth-modules-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current cpqhealth modules.
  .
@@ -122,7 +122,7 @@ Description: UCS - Linux kernel
 
 Package: univention-cpqhealth-modules-2.6.26-64gb
 Architecture: any
-Depends: cpqhealth-modules-${F:KernelVersion64}
+Depends: univention-cpqhealth-modules-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current cpqhealth modules.
  .
@@ -133,7 +133,7 @@ Description: UCS - Linux kernel
 
 Package: univention-serverview-modules-2.6.26
 Architecture: any
-Depends: srvmagt-modules-${F:KernelVersion}
+Depends: univention-serverview-modules-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
  .
@@ -144,7 +144,7 @@ Description: UCS - Linux kernel
 
 Package: univention-serverview-modules-2.6.26-64gb
 Architecture: any
-Depends: srvmagt-modules-${F:KernelVersion64}
+Depends: univention-serverview-modules-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
  .
@@ -155,7 +155,7 @@ Description: UCS - Linux kernel
 
 Package: univention-fsc-srv-modules-2.6.26
 Architecture: any
-Depends: srvmagt-modules-${F:KernelVersion}
+Depends: univention-fsc-srv-modules-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
  .
@@ -166,7 +166,7 @@ Description: UCS - Linux kernel
 
 Package: univention-fsc-srv-modules-2.6.26-64gb
 Architecture: any
-Depends: srvmagt-modules-${F:KernelVersion64}
+Depends: univention-fsc-srv-modules-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
  .
@@ -177,7 +177,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware4-modules-2.6.26
 Architecture: any
-Depends: vmware4-modules-${F:KernelVersion}
+Depends: univention-vmware4-modules-2.6.32
 Conflicts: univention-vmware5-modules-2.6.26
 Description: UCS - Linux kernel
  This meta-package installs the current vmware4 modules.
@@ -189,7 +189,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware4-modules-2.6.26-64gb
 Architecture: any
-Depends: vmware4-modules-${F:KernelVersion64}
+Depends: univention-vmware4-modules-2.6.32-64gb
 Conflicts: univention-vmware5-modules-2.6.26-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware4 modules.
@@ -201,7 +201,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware5-modules-2.6.26
 Architecture: any
-Depends: vmware5-modules-${F:KernelVersion}
+Depends: univention-vmware5-modules-2.6.32
 Conflicts: univention-vmware4-modules-2.6.26
 Description: UCS - Linux kernel
  This meta-package installs the current vmware5 modules.
@@ -213,7 +213,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware5-modules-2.6.26-64gb
 Architecture: any
-Depends: vmware5-modules-${F:KernelVersion64}
+Depends: univention-vmware5-modules-2.6.32-64gb
 Conflicts: univention-vmware4-modules-2.6.26-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware5 modules.
@@ -225,7 +225,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-gsx3-modules-2.6.26
 Architecture: any
-Depends: vmware-gsx3-modules-${F:KernelVersion}
+Depends: univention-vmware-gsx3-modules-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-gsx3 modules.
  .
@@ -236,7 +236,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-gsx3-modules-2.6.26-64gb
 Architecture: any
-Depends: vmware-gsx3-modules-${F:KernelVersion64}
+Depends: univention-vmware-gsx3-modules-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-gsx3 modules.
  .
@@ -247,7 +247,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-server-modules-2.6.26
 Architecture: any
-Depends: vmware-server-kernel-modules-${F:KernelVersion}
+Depends: univention-vmware-server-modules-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
  .
@@ -258,7 +258,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-server-modules-2.6.26-64gb
 Architecture: any
-Depends: vmware-server-kernel-modules-${F:KernelVersion64}
+Depends: univention-vmware-server-modules-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
  .
@@ -269,7 +269,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-player-modules-2.6.26
 Architecture: any
-Depends: vmware-kernel-modules-${F:KernelVersion}
+Depends: univention-vmware-player-modules-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-player modules.
  .
@@ -280,7 +280,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-player-modules-2.6.26-64gb
 Architecture: any
-Depends: vmware-kernel-modules-${F:KernelVersion64}
+Depends: univention-vmware-player-modules-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-player modules.
  .
@@ -292,7 +292,7 @@ Description: UCS - Linux kernel
 Package: univention-kernel-image-mobileclient-2.6.26
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersion}, xfsprogs
+Depends: univention-kernel-image-mobileclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current kernel image.
  .
@@ -304,7 +304,7 @@ Description: UCS - Linux kernel
 Package: univention-kernel-image-mobileclient-2.6.26-64gb
 Architecture: any
 Pre-Depends: univention-initrd
-Depends: linux-image-${F:KernelVersion64}, xfsprogs
+Depends: univention-kernel-image-mobileclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current kernel image.
  .
@@ -315,7 +315,7 @@ Description: UCS - Linux kernel
 
 Package: univention-kernel-headers-mobileclient-2.6.26
 Architecture: any
-Depends: linux-headers-${F:KernelVersion}
+Depends: univention-kernel-headers-mobileclient-2.6.32
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
  .
@@ -326,7 +326,7 @@ Description: UCS - Linux kernel headers
 
 Package: univention-kernel-headers-mobileclient-2.6.26-64gb
 Architecture: any
-Depends: linux-headers-${F:KernelVersion64}
+Depends: univention-kernel-headers-mobileclient-2.6.32-64gb
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
  .
@@ -337,7 +337,7 @@ Description: UCS - Linux kernel headers
 
 Package: univention-kernel-source-mobileclient-2.6.26
 Architecture: any
-Depends: linux-source-${F:KernelVersion}
+Depends: univention-kernel-source-mobileclient-2.6.32
 Description: UCS - Linux kernel source
  This meta-package installs the current kernel source.
  .
@@ -348,7 +348,7 @@ Description: UCS - Linux kernel source
 
 Package: univention-kernel-source-mobileclient-2.6.26-64gb
 Architecture: any
-Depends: linux-source-${F:KernelVersion64}
+Depends: univention-kernel-source-mobileclient-2.6.32-64gb
 Description: UCS - Linux kernel source
  This meta-package installs the current kernel source.
  .
@@ -359,7 +359,7 @@ Description: UCS - Linux kernel source
 
 Package: univention-avm-capi-fcpci-modules-mobileclient-2.6.26
 Architecture: any
-Depends: avm-capi-fcpci-modules-${F:KernelVersion}
+Depends: univention-avm-capi-fcpci-modules-mobileclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current AVM CAPI fcpci modules.
  .
@@ -370,7 +370,7 @@ Description: UCS - Linux kernel
 
 Package: univention-cpqhealth-modules-mobileclient-2.6.26
 Architecture: any
-Depends: cpqhealth-modules-${F:KernelVersion}
+Depends: univention-cpqhealth-modules-mobileclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current cpqhealth modules.
  .
@@ -381,7 +381,7 @@ Description: UCS - Linux kernel
 
 Package: univention-cpqhealth-modules-mobileclient-2.6.26-64gb
 Architecture: any
-Depends: cpqhealth-modules-${F:KernelVersion64}
+Depends: univention-cpqhealth-modules-mobileclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current cpqhealth modules.
  .
@@ -392,7 +392,7 @@ Description: UCS - Linux kernel
 
 Package: univention-serverview-modules-mobileclient-2.6.26
 Architecture: any
-Depends: srvmagt-modules-${F:KernelVersion}
+Depends: univention-serverview-modules-mobileclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
  .
@@ -403,7 +403,7 @@ Description: UCS - Linux kernel
 
 Package: univention-serverview-modules-mobileclient-2.6.26-64gb
 Architecture: any
-Depends: srvmagt-modules-${F:KernelVersion64}
+Depends: univention-serverview-modules-mobileclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
  .
@@ -414,7 +414,7 @@ Description: UCS - Linux kernel
 
 Package: univention-fsc-srv-modules-mobileclient-2.6.26
 Architecture: any
-Depends: srvmagt-modules-${F:KernelVersion}
+Depends: univention-fsc-srv-modules-mobileclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
  .
@@ -425,7 +425,7 @@ Description: UCS - Linux kernel
 
 Package: univention-fsc-srv-modules-mobileclient-2.6.26-64gb
 Architecture: any
-Depends: srvmagt-modules-${F:KernelVersion64}
+Depends: univention-fsc-srv-modules-mobileclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
  .
@@ -436,7 +436,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware4-modules-mobileclient-2.6.26
 Architecture: any
-Depends: vmware4-modules-${F:KernelVersion}
+Depends: univention-vmware4-modules-mobileclient-2.6.32
 Conflicts: univention-vmware5-modules-mobileclient-2.6.26
 Description: UCS - Linux kernel
  This meta-package installs the current vmware4 modules.
@@ -448,7 +448,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware4-modules-mobileclient-2.6.26-64gb
 Architecture: any
-Depends: vmware4-modules-${F:KernelVersion64}
+Depends: univention-vmware4-modules-mobileclient-2.6.32-64gb
 Conflicts: univention-vmware5-modules-mobileclient-2.6.26-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware4 modules.
@@ -460,7 +460,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware5-modules-mobileclient-2.6.26
 Architecture: any
-Depends: vmware5-modules-${F:KernelVersion}
+Depends: univention-vmware5-modules-mobileclient-2.6.32
 Conflicts: univention-vmware4-modules-mobileclient-2.6.26
 Description: UCS - Linux kernel
  This meta-package installs the current vmware5 modules.
@@ -472,7 +472,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware5-modules-mobileclient-2.6.26-64gb
 Architecture: any
-Depends: vmware5-modules-${F:KernelVersion64}
+Depends: univention-vmware5-modules-mobileclient-2.6.32-64gb
 Conflicts: univention-vmware4-modules-mobileclient-2.6.26-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware5 modules.
@@ -484,7 +484,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-gsx3-modules-mobileclient-2.6.26
 Architecture: any
-Depends: vmware-gsx3-modules-${F:KernelVersion}
+Depends: univention-vmware-gsx3-modules-mobileclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-gsx3 modules.
  .
@@ -495,7 +495,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-gsx3-modules-mobileclient-2.6.26-64gb
 Architecture: any
-Depends: vmware-gsx3-modules-${F:KernelVersion64}
+Depends: univention-vmware-gsx3-modules-mobileclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-gsx3 modules.
  .
@@ -506,7 +506,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-server-modules-mobileclient-2.6.26
 Architecture: any
-Depends: vmware-server-kernel-modules-${F:KernelVersion}
+Depends: univention-vmware-server-modules-mobileclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
  .
@@ -517,7 +517,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-server-modules-mobileclient-2.6.26-64gb
 Architecture: any
-Depends: vmware-server-kernel-modules-${F:KernelVersion64}
+Depends: univention-vmware-server-modules-mobileclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
  .
@@ -528,7 +528,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-player-modules-mobileclient-2.6.26
 Architecture: any
-Depends: vmware-kernel-modules-${F:KernelVersion}
+Depends: univention-vmware-player-modules-mobileclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-player modules.
  .
@@ -539,7 +539,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-player-modules-mobileclient-2.6.26-64gb
 Architecture: any
-Depends: vmware-kernel-modules-${F:KernelVersion64}
+Depends: univention-vmware-player-modules-mobileclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-player modules.
  .
@@ -551,7 +551,7 @@ Description: UCS - Linux kernel
 Package: univention-kernel-image-managedclient-2.6.26
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersion}, xfsprogs
+Depends: univention-kernel-image-managedclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current kernel image.
  .
@@ -563,7 +563,7 @@ Description: UCS - Linux kernel
 Package: univention-kernel-image-managedclient-2.6.26-64gb
 Architecture: any
 Pre-Depends: univention-initrd
-Depends: linux-image-${F:KernelVersion64}, xfsprogs
+Depends: univention-kernel-image-managedclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current kernel image.
  .
@@ -574,7 +574,7 @@ Description: UCS - Linux kernel
 
 Package: univention-kernel-headers-managedclient-2.6.26
 Architecture: any
-Depends: linux-headers-${F:KernelVersion}
+Depends: univention-kernel-headers-managedclient-2.6.32
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
  .
@@ -585,7 +585,7 @@ Description: UCS - Linux kernel headers
 
 Package: univention-kernel-headers-managedclient-2.6.26-64gb
 Architecture: any
-Depends: linux-headers-${F:KernelVersion64}
+Depends: univention-kernel-headers-managedclient-2.6.32-64gb
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
  .
@@ -596,7 +596,7 @@ Description: UCS - Linux kernel headers
 
 Package: univention-kernel-source-managedclient-2.6.26
 Architecture: any
-Depends: linux-source-${F:KernelVersion}
+Depends: univention-kernel-source-managedclient-2.6.32
 Description: UCS - Linux kernel source
  This meta-package installs the current kernel source.
  .
@@ -607,7 +607,7 @@ Description: UCS - Linux kernel source
 
 Package: univention-kernel-source-managedclient-2.6.26-64gb
 Architecture: any
-Depends: linux-source-${F:KernelVersion64}
+Depends: univention-kernel-source-managedclient-2.6.32-64gb
 Description: UCS - Linux kernel source
  This meta-package installs the current kernel source.
  .
@@ -618,7 +618,7 @@ Description: UCS - Linux kernel source
 
 Package: univention-avm-capi-fcpci-modules-managedclient-2.6.26
 Architecture: any
-Depends: avm-capi-fcpci-modules-${F:KernelVersion}
+Depends: univention-avm-capi-fcpci-modules-managedclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current AVM CAPI fcpci modules.
  .
@@ -629,7 +629,7 @@ Description: UCS - Linux kernel
 
 Package: univention-cpqhealth-modules-managedclient-2.6.26
 Architecture: any
-Depends: cpqhealth-modules-${F:KernelVersion}
+Depends: univention-cpqhealth-modules-managedclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current cpqhealth modules.
  .
@@ -640,7 +640,7 @@ Description: UCS - Linux kernel
 
 Package: univention-cpqhealth-modules-managedclient-2.6.26-64gb
 Architecture: any
-Depends: cpqhealth-modules-${F:KernelVersion64}
+Depends: univention-cpqhealth-modules-managedclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current cpqhealth modules.
  .
@@ -651,7 +651,7 @@ Description: UCS - Linux kernel
 
 Package: univention-serverview-modules-managedclient-2.6.26
 Architecture: any
-Depends: srvmagt-modules-${F:KernelVersion}
+Depends: univention-serverview-modules-managedclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
  .
@@ -662,7 +662,7 @@ Description: UCS - Linux kernel
 
 Package: univention-serverview-modules-managedclient-2.6.26-64gb
 Architecture: any
-Depends: srvmagt-modules-${F:KernelVersion64}
+Depends: univention-serverview-modules-managedclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
  .
@@ -673,7 +673,7 @@ Description: UCS - Linux kernel
 
 Package: univention-fsc-srv-modules-managedclient-2.6.26
 Architecture: any
-Depends: srvmagt-modules-${F:KernelVersion}
+Depends: univention-fsc-srv-modules-managedclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
  .
@@ -684,7 +684,7 @@ Description: UCS - Linux kernel
 
 Package: univention-fsc-srv-modules-managedclient-2.6.26-64gb
 Architecture: any
-Depends: srvmagt-modules-${F:KernelVersion64}
+Depends: univention-fsc-srv-modules-managedclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
  .
@@ -695,7 +695,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware4-modules-managedclient-2.6.26
 Architecture: any
-Depends: vmware4-modules-${F:KernelVersion}
+Depends: univention-vmware4-modules-managedclient-2.6.32
 Conflicts: univention-vmware5-modules-managedclient-2.6.26
 Description: UCS - Linux kernel
  This meta-package installs the current vmware4 modules.
@@ -707,7 +707,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware4-modules-managedclient-2.6.26-64gb
 Architecture: any
-Depends: vmware4-modules-${F:KernelVersion64}
+Depends: univention-vmware4-modules-managedclient-2.6.32-64gb
 Conflicts: univention-vmware5-modules-managedclient-2.6.26-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware4 modules.
@@ -719,7 +719,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware5-modules-managedclient-2.6.26
 Architecture: any
-Depends: vmware5-modules-${F:KernelVersion}
+Depends: univention-vmware5-modules-managedclient-2.6.32
 Conflicts: univention-vmware4-modules-managedclient-2.6.26
 Description: UCS - Linux kernel
  This meta-package installs the current vmware5 modules.
@@ -731,7 +731,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware5-modules-managedclient-2.6.26-64gb
 Architecture: any
-Depends: vmware5-modules-${F:KernelVersion64}
+Depends: univention-vmware5-modules-managedclient-2.6.32-64gb
 Conflicts: univention-vmware4-modules-managedclient-2.6.26-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware5 modules.
@@ -743,7 +743,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-gsx3-modules-managedclient-2.6.26
 Architecture: any
-Depends: vmware-gsx3-modules-${F:KernelVersion}
+Depends: univention-vmware-gsx3-modules-managedclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-gsx3 modules.
  .
@@ -754,7 +754,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-gsx3-modules-managedclient-2.6.26-64gb
 Architecture: any
-Depends: vmware-gsx3-modules-${F:KernelVersion64}
+Depends: univention-vmware-gsx3-modules-managedclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-gsx3 modules.
  .
@@ -765,7 +765,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-server-modules-managedclient-2.6.26
 Architecture: any
-Depends: vmware-server-kernel-modules-${F:KernelVersion}
+Depends: univention-vmware-server-modules-managedclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
  .
@@ -776,7 +776,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-server-modules-managedclient-2.6.26-64gb
 Architecture: any
-Depends: vmware-server-kernel-modules-${F:KernelVersion64}
+Depends: univention-vmware-server-modules-managedclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
  .
@@ -787,7 +787,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-player-modules-managedclient-2.6.26
 Architecture: any
-Depends: vmware-kernel-modules-${F:KernelVersion}
+Depends: univention-vmware-player-modules-managedclient-2.6.32
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-player modules.
  .
@@ -798,7 +798,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-player-modules-managedclient-2.6.26-64gb
 Architecture: any
-Depends: vmware-kernel-modules-${F:KernelVersion64}
+Depends: univention-vmware-player-modules-managedclient-2.6.32-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-player modules.
  .
@@ -811,7 +811,7 @@ Package: univention-drbd-modules-2.6.26
 Architecture: any
 Section: admin
 Priority: optional
-Depends: drbd8-${F:KernelVersion}
+Depends: univention-drbd-modules-2.6.32
 Description: Meta package for additional kernel module drbd
  This package provides a meta package to install the kernel
  module drbd for a specific version of the Linux kernel.
@@ -820,7 +820,7 @@ Package: univention-drbd-modules-2.6.26-64gb
 Architecture: any
 Section: admin
 Priority: optional
-Depends: drbd8-${F:KernelVersion64}
+Depends: univention-drbd-modules-2.6.32-64gb
 Description: Meta package for additional kernel module drbd
  This package provides a meta package to install the kernel
  module drbd for a specific version of the Linux kernel.
@@ -829,7 +829,7 @@ Package: univention-drbd-modules-2.6.26-xen
 Architecture: any
 Section: admin
 Priority: optional
-Depends: drbd8-${F:KernelVersionXen}
+Depends: univention-drbd-modules-2.6.32-xen
 Description: Meta package for additional kernel module drbd
  This package provides a meta package to install the kernel
  module drbd for a specific version of the Linux kernel.
