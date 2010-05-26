@@ -1,3 +1,9 @@
+univention-nagios-raid (1.0.0-2) unstable; urgency=low
+
+  * some cleanups (Bug #17287)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 May 2010 14:59:20 +0200
+
 univention-nagios-raid (1.0.0-1) unstable; urgency=low
 
   * merged to UCS 2.4 (Bug #17287)
