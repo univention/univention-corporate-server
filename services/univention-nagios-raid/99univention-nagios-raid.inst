@@ -3,7 +3,7 @@
 # Univention Nagios Raid Plugin
 #  join script
 #
-# Copyright (C) 2008 Univention GmbH
+# Copyright (C) 2008-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,22 +29,13 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 VERSION=1
-NAME="univention-nagios-raid"
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
 
-if ! test -e "/usr/share/univention-join/.joined"; then
-        echo "The server has not joined yet"
-        exit 1
-fi
-
-touch /usr/lib/univention-install/.index.txt
-
-test -n "`grep "${NAME} v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
-
-
-eval `univention-config-registry shell`
+eval "$(univention-config-registry shell)"
 
 # create nagios service
-univention-directory-manager nagios/service create $@ --ignore_exists \
+univention-directory-manager nagios/service create "$@" --ignore_exists \
 	--position "cn=nagios,$ldap_base" \
 	--set name="UNIVENTION_RAID" \
 	--set checkCommand="check_linux_raid" \
@@ -61,24 +52,6 @@ univention-directory-manager nagios/service create $@ --ignore_exists \
 	--set notificationOptionCritical=1 \
 	--set description="check raid status in /proc/mdstat"
 
-# add raid service for this host
-if [ ! "$nagios_client_autoregister" = "no" ] ; then
-
-	# test if nagios is enabled for this host
-	if [ "$server_role" = "fatclient" ] ; then
-		role=managedclient
-	else
-		role=$server_role
-	fi
-	if [ "`univention-directory-manager computers/$role list --filter=name=$hostname | grep nagiosContactEmail`" ]; then 
-
-		# test if raid exists
-		if [ -f /proc/mdstat ]; then
-			univention-directory-manager nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_RAID,cn=nagios,$ldap_base"
-		fi
-	fi	
-fi
-
-test -n "`grep "${NAME} v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "${NAME} v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+joinscript_save_current_version
 
 exit 0
