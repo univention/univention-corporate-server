@@ -1,3 +1,9 @@
+univention-installer (6.0.7-2) unstable; urgency=low
+
+  * generate modules list "on the fly" Bug #4296
+
+ -- Felix Botner <botner@univention.de>  Wed, 26 May 2010 13:22:41 +0200
+
 univention-installer (6.0.7-1) unstable; urgency=low
 
   * restrict windows domain name to max. 14 characters Bug #7457

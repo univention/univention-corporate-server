@@ -42,27 +42,22 @@ import inspect
 
 import os, string
 
-KERNEL2_4_MODUL_LIST={}
-
-KERNEL2_6_MODUL_LIST={}
-
+KERNEL_MODUL_LIST = {}
 WAIT_FOR_DRIVERS = 5
 
 # read kernel modules lists from file
-def __read_kernel_modules( version, hash ):
-	try:
-		mods = open( 'modules/kernel-%s' % version )
-	except:
-		mods = open( '/lib/univention-installer/modules/kernel-%s' % version )
-	num = 0
-	for mod in mods.readlines():
-		mod = mod[ : -1 ]
-		hash[ mod ] = [ mod, num ]
-		num += 1
-	mods.close()
+def __read_kernel_modules(hash):
+	module_counter = 0
+	(sysname, nodename, release, version, machine) = os.uname()
+	modules = os.path.join("/lib", "modules", release, "kernel", "drivers")
+	for root, dirs, files in os.walk(modules):
+		for file in files:
+			if file.endswith(".ko"):
+				module = os.path.join(root, file).replace(modules + "/", "").replace(".ko", "")
+				hash[module] = [module, module_counter]
+				module_counter += 1
 
-__read_kernel_modules( '2.4', KERNEL2_4_MODUL_LIST )
-__read_kernel_modules( '2.6', KERNEL2_6_MODUL_LIST )
+__read_kernel_modules( KERNEL_MODUL_LIST )
 
 class object(content):
 	#def __init__():
@@ -115,10 +110,7 @@ class object(content):
 		def layout(self):
 			selected=[]
 			self.elements.append(textline(_('Additional modules to load:'),self.pos_y+1,self.pos_x+2)) #0
-			if self.parent.container['kernelversion'].startswith('2.4.'):
-				kernel_modules = KERNEL2_4_MODUL_LIST
-			elif self.parent.container['kernelversion'].startswith('2.6.'):
-				kernel_modules = KERNEL2_6_MODUL_LIST
+			kernel_modules = KERNEL_MODUL_LIST
 			for i in self.parent.container['hardware']['local']:
 				if i in kernel_modules.keys():
 					selected.append( kernel_modules[i][1] )
