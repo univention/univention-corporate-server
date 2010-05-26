@@ -32,7 +32,9 @@
 
 eval $(univention-config-registry shell)
 
-/etc/init.d/slapd crestart
+if [ -x /etc/init.d/slapd  ]; then
+	/etc/init.d/slapd crestart
+fi
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/40univention-virtual-machine-manager-schema.inst || true
