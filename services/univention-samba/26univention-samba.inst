@@ -64,6 +64,10 @@ if COLUMNS=200 dpkg -l winbind | grep "^ii  winbind"; then
 	if [ -n "$dcaccount" -a -n "$bindpwd" ]; then
 		# create samba machine account for this machine
 		net rpc join -U${dcaccount}%${bindpwd}
+		if [ $? != 0 ]; then
+			echo "ERROR: failed to join via net rpc join"
+			exit 1
+		fi
 	fi
 fi
 
@@ -87,6 +91,10 @@ if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver
 
 		if [ -n "$passwd" ]; then
 			net join MEMBER -U ${joinuser}%${passwd}
+			if [ $? != 0 ]; then
+				echo "ERROR: failed to join via net rpc join"
+				exit 1
+			fi
 		fi
 	fi
 
@@ -146,6 +154,9 @@ fi
 if [ $winbind_was_running -eq 1 ]; then
 	/etc/init.d/winbind start >/dev/null 2>&1
 fi
+
+# sync netlogon share
+/usr/share/univention-samba/slave-sync >>/var/log/univention/samba-sync.log
 
 test -n "`grep "univention-samba v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-samba v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 

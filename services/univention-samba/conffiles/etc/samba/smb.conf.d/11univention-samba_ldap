@@ -32,5 +32,6 @@ if baseConfig.has_key('server/role') and baseConfig['server/role'] != 'memberser
 	if baseConfig.has_key('samba/ldap/replication/sleep'):
 		print '\tldap replication sleep = %s' %  baseConfig['samba/ldap/replication/sleep']
 
+print '\tpassdb expand explicit = %s' baseConfig.get('samba/passdb/expand/explicit', 'no')
 @!@
 

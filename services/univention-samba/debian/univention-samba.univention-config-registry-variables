@@ -315,3 +315,15 @@ Description[de]=LDAPSAM Passdb Backend auch auf diesem Memberserver verwenden
 Description[en]=Use the LDAPSAM passdb backend also on this memberserver
 Type=str
 Categories=service-samba
+
+[samba/passdb/expand/explicit]
+Description[de]=Dieser Parameter steuert ob die %-Makros ersetzt werden, falls sie explizit gesetzt sind (gültige Werte: no/yes)
+Description[en]=This parameter controls whether Samba substitutes %-macros if they are explicitly set (valid values: no/yes)
+Type=str
+Categories=service-samba
+
+[samba/cups/encrypt]
+Description[de]=Dieser Parameter steuert ob die Verbindung zu CUPS-Servern verschlüsselt wird oder nicht (gültige Werte: no/yes)
+Description[en]=This parameter controls whether connections to CUPS servers will be encrypted or not (valid values: no/yes)
+Type=str
+Categories=service-samba

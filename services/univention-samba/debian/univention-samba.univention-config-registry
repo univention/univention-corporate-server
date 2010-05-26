@@ -63,6 +63,7 @@ Variables: server/role
 Variables: samba/domainmaster
 Variables: samba/user
 Variables: cups/server
+Variables: samba/cups/encrypt
 
 Type: subfile
 Multifile: etc/samba/smb.conf
@@ -121,6 +122,7 @@ Subfile: etc/samba/smb.conf.d/81univention-samba_scripts
 Variables: server/role
 Variables: samba/domainmaster
 Variables: samba/user
+Variables: samba/password/checkscript
 
 Type: subfile
 Multifile: etc/samba/smb.conf

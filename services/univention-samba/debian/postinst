@@ -145,9 +145,15 @@ univention-config-registry set samba/script/adduser?true \
 				samba/time_server?yes \
 				samba/guest_account?nobody \
 				samba/map_to_guest?"Bad User" \
-				samba/invalid_users?"daemon bin sys sync games man lp mail news uucp proxy majordom postgres www-data backup msql operator list irc gnats alias qmaild qmails qmailr qmailq qmaill qmailp telnetd identd ftp rwhod gdm fetchmail faxmaster" \
 				samba/netlogon/sync?sync \
 				samba/domain/logons?auto
+
+# remove the invalid users UCR settings which was set in earlier UCS installations
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.1-0; then
+	if [ "$samba_invalid_users" = "daemon bin sys sync games man lp mail news uucp proxy majordom postgres www-data backup msql operator list irc gnats alias qmaild qmails qmailr qmailq qmaill qmailp telnetd identd ftp rwhod gdm fetchmail faxmaster" ]; then
+		univention-config-registry unset samba/invalid_users
+	fi
+fi
 
 if [ "$1" = "configure" -a -n "$2" ];
 	then

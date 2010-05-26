@@ -1,8 +1,27 @@
+univention-samba (5.0.1-1) unstable; urgency=low
+
+  * exit in join script if the net rpc join fails. Bug #7081
+  * remove old pdc-takeover script. Bug #10660
+  * added UCR variable samba/passdb/expand/explicit to set 'passdb
+    expand explicit'. Bug #10680
+  * sync netlogon share during join. Bug #16492
+  * remove the invalid users UCR settings which was set in earlier UCS
+    installations. Bug #16687
+  * use samba/user binddn for unix password sync script on a memberser
+    as on a dc slave if package slave-pdc is installed. Bug #16701
+  * register samba/password/checkscript for 81univention-samba_scripts.
+    Bug #17163
+  * change the default for wide links from 'yes' to 'no'. Bug #17593
+  * added UCR variable samba/cups/encrypt to control whether connections
+    to CUPS servers will be encrypted or not. Bug #18425
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 May 2010 21:22:03 +0200
+
 univention-samba (4.0.22-1) unstable; urgency=low
 
   * Revert idmap configuration changes made for Bug #16765, as the
     domain specific config keeps winbind from using the alloc backend
-	in cases where no sambaIdmapEntry was found. (Bug #18291)
+    in cases where no sambaIdmapEntry was found. (Bug #18291)
 
  -- Arvid Requate <requate@univention.de>  Fri, 30 Apr 2010 11:43:30 +0200
 

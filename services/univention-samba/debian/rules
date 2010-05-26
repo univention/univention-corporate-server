@@ -70,10 +70,10 @@ install: build
 	install -m 755 vampire/account-policy ${D}/usr/share/univention-samba/
 	install -m 755 vampire/password_check ${D}/usr/share/univention-samba/
 
-	cat vampire/pdc-takeover | sed -e "s/@%@package_version@%@/${version}/" > vampire/pdc-takeover_tmp
-	cat vampire/pdc-takeover_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > vampire/pdc-takeover_tmp2
-	install -m 755 vampire/pdc-takeover_tmp2 ${D}/usr/share/univention-samba/pdc-takeover.old
-	rm vampire/pdc-takeover_tmp*
+	# cat vampire/pdc-takeover | sed -e "s/@%@package_version@%@/${version}/" > vampire/pdc-takeover_tmp
+	# cat vampire/pdc-takeover_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > vampire/pdc-takeover_tmp2
+	# install -m 755 vampire/pdc-takeover_tmp2 ${D}/usr/share/univention-samba/pdc-takeover.old
+	# rm vampire/pdc-takeover_tmp*
 
 	install -m 755 26univention-samba.inst ${D}/usr/lib/univention-install/26univention-samba.inst
 	install -m 744 files/etc/heartbeat/resource.d/samba debian/univention-samba-ha/etc/heartbeat/resource.d/
