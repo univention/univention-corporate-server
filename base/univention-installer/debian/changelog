@@ -1,3 +1,10 @@
+univention-installer (6.0.11-1) unstable; urgency=low
+
+  * added Xen images for 2.6.32 in package list. Bug #18323
+  * set Administrator rid to 500. Bug #13938
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 May 2010 21:02:48 +0200
+
 univention-installer (6.0.10-1) unstable; urgency=low
 
   * fixed error message Bug #13552
