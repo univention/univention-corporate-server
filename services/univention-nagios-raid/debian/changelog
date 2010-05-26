@@ -1,0 +1,11 @@
+univention-nagios-raid (0.0.2-1) unstable; urgency=low
+
+  * added description for nagios service Ticket #2009102710000119 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 16:43:27 +0100
+
+univention-nagios-raid (0.0.1-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Univention GmbH Felix Botner  <botner@univention.de>  Thu, 06 Jun 2009 08:53:54 +0200

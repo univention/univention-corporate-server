@@ -1,0 +1,19 @@
+   * raid anlegen, formatieren und mounten
+     -> mdadm --create --verbose /dev/md0 --level=1 --raid-devices=2 \
+        /dev/sdc1 /dev/sdc2
+     -> ...
+
+   * Raid Status mdadm 
+     -> --detail /dev/md0
+
+   * Block Device als fehlerhaft markieren
+     -> mdadm /dev/md0 -f /dev/sdc2
+     Jetzt sollte Nagios einen Fehler melden
+
+   * Block Device entfernen
+     -> mdadm /dev/md0 -r /dev/sdc1
+     Nagios Fehler
+
+   * Block Device hinzufügen, sync passiert automatisch
+     -> mdadm /dev/md0 -a /dev/sdc1
+     Bis der Sync fertig ist, zeigt Nagios ein Warnung

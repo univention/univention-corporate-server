@@ -1,0 +1,11 @@
+Source: univention-nagios-raid
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev
+Standards-Version: 3.5.2
+
+Package: univention-nagios-raid
+Architecture: all
+Depends: univention-nagios-client, mdadm
+Description: nagios raid plugin
