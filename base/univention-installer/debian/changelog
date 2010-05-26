@@ -1,3 +1,9 @@
+univention-installer (6.0.7-1) unstable; urgency=low
+
+  * restrict windows domain name to max. 14 characters Bug #7457
+
+ -- Felix Botner <botner@univention.de>  Wed, 26 May 2010 13:11:41 +0200
+
 univention-installer (6.0.6-1) unstable; urgency=low
 
   * create point2point route to default gw if netmask is 32 Bug #17413

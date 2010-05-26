@@ -188,6 +188,12 @@ class object(content):
 					if focus:
 						self.move_focus(windows_domain_position)
 					return _("Please enter a valid windows domain name.")
+
+		if len(windows_domain.strip()) > 14:
+			if not self.ignore('windows_domain'):
+				if focus:
+					self.move_focus( windows_domain_position )
+				return _("The length of then windows domain name is greater than 14 characters.")
 			
 		if hostname.strip() == '' or hostname.strip() in ['localhost', 'local'] or hostname.strip().find(' ') != -1 or not self.syntax_is_hostname(hostname):
 			if not self.ignore('hostname'):

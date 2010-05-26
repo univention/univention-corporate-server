@@ -1072,6 +1072,10 @@ msgstr "Bitte geben Sie einen gültigen, klein-geschriebenen Systemnamen an."
 msgid "Please enter a valid domain name in lowercase."
 msgstr "Bitte geben Sie einen gültigen, klein-geschriebenen Domänennamen an."
 
+#: installer/modules/11_basis.py:190
+msgid "The length of then windows domain name is greater than 14 characters."
+msgstr "Die Länge des Windows Domain Names ist größer als 14 Zeichen."
+
 #: installer/modules/11_basis.py:206
 msgid "The length of host and domain name is greater than 63 characters."
 msgstr "Die Länge von System und Domänennamen ist größer als 63 Zeichen."
