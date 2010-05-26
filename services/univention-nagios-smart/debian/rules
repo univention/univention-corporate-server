@@ -1,0 +1,48 @@
+#!/usr/bin/make -f
+
+build: build-stamp
+
+build-stamp:
+	dh_testdir
+	touch build-stamp
+	gcc -o check_smart_suidwrapper check_smart_suidwrapper.c
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	dh_install
+
+	install -m 0755 99univention-nagios-smart.inst debian/univention-nagios-smart/usr/lib/univention-install/
+	install -m 0755 check_smart.pl debian/univention-nagios-smart/usr/lib/nagios/plugins/
+	install -m 4755 check_smart_suidwrapper debian/univention-nagios-smart/usr/lib/nagios/plugins/
+
+	univention-install-config-registry
+	univention-install-config-registry-info
+
+binary-indep: build install
+	dh_testdir 
+	dh_testroot 
+	dh_installchangelogs
+	dh_installdocs 
+	dh_installexamples 
+	dh_link 
+	dh_compress 
+	dh_fixperms -X/usr/lib/nagios/plugins/check_smart_suidwrapper
+	dh_shlibdeps 
+	dh_installdeb 
+	dh_gencontrol 
+	dh_md5sums 
+	dh_builddeb 
+
+binary-arch: build install
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

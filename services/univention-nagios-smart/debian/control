@@ -1,0 +1,11 @@
+Source: univention-nagios-smart
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev, build-essential
+Standards-Version: 3.5.2
+
+Package: univention-nagios-smart
+Architecture: any
+Depends: univention-nagios-client, smartmontools
+Description: nagios smart plugin
