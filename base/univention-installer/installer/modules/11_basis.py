@@ -38,6 +38,7 @@ import objects
 from objects import *
 from local import _
 import string
+import re
 
 class object(content):
 	def __init__(self, max_y, max_x, last, file, cmdline):
@@ -125,6 +126,7 @@ class object(content):
 					pos=9
 				if not len(self.elements[pos].text) or not self.guessed.has_key( 'windows_domain' ) or self.guessed[ 'windows_domain' ] == self.elements[ pos ].text:
 					text = self.elements[5].text.split('.')[0].upper()
+					text = re.sub("^\d*", "", text)
 					self.guessed[ 'windows_domain' ] = text
 					self.elements[pos].text = text
 					self.elements[pos].cursor=len(text)
@@ -183,7 +185,7 @@ class object(content):
 			password2_position=11
 
 		if not windows_domain.strip() == '':
-			if not self.syntax_is_domainname(windows_domain.lower()) or not windows_domain == windows_domain.upper():
+			if not self.syntax_is_windowsdomainname(windows_domain.lower()) or not windows_domain == windows_domain.upper():
 				if not self.ignore('windows_domain'):
 					if focus:
 						self.move_focus(windows_domain_position)

@@ -1,4 +1,10 @@
-univention-installer (6.0.7-2) unstable; urgency=low
+univention-installer (6.0.9-1) unstable; urgency=low
+
+  * allow leading digits in domain name Bug #15829 
+
+ -- Felix Botner <botner@univention.de>  Wed, 26 May 2010 14:38:08 +0200
+
+univention-installer (6.0.8-1) unstable; urgency=low
 
   * generate modules list "on the fly" Bug #4296
 
