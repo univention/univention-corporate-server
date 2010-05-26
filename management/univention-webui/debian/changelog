@@ -1,3 +1,9 @@
+univention-webui (4.0.13-1) unstable; urgency=low
+
+  * add support for saving the visibility status of sections; Bug #18127
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 May 2010 16:00:28 +0200
+
 univention-webui (4.0.12-1) unstable; urgency=low
 
   * modify layout of dojo popup dialogs; Bug #18409

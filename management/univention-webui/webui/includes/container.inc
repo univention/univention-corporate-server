@@ -147,20 +147,7 @@ class webui_container{
 <script type="text/javascript">
 <!--
 dojo.require("dojo.cookie");
-function section_hide_show(name,img_show,img_hide) {
-	if (document.getElementById) {
-		sec = document.getElementById(name);
-		image = document.getElementById("Button"+name);
-		if (sec.className == "umc_visible") {
-			sec.className = "umc_hidden";
-			image.src = img_hide;
-		} else {
-			sec.className = "umc_visible";		
-			image.src = img_show;
-		}
-	}
-}
-function umc_tree_hide_show( itemId, minus, plus ) {
+function umc_hide_show( itemId, minus, plus ) {
 	if (document.getElementById) {
 		table = document.getElementById( itemId );
 		icon = document.getElementById( itemId + ".button" );
@@ -172,21 +159,22 @@ function umc_tree_hide_show( itemId, minus, plus ) {
 				table.className = "umc_visible";		
 				icon.src = minus;
 			}
-			dojo.cookie( "univention.umc.uvmm." + itemId, table.className );
+			dojo.cookie( "univention.umc." + itemId, table.className );
 		}
 	}
 }
-function umc_tree_restore( tree_items, minus, plus ) {
+function umc_restore( tree_items, minus, plus, default_class ) {
 	if (document.getElementById) {
+        default_class = default_class || "umc_visible";
 		// IE 8 does not support for each; variable may not be named "item"
 		for ( var i = 0; i < tree_items.length; i++ ) {
 			itemId = tree_items[ i ];
 			itema = document.getElementById( itemId );
 			icon = document.getElementById( itemId + ".button" );
 			if ( itema == null ) continue;
-			class_name = dojo.cookie( "univention.umc.uvmm." + itemId );
+			class_name = dojo.cookie( "univention.umc." + itemId );
 			if ( class_name == null ) {
-				class_name = "umc_visible";
+				class_name = default_class;
 			}
 			itema.className = class_name;
 			if ( class_name == "umc_hidden" ) {
