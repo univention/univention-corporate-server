@@ -81,3 +81,4 @@ def parse( type, storage, umcp_part, parameters ):
 			return _mappers[ type ].parse( storage, umcp_part, parameters )
 
 	return None
+

@@ -94,18 +94,33 @@ def section_map( storage, umcp_part ):
 	rows = []
 
 	if umcp_part.hideable:
-		items = { 'id' : umcp_part.id(), 'title' : umcp_part.title, 'minus' : umc_tools.image_get( 'actions/minus', umc_tools.SIZE_TINY ), 'plus' : umc_tools.image_get( 'actions/plus', umc_tools.SIZE_TINY ) }
+		items = { 'id' : umcp_part.name, 'title' : umcp_part.title, 'minus' : utils.img_minus, 'plus' : utils.img_plus }
 		if umcp_part.hidden:
 			items[ 'current' ] = items[ 'plus' ]
+			items[ 'class' ] = 'umc_hidden'
 		else:
 			items[ 'current' ] = items[ 'minus' ]
+			items[ 'class' ] = 'umc_visible'
 			
-		title = '<p class="umc_title">%(title)s&nbsp;<a href="javascript:section_hide_show(\'%(id)s\',\'%(minus)s\',\'%(plus)s\')"><img style="border: 0px" id="Button%(id)s" src="%(current)s"/></a></p>' % items
+		title = '<p class="umc_title">%(title)s&nbsp;<a href="javascript:umc_hide_show(\'%(id)s\',\'%(minus)s\',\'%(plus)s\')"><img style="border: 0px" id="%(id)s.button" src="%(current)s"/></a></p>' % items
+		script = '''
+<script type="text/javascript">
+dojo.addOnLoad(function(){
+	var items = new Array( "%(id)s" );
+	umc_restore( items, "%(minus)s", "%(plus)s", "%(class)s" );
+});
+</script>''' % items
+		on_load = htmltext( '', {}, { 'htmltext' : [ script ] } )
+		
 	else:
+		on_load = None
 		title = '<p class="umc_title">%s</p>' % umcp_part.title
 	
 	elem = htmltext( '', {}, { 'htmltext' : [ title ] } )
-	col = tablecol( '', { 'type' : 'umc_section_title' }, { 'obs' : [ elem ] } )
+	if on_load:
+		col = tablecol( '', { 'type' : 'umc_section_title' }, { 'obs' : [ elem, on_load ] } )
+	else:
+		col = tablecol( '', { 'type' : 'umc_section_title' }, { 'obs' : [ elem ] } )
 	rows.append( tablerow( '', {}, { 'obs' : [ col ] } ) )
 
 	body = storage.to_uniparts( umcp_part.body )
@@ -114,7 +129,7 @@ def section_map( storage, umcp_part ):
 		css_class = 'umc_hidden'
 	else:
 		css_class = 'umc_visible'
-	rows.append( tablerow( '', { 'type' : css_class, 'webui-id' : umcp_part.id() }, { 'obs' : [ col ] } ) )
+	rows.append( tablerow( '', { 'type' : css_class, 'webui-id' : umcp_part.name }, { 'obs' : [ col ] } ) )
 
 	attrs = utils.layout_attrs( storage, umcp_part )
 	attrs[ 'type' ] = 'umc_section'

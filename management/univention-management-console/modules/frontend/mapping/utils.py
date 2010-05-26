@@ -35,6 +35,9 @@ import univention.debug as ud
 
 from uniparts import *
 
+img_minus = umc_tools.image_get( 'actions/minus', umc_tools.SIZE_TINY )
+img_plus = umc_tools.image_get( 'actions/plus', umc_tools.SIZE_TINY )
+
 def attributes( umcp_part ):
 	# check attributes
 	if umcp_part.has_attributes():

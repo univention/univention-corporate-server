@@ -507,9 +507,6 @@ class ResetButtonMap( ButtonMap, mapper.IMapper ):
 
 mapper.add( umcd.ResetButton, ResetButtonMap() )
 
-_img_minus = umc_tools.image_get( 'actions/minus', umc_tools.SIZE_TINY )
-_img_plus = umc_tools.image_get( 'actions/plus', umc_tools.SIZE_TINY )
-
 def __rewrite_tree( storage, data, level = 0, parent = None, collapsible = None, name = 'default', items = [] ):
 	rows = []
 	prev = None
@@ -526,7 +523,7 @@ def __rewrite_tree( storage, data, level = 0, parent = None, collapsible = None,
 					item_id = name + '.' + item.get_text()
 				if not item.current:
 					items.append( '"%s"' % item_id )
-				link_button = '<a href="javascript:umc_tree_hide_show(\'%(id)s\', \'%(minus)s\', \'%(plus)s\')"><img style="border: 0px" id="%(id)s.button" src="%(current)s"/></a>' % { 'id' : item_id, 'minus' : _img_minus, 'plus' : _img_plus, 'current' : _img_minus }
+				link_button = '<a href="javascript:umc_hide_show(\'%(id)s\', \'%(minus)s\', \'%(plus)s\')"><img style="border: 0px" id="%(id)s.button" src="%(current)s"/></a>' % { 'id' : item_id, 'minus' : utils.img_minus, 'plus' : utils.img_plus, 'current' : utils.img_minus }
 				col_toggle = tablecol( '', {}, { 'obs' : [ htmltext( '', {}, { 'htmltext' : [ link_button, ] } ), ] } )
 				row = tablerow( '', {}, { 'obs' : [ col_toggle, col_unipart ] } )
 			else:
@@ -565,9 +562,9 @@ def simple_treeview_map( storage, umcp_part ):
 <script type="text/javascript">
 dojo.addOnLoad(function(){
 	var items = new Array( %s );
-	umc_tree_restore( items, "%s", "%s" );
+	umc_restore( items, "%s", "%s" );
 });
-</script>''' % ( ', '.join( items ), _img_minus, _img_plus ) ] } )
+</script>''' % ( ', '.join( items ), utils.img_minus, utils.img_plus ) ] } )
 	tablerows.append( on_load )
 	return table( '', args, { 'obs' : tablerows } )
 
