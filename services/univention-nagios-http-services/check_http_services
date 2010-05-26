@@ -1,0 +1,145 @@
+#!/bin/bash
+
+function nagiosExit () {
+
+	local state="$1"
+	local msg="$2"
+
+	case $state in
+	0)
+		echo "OK: $msg"
+		exit 0
+		;;
+	1)
+		echo "WARNING: $msg"
+		exit 1
+		;;
+	2)
+		echo "CRITICAL: $msg" 
+		exit 2
+		;;
+	*)
+		echo "UNKNOWN: $msg"
+		exit 3
+		;;
+	esac
+}
+
+function checkProcesses () {
+	ODLIFS=$IFS
+	IFS=","
+	for process in $1; do
+		pid=$(pidof $process)
+		if [ -z "$pid" ]; then
+			# check processtable
+			pid=$(ps aux | grep $process | grep -v grep | grep -v $0)
+			if [ -z "$pid" ]; then
+				nagiosExit "2" "$process not running"
+			fi
+		fi
+	done
+	IFS=$ODLIFS
+}
+
+function checkProxyAuth () {
+
+	local ret=""
+	for i in ntlmauth ldapauth; do
+		local tmp=$(/usr/sbin/univention-config-registry get squid/$i)
+		if [ -n "$tmp" ]; then
+			if [ "yes" = "$tmp" -o "true" = "$tmp" ]; then
+				ret="-e 407 Proxy Authentication"
+			fi
+		fi
+	done
+	echo "$ret"
+}
+
+function checkHttp () {
+	local typ=$1
+	local checkProg=/usr/lib/nagios/plugins/check_http
+
+	case $typ in
+	cups)
+		args="-I 127.0.0.1  -p 631 -S"
+		;;
+	squid)
+		port=3128
+		squidCfg=/etc/squid/squid.conf
+		if [ -e "$squidCfg" ]; then
+			cfgPort=$(more /etc/squid/squid.conf| grep --regex='^\s*http_port' | awk {'print $2'} | sed 's/ //g')
+			if [ -n "$cfgPort" ]; then
+				port=$cfgPort
+			fi
+		fi
+		auth=$(checkProxyAuth)
+		args="-I 127.0.0.1 -p $port  -u http://127.0.0.1 $auth"
+		;;
+	opsi)
+		port=4447
+		opsiCfg=/etc/opsi/opsiconfd.conf
+		if [ -e "$opsiCfg" ]; then
+			cfgPort=$(more /etc/opsi/opsiconfd.conf | grep --regex="^\s*https port"| awk -F = {'print $2'} | sed 's/ //g')
+			if [ -n "$cfgPort" ]; then
+				port=$cfgPort
+			fi
+		fi
+		args="-I 127.0.0.1 -p $port -S"
+		;;
+	dansguardian)
+		port=3128
+		dansguardianCfg=/etc/dansguardian/dansguardian.conf
+		if [ -e "$dansguardianCfg" ]; then
+			cfgPort=$(more  /etc/dansguardian/dansguardian.conf  | grep --regex="^\s*filterport" | awk -F = {'print $2'}| sed 's/ //g')
+			if [ -n "$cfgPort" ]; then
+				port=$cfgPort
+			fi
+		fi
+		auth=$(checkProxyAuth)
+		args="-I 127.0.0.1 -p $port  -u http://127.0.0.1 $auth"
+		;;
+	*)
+		nagiosExit "1" "no valid type for http_check found"
+		;;
+	esac
+
+	if [ ! -x "$checkProg" ]; then
+		nagiosExit "1" "$checkProg not found"
+	fi
+
+	msg=$($checkProg $args)
+	nagiosExit "$?" "$msg"
+
+}
+
+# get option
+while getopts ":p:t:" opt; do
+	case $opt in
+	p)
+		processes=$OPTARG
+		;;
+	t)
+		typ=$OPTARG
+		;;
+	\?)
+		nagiosExit "1" "Invalid option: -$OPTARG"
+		;;
+	:)
+		nagiosExit "1" "Option -$OPTARG requires an argument."
+		;;
+	esac
+done
+
+# check processes in processtable
+if [ -n "$processes" ]; then
+	checkProcesses "$processes"
+fi
+
+# check http connection
+if [ -n "$typ" ]; then
+	checkHttp $typ
+else
+	nagiosExit "1" "no check_http argument defined"
+fi
+
+nagiosExit "1" "someting is wrong"

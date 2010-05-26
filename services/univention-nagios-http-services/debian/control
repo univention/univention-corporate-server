@@ -1,0 +1,11 @@
+Source: univention-nagios-http-services
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev
+Standards-Version: 3.5.2
+
+Package: univention-nagios-http-services
+Architecture: all
+Depends: univention-nagios-client,
+Description: nagios plugin for http services

@@ -1,0 +1,11 @@
+univention-nagios-http-services (0.0.2-1) unstable; urgency=low
+
+  * fixed check_http args for type opsi Ticket #2010030410000673 
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Mar 2010 13:00:05 +0100
+
+univention-nagios-http-services (0.0.1-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Univention GmbH Felix Botner  <botner@univention.de>  Thu, 06 Jun 2009 08:53:54 +0200
