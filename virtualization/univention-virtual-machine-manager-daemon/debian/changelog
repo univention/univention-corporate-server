@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (0.9.9-1) unstable; urgency=low
+
+  * Add timestamps to NODE_QUERY (Bug #18459)
+  * Disbale query during initial connect (Bug #18310)
+  * Add functionality to edit domains (remove+redefine).
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 26 May 2010 12:06:14 +0200
+
 univention-virtual-machine-manager-daemon (0.9.8-1) unstable; urgency=low
 
   * Fix format of vnc://-link in UMC module (Bug #18346)

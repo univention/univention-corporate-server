@@ -196,7 +196,7 @@ class Data_Domain(object):
 	def __init__(self):
 		self.uuid = None
 		self.name = None
-		self.os = None
+		self.virt_tech = None # linux(=Xen-PV), hvm(=Xen-FV)
 		self.kernel = None
 		self.cmdline = None
 		self.initrd = None
@@ -212,7 +212,7 @@ class Data_Domain(object):
 		return {
 			'uuid':self.uuid,
 			'name':self.name,
-			'os':self.os,
+			'virt_tech':self.virt_tech,
 			'kernel':self.kernel,
 			'cmdline':self.cmdline,
 			'initrd':self.initrd,
@@ -237,6 +237,8 @@ class Data_Node(object):
 		self.storages = []
 		self.domains = []
 		self.capabilities = {}
+		self.last_try = 0.0
+		self.last_update = 0.0
 	def _json(self):
 		return {
 			'name':self.name,
@@ -248,4 +250,6 @@ class Data_Node(object):
 			'storages':[s._json() for s in self.storages],
 			'domains':[d._json() for d in self.domains],
 			'capabilities':[str(tmp) for tmp in self.capabilities],
+			'last_try': self.last_try,
+			'last_update': self.last_update,
 			}

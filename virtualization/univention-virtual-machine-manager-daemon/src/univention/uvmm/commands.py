@@ -101,7 +101,7 @@ class _Commands:
 				domain_data = protocol.Data_Domain()
 				domain_data.uuid = domain.uuid
 				domain_data.name = domain.name
-				domain_data.os = domain.os
+				domain_data.virt_tech = domain.virt_tech
 				domain_data.kernel = domain.kernel
 				domain_data.cmdline = domain.cmdline
 				domain_data.state = domain.state
@@ -114,6 +114,8 @@ class _Commands:
 				domain_data.graphics = domain.graphics
 				pkg_data.domains.append(domain_data)
 			pkg_data.capabilities = local_data.capabilities
+			pkg_data.last_try = local_data.last_try
+			pkg_data.last_update = local_data.last_update
 
 			res = protocol.Response_DUMP()
 			res.data = pkg_data

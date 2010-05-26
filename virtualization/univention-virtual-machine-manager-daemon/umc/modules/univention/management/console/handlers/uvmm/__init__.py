@@ -349,7 +349,7 @@ class handler( umch.simpleHandler ):
 			if len( buttons ) > num_buttons:
 				num_buttons = len( buttons )
 			mem_usage = percentage( int( float( domain.curMem ) / domain.maxMem * 100 ), label = '%s / %s' % ( block2byte( domain.curMem ), block2byte( domain.maxMem ) ), width = 120 )
-			table.add_row( [ domain_btn, handler.STATES[ domain.state ], domain.os, percentage( float( domain.cputime[ 0 ] ) / 10, width = 80 ), mem_usage, ] + buttons )
+			table.add_row( [ domain_btn, handler.STATES[ domain.state ], domain.virt_tech, percentage( float( domain.cputime[ 0 ] ) / 10, width = 80 ), mem_usage, ] + buttons )
 
 		if len( table.get_content() ):
 			table.set_header( [ _( 'Instance' ), _( 'Status' ), _( 'Operating System' ), _( 'CPU usage' ), _( 'Memory usage' ) ] )
@@ -509,7 +509,7 @@ class handler( umch.simpleHandler ):
 		if domain_info:
 			domain.uuid = domain_info.uuid
 		domain.name = object.options[ 'name' ]
-		domain.os = object.options[ 'os' ]
+		domain.virt_tech = object.options[ 'os' ]
 		domain.vcpus = int( object.options[ 'cpus' ] )
 		domain.kernel = object.options[ 'kernel' ]
 		domain.cmdline = object.options[ 'cmdline' ]

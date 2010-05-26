@@ -168,7 +168,7 @@ class Domain(object):
 	def __init__(self, domain):
 		self.uuid = domain.UUIDString()
 		self.name = domain.name()
-		self.os = domain.OSType()
+		self.virt_tech = domain.OSType()
 		self.kernel = ''
 		self.cmdline = ''
 		self.initrd = ''
@@ -178,6 +178,7 @@ class Domain(object):
 		self._time_stamp = 0.0
 		self._time_used = domain.info()[4]
 		self.cputime = [0.0, 0.0, 0.0] # percentage in last 10s 60s 5m
+		self.annotations = {}
 		self.update(domain)
 
 	def __eq__(self, other):
@@ -299,7 +300,6 @@ class Node(object):
 		self.conn = None
 		self.storages = {}
 		self.domains = {}
-		self.update_autoreconnect()
 
 		def timer_callback(timer, *opaque):
 			"""Handle regular poll. Also checks connection liveness."""
@@ -309,6 +309,7 @@ class Node(object):
 
 	def update_autoreconnect(self):
 		"""(Re-)connect after connection broke."""
+		self.last_try = time.time()
 		try:
 			if self.conn == None:
 				self.conn = libvirt.open(self.uri)
@@ -426,6 +427,7 @@ class Node(object):
 			del self.domains[uuid]
 		self.curMem = curMem
 		self.maxMem = maxMem
+		self.last_update = self.last_try
 
 class Nodes(dict):
 	"""Handle registered nodes."""
@@ -501,12 +503,18 @@ def group_list():
 
 def domain_define( uri, domain ):
 	"""Convert python object to an XML document."""
+	try:
+		node = nodes[uri]
+	except KeyError:
+		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
+	conn = node.conn
+
 	impl = getDOMImplementation()
 	doc = impl.createDocument( None, 'domain', None )
 	elem = doc.createElement( 'name' )
 	elem.appendChild( doc.createTextNode( domain.name ) )
 	doc.documentElement.appendChild( elem )
-	doc.documentElement.setAttribute( 'type', 'xen' )
+	doc.documentElement.setAttribute('type', conn.getType().lower()) # TODO: verify
 	if domain.uuid:
 		elem = doc.createElement( 'uuid' )
 		elem.appendChild( doc.createTextNode( domain.uuid ) )
@@ -514,16 +522,23 @@ def domain_define( uri, domain ):
 	elem = doc.createElement( 'memory' )
 	elem.appendChild( doc.createTextNode( str( domain.maxMem / 1024 ) ) )
 	doc.documentElement.appendChild( elem )
-	elem = doc.createElement( 'currentMemory' )
-	elem.appendChild( doc.createTextNode( str( domain.maxMem / 1024 ) ) )
-	doc.documentElement.appendChild( elem )
-	elem = doc.createElement( 'vcpu' )
-	elem.appendChild( doc.createTextNode( str( domain.vcpus ) ) )
-	doc.documentElement.appendChild( elem )
+	if domain.vcpus:
+		elem = doc.createElement('vcpu')
+		elem.appendChild( doc.createTextNode(str(domain.vcpus)))
+		doc.documentElement.appendChild(elem)
 	type = doc.createElement( 'type' )
-	type.appendChild( doc.createTextNode( domain.os ) )
+	if False: # FIXME optional
+		type.setAttribute('arch', 'i686') # FIXME: (i686|x86_64)
+	if False: # FIXME optional
+		type.setAttribute('machine', 'xenfv') # FIXME: (xenfv|xenpv)
+	type.appendChild(doc.createTextNode(domain.virt_tech))
 	os = doc.createElement( 'os' )
 	os.appendChild( type )
+	if True: # FIXME required
+		text = doc.createTextNode('/usr/lib/xen/boot/hvmloader') # FIXME
+		loader = doc.createElement('loader')
+		loader.appendChild(text)
+		os.appendChild(loader)
 	if domain.kernel:
 		text = doc.createTextNode( domain.kernel )
 		kernel = doc.createElement( 'kernel' )
@@ -539,12 +554,44 @@ def domain_define( uri, domain ):
 		initrd = doc.createElement( 'initrd' )
 		initrd.appendChild( text )
 		os.appendChild( initrd )
+	if domain.virt_tech == 'hvm':
+		boot = doc.createElement('boot')
+		boot.setAttribute('dev', 'hd') # FIXME: (hd|cdrom|network|fd)+
+		os.appendChild(boot)
+	
+	if False: # FIXME optional
+		boot = doc.createElement('clock')
+		boot.setAttribute('offset', 'localtime') # FIXME: (utc|localtime|timezone|variable)
+		#boot.setAttribute('timezone', '') # @offset='timezone' only
+		#boot.setAttribute('adjustment', 0) # @offset='variable' only
+		os.appendChild(boot)
+
+	if False: # FIXME optional
+		text = doc.createTextNode('destroy') # (destroy|restart|preserve|rename-restart)
+		poweroff = doc.createElement('on_poweroff')
+		poweroff.appendChild(text)
+		doc.appendChild(poweroff)
+	if False: # FIXME optional
+		text = doc.createTextNode('restart') # (destroy|restart|preserve|rename-restart)
+		reboot = doc.createElement('on_reboot')
+		reboot.appendChild(text)
+		doc.appendChild(reboot)
+	if False: # FIXME optional
+		text = doc.createTextNode('destroy') # (destroy|restart|preserve|rename-restart)
+		crash = doc.createElement('on_crash')
+		crash.appendChild(text)
+		doc.appendChild(crash)
 
 	doc.documentElement.appendChild( os )
 	devices = doc.createElement( 'devices' )
-	logger.warning( 'DISKS: %s' % domain.disks )
+	if False: # FIXME
+		text = doc.createTextNode('/usr/lib64/xen/bin/qemu-dm') # FIXME
+		emulator = doc.createElement('emulator')
+		emulator.appendChild(text)
+		os.appendChild(emulator)
+	logger.debug('DISKS: %s' % domain.disks)
 	for disk in domain.disks:
-		logger.warning( 'DISK: %s' % disk )
+		logger.debug('DISK: %s' % disk)
 		elem = doc.createElement( 'disk' )
 		elem.setAttribute( 'type', disk.map_type( id = disk.type ) )
 		elem.setAttribute( 'device', disk.map_device( id = disk.device ) )
@@ -563,7 +610,7 @@ def domain_define( uri, domain ):
 			readonly = doc.createElement( 'readonly' )
 			elem.appendChild( readonly )
 	for iface in domain.interfaces:
-		logger.warning( 'INTERFACE: %s' % iface )
+		logger.debug('INTERFACE: %s' % iface)
 		elem = doc.createElement( 'interface' )
 		elem.setAttribute( 'type', iface.map_type( id = iface.type ) )
 		mac = doc.createElement( 'mac' )
@@ -582,7 +629,7 @@ def domain_define( uri, domain ):
 			elem.appendChild( target )
 		devices.appendChild( elem )
 	for graphic in domain.graphics:
-		logger.warning( 'GRAPHIC: %s' % graphic )
+		logger.debug('GRAPHIC: %s' % graphic)
 		elem = doc.createElement( 'graphics' )
 		elem.setAttribute( 'type', Graphic.map_type( id = graphic.type ) )
 		elem.setAttribute( 'port', str( graphic.port ) )
@@ -595,13 +642,22 @@ def domain_define( uri, domain ):
 
 	doc.documentElement.appendChild( devices )
 
+	logger.debug(doc.toxml())
+	if domain.uuid:
+		try:
+			conn.lookupByUUIDString(domain.uuid).undefine()
+			logger.info('Old domain "%s" removed.' % (domain.uuid,))
+		except libvirt.libvirtError, e:
+			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
+				raise
 	try:
-		node = nodes[uri]
-		conn = node.conn
-		logger.error( doc.toxml() )
-		conn.defineXML( doc.toxml() )
-	except KeyError:
-		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
+		conn.lookupByName(domain.name).undefine()
+		logger.info('Old domain "%s" removed.' % (domain.name,))
+	except libvirt.libvirtError, e:
+		if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
+			raise
+	conn.defineXML( doc.toxml() )
+	logger.info('New domain "%s" defined.' % (domain.name,))
 
 def domain_state(uri, domain, state):
 	"""Change running state of domain on node."""
