@@ -32,8 +32,7 @@
 
 eval $(univention-config-registry shell server/role)
 
-if [ "$server_role" = "domaincontroller_master" ]; then
-	
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	# run join script
 	/usr/lib/univention-install/99univention-nagios-smart.inst
 fi
