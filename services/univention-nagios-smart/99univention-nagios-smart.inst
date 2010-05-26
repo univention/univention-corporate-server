@@ -37,10 +37,10 @@ eval "$(univention-config-registry shell)"
 # create nagios services
 for device in sda sdb sdc sdd; do
 	dev=$(echo $device | tr a-z A-Z)
-	univention-directory-manager nagios/service create $@ --ignore_exists \
+	univention-directory-manager nagios/service create "$@" --ignore_exists \
 		--position "cn=nagios,$ldap_base" \
 		--set name="UNIVENTION_SMART_${dev}" \
-		--set checkCommand="check_smart_${device}" \
+		--set checkCommand="check_smart" \
 		--set normalCheckInterval=10 \
 		--set retryCheckInterval=1 \
 		--set maxCheckAttempts=5 \
@@ -52,7 +52,7 @@ for device in sda sdb sdc sdd; do
 		--set notificationOptionUnreachable=1 \
 		--set useNRPE=1 \
 		--set notificationOptionCritical=1 \
-		--set checkArgs="ata" \
+		--set checkArgs="/dev/$device!ata" \
 		--set description="check smart values (option ca be ata or scsi)"
 done
 
