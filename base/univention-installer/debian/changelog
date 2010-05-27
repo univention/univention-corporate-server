@@ -1,3 +1,9 @@
+univention-installer (6.0.14-1) unstable; urgency=low
+
+  * compress installer.log at the and of the installation Bug #15725
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 May 2010 15:07:45 +0200
+
 univention-installer (6.0.13-1) unstable; urgency=low
 
   * create slink ucr to univention-config-registry Bug #16812
