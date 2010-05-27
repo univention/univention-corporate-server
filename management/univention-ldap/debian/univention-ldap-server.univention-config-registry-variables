@@ -40,6 +40,11 @@ Description[en]=Threads used by the LDAP server
 Type=str
 Categories=service-ldap
 
+[ldap/maxopenfiles]
+Description[de]=Maximale Anzahl der gleichzeitig offenen Dateideskriptoren des slapd
+Description[en]=Maximum amount of simultaneously open file handles for slapd
+Type=str
+Categories=service-ldap
 
 [ldap/schema/export]
 Description[de]=Exportiere die LDAP-Schemata beim LDAP-Start in das Webverzeichnis

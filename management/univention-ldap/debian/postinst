@@ -84,6 +84,7 @@ univention-config-registry set ldap/acl/slavepdc?yes
 univention-config-registry set ldap/acl/nestedgroups?yes
 univention-config-registry set ldap/database/bdb/db_config_options?"set_flags"
 univention-config-registry set ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE"
+univention-config-registry set ldap/maxopenfiles?4096 # Bug #17705
 
 # this update-block used to be called much later, now it is just here for documentation
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.11-1; then

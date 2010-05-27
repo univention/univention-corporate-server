@@ -167,8 +167,13 @@ if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
    @!@
 
     log_action_msg "Starting ldap server(s): slapd"
-    start-stop-daemon --start --quiet --pidfile "$pidfile" \
-		--exec $DAEMON -- -h "ldap:/// ldapi:/// ldaps:///"
+	(
+@!@
+if configRegistry.get('ldap/maxopenfiles'):
+	print '\t\tulimit -n %s' % configRegistry['ldap/maxopenfiles']
+@!@		start-stop-daemon --start --quiet --pidfile "$pidfile" \
+			--exec $DAEMON -- -h "ldap:/// ldapi:/// ldaps:///"
+	)
 
 	test -e /var/run/slapd/ldapi && ln -sf /var/run/slapd/ldapi /var/run/ldapi
 

@@ -4,6 +4,7 @@ Variables: ldap/server/type
 Variables: ldap/database/type
 Variables: ldap/schema/export
 Variables: ldap/replog
+Variables: ldap/maxopenfiles
 
 Type: file
 File: var/lib/univention-ldap/ldap/DB_CONFIG

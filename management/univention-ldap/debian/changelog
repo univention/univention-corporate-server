@@ -1,3 +1,9 @@
+univention-ldap (7.0.1-1) unstable; urgency=low
+
+  * enable max file handles to be configured via UCR (Bug #17705)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 27 May 2010 14:14:03 +0200
+
 univention-ldap (7.0.0-1) unstable; urgency=low
 
   * version bump for UCS 2.4
