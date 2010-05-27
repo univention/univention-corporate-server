@@ -421,8 +421,8 @@ class object(content):
 		self.scandir(path)
 		tmp=[]
 		if self.scaneddir.has_key(path):
-			dirs=self.scaneddir[path][0]
-			files=self.scaneddir[path][1]
+			dirs=sorted(self.scaneddir[path][0], key=str.lower)
+			files=sorted(self.scaneddir[path][1], key=str.lower)
 			if not dirs == []:
 				for dir in dirs:
 					tmp.append([dir,'DIR'])
