@@ -9,19 +9,18 @@ print 'objectClass: domainRelatedObject'
 if dn == 'dc':
 	print 'objectClass: domain'
 	print 'dc: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
-
-if dn == 'o':
+elif dn == 'o':
 	print 'objectClass: organization'
 	print 'o: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
 elif dn == 'ou':
-	print 'objectClass: organizationalRole'
+	print 'objectClass: organizationalUnit'
 	print 'ou: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
 elif dn == 'l':
 	print 'objectClass: organization'
 	print 'l: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
 	print 'o: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
 elif dn == 'cn':
-	print 'objectClass: organizationUnit'
+	print 'objectClass: organizationalRole'
 	print 'cn: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
 elif dn == 'c':
 	print 'objectClass: country'

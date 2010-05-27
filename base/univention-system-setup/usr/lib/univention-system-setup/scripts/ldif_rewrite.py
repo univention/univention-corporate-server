@@ -76,13 +76,13 @@ else:
 		objectClass_remove='organization'
 		attribute_remove=['o', 'structuralObjectClass']
 	elif old_base_type == 'ou':
-		objectClass_remove='organizationalRole'
+		objectClass_remove='organizationalUnit'
 		attribute_remove=['ou', 'structuralObjectClass']
 	elif old_base_type == 'l':
 		objectClass_remove='organization'
 		attribute_remove=['l', 'o', 'structuralObjectClass']
 	elif old_base_type == 'cn':
-		objectClass_remove='organizationUnit'
+		objectClass_remove='organizationalRole'
 		attribute_remove=['cn', 'structuralObjectClass']
 	elif old_base_type == 'c':
 		objectClass_remove='country'
@@ -95,13 +95,13 @@ else:
 		objectClass_append='organization'
 		attribute_append=['o']
 	elif new_base_type == 'ou':
-		objectClass_append='organizationalRole'
+		objectClass_append='organizationalUnit'
 		attribute_append=['ou']
 	elif new_base_type == 'l':
 		objectClass_append='organization'
 		attribute_append=['l', 'o']
 	elif new_base_type == 'cn':
-		objectClass_append='organizationUnit'
+		objectClass_append='organizationalRole'
 		attribute_append=['cn']
 	elif new_base_type == 'c':
 		objectClass_append='country'

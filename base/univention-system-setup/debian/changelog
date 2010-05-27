@@ -1,3 +1,9 @@
+univention-system-setup (4.0.1-1) unstable; urgency=low
+
+  * fix error with "cn" or "ou" ldap/base (Bug #16874)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 27 May 2010 16:42:26 +0200
+
 univention-system-setup (4.0.0-1) unstable; urgency=low
 
   * version bump for UCS 2.4
