@@ -1,3 +1,15 @@
+univention-squid (4.0.1-1) unstable; urgency=low
+
+  * added join script for registering to nagios service check (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 May 2010 15:08:56 +0200
+
+univention-squid (4.0.0-1) unstable; urgency=low
+
+  * bumped version for UCS 2.4
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 May 2010 15:08:48 +0200
+
 univention-squid (3.0.8-3) unstable; urgency=low
 
   * change template defaults for squid/ntlmauth/children to 10
