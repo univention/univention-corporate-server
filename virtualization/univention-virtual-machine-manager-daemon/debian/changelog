@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.10-1) unstable; urgency=low
+
+  * implement removing of virtual instances including disk images; Bug #18190
+  * support adding and modifying virtual instances; Bug #18359
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 27 May 2010 18:11:22 +0200
+
 univention-virtual-machine-manager-daemon (0.9.9-1) unstable; urgency=low
 
   * Add timestamps to NODE_QUERY (Bug #18459)

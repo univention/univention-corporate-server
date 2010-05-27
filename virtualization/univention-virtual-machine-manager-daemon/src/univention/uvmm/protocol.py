@@ -196,6 +196,8 @@ class Data_Domain(object):
 	def __init__(self):
 		self.uuid = None
 		self.name = None
+		self.arch = None
+		self.os = None
 		self.virt_tech = None # linux(=Xen-PV), hvm(=Xen-FV)
 		self.kernel = None
 		self.cmdline = None

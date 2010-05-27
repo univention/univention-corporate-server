@@ -163,8 +163,8 @@ msgid "running"
 msgstr "läuft"
 
 #: __init__.py:195
-msgid "blocked"
-msgstr "blockiert"
+msgid "idle"
+msgstr "idle"
 
 #: __init__.py:196
 msgid "paused"

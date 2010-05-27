@@ -168,6 +168,8 @@ class Domain(object):
 	def __init__(self, domain):
 		self.uuid = domain.UUIDString()
 		self.name = domain.name()
+		self.os = '' # FIXME
+		self.arch = 'i686'
 		self.virt_tech = domain.OSType()
 		self.kernel = ''
 		self.cmdline = ''
@@ -503,10 +505,7 @@ def group_list():
 
 def domain_define( uri, domain ):
 	"""Convert python object to an XML document."""
-	try:
-		node = nodes[uri]
-	except KeyError:
-		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
+	node = node_query(uri)
 	conn = node.conn
 
 	impl = getDOMImplementation()
@@ -526,19 +525,23 @@ def domain_define( uri, domain ):
 		elem = doc.createElement('vcpu')
 		elem.appendChild( doc.createTextNode(str(domain.vcpus)))
 		doc.documentElement.appendChild(elem)
+
+	# find loader
+	loader = None
+	logger.warning( 'Searching for loader: %s' % node.capabilities )
+	for template in node.capabilities:
+		logger.warning( 'template: %s' % str( (template.arch, domain.arch, template.os_type, domain.virt_tech ) ) )
+		if template.arch == domain.arch and template.os_type == domain.virt_tech and template.loader:
+			loader = doc.createElement( 'loader' )
+			loader.appendChild( doc.createTextNode( template.loader ) )
+
 	type = doc.createElement( 'type' )
-	if False: # FIXME optional
-		type.setAttribute('arch', 'i686') # FIXME: (i686|x86_64)
-	if False: # FIXME optional
-		type.setAttribute('machine', 'xenfv') # FIXME: (xenfv|xenpv)
-	type.appendChild(doc.createTextNode(domain.virt_tech))
+	type.appendChild( doc.createTextNode( domain.virt_tech ) )
 	os = doc.createElement( 'os' )
 	os.appendChild( type )
-	if True: # FIXME required
-		text = doc.createTextNode('/usr/lib/xen/boot/hvmloader') # FIXME
-		loader = doc.createElement('loader')
-		loader.appendChild(text)
-		os.appendChild(loader)
+	if loader:
+		os.appendChild( loader )
+		
 	if domain.kernel:
 		text = doc.createTextNode( domain.kernel )
 		kernel = doc.createElement( 'kernel' )

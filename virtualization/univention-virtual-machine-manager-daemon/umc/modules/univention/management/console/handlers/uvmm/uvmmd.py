@@ -271,10 +271,11 @@ class Client( notifier.signals.Provider ):
 			raise ConnectionError()
 		return self.recv_blocking()
 
-	def domain_undefine( self, node, domain ):
+	def domain_undefine( self, node, domain, drives ):
 		req = protocol.Request_DOMAIN_UNDEFINE()
 		req.uri = node
 		req.domain = domain
+		req.volumes = drives
 		if not self.send( req.pack() ):
 			raise ConnectionError()
 		return self.recv_blocking()

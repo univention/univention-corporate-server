@@ -102,6 +102,7 @@ class _Commands:
 				domain_data.uuid = domain.uuid
 				domain_data.name = domain.name
 				domain_data.virt_tech = domain.virt_tech
+				domain_data.arch = domain.arch
 				domain_data.kernel = domain.kernel
 				domain_data.cmdline = domain.cmdline
 				domain_data.state = domain.state
