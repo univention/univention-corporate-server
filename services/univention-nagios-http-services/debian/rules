@@ -1,6 +1,39 @@
 #!/usr/bin/make -f
+#
+# Univention Nagios Plugin
+#  rules file for the debian package
+#
+# Copyright (C) 2010 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 build: build-stamp
+
+CUPS=$(curdir)/debian/univention-nagios-cups
+SQUID=$(curdir)/debian/univention-nagios-squid
+DANSGUARDIAN=$(curdir)/debian/univention-nagios-dansguardian
+OPSI=$(curdir)/debian/univention-nagios-opsi
 
 build-stamp:
 	dh_testdir
@@ -19,8 +52,17 @@ install: build
 	dh_installdirs
 	dh_install
 
-	install -m 0755 99univention-nagios-http-services.inst debian/univention-nagios-http-services/usr/lib/univention-install/
-	install -m 0755 check_http_services debian/univention-nagios-http-services/usr/lib/nagios/plugins/
+	install -m 0755 30univention-nagios-cups.inst $(CUPS)/usr/lib/univention-install/
+	install -m 0755 check_univention_cups $(CUPS)/usr/lib/nagios/plugins/
+
+	install -m 0755 30univention-nagios-squid.inst $(SQUID)/usr/lib/univention-install/
+	install -m 0755 check_univention_squid $(SQUID)/usr/lib/nagios/plugins/
+
+	install -m 0755 30univention-nagios-dansguardian.inst $(DANSGUARDIAN)/usr/lib/univention-install/
+	install -m 0755 check_univention_dansguardian $(DANSGUARDIAN)/usr/lib/nagios/plugins/
+
+	install -m 0755 30univention-nagios-opsi.inst $(OPSI)/usr/lib/univention-install/
+	install -m 0755 check_univention_opsi $(OPSI)/usr/lib/nagios/plugins/
 
 	univention-install-config-registry
 	univention-install-config-registry-info
