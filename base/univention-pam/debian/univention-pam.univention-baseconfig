@@ -44,6 +44,8 @@ Variables: ldap/server/addition
 Variables: nssldap/bindpolicy
 Variables: nssldap/idle/timelimit
 Variables: nssldap/tls/checkpeer
+Variables: nssldap/nss_initgroups_ignoreusers
+Variables: nssldap/nss_initgroups_ignoreusers/users
 
 Type: file
 File: etc/nsswitch.conf

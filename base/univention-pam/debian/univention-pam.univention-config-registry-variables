@@ -100,6 +100,18 @@ Description[en]=If a verification of the server certificate should be done
 Type=bool
 Categories=system-base
 
+[nssldap/nss_initgroups_ignoreusers]
+Description[de]=Gibt an, ob die Auflösung der Gruppenmitgliedschaften über LDAP für bestimmte Benutzer deaktiviert wird. (YES, no)
+Description[en]=Specifies whether or not group memberships for certain users are resolved via LDAP. (YES, no)
+Type=bool
+Categories=system-base
+
+[nssldap/nss_initgroups_ignoreusers/users]
+Description[de]=Komma separierte Liste von UID's, deren Gruppenmitgliedschaften nicht über LDAP aufgelöst werden. (root)
+Description[en]=Comma separated list of UID's whose group memberships are not resolved via LDAP. (root)
+Type=str
+Categories=system-base
+
 [security/limits/user/.*/hard/.*]
 Description[de]=Definiert den maximalen Wert auf den der Benutzer das entsprechende Limit setzen kann.
 Description[en]=Specifies the maximum value the user can change the corresponding limit to.

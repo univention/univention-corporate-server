@@ -1,3 +1,10 @@
+univention-pam (4.0.0-1) unstable; urgency=low
+
+  * bump version for UCS 2.4
+  * add ucrv's nssldap/nss_initgroups_ignoreusers and nssldap/nss_initgroups_ignoreusers/users Bug #16570
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 May 2010 12:05:32 +0200
+
 univention-pam (3.0.19-1) unstable; urgency=low
 
   * make changes to UCR variables on installation (Bug #18394)
