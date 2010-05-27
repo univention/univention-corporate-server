@@ -85,7 +85,7 @@ def init(lo, position, module, template_object=None):
 		#univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: reset default descriptions')
 
 	# overwrite property descriptions
-	univention.admin.ucr_overwrite_properties( module )
+	univention.admin.ucr_overwrite_properties( module, lo )
 
 	# get defaults from template
 	if template_object:

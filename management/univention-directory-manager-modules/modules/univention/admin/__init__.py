@@ -38,7 +38,7 @@ baseConfig.load()
 
 __path__.append("handlers")
 
-def ucr_overwrite_properties( module ):
+def ucr_overwrite_properties( module, lo ):
 	"""
 	Overwrite properties in property_descriptions by UCR variables
 	"""
@@ -61,8 +61,16 @@ def ucr_overwrite_properties( module ):
 				if hasattr( module.property_descriptions[ prop ], attr ):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: set property attribute %s to %s' % ( attr, baseConfig[ var ] ) )
 					if attr in ( 'syntax', ):
-						syntax = getattr( univention.admin.syntax, baseConfig[ var ] )
-						setattr( module.property_descriptions[ prop ], attr, syntax() )
+						if hasattr(univention.admin.syntax, baseConfig[ var ]) and False:
+							syntax = getattr( univention.admin.syntax, baseConfig[ var ] )
+							setattr( module.property_descriptions[ prop ], attr, syntax() )
+						else:
+							if lo.search( filter = univention.admin.syntax.LDAP_Search.FILTER_PATTERN % baseConfig[ var ] ):
+								syntax = univention.admin.syntax.LDAP_Search( baseConfig[ var ] )
+								setattr( module.property_descriptions[ prop ], attr, syntax )
+							else:
+								syntax = univention.admin.syntax.string()
+								setattr( module.property_descriptions[ prop ], attr, syntax() )
 					else:
 						setattr( module.property_descriptions[ prop ], attr, type( getattr( module.property_descriptions[ prop ], attr ) ) ( baseConfig[ var ] ) )
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: get property attribute: %s' % getattr( module.property_descriptions[ prop ], attr ) )
