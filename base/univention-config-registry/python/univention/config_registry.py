@@ -203,14 +203,14 @@ class ConfigRegistry( dict ):
 		merge = self._merge()
 		return '\n'.join( [ '%s: %s' % ( key, val ) for key, val in merge.items() ] )
 
-	def is_true(self, key, default = False):                                             
-		if self.has_key(key):                                                        
-			return self.get(key).lower() in ('yes', 'true', '1', 'enable')       
-		return default                                                               
-                                                                                     
-	def is_false(self, key, default = False):                                            
-		if self.has_key(key):                                                        
-			return self.get(key).lower() in ('no', 'false', '0', 'disable')      
+	def is_true(self, key, default = False):
+		if key in self:
+			return self.get(key).lower() in ('yes', 'true', '1', 'enable')
+		return default
+
+	def is_false(self, key, default = False):
+		if key in self:
+			return self.get(key).lower() in ('no', 'false', '0', 'disable')
 		return default
 
 class _ConfigRegistry( dict ):
