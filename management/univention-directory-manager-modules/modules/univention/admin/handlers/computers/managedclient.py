@@ -229,7 +229,7 @@ property_descriptions={
 			identifies=0
 		),
 	'reinstalltext': univention.admin.property(
-			short_description=_('Use text mode'),
+			short_description=_('Interactive installation'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,

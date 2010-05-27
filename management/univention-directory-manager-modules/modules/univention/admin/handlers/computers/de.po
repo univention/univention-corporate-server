@@ -184,8 +184,8 @@ msgstr "(Neu-)Installieren bei nächstem Systemstart"
 #: domaincontroller_backup.py:252 domaincontroller_master.py:252
 #: domaincontroller_slave.py:252 managedclient.py:232 memberserver.py:252
 #: mobileclient.py:232
-msgid "Use text mode"
-msgstr "Textbasierte Installation"
+msgid "Interactive installation"
+msgstr "Interaktive Installation"
 
 #: domaincontroller_backup.py:262 domaincontroller_master.py:262
 #: domaincontroller_slave.py:262 managedclient.py:242 memberserver.py:262

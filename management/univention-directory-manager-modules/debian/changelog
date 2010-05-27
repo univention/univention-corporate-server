@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.2-1) unstable; urgency=low
+
+  * fixed translation in computer modules Bug #14120 
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 May 2010 12:27:50 +0200
+
 univention-directory-manager-modules (6.0.1-1) unstable; urgency=low
 
   * Support the use of LDAP_Search syntax in property overwrites via
@@ -13,7 +19,7 @@ univention-directory-manager-modules (6.0.0-1) unstable; urgency=low
 
 univention-directory-manager-modules (5.0.72-1) unstable; urgency=low
 
-  * merged email restrictions from svn+ssh://fbotner@billy.knut.univention.de/var/svn/dev/branches/ucs-2.2/customers/9801_ict-basler-schulen/univention-directory-manager-modules Bug #17954
+  * merged email restrictions changes Bug #17954
 
  -- Felix Botner <botner@univention.de>  Mon, 10 May 2010 11:19:12 +0200
 
