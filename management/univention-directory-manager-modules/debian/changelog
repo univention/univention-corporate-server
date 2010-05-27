@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.4-1) unstable; urgency=low
+
+  * initialize the LDAP_Search syntax. Bug #18499
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 27 May 2010 15:40:27 +0200
+
 univention-directory-manager-modules (6.0.3-1) unstable; urgency=low
 
   * Support the property and layout overwrites for UDM policies.

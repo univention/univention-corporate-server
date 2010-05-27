@@ -67,6 +67,7 @@ def ucr_overwrite_properties( module, lo ):
 						else:
 							if lo.search( filter = univention.admin.syntax.LDAP_Search.FILTER_PATTERN % baseConfig[ var ] ):
 								syntax = univention.admin.syntax.LDAP_Search( baseConfig[ var ] )
+								syntax._load( lo )
 								setattr( module.property_descriptions[ prop ], attr, syntax )
 							else:
 								syntax = univention.admin.syntax.string()
