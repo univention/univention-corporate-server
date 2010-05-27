@@ -52,16 +52,16 @@ install: build
 	dh_installdirs
 	dh_install
 
-	install -m 0755 30univention-nagios-cups.inst ${CUPS}/usr/lib/univention-install/
+	install -m 0755 35univention-nagios-cups.inst ${CUPS}/usr/lib/univention-install/
 	install -m 0755 check_univention_cups ${CUPS}/usr/lib/nagios/plugins/
 
-	install -m 0755 30univention-nagios-squid.inst ${SQUID}/usr/lib/univention-install/
+	install -m 0755 35univention-nagios-squid.inst ${SQUID}/usr/lib/univention-install/
 	install -m 0755 check_univention_squid ${SQUID}/usr/lib/nagios/plugins/
 
-	install -m 0755 30univention-nagios-dansguardian.inst ${DANSGUARDIAN}/usr/lib/univention-install/
+	install -m 0755 35univention-nagios-dansguardian.inst ${DANSGUARDIAN}/usr/lib/univention-install/
 	install -m 0755 check_univention_dansguardian ${DANSGUARDIAN}/usr/lib/nagios/plugins/
 
-	install -m 0755 30univention-nagios-opsi.inst ${OPSI}/usr/lib/univention-install/
+	install -m 0755 35univention-nagios-opsi.inst ${OPSI}/usr/lib/univention-install/
 	install -m 0755 check_univention_opsi ${OPSI}/usr/lib/nagios/plugins/
 
 	univention-install-config-registry
