@@ -34,15 +34,7 @@ eval "$(univention-config-registry shell server/role)"
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	# run join script
-	/usr/lib/univention-install/99univention-nagios-http-services.inst
-fi
-
-# restart nagios
-if [ -x "/etc/init.d/nagios2" ]; then
-	/etc/init.d/nagios2 restart
-fi
-if [ -x "/etc/init.d/nagios-nrpe-server" ]; then
-	/etc/init.d/nagios-nrpe-server restart
+	/usr/lib/univention-install/35univention-nagios-cups.inst
 fi
 
 exit 0
