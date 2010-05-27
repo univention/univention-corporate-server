@@ -36,7 +36,7 @@ def get_first_version():
 	ui = open( '/mnt/.univention_install' )
 	for line in ui.readlines():
 		if line.startswith( 'VERSION=' ):
-			version = line[ line.find( '=' ) + 1 : ].split( '.' )
+			version = line[ line.find( '=' ) + 1 : ].strip()
 			break
 
 	ui.close()
@@ -54,9 +54,9 @@ def get_package_list( pkglist ):
 			fp.close()
 		else:
 			pkglist = 'INVALID'
-	elif os.path.isdir( '/mnt/%s/maintained/%s-0/' % ( version, version ) ):
+	elif os.path.isdir( '/mnt/mirror/%s/maintained/%s-0/' % ( version, version ) ):
 		for arch in ( 'i386', 'amd64', 'all' ):
-			filename = '/mnt/%s/maintained/%s-0/%s/Packages' % ( version, version, arch )
+			filename = '/mnt/mirror/%s/maintained/%s-0/%s/Packages' % ( version, version, arch )
 			if not os.path.isfile( filename ):
 				continue
 			fp = open( filename )
