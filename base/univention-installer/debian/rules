@@ -136,6 +136,7 @@ install: build
 	install -m 755 startup-scripts/S88keyboard ${D}/lib/univention-installer-startup.d/
 	install -m 755 startup-scripts/S89cciss ${D}/lib/univention-installer-startup.d/
 	install -m 755 startup-scripts/S25filesystems ${D}/lib/univention-installer-startup.d/
+	install -m 755 startup-scripts/S99customize ${D}/lib/univention-installer-startup.d/
 
 	install -m 600 etc/inittab ${D}/etc/
 	install -m 600 etc/passwd  ${D}/etc/

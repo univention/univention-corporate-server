@@ -1,0 +1,5 @@
+#!/bin/sh
+
+if [ ! -e /sbin/ucr ]; then
+	ln -s /sbin/univention-config-registry /sbin/ucr
+fi

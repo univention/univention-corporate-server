@@ -1,3 +1,9 @@
+univention-installer (6.0.13-1) unstable; urgency=low
+
+  * create slink ucr to univention-config-registry Bug #16812
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 May 2010 14:10:34 +0200
+
 univention-installer (6.0.12-1) unstable; urgency=low
 
   * sort profile files/dirs case insensitiv in profile menu Bug #15605 
