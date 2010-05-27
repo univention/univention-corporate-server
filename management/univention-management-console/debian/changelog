@@ -1,3 +1,9 @@
+univention-management-console (3.0.20-1) unstable; urgency=low
+
+  * support single quotes in message text of popup dialogs; Bug #18409
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 27 May 2010 18:15:42 +0200
+
 univention-management-console (3.0.19-1) unstable; urgency=low
 
   * supporting setting the warning symbol on MultiValue widgets; Bug #18127
