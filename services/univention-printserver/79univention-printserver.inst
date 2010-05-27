@@ -28,11 +28,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-VERSION=5
+VERSION=6
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 getent group lp | grep -q "$hostname" || adduser $hostname\$ lp || true
 
@@ -3885,6 +3885,19 @@ univention-admin policies/console_access create $@ --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \
 	--set name=cups-admin --append allow=cn=cups-all,cn=acls,cn=console,cn=univention,$ldap_base
 
+
+# add CUPS to nagios' UNIVENTION_CUPS service check
+if [ ! "$nagios_client_autoregister" = "no" ] ; then
+
+	if ! ldapsearch -xLLL -s base -b "cn=UNIVENTION_CUPS,cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
+		echo "Cannot find nagios object cn=UNIVENTION_CUPS,cn=nagios,$ldap_base (ldapsearch error $?)"
+		echo "Please check if univention-nagios-server is installed on a system in UCS domain to enable nagios functionality."
+	else
+		univention-directory-manager nagios/service modify "$@" \
+			--dn "cn=UNIVENTION_CUPS,cn=nagios,$ldap_base" \
+			--append assignedHosts="${ldap_hostdn}"
+	fi
+fi
 
 joinscript_save_current_version
 

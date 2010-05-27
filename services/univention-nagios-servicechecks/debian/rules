@@ -30,10 +30,10 @@
 
 build: build-stamp
 
-CUPS=$(curdir)/debian/univention-nagios-cups
-SQUID=$(curdir)/debian/univention-nagios-squid
-DANSGUARDIAN=$(curdir)/debian/univention-nagios-dansguardian
-OPSI=$(curdir)/debian/univention-nagios-opsi
+CUPS=$(CURDIR)/debian/univention-nagios-cups
+SQUID=$(CURDIR)/debian/univention-nagios-squid
+DANSGUARDIAN=$(CURDIR)/debian/univention-nagios-dansguardian
+OPSI=$(CURDIR)/debian/univention-nagios-opsi
 
 build-stamp:
 	dh_testdir
@@ -52,17 +52,17 @@ install: build
 	dh_installdirs
 	dh_install
 
-	install -m 0755 30univention-nagios-cups.inst $(CUPS)/usr/lib/univention-install/
-	install -m 0755 check_univention_cups $(CUPS)/usr/lib/nagios/plugins/
+	install -m 0755 30univention-nagios-cups.inst ${CUPS}/usr/lib/univention-install/
+	install -m 0755 check_univention_cups ${CUPS}/usr/lib/nagios/plugins/
 
-	install -m 0755 30univention-nagios-squid.inst $(SQUID)/usr/lib/univention-install/
-	install -m 0755 check_univention_squid $(SQUID)/usr/lib/nagios/plugins/
+	install -m 0755 30univention-nagios-squid.inst ${SQUID}/usr/lib/univention-install/
+	install -m 0755 check_univention_squid ${SQUID}/usr/lib/nagios/plugins/
 
-	install -m 0755 30univention-nagios-dansguardian.inst $(DANSGUARDIAN)/usr/lib/univention-install/
-	install -m 0755 check_univention_dansguardian $(DANSGUARDIAN)/usr/lib/nagios/plugins/
+	install -m 0755 30univention-nagios-dansguardian.inst ${DANSGUARDIAN}/usr/lib/univention-install/
+	install -m 0755 check_univention_dansguardian ${DANSGUARDIAN}/usr/lib/nagios/plugins/
 
-	install -m 0755 30univention-nagios-opsi.inst $(OPSI)/usr/lib/univention-install/
-	install -m 0755 check_univention_opsi $(OPSI)/usr/lib/nagios/plugins/
+	install -m 0755 30univention-nagios-opsi.inst ${OPSI}/usr/lib/univention-install/
+	install -m 0755 check_univention_opsi ${OPSI}/usr/lib/nagios/plugins/
 
 	univention-install-config-registry
 	univention-install-config-registry-info
