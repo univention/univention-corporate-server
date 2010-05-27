@@ -883,6 +883,11 @@ class simpleLdap(base):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "loadPolicyObject: policy_type: %s" % policy_type)
 		policy_module=univention.admin.modules.get(policy_type)
 
+		# overwrite property descriptions
+		univention.admin.ucr_overwrite_properties( policy_module, self.lo )
+		# re-build layout if there any overwrites defined
+		univention.admin.ucr_overwrite_module_layout( policy_module )
+
 		# retrieve path info from 'cn=directory,cn=univention,<current domain>' object
 		try:
 			pathResult = self.lo.get('cn=directory,cn=univention,'+self.position.getDomain())
