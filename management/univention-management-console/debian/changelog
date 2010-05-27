@@ -1,3 +1,9 @@
+univention-management-console (3.0.19-1) unstable; urgency=low
+
+  * supporting setting the warning symbol on MultiValue widgets; Bug #18127
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 27 May 2010 10:28:34 +0200
+
 univention-management-console (3.0.18-1) unstable; urgency=low
 
   * add support for saving the visibility status of sections; Bug #18127

@@ -226,8 +226,9 @@ class MultiValueMap( mapper.IMapper ):
 				labelID = getattr(umcp_item, 'labelID', None)
 				if labelID and value == labelID:
 					return True
+				del umcp_item[ 'warning' ]
 				if not utils.check_syntax( umcp_item, value ):
-					raise umc.SyntaxError( field )
+					raise umc.SyntaxError( umcp_item )
 				values.append( umcp_item.item( value ) )
 			key = dyn.separator.join( map( lambda x: x[ 0 ], values ) )
 			value = dyn.separator.join( map( lambda x: x[ 1 ], values ) )
