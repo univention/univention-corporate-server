@@ -1,3 +1,9 @@
+univention-squid (4.0.1-2) unstable; urgency=low
+
+  * fixed debian/rules (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 May 2010 17:23:23 +0200
+
 univention-squid (4.0.1-1) unstable; urgency=low
 
   * added join script for registering to nagios service check (Bug #17957)
