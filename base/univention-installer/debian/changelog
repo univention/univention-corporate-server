@@ -1,3 +1,9 @@
+univention-installer (6.0.18-1) unstable; urgency=low
+
+  * renamed flash and msfonts installer packages in software selection Bug #13253
+
+ -- Felix Botner <botner@univention.de>  Fri, 28 May 2010 12:14:35 +0200
+
 univention-installer (6.0.17-1) unstable; urgency=low
 
   * renamed "IP management" software component Bug #16609

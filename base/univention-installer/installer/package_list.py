@@ -454,7 +454,7 @@ PackageList=[
 					'Description': _('Java Virtual Machine'),
 				},
 				{
-					'Name': "  %s" %_('Flash plugin'),
+					'Name': "  %s" %_('Flash plugin installer'),
 					'Packages': ['univention-flashplugin'],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
@@ -470,7 +470,7 @@ PackageList=[
 					'Description': _('Mplayer for webbrowsers'),
 				},
 				{
-					'Name': _('Microsoft fonts'),
+					'Name': _('Microsoft fonts installer'),
 					'Packages': ['msttcorefonts'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],

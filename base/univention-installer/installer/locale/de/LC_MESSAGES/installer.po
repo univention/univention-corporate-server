@@ -586,8 +586,8 @@ msgid "Java Virtual Machine"
 msgstr "Java Virtual Machine"
 
 #: installer/package_list.py:463
-msgid "Flash plugin"
-msgstr "Flash-Plugin"
+msgid "Flash plugin installer"
+msgstr "Flash-Plugin Installer"
 
 #: installer/package_list.py:468
 msgid "Flashplugin for webbrowsers"
@@ -602,8 +602,8 @@ msgid "Mplayer for webbrowsers"
 msgstr "Mplayer für Webbrowser"
 
 #: installer/package_list.py:479
-msgid "Microsoft fonts"
-msgstr "Microsoft-Schriften"
+msgid "Microsoft fonts installer"
+msgstr "Microsoft-Schriften Installer"
 
 #: installer/package_list.py:484
 msgid "Microsoft True Type Core fonts"
