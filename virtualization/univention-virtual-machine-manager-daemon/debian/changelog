@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.12-1) unstable; urgency=low
+
+  * add UVMM profiles; Bug #18516
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 28 May 2010 17:47:14 +0200
+
 univention-virtual-machine-manager-daemon (0.9.11-1) unstable; urgency=low
 
   * split settings of a domain into settings and extend settings
