@@ -305,8 +305,8 @@ msgid "Standard mail services with postfix and cyrus (SMTP/POP/IMAP)"
 msgstr "Standard Mail-Dienste mit Postfix und Cyrus (SMTP/POP/IMAP)"
 
 #: installer/package_list.py:124
-msgid "IP management"
-msgstr "IP-Verwaltung"
+msgid "Network management"
+msgstr "Netzwerk-Verwaltung"
 
 #: installer/package_list.py:126
 msgid "Several IP related services"

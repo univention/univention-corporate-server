@@ -121,7 +121,7 @@ PackageList=[
 			],
 },
 {
-	'Category': _('IP management'),
+	'Category': _('Network management'),
 	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 	'Description': _("Several IP related services"),
 	'Packages':
