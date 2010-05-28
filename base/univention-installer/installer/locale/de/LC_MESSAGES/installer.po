@@ -522,8 +522,8 @@ msgid "Tape Backup Software"
 msgstr "Bandsicherungssoftware"
 
 #: installer/package_list.py:398
-msgid "Remote backup"
-msgstr "Remote-Backup"
+msgid "Remote backup (for Unidump)"
+msgstr "Remote-Backup (für Unidump)"
 
 #: installer/package_list.py:404
 msgid "Backup Software based on rsync"

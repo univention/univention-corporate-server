@@ -1,3 +1,9 @@
+univention-installer (6.0.16-1) unstable; urgency=low
+
+  * renamed "Remote Backup" software component Bug #16062
+
+ -- Felix Botner <botner@univention.de>  Fri, 28 May 2010 09:09:12 +0200
+
 univention-installer (6.0.15-1) unstable; urgency=low
 
   * fixed repository.py for network installation Bug #18482

@@ -389,7 +389,7 @@ PackageList=[
 					'Description': _('Tape Backup Software'),
 				},
 				{
-					'Name': _('Remote backup'),
+					'Name': _('Remote backup (for Unidump)'),
 					'Packages': ['univention-remote-backup'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
