@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-25 14:02+0200\n"
+"POT-Creation-Date: 2010-05-28 17:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,9 +15,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: info.py:45 info.py:84
-msgid "Virtual machine information"
-msgstr "Informationen zur virtuelle Maschine"
+#: info.py:45
+msgid "UVMM: Machine information"
+msgstr "UVMM: Informationen zur Maschine"
 
 #: info.py:51 info.py:52
 msgid "UUID"
@@ -40,6 +39,78 @@ msgstr "Betriebssystem"
 msgid "Name of the operation system"
 msgstr "Name des Betriebssystem"
 
-#: info.py:84
+#: info.py:84 profile.py:144
 msgid "General"
 msgstr "Allgemein"
+
+#: info.py:84
+msgid "Virtual machine information"
+msgstr "Informationen zur virtuelle Maschine"
+
+#: profile.py:45
+msgid "UVMM: Profile"
+msgstr "UVMM: Profil"
+
+#: profile.py:51 profile.py:52
+msgid "Name"
+msgstr "Name"
+
+#: profile.py:61
+msgid "Name prefix"
+msgstr "Namenspräfix"
+
+#: profile.py:62
+msgid "Prefix for the name of virtual machines"
+msgstr "Präfix für den Namen von virtuellen Maschinen"
+
+#: profile.py:71
+msgid "Architecture"
+msgstr "Architektur"
+
+#: profile.py:72
+msgid "Architecture of the virtual machine"
+msgstr "Architektur der virtuellen Maschine"
+
+#: profile.py:81 profile.py:82
+msgid "Virtualisation Technology"
+msgstr "Virtualisierungstechnology"
+
+#: profile.py:91
+msgid "CPUs"
+msgstr "Processoren"
+
+#: profile.py:92
+msgid "Number of virtual CPUs"
+msgstr "Anzahl der Prozessoren"
+
+#: profile.py:101
+msgid "Memory"
+msgstr "Speicher"
+
+#: profile.py:102
+msgid "Amount of memory"
+msgstr "Größe des Speichers"
+
+#: profile.py:111
+msgid "Network interface"
+msgstr "Netz-Interface"
+
+#: profile.py:112
+msgid "Bridging interface"
+msgstr "Bridging Interface"
+
+#: profile.py:121
+msgid "Remote access"
+msgstr "Fernzugriff"
+
+#: profile.py:122
+msgid "Active VNC remote acess"
+msgstr "Aktiviert den VNC Fernzugriff"
+
+#: profile.py:131 profile.py:132
+msgid "Keyboard layout"
+msgstr "Tastaturlayout"
+
+#: profile.py:144
+msgid "Virtual machine profile"
+msgstr "Profil für eine virtuelle Maschine"

@@ -42,7 +42,7 @@ _=translation.translate
 module = 'uvmm/info'
 
 childs = 0
-short_description = _('Virtual machine information')
+short_description = _('UVMM: Machine information')
 long_description = ''
 operations = [ 'search', 'edit', 'add', 'remove' ]
 

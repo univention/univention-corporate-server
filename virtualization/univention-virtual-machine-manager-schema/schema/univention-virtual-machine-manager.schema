@@ -31,3 +31,58 @@ objectclass ( 1.3.6.1.4.1.10176.4101.2.10 NAME 'univentionVirtualMachine'
 	MAY ( description $ univentionVirtualMachineOS )
     )
 
+attributetype ( 1.3.6.1.4.1.10176.4101.3.1 NAME 'univentionVirtualMachineProfileNamePrefix'
+	DESC 'Name prefix for the virtual machine'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4101.3.2 NAME 'univentionVirtualMachineProfileArch'
+	DESC 'Architecture of the virtual machine'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4101.3.3 NAME 'univentionVirtualMachineProfileCPUs'
+	DESC 'Number of CPUs for the virtual machine'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4101.3.4 NAME 'univentionVirtualMachineProfileVirtTech'
+	DESC 'Virtualization Technology for the virtual machine'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4101.3.5 NAME 'univentionVirtualMachineProfileRAM'
+	DESC 'Amount of memory for the virtual machine'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4101.3.6 NAME 'univentionVirtualMachineProfileVNC'
+	DESC 'Activate remote access for the virtual machine'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4101.3.7 NAME 'univentionVirtualMachineProfileInterface'
+	DESC 'Bridging interface for the virtual machine'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4101.3.8 NAME 'univentionVirtualMachineProfileKBLayout'
+	DESC 'Keyboard layout for the virtual machine'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.10176.4101.4.1 NAME 'univentionVirtualMachineProfile'
+	DESC 'Univention Virtual Machine profile objectclass'
+	STRUCTURAL
+	MUST ( cn )
+	MAY ( univentionVirtualMachineProfileNamePrefix $ univentionVirtualMachineProfileArch $ univentionVirtualMachineProfileCPUs $ univentionVirtualMachineProfileVirtTech $ univentionVirtualMachineProfileRAM $ univentionVirtualMachineProfileVNC $ univentionVirtualMachineProfileInterface $ univentionVirtualMachineProfileKBLayout )
+    )
+
