@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.11-1) unstable; urgency=low
+
+  * split settings of a domain into settings and extend settings
+  * show stauts of domains in tree view; Bug #18235
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 28 May 2010 16:03:21 +0200
+
 univention-virtual-machine-manager-daemon (0.9.10-1) unstable; urgency=low
 
   * implement removing of virtual instances including disk images; Bug #18190

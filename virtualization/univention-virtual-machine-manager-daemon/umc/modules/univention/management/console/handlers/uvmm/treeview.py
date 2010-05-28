@@ -66,16 +66,29 @@ class TreeView( object ):
 		return link
 
 	@staticmethod
-	def convert( data, current, level = 0, options = {}, additional_buttons = {} ):
+	def convert( data, current, level = 0, options = {}, additional_buttons = {}, uvmm = None, node_uri = None ):
 		treedata = []
 		opt = TreeView.LEVELS[ level ]
 		command = 'uvmm/%s/overview' % opt
+
 		icon = 'uvmm/' + opt
+
 		for item in data:
 			if type( item ) not in ( list, tuple ):
 				if item == 'Domain-0':
 					continue
 				options[ opt ] = item
+				if level == 2:
+					node_uri = uvmm.node_name2uri( item )
+				elif level == 3:
+					# node = uvmm.get_node_info( node_uri )
+					domain_info = uvmm.get_domain_info( node_uri, item )
+					if domain_info.state in ( 1, 2 ):
+						icon = 'uvmm/domain-on'
+					elif domain_info.state in ( 3, ):
+						icon = 'uvmm/domain-paused'
+					else:
+						icon = 'uvmm/domain'
 				link = TreeView.button_create( item, icon, command, options, current )
 				treedata.append( link )
 			else:
@@ -87,7 +100,7 @@ class TreeView( object ):
 						myoptions.update( options )
 						link = TreeView.button_create( text, myicon, mycommand, myoptions, current )
 						items.append( link )
-				items.extend( TreeView.convert( item, current, level + 1, options = copy.copy( options ), additional_buttons = additional_buttons ) )
+				items.extend( TreeView.convert( item, current, level + 1, options = copy.copy( options ), additional_buttons = additional_buttons, uvmm = uvmm, node_uri = node_uri ) )
 				treedata.append( items )
 
 		return treedata
@@ -115,7 +128,7 @@ class TreeView( object ):
 	def get_tree( uvmm_client, current ):
 		additional_buttons = { 2 : ( ( _( 'Add' ), 'uvmm/add', 'uvmm/domain/create', { 'domain' : 'NONE' } ), ) }
 		table = umcd.SimpleTreeTable( collapsible = 2 )
-		table.set_tree_data( TreeView.convert( uvmm_client.get_node_tree(), current, additional_buttons = additional_buttons ) )
+		table.set_tree_data( TreeView.convert( uvmm_client.get_node_tree(), current, additional_buttons = additional_buttons, uvmm = uvmm_client ) )
 		
 		return table
 

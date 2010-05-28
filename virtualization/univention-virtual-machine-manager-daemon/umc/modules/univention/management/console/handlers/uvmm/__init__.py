@@ -337,7 +337,6 @@ class handler( umch.simpleHandler ):
 	def _dlg_domain_settings( self, object, node, domain_info ):
 		content = umcd.List()
 
-		# get type and architecture FIXME
 		types = []
 		archs = []
 		for template in node.capabilities:
@@ -396,18 +395,19 @@ class handler( umch.simpleHandler ):
 		content.add_row( [ cpus, mac ] )
 		content.add_row( [ memory, interface ] )
 
-		content.add_row( [ umcd.Cell( umcd.Text( '' ), attributes = { 'colspan' : '2' } ) ] )
+		content2 = umcd.List()
+		content2.add_row( [ ram_disk, umcd.Cell( drives, attributes = { 'rowspan' : '6' } ) ] )
+		content2.add_row( [ root_part ] )
+		content2.add_row( [ kernel ] )
 
-		content.add_row( [ ram_disk, umcd.Cell( drives, attributes = { 'rowspan' : '6' } ) ] )
-		content.add_row( [ root_part ] )
-		content.add_row( [ kernel ] )
+		content2.add_row( [ umcd.Text( '' ) ] )
 
-		content.add_row( [ umcd.Text( '' ) ] )
+		content2.add_row( [ vnc ] )
+		content2.add_row( [ kblayout ] )
 
-		content.add_row( [ vnc ] )
-		content.add_row( [ kblayout ] )
+		content2.add_row( [ umcd.Text( '' ) ] )
 
-		content.add_row( [ umcd.Text( '' ) ] )
+		content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'subsection.%s' % domain_info.name ), attributes = { 'colspan' : '2' } ), ] )
 
 		ids = ( name.id(), os.id(), os_type.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), drives.id(), vnc.id(), kblayout.id() )
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
