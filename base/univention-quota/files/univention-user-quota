@@ -3,7 +3,7 @@
 # Univention Quota
 #  read default quota-settings and write into quota-table
 #
-# Copyright (C) 2004-2009 Univention GmbH
+# Copyright (C) 2004-2010 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,15 +28,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-LOGFILE="/dev/null"
-
-if [ -n "$2" ]
-	then
-	LOGFILE=$2
-fi
-
-echo "$$ -------------------------------------------------------- start" >> $LOGFILE
-echo "$$" `date` >> $LOGFILE
+usage () {
+	echo "Usage: $0 [username]"
+	echo "    username defaults to \$USER"
+	echo
+	echo "Example:"
+	echo "  $0 someuser"
+	echo "     set up quota for someuser"
+	echo "  $0"
+	echo "     set up quota for \$USER"
+}
 
 get_blocksize () {
 	echo 1024
@@ -82,6 +83,27 @@ get_blocks () {
 }
 
 
+for arg
+do
+	if [ "$arg" = "-h" -o "$arg" = "--help" ]
+	then
+		usage
+		exit 0
+	fi
+done
+
+eval `/usr/sbin/univention-config-registry shell`
+
+if [ -n "$quota_logfile" ]
+then
+	LOGFILE="$quota_logfile"
+else
+	LOGFILE="/dev/null"
+fi
+
+echo "$$ -------------------------------------------------------- start" >> $LOGFILE
+echo "$$" `date` >> $LOGFILE
+
 if [ -n "$1" ]; then
 	USER=$1
 fi
@@ -103,7 +125,6 @@ fi
 
 echo "$$ set default quota for $USER" >> $LOGFILE
 
-eval `/usr/sbin/univention-baseconfig shell`
 echo "$$ host ist $hostname.$domainname" >> $LOGFILE
 
 # get all mountpoints with quota-support and without already set quota

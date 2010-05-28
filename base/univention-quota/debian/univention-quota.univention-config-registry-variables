@@ -1,0 +1,5 @@
+[quota/logfile]
+Description[de]=Datei in der Aufrufe von univention-user-quota protokolliert werden sollen.
+Description[en]=File in which calls to univention-user-quota are logged.
+Type=str
+Categories=system-base

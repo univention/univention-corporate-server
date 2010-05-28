@@ -1,3 +1,10 @@
+univention-quota (4.0.3-1) unstable; urgency=low
+
+  * enable logging of univention-user-quota controlled by UCR quota/logfile (Bug #18114)
+  * Add usage to univention-user-quota
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 28 May 2010 13:25:23 +0200
+
 univention-quota (4.0.2-1) unstable; urgency=low
 
   * replace os.system with subprocess.call in UMC module; Bug #17045
