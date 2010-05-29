@@ -30,7 +30,7 @@ endif
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	tar xzf xen-3.4.3~rc6.tar.gz
+	tar xzf xen-3.4.3.tar.gz
 	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
 	touch $@
 
@@ -39,15 +39,15 @@ build: build-arch build-indep
 
 build-arch: build-arch-stamp
 build-arch-common: configure-stamp
-	$(MAKE) -C xen-3.4.3~rc6/xen build
-	$(MAKE) -C xen-3.4.3~rc6/tools all
+	$(MAKE) -C xen-3.4.3/xen build
+	$(MAKE) -C xen-3.4.3/tools all
 build-python%: build-arch-common
-	$(MAKE) -C xen-3.4.3~rc6/tools/pygrub build PYTHON=/usr/bin/python$*
-	$(MAKE) -C xen-3.4.3~rc6/tools/python build PYTHON=/usr/bin/python$*
+	$(MAKE) -C xen-3.4.3/tools/pygrub build PYTHON=/usr/bin/python$*
+	$(MAKE) -C xen-3.4.3/tools/python build PYTHON=/usr/bin/python$*
 
 build-indep: build-indep-stamp
 build-indep-stamp: configure-stamp
-	$(MAKE) -C xen-3.4.3~rc6/docs
+	$(MAKE) -C xen-3.4.3/docs
 	touch $@
 build-arch-stamp: build-arch-common $(PYVERS:%=build-python%)
 	touch $@
@@ -55,7 +55,7 @@ build-arch-stamp: build-arch-common $(PYVERS:%=build-python%)
 clean:
 	dh_testdir
 	$(RM) build-arch-stamp build-indep-stamp
-	rm -Rf xen-3.4.3~rc6 .pc
+	rm -Rf xen-3.4.3 .pc
 	-$(MAKE) clean
 	dh_clean  --exclude ./debian.orig
 
@@ -64,19 +64,19 @@ install-indep:
 	dh_testdir
 	dh_testroot
 	dh_installdirs -i
-	$(MAKE) -C xen-3.4.3~rc6/docs         install
+	$(MAKE) -C xen-3.4.3/docs         install
 	dh_install -i
 
 install-arch-common:
 	dh_testdir
 	dh_testroot
 	dh_installdirs -s
-	$(MAKE) -C xen-3.4.3~rc6/xen          install
-	$(MAKE) -C xen-3.4.3~rc6/tools        install
+	$(MAKE) -C xen-3.4.3/xen          install
+	$(MAKE) -C xen-3.4.3/tools        install
 install-python%: install-arch-common
-	$(MAKE) -C xen-3.4.3~rc6/tools/pygrub install PYTHON=/usr/bin/python$*
-	$(MAKE) -C xen-3.4.3~rc6/tools/python install PYTHON=/usr/bin/python$*
-	#$(MAKE) -C xen-3.4.3~rc6/tools/security install PYTHON=/usr/bin/python$*
+	$(MAKE) -C xen-3.4.3/tools/pygrub install PYTHON=/usr/bin/python$*
+	$(MAKE) -C xen-3.4.3/tools/python install PYTHON=/usr/bin/python$*
+	#$(MAKE) -C xen-3.4.3/tools/security install PYTHON=/usr/bin/python$*
 install-arch: install-arch-common $(PYVERS:%=install-python%)
 	dh_install -s
 
