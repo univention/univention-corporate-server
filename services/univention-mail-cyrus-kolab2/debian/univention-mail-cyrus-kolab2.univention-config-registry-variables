@@ -46,6 +46,13 @@ Description[en]=The maximum amount of free space (in kB) in which to give a quot
 Type=str
 Categories=service-mail
 
+[mail/cyrus/imap/quotaintervall]
+Description[de]=Setzt das Zeitintervall, in welchem auf Mailquotaeinstellungen geprüft wird (Minuten)
+Description[en]=Sets time interval for checking mailquota settings (minutes)
+Type=str
+Categories=service-mail
+
+
 [mail/cyrus/idlemethod]
 Description[de]=Zu verwendendes Backend für das IDLE Kommando ("no", "poll", "idled")
 Description[en]=The idle backend to use for IDLE command ("no", "poll", "idled")
