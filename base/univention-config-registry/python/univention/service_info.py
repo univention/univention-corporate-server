@@ -143,19 +143,6 @@ class ServiceInfo( object ):
 				failed.append( name )
 		return failed
 
-	def read_services( self, filename ):
-		cfg = uit.UnicodeConfig()
-		cfg.read( filename )
-		for sec in cfg.sections():
-			# service already known?
-			cat_name = string.lower( sec )
-			if cat_name in self.services.keys():
-				continue
-			serv = Service()
-			for name, value in cfg.items( sec ):
-				serv[ name ] = value
-			self.services[ cat_name ] = serv
-
 	def write_customized( self ):
 		filename = os.path.join( ServiceInfo.BASE_DIR, ServiceInfo.SERVICES,
 								 ServiceInfo.CUSTOMIZED )
@@ -192,7 +179,14 @@ class ServiceInfo( object ):
 			srv = Service()
 			for name, value in cfg.items( sec ):
 				srv[ name ] = value
-			self.services[ sec ] = srv
+			for path in srv['programs'].split(','):
+				# "programs" defines the "/proc/self/cmdline" of the service,
+				# not the executable, therefore we test for a leading "/":
+				# check if it is a real file    split to remove parameters
+				if path.startswith('/') and not os.path.exists(path.split(' ', 1)[0]):
+					break # ==> do not execute else
+			else:
+				self.services[ sec ] = srv
 
 	def __load_services( self ):
 		path = os.path.join( ServiceInfo.BASE_DIR, ServiceInfo.SERVICES )
