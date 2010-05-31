@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (2.0.10-1) unstable; urgency=low
+
+  * fixed set-quota skript, Bug #15220
+
+ -- Tim Petersen <petersen@univention.de>  Mon, 31 May 2010 15:36:01 +0100
+
 univention-mail-cyrus-kolab2 (2.0.9-1) unstable; urgency=low
 
   * added time intervall for mailquota checks, Bug #15220
