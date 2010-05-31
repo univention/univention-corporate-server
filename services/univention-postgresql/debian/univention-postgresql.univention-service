@@ -9,6 +9,6 @@ start_type=postgres/autostart
 Description[de]=PostgreSQL-8.3-Server
 Description[en]=PostgreSQL 8.3 Server
 icon=service/postgres
-programs=/usr/lib/postgresql/8.3/bin/postmaster
+programs=/usr/lib/postgresql/8.3/bin/postgres
 start_type=postgres8/autostart
 

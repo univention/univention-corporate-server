@@ -1,3 +1,9 @@
+univention-postgresql (2.0.3-1) unstable; urgency=low
+
+  * fix typo in service description (Bug #17339)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 31 May 2010 13:19:18 +0200
+
 univention-postgresql (2.0.2-2) unstable; urgency=low
 
   * service description adjusted (Bug #13469)
