@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (4.0.3-1) unstable; urgency=low
+
+  * fixed header in pam.d/smtp template (Bug #18526)
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 31 May 2010 12:01:18 +0200
+
 univention-mail-postfix-kolab2 (4.0.2-1) unstable; urgency=low
 
   * made smtpd_recipient_restrictions customizable (Bug #18471)
