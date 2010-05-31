@@ -302,8 +302,10 @@ def main():
 	updateto_args = []
 	reboot = None
 	clean  = True
+	ignoressh = False
+	ignoreterm = False
 
-	longopts=['src=','device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check']
+	longopts=['src=','device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check', 'ignoressh', 'ignoreterm']
 	try:
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
@@ -345,6 +347,10 @@ def main():
 			else:
 				dprint('System is up to date') # Sync with /etc/cron.d/univention-maintenance
 			sys.exit(0)
+		elif opt == '--ignoressh':
+			ignoressh = True
+		elif opt == '--ignoreterm':
+			ignoreterm = True
 		else:
 			dprint('Unknown parameter: "%s"'%opt)
 			sys.exit(2)
@@ -397,6 +403,10 @@ def main():
 			raise UpToDateNoError(reboot)
 
 		dprint('Update to = %s' % nextversion)
+		if ignoressh:
+			os.putenv('update%d%d_ignoressh' % (UCS_Version(nextversion).major, UCS_Version(nextversion).minor, ), 'yes')
+		if ignoreterm:
+			os.putenv('update%d%d_ignoreterm' % (UCS_Version(nextversion).major, UCS_Version(nextversion).minor, ), 'yes')
 
 		updater = LocalUpdater()
 		temporary_sources_list = updater.release_update_temporary_sources_list(nextversion)
@@ -422,6 +432,10 @@ def main():
 			raise UpToDateNoError(reboot)
 
 		dprint('Update to = %s' % nextversion)
+		if ignoressh:
+			os.putenv('update%d%d_ignoressh' % (UCS_Version(nextversion).major, UCS_Version(nextversion).minor, ), 'yes')
+		if ignoreterm:
+			os.putenv('update%d%d_ignoreterm' % (UCS_Version(nextversion).major, UCS_Version(nextversion).minor, ), 'yes')
 
 		if baseConfig.get('local/repository', 'no').lower() in ('true', 'yes', '1'):
 			log('local/reposity active, copy %s and start local mode' % device_name)
@@ -473,6 +487,10 @@ def main():
 			raise UpToDateNoError(reboot)
 
 		dprint('Update to = %s' % nextversion)
+		if ignoressh:
+			os.putenv('update%d%d_ignoressh' % (UCS_Version(nextversion).major, UCS_Version(nextversion).minor, ), 'yes')
+		if ignoreterm:
+			os.putenv('update%d%d_ignoreterm' % (UCS_Version(nextversion).major, UCS_Version(nextversion).minor, ), 'yes')
 
 		(next_vv, next_vp) = nextversion.split('-')[0:2]
 
