@@ -1,8 +1,9 @@
 univention-updater (5.0.84-1) unstable; urgency=low
 
   * add --ignoressh and --ignoreterm to univention-updater (Bug #17258)
+  * update preup.sh ssh/term message (Bug #17258)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 31 May 2010 16:12:09 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 31 May 2010 16:18:08 +0200
 
 univention-updater (5.0.83-1) unstable; urgency=low
 
