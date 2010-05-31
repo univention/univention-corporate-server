@@ -1,3 +1,9 @@
+univention-mail-postfix (2.0.2-4) unstable; urgency=low
+
+  * fixed header for pam.d/smtp template (Bug #18526)
+
+ -- Tim Petersen <petersen@univention.de>  Mon, 31 May 2010 11:58:17 +0100
+
 univention-mail-postfix (2.0.2-3) unstable; urgency=low
 
   * service description adjusted (Bug #13469)
