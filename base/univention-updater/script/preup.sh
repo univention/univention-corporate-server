@@ -29,17 +29,17 @@ trap cleanup EXIT
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
-	if [ "$update23_ignoressh" != "yes" ]; then
+	if [ "$update24_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or set the Univention Configuration Registry variable \"update23/ignoressh\" to \"yes\" to ignore it."
+		echo "Please log in under the console or set the Univention Configuration Registry variable \"update24/ignoressh\" to \"yes\" to ignore it."
 		exit 1
 	fi
 fi
 
 if [ "$TERM" = "xterm" ]; then
-	if [ "$update23_ignoreterm" != "yes" ]; then
+	if [ "$update24_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or set the Univention Configuration Registry variable \"update23/ignoreterm\" to \"yes\" to ignore it."
+		echo "Please log in under the console or set the Univention Configuration Registry variable \"update24/ignoreterm\" to \"yes\" to ignore it."
 		exit 1
 	fi
 fi
