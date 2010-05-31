@@ -28,14 +28,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
-"""UVMM handler."""
+"""UVMM Daemon."""
 
 import sys
 import locale
 import ConfigParser
 import logging
 import logging.config
-from optparse import OptionParser
+from optparse import OptionParser, OptionGroup
+from univention.uvmm.helpers import TranslatableException, _, N_
 
 def createDaemon(options):
 	"""http://code.activestate.com/recipes/278731/"""
@@ -68,7 +69,7 @@ def createDaemon(options):
 		(read_end, write_end) = os.pipe()
 		pid = os.fork()
 	except OSError, e:
-		raise Exception, "%s [%d]" % (e.strerror, e.errno)
+		raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
 	if (pid == 0): # 1st child
 		# detach from parent environment
 		os.chdir(WORKDIR)
@@ -78,7 +79,7 @@ def createDaemon(options):
 		try:
 			pid = os.fork()
 		except OSError, e:
-			raise Exception, "%s [%d]" % (e.strerror, e.errno)
+			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
 		if (pid == 0): # 2nd child
 			os.close(read_end)
 			def server_ready():
@@ -128,45 +129,58 @@ def createDaemon(options):
 				fd.close()
 				sys.exit(0)
 			else:
-				print >>sys.stderr, "Failed to fork daemon."
+				print >>sys.stderr, _("Failed to fork daemon.")
 				sys.exit(1)
 		except OSError, e:
-			raise Exception, "%s [%d]" % (e.strerror, e.errno)
+			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
 
 if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, '')
 
-	parser = OptionParser( usage="usage: %prog [options] command" )
-	parser.add_option( '-u', '--unix',
+	parser = OptionParser(usage=_('usage: %prog [options] command'))
+
+	socket_group = OptionGroup(parser, _('Connection options'))
+	socket_group.add_option('-u', '--unix',
 			action='store', dest='socket', default="/var/run/uvmm.socket",
-			help='Path to the UNIX socket' )
-	parser.add_option('-t', '--tcp',
-			action='store', dest='tcp', default=None,
-			help='Host and port number of the TCP socket')
-	parser.add_option('-s', '--ssl',
-			action='store', dest='ssl', default=None,
-			help='Host and port number of the SSL encrypted TCP socket')
-	parser.add_option( '-l', '--log',
-			action='store', dest='logfile', default="/var/log/univention/virtual-machine-manager-daemon.log",
-			help='Path to the log-file' )
-	parser.add_option( '-v', '--verbose',
-			action='store_true', dest='verbose', default=False,
-			help='Print additional information' )
-	parser.add_option( '-c', '--config',
-			action='store', dest='conffile', default="/etc/univention/uvmmd.ini",
-			help='Path to the ini-file' )
-	parser.add_option( '-p', '--pidfile',
+			help=_('Path to the UNIX socket [%(default)s]') % {'default':'%default'})
+	socket_group.add_option('-t', '--tcp',
+			action='store', dest='tcp', default=None, metavar=_("HOST:PORT"),
+			help=_('HOST and PORT number of the TCP socket'))
+	socket_group.add_option('-s', '--ssl',
+			action='store', dest='ssl', default=None, metavar=_("HOST:PORT"),
+			help=_('HOST and PORT number of the SSL encrypted TCP socket'))
+	parser.add_option_group(socket_group)
+
+	ldap_group = OptionGroup(parser, _('LDAP options'))
+	ldap_group.add_option('-c', '--cache',
+			action='store', dest='cache', default="/var/cache/univention-virtual-machine-manager-daemon",
+			help=_('LDAP cache directory [%(default)s]') % {'default':'%default'})
+	ldap_group.add_option('-b', '--ldap-base',
+			action='store', dest='ldap_uri', default=None, metavar=_("ldap://HOST:PORT/BASE"),
+			help=_('LDAP-uri for searching initial nodes'))
+	parser.add_option_group(ldap_group)
+
+	daemon_group = OptionGroup(parser, _('Daemon options'))
+	daemon_group.add_option('-p', '--pidfile',
 			action='store', dest='pidfile', default="/var/run/uvmmd.pid",
-			help='Path to the pid-file' )
-	parser.add_option( '-d', '--daemon',
+			help=_('Path to the pid-file [%(default)s]') % {'default':'%default'})
+	daemon_group.add_option('-d', '--daemon',
 			action='store_true', dest='daemonize', default=False,
-			help='Fork into background' )
-	parser.add_option( '-I', '--no-ini',
+			help=_('Fork into background'))
+	daemon_group.add_option('-l', '--log',
+			action='store', dest='logfile', default="/var/log/univention/virtual-machine-manager-daemon.log",
+			help=_('Path to the log-file [%(default)s]') % {'default':'%default'})
+	daemon_group.add_option('-v', '--verbose',
+			action='store_true', dest='verbose', default=False,
+			help=_('Print additional information'))
+	daemon_group.add_option('-i', '--config',
+			action='store', dest='conffile', default="/etc/univention/uvmmd.ini",
+			help=_('Path to the ini-file [%(default)s]') % {'default':'%default'})
+	daemon_group.add_option('-I', '--no-ini',
 			action='store_false', dest='read_ini', default=True,
-			help='Skip reading ini file' )
-	parser.add_option( '-L', '--no-ldap',
-			action='store_false', dest='read_ldap', default=True,
-			help='Skip reading ini file' )
+			help=_('Skip reading ini file'))
+	parser.add_option_group(daemon_group)
+
 	(options, arguments) = parser.parse_args()
 
 	if options.daemonize:
@@ -198,13 +212,18 @@ if __name__ == '__main__':
 		node_add(uri)
 
 	# Add nodes from LDAP
-	if options.read_ldap:
-		import univention.uvmm.ldap as ldap
+	if options.ldap_uri != '':
+		from univention.uvmm.uvmm_ldap import ldap_cached, ldap_uris, LdapError
 		try:
-			uris = ldap.ldap2uri()
+			if options.cache != '':
+				get_ldap_uris = lambda:ldap_uris(options.ldap_uri)
+				uris = ldap_cached("%s/ldap.pic" % (options.cache,), get_ldap_uris)
+			else:
+				uris = ldap_uris(options.ldap_uri)
+
 			for uri in uris:
 				node_add(uri)
-		except ldap.LdapError, msg:
+		except LdapError, msg:
 			logger.warning(msg)
 
 	from univention.uvmm.unix import unix

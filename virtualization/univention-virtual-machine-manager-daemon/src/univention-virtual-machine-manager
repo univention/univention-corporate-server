@@ -35,29 +35,40 @@ import os
 import locale
 from optparse import OptionParser
 from univention.uvmm import protocol, client
+from univention.uvmm.helpers import TranslatableException, _, N_
+__builtins__._ = _
+
+def create_socket(options):
+	"""Create socket for communication with UVMMd.
+
+	Either SSL, TCP or UNIX."""
+	if options.ssl:
+		if ':' in options.ssl:
+			host, port = options.ssl.rsplit(':', 1)
+		else:
+			host, port = options.ssl, 2106
+		sock = client.UVMM_ClientSSLSocket(host, int(port))
+	elif options.tcp:
+		if ':' in options.tcp:
+			host, port = options.tcp.rsplit(':', 1)
+		else:
+			host, port = options.tcp, 2105
+		sock = client.UVMM_ClientTCPSocket(host, int(port))
+	else:
+		sock = client.UVMM_ClientUnixSocket(options.socket)
+	if options.verbose:
+		print >>sys.stderr, "sock=%s" % (sock,)
+	return sock
 
 def request(options, req):
 	"""Send request and wait for answer."""
+	sock = create_socket(options)
 	try:
-		if options.ssl:
-			if ':' in options.ssl:
-				host, port = options.ssl.rsplit(':', 1)
-			else:
-				host, port = options.ssl, 2106
-			sock = client.UVMM_ClientSSLSocket(host, int(port))
-		elif options.tcp:
-			if ':' in options.tcp:
-				host, port = options.tcp.rsplit(':', 1)
-			else:
-				host, port = options.tcp, 2105
-			sock = client.UVMM_ClientTCPSocket(host, int(port))
-		else:
-			sock = client.UVMM_ClientUnixSocket(options.socket)
 		if options.verbose:
-			print >>sys.stderr, "sock=%s" % (sock,)
 			print >>sys.stderr, "request=%s" % (req,)
 		res = sock.send(req)
 		if isinstance(res, protocol.Response_DUMP):
+			print "DATA:"
 			try:
 				from pprint import pprint
 				pprint(res.data._json())
@@ -69,40 +80,36 @@ def request(options, req):
 				print 'Exception', e
 				print str(res)
 		elif isinstance(res, protocol.Response_ERROR):
-			print(res.msg)
+			raise TranslatableException(res.translatable_text, res.values)
 		else:
 			print "OK."
+	finally:
 		sock.close()
-	except client.ClientError, (msg,):
-		print >>sys.stderr, msg
-		return False
 
 def from_ldap(options):
 	"""Add all nodes registered in LDAP."""
-	import univention.uvmm.ldap as ldap
+	from univention.uvmm.uvmm_ldap import ldap_uris, LdapError
 	try:
-		uris = ldap.ldap2uri()
-	except ldap.LdapError, msg:
-		print >>sys.stderr, msg
+		uris = ldap_uris(options.ldap_uri)
+	except LdapError, (translatable_text, dict):
+		print >>sys.stderr, "ERROR:"
+		print >>sys.stderr, _(translatable_text) % dict
 		return False
 
 	if len(uris) == 0:
-		print >>sys.stderr, "No nodes found."
+		print >>sys.stderr, _("No nodes found.")
 		return False
 
 	result = True
-	sock = client.UVMM_ClientSocket(options.socket)
-	if not sock:
-		print >>sys.stderr, "Failed to connect to UVMM daemon."
-		return False
+	sock = create_socket(options)
 	for uri in uris:
 		try:
 			req = protocol.Request_NODE_ADD(uri=uri)
 			res = sock.send(req)
 			if isinstance(res, protocol.Response_ERROR):
-				raise client.ClientError(res.msg)
-		except client.ClientError, (msg,):
-			print >>sys.stderr, msg
+				raise client.ClientError(res.translatable_text, res.values)
+		except client.ClientError, (translatable_text, dict):
+			print >>sys.stderr, _(translatable_text) % dict
 			result = False
 	sock.close()
 
@@ -123,53 +130,57 @@ if __name__ == '__main__':
 	progname = os.path.basename(sys.argv[0])
 	if progname[len('univention-virtual-machine-manager-'):] in modes:
 		mode = progname[len('univention-virtual-machine-manager-'):]
-		usage="usage: %prog [options] uri"
+		usage = _("usage: %prog [options] uri")
 	else:
 		mode = None
-		usage="usage: %%prog [options] {%s} uri" % (','.join(modes),)
+		usage = _("usage: %%prog [options] {%(modes)s} uri") % {'modes':','.join(modes)}
 
 	parser = OptionParser( usage=usage )
 	parser.add_option('-u', '--unix',
 			action='store', dest='socket', default="/var/run/uvmm.socket",
-			help='Path to the UNIX socket')
+			help=_('Path to the UNIX socket'))
 	parser.add_option('-t', '--tcp',
-			action='store', dest='tcp', default=None,
-			help='Host and port number of the TCP socket')
+			action='store', dest='tcp', default=None, metavar=_("HOST:PORT"),
+			help=_('HOST and PORT number of the TCP socket'))
 	parser.add_option('-s', '--ssl',
-			action='store', dest='ssl', default=False,
-			help='Host and port number of the SSL encrypted TCP socket')
+			action='store', dest='ssl', default=False, metavar=_("HOST:PORT"),
+			help=_('HOST and PORT number of the SSL encrypted TCP socket'))
 	parser.add_option( '-v', '--verbose',
 			action='store_true', dest='verbose', default=False,
-			help='Print additional information' )
+			help=_('Print additional information'))
+	parser.add_option('-b', '--ldap-base',
+			action='store', dest='ldap_uri', metavar=_("ldap://HOST:PORT/BASE"),
+			help=_('LDAP-uri for searching initial nodes'))
 
 	(options, arguments) = parser.parse_args()
 
-	if mode is None:
-		try:
-			mode = arguments.pop(0)
-		except IndexError:
-			print >>sys.stderr, 'Error: No mode specified'
-			parser.print_usage()
-			sys.exit(2)
-	if mode not in modes:
-		print >>sys.stderr, 'Error: Unknown mode "%s"' % (mode,)
-		parser.print_usage()
-		sys.exit(2)
-
-	if options.verbose:
-		print >>sys.stderr, "mode=%s" % (mode,)
 	try:
+		if mode is None:
+			try:
+				mode = arguments.pop(0)
+			except IndexError:
+				raise TranslatableException(N_('No mode specified'))
+		if mode not in modes:
+			raise TranslatableException(N_('Unknown mode "%(mode)s"'), mode=mode)
+
+		if options.verbose:
+			print >>sys.stderr, "mode=%s" % (mode,)
+
 		if mode == 'ldap':
 			result = from_ldap(options)
-			sys.exit({True:0}.get(result, 1))
-		if mode == 'add':
-			req = protocol.Request_NODE_ADD(uri=arguments.pop(0))
+			sys.exit(result and 0 or 1)
+		elif mode == 'add':
+			try: req = protocol.Request_NODE_ADD(uri=arguments.pop(0))
+			except IndexError: raise TranslatableException(N_('URI required'))
 		elif mode == 'remove':
-			req = protocol.Request_NODE_REMOVE(uri=arguments.pop(0))
+			try: req = protocol.Request_NODE_REMOVE(uri=arguments.pop(0))
+			except IndexError: raise TranslatableException(N_('URI required'))
 		elif mode == 'query':
-			req = protocol.Request_NODE_QUERY(uri=arguments.pop(0))
+			try: req = protocol.Request_NODE_QUERY(uri=arguments.pop(0))
+			except IndexError: raise TranslatableException(N_('URI required'))
 		elif mode == 'frequency':
-			hz = arguments.pop(0)
+			try: hz = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('Frequency required'))
 			if len(arguments) >= 1:
 				uri = arguments.pop(0)
 			else:
@@ -178,40 +189,54 @@ if __name__ == '__main__':
 		elif mode == 'groups':
 			req = protocol.Request_GROUP_LIST()
 		elif mode == 'nodes':
-			req = protocol.Request_NODE_LIST(group=arguments.pop(0))
+			try: req = protocol.Request_NODE_LIST(group=arguments.pop(0))
+			except IndexError: raise TranslatableException(N_('URI required'))
 		elif mode == 'bye':
 			req = protocol.Request_BYE()
 		elif mode == 'save':
-			uri = arguments.pop(0)
-			domain = arguments.pop(0)
-			statefile = arguments.pop(0)
+			try: uri = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('URI required'))
+			try: domain = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('Domain required'))
+			try: statefile = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('File name required'))
 			req = protocol.Request_DOMAIN_SAVE(uri=uri, domain=domain, statefile=statefile)
 		elif mode == 'restore':
-			uri = arguments.pop(0)
-			statefile = arguments.pop(0)
+			try: uri = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('URI required'))
+			try: statefile = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('File name required'))
 			req = protocol.Request_DOMAIN_RESTORE(uri=uri, statefile=statefile)
 		elif mode == 'migrate':
-			uri = arguments.pop(0)
-			domain = arguments.pop(0)
-			target_uri = arguments.pop(0)
+			try: uri = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('URI required'))
+			try: domain = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('Domain required'))
+			try: target_uri = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('URI required'))
 			req = protocol.Request_DOMAIN_MIGRATE(uri=uri, domain=domain, target_uri=target_uri)
 		elif mode == 'state':
-			uri = arguments.pop(0)
-			domain = arguments.pop(0)
-			state = arguments.pop(0)
+			try: uri = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('URI required'))
+			try: domain = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('Domain required'))
+			try: state = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('State required'))
 			req = protocol.Request_DOMAIN_STATE(uri=uri, domain=domain, state=state)
 		elif mode == 'define':
-			uri = arguments.pop(0)
-			file_or_xml = arguments.pop(0)
+			try: uri = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('URI required'))
+			try: file_or_xml = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('File name or XML required'))
 			try:
 				import xml.etree.ElementTree as ET
 			except ImportError:
 				import elementtree.ElementTree as ET
 			if file_or_xml.startswith('<'):
-				tree = ET.fromstring(file_or_xml)
+				root = ET.fromstring(file_or_xml)
 			else:
 				tree = ET.parse(file_or_xml)
-			root = tree.getroot() # domain
+				root = tree.getroot() # domain
 			domain = protocol.Data_Domain()
 			domain.uuid = root.findtext('uuid')
 			domain.name = root.findtext('name')
@@ -272,18 +297,22 @@ if __name__ == '__main__':
 				domain.graphics.append(g)
 			req = protocol.Request_DOMAIN_DEFINE(uri=uri, domain=domain)
 		elif mode == 'undefine':
-			uri = arguments.pop(0)
-			domain = arguments.pop(0)
+			try: uri = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('URI required'))
+			try: domain = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('Domain required'))
 			req = protocol.Request_DOMAIN_UNDEFINE(uri=uri, domain=domain, volumes=arguments)
 		else:
-			print >>sys.stderr, 'Error: Unknown mode "%s"' % (mode,)
-			parser.print_usage()
-			sys.exit(2)
-	except IndexError:
-		print >>sys.stderr, 'Error: An URI is required'
+			raise TranslatableException(N_('Unknown mode "%(mode)s"'), mode=mode)
+	except TranslatableException, (translatable_text, dict):
+		print >>sys.stderr, _(translatable_text) % dict
 		parser.print_usage()
 		sys.exit(2)
 
-	res = request(options, req)
-	if res == False:
+	try:
+		request(options, req)
+		sys.exit(0)
+	except TranslatableException, (translatable_text, dict):
+		print >>sys.stderr, "ERROR:"
+		print >>sys.stderr, _(translatable_text) % dict
 		sys.exit(1)

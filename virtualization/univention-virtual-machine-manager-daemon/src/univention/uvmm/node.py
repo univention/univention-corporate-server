@@ -39,6 +39,8 @@ import socket
 import logging
 from xml.dom.minidom import getDOMImplementation, parseString
 import math
+from helpers import TranslatableException, N_ as _
+from uvmm_ldap import ldap_annotation
 
 logger = logging.getLogger('uvmmd.node')
 
@@ -47,7 +49,7 @@ from univention.uvmm.eventloop import *
 virEventLoopPureStart()
 virEventLoopPureRegister()
 
-class NodeError(Exception):
+class NodeError(TranslatableException):
 	"""Error while handling node."""
 	pass
 
@@ -61,7 +63,7 @@ class StoragePool(object):
 		return self.uuid == other.uuid;
 	def update(self, pool):
 		"""Update statistics."""
-		_, self.capacity, _, self.available = pool.info()
+		state, self.capacity, allocation, self.available = pool.info()
 
 def _map( dictionary, id = None, name = None ):
 	"""Map id to name or reverse using the dictionary."""
@@ -191,7 +193,7 @@ class Domain(object):
 		self.name = domain.name()
 		self.state, maxMem, curMem, self.vcpus, runtime = domain.info()
 
-		if domain.ID() == 0 and domain.connect().getURI().startswith("xen"):
+		if domain.ID() == 0 and domain.connect().getURI().startswith('xen'):
 			# xen://#Domain-0 always reports (1<<32)-1
 			maxMem = domain.connect().getInfo()[1]
 			self.maxMem = long(maxMem) << 20 # GiB
@@ -223,6 +225,7 @@ class Domain(object):
 	def update_expensive(self, domain):
 		"""Update statistics."""
 		self.xml2obj( domain )
+		self.annotations = ldap_annotation(self.uuid)
 
 	def xml2obj( self, domain ):
 		"""Parse XML into python object."""
@@ -293,7 +296,6 @@ class Domain(object):
 				dev.autoport = False
 			dev.keymap = graphic.getAttribute( 'keymap' )
 			self.graphics.append( dev )
-
 
 class Node(object):
 	"""Container for node statistics."""
@@ -449,14 +451,13 @@ class Nodes(dict):
 
 nodes = Nodes()
 
-
 def node_add(uri):
 	"""Add node to watch list.
 	>>> node_add("qemu:///session")
 	>>> node_add("xen:///")"""
 	global nodes
 	if uri in nodes:
-		raise NodeError("Hypervisor '%s' is already connected." % (uri,))
+		raise NodeError(_('Hypervisor "%(uri)s" is already connected.'), uri=uri)
 
 	node = Node(uri)
 	nodes[uri] = node
@@ -469,7 +470,7 @@ def node_remove(uri):
 	try:
 		del nodes[uri]
 	except KeyError:
-		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
+		raise NodeError(_('Hypervisor "%(uri)s" is not connected.'), uri=uri)
 	logger.debug("Hypervisor '%s' removed." % (uri,))
 
 def node_query(uri):
@@ -478,7 +479,7 @@ def node_query(uri):
 	try:
 		return nodes[uri]
 	except KeyError:
-		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
+		raise NodeError(_('Hypervisor "%(uri)s" is not connected.'), uri=uri)
 
 def node_frequency(hz=Nodes.IDLE_FREQUENCY, uri=None):
 	"""Set frequency for polling nodes."""
@@ -486,10 +487,8 @@ def node_frequency(hz=Nodes.IDLE_FREQUENCY, uri=None):
 	if uri == None:
 		nodes.set_frequency(hz)
 	else:
-		try:
-			nodes[uri].set_frequency(hz)
-		except KeyError:
-			raise NodeError("Hypervisor '%s' is not connected." % (uri,))
+		node = node_query(uri)
+		node.set_frequency(hz)
 
 def node_list(group):
 	"""Return list of watched nodes."""
@@ -501,7 +500,6 @@ def node_list(group):
 def group_list():
 	"""Return list of groups for nodes."""
 	return ['default'] # FIXME
-
 
 def domain_define( uri, domain ):
 	"""Convert python object to an XML document."""
@@ -652,20 +650,23 @@ def domain_define( uri, domain ):
 			logger.info('Old domain "%s" removed.' % (domain.uuid,))
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
-				raise
+				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.uuid, error=e)
 	try:
 		conn.lookupByName(domain.name).undefine()
 		logger.info('Old domain "%s" removed.' % (domain.name,))
 	except libvirt.libvirtError, e:
 		if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
-			raise
-	conn.defineXML( doc.toxml() )
+			raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.name, error=e)
+	try:
+		conn.defineXML(doc.toxml())
+	except libvirt.libvirtError, e:
+		raise NodeError(_('Error defining domain "%(domain)s: %(error)s'), domain=domain.name, error=e)
 	logger.info('New domain "%s" defined.' % (domain.name,))
 
 def domain_state(uri, domain, state):
 	"""Change running state of domain on node."""
 	try:
-		node = nodes[uri]
+		node = node_query(uri)
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
 		dom_state = dom.info()[0]
@@ -685,46 +686,40 @@ def domain_state(uri, domain, state):
 				return dom.reboot(None)
 
 		try:
-			STATES = ['NOSTATE', 'RUNNING', 'BLOCKED', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED']
+			STATES = ['NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED']
 			cur_state = STATES[dom_state]
 		except IndexError:
 			cur_state = str(dom_state)
-		raise NodeError("Unsupported state transition %s to %s" % (cur_state, state))
-	except KeyError, key:
-		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
+		raise NodeError(_('Unsupported state transition %(cur_state)s to %(next_state)s'), cur_state=cur_state, next_state=state)
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise NodeError("Error managing domain '%s': %s" % (domain, e))
+		raise NodeError(_('Error managing domain "%(domain)s": %(error)s'), domain=domain, error=e)
 
 def domain_save(uri, domain, statefile):
 	"""Save defined domain."""
 	try:
-		node = nodes[uri]
+		node = node_query(uri)
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
 		dom.save(statefile)
-	except KeyError, key:
-		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise NodeError("Error saving domain '%s': %s" % (domain, e))
+		raise NodeError(_('Error saving domain "%(domain)s": %(error)s'), domain=domain, error=e)
 
 def domain_restore(uri, statefile):
 	"""Restore defined domain."""
 	try:
-		node = nodes[uri]
+		node = node_query(uri)
 		conn = node.conn
 		conn.restore(statefile)
-	except KeyError:
-		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise NodeError("Error restoring domain '%s': %s" % (domain, e))
+		raise NodeError(_('Error restoring domain "%(domain)s": %(error)s'), domain=domain, error=e)
 
 def domain_undefine(uri, domain, volumes=[]):
 	"""Undefine a domain and its volumes on a node."""
 	try:
-		node = nodes[uri]
+		node = node_query(uri)
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
 		if volumes is None:
@@ -739,29 +734,36 @@ def domain_undefine(uri, domain, volumes=[]):
 		for vol_name in volumes:
 			vol = conn.storageVolLookupByKey(vol_name)
 			vol.delete(0)
-	except KeyError, key:
-		raise NodeError("Hypervisor '%s' is not connected." % (uri,))
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise NodeError("Error undefining domain '%s': %s" % (domain, e))
+		raise NodeError(_('Error undefining domain "%(domain)s": %(error)s'), domain=domain, error=e)
 
 def domain_migrate(source_uri, domain, target_uri):
 	"""Migrate a domain from node to the target node."""
 	try:
-		source_node = nodes[source_uri]
+		source_node = node_query(source_uri)
 		source_conn = source_node.conn
 		source_dom = source_conn.lookupByUUIDString(domain)
-		target_node = nodes[target_uri]
+		source_state = source_dom.info()[0]
+		target_node = node_query(target_uri)
 		target_conn = target_node.conn
 
-		flags = libvirt.VIR_MIGRATE_LIVE | libvirt.VIR_MIGRATE_PERSIST_DEST | libvirt.VIR_MIGRATE_UNDEFINE_SOURCE
-		target_dom = source_dom.migrate(target_conn, flags, None, None, 0)
+		if source_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED):
+			# running domains are live migrated
+			flags = libvirt.VIR_MIGRATE_LIVE | libvirt.VIR_MIGRATE_PERSIST_DEST | libvirt.VIR_MIGRATE_UNDEFINE_SOURCE
+			target_dom = source_dom.migrate(target_conn, flags, None, None, 0)
+		elif source_state in (libvirt.VIR_DOMAIN_SHUTDOWN, libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
+			# for domains not running their definition is migrated
+			xml = source_dom.XMLDesc(0)
+			target_conn.defineXML(xml)
+			source_dom.undefine()
+		elif True or source_state in (libvirt.VIR_DOMAIN_PAUSED):
+			raise NodeError(_('Domain "%(domain)s" in state "%(state)d" can not be migrated'), domain=domain, state=source_state)
 
 		# Updates are handled via the callback mechanism
 		#del source_node.domains[domain]
 		#target_node.domains[domain] = Domain(target_dom)
-	except KeyError, key:
-		raise NodeError("Hypervisor '%s' is not connected." % (key,))
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise NodeError("Error migrating domain '%s': %s" % (domain, e))
+		raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=e)
+

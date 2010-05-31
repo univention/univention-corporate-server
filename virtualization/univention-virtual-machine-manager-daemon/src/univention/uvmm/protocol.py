@@ -34,15 +34,16 @@ try:
 except ImportError:
 	import pickle
 import struct
+from helpers import TranslatableException, N_ as _
 
-VERSION = (1, 0)
+VERSION = (1, 1)
 MAX_MSG_SIZE = 4096
 
-class PacketError(Exception):
+class PacketError(TranslatableException):
 	"""Packet framing error."""
 	pass
 
-class Packet:
+class Packet(object):
 	"""On-wire packet format."""
 	def __init__(self, **kw):
 		"""Create new packet."""
@@ -71,13 +72,13 @@ class Packet:
 			return None
 		(v1, v2, length,) = struct.unpack(FORMAT, buffer[offset:offset + SIZE])
 		if VERSION[0] != v1 or VERSION[1] > v2:
-			raise PacketError('Incompatible version: %d.%d' % (v1, v2))
+			raise PacketError(_('Incompatible version: %(major)d.%(minor)d'), major=v1, minor=v2)
 		if len(buffer) < offset + SIZE + length:
 			return None
 		(data,) = struct.unpack('%ds' % length, buffer[offset + SIZE:offset + SIZE + length])
 		packet = pickle.loads(data)
 		if not isinstance(packet, Packet):
-			raise PacketError('not a Packet')
+			raise PacketError(_('Not a Packet'))
 		else:
 			return (SIZE + length, packet)
 
@@ -168,7 +169,11 @@ class Response(Packet):
 class Response_ERROR(Response):
 	def _default(self):
 		self.status = 'ERROR'
-		self.msg = None
+		self.translatable_text = None
+		self.values = {}
+	@property
+	def msg(self):
+		return self.translatable_text % self.values
 class Response_OK(Response):
 	def _default(self):
 		self.status = 'OK'
@@ -207,9 +212,10 @@ class Data_Domain(object):
 		self.curMem = None
 		self.vcpus = None
 		self.cputime = [0.0, 0.0, 0.0]
-		self.interfaces = []
-		self.disks = []
-		self.graphics = []
+		self.interfaces = [] # node.Interface
+		self.disks = [] # node.Disk
+		self.graphics = [] # node.Graphics
+		self.annotations = {}
 	def _json(self):
 		return {
 			'uuid':self.uuid,
@@ -226,6 +232,7 @@ class Data_Domain(object):
 			'graphics': [ str( g ) for g in self.graphics ],
 			'interfaces': [ str( i ) for i in self.interfaces ],
 			'disks': [ str( d ) for d in self.disks ],
+			'annotations': self.annotations,
 			}
 class Data_Node(object):
 	"""Container for node statistics."""
@@ -236,9 +243,9 @@ class Data_Node(object):
 		self.maxMem = None
 		self.cpus = None
 		self.cores = [None, None, None, None]
-		self.storages = []
-		self.domains = []
-		self.capabilities = {}
+		self.storages = [] # Data_StoragePool
+		self.domains = [] # Data_Domain
+		self.capabilities = {} # node.DomainTemplate
 		self.last_try = 0.0
 		self.last_update = 0.0
 	def _json(self):
@@ -255,3 +262,4 @@ class Data_Node(object):
 			'last_try': self.last_try,
 			'last_update': self.last_update,
 			}
+

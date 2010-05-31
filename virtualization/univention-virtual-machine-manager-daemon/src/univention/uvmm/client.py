@@ -31,10 +31,11 @@
 """UVMM client using a unix-socket."""
 
 import socket
-from univention.uvmm import protocol
+import protocol
+from helpers import TranslatableException, N_ as _
 from OpenSSL import SSL
 
-class ClientError(Exception):
+class ClientError(TranslatableException):
 	"""Error during communication with UVMM daemon."""
 	pass
 
@@ -48,7 +49,7 @@ class UVMM_ClientSocket:
 			self.sock.send(packet)
 			return self.receive()
 		except socket.error, (errno, msg):
-			raise ClientError("Could not send request: %d" % (errno,))
+			raise ClientError("Could not send request: %(errno)d", errno=errno)
 
 	def receive(self):
 		"""Get response."""
@@ -69,15 +70,15 @@ class UVMM_ClientSocket:
 				buffer = buffer[length:]
 
 				if not isinstance(res, protocol.Response):
-					raise ClientError('Not a UVMM_Response.')
+					raise ClientError(_('Not a UVMM_Response.'))
 				else:
 					return res
 		except protocol.PacketError, (msg,):
-			raise ClientError("Invalid packet received: %s" % (msg,))
+			raise ClientError(_('Invalid packet received: %(msg)s'), msg=msg)
 		except socket.error, (errno, msg):
-			raise ClientError("Error while waiting for answer: %d" % (errno,))
+			raise ClientError(_('Error while waiting for answer: %(errno)d'), errno=errno)
 		except EOFError:
-			raise ClientError("EOF while waiting for answer.")
+			raise ClientError(_('EOS while waiting for answer.'))
 
 	def close(self):
 		"""Close socket."""
@@ -85,7 +86,7 @@ class UVMM_ClientSocket:
 			self.sock.close()
 			self.sock = None
 		except socket.error, (errno, msg):
-			raise ClientError("Error while closing socket: %d" % (errno,))
+			raise ClientError(_('Error while closing socket: %(errno)d'), errno=errno)
 
 class UVMM_ClientUnixSocket(UVMM_ClientSocket):
 	"""UVMM client Unix socket."""
@@ -96,7 +97,7 @@ class UVMM_ClientUnixSocket(UVMM_ClientSocket):
 			self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 			self.sock.connect(socket_path)
 		except socket.error, (errno, msg):
-			raise ClientError("Could not open socket '%s': %d" % (socket_path, errno))
+			raise ClientError(_('Could not open socket "%(path)s": %(errno)d'), path=socket_path, errno=errno)
 
 	def __str__(self):
 		return "UNIX Socket %s" % (self.sock.getpeername(),)
@@ -109,7 +110,7 @@ class UVMM_ClientTCPSocket(UVMM_ClientSocket):
 			self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			self.sock.connect((host, port))
 		except socket.error, (errno, msg):
-			raise ClientError("Could not connect to '%s:%d': %d" % (host, port, errno))
+			raise ClientError(_('Could not connect to "%(host)s:%(port)d": %(errno)d'), host=host, port=port, errno=errno)
 
 	def __str__(self):
 		return "TCP Socket %s:%d -> %s:%d" % (self.sock.getsockname() + self.sock.getpeername())
@@ -134,7 +135,8 @@ class UVMM_ClientSSLSocket(UVMM_ClientSocket):
 			self.sock = SSL.Connection(ctx, sock)
 			self.sock.connect((host, port))
 		except socket.error, (errno, msg):
-			raise ClientError("Could not connect to '%s:%d': %d" % (host, port, errno))
+			raise ClientError(_('Could not connect to "%(host)s:%(port)d": %(errno)d'), host=host, port=port, errno=errno)
 
 	def __str__(self):
 		return "TCP-SSL Socket %s:%d -> %s:%d" % (self.sock.getsockname() + self.sock.getpeername())
+

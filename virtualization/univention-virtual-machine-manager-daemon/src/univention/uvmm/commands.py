@@ -37,49 +37,52 @@ validity and invoking the real implementation.
 import protocol
 import node
 import logging
+from helpers import TranslatableException, N_ as _
 
 logger = logging.getLogger('uvmmd.command')
 
-class CommandError(Exception):
+class CommandError(TranslatableException):
 	"""Signal error during command execution."""
-	pass
+	def __init__(self, command, e, **kv):
+		kv['command'] = command
+		TranslatableException.__init__(self, e, kv)
 
 class _Commands:
 	@staticmethod
 	def NODE_ADD(server, request):
 		"""Add node to watch list."""
 		if not isinstance(request.uri, basestring):
-			raise CommandError('NODE_ADD: uri != string: %s' % (request.uri,))
+			raise CommandError('NODE_ADD', _('uri != string: %(uri)s'), uri=request.uri)
 		logger.debug('NODE_ADD %s' % (request.uri,))
 
 		try:
 			node.node_add(request.uri)
-		except node.NodeError, (msg):
-			raise CommandError('NODE: %s' % (msg,))
+		except node.NodeError, e:
+			raise CommandError('NODE_ADD', e)
 
 	@staticmethod
 	def NODE_REMOVE(server, request):
 		"""Remove node from watch list."""
 		if not isinstance(request.uri, basestring):
-			raise CommandError('NODE_REMOVE: uri != string: %s' % (request.uri,))
+			raise CommandError('NODE_REMOVE', _('uri != string: %(uri)s'), uri=request.uri)
 		logger.debug('NODE_REMOVE %s' % (request.uri,))
 
 		try:
 			node.node_remove(request.uri)
-		except node.NodeError, (msg):
-			raise CommandError('NODE_REMOVE: %s' % (msg,))
+		except node.NodeError, e:
+			raise CommandError('NODE_REMOVE', e)
 
 	@staticmethod
 	def NODE_QUERY(server, request):
 		"""Get domain and storage-pool information from node."""
 		if not isinstance(request.uri, basestring):
-			raise CommandError('NODE_QUERY: uri != string: %s' % (request.uri,))
+			raise CommandError('NODE_QUERY', _('uri != string: %(uri)s'), uri=request.uri)
 		logger.debug('NODE_QUERY %s' % (request.uri,))
 
 		try:
 			local_data = node.node_query(request.uri)
 			if local_data is None:
-				raise CommandError('NODE_QUERY: unknown node %s' % (request.uri,))
+				raise CommandError('NODE_QUERY', _('unknown node %(uri)s'), uri=request.uri)
 
 			pkg_data = protocol.Data_Node()
 			pkg_data.name = local_data.name
@@ -113,6 +116,7 @@ class _Commands:
 				domain_data.interfaces = domain.interfaces
 				domain_data.disks = domain.disks
 				domain_data.graphics = domain.graphics
+				domain_data.annotations = domain.annotations
 				pkg_data.domains.append(domain_data)
 			pkg_data.capabilities = local_data.capabilities
 			pkg_data.last_try = local_data.last_try
@@ -121,8 +125,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = pkg_data
 			return res
-		except node.NodeError, (msg):
-			raise CommandError('NODE_QUERY: %s' % (msg,))
+		except node.NodeError, e:
+			raise CommandError('NODE_QUERY', e)
 
 	@staticmethod
 	def NODE_FREQUENCY(server, request):
@@ -130,27 +134,27 @@ class _Commands:
 		try:
 			hz = int(request.hz)
 		except TypeError:
-			raise CommandError('NODE_FREQUENCY: hz != int: %s' % (request.hz,))
+			raise CommandError('NODE_FREQUENCY', _('hz != int: %(hz)s'), hz=request.hz)
 		if request.uri != None and not isinstance(request.uri, basestring):
-			raise CommandError('NODE_FREQUENCY: uri != string: %s' % (request.uri,))
+			raise CommandError('NODE_FREQUENCY', _('uri != string: %(uri)s'), uri=request.uri)
 		logger.debug('NODE_FREQUENCY %d %s' % (hz,request.uri))
 		try:
 			node.node_frequency(hz, request.uri)
-		except node.NodeError, (msg):
-			raise CommandError('NODE_FREQUENCY: %s' % (msg,))
+		except node.NodeError, e:
+			raise CommandError('NODE_FREQUENCY', e)
 
 	@staticmethod
 	def NODE_LIST(server, request):
 		"""Return list of nodes in group."""
 		if not isinstance(request.group, basestring):
-			raise CommandError('NODE_LIST: group != string: %s' % (request.group,))
+			raise CommandError('NODE_LIST', _('group != string: %(group)s'), group=request.group)
 		logger.debug('NODE_LIST')
 		try:
 			res = protocol.Response_DUMP()
 			res.data = node.node_list(request.group)
 			return res
-		except node.NodeError, (msg):
-			raise CommandError('NODE_LIST: %s' % (msg,))
+		except node.NodeError, e:
+			raise CommandError('NODE_LIST', e)
 
 	@staticmethod
 	def GROUP_LIST(server, request):
@@ -160,8 +164,8 @@ class _Commands:
 			res = protocol.Response_DUMP()
 			res.data = node.group_list()
 			return res
-		except node.NodeError, (msg):
-			raise CommandError('GROUP_LIST: %s' % (msg,))
+		except node.NodeError, e:
+			raise CommandError('GROUP_LIST', e)
 
 	@staticmethod
 	def BYE(server, request):
@@ -173,94 +177,94 @@ class _Commands:
 	def DOMAIN_DEFINE(server, request):
 		"""Define new domain on node."""
 		if not isinstance(request.uri, basestring):
-			raise CommandError('DOMAIN_DEFINE: uri != string: %s' % (request.uri,))
+			raise CommandError('DOMAIN_DEFINE', _('uri != string: %(uri)s'), uir=request.uri)
 		if not isinstance(request.domain, protocol.Data_Domain):
-			raise CommandError('DOMAIN_DEFINE: definition != Domain: %s' % (request.domain,))
+			raise CommandError('DOMAIN_DEFINE', _('definition != Domain: %(domain)s'), domain=request.domain)
 		logger.debug('DOMAIN_DEFINE %s %s' % (request.uri, request.domain))
 		try:
 			node.domain_define(request.uri, request.domain)
-		except node.NodeError, (msg):
-			raise CommandError('NODE_DEFINE: %s' % (msg,))
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_DEFINE', e)
 
 	@staticmethod
 	def DOMAIN_STATE(server, request):
 		"""Change running state of domain on node."""
 		if not isinstance(request.uri, basestring):
-			raise CommandError('DOMAIN_STATE: uri != string: %s' % (request.uri,))
+			raise CommandError('DOMAIN_STATE', _('uri != string: %(uri)s'), uri=request.uri)
 		if not isinstance(request.domain, basestring):
-			raise CommandError('DOMAIN_STATE: domain != string: %s' % (request.domain,))
+			raise CommandError('DOMAIN_STATE', _('domain != string: %(domain)s'), domain=request.domain)
 		if not request.state in ('RUN', 'PAUSE', 'SHUTDOWN', 'RESTART'):
-			raise CommandError('DOMAIN_STATE: unsupported state: %s' % (request.state,))
+			raise CommandError('DOMAIN_STATE', _('unsupported state: %(state)s'), state=request.state)
 		logger.debug('DOMAIN_STATE %s#%s %s' % (request.uri, request.domain, request.state))
 		try:
 			node.domain_state(request.uri, request.domain, request.state)
-		except node.NodeError, (msg):
-			raise CommandError('DOMAIN_STATE: %s' % (msg,))
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_STATE', e)
 
 	@staticmethod
 	def DOMAIN_SAVE(server, request):
 		"""Save defined domain."""
 		if not isinstance(request.uri, basestring):
-			raise CommandError('DOMAIN_STATE: uri != string: %s' % (request.uri,))
+			raise CommandError('DOMAIN_SAVE', _('uri != string: %(uri)s'), uri=request.uri)
 		if not isinstance(request.domain, basestring):
-			raise CommandError('DOMAIN_STATE: domain != string: %s' % (request.domain,))
+			raise CommandError('DOMAIN_SAVE', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.statefile, basestring):
-			raise CommandError('DOMAIN_STATE: statefile != string: %s' % (request.statefile,))
+			raise CommandError('DOMAIN_SAVE', _('statefile != string: %(file)s'), file=request.statefile)
 		logger.debug('DOMAIN_SAVE %s#%s %s' % (request.uri, request.domain, request.statefile))
 		try:
 			node.domain_save(request.uri, request.domain, request.statefile)
-		except node.NodeError, (msg):
-			raise CommandError('DOMAIN_SAVE: %s' % (msg,))
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_SAVE', e)
 
 	@staticmethod
 	def DOMAIN_RESTORE(server, request):
 		"""Restore defined domain."""
 		if not isinstance(request.uri, basestring):
-			raise CommandError('DOMAIN_STATE: uri != string: %s' % (request.uri,))
+			raise CommandError('DOMAIN_RESTORE', _('uri != string: %(uri)s'), uri=request.uri)
 		if not isinstance(request.statefile, basestring):
-			raise CommandError('DOMAIN_STATE: statefile != string: %s' % (request.statefile,))
-		logger.debug('DOMAIN_SAVE %s %s' % (request.uri, request.statefile))
+			raise CommandError('DOMAIN_RESTORE', _('statefile != string: %(file)s'), file=request.statefile)
+		logger.debug('DOMAIN_RESTORE %s %s' % (request.uri, request.statefile))
 		try:
 			node.domain_restore(request.uri, request.statefile)
-		except node.NodeError, (msg):
-			raise CommandError('DOMAIN_RESTORE: %s' % (msg,))
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_RESTORE', e)
 
 	@staticmethod
 	def DOMAIN_UNDEFINE(server, request):
 		"""Undefine a domain on a node."""
 		if not isinstance(request.uri, basestring):
-			raise CommandError('DOMAIN_UNDEFINE: uri != string: %s' % (request.uri,))
+			raise CommandError('DOMAIN_UNDEFINE', _('uri != string: %(uri)s'), uri=request.uri)
 		if not isinstance(request.domain, basestring):
-			raise CommandError('DOMAIN_UNDEFINE: domain != string: %s' % (request.domain,))
+			raise CommandError('DOMAIN_UNDEFINE', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.volumes, (list, tuple)):
-			raise CommandError('DOMAIN_UNDEFINE: volumes != list: %s' % (request.volumes,))
+			raise CommandError('DOMAIN_UNDEFINE', _('volumes != list: %(volumes)s'), volumes=request.volumes)
 		for vol in request.volumes:
 			if not isinstance(vol, basestring):
-				raise CommandError('DOMAIN_UNDEFINE: volumes[] != string: %s' % (vol,))
+				raise CommandError('DOMAIN_UNDEFINE', _('volumes[] != string: %(volume)s'), volume=vol)
 		logger.debug('DOMAIN_UNDEFINE %s#%s [%s]' % (request.uri, request.domain, ','.join(request.volumes)))
 		try:
 			node.domain_undefine(request.uri, request.domain, request.volumes)
-		except node.NodeError, (msg):
-			raise CommandError('DOMAIN_UNDEFINE: %s' % (msg,))
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_UNDEFINE', e)
 
 	@staticmethod
 	def DOMAIN_MIGRATE(server, request):
 		"""Migrate a domain from node to the target node."""
 		if not isinstance(request.uri, basestring):
-			raise CommandError('DOMAIN_MIGRATE: uri != string: %s' % (request.uri,))
+			raise CommandError('DOMAIN_MIGRATE', _('uri != string: %(uri)s'), uri=request.uri)
 		if not isinstance(request.domain, basestring):
-			raise CommandError('DOMAIN_MIGRATE: domain != string: %s' % (request.domain,))
+			raise CommandError('DOMAIN_MIGRATE', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.target_uri, basestring):
-			raise CommandError('DOMAIN_MIGRATE: target_uri != string: %s' % (request.target_uri,))
+			raise CommandError('DOMAIN_MIGRATE', _('target_uri != string: %(uri)s'), uri=request.target_uri)
 		logger.debug('DOMAIN_MIGRATE %s#%s %s' % (request.uri, request.domain, request.target_uri))
 		try:
 			node.domain_migrate(request.uri, request.domain, request.target_uri)
-		except node.NodeError, (msg):
-			raise CommandError('DOMAIN_MIGRATE: %s' % (msg,))
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_MIGRATE', e)
 
 	def __getitem__(self, cmd):
 		if cmd.startswith('_'):
-			raise CommandError('Command is restricted.')
+			raise CommandError(cmd, _('Command "%(command)s" is restricted'))
 		return getattr(self, cmd)
 
 commands = _Commands()

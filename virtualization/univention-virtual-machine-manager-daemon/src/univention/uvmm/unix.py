@@ -39,6 +39,7 @@ import SocketServer
 import protocol
 from commands import commands, CommandError
 from node import Nodes, node_frequency
+from helpers import TranslatableException, N_ as _
 import socket
 import select
 import logging
@@ -104,15 +105,22 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				except KeyError:
 					logger.warning('[%d] Unknown command "%s".' % (self.client_id, command.command,))
 					res = protocol.Response_ERROR()
-					res.msg = '[%d] Unknown command "%s".' % (self.client_id, command.command,)
-				except CommandError, (msg):
-					logger.warning('[%d] Error doing command "%s": %s' % (self.client_id, command.command, msg))
+					res.translatable_text = '[%(id)d] Unknown command "%(command)s".'
+					res.values = {
+							'id': self.client_id,
+							'command': command.command,
+							}
+				except CommandError, e:
+					logger.warning('[%d] Error doing command "%s": %s' % (self.client_id, command.command, e))
 					res = protocol.Response_ERROR()
-					res.msg = msg
+					res.translatable_text, res.values = e.args
 				except:
 					import traceback
 					res = protocol.Response_ERROR()
-					res.msg = traceback.print_exc()
+					res.translatable_text = _('Traceback: %(traceback)s')
+					res.values = {
+							'traceback': traceback.print_exc(),
+							}
 
 				logger.debug('[%d] Sending response.' % (self.client_id,))
 				packet = res.pack()
@@ -227,3 +235,4 @@ def unix(options):
 		os.remove(options.socket)
 	except OSError, (err, errmsg):
 		logger.warning("Failed to delete old socket '%s': %s" % (options.socket, errmsg))
+

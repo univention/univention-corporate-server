@@ -1,3 +1,14 @@
+univention-virtual-machine-manager-daemon (0.9.13-1) unstable; urgency=low
+
+  * Implement domain-define in cli-tool (Bug #18289)
+  * Cache LDAP results (Bug #18288)
+  * Translatable errors (Bug #18414)
+  * Annotations from LDAP (Bug #18160, #18193, #18287)
+  * Implement migrating stopped domains (Bug #18382)
+  * Configure LDAP search base (Bug #18286)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 31 May 2010 13:16:58 +0200
+
 univention-virtual-machine-manager-daemon (0.9.12-1) unstable; urgency=low
 
   * add UVMM profiles; Bug #18516

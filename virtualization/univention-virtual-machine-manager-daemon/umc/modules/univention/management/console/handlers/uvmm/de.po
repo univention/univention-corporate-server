@@ -1,188 +1,279 @@
-# SOME DESCRIPTIVE TITLE.
+# Univention Virtual Machine Manager Management Console Module
 # Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Andreas Büsching <buesching@univention.de>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-18 11:37+0200\n"
+"Project-Id-Version: univention-virtual-machina-manager-daemon VERSION\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2010-05-31 13:16+0200\n"
 "PO-Revision-Date: 2010-04-08 09:57+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Last-Translator: Andreas Büsching <buesching@univention.de>\n"
+"Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: __init__.py:57
-msgid "Virtual Machines"
-msgstr "Virtuelle Maschinen"
+#: umc/modules/univention/management/console/handlers/uvmm/treeview.py:129
+msgid "Add"
+msgstr "Hinzufügen"
 
-#: __init__.py:58
-msgid "Univention Virtual Machine Manager"
-msgstr "Univention Virtual Machine Manager"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:581
+msgid "Add virtual instance"
+msgstr "Hinzufügen einer virtuellen Instanz"
 
-#: __init__.py:68
-msgid "German"
-msgstr "Deutsch"
-
-#: __init__.py:68
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:50
 msgid "American"
 msgstr "Englisch"
 
-#: __init__.py:80
-msgid "Hard drive"
-msgstr "Festplatte"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:70
+msgid "Architecture"
+msgstr ""
 
-#: __init__.py:80
-msgid "CD/DVD-ROM"
-msgstr "CD/DVD-ROM"
-
-#: __init__.py:102
-msgid "Type"
-msgstr "Typ"
-
-#: __init__.py:104
-msgid "Device"
-msgstr "Gerät"
-
-#: __init__.py:106
-msgid "Destination host"
-msgstr "Zielwirtsystem"
-
-#: __init__.py:107
-msgid "Number of CPUs"
-msgstr "Anzahl der CPUs"
-
-#: __init__.py:111 __init__.py:112
-msgid "Overview"
-msgstr "Überblick"
-
-#: __init__.py:118 __init__.py:119
-msgid "Show group information"
-msgstr "Anzeigen der Gruppeninformationen"
-
-#: __init__.py:124 __init__.py:125
-msgid "Show physical server information"
-msgstr "Informationen zum physikalischen Server anzeigen"
-
-#: __init__.py:130 __init__.py:131
-msgid "Show instance information"
-msgstr "Anzeigen der Instanzinformationen"
-
-#: __init__.py:136 __init__.py:137
-msgid "Create a virtual instance"
-msgstr "Erstellen einer virtuellen Instanz"
-
-#: __init__.py:143 __init__.py:144
-msgid "Remove a virtual instance"
-msgstr "Löschen einer virtuellen Instanz"
-
-#: __init__.py:149
-msgid "Remove virtual instance"
-msgstr "Löschen einer virtuellen Instanz"
-
-#: __init__.py:149
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:125
 msgid "Are you sure that the virtual instance should be removed?"
 msgstr "Sind Sie sicher, dass die virtuelle Instanz gelöscht werden soll?"
 
-#: __init__.py:152 __init__.py:153
-msgid "Configuration of virtual instances"
-msgstr "Konfiguration der virtuellen Instanzen"
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:62
+msgid "CD/DVD-ROM"
+msgstr "CD/DVD-ROM"
 
-#: __init__.py:156
-msgid "Name"
-msgstr "Name"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:214
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:312
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:331
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:445
+msgid "CPU usage"
+msgstr "CPU Auslastung"
 
-#: __init__.py:157
-msgid "MAC address"
-msgstr "MAC-Adresse"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:617
+msgid "Cancel"
+msgstr ""
 
-#: __init__.py:158
-msgid "Memory"
-msgstr "Speicher"
-
-#: __init__.py:159
-msgid "Interface"
-msgstr "Interface"
-
-#: __init__.py:161
-msgid "activate VNC remote access"
-msgstr "Aktiviere VNC-Fernzugriff"
-
-#: __init__.py:162
-msgid "Keyboard layout"
-msgstr "Tastaturlayout"
-
-#: __init__.py:163
-msgid "Operating system"
-msgstr "Betriebssystem"
-
-#: __init__.py:164
-msgid "RAM disk"
-msgstr "RAM-Disk"
-
-#: __init__.py:165
-msgid "Kernel parameter"
-msgstr "Kernel Parameter"
-
-#: __init__.py:166
-msgid "Kernel"
-msgstr "Kernel"
-
-#: __init__.py:167
-msgid "Drive"
-msgstr "Laufwerk"
-
-#: __init__.py:171 __init__.py:172
-msgid "Migration of virtual instances"
-msgstr "Migration von virtuellen Instanzen"
-
-#: __init__.py:174
-msgid "domain"
-msgstr "Domäne"
-
-#: __init__.py:180
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:159
 msgid "Change state of a virtual instance"
 msgstr "Ändern des Status einer virtuellen Instanz"
 
-#: __init__.py:181
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:160
 msgid "Change state of virtual instances"
 msgstr "Ändern des Status von virtuellen Instanzen"
 
-#: __init__.py:183 __init__.py:341
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:128
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:129
+msgid "Configuration of virtual instances"
+msgstr "Konfiguration der virtuellen Instanzen"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:101
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:102
+msgid "Create a virtual instance"
+msgstr "Erstellen einer virtuellen Instanz"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:69
+msgid "Destination host"
+msgstr "Zielwirtsystem"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:67
+msgid "Device"
+msgstr "Gerät"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:141
+msgid "Drive"
+msgstr "Laufwerk"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:377
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:380
+msgid "Drives"
+msgstr "Laufwerk"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:410
+#, fuzzy
+msgid "Extended Settings"
+msgstr "Einstellungen"
+
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:50
+msgid "German"
+msgstr "Deutsch"
+
+#: umc/modules/univention/management/console/handlers/uvmm/types.py:62
+msgid "Hard drive"
+msgstr "Festplatte"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:162
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:331
 msgid "Instance"
 msgstr "Instanz"
 
-#: __init__.py:193
-msgid "unknown"
-msgstr "Unbekannt"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:135
+msgid "Interface"
+msgstr "Interface"
 
-#: __init__.py:194
-msgid "running"
-msgstr "läuft"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:146
+msgid "Kernel"
+msgstr "Kernel"
 
-#: __init__.py:195
-msgid "idle"
-msgstr "idle"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:145
+msgid "Kernel parameter"
+msgstr "Kernel Parameter"
 
-#: __init__.py:196
-msgid "paused"
-msgstr "pausiert"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:138
+msgid "Keyboard layout"
+msgstr "Tastaturlayout"
 
-#: __init__.py:197
-msgid "shut down"
-msgstr "wird ausgeschaltet"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:133
+msgid "MAC address"
+msgstr "MAC-Adresse"
 
-#: __init__.py:198
-msgid "shut off"
-msgstr "aus"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:134
+msgid "Memory"
+msgstr "Speicher"
 
-#: __init__.py:199
-msgid "crashed"
-msgstr "abgestürzt"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:214
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:313
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:331
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:444
+msgid "Memory usage"
+msgstr "Speichernutzung"
 
-#: __init__.py:220
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:232
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:490
+msgid "Migrate"
+msgstr "Migrieren"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:481
+#, python-format
+msgid "Migrate %(domain)s from %(source)s to:"
+msgstr "Migriere die Instanz %(domain)s vom Wirtsystem %(source)s zu:"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:150
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:151
+msgid "Migration of virtual instances"
+msgstr "Migration von virtuellen Instanzen"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:132
+msgid "Name"
+msgstr "Name"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:72
+msgid "Number of CPUs"
+msgstr "Anzahl der CPUs"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:142
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:331
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:439
+msgid "Operating System"
+msgstr "Betriebssystem"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:76
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:77
+msgid "Overview"
+msgstr "Überblick"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:214
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:311
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:314
+msgid "Physical server"
+msgstr "Physikalischer Server"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:144
+msgid "RAM disk"
+msgstr "RAM-Disk"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:209
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:302
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:433
+msgid "Refresh"
+msgstr "Aktualisieren"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:267
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:618
+msgid "Remove"
+msgstr "Löschen"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:117
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:118
+msgid "Remove a virtual instance"
+msgstr "Löschen einer virtuellen Instanz"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:108
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:109
+#, fuzzy
+msgid "Remove drives of a virtual instance"
+msgstr "Löschen einer virtuellen Instanz"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:622
+#, fuzzy, python-format
+msgid "Remove the virtual instance %(instance)s?"
+msgstr "Löschen einer virtuellen Instanz"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:125
+msgid "Remove virtual instance"
+msgstr "Löschen einer virtuellen Instanz"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:637
+#, python-format
+msgid "Removing the instance <i>%(domain)s</i> failed"
+msgstr ""
+"Das Löschen der virtuellen Instanz <i>%(domain)s</i> ist fehlgeschlagen"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:261
+msgid "Resume"
+msgstr "Fortführen"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:415
+msgid "Save"
+msgstr "Speichern"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:458
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:83
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:84
+msgid "Show group information"
+msgstr "Anzeigen der Gruppeninformationen"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:95
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:96
+msgid "Show instance information"
+msgstr "Anzeigen der Instanzinformationen"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:89
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:90
+#, fuzzy
+msgid "Show physical server information"
+msgstr "Anzeigen der Instanzinformationen"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:240
+msgid "Start"
+msgstr "Start"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:331
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:438
+msgid "Status"
+msgstr "Status"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:247
+msgid "Stop"
+msgstr "Stop"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:254
+msgid "Suspend"
+msgstr "Anhalten"
+
+#: umc/modules/univention/management/console/handlers/uvmm/treeview.py:121
+msgid ""
+"The connection to the UVMM service could not be established. Please verify "
+"that it is started. You may use the UMC service module therefor."
+msgstr ""
+"Die Verbindung zum UCSvirt-Dienst konnte nicht hergestellt werden. Bitte "
+"prüfen Sie, ob der Dienst gestartet ist. Dafür können Sie das UMC Dienste-"
+"Modul verwenden."
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:640
+#, python-format
+msgid "The instance <i>%(domain)s</i> was removed successfully"
+msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde erfolgreich gelöscht"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:196
 msgid ""
 "This UMC module provides a management system for virtualization hosts that "
 "are registered within the UCS domain.\n"
@@ -212,107 +303,84 @@ msgstr ""
 "detaillierten Auflistung von Einstellungen. Diese können auch bearbeitet und "
 "gespeichert werden."
 
-#: __init__.py:232 __init__.py:312 __init__.py:428
-msgid "Refresh"
-msgstr "Aktualisieren"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:65
+msgid "Type"
+msgstr "Typ"
 
-#: __init__.py:237 __init__.py:321 __init__.py:324
-msgid "Physical server"
-msgstr "Physikalischer Server"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:60
+msgid "Univention Virtual Machine Manager"
+msgstr "Univention Virtual Machine Manager"
 
-#: __init__.py:237 __init__.py:322 __init__.py:341 __init__.py:440
-msgid "CPU usage"
-msgstr "CPU Auslastung"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:143
+msgid "User"
+msgstr ""
 
-#: __init__.py:237 __init__.py:323 __init__.py:341 __init__.py:439
-msgid "Memory usage"
-msgstr "Speichernutzung"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:59
+msgid "Virtual Machines"
+msgstr "Virtuelle Maschinen"
 
-#: __init__.py:255 __init__.py:478
-msgid "Migrate"
-msgstr "Migrieren"
-
-#: __init__.py:263
-msgid "Start"
-msgstr "Start"
-
-#: __init__.py:270
-msgid "Stop"
-msgstr "Stop"
-
-#: __init__.py:277
-msgid "Suspend"
-msgstr "Anhalten"
-
-#: __init__.py:284
-msgid "Resume"
-msgstr "Fortführen"
-
-#: __init__.py:291
-msgid "Remove"
-msgstr "Löschen"
-
-#: __init__.py:341 __init__.py:433
-msgid "Status"
-msgstr "Status"
-
-#: __init__.py:341 __init__.py:434
-msgid "Operating System"
-msgstr "Betriebssystem"
-
-#: __init__.py:375 __init__.py:378
-msgid "Drives"
-msgstr "Laufwerk"
-
-#: __init__.py:411
-msgid "Save"
-msgstr "Speichern"
-
-#: __init__.py:449
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:454
 #, python-format
 msgid "Virtual instance %(domain)s"
 msgstr "Virtuelle Instanz %(domain)s"
 
-#: __init__.py:453
-msgid "Settings"
-msgstr "Einstellungen"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:71
+#, fuzzy
+msgid "Virtualization Technique"
+msgstr "Virtuelle Maschinen"
 
-#: __init__.py:471
-msgid "The migration was successfull"
-msgstr "Die Migration war erfolgreich"
-
-#: __init__.py:475
-#, python-format
-msgid "Migrate %(domain)s from %(source)s to:"
-msgstr "Migriere die Instanz %(domain)s vom Wirtsystem %(source)s zu:"
-
-#: __init__.py:561
-msgid "Add virtual instance"
-msgstr "Hinzufügen einer virtuellen Instanz"
-
-#: __init__.py:575
-#, python-format
-msgid "Removing the instance <i>%(domain)s</i> failed"
-msgstr ""
-"Das Löschen der virtuellen Instanz <i>%(domain)s</i> ist fehlgeschlagen"
-
-#: __init__.py:578
-#, python-format
-msgid "The instance <i>%(domain)s</i> was removed successfully"
-msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde erfolgreich gelöscht"
-
-#: treeview.py:108
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:599
 msgid ""
-"The connection to the UVMM service could not be established. Please verify "
-"that it is started. You may use the UMC service module therefor."
+"When removing a virtual instance the disk images bind to it may be removed "
+"also. Please select the disks that should be remove with the virtual "
+"instance. Be sure that none of the images to be delete are just by any other "
+"instance."
 msgstr ""
-"Die Verbindung zum UCSvirt-Dienst konnte nicht hergestellt werden. Bitte "
-"prüfen Sie, ob der Dienst gestartet ist. Dafür können Sie das UMC Dienste-"
-"Modul verwenden."
 
-#: treeview.py:116
-msgid "Add"
-msgstr "Hinzufügen"
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:137
+msgid "activate VNC remote access"
+msgstr "Aktiviere VNC-Fernzugriff"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:178
+msgid "crashed"
+msgstr "abgestürzt"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:153
+msgid "domain"
+msgstr "Domäne"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:174
+msgid "idle"
+msgstr "idle"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:175
+msgid "paused"
+msgstr "pausiert"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:173
+msgid "running"
+msgstr "läuft"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:176
+msgid "shut down"
+msgstr "wird ausgeschaltet"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:177
+msgid "shut off"
+msgstr "aus"
+
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:172
+msgid "unknown"
+msgstr "Unbekannt"
 
 #~ msgid "Create"
 #~ msgstr "Erstellen"
+
+#~ msgid "Operating system"
+#~ msgstr "Betriebssystem"
+
+#~ msgid "The migration was successfull"
+#~ msgstr "Die Migration war erfolgreich"
+
+#~ msgid "blocked"
+#~ msgstr "blockiert"
