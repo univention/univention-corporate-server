@@ -135,6 +135,36 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'kernel': univention.admin.property(
+			short_description= _('Kernel'),
+			long_description= _('Kernel'),
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'kernel_parammeter': univention.admin.property(
+			short_description= _('Kernel parameter'),
+			long_description= _('Kernel parameter'),
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'initramfs': univention.admin.property(
+			short_description= _('Initramfs disk'),
+			long_description= _('Initramfs disk'),
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 }
 
 
@@ -143,10 +173,12 @@ layout=[
 	      [
 			[ univention.admin.field( "name" ), ],
 			[ univention.admin.field( "name_prefix" ), ],
-			[ univention.admin.field( "arch" ),  univention.admin.field( "cpus" ) ],
-			[ univention.admin.field( "virttech" ),  univention.admin.field( "ram" ) ],
+			[ univention.admin.field( "arch" ), univention.admin.field( "cpus" ) ],
+			[ univention.admin.field( "virttech" ), univention.admin.field( "ram" ) ],
 			[ univention.admin.field( "interface" ), ],
-			[ univention.admin.field( "vnc" ),  univention.admin.field( "kblayout" ) ],
+			[ univention.admin.field( "vnc" ), univention.admin.field( "kblayout" ) ],
+			[ univention.admin.field( "kernel" ), univention.admin.field( "kernel_parameter" ) ],
+			[ univention.admin.field( "initramfs" ),  ],
 		  ] )
 	]
 
@@ -162,6 +194,9 @@ mapping.register('ram', 'univentionVirtualMachineProfileRAM', None, univention.a
 mapping.register('vnc', 'univentionVirtualMachineProfileVNC', None, univention.admin.mapping.ListToString)
 mapping.register('interface', 'univentionVirtualMachineProfileInterface', None, univention.admin.mapping.ListToString)
 mapping.register('kblayout', 'univentionVirtualMachineProfileKBLayout', None, univention.admin.mapping.ListToString)
+mapping.register('kernel', 'univentionVirtualMachineProfileKernel', None, univention.admin.mapping.ListToString)
+mapping.register('kernel_parameter', 'univentionVirtualMachineProfileKernelParameter', None, univention.admin.mapping.ListToString)
+mapping.register('initramfs', 'univentionVirtualMachineProfileInitRAMfs', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
