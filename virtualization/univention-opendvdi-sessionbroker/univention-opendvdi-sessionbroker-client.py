@@ -36,6 +36,11 @@ import httplib
 import urllib
 import threading
 import time
+import base64
+
+user='bob';passwd='univention'
+user_pass=base64.encodestring('%s:%s' %(user,passwd))
+auth_header={"Authorization": "Basic %s" % user_pass}
 
 id=''
 drop_connection=False
@@ -95,10 +100,14 @@ def HTTP11_streaming_client(HOST, PORT):
 	# conn1 =  httplib.HTTPConnection(HOST, PORT)
 	conn1.auto_open =  False
 	conn1.connect()
-	conn1.request("GET", "/connect")
+	conn1.request("GET", "/connect", '', auth_header)
 	r1 = conn1.getresponse()
 	# print r1.status, r1.reason
-        if r1.chunked != httplib._UNKNOWN:
+	if r1.status==401:
+		print >>sys.stderr, "Authentication Failure"
+		drop_connection=True
+		return
+	if r1.chunked != httplib._UNKNOWN:
 		for chunk in iter_chunked(r1):
 			if drop_connection:
 				break
@@ -107,10 +116,11 @@ def HTTP11_streaming_client(HOST, PORT):
 				if line.startswith("id: "):
 					id=line[4:]
 					print "SERVER SENT ID=%s" % id
-        else: # not r1.chunked
+	else: # not r1.chunked
 		raise httplib.UnknownTransferEncoding()
 
 def HTTP11_client(HOST, PORT):
+	global drop_connection
 	global id
 	conn2 =  httplib.HTTPSConnection(HOST, int(PORT))
 	# conn2 =  httplib.HTTPConnection(HOST, PORT)
@@ -118,11 +128,13 @@ def HTTP11_client(HOST, PORT):
 	conn2.connect()
 	
 	while not id:
+		if drop_connection:
+			return
 		time.sleep(0.1)
 	
 	for trial in xrange(5):
 		# Send next alive
-		conn2.request("GET", "/alive?clientid=%s"  % id)
+		conn2.request("GET", "/alive?clientid=%s"  % id, '', auth_header)
 		time.sleep(1)
 		print 'aliveevent %s\n' % (trial+1)
 		
@@ -132,7 +144,6 @@ def HTTP11_client(HOST, PORT):
 		print 'aliveevent server response: %s\n' % body
 	
 	conn2.close()
-	global drop_connection
 	drop_connection=True
 
 if __name__ == '__main__':
