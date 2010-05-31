@@ -71,17 +71,18 @@ univention-directory-manager policies/console_access modify "$@" --ignore_exists
 # create containers for additional UVMM objects
 univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
-	--position="cn=univention,$ldap_base" \
-	--set name=uvmm
+	--position="$ldap_base" \
+	--set name="Virtual Machine Manager"
+
 univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
-	--position="cn=univention,$ldap_base" \
-	--set name=profiles
+	--position="cn=Virtual Machine Manager,$ldap_base" \
+	--set name=Profiles
 
 # create machine profiles
 univention-directory-manager uvmm/profile create "$@" \
 	--ignore_exists \
-	--position="cn=profiles,cn=uvmm,cn=univention,$ldap_base" \
+	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 	--set name="Windows XP x86" \
 	--set name_prefix=win-xp- \
 	--set arch=x86 \
@@ -94,7 +95,7 @@ univention-directory-manager uvmm/profile create "$@" \
 
 univention-directory-manager uvmm/profile create "$@" \
 	--ignore_exists \
-	--position="cn=profiles,cn=uvmm,cn=univention,$ldap_base" \
+	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 	--set name="Windows XP x86_64" \
 	--set name_prefix=winxp-64- \
 	--set arch=x86_64 \
@@ -107,7 +108,7 @@ univention-directory-manager uvmm/profile create "$@" \
 
 univention-directory-manager uvmm/profile create "$@" \
 	--ignore_exists \
-	--position="cn=profiles,cn=uvmm,cn=univention,$ldap_base" \
+	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 	--set name="Windows 7 x86" \
 	--set name_prefix=win7- \
 	--set arch=x86 \
@@ -120,7 +121,7 @@ univention-directory-manager uvmm/profile create "$@" \
 
 univention-directory-manager uvmm/profile create "$@" \
 	--ignore_exists \
-	--position="cn=profiles,cn=uvmm,cn=univention,$ldap_base" \
+	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 	--set name="Windows 7 x86_64" \
 	--set name_prefix=win7-64- \
 	--set arch=x86_64 \
@@ -133,8 +134,8 @@ univention-directory-manager uvmm/profile create "$@" \
 
 univention-directory-manager uvmm/profile create "$@" \
 	--ignore_exists \
-	--position="cn=profiles,cn=uvmm,cn=univention,$ldap_base" \
-	--set name="UCS 2.4-0 (i386)" \
+	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+	--set name="Univention Corporate Server 2.4-0 (i386)" \
 	--set name_prefix=ucs24- \
 	--set arch=x86 \
 	--set cpus=1 \
@@ -146,8 +147,8 @@ univention-directory-manager uvmm/profile create "$@" \
 
 univention-directory-manager uvmm/profile create "$@" \
 	--ignore_exists \
-	--position="cn=profiles,cn=uvmm,cn=univention,$ldap_base" \
-	--set name="UCS 2.4-0 (amd64)" \
+	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+	--set name="Univention Corporate Server 2.4-0 (amd64)" \
 	--set name_prefix=ucs24-amd64- \
 	--set arch=x86_64 \
 	--set cpus=1 \

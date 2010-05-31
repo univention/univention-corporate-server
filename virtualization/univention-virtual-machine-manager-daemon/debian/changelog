@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.14-1) unstable; urgency=low
+
+  * move profiles to new container; Bug #18516
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 May 2010 14:51:15 +0200
+
 univention-virtual-machine-manager-daemon (0.9.13-2) unstable; urgency=low
 
   * Fix quoting of "$@" (Bug #18489)
