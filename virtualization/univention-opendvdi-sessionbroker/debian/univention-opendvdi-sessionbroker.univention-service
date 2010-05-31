@@ -1,0 +1,6 @@
+[uvmmd]
+Description[de]=Univention OpenDVDI Sessionbroker
+Description[en]=Univention OpenDVDI Sessionbroker
+start_type=yes
+programs=/usr/sbin/univention-opendvdi-sessionbroker
+icon=service/univention-opendvdi-sessionbroker

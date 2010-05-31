@@ -1,0 +1,36 @@
+Source: univention-opendvdi-sessionbroker
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Uploaders: Arvid Requate <requate@univention.de>,
+Standards-Version: 3.5.5
+Build-Depends: debhelper,
+ python-all-dev, python-central,
+ univention-config-dev
+XS-Python-Version: 2.4
+
+Package: univention-opendvdi-sessionbroker
+Architecture: all
+Depends: univention-virtual-machine-manager-daemon, mysql-server,
+ python-cherrypy3, ${python:Depends}
+XB-Python-Version: ${python:Versions}
+Description: Univention OpenDVDI Sessionbroker
+ This package contains the Univention OpenDVDI Sessionbroker.
+ Upon user login via a Univention OpenDVDI client it returns
+ the FQDN of the users Virtual Machine and periodically monitors
+ the Session Alive Events sent by the client. The service may
+ send commands back to the client via HTTPS Server-Push.
+ The Sessionbroker connects to the Univention Virtual Machine
+ Manager Daemon to resume OpenDVDI Desktops.
+
+Package: univention-opendvdi-sessionbroker-client
+Architecture: all
+Depends: ${python:Depends}
+XB-Python-Version: ${python:Versions}
+Description: Univention OpenDVDI Sessionbroker Client
+ This package contains the Univention OpenDVDI Sessionbroker Client.
+ The Univention OpenDVDI Sessionbroker Client sends authenticated
+ connect requests to the Univention OpenDVDI Sessionbroker to
+ determine the FQDN of a users Virtual Machine and sends Session
+ Alive Events while the OpenDVDI Session is open. Via HTTPS
+ it listens for commands issued by the Sessionbroker.
