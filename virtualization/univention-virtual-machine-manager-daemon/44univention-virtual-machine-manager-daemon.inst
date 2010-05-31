@@ -48,14 +48,14 @@ univention-directory-manager "computers/$server_role" modify "$@" \
 	--append service="$NAME"
 
 # create operations
-univention-directory-manager settings/console_operation create $@ --ignore_exists \
+univention-directory-manager settings/console_operation create "$@" --ignore_exists \
 	--position cn="operations,cn=console,cn=univention,$ldap_base" \
 	--set name="uvmm" \
 	--set description="Univention Virtual Machine Manager" \
 	--append operation="uvmm/*"
 
 # create acls
-univention-directory-manager settings/console_acl create $@ --ignore_exists \
+univention-directory-manager settings/console_acl create "$@" --ignore_exists \
 	--position cn="acls,cn=console,cn=univention,$ldap_base" \
 	--set name="uvmm-all" \
 	--set category="Virtualization" \
@@ -64,22 +64,22 @@ univention-directory-manager settings/console_acl create $@ --ignore_exists \
 	--set description="All UVMM Operations"
 
 # default policies
-univention-directory-manager policies/console_access modify $@ --ignore_exists \
+univention-directory-manager policies/console_access modify "$@" --ignore_exists \
 	--dn cn="default-admin,cn=console,cn=policies,$ldap_base" \
 	--append allow="cn=uvmm-all,cn=acls,cn=console,cn=univention,$ldap_base"
 
 # create containers for additional UVMM objects
-univention-directory-manager container/cn create $@ \
+univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
 	--position="cn=univention,$ldap_base" \
 	--set name=uvmm
-univention-directory-manager container/cn create $@ \
+univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
 	--position="cn=univention,$ldap_base" \
 	--set name=profiles
 
 # create machine profiles
-univention-directory-manager uvmm/profile create $@ \
+univention-directory-manager uvmm/profile create "$@" \
 	--ignore_exists \
 	--position="cn=profiles,cn=uvmm,cn=univention,$ldap_base" \
 	--set name="Windows XP x86" \
@@ -92,7 +92,7 @@ univention-directory-manager uvmm/profile create $@ \
 	--set vnc=1 \
 	--set kblayout=de
 
-univention-directory-manager uvmm/profile create $@ \
+univention-directory-manager uvmm/profile create "$@" \
 	--ignore_exists \
 	--position="cn=profiles,cn=uvmm,cn=univention,$ldap_base" \
 	--set name="Windows XP x86_64" \
@@ -105,7 +105,7 @@ univention-directory-manager uvmm/profile create $@ \
 	--set vnc=1 \
 	--set kblayout=de
 
-univention-directory-manager uvmm/profile create $@ \
+univention-directory-manager uvmm/profile create "$@" \
 	--ignore_exists \
 	--position="cn=profiles,cn=uvmm,cn=univention,$ldap_base" \
 	--set name="Windows 7 x86" \
@@ -118,7 +118,7 @@ univention-directory-manager uvmm/profile create $@ \
 	--set vnc=1 \
 	--set kblayout=de
 
-univention-directory-manager uvmm/profile create $@ \
+univention-directory-manager uvmm/profile create "$@" \
 	--ignore_exists \
 	--position="cn=profiles,cn=uvmm,cn=univention,$ldap_base" \
 	--set name="Windows 7 x86_64" \
@@ -131,7 +131,7 @@ univention-directory-manager uvmm/profile create $@ \
 	--set vnc=1 \
 	--set kblayout=de
 
-univention-directory-manager uvmm/profile create $@ \
+univention-directory-manager uvmm/profile create "$@" \
 	--ignore_exists \
 	--position="cn=profiles,cn=uvmm,cn=univention,$ldap_base" \
 	--set name="UCS 2.4-0 (i386)" \
@@ -144,7 +144,7 @@ univention-directory-manager uvmm/profile create $@ \
 	--set vnc=1 \
 	--set kblayout=de
 
-univention-directory-manager uvmm/profile create $@ \
+univention-directory-manager uvmm/profile create "$@" \
 	--ignore_exists \
 	--position="cn=profiles,cn=uvmm,cn=univention,$ldap_base" \
 	--set name="UCS 2.4-0 (amd64)" \
@@ -156,9 +156,6 @@ univention-directory-manager uvmm/profile create $@ \
 	--set interface=eth0 \
 	--set vnc=1 \
 	--set kblayout=de
-
-
-
 
 joinscript_save_current_version
 

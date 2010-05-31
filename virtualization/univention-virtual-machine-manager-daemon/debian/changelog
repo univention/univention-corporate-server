@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.13-2) unstable; urgency=low
+
+  * Fix quoting of "$@" (Bug #18489)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 31 May 2010 13:51:10 +0200
+
 univention-virtual-machine-manager-daemon (0.9.13-1) unstable; urgency=low
 
   * Implement domain-define in cli-tool (Bug #18289)
