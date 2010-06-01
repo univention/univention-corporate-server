@@ -28,8 +28,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-set -e
-
 #DEBHELPER#
 
 case "$1" in
@@ -59,6 +57,10 @@ case "$1" in
 
 	/etc/init.d/squid stop
 	/etc/init.d/squid start
+
+	if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	 	/usr/lib/univention-install/79univention-antivir-web.inst
+	fi
 
     ;;
 
