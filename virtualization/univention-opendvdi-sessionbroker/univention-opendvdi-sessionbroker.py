@@ -31,6 +31,7 @@
 
 import httplib
 import socket
+import os
 import sys
 import time
 from cherrypy import wsgiserver
@@ -41,6 +42,8 @@ import locale
 from optparse import OptionParser
 import logging
 import logging.config
+from univention.opendvdi.sessionbroker import uuid	# backport from python2.5
+import MySQLdb
 
 # test with
 # curl -v http://localhost:8080/connect
@@ -49,48 +52,184 @@ import logging.config
 baseConfig = univention_baseconfig.baseConfig()
 baseConfig.load()
 
-timeout=2
+sessionbroker_dir='/etc/univention/opendvdi/sessionbroker'
+session_db_password=''
+update_interval=5
+SESSION_STATUS_CONNECTING='connecting'
+SESSION_STATUS_ACTIVE='active'
+SESSION_STATUS_SILENT='silent'
+SESSION_STATUS_TERMINATED_CLIENT='clientterm'
+SESSION_STATUS_TERMINATED_SERVER='serverterm'
 
-id=0
-n1=0
+class session_db_connector:
+	def __init__(self, session_db_password) :
+		self.PASSWORD=session_db_password
+		self.HOST	= 'localhost'
+		self.PORT	= 3306
+		self.USER	= 'opendvdi-sessionbroker'
+		self.DB		= 'opendvdi-sessionbroker'
+		self.CONNECTION = None
 
-def multipart_answer():
-	#try:
-		global id
-		part0="--newdevider\n\rContent-Type: application/xml; charset=utf-8\n\r\n\rid: %s\n"  % id
-		part1="--newdevider\n\rContent-Type: application/xml; charset=utf-8\n\r\n\r"
-		yield part0
-		# TODO: wait on message queue, e.g. via threading.Condition().wait()
+	def dbcursor (self):
+		if not self.CONNECTION:
+			self.CONNECTION = self.dbconnect (host=self.HOST, port=self.PORT, user=self.USER, passwd=self.PASSWORD, db=self.DB)
+		try:
+			return self.CONNECTION.cursor()
+		except (AttributeError, MySQLdb.OperationalError):
+			self.dbdisconnect()
+			self.CONNECTION = self.dbconnect (host=self.HOST, port=self.PORT, user=self.USER, passwd=self.PASSWORD, db=self.DB)
+			return self.CONNECTION.cursor()
+
+	def dbconnect (self, *args, **kwargs):
+		if not self.CONNECTION:
+			self.CONNECTION = MySQLdb.connect(*args, **kwargs)
+			if self.CONNECTION.get_server_info() >= '4.1' and not self.CONNECTION.character_set_name().startswith('utf8'):
+				self.CONNECTION.set_character_set('utf8')
+		return self.CONNECTION
+
+	def dbdisconnect (self):
+		self.CONNECTION.close ()
+		self.CONNECTION = None
+
+	def get_alive_timestamp(self, session_id):
+		cursor = self.dbcursor()
+
+		# dictionary for the mysql commands
+		request_dict={
+		'session_table': 'sessions',
+		'session_id': session_id,
+		}
+
+		cursor.execute("SELECT alive_timestamp FROM `%(session_table)s` WHERE session_id='%(session_id)s'" % request_dict)
+		res = cursor.fetchone()
+		return res[0]
+
+		cursor.close()
+
+	def update_alive_timestamp(self, session_id):
+		cursor = self.dbcursor()
+
+		# dictionary for the mysql commands
+		request_dict={
+		'session_table': 'sessions',
+		'session_id': session_id,
+		'alive_timestamp': time.strftime("%Y-%m-%d %H:%M:%S"),
+		'status': SESSION_STATUS_ACTIVE,
+		}
+
+		cursor.execute("UPDATE `%(session_table)s` SET alive_timestamp='%(alive_timestamp)s' WHERE session_id=%(session_id)d" % request_dict)
+
+		cursor.close()
+		watchdog = threading.Timer(update_interval, self.check_session, [session_id])
+		return watchdog
+
+	def newsession(self, username, client_ip):
+		cursor = self.dbcursor()
+
+		timestamp=time.strftime("%Y-%m-%d %H:%M:%S"),
+		# dictionary for the mysql commands
+		request_dict={
+		'session_table': 'sessions',
+		'session_id': uuid.uuid5(uuid.uuid1(), username),
+		'username': username,
+		'client_ip': client_ip,
+		'desktop_host': desktop_host,
+		'session_protocol': session_protocol,
+		'session_start': timestamp,
+		'alive_timestamp': timestamp,
+		'update_interval': update_interval,
+		'status': SESSION_STATUS_CONNECTING,
+		}
+
+		cursor.execute("INSERT INTO `%(session_table)s` VALUES ('%(session_id)s', '%(username)s', '%(client_ip)s', '%(desktop_host)s', '%(session_protocol)s', '%(session_start)s', '%(alive_timestamp)s', '%(update_interval)s, %(status)s')" % request_dict)
+
+		cursor.close()
+		watchdog = threading.Timer(update_interval, self.check_session, [session_id])
+		return (session_id, desktop_host, watchdog)
+
+	def check_session(self, session_id):
+		now=time.time()
+		cursor = self.dbcursor()
+
+		# dictionary for the mysql commands
+		request_dict={
+		'session_table': 'sessions',
+		'session_id': session_id,
+		}
+
+		cursor.execute("SELECT alive_timestamp FROM `%(session_table)s` WHERE session_id='%(session_id)s'" % request_dict)
+		res = cursor.fetchone()
+		last_alive_time=time.strptime(res[0], "%Y-%m-%d %H:%M:%S")
+		if now-time.mktime(last_alive_time) > update_interval:
+			request_dict['status']=SESSION_STATUS_SILENT
+			cursor.execute("UPDATE `%(session_table)s` SET status='%(status)s' WHERE session_id=%(session_id)d" % request_dict)
+
+		cursor.close()
+
+def get_session_db_password():
+	global session_db_password
+	file="opendvdi-sessionbroker.secret" % ou
+	try:
+		f = open (os.path.join(sessionbroker_dir, file), 'r')
+		session_db_password = f.read ()
+		if len (session_db_password) > 0 and session_db_password[-1] == '\n':
+			session_db_password = session_db_password[:-1]
+		f.close ()
+	except IOError:
+		logger.error("IOError reading %s" % (file, ))
+
+class connection_server_response:
+	def __init__(self, username):
+		self.session_db=session_db_connector(session_db_password)
+		self.session_id, self.desktop_host, self.watchdog = self.session_db.newsession(username, client_ip)
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        #if self.session_db.session_terminated():
+        #    raise StopIteration
+		if self.watchdog:
+			msg="--newdivider\n\rContent-Type: application/xml; charset=utf-8\n\r\n\r<?xml version="1.0" ?><body><session id=%s/></body>\n"  % self.id
+			self.watchdog.start()
+			self.watchdog=None
+        	return msg
+
+		# TODO: wait on session.command_queue, e.g. via threading.Condition().wait()
 		while 1:
-			time.sleep(timeout)
-			yield part1
-	#except ('error', (32, 'Broken pipe') ):
-	#	pass
+			time.sleep(1)
+		
+		msg="--newdivider\n\rContent-Type: application/xml; charset=utf-8\n\r\n\r<?xml version="1.0" ?><body><command>%s</command></body>\n" % self.command_queue.pop(0)
+		return msg
+
+##### Exceptions
+#class DBSelectFaild (Exception):
+#	def __init__ (self, msg):
+#		self.msg = msg
 
 def connect(environ, start_response):
 	# streaming HTTP server response
-	global id
-	global n1
 	status = '200 OK'
 	response_headers = [('Content-type','multipart/x-mixed-replace; boundary=newdivider')]
 	start_response(status, response_headers)
-	id+=1
-	n1=0
-	return multipart_answer()
+	return connection_server_response(environ['REMOTE_USER'])
 
 def alive(environ, start_response):
 	d = parse_qs(environ['QUERY_STRING'])
-	clientid = escape(d.get('clientid', [''])[0]) # Returns the first age value.
+	session_id = escape(d.get('session_id', [''])[0])
+
 	# normal HTTP server response
-	global n1
-	global id
 	status = '200 OK'
 	response_headers = [('Content-type','text/plain')]
 	start_response(status, response_headers)
-	n1+=1
 	# NOTE: check connection1? No, let the client monitor it, he must initiate reconnect
-	# TODO: reset connection status timer
-	return [ "ack (clientid: %s - req: %s)" % (id, n1) ]
+	# TODO: check if id is valid
+
+	session_db=session_db_connector(session_db_password)
+	watchdog = session_db.update_alive_timestamp(session_id)
+	watchdog.start()
+
+	return [ "ack session_id: %s" % (session_id, ) ]
 
 def auth_ldap(username, password):
 	"""LDAP bind test."""
@@ -140,7 +279,8 @@ class HTTP_basic_auth_ldap(object):
 		if auth:
 		    scheme, data = auth.split(None, 1)
 		    assert scheme.lower() == 'basic'
-		    username, password = map(escape, data.decode('base64').split(':', 1))
+		    username, password = data.decode('base64').split(':', 1)
+			username = escape(username)
 		    if auth_ldap(username, password):
 		    	environ['REMOTE_USER'] = username
 		    	del environ['HTTP_AUTHORIZATION']
@@ -192,6 +332,12 @@ if __name__ == '__main__':
 
 	if options.verbose:
 		logger.setLevel(logging.DEBUG)
+
+	# Database backend connection
+	get_session_db_password()
+
+	if os.getuid() == 0:	# drop privileges
+		os.setuid(65534)
 
 	# WSGI server
 	server = wsgiserver.CherryPyWSGIServer(('localhost', PORT), wsgi_apps,
