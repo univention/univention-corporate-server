@@ -143,7 +143,7 @@ case "$1" in
 		upd_net=$?
 		/usr/sbin/univention-security-update net --check >/dev/null 2>&1
 		sec_net=$?
-		/usr/sbin/univention-actualise --silent --check >/dev/null 2>&1
+		/usr/sbin/univention-actualise --dist-upgrade --silent --check >/dev/null 2>&1
 		actualise=$?
 
 		if [ "$upd_local$sec_local$upd_net$sec_net$actualise" = 00000 ]; then
@@ -201,7 +201,7 @@ case "$1" in
 				fi
 
 				echo -n "  actualise "
-				/usr/sbin/univention-actualise --silent >>"$LOG" 2>&1
+				/usr/sbin/univention-actualise --dist-upgrade --silent >>"$LOG" 2>&1
 				echo -n "  security-update "
 				/usr/sbin/univention-security-update "$mode" --silent >>"$LOG" 2>&1
 				echo

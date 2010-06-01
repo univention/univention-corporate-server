@@ -49,7 +49,7 @@ def write_cron_job(baseConfig, cron, updateto, reboot):
 		if reboot:
 			reboot='--reboot=%s' % reboot
 		file.write('/usr/sbin/univention-updater %s %s %s | grep -v "System is up to date"; ' % (target, updateto, reboot))
-		file.write('/usr/sbin/univention-actualise --silent; ')
+		file.write('/usr/sbin/univention-actualise --dist-upgrade --silent; ')
 		file.write('/usr/sbin/univention-security-update %s | grep -vF "No Security Update available"\n' % target)
 	file.close()
 

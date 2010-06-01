@@ -1,3 +1,9 @@
+univention-updater (5.0.85-1) unstable; urgency=low
+
+  * run univention-actualise with --dist-upgrade (Bug #18178)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 01 Jun 2010 14:31:25 +0200
+
 univention-updater (5.0.84-1) unstable; urgency=low
 
   * add --ignoressh and --ignoreterm to univention-updater (Bug #17258)
