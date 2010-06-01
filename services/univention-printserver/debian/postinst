@@ -48,7 +48,7 @@ fi
 
 #DEBHELPER#
 
-if [ "$server_role" = "domaincontroller_master" ]; then
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.8; then
 		cat /var/lib/univention-install/.index | grep -v "univention-printserver" >/var/lib/univention-install/.index2
 		mv /var/lib/univention-install/.index2 /var/lib/univention-install/.index
@@ -56,7 +56,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-admin settings/printermodel remove --dn "cn=cupsModel,cn=univention,$ldap_base"
 	fi
 
-	/usr/lib/univention-install/79univention-printserver.inst || true
+	/usr/lib/univention-install/79univention-printserver.inst
 fi
 
 if [ ! -d /var/lib/cups/certs ]; then

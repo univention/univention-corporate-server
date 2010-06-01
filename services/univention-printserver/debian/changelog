@@ -1,3 +1,9 @@
+univention-printserver (4.0.1-2) unstable; urgency=low
+
+  * run joinscript on DC backup too (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 01 Jun 2010 11:19:33 +0200
+
 univention-printserver (4.0.1-1) unstable; urgency=low
 
   * added join script for registering to nagios service check (Bug #17957)
