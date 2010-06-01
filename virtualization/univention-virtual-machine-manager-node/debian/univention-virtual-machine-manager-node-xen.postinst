@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
-eval $(univention-config-registry shell server/role)
+eval "$(univention-config-registry shell server/role)"
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	univention-config-registry set xen/server/unix_server?yes

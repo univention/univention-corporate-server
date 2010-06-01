@@ -29,7 +29,7 @@
 
 univention-config-registry set xen/repository?"file:///var/lib/univention-server-cdrom"
 
-eval $(univention-config-registry shell kernel/modules)
+eval "$(univention-config-registry shell kernel/modules)"
 
 echo "$kernel_modules" | grep xen-evtchn >/dev/null
 if [ $? = 1 ]; then

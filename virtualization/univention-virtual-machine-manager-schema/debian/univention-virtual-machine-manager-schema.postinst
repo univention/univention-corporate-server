@@ -30,10 +30,10 @@
 
 #DEBHELPER#
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
-if [ -x /etc/init.d/slapd  ]; then
-	/etc/init.d/slapd crestart
+if [ -x /etc/init.d/slapd ]; then
+	invoke-rc.d slapd crestart
 fi
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
@@ -41,4 +41,3 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 fi
 
 exit 0
-
