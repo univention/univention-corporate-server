@@ -1,3 +1,9 @@
+univention-nagios-servicechecks (1.0.1-2) unstable; urgency=low
+
+  * registration is done in service packages (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 01 Jun 2010 11:31:04 +0200
+
 univention-nagios-servicechecks (1.0.1-1) unstable; urgency=low
 
   * register services if nagios is enabled for that host (Bug #17957)

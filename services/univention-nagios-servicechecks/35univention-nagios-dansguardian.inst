@@ -55,14 +55,6 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		 	--set checkArgs='' \
 		 	--set useNRPE=1 \
 		 	--set notificationOptionCritical=1
-
-		# only register client to UNIVENTION_* if nagios has been enabled for computer object
-		if [ "$(ldapsearch -xLLL -h $ldap_master -b $ldap_hostdn univentionNagiosEnabled | sed -nre 's/^univentionNagiosEnabled: //p')" = "1" ] ; then
-			# only register client to UNIVENTION_* if corresponding service is installed (do not register on nagios server if service is not installed)
-			if dpkg -l univention-antivir-web 2>&1 | grep -q ^i ; then
-				univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_DANSGUARDIAN,cn=nagios,$ldap_base"
-			fi
-		fi
 	fi
 fi
 
