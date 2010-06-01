@@ -1,8 +1,9 @@
 univention-virtual-machine-manager-daemon (0.9.15-1) unstable; urgency=low
 
   * Return Response_ERROR for unreachable hosts (Bug #18459)
+  * Fix LDAP import.
 
- -- Philipp Hahn <hahn@univention.de>  Tue, 01 Jun 2010 08:51:59 +0200
+ -- Philipp Hahn <hahn@univention.de>  Tue, 01 Jun 2010 12:16:34 +0200
 
 univention-virtual-machine-manager-daemon (0.9.14-1) unstable; urgency=low
 

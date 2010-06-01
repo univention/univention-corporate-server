@@ -38,7 +38,7 @@ except ImportError:
 	import pickle
 import univention.baseconfig
 import univention.uldap
-import ldap # LDAPError
+from ldap import LDAPError
 import ldapurl
 from helpers import TranslatableException, N_ as _
 import logging
@@ -208,7 +208,7 @@ def ldap_annotation(uuid, ldap_uri=None):
 			del data['objectClass']
 	
 			return data
-		except ldap.LDAPError, e:
+		except LDAPError, e:
 			raise LdapConnectionError(_('Could not query "%(uri)s"'), uri=ldap_uri)
 	finally:
 		ldap_conn.lo.unbind()
