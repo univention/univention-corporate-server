@@ -1,3 +1,9 @@
+univention-antivir-web (4.0.1-2) unstable; urgency=low
+
+  * call join script during installation (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 01 Jun 2010 11:22:57 +0200
+
 univention-antivir-web (4.0.1-1) unstable; urgency=low
 
   * added join script for registering to nagios service check (Bug #17957)
