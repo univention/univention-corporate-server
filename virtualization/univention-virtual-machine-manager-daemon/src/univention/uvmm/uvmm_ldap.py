@@ -38,7 +38,7 @@ except ImportError:
 	import pickle
 import univention.baseconfig
 import univention.uldap
-from ldap import LDAPError
+import ldap # LDAPError
 import ldapurl
 from helpers import TranslatableException, N_ as _
 import logging
@@ -50,6 +50,10 @@ SERVICES = {
 		"XEN Host": "xen://%s/",
 		"KVM Host": "qemu://%s/system",
 		}
+
+LDAP_UVMM_RDN = "cn=Virtual Machine Manager"
+LDAP_INFO_RDN = "cn=Information,%s" % LDAP_UVMM_RDN
+LDAP_PROFILES_RDN = "cn=Profiles,%s" % LDAP_UVMM_RDN
 
 class LdapError(TranslatableException):
 	"""LDAP error."""
@@ -193,7 +197,7 @@ def ldap_annotation(uuid, ldap_uri=None):
 	"""Load anntonations for domain from LDAP."""
 	filter = "(&(objectClass=univentionVirtualMachine)(univentionVirtualMachineUUID=%s))" % (uuid,)
 	
-	ldap_uri = _ldap_uri(ldap_uri, 'cn=Virtual Machine Manager')
+	ldap_uri = _ldap_uri(ldap_uri, LDAP_INFO_RDN)
 	ldap_conn = ldap_uri.connect()
 	try:
 		try:

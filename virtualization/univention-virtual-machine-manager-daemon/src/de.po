@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager 0.9.10-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2010-05-31 13:16+0200\n"
+"POT-Creation-Date: 2010-06-01 08:46+0200\n"
 "PO-Revision-Date: 2010-05-28 11:30+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "%(strerror)s [%(errno)d]"
 msgstr "%(strerror)s [%(errno)d]"
 
-#: src/univention/uvmm/commands.py:267
+#: src/univention/uvmm/commands.py:269
 #, python-format
 msgid "Command \"%(command)s\" is restricted"
 msgstr "Kommando \"%(command)s\" ist verboten"
@@ -36,7 +36,7 @@ msgstr "Verbindungsoptionen"
 msgid "Could not connect to \"%(host)s:%(port)d\": %(errno)d"
 msgstr "Keine Verbindung zu \"%(host)s:%(port)d\": %(errno)d"
 
-#: src/univention/uvmm/uvmm_ldap.py:110
+#: src/univention/uvmm/uvmm_ldap.py:114
 #, python-format
 msgid "Could not connect to \"%(uri)s\"\""
 msgstr "Keine Verbindung zu \"%(uri)s\"\""
@@ -46,7 +46,7 @@ msgstr "Keine Verbindung zu \"%(uri)s\"\""
 msgid "Could not open socket \"%(path)s\": %(errno)d"
 msgstr "Konnte Socket \"%(path)s\" nicht öffnen: %(errno)d"
 
-#: src/univention/uvmm/uvmm_ldap.py:188 src/univention/uvmm/uvmm_ldap.py:208
+#: src/univention/uvmm/uvmm_ldap.py:192 src/univention/uvmm/uvmm_ldap.py:212
 #, python-format
 msgid "Could not query \"%(uri)s\""
 msgstr "Keine Antwort für \"%(uri)s\""
@@ -87,12 +87,12 @@ msgstr "Fehler beim Verwalten der Domäne \"%(domain)s: %(error)s"
 msgid "Error migrating domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Migrieren der Domäne \"%(domain)s: %(error)s"
 
-#: src/univention/uvmm/uvmm_ldap.py:157
+#: src/univention/uvmm/uvmm_ldap.py:161
 #, python-format
 msgid "Error reading %(file)s: %(msg)s"
 msgstr "Fehler beim Lesen der Datei %(file)s: %(msg)s"
 
-#: src/univention/uvmm/uvmm_ldap.py:132
+#: src/univention/uvmm/uvmm_ldap.py:136
 #, python-format
 msgid "Error removing %(file)s.old: %(msg)s"
 msgstr "Fehler beim Entfernen der Datei %(file)s.old: %(msg)s"
@@ -102,12 +102,12 @@ msgstr "Fehler beim Entfernen der Datei %(file)s.old: %(msg)s"
 msgid "Error removing domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Löschen der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/uvmm_ldap.py:142
+#: src/univention/uvmm/uvmm_ldap.py:146
 #, python-format
 msgid "Error renaming %(file)s.new: %(msg)s"
 msgstr "Fehler beim Umbenennen der Datei %(file)s.new: %(msg)s"
 
-#: src/univention/uvmm/uvmm_ldap.py:137
+#: src/univention/uvmm/uvmm_ldap.py:141
 #, python-format
 msgid "Error renaming %(file)s: %(msg)s"
 msgstr "Fehler beim Umbenennen der Datei %(file)s: %(msg)s"
@@ -185,10 +185,10 @@ msgstr "Verbindung zum Hypervisor \"%(uri)s\" besteht bereits."
 msgid "Hypervisor \"%(uri)s\" is not connected."
 msgstr "Noch keine Verbindung zum Hypervisor \"%(uri)s\"."
 
-#: src/univention/uvmm/uvmm_ldap.py:77
+#: src/univention/uvmm/uvmm_ldap.py:81
 #, python-format
 msgid "Illegal URI: %(uri)s"
-msgstr ""
+msgstr "Fehlerhafte URI: %(uri)s"
 
 #: src/univention/uvmm/protocol.py:75
 #, python-format
@@ -214,15 +214,15 @@ msgstr "LDAP-Optionen"
 msgid "LDAP-uri for searching initial nodes"
 msgstr "LDAP-URI zum Suchen der initialen Knoten"
 
-#: src/univention/uvmm/uvmm_ldap.py:97
+#: src/univention/uvmm/uvmm_ldap.py:101
 msgid "No LDAP base in ldap/base."
 msgstr "Keine LDAP-Basis in ldap/base."
 
-#: src/univention/uvmm/uvmm_ldap.py:85
+#: src/univention/uvmm/uvmm_ldap.py:89
 msgid "No LDAP server in ldap/server/name."
 msgstr "Kein LDAP-Server in ldap/server/name."
 
-#: src/univention/uvmm/uvmm_ldap.py:165
+#: src/univention/uvmm/uvmm_ldap.py:169
 msgid "No SERVICES defined."
 msgstr "Keine Dienste(SERVICES) definiert."
 
@@ -233,6 +233,11 @@ msgstr "Kein Modus angegeben"
 #: src/univention-virtual-machine-manager:100
 msgid "No nodes found."
 msgstr "Keine Knoten gefunden."
+
+#: src/univention/uvmm/commands.py:87
+#, python-format
+msgid "Node %(uri)s is not available"
+msgstr "Knoten %(uri)s ist nicht verfügbar"
 
 #: src/univention/uvmm/protocol.py:81
 msgid "Not a Packet"
@@ -309,23 +314,23 @@ msgstr "Unbekannter Modus \"%(mode)s\""
 msgid "Unsupported state transition %(cur_state)s to %(next_state)s"
 msgstr "Ungültiger Zustandsübergang von %(cur_state)s zu %(next_state)s"
 
-#: src/univention/uvmm/commands.py:182
+#: src/univention/uvmm/commands.py:184
 #, python-format
 msgid "definition != Domain: %(domain)s"
 msgstr "definition != Domain: %(domain)s"
 
-#: src/univention/uvmm/commands.py:195 src/univention/uvmm/commands.py:210
-#: src/univention/uvmm/commands.py:238 src/univention/uvmm/commands.py:256
+#: src/univention/uvmm/commands.py:197 src/univention/uvmm/commands.py:212
+#: src/univention/uvmm/commands.py:240 src/univention/uvmm/commands.py:258
 #, python-format
 msgid "domain != string: %(domain)s"
 msgstr "domain != Zeichenkette: %(domain)s"
 
-#: src/univention/uvmm/commands.py:150
+#: src/univention/uvmm/commands.py:152
 #, python-format
 msgid "group != string: %(group)s"
 msgstr "group != Zeichenkette: %(group)s"
 
-#: src/univention/uvmm/commands.py:137
+#: src/univention/uvmm/commands.py:139
 #, python-format
 msgid "hz != int: %(hz)s"
 msgstr "hz != Ganzzahl: %(hz)s"
@@ -335,12 +340,12 @@ msgstr "hz != Ganzzahl: %(hz)s"
 msgid "ldap://HOST:PORT/BASE"
 msgstr "ldap://RECHNER:PORT/BASIS"
 
-#: src/univention/uvmm/commands.py:212 src/univention/uvmm/commands.py:225
+#: src/univention/uvmm/commands.py:214 src/univention/uvmm/commands.py:227
 #, python-format
 msgid "statefile != string: %(file)s"
 msgstr "statefile != Zeichenkette: %(file)s"
 
-#: src/univention/uvmm/commands.py:258
+#: src/univention/uvmm/commands.py:260
 #, python-format
 msgid "target_uri != string: %(uri)s"
 msgstr "target_uri != Zeichenkette: %(uri)s"
@@ -350,16 +355,16 @@ msgstr "target_uri != Zeichenkette: %(uri)s"
 msgid "unknown node %(uri)s"
 msgstr "Unbekannter Knoten %(uri)s"
 
-#: src/univention/uvmm/commands.py:197
+#: src/univention/uvmm/commands.py:199
 #, python-format
 msgid "unsupported state: %(state)s"
 msgstr "Unbekannter Zustand: %(state)s"
 
 #: src/univention/uvmm/commands.py:55 src/univention/uvmm/commands.py:67
-#: src/univention/uvmm/commands.py:79 src/univention/uvmm/commands.py:139
-#: src/univention/uvmm/commands.py:180 src/univention/uvmm/commands.py:193
-#: src/univention/uvmm/commands.py:208 src/univention/uvmm/commands.py:223
-#: src/univention/uvmm/commands.py:236 src/univention/uvmm/commands.py:254
+#: src/univention/uvmm/commands.py:79 src/univention/uvmm/commands.py:141
+#: src/univention/uvmm/commands.py:182 src/univention/uvmm/commands.py:195
+#: src/univention/uvmm/commands.py:210 src/univention/uvmm/commands.py:225
+#: src/univention/uvmm/commands.py:238 src/univention/uvmm/commands.py:256
 #, python-format
 msgid "uri != string: %(uri)s"
 msgstr "uri != Zeichenkette: %(uri)s"
@@ -377,12 +382,12 @@ msgstr "Aufruf: %prog [Optionen] Kommando"
 msgid "usage: %prog [options] uri"
 msgstr "Aufruf: %prog [Optionen] uri"
 
-#: src/univention/uvmm/commands.py:240
+#: src/univention/uvmm/commands.py:242
 #, python-format
 msgid "volumes != list: %(volumes)s"
 msgstr "volumes != Liste: %(volumes)s"
 
-#: src/univention/uvmm/commands.py:243
+#: src/univention/uvmm/commands.py:245
 #, python-format
 msgid "volumes[] != string: %(volume)s"
 msgstr "volumes[] != Zeichenkette: %(volume)s"

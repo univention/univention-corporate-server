@@ -83,6 +83,8 @@ class _Commands:
 			local_data = node.node_query(request.uri)
 			if local_data is None:
 				raise CommandError('NODE_QUERY', _('unknown node %(uri)s'), uri=request.uri)
+			if local_data.conn is None:
+				raise CommandError('NODE_QUERY', _('Node %(uri)s is not available'), uri=request.uri)
 
 			pkg_data = protocol.Data_Node()
 			pkg_data.name = local_data.name
