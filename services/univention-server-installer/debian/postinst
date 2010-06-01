@@ -32,6 +32,11 @@
 
 
 if [ "$1" = "configure" ]; then
+	eval $(univention-config-registry shell server/role)
+	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]
+	then
+		/usr/lib/univention-install/81univention-server-installation.inst
+	fi
 	if test -f /etc/init.d/univention-directory-listener
 		then
 		/etc/init.d/univention-directory-listener crestart

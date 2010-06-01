@@ -1,3 +1,9 @@
+univention-server-installer (3.0.4-1) unstable; urgency=low
+
+  * execute join-script in postinst (Bug #13861)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 01 Jun 2010 10:56:27 +0200
+
 univention-server-installer (3.0.3-1) unstable; urgency=low
 
   * added start option feature, Bug #13244
