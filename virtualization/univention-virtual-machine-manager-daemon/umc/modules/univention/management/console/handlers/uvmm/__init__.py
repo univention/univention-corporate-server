@@ -297,6 +297,11 @@ class handler( umch.simpleHandler ):
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		node = self.uvmm.get_node_info( node_uri )
 
+		if not node:
+			res.dialog[ 0 ].set_dialog( umcd.Text( 'The host is not available at the moment' ) )
+			self.finished(object.id(), res)
+			return
+
 		content = umcd.List()
 		reload_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : object.options[ 'node' ] } )
 		reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
@@ -407,7 +412,10 @@ class handler( umch.simpleHandler ):
 
 		content2.add_row( [ umcd.Text( '' ) ] )
 
-		content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'subsection.%s' % domain_info.name ), attributes = { 'colspan' : '2' } ), ] )
+		if not domain_info:
+			content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = False, name = 'subsection.newdomain' ), attributes = { 'colspan' : '2' } ), ] )
+		else:
+			content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'subsection.%s' % domain_info.name ), attributes = { 'colspan' : '2' } ), ] )
 
 		ids = ( name.id(), os.id(), os_type.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), drives.id(), vnc.id(), kblayout.id() )
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )

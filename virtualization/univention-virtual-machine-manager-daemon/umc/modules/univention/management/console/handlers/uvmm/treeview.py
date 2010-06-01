@@ -74,6 +74,8 @@ class TreeView( object ):
 		icon = 'uvmm/' + opt
 
 		for item in data:
+			if item == None:
+				continue
 			if type( item ) not in ( list, tuple ):
 				if item == 'Domain-0':
 					continue

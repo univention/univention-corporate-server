@@ -152,6 +152,9 @@ class Client( notifier.signals.Provider ):
 			raise ConnectionError()
 		node_info = self.recv_blocking()
 
+		if isinstance( node_info, protocol.Response_ERROR ):
+			return None
+
 		return node_info.data
 
 	def get_domain_info( self, node, domain ):
@@ -184,7 +187,8 @@ class Client( notifier.signals.Provider ):
 				if not self.send( req.pack() ):
 					raise ConnectionError()
 				node_info = self.recv_blocking()
-				
+				if isinstance( node_info, protocol.Response_ERROR ):
+					continue
 				if node_info.data.name == name:
 					return node
 
@@ -230,10 +234,13 @@ class Client( notifier.signals.Provider ):
 				if not self.send( req.pack() ):
 					raise ConnectionError()
 				node_info = self.recv_blocking()
-				
-				for dom in node_info.data.domains:
-					domains.append( dom.name )
-				group.extend( [ node_info.data.name, domains ] )
+
+				if isinstance( node_info, protocol.Response_ERROR ):
+					group.extend( [ node[ node.find( '://' ) + 3 : node.rfind( '/' ) ], None ]  )
+				else:
+					for dom in node_info.data.domains:
+						domains.append( dom.name )
+					group.extend( [ node_info.data.name, domains ] )
 			tree_data.append( [ grp, group ] )
 
 		return tree_data
