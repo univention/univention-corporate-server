@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.15-2) unstable; urgency=low
+
+  * Handle LDAP exception (Bug #18287)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 01 Jun 2010 13:56:35 +0200
+
 univention-virtual-machine-manager-daemon (0.9.15-1) unstable; urgency=low
 
   * Return Response_ERROR for unreachable hosts (Bug #18459)

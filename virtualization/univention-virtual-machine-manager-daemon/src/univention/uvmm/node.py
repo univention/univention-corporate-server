@@ -40,7 +40,7 @@ import logging
 from xml.dom.minidom import getDOMImplementation, parseString
 import math
 from helpers import TranslatableException, N_ as _
-from uvmm_ldap import ldap_annotation
+from uvmm_ldap import ldap_annotation, LdapError
 
 logger = logging.getLogger('uvmmd.node')
 
@@ -225,7 +225,10 @@ class Domain(object):
 	def update_expensive(self, domain):
 		"""Update statistics."""
 		self.xml2obj( domain )
-		self.annotations = ldap_annotation(self.uuid)
+		try:
+			self.annotations = ldap_annotation(self.uuid)
+		except LdapError, e:
+			self.annotations = {}
 
 	def xml2obj( self, domain ):
 		"""Parse XML into python object."""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager 0.9.10-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2010-06-01 08:46+0200\n"
+"POT-Creation-Date: 2010-06-01 13:18+0200\n"
 "PO-Revision-Date: 2010-05-28 11:30+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -36,17 +36,21 @@ msgstr "Verbindungsoptionen"
 msgid "Could not connect to \"%(host)s:%(port)d\": %(errno)d"
 msgstr "Keine Verbindung zu \"%(host)s:%(port)d\": %(errno)d"
 
-#: src/univention/uvmm/uvmm_ldap.py:114
+#: src/univention/uvmm/uvmm_ldap.py:117
 #, python-format
-msgid "Could not connect to \"%(uri)s\"\""
-msgstr "Keine Verbindung zu \"%(uri)s\"\""
+msgid "Could not connect to \"%(uri)s\""
+msgstr "Keine Verbindung zu \"%(uri)s\""
+
+#: src/univention/uvmm/uvmm_ldap.py:226
+msgid "Could not open LDAP-Admin connection"
+msgstr "Keine LDAP-Verbindung als Administrator"
 
 #: src/univention/uvmm/client.py:100
 #, python-format
 msgid "Could not open socket \"%(path)s\": %(errno)d"
 msgstr "Konnte Socket \"%(path)s\" nicht öffnen: %(errno)d"
 
-#: src/univention/uvmm/uvmm_ldap.py:192 src/univention/uvmm/uvmm_ldap.py:212
+#: src/univention/uvmm/uvmm_ldap.py:195 src/univention/uvmm/uvmm_ldap.py:215
 #, python-format
 msgid "Could not query \"%(uri)s\""
 msgstr "Keine Antwort für \"%(uri)s\""
@@ -87,12 +91,12 @@ msgstr "Fehler beim Verwalten der Domäne \"%(domain)s: %(error)s"
 msgid "Error migrating domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Migrieren der Domäne \"%(domain)s: %(error)s"
 
-#: src/univention/uvmm/uvmm_ldap.py:161
+#: src/univention/uvmm/uvmm_ldap.py:164
 #, python-format
 msgid "Error reading %(file)s: %(msg)s"
 msgstr "Fehler beim Lesen der Datei %(file)s: %(msg)s"
 
-#: src/univention/uvmm/uvmm_ldap.py:136
+#: src/univention/uvmm/uvmm_ldap.py:139
 #, python-format
 msgid "Error removing %(file)s.old: %(msg)s"
 msgstr "Fehler beim Entfernen der Datei %(file)s.old: %(msg)s"
@@ -102,12 +106,12 @@ msgstr "Fehler beim Entfernen der Datei %(file)s.old: %(msg)s"
 msgid "Error removing domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Löschen der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/uvmm_ldap.py:146
+#: src/univention/uvmm/uvmm_ldap.py:149
 #, python-format
 msgid "Error renaming %(file)s.new: %(msg)s"
 msgstr "Fehler beim Umbenennen der Datei %(file)s.new: %(msg)s"
 
-#: src/univention/uvmm/uvmm_ldap.py:141
+#: src/univention/uvmm/uvmm_ldap.py:144
 #, python-format
 msgid "Error renaming %(file)s: %(msg)s"
 msgstr "Fehler beim Umbenennen der Datei %(file)s: %(msg)s"
@@ -185,7 +189,7 @@ msgstr "Verbindung zum Hypervisor \"%(uri)s\" besteht bereits."
 msgid "Hypervisor \"%(uri)s\" is not connected."
 msgstr "Noch keine Verbindung zum Hypervisor \"%(uri)s\"."
 
-#: src/univention/uvmm/uvmm_ldap.py:81
+#: src/univention/uvmm/uvmm_ldap.py:84
 #, python-format
 msgid "Illegal URI: %(uri)s"
 msgstr "Fehlerhafte URI: %(uri)s"
@@ -214,15 +218,15 @@ msgstr "LDAP-Optionen"
 msgid "LDAP-uri for searching initial nodes"
 msgstr "LDAP-URI zum Suchen der initialen Knoten"
 
-#: src/univention/uvmm/uvmm_ldap.py:101
+#: src/univention/uvmm/uvmm_ldap.py:104
 msgid "No LDAP base in ldap/base."
 msgstr "Keine LDAP-Basis in ldap/base."
 
-#: src/univention/uvmm/uvmm_ldap.py:89
+#: src/univention/uvmm/uvmm_ldap.py:92
 msgid "No LDAP server in ldap/server/name."
 msgstr "Kein LDAP-Server in ldap/server/name."
 
-#: src/univention/uvmm/uvmm_ldap.py:169
+#: src/univention/uvmm/uvmm_ldap.py:172
 msgid "No SERVICES defined."
 msgstr "Keine Dienste(SERVICES) definiert."
 
