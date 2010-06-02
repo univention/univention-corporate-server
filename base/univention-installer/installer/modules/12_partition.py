@@ -1126,6 +1126,12 @@ class object(content):
 						fstype = self.parent.container['profile']['create'][disk][num]['fstype']
 						start = self.parent.container['profile']['create'][disk][num]['start']
 						end = self.parent.container['profile']['create'][disk][num]['end']
+
+						# do not create partitions if only_mount is set
+						if type == "only_mount":
+							self.parent.debug('will not create partition %s%s due type == %s' % (disk, num, type))
+							continue
+
 						if not fstype or fstype.lower() in [ 'none' ]:
 							self.run_cmd('/sbin/PartedCreate -d %s -t %s -s %s -e %s 2>&1' % (disk, type, start, end))
 						else:
@@ -1163,6 +1169,12 @@ class object(content):
 					for num in num_list:
 						type = self.parent.container['profile']['create'][disk][num]['type']
 						fstype = self.parent.container['profile']['create'][disk][num]['fstype']
+						format = self.parent.container['profile']['create'][disk][num]['format']
+
+						# do not create fs on partitions if format is 0
+						if format == "0":
+							self.parent.debug('will not create fs on partition %s%s due format == %s' % (disk, num, format))
+							continue
 
 						mkfs_cmd = None
 						fstype = fstype.lower()
@@ -1182,6 +1194,12 @@ class object(content):
 				for lvname, lv in self.parent.container['profile']['lvmlv']['create'].items():
 					device = '/dev/%s/%s' % (lv['vg'], lvname)
 					fstype = lv['fstype'].lower()
+					format = lv['format']
+
+					# do not create fs on partitions if format is 0
+					if format == "0":
+						self.parent.debug('will not create fs on %s due format == %s' % (lvname, format))
+						continue
 
 					mkfs_cmd = None
 					fstype = fstype.lower()

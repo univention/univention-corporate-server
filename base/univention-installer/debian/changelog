@@ -1,3 +1,9 @@
+univention-installer (6.0.20-1) unstable; urgency=low
+
+  * do not create/format partition if type/format is set to only_mount/0 in profile Bug #13151
+
+ -- Felix Botner <botner@univention.de>  Wed, 02 Jun 2010 10:08:21 +0200
+
 univention-installer (6.0.19-1) unstable; urgency=low
 
   * disable dns forwarder for non server roles Bug #13836
