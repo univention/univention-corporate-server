@@ -40,6 +40,9 @@ import univention.baseconfig
 import univention.uldap
 from ldap import LDAPError
 import ldapurl
+import univention.admin.uldap
+import univention.admin.modules
+import univention.admin.handlers.uvmm.info as uvmm_info
 from helpers import TranslatableException, N_ as _
 import logging
 
@@ -111,7 +114,7 @@ class _ldap_uri(object):
 			if not conn:
 				raise LDAPError() # catched below
 		except LDAPError, e:
-			raise LdapConnectionError(_('Could not connect to "%(uri)s""'), uri=str(self))
+			raise LdapConnectionError(_('Could not connect to "%(uri)s"'), uri=str(self))
 		return conn
 	
 	def __str__(self):
@@ -194,21 +197,46 @@ def ldap_uris(ldap_uri=None):
 		ldap_conn.lo.unbind()
 
 def ldap_annotation(uuid, ldap_uri=None):
-	"""Load anntonations for domain from LDAP."""
-	filter = "(&(objectClass=univentionVirtualMachine)(univentionVirtualMachineUUID=%s))" % (uuid,)
-	
-	ldap_uri = _ldap_uri(ldap_uri, LDAP_INFO_RDN)
-	ldap_conn = ldap_uri.connect()
-	try:
+	"""Load annotations for domain from LDAP."""
+	if ldap_uri:
+		base = _ldap_uri(ldap_uri, LDAP_INFO_RDN)
+		lo = base.connect()
+	else:
 		try:
-			res = ldap_conn.search(filter)
-			if len(res) != 1:
-				return {}
-			dn, data = res[0]
-			del data['objectClass']
-	
-			return data
-		except LDAPError, e:
-			raise LdapConnectionError(_('Could not query "%(uri)s"'), uri=ldap_uri)
-	finally:
-		ldap_conn.lo.unbind()
+			lo, position = univention.admin.uldap.getMachineConnection()
+			base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
+		except IOError, e:
+			raise LdapConnectionError(_('Could not open LDAP-Machine connection'))
+	co = None
+	filter = "(uuid=%s)" % (uuid,)
+	try:
+		res = univention.admin.modules.lookup(uvmm_info, co, lo, scope='domain', base=base, filter=filter, required=True, unique=True)
+		record = res[0]
+		return dict(record)
+	except univention.admin.uexceptions.base:
+		return {}
+
+def ldap_modify(uuid, ldap_uri=None):
+	"""Modify annotations for domain from LDAP."""
+	if ldap_uri:
+		base = _ldap_uri(ldap_uri, LDAP_INFO_RDN)
+		lo = base.connect()
+	else:
+		try:
+			lo, position = univention.admin.uldap.getAdminConnection()
+			base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
+		except IOError, e:
+			raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
+	co = None
+	filter = "(uuid=%s)" % (uuid,)
+	try:
+		res = univention.admin.modules.lookup(uvmm_info, co, lo, scope='domain', base=base, filter=filter, required=True, unique=True)
+		record = res[0]
+		record.open()
+		record.commit = lambda:record.modify()
+	except univention.admin.uexceptions.base:
+		position.setDn(base)
+		record = uvmm_info.object(co, lo, position)
+		record['uuid'] = uuid
+		record.commit = lambda:record.create()
+	return record

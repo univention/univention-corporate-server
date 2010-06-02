@@ -330,7 +330,7 @@ class handler( umch.simpleHandler ):
 			if len( buttons ) > num_buttons:
 				num_buttons = len( buttons )
 			mem_usage = percentage( int( float( domain.curMem ) / domain.maxMem * 100 ), label = '%s / %s' % ( block2byte( domain.curMem ), block2byte( domain.maxMem ) ), width = 120 )
-			table.add_row( [ domain_btn, handler.STATES[ domain.state ], domain.virt_tech, percentage( float( domain.cputime[ 0 ] ) / 10, width = 80 ), mem_usage, ] + buttons )
+			table.add_row( [ domain_btn, handler.STATES[ domain.state ], getattr(domain, 'annotations', {}).get('os', ''), percentage( float( domain.cputime[ 0 ] ) / 10, width = 80 ), mem_usage, ] + buttons )
 
 		if len( table.get_content() ):
 			table.set_header( [ _( 'Instance' ), _( 'Status' ), _( 'Operating System' ), _( 'CPU usage' ), _( 'Memory usage' ) ] )
@@ -345,17 +345,17 @@ class handler( umch.simpleHandler ):
 		types = []
 		archs = []
 		for template in node.capabilities:
-			if not template.os_type in types:
-				types.append( template.os_type )
+			if not template.virt_tech in types:
+				types.append( template.virt_tech )
 			if not template.arch in archs:
 				archs.append( template.arch )
 		type_select.update_choices( types )
 		arch_select.update_choices( archs )
 									
 		name = umcd.make( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ) )
-		os_type = umcd.make( self[ 'uvmm/domain/configure' ][ 'type' ], default = handler._getattr( domain_info, 'os_type', 'xen' ) )
-		arch = umcd.make( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, '', 'i686' ) )
-		os = umcd.make( self[ 'uvmm/domain/configure' ][ 'os' ], default = handler._getattr( domain_info, 'os', 'unknown' ) )
+		virt_tech = umcd.make( self[ 'uvmm/domain/configure' ][ 'type' ], default = handler._getattr( domain_info, 'virt_tech', 'xen' ) )
+		arch = umcd.make( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ) )
+		os = umcd.make( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', '') )
 		cpus_select.max = int( node.cpus )
 		cpus = umcd.make( self[ 'uvmm/domain/configure' ][ 'cpus' ], default = handler._getattr( domain_info, 'vcpus', '1' ) )
 		mem = handler._getattr( domain_info, 'maxMem', '0' )
@@ -396,7 +396,7 @@ class handler( umch.simpleHandler ):
 		kblayout = umcd.make( self[ 'uvmm/domain/configure' ][ 'kblayout' ], default = vnc_keymap )
 
 		content.add_row( [ name, os ] )
-		content.add_row( [ arch, os_type ] )
+		content.add_row( [ arch, virt_tech ] )
 		content.add_row( [ cpus, mac ] )
 		content.add_row( [ memory, interface ] )
 
@@ -417,7 +417,7 @@ class handler( umch.simpleHandler ):
 		else:
 			content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'subsection.%s' % domain_info.name ), attributes = { 'colspan' : '2' } ), ] )
 
-		ids = ( name.id(), os.id(), os_type.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), drives.id(), vnc.id(), kblayout.id() )
+		ids = ( name.id(), os.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), drives.id(), vnc.id(), kblayout.id() )
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
 		overview_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = object.options )
 		content.add_row( [ '', umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ] ) ] )
@@ -444,7 +444,7 @@ class handler( umch.simpleHandler ):
 
 		infos = umcd.List()
 		infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Status' ) ), handler.STATES[ domain_info.state ] ] )
-		infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Operating System' ) ), 'FIXME' ] )
+		infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Operating System' ) ), getattr(domain_info, 'annotations', {}).get('os') ] )
 
 		stats = umcd.List()
 		mem_usage = percentage( int( float( domain_info.curMem ) / domain_info.maxMem * 100 ), label = '%s / %s' % ( block2byte( domain_info.curMem ), block2byte( domain_info.maxMem ) ), width = 130 )
@@ -519,7 +519,7 @@ class handler( umch.simpleHandler ):
 			domain.uuid = domain_info.uuid
 		domain.name = object.options[ 'name' ]
 		domain.virt_tech = object.options[ 'type' ]
-		domain.os = object.options[ 'os' ]
+		domain.annotations['os'] = object.options[ 'os' ]
 		domain.arch = object.options[ 'arch' ]
 		domain.vcpus = int( object.options[ 'cpus' ] )
 		domain.kernel = object.options[ 'kernel' ]
@@ -604,7 +604,7 @@ class handler( umch.simpleHandler ):
 		boxes = []
 		lst = umcd.List()
 
-		lst.add_row( [ umcd.Cell( umcd.Text( _( 'When removing a virtual instance the disk images bind to it may be removed also. Please select the disks that should be remove with the virtual instance. Be sure that none of the images to be delete are just by any other instance.' ) ), attributes = { 'colspan' : '3' } ) ] )
+		lst.add_row( [ umcd.Cell( umcd.Text( _( 'When removing a virtual instance the disk images bind to it may be removed also. Please select the disks that should be remove with the virtual instance. Be sure that none of the images to be delete are used by any other instance.' ) ), attributes = { 'colspan' : '3' } ) ] )
 		lst.add_row( [ '' ] )
 		if domain_info.disks:
 			defaults = []

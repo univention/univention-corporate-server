@@ -241,6 +241,8 @@ if __name__ == '__main__':
 			domain.uuid = root.findtext('uuid')
 			domain.name = root.findtext('name')
 			domain.virt_tech = root.find('os').findtext('type')
+			try: domain.arch = root.find('os').find('type').attrib['arch']
+			except KeyError: domain.arch = 'i686' # FIXME
 			if domain.virt_tech == 'linux':
 				domain.kernel = root.find('os').findtext('kernel')
 				domain.cmdline = root.find('os').findtext('cmdline')
@@ -295,6 +297,14 @@ if __name__ == '__main__':
 				try: g.keymap = graphics.attrib['keymap']
 				except KeyError: pass
 				domain.graphics.append(g)
+			try:
+				for annotation in root.find('annotations').findall('annotation'):
+					key = annotation.findtext('key')
+					value = annotation.findtext('value')
+					domain.annotations[key] = value
+			except AttributeError: pass
+			from pprint import pprint
+			pprint(domain._json())
 			req = protocol.Request_DOMAIN_DEFINE(uri=uri, domain=domain)
 		elif mode == 'undefine':
 			try: uri = arguments.pop(0)

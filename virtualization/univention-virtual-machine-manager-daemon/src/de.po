@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager 0.9.10-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2010-06-01 13:18+0200\n"
+"POT-Creation-Date: 2010-06-02 10:15+0200\n"
 "PO-Revision-Date: 2010-05-28 11:30+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -41,8 +41,13 @@ msgstr "Keine Verbindung zu \"%(host)s:%(port)d\": %(errno)d"
 msgid "Could not connect to \"%(uri)s\""
 msgstr "Keine Verbindung zu \"%(uri)s\""
 
-#: src/univention/uvmm/uvmm_ldap.py:226
+#: src/univention/uvmm/uvmm_ldap.py:229
 msgid "Could not open LDAP-Admin connection"
+msgstr "Keine LDAP-Verbindung als Administrator"
+
+#: src/univention/uvmm/uvmm_ldap.py:209
+#, fuzzy
+msgid "Could not open LDAP-Machine connection"
 msgstr "Keine LDAP-Verbindung als Administrator"
 
 #: src/univention/uvmm/client.py:100
@@ -50,7 +55,7 @@ msgstr "Keine LDAP-Verbindung als Administrator"
 msgid "Could not open socket \"%(path)s\": %(errno)d"
 msgstr "Konnte Socket \"%(path)s\" nicht öffnen: %(errno)d"
 
-#: src/univention/uvmm/uvmm_ldap.py:195 src/univention/uvmm/uvmm_ldap.py:215
+#: src/univention/uvmm/uvmm_ldap.py:195
 #, python-format
 msgid "Could not query \"%(uri)s\""
 msgstr "Keine Antwort für \"%(uri)s\""
@@ -59,7 +64,7 @@ msgstr "Keine Antwort für \"%(uri)s\""
 msgid "Daemon options"
 msgstr "Dämonoptionen"
 
-#: src/univention/uvmm/node.py:761
+#: src/univention/uvmm/node.py:790
 #, python-format
 msgid "Domain \"%(domain)s\" in state \"%(state)d\" can not be migrated"
 msgstr ""
@@ -68,7 +73,7 @@ msgstr ""
 #: src/univention-virtual-machine-manager:200
 #: src/univention-virtual-machine-manager:214
 #: src/univention-virtual-machine-manager:222
-#: src/univention-virtual-machine-manager:303
+#: src/univention-virtual-machine-manager:313
 msgid "Domain required"
 msgstr "Domäne erwartet"
 
@@ -76,17 +81,17 @@ msgstr "Domäne erwartet"
 msgid "EOS while waiting for answer."
 msgstr "Ende des Datenstroms beim Warten auf eine Antwort"
 
-#: src/univention/uvmm/node.py:663
+#: src/univention/uvmm/node.py:677
 #, python-format
 msgid "Error defining domain \"%(domain)s: %(error)s"
 msgstr "Fehler mein Definieren der Domäne \"%(domain)s: %(error)s"
 
-#: src/univention/uvmm/node.py:696
+#: src/univention/uvmm/node.py:725
 #, python-format
 msgid "Error managing domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Verwalten der Domäne \"%(domain)s: %(error)s"
 
-#: src/univention/uvmm/node.py:768
+#: src/univention/uvmm/node.py:797
 #, python-format
 msgid "Error migrating domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Migrieren der Domäne \"%(domain)s: %(error)s"
@@ -101,7 +106,7 @@ msgstr "Fehler beim Lesen der Datei %(file)s: %(msg)s"
 msgid "Error removing %(file)s.old: %(msg)s"
 msgstr "Fehler beim Entfernen der Datei %(file)s.old: %(msg)s"
 
-#: src/univention/uvmm/node.py:653 src/univention/uvmm/node.py:659
+#: src/univention/uvmm/node.py:664 src/univention/uvmm/node.py:671
 #, python-format
 msgid "Error removing domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Löschen der Domäne \"%(domain)s\": %(error)s"
@@ -116,17 +121,22 @@ msgstr "Fehler beim Umbenennen der Datei %(file)s.new: %(msg)s"
 msgid "Error renaming %(file)s: %(msg)s"
 msgstr "Fehler beim Umbenennen der Datei %(file)s: %(msg)s"
 
-#: src/univention/uvmm/node.py:717
+#: src/univention/uvmm/node.py:746
 #, python-format
 msgid "Error restoring domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Wiederherstellen der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:707
+#: src/univention/uvmm/node.py:525
+#, fuzzy, python-format
+msgid "Error retrieving old domain \"%(domain)s\": %(error)s"
+msgstr "Fehler beim Wiederherstellen der Domäne \"%(domain)s\": %(error)s"
+
+#: src/univention/uvmm/node.py:736
 #, python-format
 msgid "Error saving domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Speichern der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:739
+#: src/univention/uvmm/node.py:768
 #, python-format
 msgid "Error undefining domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Löschen der Domäne \"%(domain)s\": %(error)s"
@@ -179,12 +189,12 @@ msgstr "RECHNER und PORT-Nummer für die TCP Verbindung"
 msgid "HOST:PORT"
 msgstr "RECHNER:PORT"
 
-#: src/univention/uvmm/node.py:460
+#: src/univention/uvmm/node.py:462
 #, python-format
 msgid "Hypervisor \"%(uri)s\" is already connected."
 msgstr "Verbindung zum Hypervisor \"%(uri)s\" besteht bereits."
 
-#: src/univention/uvmm/node.py:473 src/univention/uvmm/node.py:482
+#: src/univention/uvmm/node.py:475 src/univention/uvmm/node.py:484
 #, python-format
 msgid "Hypervisor \"%(uri)s\" is not connected."
 msgstr "Noch keine Verbindung zum Hypervisor \"%(uri)s\"."
@@ -303,17 +313,17 @@ msgstr "Traceback: %(traceback)s"
 #: src/univention-virtual-machine-manager:216
 #: src/univention-virtual-machine-manager:220
 #: src/univention-virtual-machine-manager:228
-#: src/univention-virtual-machine-manager:301
+#: src/univention-virtual-machine-manager:311
 msgid "URI required"
 msgstr "URI erwartet"
 
 #: src/univention-virtual-machine-manager:164
-#: src/univention-virtual-machine-manager:306
+#: src/univention-virtual-machine-manager:316
 #, python-format
 msgid "Unknown mode \"%(mode)s\""
 msgstr "Unbekannter Modus \"%(mode)s\""
 
-#: src/univention/uvmm/node.py:693
+#: src/univention/uvmm/node.py:722
 #, python-format
 msgid "Unsupported state transition %(cur_state)s to %(next_state)s"
 msgstr "Ungültiger Zustandsübergang von %(cur_state)s zu %(next_state)s"

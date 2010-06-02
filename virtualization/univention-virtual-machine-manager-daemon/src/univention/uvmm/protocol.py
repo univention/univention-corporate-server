@@ -201,8 +201,7 @@ class Data_Domain(object):
 	def __init__(self):
 		self.uuid = None
 		self.name = None
-		self.arch = None
-		self.os = None
+		self.arch = None # i686, x86_64
 		self.virt_tech = None # linux(=Xen-PV), hvm(=Xen-FV)
 		self.kernel = None
 		self.cmdline = None
@@ -220,6 +219,7 @@ class Data_Domain(object):
 		return {
 			'uuid':self.uuid,
 			'name':self.name,
+			'arch': self.arch,
 			'virt_tech':self.virt_tech,
 			'kernel':self.kernel,
 			'cmdline':self.cmdline,

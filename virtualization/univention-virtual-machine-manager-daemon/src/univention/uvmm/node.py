@@ -40,7 +40,7 @@ import logging
 from xml.dom.minidom import getDOMImplementation, parseString
 import math
 from helpers import TranslatableException, N_ as _
-from uvmm_ldap import ldap_annotation, LdapError
+from uvmm_ldap import ldap_annotation, LdapError, ldap_modify
 
 logger = logging.getLogger('uvmmd.node')
 
@@ -144,14 +144,14 @@ class DomainTemplate(object):
 		doc = parseString(xml)
 		result = []
 		for guest in doc.getElementsByTagName('guest'):
-			os_type = guest.getElementsByTagName('os_type')[0].firstChild.nodeValue
+			virt_tech = guest.getElementsByTagName('os_type')[0].firstChild.nodeValue
 			for arch in guest.getElementsByTagName('arch'):
-				dom = DomainTemplate(os_type, arch)
+				dom = DomainTemplate(virt_tech, arch)
 				result.append(dom)
 		return result
 
-	def __init__(self, os_type, arch):
-		self.os_type = os_type
+	def __init__(self, virt_tech, arch):
+		self.virt_tech = virt_tech
 		self.arch = arch.getAttribute('name')
 		self.emulator = arch.getElementsByTagName('emulator')[0].firstChild.nodeValue
 		try:
@@ -162,7 +162,7 @@ class DomainTemplate(object):
 		self.domains = [d.getAttribute('type') for d in arch.getElementsByTagName('domain')]
 
 	def __str__(self):
-		return 'DomainTemplate(type=%s arch=%s): %s, %s, %s, %s' % (self.os_type, self.arch, self.emulator, self.loader, self.machines, self.domains)
+		return 'DomainTemplate(type=%s arch=%s): %s, %s, %s, %s' % (self.virt_tech, self.arch, self.emulator, self.loader, self.machines, self.domains)
 
 class Domain(object):
 	"""Container for domain statistics."""
@@ -170,7 +170,6 @@ class Domain(object):
 	def __init__(self, domain):
 		self.uuid = domain.UUIDString()
 		self.name = domain.name()
-		self.os = '' # FIXME
 		self.arch = 'i686'
 		self.virt_tech = domain.OSType()
 		self.kernel = ''
@@ -509,12 +508,21 @@ def domain_define( uri, domain ):
 	node = node_query(uri)
 	conn = node.conn
 
+	old_dom = None
+
 	impl = getDOMImplementation()
 	doc = impl.createDocument( None, 'domain', None )
 	elem = doc.createElement( 'name' )
 	elem.appendChild( doc.createTextNode( domain.name ) )
 	doc.documentElement.appendChild( elem )
 	doc.documentElement.setAttribute('type', conn.getType().lower()) # TODO: verify
+	if not domain.uuid:
+		try:
+			old_dom = conn.lookupByName(domain.name)
+			domain.uuid = old_dom.UUIDString()
+		except libvirt.libvirtError, e:
+			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
+				raise NodeError(_('Error retrieving old domain "%(domain)s": %(error)s'), domain=domain.name, error=e)
 	if domain.uuid:
 		elem = doc.createElement( 'uuid' )
 		elem.appendChild( doc.createTextNode( domain.uuid ) )
@@ -531,8 +539,8 @@ def domain_define( uri, domain ):
 	loader = None
 	logger.warning( 'Searching for loader: %s' % node.capabilities )
 	for template in node.capabilities:
-		logger.warning( 'template: %s' % str( (template.arch, domain.arch, template.os_type, domain.virt_tech ) ) )
-		if template.arch == domain.arch and template.os_type == domain.virt_tech and template.loader:
+		logger.warning( 'template: %s' % str( (template.arch, domain.arch, template.virt_tech, domain.virt_tech ) ) )
+		if template.arch == domain.arch and template.virt_tech == domain.virt_tech and template.loader:
 			loader = doc.createElement( 'loader' )
 			loader.appendChild( doc.createTextNode( template.loader ) )
 
@@ -646,7 +654,14 @@ def domain_define( uri, domain ):
 
 	doc.documentElement.appendChild( devices )
 
-	logger.debug(doc.toxml())
+	# remove old domain definitions
+	if old_dom:
+		try:
+			old_dom.undefine()
+			logger.info('Old domain "%s" removed.' % (domain.name,))
+		except libvirt.libvirtError, e:
+			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
+				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.name, error=e)
 	if domain.uuid:
 		try:
 			conn.lookupByUUIDString(domain.uuid).undefine()
@@ -654,17 +669,28 @@ def domain_define( uri, domain ):
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.uuid, error=e)
+
 	try:
-		conn.lookupByName(domain.name).undefine()
-		logger.info('Old domain "%s" removed.' % (domain.name,))
-	except libvirt.libvirtError, e:
-		if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
-			raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.name, error=e)
-	try:
-		conn.defineXML(doc.toxml())
+		d = conn.defineXML(doc.toxml())
+		domain.uuid = d.UUIDString()
 	except libvirt.libvirtError, e:
 		raise NodeError(_('Error defining domain "%(domain)s: %(error)s'), domain=domain.name, error=e)
-	logger.info('New domain "%s" defined.' % (domain.name,))
+	logger.info('New domain "%s"(%s) defined.' % (domain.name, domain.uuid))
+
+	if domain.annotations:
+	  try:
+		record = ldap_modify(domain.uuid)
+		modified = False
+		for key, cur_value in record.items():
+			new_value = domain.annotations.get(key, cur_value)
+			if new_value != cur_value:
+				record[key] = new_value
+				modified = True
+		if modified:
+			record.commit()
+	  except Exception, e:
+		import traceback
+		logger.error("Error: %s: %s" % (e, traceback.print_exc()))
 
 def domain_state(uri, domain, state):
 	"""Change running state of domain on node."""
