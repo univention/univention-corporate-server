@@ -171,6 +171,12 @@ class handler( umch.simpleHandler ):
 			self.finished( object.id(), res )
 			return
 
+		result = umcd.List()
+		result.set_header( [ _( 'User' ), _( 'Client' ), _( 'Server' ), _( 'Status' ) ] )
+		for session in sessions:
+			result.add_row( [] )
+		
+		res.dialog = [ form, result ]
 		
 		self.finished( object.id(), res )
 
