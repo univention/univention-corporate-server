@@ -61,6 +61,18 @@ SESSION_STATUS_SILENT='silent'
 SESSION_STATUS_TERMINATED_CLIENT='clientterm'
 SESSION_STATUS_TERMINATED_SERVER='serverterm'
 
+def get_session_db_password():
+	global session_db_password
+	file="opendvdi-sessionbroker.secret" % ou
+	try:
+		f = open (os.path.join(sessionbroker_dir, file), 'r')
+		session_db_password = f.read ()
+		if len (session_db_password) > 0 and session_db_password[-1] == '\n':
+			session_db_password = session_db_password[:-1]
+		f.close ()
+	except IOError:
+		logger.error("IOError reading %s" % (file, ))
+
 class session_db_connector:
 	def __init__(self, session_db_password) :
 		self.PASSWORD=session_db_password
@@ -91,20 +103,97 @@ class session_db_connector:
 		self.CONNECTION.close ()
 		self.CONNECTION = None
 
-	def get_alive_timestamp(self, session_id):
+class session_control_channel(session_db_connector):
+
+	def __init__(self, host_timestamp_id, username, client_ip, session_id=None):
+		self.initial_response=True
+		session_db_connector.__init__(session_db_password)
+		self.separator=host_timestamp_id
+		if not session_id:
+			self.session_id=uuid.uuid5(self.separator, username)
+			self.desktop_host, self.update_interval = self.newsession(self.session_id, username, client_ip)
+		else:
+			# TODO: reconnect case: lookup if the session_id is valid
+			# TODO: retrive self.desktop_host and self.update_interval
+			self.session_id=session_id
+
+    def __iter__(self):	# turn this into an iterator class
+        return self
+
+    def next(self):
+        #if self.session_db.session_terminated():
+        #    raise StopIteration
+		if self.initial_response:
+			self.initial_response=False
+			msg='--%s\n\rContent-Type: text/plain; charset=utf-8\n\r\n\rsession id: %s\ndesktop_host: %s\nupdate_interval: %s\n'  % (self.separator, self.session_id, self.desktop_host, self.update_interval)
+        	return msg
+
+		# TODO: wait on session.command_queue, e.g. via threading.Condition().wait()
+		while 1:
+			time.sleep(self.update_interval)
+		
+		msg="--%s\n\rContent-Type: text/plain; charset=utf-8\n\r\n\r%s\n" % (self.separator, self.command_queue.pop(0))
+		return msg
+
+
+	def newsession(self, session_id, username, client_ip):
+		cursor = self.dbcursor()
+
+		self.session_id=session_id	# store this for check_session
+		timestamp=time.strftime("%Y-%m-%d %H:%M:%S"),
+		# dictionary for the mysql commands
+		request_dict={
+		'session_table': 'sessions',
+		'session_id': self.session_id,
+		'username': username,
+		'client_ip': client_ip,
+		'desktop_host': desktop_host,
+		'session_protocol': session_protocol,
+		'session_start': timestamp,
+		'alive_timestamp': timestamp,
+		'update_interval': update_interval,
+		'status': SESSION_STATUS_CONNECTING,
+		}
+
+		cursor.execute("INSERT INTO `%(session_table)s` VALUES ('%(session_id)s', '%(username)s', '%(client_ip)s', '%(desktop_host)s', '%(session_protocol)s', '%(session_start)s', '%(alive_timestamp)s', '%(update_interval)s, %(status)s')" % request_dict)
+
+		cursor.close()
+		watchdog = threading.Timer(update_interval, self.check_session)
+		watchdog.start()
+		return (session_id, desktop_host, update_interval)
+
+	def check_session(self)
+		now=time.time()
 		cursor = self.dbcursor()
 
 		# dictionary for the mysql commands
 		request_dict={
 		'session_table': 'sessions',
-		'session_id': session_id,
+		'session_id': self.session_id,
 		}
 
 		cursor.execute("SELECT alive_timestamp FROM `%(session_table)s` WHERE session_id='%(session_id)s'" % request_dict)
 		res = cursor.fetchone()
-		return res[0]
+		last_alive_time=time.strptime(res[0], "%Y-%m-%d %H:%M:%S")
+		if now-time.mktime(last_alive_time) > update_interval:
+			request_dict['status']=SESSION_STATUS_SILENT
+			cursor.execute("UPDATE `%(session_table)s` SET status='%(status)s' WHERE session_id=%(session_id)d" % request_dict)
+			cursor.close()
+			self.dbdisconnect()
+		else:
+			cursor.close()
+			watchdog = threading.Timer(update_interval, self.check_session)
+			watchdog.start()
 
-		cursor.close()
+##### Exceptions
+#class DBSelectFaild (Exception):
+#	def __init__ (self, msg):
+#		self.msg = msg
+
+class session_feedback_channel(session_db_connector):
+
+	def __init__(self):
+		session_db_connector.__init__(session_db_password)
 
 	def update_alive_timestamp(self, session_id):
 		cursor = self.dbcursor()
@@ -120,99 +209,18 @@ class session_db_connector:
 		cursor.execute("UPDATE `%(session_table)s` SET alive_timestamp='%(alive_timestamp)s' WHERE session_id=%(session_id)d" % request_dict)
 
 		cursor.close()
-		watchdog = threading.Timer(update_interval, self.check_session, [session_id])
-		return watchdog
-
-	def newsession(self, username, client_ip):
-		cursor = self.dbcursor()
-
-		timestamp=time.strftime("%Y-%m-%d %H:%M:%S"),
-		# dictionary for the mysql commands
-		request_dict={
-		'session_table': 'sessions',
-		'session_id': uuid.uuid5(uuid.uuid1(), username),
-		'username': username,
-		'client_ip': client_ip,
-		'desktop_host': desktop_host,
-		'session_protocol': session_protocol,
-		'session_start': timestamp,
-		'alive_timestamp': timestamp,
-		'update_interval': update_interval,
-		'status': SESSION_STATUS_CONNECTING,
-		}
-
-		cursor.execute("INSERT INTO `%(session_table)s` VALUES ('%(session_id)s', '%(username)s', '%(client_ip)s', '%(desktop_host)s', '%(session_protocol)s', '%(session_start)s', '%(alive_timestamp)s', '%(update_interval)s, %(status)s')" % request_dict)
-
-		cursor.close()
-		watchdog = threading.Timer(update_interval, self.check_session, [session_id])
-		return (session_id, desktop_host, watchdog)
-
-	def check_session(self, session_id):
-		now=time.time()
-		cursor = self.dbcursor()
-
-		# dictionary for the mysql commands
-		request_dict={
-		'session_table': 'sessions',
-		'session_id': session_id,
-		}
-
-		cursor.execute("SELECT alive_timestamp FROM `%(session_table)s` WHERE session_id='%(session_id)s'" % request_dict)
-		res = cursor.fetchone()
-		last_alive_time=time.strptime(res[0], "%Y-%m-%d %H:%M:%S")
-		if now-time.mktime(last_alive_time) > update_interval:
-			request_dict['status']=SESSION_STATUS_SILENT
-			cursor.execute("UPDATE `%(session_table)s` SET status='%(status)s' WHERE session_id=%(session_id)d" % request_dict)
-
-		cursor.close()
-
-def get_session_db_password():
-	global session_db_password
-	file="opendvdi-sessionbroker.secret" % ou
-	try:
-		f = open (os.path.join(sessionbroker_dir, file), 'r')
-		session_db_password = f.read ()
-		if len (session_db_password) > 0 and session_db_password[-1] == '\n':
-			session_db_password = session_db_password[:-1]
-		f.close ()
-	except IOError:
-		logger.error("IOError reading %s" % (file, ))
-
-class connection_server_response:
-	def __init__(self, username):
-		self.session_db=session_db_connector(session_db_password)
-		self.session_id, self.desktop_host, self.watchdog = self.session_db.newsession(username, client_ip)
-
-    def __iter__(self):
-        return self
-
-    def next(self):
-        #if self.session_db.session_terminated():
-        #    raise StopIteration
-		if self.watchdog:
-			msg="--newdivider\n\rContent-Type: application/xml; charset=utf-8\n\r\n\r<?xml version="1.0" ?><body><session id=%s/></body>\n"  % self.id
-			self.watchdog.start()
-			self.watchdog=None
-        	return msg
-
-		# TODO: wait on session.command_queue, e.g. via threading.Condition().wait()
-		while 1:
-			time.sleep(1)
-		
-		msg="--newdivider\n\rContent-Type: application/xml; charset=utf-8\n\r\n\r<?xml version="1.0" ?><body><command>%s</command></body>\n" % self.command_queue.pop(0)
-		return msg
-
-##### Exceptions
-#class DBSelectFaild (Exception):
-#	def __init__ (self, msg):
-#		self.msg = msg
+		self.dbdisconnect()
 
 def connect(environ, start_response):
+	## cherrypy wsgiserver uses a thread pool, so we must handle data accoringly
+	## http://old.nabble.com/about-cherrypy.engine.subscribe-td17910741.html
+	thread_data=threading.local()
 	# streaming HTTP server response
 	status = '200 OK'
-	response_headers = [('Content-type','multipart/x-mixed-replace; boundary=newdivider')]
+	thread_data.host_timestamp_id=uuid.uuid1()
+	response_headers = [('Content-type','multipart/x-mixed-replace; boundary=%s' % thread_data.host_timestamp_id)]
 	start_response(status, response_headers)
-	return connection_server_response(environ['REMOTE_USER'])
+	return session_control_channel(thread_data.host_timestamp_id, environ['REMOTE_USER'], environ['REMOTE_IP'])
 
 def alive(environ, start_response):
 	d = parse_qs(environ['QUERY_STRING'])
@@ -225,9 +233,8 @@ def alive(environ, start_response):
 	# NOTE: check connection1? No, let the client monitor it, he must initiate reconnect
 	# TODO: check if id is valid
 
-	session_db=session_db_connector(session_db_password)
-	watchdog = session_db.update_alive_timestamp(session_id)
-	watchdog.start()
+	session_db=session_feedback_channel()
+	session_db.update_alive_timestamp(session_id)
 
 	return [ "ack session_id: %s" % (session_id, ) ]
 
