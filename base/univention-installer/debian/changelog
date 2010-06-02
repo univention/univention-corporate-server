@@ -1,3 +1,9 @@
+univention-installer (6.0.19-1) unstable; urgency=low
+
+  * disable dns forwarder for non server roles Bug #13836
+
+ -- Felix Botner <botner@univention.de>  Wed, 02 Jun 2010 09:25:01 +0200
+
 univention-installer (6.0.18-1) unstable; urgency=low
 
   * renamed flash and msfonts installer packages in software selection Bug #13253

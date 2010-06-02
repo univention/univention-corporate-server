@@ -129,6 +129,11 @@ class object(content):
 		else:
 			self.serversystem=True
 
+		if 'system_role' in self.all_results and not (self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave']):
+			self.ask_forwarder=False
+		else:
+			self.ask_forwarder=True
+
 		for i in range(0,4):
 			if self.all_results.has_key('eth%d_type' % i) and (self.all_results['eth%d_type' % i] == 'dynamic' or self.all_results['eth%d_type' % i] == 'dhcp'):
 				self.interfaces.append(['eth%d' % i,
