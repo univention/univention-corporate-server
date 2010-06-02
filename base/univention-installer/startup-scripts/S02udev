@@ -1,0 +1,25 @@
+#!/bin/sh
+
+udev=`cat /proc/cmdline | grep -i udev`
+
+if [ -n "$udev" ]; then
+
+	# sysfs
+	if [ ! -d /sys ]; then
+        	mkdir /sys
+	fi
+	mount -t sysfs none /sys
+
+	# move dev 
+	mv /dev /dev.old
+	mkdir /dev
+
+
+	# udev
+	echo > /sys/kernel/uevent_helper
+	mkdir -p /dev/.udev/db/
+	udevd --daemon
+	mkdir -p /dev/.udev/queue/ /dev/.udev/rules.d/
+	udevadm trigger
+	udevadm settle || true
+fi

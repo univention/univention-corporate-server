@@ -129,6 +129,7 @@ install: build
 	install -m755 scripts/99_reboot.sh ${D}/lib/univention-installer-scripts.d/
 
 	install -m 755 startup-scripts/S02mount ${D}/lib/univention-installer-startup.d/
+	install -m 755 startup-scripts/S02udev ${D}/lib/univention-installer-startup.d/
 	install -m 755 startup-scripts/S20syslogd ${D}/lib/univention-installer-startup.d/
 	install -m 755 startup-scripts/S45loadmodules ${D}/lib/univention-installer-startup.d/
 	install -m 755 startup-scripts/S50usbhid ${D}/lib/univention-installer-startup.d/
