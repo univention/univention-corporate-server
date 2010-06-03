@@ -22,7 +22,7 @@ Package: univention-virtual-machine-manager-node-xen
 Architecture: all
 Depends: ${misc:Depends},
  univention-virtual-machine-manager-node-common,
- xen-3.4 | xen-hypervisor,
+ univention-xen,
 Provides: univention-virtual-machine-manager-node
 Description: UCS - Univention Virtual Machine Manager node using xen
  This meta-package provides basic configuration for virtualization nodes using
