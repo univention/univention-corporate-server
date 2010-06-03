@@ -678,7 +678,6 @@ def domain_define( uri, domain ):
 	logger.info('New domain "%s"(%s) defined.' % (domain.name, domain.uuid))
 
 	if domain.annotations:
-	  try:
 		record = ldap_modify(domain.uuid)
 		modified = False
 		for key, cur_value in record.items():
@@ -688,9 +687,6 @@ def domain_define( uri, domain ):
 				modified = True
 		if modified:
 			record.commit()
-	  except Exception, e:
-		import traceback
-		logger.error("Error: %s: %s" % (e, traceback.print_exc()))
 
 def domain_state(uri, domain, state):
 	"""Change running state of domain on node."""

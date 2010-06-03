@@ -147,7 +147,7 @@ def ldap_cached(cachefile, func):
 		except OSError, e:
 			if e.errno != errno.ENOENT:
 				raise LdapError(_('Error renaming %(file)s.new: %(msg)s'), file=cachefile, msg=e)
-	except OSError, e:
+	except IOError, e:
 		# LdapError("Error writing %(file)s: %(msg)e", file=cachefile, msg=e)
 		pass
 	except LdapConnectionError, msg:
@@ -155,14 +155,15 @@ def ldap_cached(cachefile, func):
 		try:
 			file = open("%s" % (cachefile,), "r")
 			try:
-				data = file.read()
+				result = pickle.load(file)
 			finally:
 				file.close()
-			result = pickle.loads(data)
-		except OSError, e:
+		except IOError, e:
 			if e.errno != errno.ENOENT:
 				raise LdapConnectionError(_('Error reading %(file)s: %(msg)s'), file=cachefile, msg=e)
 			raise msg
+		except EOFError:
+			raise LdapConnectionError(_('Error reading incomplete %(file)s.'), file=cachefile)
 
 	return result
 
@@ -233,10 +234,10 @@ def ldap_modify(uuid, ldap_uri=None):
 		res = univention.admin.modules.lookup(uvmm_info, co, lo, scope='domain', base=base, filter=filter, required=True, unique=True)
 		record = res[0]
 		record.open()
-		record.commit = lambda:record.modify()
+		record.commit = record.modify
 	except univention.admin.uexceptions.base:
 		position.setDn(base)
 		record = uvmm_info.object(co, lo, position)
 		record['uuid'] = uuid
-		record.commit = lambda:record.create()
+		record.commit = record.create
 	return record

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager 0.9.10-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2010-06-02 10:15+0200\n"
+"POT-Creation-Date: 2010-06-03 12:30+0200\n"
 "PO-Revision-Date: 2010-05-28 11:30+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -41,21 +41,20 @@ msgstr "Keine Verbindung zu \"%(host)s:%(port)d\": %(errno)d"
 msgid "Could not connect to \"%(uri)s\""
 msgstr "Keine Verbindung zu \"%(uri)s\""
 
-#: src/univention/uvmm/uvmm_ldap.py:229
+#: src/univention/uvmm/uvmm_ldap.py:230
 msgid "Could not open LDAP-Admin connection"
 msgstr "Keine LDAP-Verbindung als Administrator"
 
-#: src/univention/uvmm/uvmm_ldap.py:209
-#, fuzzy
+#: src/univention/uvmm/uvmm_ldap.py:210
 msgid "Could not open LDAP-Machine connection"
-msgstr "Keine LDAP-Verbindung als Administrator"
+msgstr "Keine LDAP-Verbindung als Host"
 
 #: src/univention/uvmm/client.py:100
 #, python-format
 msgid "Could not open socket \"%(path)s\": %(errno)d"
 msgstr "Konnte Socket \"%(path)s\" nicht öffnen: %(errno)d"
 
-#: src/univention/uvmm/uvmm_ldap.py:195
+#: src/univention/uvmm/uvmm_ldap.py:196
 #, python-format
 msgid "Could not query \"%(uri)s\""
 msgstr "Keine Antwort für \"%(uri)s\""
@@ -64,7 +63,7 @@ msgstr "Keine Antwort für \"%(uri)s\""
 msgid "Daemon options"
 msgstr "Dämonoptionen"
 
-#: src/univention/uvmm/node.py:790
+#: src/univention/uvmm/node.py:786
 #, python-format
 msgid "Domain \"%(domain)s\" in state \"%(state)d\" can not be migrated"
 msgstr ""
@@ -86,20 +85,25 @@ msgstr "Ende des Datenstroms beim Warten auf eine Antwort"
 msgid "Error defining domain \"%(domain)s: %(error)s"
 msgstr "Fehler mein Definieren der Domäne \"%(domain)s: %(error)s"
 
-#: src/univention/uvmm/node.py:725
+#: src/univention/uvmm/node.py:721
 #, python-format
 msgid "Error managing domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Verwalten der Domäne \"%(domain)s: %(error)s"
 
-#: src/univention/uvmm/node.py:797
+#: src/univention/uvmm/node.py:793
 #, python-format
 msgid "Error migrating domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Migrieren der Domäne \"%(domain)s: %(error)s"
 
-#: src/univention/uvmm/uvmm_ldap.py:164
+#: src/univention/uvmm/uvmm_ldap.py:163
 #, python-format
 msgid "Error reading %(file)s: %(msg)s"
 msgstr "Fehler beim Lesen der Datei %(file)s: %(msg)s"
+
+#: src/univention/uvmm/uvmm_ldap.py:166
+#, python-format
+msgid "Error reading incomplete %(file)s."
+msgstr "Fehler beim Lesen der unvollständigen Datei %(file)s"
 
 #: src/univention/uvmm/uvmm_ldap.py:139
 #, python-format
@@ -121,22 +125,22 @@ msgstr "Fehler beim Umbenennen der Datei %(file)s.new: %(msg)s"
 msgid "Error renaming %(file)s: %(msg)s"
 msgstr "Fehler beim Umbenennen der Datei %(file)s: %(msg)s"
 
-#: src/univention/uvmm/node.py:746
+#: src/univention/uvmm/node.py:742
 #, python-format
 msgid "Error restoring domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Wiederherstellen der Domäne \"%(domain)s\": %(error)s"
 
 #: src/univention/uvmm/node.py:525
-#, fuzzy, python-format
+#, python-format
 msgid "Error retrieving old domain \"%(domain)s\": %(error)s"
-msgstr "Fehler beim Wiederherstellen der Domäne \"%(domain)s\": %(error)s"
+msgstr "Fehler beim Auslesen der alten Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:736
+#: src/univention/uvmm/node.py:732
 #, python-format
 msgid "Error saving domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Speichern der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:768
+#: src/univention/uvmm/node.py:764
 #, python-format
 msgid "Error undefining domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Löschen der Domäne \"%(domain)s\": %(error)s"
@@ -153,7 +157,7 @@ msgstr "Fehler beim Warten auf eine Antwort: %(errno)d"
 
 #: src/univention-virtual-machine-manager-daemon:132
 msgid "Failed to fork daemon."
-msgstr "Dämon konnte sich nicht duplizieren-"
+msgstr "Dämon konnte sich nicht abspalten."
 
 #: src/univention-virtual-machine-manager:230
 msgid "File name or XML required"
@@ -236,7 +240,7 @@ msgstr "Keine LDAP-Basis in ldap/base."
 msgid "No LDAP server in ldap/server/name."
 msgstr "Kein LDAP-Server in ldap/server/name."
 
-#: src/univention/uvmm/uvmm_ldap.py:172
+#: src/univention/uvmm/uvmm_ldap.py:173
 msgid "No SERVICES defined."
 msgstr "Keine Dienste(SERVICES) definiert."
 
@@ -323,7 +327,7 @@ msgstr "URI erwartet"
 msgid "Unknown mode \"%(mode)s\""
 msgstr "Unbekannter Modus \"%(mode)s\""
 
-#: src/univention/uvmm/node.py:722
+#: src/univention/uvmm/node.py:718
 #, python-format
 msgid "Unsupported state transition %(cur_state)s to %(next_state)s"
 msgstr "Ungültiger Zustandsübergang von %(cur_state)s zu %(next_state)s"
