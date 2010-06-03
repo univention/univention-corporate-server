@@ -1,0 +1,220 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# Univention SSH
+#  ssh wrapper script
+#
+# Copyright (C) 2004-@@copyright_lastyear@@ Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import os
+import sys
+
+def trim(docstring):
+	'''Format docstring. http://www.python.org/dev/peps/pep-0257/#one-line-docstrings'''
+	if not docstring:
+		return ''
+	# Convert tabs to spaces (following the normal Python rules)
+	# and split into a list of lines:
+	lines = docstring.expandtabs().splitlines()
+	# Determine minimum indentation (first line doesn't count):
+	indent = sys.maxint
+	for line in lines[1:]:
+		stripped = line.lstrip()
+		if stripped:
+			indent = min(indent, len(line) - len(stripped))
+	# Remove indentation (first line is special):
+	trimmed = [lines[0].strip()]
+	if indent < sys.maxint:
+		for line in lines[1:]:
+			trimmed.append(line[indent:].rstrip())
+	# Strip off trailing and leading blank lines:
+	while trimmed and not trimmed[-1]:
+		trimmed.pop()
+	while trimmed and not trimmed[0]:
+		trimmed.pop(0)
+	# Return a single string:
+	return '\n'.join(trimmed)
+
+def display_help(out=sys.stdout):
+	'''Display help text.'''
+	if cmd == 'univention-ssh':
+		text = '''
+		%(cmd)s: internal managing tool for UCS clients
+		Copyright (c) 2001-@@copyright_lastyear@@ Univention GmbH, Germany
+
+		Syntax:
+		  %(cmd)s <pwd_file> [options] [user@]host <command>
+		  %(cmd)s [--help] [--version]
+
+		Parameters:
+		  pwd_file                         file containing the password
+		  options                          optional options to %(cmd)s
+		  user                             user to log in as on the remote system
+		  host                             name or ip address of the remote system
+		  command                          command to be executed on remote system
+
+		Options:
+		  -h | --help | -?:                print this usage message
+		  --version:                       print version information
+
+		Description:
+		  %(cmd)s is an internal managing tool which is used to
+		  execute commands on remote computer systems,
+		  e.g. %(cmd)s /tmp/pwd root@192.168.0.31 ls -la /
+		'''
+	else:
+		text = '''
+		%(cmd)s: internal managing tool for UCS clients
+		Copyright (c) 2001-@@copyright_lastyear@@ Univention GmbH, Germany
+
+		Syntax:
+		  %(cmd)s <pwd_file> [options] files [user@]host:[path]
+		  %(cmd)s [--help] [--version]
+
+		Parameters:
+		  pwd_file                         file containing the password
+		  options                          optional options to %(cmd)s
+		  files                            source files or directories
+		  user                             user to log in as on the remote system
+		  host                             name or ip address of the remote system
+		  path                             destination on the remote system
+
+		Options:
+		  -h | --help | -?:                print this usage message
+		  --version:                       print version information
+
+		Description:
+		  %(cmd)s is an internal managing tool which is used to
+		  copy files from/to remote computer systems,
+		  e.g. %(cmd)s /tmp/pwd file.txt root@192.168.0.31:
+		'''
+	print >>out, trim(text % {'cmd': cmd})
+
+def display_version(out=sys.stdout):
+	'''Display program name and version string.'''
+	print >>out, '%s @@package_version@@' % (cmd,)
+
+UNIVENTION_SSH_ASKPASS_HELPER = '/usr/lib/univention-ssh/univention-ssh-askpass'
+UNIVENTION_SSH_ASKPASS_ENV = 'UNIVENTION_SSH_ASKPASS'
+
+try:
+	program = sys.argv.pop(0)
+	if program == UNIVENTION_SSH_ASKPASS_HELPER:
+		try:
+			sys.stdout.write(os.environ[UNIVENTION_SSH_ASKPASS_ENV])
+			sys.exit(0)
+		except Exception:
+			sys.exit(1)
+	cmd = os.path.basename(program)
+
+	while True:
+		arg = sys.argv.pop(0)
+		if arg == '--version':
+			display_version()
+			sys.exit(0)
+		elif arg in ('-?', '--help', '-h'):
+			display_help()
+			sys.exit(0)
+		elif arg == '-timeout':
+			print >>sys.stderr, '-timeout parameter ignored for backward compatibility.'
+			sys.argv.pop(0)
+		elif arg.startswith('-'):
+			raise IndexError
+		else:
+			pw_file = open(arg, 'r')
+			try:
+				password = pw_file.read()
+				if password[-1] == '\n':
+					password = password[0:-1]
+			finally:
+				pw_file.close()
+
+			# the password for the grandchild
+			os.environ[UNIVENTION_SSH_ASKPASS_ENV] = password
+			# path to self
+			os.environ['SSH_ASKPASS'] = UNIVENTION_SSH_ASKPASS_HELPER
+			# DISPLAY must be non-empty
+			if not 'DISPLAY' in os.environ:
+				os.environ['DISPLAY'] = ':99'
+
+			command = {
+				'univention-ssh': ['ssh', '-o', 'StrictHostKeyChecking=no'],
+				'univention-scp': ['scp', '-o', 'StrictHostKeyChecking=no'],
+				'univention-ssh-rsync': ['rsync', '-e', 'ssh -o StrictHostKeyChecking=no'],
+				}[cmd]
+			if cmd == 'univention-ssh-rsync':
+				i = 1
+				while i < len(sys.argv):
+					arg = sys.argv[i]
+					if arg in ('-e', '--rsh'):
+						print >>sys.stderr, 'Overwriting %s option' % (arg,)
+						del sys.argv[i:i+2]
+					elif arg.startswith('--rsh='):
+						print >>sys.stderr, 'Overwriting --rsh option' % (arg,)
+						del sys.argv[i]
+					else:
+						i += 1
+			command += sys.argv
+
+			pid = os.fork()
+			if pid < 0:
+				print >>sys.stderr, 'Failed to fork child process'
+			elif pid == 0: # child
+				# create new session to force ssh to call SSH_ASKPASS
+				os.setsid()
+				os.execvp(command[0], command)
+				print >>sys.stderr, 'Failed to exec %s' % (' '.join(command),)
+			else: # parent
+				# close all file descriptors
+				max_fd = os.sysconf('SC_OPEN_MAX')
+				if hasattr(os, 'closerange'):
+					os.closerange(0, max_fd)
+				else:
+					for fd in range(0, max_fd):
+						try:
+							os.close(fd)
+						except OSError:
+							pass
+
+				# wait for child and pass its exit status / signal
+				pid, status = os.waitpid(pid, 0)
+				if os.WIFEXITED(status):
+					rc = os.WEXITSTATUS(status)
+					sys.exit(rc)
+				elif os.WIFSIGNALED(status):
+					sig = os.WTERMSIG(status)
+					self = os.getpid()
+					os.kill(self, sig)
+			# the buck stops here: fatal error
+			sys.exit(1)
+except KeyError, e:
+	print >>sys.stderr, 'Unknown command %s' % (cmd,)
+except IndexError, e:
+	display_help(sys.stderr)
+except IOError, e:
+	print >>sys.stderr, 'Failed to read password from %s' % (pw_filename,)
+
+sys.exit(2)

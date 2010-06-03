@@ -28,26 +28,29 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-export DH_COMPAT=3
-version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
-copyrightyear=`date +%Y`
+version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
+copyrightyear := $(shell date +%Y)
 
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	touch configure-stamp
 
+univention-ssh: univention-ssh.in
+	sed \
+		-e "s/@@package_version@@/${version}/" \
+		-e "s/@@copyright_lastyear@@/${copyrightyear}/" \
+		$< > $@
+
 build: configure-stamp build-stamp
-build-stamp:
+build-stamp: univention-ssh
 	dh_testdir
 	touch build-stamp
 
 clean:
 	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-	rm -f *~ univention-name-to-unicode
-
+	$(RM) build-stamp configure-stamp
+	$(RM) *~ univention-ssh
 	dh_clean
 
 D=$(CURDIR)/debian/univention-ssh
@@ -57,18 +60,11 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-
-	cat univention-ssh | sed -e "s/@%@package_version@%@/${version}/" > univention-ssh_tmp
-	cat univention-ssh_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-ssh_tmp2
-
-	install -m755 univention-ssh_tmp2 ${D}/usr/sbin/univention-ssh
-	install -m755 univention-ssh_tmp2 ${D}/usr/sbin/univention-scp
-	install -m755 univention-ssh_tmp2 ${D}/usr/sbin/univention-ssh-rsync
+	install -m755 univention-ssh ${D}/usr/sbin/univention-ssh
+	ln -s univention-ssh ${D}/usr/sbin/univention-scp
+	ln -s univention-ssh ${D}/usr/sbin/univention-ssh-rsync
+	ln -s /usr/sbin/univention-ssh ${D}/usr/lib/univention-ssh/univention-ssh-askpass
 	install -m755 univention-openssh-recreate-host-keys ${D}/usr/sbin/univention-openssh-recreate-host-keys
-
-	rm univention-ssh_tmp*
-
-	dh_install
 
 binary-arch: build install
 
@@ -76,18 +72,11 @@ binary-indep: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs
-	dh_installexamples
-	dh_installmenu
-	dh_installcron
-	dh_installman
-	dh_installinfo
 	dh_installchangelogs
 	dh_link
-	dh_strip
 	dh_compress
 	dh_fixperms
 	dh_installdeb
-	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
