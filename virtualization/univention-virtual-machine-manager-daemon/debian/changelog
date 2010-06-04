@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.19-1) unstable; urgency=low
+
+  * if operating system is not set return empty string instead of None; Bug #18359
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 04 Jun 2010 11:52:42 +0200
+
 univention-virtual-machine-manager-daemon (0.9.18-1) unstable; urgency=low
 
   * Fix LDAP-caching bug. (Bug #18288)

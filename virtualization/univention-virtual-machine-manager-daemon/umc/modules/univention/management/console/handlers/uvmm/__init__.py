@@ -444,7 +444,7 @@ class handler( umch.simpleHandler ):
 
 		infos = umcd.List()
 		infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Status' ) ), handler.STATES[ domain_info.state ] ] )
-		infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Operating System' ) ), getattr(domain_info, 'annotations', {}).get('os') ] )
+		infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Operating System' ) ), getattr(domain_info, 'annotations', {}).get('os', '' ) ] )
 
 		stats = umcd.List()
 		mem_usage = percentage( int( float( domain_info.curMem ) / domain_info.maxMem * 100 ), label = '%s / %s' % ( block2byte( domain_info.curMem ), block2byte( domain_info.maxMem ) ), width = 130 )
