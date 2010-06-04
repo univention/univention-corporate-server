@@ -190,6 +190,13 @@ class handler( umch.simpleHandler ):
 			value = ''
 		return str( value )
 
+	@staticmethod
+	def _getstr( object, attr, default = '' ):
+		value = object.options.get( attr, default )
+		if value == None:
+			value = default
+		return value
+
 	def uvmm_overview( self, object ):
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object )
 		if success:
@@ -519,18 +526,18 @@ class handler( umch.simpleHandler ):
 			domain.uuid = domain_info.uuid
 		domain.name = object.options[ 'name' ]
 		domain.virt_tech = object.options[ 'type' ]
-		domain.annotations['os'] = object.options[ 'os' ]
+		domain.annotations['os'] = handler._getstr( object, 'os' )
 		domain.arch = object.options[ 'arch' ]
 		domain.vcpus = int( object.options[ 'cpus' ] )
-		domain.kernel = object.options[ 'kernel' ]
-		domain.cmdline = object.options[ 'cmdline' ]
-		domain.initrd = object.options[ 'initrd' ]
+		domain.kernel = handler._getstr( object, 'kernel' )
+		domain.cmdline = handler._getstr( object, 'cmdline' )
+		domain.initrd = handler._getstr( object, 'initrd' )
 		domain.maxMem = byte2block( object.options[ 'memory' ] )
 
 		# interface
 		iface = uuv_node.Interface()
-		iface.mac_address = object.options[ 'mac' ]
-		iface.source = object.options[ 'interface' ]
+		iface.mac_address = handler._getstr( object, 'mac' )
+		iface.source = handler._getstr( object, 'interface' )
 		domain.interfaces.append( iface )
 
 		# disks

@@ -625,9 +625,10 @@ def domain_define( uri, domain ):
 		logger.debug('INTERFACE: %s' % iface)
 		elem = doc.createElement( 'interface' )
 		elem.setAttribute( 'type', iface.map_type( id = iface.type ) )
-		mac = doc.createElement( 'mac' )
-		mac.setAttribute( 'address', iface.mac_address )
-		elem.appendChild( mac )
+		if iface.mac_address:
+			mac = doc.createElement( 'mac' )
+			mac.setAttribute( 'address', iface.mac_address )
+			elem.appendChild( mac )
 		source = doc.createElement( 'source' )
 		source.setAttribute( 'bridge', iface.source )
 		elem.appendChild( source )
