@@ -211,7 +211,7 @@ class Module( base.Page ):
 					return None
 				# we should display a report dialog and continue with the normal processing of responses
 				elif response.status() in ( 201, 301 ):
-					popup_infos.append( response.report )
+					popup_infos.append( response.report.replace( '\n', ' ' ) )
 				elif response.status() != 200:
 					reports.append( response.report )
 					if response.status() == 500:
