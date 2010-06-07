@@ -31,6 +31,9 @@
 
 import os
 import sys
+import shlex
+import signal
+import time
 
 def trim(docstring):
 	'''Format docstring. http://www.python.org/dev/peps/pep-0257/#one-line-docstrings'''
@@ -66,7 +69,7 @@ def display_help(out=sys.stdout):
 		Copyright (c) 2001-@@copyright_lastyear@@ Univention GmbH, Germany
 
 		Syntax:
-		  %(cmd)s <pwd_file> [options] [user@]host <command>
+		  %(cmd)s [-timeout timeout] <pwd_file> [options] [user@]host <command>
 		  %(cmd)s [--help] [--version]
 
 		Parameters:
@@ -77,6 +80,8 @@ def display_help(out=sys.stdout):
 		  command                          command to be executed on remote system
 
 		Options:
+		  -timeout:                        timeout for operation in seconds
+		  --no-split:                      don't word-split command
 		  -h | --help | -?:                print this usage message
 		  --version:                       print version information
 
@@ -103,6 +108,8 @@ def display_help(out=sys.stdout):
 		  path                             destination on the remote system
 
 		Options:
+		  -timeout:                        timeout for operation in seconds
+		  --no-split:                      don't word-split command
 		  -h | --help | -?:                print this usage message
 		  --version:                       print version information
 
@@ -129,6 +136,8 @@ try:
 		except Exception:
 			sys.exit(1)
 	cmd = os.path.basename(program)
+	split = True
+	timeout = 3600
 
 	while True:
 		arg = sys.argv.pop(0)
@@ -139,8 +148,10 @@ try:
 			display_help()
 			sys.exit(0)
 		elif arg == '-timeout':
-			print >>sys.stderr, '-timeout parameter ignored for backward compatibility.'
-			sys.argv.pop(0)
+			arg = sys.argv.pop(0)
+			timeout = int(arg)
+		elif arg == '--no-split':
+			split = False
 		elif arg.startswith('-'):
 			raise IndexError
 		else:
@@ -152,19 +163,13 @@ try:
 			finally:
 				pw_file.close()
 
-			# the password for the grandchild
-			os.environ[UNIVENTION_SSH_ASKPASS_ENV] = password
-			# path to self
-			os.environ['SSH_ASKPASS'] = UNIVENTION_SSH_ASKPASS_HELPER
-			# DISPLAY must be non-empty
-			if not 'DISPLAY' in os.environ:
-				os.environ['DISPLAY'] = ':99'
-
 			command = {
 				'univention-ssh': ['ssh', '-o', 'StrictHostKeyChecking=no'],
 				'univention-scp': ['scp', '-o', 'StrictHostKeyChecking=no'],
 				'univention-ssh-rsync': ['rsync', '-e', 'ssh -o StrictHostKeyChecking=no'],
 				}[cmd]
+			if split:
+				sys.argv = shlex.split(' '.join(sys.argv))
 			if cmd == 'univention-ssh-rsync':
 				i = 1
 				while i < len(sys.argv):
@@ -183,9 +188,19 @@ try:
 			if pid < 0:
 				print >>sys.stderr, 'Failed to fork child process'
 			elif pid == 0: # child
+				# the password for the grandchild
+				os.environ[UNIVENTION_SSH_ASKPASS_ENV] = password
+				# path to self
+				os.environ['SSH_ASKPASS'] = UNIVENTION_SSH_ASKPASS_HELPER
+				# DISPLAY must be non-empty
+				if not 'DISPLAY' in os.environ:
+					os.environ['DISPLAY'] = ':99'
+
 				# create new session to force ssh to call SSH_ASKPASS
 				os.setsid()
+
 				os.execvp(command[0], command)
+
 				print >>sys.stderr, 'Failed to exec %s' % (' '.join(command),)
 			else: # parent
 				# close all file descriptors
@@ -199,15 +214,32 @@ try:
 						except OSError:
 							pass
 
-				# wait for child and pass its exit status / signal
-				pid, status = os.waitpid(pid, 0)
-				if os.WIFEXITED(status):
-					rc = os.WEXITSTATUS(status)
-					sys.exit(rc)
-				elif os.WIFSIGNALED(status):
-					sig = os.WTERMSIG(status)
-					self = os.getpid()
-					os.kill(self, sig)
+				try:
+					# setup timeout
+					sig_alrm = signal.signal(signal.SIGALRM, lambda signum, frame:None)
+					signal.alarm(timeout)
+
+					# wait for child and pass its exit status / signal
+					cpid, status = os.waitpid(pid, 0)
+
+					# restore SIGALRM
+					signal.signal(signal.SIGALRM, sig_alrm)
+
+					if os.WIFEXITED(status):
+						rc = os.WEXITSTATUS(status)
+						sys.exit(rc)
+					elif os.WIFSIGNALED(status):
+						sig = os.WTERMSIG(status)
+						self = os.getpid()
+						os.kill(self, sig)
+				except OSError, e:
+					print >>sys.stderr, 'Timeout.'
+					os.kill(pid, signal.SIGTERM)
+					cpid, status = os.waitpid(pid, os.WNOHANG)
+					if (cpid, status) == (0, 0):
+						time.sleep(1)
+						os.kill(pid, signal.SIGKILL)
+						cpid, status = os.waitpid(pid, 0)
 			# the buck stops here: fatal error
 			sys.exit(1)
 except KeyError, e:
