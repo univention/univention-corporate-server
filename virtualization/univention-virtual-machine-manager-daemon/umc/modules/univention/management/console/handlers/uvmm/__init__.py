@@ -62,9 +62,9 @@ categories = [ 'system', 'all' ]
 hide_tabs = True
 
 # fields of a drive definition
-drive_type = umcd.make( ( 'type', DriveTypSelect( _( 'Type' ) ) ) )
-drive_uri = umcd.make( ( 'uri', umc.String( 'URI' ) ) )
-drive_dev = umcd.make( ( 'dev', umc.String( _( 'Device' ) ) ) )
+drive_type = umcd.make( ( 'type', DriveTypSelect( _( 'Type' ) ) ), attributes = { 'width' : '250' } )
+drive_uri = umcd.make( ( 'uri', umc.String( 'URI' ) ), attributes = { 'width' : '250' } )
+drive_dev = umcd.make( ( 'dev', umc.String( _( 'Device' ) ) ), attributes = { 'width' : '250' } )
 
 dest_node_select = NodeSelect( _( 'Destination host' ) )
 arch_select = DynamicSelect( _( 'Architecture' ) )
@@ -360,14 +360,14 @@ class handler( umch.simpleHandler ):
 		type_select.update_choices( types )
 		arch_select.update_choices( archs )
 									
-		name = umcd.make( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ) )
-		virt_tech = umcd.make( self[ 'uvmm/domain/configure' ][ 'type' ], default = handler._getattr( domain_info, 'virt_tech', 'xen' ) )
-		arch = umcd.make( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ) )
-		os = umcd.make( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', '') )
+		name = umcd.make( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ), attributes = { 'width' : '250' } )
+		virt_tech = umcd.make( self[ 'uvmm/domain/configure' ][ 'type' ], default = handler._getattr( domain_info, 'virt_tech', 'xen' ), attributes = { 'width' : '250' } )
+		arch = umcd.make( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ), attributes = { 'width' : '250' } )
+		os = umcd.make( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
 		cpus_select.max = int( node.cpus )
-		cpus = umcd.make( self[ 'uvmm/domain/configure' ][ 'cpus' ], default = handler._getattr( domain_info, 'vcpus', '1' ) )
+		cpus = umcd.make( self[ 'uvmm/domain/configure' ][ 'cpus' ], default = handler._getattr( domain_info, 'vcpus', '1' ), attributes = { 'width' : '250' } )
 		mem = handler._getattr( domain_info, 'maxMem', '0' )
-		memory = umcd.make( self[ 'uvmm/domain/configure' ][ 'memory' ], default = block2byte( mem ) )
+		memory = umcd.make( self[ 'uvmm/domain/configure' ][ 'memory' ], default = block2byte( mem ), attributes = { 'width' : '250' } )
 		if domain_info and domain_info.interfaces:
 			iface = domain_info.interfaces[ 0 ]
 			iface_mac = iface.mac_address
@@ -376,11 +376,11 @@ class handler( umch.simpleHandler ):
 			iface_mac = ''
 			iface_device = ''
 			iface_source = ''
-		mac = umcd.make( self[ 'uvmm/domain/configure' ][ 'mac' ], default = iface_mac )
-		interface = umcd.make( self[ 'uvmm/domain/configure' ][ 'interface' ], default = iface_source )
-		ram_disk = umcd.make( self[ 'uvmm/domain/configure' ][ 'initrd' ], default = handler._getattr( domain_info, 'initrd', '' ) )
-		root_part = umcd.make( self[ 'uvmm/domain/configure' ][ 'cmdline' ], default = handler._getattr( domain_info, 'cmdline', '' ) )
-		kernel = umcd.make( self[ 'uvmm/domain/configure' ][ 'kernel' ], default = handler._getattr( domain_info, 'kernel', '' ) )
+		mac = umcd.make( self[ 'uvmm/domain/configure' ][ 'mac' ], default = iface_mac, attributes = { 'width' : '250' } )
+		interface = umcd.make( self[ 'uvmm/domain/configure' ][ 'interface' ], default = iface_source, attributes = { 'width' : '250' } )
+		ram_disk = umcd.make( self[ 'uvmm/domain/configure' ][ 'initrd' ], default = handler._getattr( domain_info, 'initrd', '' ), attributes = { 'width' : '250' } )
+		root_part = umcd.make( self[ 'uvmm/domain/configure' ][ 'cmdline' ], default = handler._getattr( domain_info, 'cmdline', '' ), attributes = { 'width' : '250' } )
+		kernel = umcd.make( self[ 'uvmm/domain/configure' ][ 'kernel' ], default = handler._getattr( domain_info, 'kernel', '' ), attributes = { 'width' : '250' } )
 		if domain_info and domain_info.disks:
 			defaults = []
 			for disk in domain_info.disks:
@@ -388,9 +388,9 @@ class handler( umch.simpleHandler ):
 				value = '%s,%s:%s,%s' % ( uuv_node.Disk.map_device( id = disk.device ), disk.driver, disk.source, disk.target_dev )
 				defaults.append( ( value, value ) )
 			drives = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'drives' ], fields = [ drive_type, drive_uri, drive_dev ], separator = ',', label = _( 'Drives' ),
-									  default = defaults )
+									  default = defaults, attributes = { 'width' : '250' } )
 		else:
-			drives = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'drives' ], fields = [ drive_type, drive_uri, drive_dev ], separator = ',', label = _( 'Drives' ) )
+			drives = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'drives' ], fields = [ drive_type, drive_uri, drive_dev ], separator = ',', label = _( 'Drives' ), attributes = { 'width' : '250' } )
 		vnc_bool = False
 		vnc_global = True
 		vnc_keymap = 'de'
@@ -408,9 +408,9 @@ class handler( umch.simpleHandler ):
 					vnc_keymap = gfx.keymap
 					break
 		
-		vnc = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc' ], default = vnc_bool )
-		kblayout = umcd.make( self[ 'uvmm/domain/configure' ][ 'kblayout' ], default = vnc_keymap )
-		vnc_global = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc_global' ], default = vnc_global )
+		vnc = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc' ], default = vnc_bool, attributes = { 'width' : '250' } )
+		kblayout = umcd.make( self[ 'uvmm/domain/configure' ][ 'kblayout' ], default = vnc_keymap, attributes = { 'width' : '250' } )
+		vnc_global = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc_global' ], default = vnc_global, attributes = { 'width' : '250' } )
 
 		content.add_row( [ name, os ] )
 		content.add_row( [ arch, virt_tech ] )
