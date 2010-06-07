@@ -9,7 +9,7 @@ eval $(univention-baseconfig shell)
 DOWNLOAD_DIR=/var/cache/flashplugin-nonfree
 # DOWNLOAD_FILE=install_flash_player_10_linux
 # DOWNLOAD_URL=http://fpdownload.macromedia.com/get/flashplayer/current/install_flash_player_10_linux.tar.gz
-DOWNLOAD_FILE=flashplayer10_1_rc7_linux_060210
+DOWNLOAD_FILE=flashplayer10_1_rc7_linux_060210.so
 DOWNLOAD_URL=http://download.macromedia.com/pub/labs/flashplayer10/flashplayer10_1_rc7_linux_060210.so.tar.gz
 TARGET_DIR=/usr/lib/flashplugin-nonfree
 
