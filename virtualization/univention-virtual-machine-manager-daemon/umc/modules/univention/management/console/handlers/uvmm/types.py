@@ -47,7 +47,7 @@ class DynamicSelect( umc.StaticSelection ):
 
 class KBLayoutSelect( umc.StaticSelection ):
 	def choices( self ):
-		return ( ( 'de-de', _( 'German' ) ), ( 'en-us', _( 'American' ) ) )
+		return ( ( 'de', _( 'German' ) ), ( 'en-us', _( 'American' ) ) )
 
 class NumberSelect( umc.StaticSelection ):
 	def __init__( self, label, max = 8, required = True, may_change = True ):

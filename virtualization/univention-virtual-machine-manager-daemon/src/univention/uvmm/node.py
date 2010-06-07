@@ -128,7 +128,8 @@ class Graphic( object ):
 		self.type = Graphic.TYPE_VNC
 		self.port = -1
 		self.autoport = True
-		self.keymap = 'de-de'
+		self.keymap = 'de'
+		self.listen = None
 
 	@staticmethod
 	def map_type( id = None, name = None ):
@@ -237,6 +238,11 @@ class Domain(object):
 		os = doc.getElementsByTagName( 'os' )
 		if os:
 			os = os[ 0 ]
+			type = os.getElementsByTagName( 'type' )
+			if type and type[ 0 ].firstChild and type[ 0 ].firstChild.nodeValue:
+				self.virt_tech = type[ 0 ].firstChild.nodeValue
+				if type[ 0 ].hasAttribute( 'arch' ):
+					self.arch = type[ 0 ].getAttribute( 'arch' )
 			kernel = os.getElementsByTagName( 'kernel' )
 			if kernel and kernel[ 0 ].firstChild and kernel[ 0 ].firstChild.nodeValue:
 				self.kernel = kernel[ 0 ].firstChild.nodeValue
@@ -291,6 +297,9 @@ class Domain(object):
 			dev = Graphic()
 			dev.type = Graphic.map_type( name = graphic.getAttribute( 'type' ) )
 			dev.port = int( graphic.getAttribute( 'port' ) )
+			dev.autoport = graphic.getAttribute( 'autoport' )
+			if graphic.hasAttribute( 'listen' ):
+				dev.listen = graphic.getAttribute( 'listen' )
 			dev.autoport = graphic.getAttribute( 'autoport' )
 			if dev.autoport.lower() == 'yes':
 				dev.autoport = True
@@ -546,6 +555,7 @@ def domain_define( uri, domain ):
 
 	type = doc.createElement( 'type' )
 	type.appendChild( doc.createTextNode( domain.virt_tech ) )
+	type.setAttribute( 'arch', domain.arch )
 	os = doc.createElement( 'os' )
 	os.appendChild( type )
 	if loader:
@@ -650,6 +660,8 @@ def domain_define( uri, domain ):
 			elem.setAttribute( 'autoport', 'yes' )
 		else:
 			elem.setAttribute( 'autoport', 'no' )
+		if graphic.listen:
+			elem.setAttribute( 'listen', graphic.listen )
 		elem.setAttribute( 'keymap', graphic.keymap )
 		devices.appendChild( elem )
 

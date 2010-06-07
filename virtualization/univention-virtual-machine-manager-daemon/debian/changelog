@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.21-1) unstable; urgency=low
+
+  * support setting architecture of virtual instance
+  * allow activating globally available VNC remote access; Bug #18359
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 07 Jun 2010 14:17:12 +0200
+
 univention-virtual-machine-manager-daemon (0.9.20-1) unstable; urgency=low
 
   * creating virtual instances without specifying a MAC addres is possible now; Bug #17733

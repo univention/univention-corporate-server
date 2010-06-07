@@ -134,7 +134,8 @@ command_description = {
 				   'memory' : umc.String( _( 'Memory' ) ),
 				   'interface' : umc.String( _( 'Interface' ) ),
 				   'cpus' : cpus_select,
-				   'vnc' : umc.Boolean( _( 'activate VNC remote access' ) ),
+				   'vnc' : umc.Boolean( _( 'VNC remote access' ) ),
+				   'vnc_global' : umc.Boolean( _( 'Available globally' ) ),
 				   'kblayout' : KBLayoutSelect( _( 'Keyboard layout' ) ),
 				   'arch' : arch_select,
 				   'type' : type_select,
@@ -204,7 +205,7 @@ class handler( umch.simpleHandler ):
 		self.finished( object.id(), res )
 
 	def uvmm_group_overview( self, object ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: group overview' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Group overview' )		
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', ) )
 		if not success:
 			self.finished(object.id(), res)
@@ -295,7 +296,7 @@ class handler( umch.simpleHandler ):
 		return buttons
 
 	def uvmm_node_overview( self, object ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: node overview' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Node overview' )		
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node' ) )
 		if not success:
 			self.finished(object.id(), res)
@@ -391,16 +392,25 @@ class handler( umch.simpleHandler ):
 		else:
 			drives = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'drives' ], fields = [ drive_type, drive_uri, drive_dev ], separator = ',', label = _( 'Drives' ) )
 		vnc_bool = False
-		vnc_keymap = 'de-de'
+		vnc_global = True
+		vnc_keymap = 'de'
 		if domain_info and domain_info.graphics:
 			for gfx in domain_info.graphics:
 				if gfx.type == uuv_node.Graphic.TYPE_VNC:
-					vnc_bool = ( gfx.port != -1 )
+					if gfx.autoport:
+						vnc_bool = True
+					elif not gfx.autoport and gfx.port > 0:
+						vnc_bool = True
+					else:
+						vnc_bool = False
+					if gfx.listen != '0.0.0.0':
+						vnc_global = False
 					vnc_keymap = gfx.keymap
 					break
 		
 		vnc = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc' ], default = vnc_bool )
 		kblayout = umcd.make( self[ 'uvmm/domain/configure' ][ 'kblayout' ], default = vnc_keymap )
+		vnc_global = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc_global' ], default = vnc_global )
 
 		content.add_row( [ name, os ] )
 		content.add_row( [ arch, virt_tech ] )
@@ -408,13 +418,14 @@ class handler( umch.simpleHandler ):
 		content.add_row( [ memory, interface ] )
 
 		content2 = umcd.List()
-		content2.add_row( [ ram_disk, umcd.Cell( drives, attributes = { 'rowspan' : '6' } ) ] )
+		content2.add_row( [ ram_disk, umcd.Cell( drives, attributes = { 'rowspan' : '7' } ) ] )
 		content2.add_row( [ root_part ] )
 		content2.add_row( [ kernel ] )
 
 		content2.add_row( [ umcd.Text( '' ) ] )
 
 		content2.add_row( [ vnc ] )
+		content2.add_row( [ vnc_global ] )
 		content2.add_row( [ kblayout ] )
 
 		content2.add_row( [ umcd.Text( '' ) ] )
@@ -424,7 +435,7 @@ class handler( umch.simpleHandler ):
 		else:
 			content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'subsection.%s' % domain_info.name ), attributes = { 'colspan' : '2' } ), ] )
 
-		ids = ( name.id(), os.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), drives.id(), vnc.id(), kblayout.id() )
+		ids = ( name.id(), os.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), drives.id(), vnc.id(), vnc_global.id(), kblayout.id() )
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
 		overview_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = object.options )
 		content.add_row( [ '', umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ] ) ] )
@@ -432,7 +443,7 @@ class handler( umch.simpleHandler ):
 		return content
 
 	def uvmm_domain_overview( self, object ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: domain overview' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain overview' )		
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
 		if not success:
 			self.finished(object.id(), res)
@@ -476,7 +487,7 @@ class handler( umch.simpleHandler ):
 		self.finished(object.id(), res)
 
 	def uvmm_domain_migrate( self, object ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: domain migrate' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain migrate' )		
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'source', 'domain' ) )
 		if not success:
 			self.finished(object.id(), res)
@@ -487,7 +498,7 @@ class handler( umch.simpleHandler ):
 			src_uri = self.uvmm.node_name2uri( object.options[ 'source' ] )
 			dest_uri = self.uvmm.node_name2uri( object.options[ 'dest' ] )
 			domain_info = self.uvmm.get_domain_info( src_uri, object.options[ 'domain' ] )
-			ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: migrate: %s, %s, %s' % ( src_uri, dest_uri, domain_info ) )
+			ud.debug( ud.ADMIN, ud.INFO, 'Domain migrate: %s, %s, %s' % ( src_uri, dest_uri, domain_info ) )
 			resp = self.uvmm.domain_migrate( src_uri, dest_uri, domain_info.uuid )
 			# res.dialog[ 0 ].set_dialog( umcd.InfoBox( _( 'The migration was successfull' ) ) )
 		else:
@@ -508,13 +519,13 @@ class handler( umch.simpleHandler ):
 
 		if resp and self.uvmm.is_error( resp ):
 			res.status( 301 )
-			ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: migrate: error: %s' % str( resp.msg ) )
+			ud.debug( ud.ADMIN, ud.INFO, 'Domain migrate: error: %s' % str( resp.msg ) )
 			self.finished( object.id(), res, report = str( resp.msg ) )
 		else:
 			self.finished( object.id(), res )
 
 	def uvmm_domain_configure( self, object ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: domain configure' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure' )		
 		res = umcp.Response( object )
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
@@ -528,6 +539,7 @@ class handler( umch.simpleHandler ):
 		domain.virt_tech = object.options[ 'type' ]
 		domain.annotations['os'] = handler._getstr( object, 'os' )
 		domain.arch = object.options[ 'arch' ]
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: architecture: %s' % domain.arch )		
 		domain.vcpus = int( object.options[ 'cpus' ] )
 		domain.kernel = handler._getstr( object, 'kernel' )
 		domain.cmdline = handler._getstr( object, 'cmdline' )
@@ -555,10 +567,14 @@ class handler( umch.simpleHandler ):
 			ud.debug( ud.ADMIN, ud.ERROR, 'drive: %s' % str( disk ) )
 
 		# graphics
+		ud.debug( ud.ADMIN, ud.INFO, 'Configure Domain: graphics: %s' % object.options[ 'vnc' ] )
 		if object.options[ 'vnc' ]:
 			gfx = uuv_node.Graphic()
 			gfx.keymap = object.options[ 'kblayout' ]
+			if object.options[ 'vnc_global' ]:
+				gfx.listen = '0.0.0.0'
 			domain.graphics.append( gfx )
+			ud.debug( ud.ADMIN, ud.INFO, 'Configure Domain: graphics: %s' % str( gfx ) )
 
 		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain )
 
@@ -569,12 +585,12 @@ class handler( umch.simpleHandler ):
 			self.finished( object.id(), res )
 
 	def uvmm_domain_state( self, object ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: domain state' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain State' )		
 		res = umcp.Response( object )
 
-		ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: change domain state to %s' % object.options[ 'state' ] )
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain State: change to %s' % object.options[ 'state' ] )
 		resp = self.uvmm.domain_set_state( object.options[ 'node' ], object.options[ 'domain' ], object.options[ 'state' ] )
-		ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: changed domain state to %s' % object.options[ 'state' ] )
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain State: changed to %s' % object.options[ 'state' ] )
 
 		if self.uvmm.is_error( resp ):
 			res.status( 301 )
@@ -583,7 +599,7 @@ class handler( umch.simpleHandler ):
 			self.finished( object.id(), res )
 
 	def uvmm_domain_create( self, object ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: domain create' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain create' )		
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
 		if not success:
 			self.finished(object.id(), res)
@@ -598,7 +614,7 @@ class handler( umch.simpleHandler ):
 		self.finished(object.id(), res)
 
 	def uvmm_domain_remove_images( self, object ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: domain remove images' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain remove images' )		
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
 		if not success:
 			self.finished(object.id(), res)
@@ -638,7 +654,7 @@ class handler( umch.simpleHandler ):
 		self.finished(object.id(), res)
 		
 	def uvmm_domain_remove( self, object ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: domain remove' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain remove' )		
 		res = umcp.Response( object )
 
 		
