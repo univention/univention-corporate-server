@@ -96,7 +96,7 @@ fi
 
 # install all firmware packages if dummy network interface is used
 if [ -f "/tmp/dummy-network-interface.txt" ] ; then
-	export extra_packages="${extra_packages} firmware-all"
+	export extra_packages="${extra_packages} firmware-linux"
 fi
 
 kolab=`echo $packages | grep "univention-kolab2"`
