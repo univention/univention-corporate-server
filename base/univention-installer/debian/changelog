@@ -1,3 +1,9 @@
+univention-installer (6.0.21-1) unstable; urgency=low
+
+  * make udev default, disabled via noudev kernel parameter Bug #12524 
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 Jun 2010 12:32:07 +0200
+
 univention-installer (6.0.20-2) unstable; urgency=low
 
   * udev test Bug #12524 

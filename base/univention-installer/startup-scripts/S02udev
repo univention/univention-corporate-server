@@ -1,9 +1,8 @@
 #!/bin/sh
 
-udev=`cat /proc/cmdline | grep -i udev`
-
-if [ -n "$udev" ]; then
-
+if grep -iq '\<noudev\>' /proc/cmdline; then
+	echo "udev disabled"
+else
 	# sysfs
 	if [ ! -d /sys ]; then
         	mkdir /sys
