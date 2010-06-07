@@ -1,3 +1,9 @@
+univention-flashplugin (4.0.2-3) unstable; urgency=low
+
+  * adjusted DOWNLOAD_URL and _FILE for sec2.3-4 (Bug #18585)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 07 Jun 2010 15:44:08 +0200
+
 univention-flashplugin (4.0.2-2) unstable; urgency=low
 
   * Trigger reinitialisation of Flash plugin
