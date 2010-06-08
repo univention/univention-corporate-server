@@ -226,11 +226,12 @@ class Module( base.Page ):
 				self.active.reset()
 			# received a _final_ response
 			if not self.active:
+				ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: received final response' )
 				self._refresh = False
 				self.__in_progress = None
 				# convert dialog to uniparts stuff
 				if error_dialog:
-					ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: error layout' )
+					ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: display error dialog' )
 					self.__layout = error_dialog
 				else:
 					cmd = self.__startups[ self.selected ]
@@ -245,6 +246,7 @@ class Module( base.Page ):
 							ud.debug(ud.ADMIN, ud.ERROR, 'Module.layout: B: self.selected points to None-startup: all other startups are None too!' )
 
 						cmd = self.__startups[ self.selected ]
+					ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: check last response message ...' )
 					last_resp = responses[ -1 ]
 					# if there is no dialog 
 					if len( last_resp.dialog ) == 1 and list.__getitem__( last_resp.dialog, 0 ) == None:
@@ -270,16 +272,16 @@ class Module( base.Page ):
 								cmd.cache = self.__layout
 
 				self.__storage.clear()
-				self.__dialog = self.__storage.to_uniparts( self.__layout )
 				if popup_infos:
 					js = '''<script type="text/javascript">
 dojo.addOnLoad( function () {
 umc_info_dialog( '%s', '%s' );
 } );
 </script>
-''' % ( ' %s - %s' % ( self._title, _( 'Messages' ) ), '<br>'.join( popup_infos ).replace( "'", "\\'" ) )
-					row = uniparts.tablerow( '', {}, { 'obs' : [ uniparts.htmltext( '', {}, { 'htmltext' : [ js ] } ) ] } )
-					rows.append( row )
+''' % ( '%s - %s' % ( self._title, _( 'Messages' ) ), '<br>'.join( popup_infos ).replace( "'", "\\'" ) )
+					self.__layout.append( umcd.HTML( js ) )
+
+				self.__dialog = self.__storage.to_uniparts( self.__layout )
 				col = uniparts.tablecol( '', {}, { 'obs' : [ self.__dialog ] } )
 				row = uniparts.tablerow( '', {}, { 'obs' : [ col ] } )
 				rows.append( row )
@@ -438,6 +440,7 @@ umc_info_dialog( '%s', '%s' );
 				return
 
 			if requests:
+				ud.debug( ud.ADMIN, ud.INFO, 'Module.apply: a button has been pressed')
 				# selection button: dynamic action
 				if requests[ -1 ] in ( '::dynamic', '::reset' ):
 					break
@@ -486,13 +489,17 @@ umc_info_dialog( '%s', '%s' );
 						# is a startup request?
 						self.__startup_request( req )
 
+				ud.debug( ud.ADMIN, ud.INFO, 'Module.apply: reset active list' )
 				self.active.reset()
 				if len( requests ) > 1:
+					ud.debug( ud.ADMIN, ud.INFO, 'Module.apply: add action group with %d requests' % len( requests ) )
 					self.active.group( client.request_group_send( requests ) )
 				elif requests:
+					ud.debug( ud.ADMIN, ud.INFO, 'Module.apply: add single action %s' % requests[ 0 ].arguments[ 0 ] )
 					self.active.single( client.request_send( requests[ 0 ] ) )
 
 				# there can be just one button that was pressed -> break
 				break
 		else: # no button was pressed
+			ud.debug( ud.ADMIN, ud.INFO, 'Module.apply: no button has been pressed')
 			self.focused()

@@ -475,6 +475,11 @@ class SignalButtonMap( ButtonMap, mapper.IMapper ):
 		ButtonMap.__init__( self )
 		mapper.IMapper.__init__( self )
 
+	def layout( self, storage, umcp_part, attributes = {} ):
+		ret = ButtonMap.layout( self, storage, umcp_part, attributes )
+		attributes[ 'class' ] = 'cancel'
+		return ret
+
 	def apply( self, storage, umcp_part, parameters, *args ):
 		if parameters.pressed():
 			return umcp_part.actions
@@ -490,6 +495,11 @@ class ResetButtonMap( ButtonMap, mapper.IMapper ):
 	def __init__( self ):
 		ButtonMap.__init__( self )
 		mapper.IMapper.__init__( self )
+
+	def layout( self, storage, umcp_part, attributes = {} ):
+		ret = ButtonMap.layout( self, storage, umcp_part, attributes )
+		attributes[ 'class' ] = 'cancel'
+		return ret
 
 	def apply( self, storage, umcp_part, parameters, *args ):
 		if parameters.pressed():

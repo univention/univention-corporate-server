@@ -1,3 +1,10 @@
+univention-management-console (3.0.22-1) unstable; urgency=low
+
+  * ensure that signal buttons are never default buttons
+  * after displaying a popup dialog the next action was not recognized; Bug #18409
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 08 Jun 2010 14:58:39 +0200
+
 univention-management-console (3.0.21-1) unstable; urgency=low
 
   * newlines needs to be removed as javascript does not support it; Bug #18409

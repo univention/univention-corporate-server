@@ -86,7 +86,7 @@ class SearchForm( base.List ):
 		req = umcp.Command( args = [ command ], opts = opts )
 		btn = button.SearchButton( button.Action( req, ids ), {'class': 'submit', 'defaultbutton': '1'}, label = search_button_label )
 		btn.close_dialog = False
-		reset = button.ResetButton( fields = defaults, attributes = {'class': 'cancel'})
+		reset = button.ResetButton( fields = defaults, attributes = { 'class': 'cancel' } )
 		reset.close_dialog = False
 		if paged_results:
 			num_result = widget.make_readonly( ( None, umcv.Integer( _( 'Results per page' ) ) ),
