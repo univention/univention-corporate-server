@@ -1,3 +1,9 @@
+univention-config-registry (6.0.4-1) unstable; urgency=low
+
+  * fixed is_false() and is_true() in configRegistry() Bug #15125
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 Jun 2010 12:45:11 +0200
+
 univention-config-registry (6.0.3-1) unstable; urgency=low
 
   * chmod 640 all logfiles in /var/log/univention after logrotat Bug #17798 
