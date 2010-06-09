@@ -376,7 +376,7 @@ class UniventionUpdater:
 			ud.debug(ud.NETWORK, ud.INFO, "HEAD not implemented at %s, switching to GET." % site)
 			self.http_method = 'GET'
 			self.close_connection()
-			return self.net_path_exsists (self, path, server, port, prefix, username, password, debug)
+			return self.net_path_exists(self, path, server, port, prefix, username, password, debug)
 
 		if debug:
 			if response.status == httplib.NOT_FOUND: # 404
@@ -385,7 +385,7 @@ class UniventionUpdater:
 				if username and password:
 					print '# Authentication failure for http://%s:%s@%s:%s%s' % (username, password, server, port, site)
 				else:
-					print '# Username and password are requiered for http://%s:%s%s' % (server, port, site)
+					print '# Username and password are required for http://%s:%s%s' % (server, port, site)
 			else:
 				print '# The http error code (%d) was returned for the site http://%s:%s%s' % (response.status, server, port, site)
 

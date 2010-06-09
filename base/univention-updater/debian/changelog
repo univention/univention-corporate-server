@@ -1,3 +1,9 @@
+univention-updater (5.0.85-2) unstable; urgency=low
+
+  * Fix typo when using repository/online/httpmethod=HEAD (Bug #18366)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 09 Jun 2010 08:25:40 +0200
+
 univention-updater (5.0.85-1) unstable; urgency=low
 
   * run univention-actualise with --dist-upgrade (Bug #18178)
