@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (0.9.23-1) unstable; urgency=low
+
+  * clean up debug messages
+  * fixed typo, introduced with 0.9.22-2
+  * improved error handling; Bug #18607
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 09 Jun 2010 13:59:13 +0200
+
 univention-virtual-machine-manager-daemon (0.9.22-3) unstable; urgency=low
 
   * Fix typo (Bug #18459)

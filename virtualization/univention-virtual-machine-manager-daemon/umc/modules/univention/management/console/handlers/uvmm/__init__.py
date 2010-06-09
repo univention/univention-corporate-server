@@ -537,6 +537,7 @@ class handler( umch.simpleHandler ):
 			domain.uuid = domain_info.uuid
 		domain.name = object.options[ 'name' ]
 		domain.virt_tech = object.options[ 'type' ]
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: operating system: %s' % handler._getstr( object, 'os' ) )
 		domain.annotations['os'] = handler._getstr( object, 'os' )
 		domain.arch = object.options[ 'arch' ]
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: architecture: %s' % domain.arch )		

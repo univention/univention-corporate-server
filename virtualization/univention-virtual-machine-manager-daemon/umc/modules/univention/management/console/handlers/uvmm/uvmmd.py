@@ -122,8 +122,8 @@ class Client( notifier.signals.Provider ):
 			notifier.step()
 		self.signal_disconnect( 'received', self._signal_received )
 
-		if type( self._packet ) == protocol.Response_ERROR:
-			ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: request failed: %s' % self._packet.msg )
+		if self.is_error( self._packet ):
+			ud.debug( ud.ADMIN, ud.ERROR, 'UVMM: request failed: %s' % self._packet.msg )
 			
 		return self._packet
 
@@ -131,9 +131,9 @@ class Client( notifier.signals.Provider ):
 		try:
 			self._socket.send( packet )
 		except:
-			ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: send failed' )
+			ud.debug( ud.ADMIN, ud.WARN, 'UVMM: send failed' )
 			if not self.is_connected():
-				ud.debug( ud.ADMIN, ud.ERROR, 'CRUNCHY: try to reconnect' )
+				ud.debug( ud.ADMIN, ud.INFO, 'UVMM: try to reconnect' )
 				if not self.connect():
 					return False
 				if retry:
@@ -152,13 +152,15 @@ class Client( notifier.signals.Provider ):
 			raise ConnectionError()
 		node_info = self.recv_blocking()
 
-		if isinstance( node_info, protocol.Response_ERROR ):
+		if self.is_error( node_info ):
 			return None
 
 		return node_info.data
 
 	def get_domain_info( self, node, domain ):
 		node_info = self.get_node_info( node )
+		if self.is_error( node_info ):
+			return None
 		for dom in node_info.domains:
 			if dom.name == domain:
 				return dom
@@ -187,7 +189,7 @@ class Client( notifier.signals.Provider ):
 				if not self.send( req.pack() ):
 					raise ConnectionError()
 				node_info = self.recv_blocking()
-				if isinstance( node_info, protocol.Response_ERROR ):
+				if self.is_error( node_info ):
 					continue
 				if node_info.data.name == name:
 					return node
@@ -201,14 +203,16 @@ class Client( notifier.signals.Provider ):
 			raise ConnectionError()
 		node_uris = self.recv_blocking()
 		group = []
+		if self.is_error( node_uris ):
+			return group
 		for node in node_uris.data:
 			req = protocol.Request_NODE_QUERY()
 			req.uri = node
 			if not self.send( req.pack() ):
 				raise ConnectionError()
 			node_info = self.recv_blocking()
-			
-			group.append( node_info.data )
+			if not self.is_error( node_info ):
+				group.append( node_info.data )
 
 		return group
 		
@@ -235,7 +239,7 @@ class Client( notifier.signals.Provider ):
 					raise ConnectionError()
 				node_info = self.recv_blocking()
 
-				if isinstance( node_info, protocol.Response_ERROR ):
+				if self.is_error( node_info ):
 					group.extend( [ node[ node.find( '://' ) + 3 : node.rfind( '/' ) ], None ]  )
 				else:
 					for dom in node_info.data.domains:
@@ -258,8 +262,6 @@ class Client( notifier.signals.Provider ):
 		return self.recv_blocking()
 
 	def domain_configure( self, node, data ):
-		import copy
-		
 		req = protocol.Request_DOMAIN_DEFINE()
 		req.uri = self.node_name2uri( node )
 		ud.debug( ud.ADMIN, ud.ERROR, 'disks to send: %s' % data.disks )

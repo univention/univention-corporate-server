@@ -105,7 +105,7 @@ class TreeView( object ):
 						pass
 				elif level == 3:
 					node_info = cache[node_uri]
-					domain_info = [d for d in node.info.domains if d.name == item][0]
+					domain_info = [d for d in node_info.domains if d.name == item][0]
 					if domain_info.state in ( 1, 2 ):
 						icon = 'uvmm/domain-on'
 					elif domain_info.state in ( 3, ):
