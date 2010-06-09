@@ -69,6 +69,7 @@ install: build
 	install -m 755 vampire/slave-sync ${D}/usr/share/univention-samba/
 	install -m 755 vampire/account-policy ${D}/usr/share/univention-samba/
 	install -m 755 vampire/password_check ${D}/usr/share/univention-samba/
+	install -m 755 vampire/set_privilege ${D}/usr/share/univention-samba/
 
 	# cat vampire/pdc-takeover | sed -e "s/@%@package_version@%@/${version}/" > vampire/pdc-takeover_tmp
 	# cat vampire/pdc-takeover_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > vampire/pdc-takeover_tmp2

@@ -1,3 +1,10 @@
+univention-samba (5.0.3-1) unstable; urgency=low
+
+  * added set_privilege script to give an user SeMachineAccount
+    privilege. Bug #18616
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Jun 2010 16:26:40 +0200
+
 univention-samba (5.0.2-1) unstable; urgency=low
 
   * fixed UCR typo in 11univention-samba_ldap. Bug #10680
