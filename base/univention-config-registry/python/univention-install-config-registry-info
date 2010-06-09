@@ -32,11 +32,9 @@
 import os, sys, string
 import univention.config_registry_info as ucr_info
 
-def debhelper_files():
-	return ( os.path.join( 'debian', package + 'postinst.debhelper' ),
-			 os.path.join( 'debian', package + 'preinst.debhelper'),
-			 os.path.join( 'debian', package + 'postrm.debhelper'),
-			 os.path.join( 'debian', package + 'prerm.debhelper') )
+def doIt(argv):
+	print '%s' % string.join(argv, ' ')
+	os.spawnvp(os.P_WAIT, argv[0], argv)
 
 def binary_packages():
 	_prefix = 'Package: '
@@ -49,12 +47,6 @@ def binary_packages():
 	fp.close()
 	return packages
 
-def divert_add( fd, dest ):
-	fd.write( 'test "$1" = "install" && dpkg-divert --rename --divert "%s" --add "%s" || true\n' % ( dest + '.debian', dest ) )
-
-def divert_remove( fd, dest ):
-	fd.write( 'test "$1" = "install" && dpkg-divert --rename --divert %s --remove "%s" || true\n' % ( dest + '.debian', dest ) )
-
 if __name__ == '__main__':
 	info = ucr_info.ConfigRegistryInfo( install_mode = True )
 	for package in binary_packages():
@@ -66,12 +58,6 @@ if __name__ == '__main__':
 			current_conffiles = []
 
 		conffiles = open( conffilename, 'a' )
-
-		# helper
-		postinst, preinst, postrm, prerm = debhelper_files()
-
-		preinst_fd = open( preinst, 'a' )
-		postinst_fd = open( postinst, 'a' )
 
 		# categories
 		source = os.path.join( 'debian', package + '.univention-config-registry-categories' )
@@ -86,17 +72,14 @@ if __name__ == '__main__':
 									  ucr_info.ConfigRegistryInfo.CATEGORIES )
 			dest = os.path.join( dest_path, package + '.cfg' )
 
-			os.system( 'install -m 755 -d %s' % dest_path )
-			os.system( 'install -m 644 %s %s' % ( source, dest ) )
+			doIt(['install', '-m', '755', '-d', dest_path])
+			doIt(['install', '-m', '644', source, dest])
 
 			real_conffile = os.path.join( ucr_info.ConfigRegistryInfo.BASE_DIR,
 										  ucr_info.ConfigRegistryInfo.CATEGORIES,
 										  package + '.cfg' )
 			if not real_conffile + '\n' in current_conffiles:
 				conffiles.write( real_conffile + '\n' )
-
-			divert_add( preinst_fd, dest )
-			divert_remove( postinst_fd, dest )
 
 		# variables
 		source = os.path.join( 'debian', package + '.univention-config-registry-variables' )
@@ -113,18 +96,14 @@ if __name__ == '__main__':
 								  ucr_info.ConfigRegistryInfo.VARIABLES )
 		dest = os.path.join( dest_path, package + '.cfg' )
 
-		os.system( 'install -m 755 -d %s' % dest_path )
-		os.system( 'install -m 644 %s %s' % ( source, dest ) )
+		doIt(['install', '-m', '755', '-d', dest_path])
+		doIt(['install', '-m', '644', source, dest])
 
-		real_conffile = os.path.join( ucr_info.ConfigRegistryInfo.BASE_DIR, ucr_info.ConfigRegistryInfo.VARIABLES,
+		real_conffile = os.path.join( ucr_info.ConfigRegistryInfo.BASE_DIR,
+									  ucr_info.ConfigRegistryInfo.VARIABLES,
 									  package + '.cfg' )
 		if not real_conffile + '\n' in current_conffiles:
 			conffiles.write( real_conffile + '\n' )
 
-		divert_add( preinst_fd, dest )
-		divert_remove( postinst_fd, dest )
-
 		# close files
-		preinst_fd.close()
-		postinst_fd.close()
 		conffiles.close()

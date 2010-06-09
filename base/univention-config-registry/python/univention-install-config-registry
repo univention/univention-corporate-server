@@ -175,3 +175,5 @@ if __name__ == '__main__':
 		prerm.write('	test -x /usr/sbin/univention-config-registry && univention-config-registry unregister %s || true\n' % package)
 		prerm.write('fi\n')
 		prerm.write('\n')
+
+	doIt(["univention-install-config-registry-info"])

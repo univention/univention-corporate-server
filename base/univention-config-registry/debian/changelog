@@ -1,3 +1,12 @@
+univention-config-registry (6.0.5-1) unstable; urgency=low
+
+  * removed unnecessary debhelper files in univention-install-service-info
+    and univention-install-config-registry-info
+  * univention-install-config-registry now executes univention-install-config-registry-info
+    Bug #18091 Bug #18533
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 Jun 2010 15:16:23 +0200
+
 univention-config-registry (6.0.4-1) unstable; urgency=low
 
   * fixed is_false() and is_true() in configRegistry() Bug #15125
