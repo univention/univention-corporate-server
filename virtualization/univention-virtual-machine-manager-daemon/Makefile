@@ -6,14 +6,14 @@ UVMM := univention-virtual-machine-manager
 MODULES=$(shell find umc/modules/univention/management -name '*.py')
 PO_FILES := $(shell find umc/modules/univention/management src -name '*.po')
 MO_FILES := $(PO_FILES:%.po=%.mo)
-IMAGES=$(shell find umc/images -name '*.gif' -o -name '*.png')
+IMAGES := $(shell find umc/images -name '*.gif' -o -name '*.png')
 MODULENAME=uvmm
+
+.PHONY: all
+all:: $(MO_FILES) $(IMAGES)
 
 %.mo:	%.po
 	msgfmt --check --output-file $@ $<
-
-.PHONY: all
-all: $(MO_FILES)
 
 .PHONY: install
 install:: install-modules install-locales install-images
@@ -78,7 +78,7 @@ install-locales: $(MO_FILES)
 
 ifeq ($(M),1)
 LANGUAGES := de
-DIRS := src umc/modules/univention/management/console/handlers/uvmm
+DIRS := src umc/modules/univention/management/console/handlers/$(MODULENAME)
 
 .PHONY: maintainer-locales
 maintainer-locales: $(foreach d,$(DIRS),$(d)/messages.pot)
@@ -90,7 +90,7 @@ define I18N_template
 endef
 $(foreach lang,$(LANGUAGES),$(eval $(call I18N_template,$(lang))))
 
-umc/modules/univention/management/console/handlers/uvmm/messages.pot: $(shell find umc/modules/univention/management/console/handlers/uvmm -name \*.py)
+umc/modules/univention/management/console/handlers/$(MODULENAME)/messages.pot: $(shell find umc/modules/univention/management/console/handlers/$(MODULENAME) -name \*.py)
 
 src/messages.pot: src/univention-virtual-machine-manager
 src/messages.pot: src/univention-virtual-machine-manager-daemon
@@ -109,4 +109,25 @@ src/messages.pot: $(shell find src/univention/uvmm -name \*.py)
 
 clean::
 	$(RM) $(foreach d,$(DIRS),$(d)/messages.pot)
+
+
+IMAGES_12 := domain group node
+IMAGES_16 := add domain-on domain-paused domain group node node-off refresh
+IMAGES_64 := module
+
+SIZES := 12 16 64
+FORMATS := png gif
+
+IMAGES := $(foreach format,$(FORMATS),$(foreach size,$(SIZES),$(foreach img,$(IMAGES_$(size)),umc/images/default/$(size)x$(size)/$(MODULENAME)/$(img).$(format))))
+all:: $(IMAGES)
+
+define CONVERT_template
+ umc/images/default/$(1)x$(1)/%.png: umc/images/default/scalable/%.svg
+	inkscape -w $(1) -h $(1) -f $$< -e $$@
+endef
+$(foreach size,$(SIZES),$(eval $(call CONVERT_template,$(size))))
+
+%.gif: %.png
+	convert $< $@
+
 endif

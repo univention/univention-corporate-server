@@ -66,7 +66,18 @@ class TreeView( object ):
 		return link
 
 	@staticmethod
-	def convert( data, current, level = 0, options = {}, additional_buttons = {}, uvmm = None, node_uri = None ):
+	def convert(data, current, level=0, options={}, additional_buttons={}, uvmm=None, node_uri=None, cache={}):
+		"""
+		Convert nested list|tutple into TreeView of buttons.
+
+		data: nested list|tuples.
+		level: recursion level.
+		options: dictionary[level_name] of options for buttons.
+		additional_buttons: dictionary[level] of buttons.
+		uvmm: instance of uvmmd client.
+		node_uri: URI of node for levels below 2.
+		cache: dictionary for caching data during recursion calls.
+		"""
 		treedata = []
 		opt = TreeView.LEVELS[ level ]
 		command = 'uvmm/%s/overview' % opt
@@ -82,9 +93,18 @@ class TreeView( object ):
 				options[ opt ] = item
 				if level == 2:
 					node_uri = uvmm.node_name2uri( item )
+					icon = 'uvmm/node-off'
+					try:
+						try:
+							node_info = cache[node_uri]
+						except KeyError, e:
+							node_info = cache[node_uri] = uvmm.get_node_info(node_uri)
+						if node_info.last_try == node_indo.last_update:
+							icon = 'uvmm/node'
+					except: pass
 				elif level == 3:
-					# node = uvmm.get_node_info( node_uri )
-					domain_info = uvmm.get_domain_info( node_uri, item )
+					node_info = cache[node_uri]
+					domain_info = [d for d in node.info.domains if d.name == item][0]
 					if domain_info.state in ( 1, 2 ):
 						icon = 'uvmm/domain-on'
 					elif domain_info.state in ( 3, ):

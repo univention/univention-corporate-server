@@ -38,7 +38,7 @@ attributes=['univentionService']
 
 import listener
 import univention.debug as debug
-from univention.uvmm.ldap import SERVICES, ldap2fqdn
+from univention.uvmm.uvmm_ldap import SERVICES, ldap2fqdn
 
 def uvmm(mode, uri):
 	"""Invoke UVMM CLI as root."""

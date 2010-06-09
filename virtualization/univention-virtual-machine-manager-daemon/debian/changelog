@@ -1,3 +1,14 @@
+univention-virtual-machine-manager-daemon (0.9.22-2) unstable; urgency=low
+
+  * Add image for unreachable hosts (Bug #18459)
+  * Quieten logging.
+  * Update translations.
+  * Cache results of uvmm query during TreeView traversal.
+  * Fix uvmm_ldap import in listener.
+  * make M=1 creates images and updates .pot files.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 09 Jun 2010 10:35:45 +0200
+
 univention-virtual-machine-manager-daemon (0.9.22-1) unstable; urgency=low
 
   * fix layout; width of settings dialog was to big; Bug #17733
