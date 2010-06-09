@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.26 (4.0.1-5) unstable; urgency=low
+
+  * Rebuild for ucs54 (Ticket#: 2010031710000756)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 09 Jun 2010 10:29:29 +0200
+
 univention-kernel-image-2.6.26 (4.0.1-4) unstable; urgency=low
 
   * sec2.3-4 update to ucs53 (Bug #16980)
