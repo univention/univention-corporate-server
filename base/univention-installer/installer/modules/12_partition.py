@@ -47,7 +47,6 @@ from local import _
 import os, re, string, curses
 import inspect
 import subprocess
-import time
 
 # some autopartitioning config values
 PARTSIZE_BOOT = 200           # size of /boot partition
@@ -1138,7 +1137,7 @@ class object(content):
 						else:
 							self.run_cmd('/sbin/PartedCreate -d %s -t %s -f %s -s %s -e %s 2>&1' % (disk, type, fstype, start, end))
 						self.parent.debug('wait for udev to create device file')
-						time.sleep(3)
+						os.system("udevadm settle || true")
 
 						if 'lvm' in flaglist:
 							device = self.get_real_partition_device_name(disk,num)
@@ -3248,7 +3247,7 @@ class object(content):
 										 (proc.returncode, command, stderr.replace('\n','\n=> '), stdout.replace('\n','\n=> ')))
 				if "mkpart" in command:
 					self.parent.parent.debug('waiting for udev to create device file')
-					time.sleep(3)
+					os.system("udevadm settle || true")
 
 				if proc.returncode:
 					self.parent.container['history']=[]

@@ -1,3 +1,9 @@
+univention-installer (6.0.22-1) unstable; urgency=low
+
+  * use udevadm settle to wait for udev Bug #12524
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 Jun 2010 11:20:59 +0200
+
 univention-installer (6.0.21-3) unstable; urgency=low
 
   * in partition module wait for udev to create device files Bug #12524 

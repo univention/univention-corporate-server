@@ -420,6 +420,7 @@ class object(content):
 					time.sleep(0.5)
 				elif self.action == 'wait':
 					time.sleep(WAIT_FOR_DRIVERS)
+					os.system("udevadm settle || true")
 				else:
 					self._scan_hardware()
 			else:
