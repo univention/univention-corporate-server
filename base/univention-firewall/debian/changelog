@@ -1,3 +1,9 @@
+univention-firewall (3.0.0-2) unstable; urgency=low
+
+  * fixed 20localhost permissions Bug #18407 
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 Jun 2010 14:03:12 +0200
+
 univention-firewall (3.0.0-1) unstable; urgency=low
 
   * version bump for UCS 2.4
