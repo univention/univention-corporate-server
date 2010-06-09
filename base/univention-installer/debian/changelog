@@ -1,3 +1,9 @@
+univention-installer (6.0.21-3) unstable; urgency=low
+
+  * in partition module wait for udev to create device files Bug #12524 
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 Jun 2010 09:57:13 +0200
+
 univention-installer (6.0.21-2) unstable; urgency=low
 
   * firmware-all package is now firmware-linux Bug #18323 

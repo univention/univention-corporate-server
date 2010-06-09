@@ -47,6 +47,7 @@ from local import _
 import os, re, string, curses
 import inspect
 import subprocess
+import time
 
 # some autopartitioning config values
 PARTSIZE_BOOT = 200           # size of /boot partition
@@ -1136,6 +1137,8 @@ class object(content):
 							self.run_cmd('/sbin/PartedCreate -d %s -t %s -s %s -e %s 2>&1' % (disk, type, start, end))
 						else:
 							self.run_cmd('/sbin/PartedCreate -d %s -t %s -f %s -s %s -e %s 2>&1' % (disk, type, fstype, start, end))
+						self.parent.debug('wait for udev to create device file')
+						time.sleep(3)
 
 						if 'lvm' in flaglist:
 							device = self.get_real_partition_device_name(disk,num)
@@ -3196,49 +3199,18 @@ class object(content):
 
 		# returns False if one or more device files cannot be found - otherwise True
 		def write_devices_check(self):
-			missing_devices=[]
-			for disk in self.container['disk'].keys():
-				for part in self.container['disk'][disk]['partitions']:
-					if self.container['disk'][disk]['partitions'][part]['num'] > 0 : # only valid partitions
-						dev = self.parent.get_device(disk, part)
-						if not os.path.exists(dev):
-							missing_devices.append(dev)
-			missing_devices.sort()
-			if missing_devices:
-				self.parent.debug('MISSING DEVICES: %s' % missing_devices)
-				msglist = [ _('No device files found for following devices. Please'),
-							_('decrease number of partitions on a single disk or use LVM.'),
-							'' ]
-				# create device list and wrap at column 55
-				tmpstr = ''
-				for dev in missing_devices:
-					if len(tmpstr) + len(dev) > 55:
-						msglist.append(tmpstr)
-						tmpstr = dev
-					else:
-						if tmpstr == '':
-							tmpstr = dev
-						else:
-							tmpstr += ', %s' % dev
-				if len(tmpstr):
-					msglist.append(tmpstr)
-
-				self.sub = msg_win(self,self.pos_y+1,self.pos_x+1,self.width-1,2, msglist)
+			self.parent.debug('WRITE_DEVICES')
+			error = self.write_devices()
+			if error:
+				self.ERROR = False
+				msg = []
+				for err in error.split('\n'):
+					msg.append(err[:60])
+				self.sub = msg_win(self,self.pos_y+1,self.pos_x+1,self.width-1,2,msg)
+				self.parent.start()
 				self.draw()
 				return False
-			else:
-				self.parent.debug('WRITE_DEVICES')
-				error = self.write_devices()
-				if error:
-					self.ERROR = False
-					msg = []
-					for err in error.split('\n'):
-						msg.append(err[:60])
-					self.sub = msg_win(self,self.pos_y+1,self.pos_x+1,self.width-1,2,msg)
-					self.parent.start()
-					self.draw()
-					return False
-				return True
+			return True
 
 		def write_devices(self):
 			self.draw()
@@ -3274,6 +3246,10 @@ class object(content):
 				(stdout, stderr) = proc.communicate()
 				self.parent.parent.debug('===(exitcode=%d)====> %s\nSTDOUT:\n=> %s\nSTDERR:\n=> %s' %
 										 (proc.returncode, command, stderr.replace('\n','\n=> '), stdout.replace('\n','\n=> ')))
+				if "mkpart" in command:
+					self.parent.parent.debug('waiting for udev to create device file')
+					time.sleep(3)
+
 				if proc.returncode:
 					self.parent.container['history']=[]
 					self.parent.ERROR = "%s (%s)\n%s " % (command, proc.returncode, stderr)
