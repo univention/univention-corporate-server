@@ -99,9 +99,10 @@ class TreeView( object ):
 							node_info = cache[node_uri]
 						except KeyError, e:
 							node_info = cache[node_uri] = uvmm.get_node_info(node_uri)
-						if node_info.last_try == node_indo.last_update:
+						if node_info.last_try == node_info.last_update:
 							icon = 'uvmm/node'
-					except: pass
+					except Exception, e:
+						pass
 				elif level == 3:
 					node_info = cache[node_uri]
 					domain_info = [d for d in node.info.domains if d.name == item][0]
