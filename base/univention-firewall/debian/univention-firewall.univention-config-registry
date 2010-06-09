@@ -97,3 +97,7 @@ Variables: security/services/telnet
 Type: file
 File: etc/security/netfilter.d/20tftp
 Variables: security/services/tftp
+
+Type: file
+File: etc/security/netfilter.d/20localhost
+Variables: security/services/localhost

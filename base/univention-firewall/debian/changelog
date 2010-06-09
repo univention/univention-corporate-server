@@ -1,3 +1,10 @@
+univention-firewall (3.0.0-1) unstable; urgency=low
+
+  * version bump for UCS 2.4
+  * add 20localhost Bug #18407
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 Jun 2010 13:08:13 +0200
+
 univention-firewall (2.0.5-1) unstable; urgency=low
 
   * add security/services/sieve for TCP port 2000 (Bug #16670)
