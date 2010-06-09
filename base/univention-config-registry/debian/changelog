@@ -1,3 +1,9 @@
+univention-config-registry (6.0.3-1) unstable; urgency=low
+
+  * chmod 640 all logfiles in /var/log/univention after logrotat Bug #17798 
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 Jun 2010 11:56:28 +0200
+
 univention-config-registry (6.0.2-1) unstable; urgency=low
 
   * ignore services whose executable is missing (Bug #17339)
