@@ -83,7 +83,7 @@ def postrun():
 	"""Called 15s after handler."""
 	listener.setuid(0)
 	try:
-		ret = subprocess.call(['invoke-rc.d', 'libvirt-bin', 'reload'])
+		ret = subprocess.call(['invoke-rc.d', 'libvirt-bin', 'restart'])
 	finally:
 		listener.unsetuid()
 
