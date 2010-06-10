@@ -45,11 +45,18 @@ class Wizard( base.Element ):
 		self._content.add_row( [ option, text ] )
 
 	def add_buttons( self, *args ):
-		self._content.add_row( [ base.Fill( 2 ) ] )
-		self._content.add_row( [ '', args ] )
+		if self._image:
+			self._content.add_row( [ base.Fill( 2 ) ] )
+			self._content.add_row( [ '', args ] )
+		else:
+			self._content.add_row( [ '' ] )
+			self._content.add_row( [ args ] )
 
 	def setup( self ):
-		self._image[ 'width' ] = '100'
-		return base.Frame( [ base.List( content = [ [ base.Cell( self._image, { 'valign' : 'top' } ), self._content ] ] ) ], self._title )
+		if self._image:
+			self._image[ 'width' ] = '100'
+			return base.Frame( [ base.List( content = [ [ base.Cell( self._image, { 'valign' : 'top' } ), self._content ] ] ) ], self._title )
+		else:
+			return base.Frame( [ base.List( content = [ [ self._content ] ] ) ], self._title )
 
 WizardTypes = ( type( Wizard() ), )

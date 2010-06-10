@@ -1,3 +1,9 @@
+univention-management-console (3.0.23-1) unstable; urgency=low
+
+  * wizard: the image is optional; Bug #18612
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 10 Jun 2010 16:15:04 +0200
+
 univention-management-console (3.0.22-1) unstable; urgency=low
 
   * ensure that signal buttons are never default buttons
