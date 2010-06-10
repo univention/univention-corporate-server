@@ -255,7 +255,7 @@ class handler( umch.simpleHandler ):
 			buttons.append( umcd.LinkButton( _( 'Stop' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
 
 		# Suspend? if state is running or blocked
-		if domain.state in ( 1, ):
+		if domain.state in ( 1, 2):
 			opts = copy.copy( cmd_opts )
 			opts[ 'state' ] = 'PAUSE' 
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )

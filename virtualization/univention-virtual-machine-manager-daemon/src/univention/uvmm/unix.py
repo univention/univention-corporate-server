@@ -44,6 +44,7 @@ import socket
 import select
 import logging
 from OpenSSL import SSL
+import traceback
 
 logger = logging.getLogger('uvmmd.unix')
 
@@ -114,12 +115,12 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 					logger.warning('[%d] Error doing command "%s": %s' % (self.client_id, command.command, e))
 					res = protocol.Response_ERROR()
 					res.translatable_text, res.values = e.args
-				except:
-					import traceback
+				except Exception, e:
+					logger.error('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
 					res = protocol.Response_ERROR()
-					res.translatable_text = _('Traceback: %(traceback)s')
+					res.translatable_text = _('Exception: %(exception)s')
 					res.values = {
-							'traceback': traceback.print_exc(),
+							'exception': str(e),
 							}
 
 				logger.debug('[%d] Sending response.' % (self.client_id,))

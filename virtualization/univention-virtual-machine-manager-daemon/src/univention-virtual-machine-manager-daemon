@@ -190,9 +190,12 @@ if __name__ == '__main__':
 	if options.read_ini:
 		config.read(options.conffile)
 	logging.basicConfig(filename=options.logfile)
-	logging.config.fileConfig(options.conffile)
-
-	logger = logging.getLogger("uvmmd")
+	try:
+		logging.config.fileConfig(options.conffile)
+		logger = logging.getLogger("uvmmd")
+	except ConfigParser.Error, e:
+		logger = logging.getLogger("uvmmd")
+		logger.warning('Could not configure logger from %s' % (options.conffile,))
 
 	if options.verbose:
 		logger.setLevel(logging.DEBUG)

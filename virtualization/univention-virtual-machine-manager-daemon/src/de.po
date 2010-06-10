@@ -65,9 +65,9 @@ msgstr "Dämonoptionen"
 
 #: src/univention/uvmm/node.py:786
 #, python-format
-msgid "Domain \"%(domain)s\" in state \"%(state)d\" can not be migrated"
+msgid "Domain \"%(domain)s\" in state \"%(state)s\" can not be migrated"
 msgstr ""
-"Domain \"%(domain)s\" im Zustand \"%(state)d\" kann nicht migriert werden"
+"Domain \"%(domain)s\" im Zustand \"%(state)s\" kann nicht migriert werden"
 
 #: src/univention-virtual-machine-manager:200
 #: src/univention-virtual-machine-manager:214
@@ -304,8 +304,8 @@ msgstr "Zustand erwartet"
 
 #: src/univention/uvmm/unix.py:120
 #, python-format
-msgid "Traceback: %(traceback)s"
-msgstr "Traceback: %(traceback)s"
+msgid "Exception: %(exception)s"
+msgstr "Fehler: %(exception)s"
 
 #: src/univention-virtual-machine-manager:174
 #: src/univention-virtual-machine-manager:177

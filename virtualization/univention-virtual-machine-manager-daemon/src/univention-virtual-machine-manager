@@ -296,6 +296,8 @@ if __name__ == '__main__':
 				except KeyError: pass
 				try: g.keymap = graphics.attrib['keymap']
 				except KeyError: pass
+				try: g.listen = graphics.attrib['listen']
+				except KeyError: pass
 				domain.graphics.append(g)
 			try:
 				for annotation in root.find('annotations').findall('annotation'):

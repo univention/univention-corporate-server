@@ -1,3 +1,13 @@
+univention-virtual-machine-manager-daemon (0.9.24-1) unstable; urgency=low
+
+  * Wait for update on domain data (Bug #18385)
+  * Fix typo in logger configuration.
+  * Fix error reporting.
+  * Implement vnc-listen in cli-tool (Bug #18359)
+  * umc: handle RUNNING and IDLE as same state.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Jun 2010 10:46:15 +0200
+
 univention-virtual-machine-manager-daemon (0.9.23-1) unstable; urgency=low
 
   * clean up debug messages

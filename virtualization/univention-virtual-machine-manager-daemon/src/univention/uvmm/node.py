@@ -49,6 +49,8 @@ from univention.uvmm.eventloop import *
 virEventLoopPureStart()
 virEventLoopPureRegister()
 
+STATES = ['NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED']
+
 class NodeError(TranslatableException):
 	"""Error while handling node."""
 	pass
@@ -170,7 +172,7 @@ class Domain(object):
 	CPUTIMES = (10, 60, 5*60) # 10s 60s 5m
 	def __init__(self, domain):
 		self.uuid = domain.UUIDString()
-		self.name = domain.name()
+		self.state = 0
 		self.arch = 'i686'
 		self.virt_tech = domain.OSType()
 		self.kernel = ''
@@ -191,7 +193,9 @@ class Domain(object):
 	def update(self, domain):
 		"""Update statistics."""
 		self.name = domain.name()
-		self.state, maxMem, curMem, self.vcpus, runtime = domain.info()
+		state, maxMem, curMem, self.vcpus, runtime = domain.info()
+		if state != libvirt.VIR_DOMAIN_NOSTATE: # ignore =?= libvirt's transient error
+			self.state = state
 
 		if domain.ID() == 0 and domain.connect().getURI().startswith('xen'):
 			# xen://#Domain-0 always reports (1<<32)-1
@@ -307,6 +311,10 @@ class Domain(object):
 				dev.autoport = False
 			dev.keymap = graphic.getAttribute( 'keymap' )
 			self.graphics.append( dev )
+
+	def key(self):
+		"""Return a unique key for this domain and generation."""
+		return hash((self.uuid, self._time_stamp))
 
 class Node(object):
 	"""Container for node statistics."""
@@ -444,6 +452,19 @@ class Node(object):
 		self.maxMem = maxMem
 		self.last_update = self.last_try
 
+	def wait_update(self, domain, state_key, timeout=10):
+		"""Wait until domain gets updated."""
+		while timeout > 0:
+			try:
+				if state_key != self.domains[domain].key():
+					break
+			except KeyError, e:
+				pass
+			time.sleep(1)
+			timeout -= 1
+		else:
+			logger.warning('Timeout waiting for update.')
+
 class Nodes(dict):
 	"""Handle registered nodes."""
 	IDLE_FREQUENCY = 60*1000; # ms
@@ -476,7 +497,7 @@ def node_add(uri):
 	logger.debug("Hypervisor '%s' added." % (uri,))
 
 def node_remove(uri):
-	"""Add node to watch list."""
+	"""Remove node from watch list."""
 	global nodes
 	try:
 		del nodes[uri]
@@ -518,6 +539,7 @@ def domain_define( uri, domain ):
 	conn = node.conn
 
 	old_dom = None
+	old_stat = None
 
 	impl = getDOMImplementation()
 	doc = impl.createDocument( None, 'domain', None )
@@ -529,6 +551,7 @@ def domain_define( uri, domain ):
 		try:
 			old_dom = conn.lookupByName(domain.name)
 			domain.uuid = old_dom.UUIDString()
+			old_stat = node.domains[domain.uuid].key()
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 				raise NodeError(_('Error retrieving old domain "%(domain)s": %(error)s'), domain=domain.name, error=e)
@@ -701,34 +724,52 @@ def domain_define( uri, domain ):
 		if modified:
 			record.commit()
 
+	node.wait_update(domain.uuid, old_stat)
+
 def domain_state(uri, domain, state):
-	"""Change running state of domain on node."""
+	"""Change running state of domain on node and wait for updated state."""
 	try:
 		node = node_query(uri)
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
-		dom_state = dom.info()[0]
-		if "RUN" == state:
-			if dom_state == libvirt.VIR_DOMAIN_PAUSED:
-				return dom.resume()
-			elif dom_state in (libvirt.VIR_DOMAIN_SHUTDOWN, libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
-				return dom.create()
-		elif "PAUSE" == state:
-			if dom_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED):
-				return dom.suspend()
-		elif "SHUTDOWN" == state:
-			if dom_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED):
-				return dom.destroy()
-		elif "RESTART" == state:
-			if dom_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED):
-				return dom.reboot(None)
-
+		dom_stat = node.domains[domain]
 		try:
-			STATES = ['NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED']
-			cur_state = STATES[dom_state]
-		except IndexError:
-			cur_state = str(dom_state)
-		raise NodeError(_('Unsupported state transition %(cur_state)s to %(next_state)s'), cur_state=cur_state, next_state=state)
+			TRANSITION = {
+					(libvirt.VIR_DOMAIN_RUNNING,  'PAUSE'   ): dom.suspend,
+					(libvirt.VIR_DOMAIN_RUNNING,  'RESTART' ): lambda:dom.destroy(None),
+					(libvirt.VIR_DOMAIN_RUNNING,  'RUN'     ): None,
+					(libvirt.VIR_DOMAIN_RUNNING,  'SHUTDOWN'): dom.destroy,
+					(libvirt.VIR_DOMAIN_BLOCKED,  'PAUSE'   ): dom.suspend,
+					(libvirt.VIR_DOMAIN_BLOCKED,  'RESTART' ): lambda:dom.destroy(None),
+					(libvirt.VIR_DOMAIN_BLOCKED,  'RUN'     ): None,
+					(libvirt.VIR_DOMAIN_BLOCKED,  'SHUTDOWN'): dom.destroy,
+					(libvirt.VIR_DOMAIN_PAUSED,   'PAUSE'   ): None,
+					(libvirt.VIR_DOMAIN_PAUSED,   'RUN'     ): dom.resume,
+					(libvirt.VIR_DOMAIN_SHUTDOWN, 'RUN'     ): dom.create,
+					(libvirt.VIR_DOMAIN_SHUTDOWN, 'SHUTDOWN'): None,
+					(libvirt.VIR_DOMAIN_SHUTOFF,  'RUN'     ): dom.create,
+					(libvirt.VIR_DOMAIN_SHUTOFF,  'SHUTDOWN'): None,
+					(libvirt.VIR_DOMAIN_CRASHED,  'RUN'     ): dom.create,
+					(libvirt.VIR_DOMAIN_CRASHED,  'SHUTDOWN'): None, # TODO destroy?
+					}
+			transition = TRANSITION[(dom_stat.state, state)]
+		except KeyError, e:
+
+			cur_state = STATES[dom_stat.state]
+			raise NodeError(_('Unsupported state transition %(cur_state)s to %(next_state)s'), cur_state=cur_state, next_state=state)
+
+		if transition:
+			transition()
+			ignore_states = [libvirt.VIR_DOMAIN_NOSTATE]
+			if state == 'RUN':
+				ignore_states.append(libvirt.VIR_DOMAIN_PAUSED)
+			for t in range(10):
+				cur_state = dom.info()[0]
+				if cur_state not in ignore_states:
+					# xen does not send event, do update explicitly
+					dom_stat.state = cur_state
+					break
+				time.sleep(1)
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise NodeError(_('Error managing domain "%(domain)s": %(error)s'), domain=domain, error=e)
@@ -782,7 +823,11 @@ def domain_migrate(source_uri, domain, target_uri):
 		source_node = node_query(source_uri)
 		source_conn = source_node.conn
 		source_dom = source_conn.lookupByUUIDString(domain)
-		source_state = source_dom.info()[0]
+		for t in range(10):
+			source_state = source_dom.info()[0]
+			if source_state != libvirt.VIR_DOMAIN_NOSTATE:
+				break
+			time.sleep(1)
 		target_node = node_query(target_uri)
 		target_conn = target_node.conn
 
@@ -796,7 +841,7 @@ def domain_migrate(source_uri, domain, target_uri):
 			target_conn.defineXML(xml)
 			source_dom.undefine()
 		elif True or source_state in (libvirt.VIR_DOMAIN_PAUSED):
-			raise NodeError(_('Domain "%(domain)s" in state "%(state)d" can not be migrated'), domain=domain, state=source_state)
+			raise NodeError(_('Domain "%(domain)s" in state "%(state)s" can not be migrated'), domain=domain, state=STATES[source_state])
 
 		# Updates are handled via the callback mechanism
 		#del source_node.domains[domain]
