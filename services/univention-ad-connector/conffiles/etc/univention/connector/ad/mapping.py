@@ -45,6 +45,7 @@ global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base
 			'ou=Domain Controllers,@%@connector/ad/ldap/base@%@',
 			'cn=Program Data,@%@connector/ad/ldap/base@%@',
 			'cn=Configuration,@%@connector/ad/ldap/base@%@',
+			'cn=opsi,@%@ldap/base@%@',
 			'cn=Microsoft Exchange System Objects,@%@connector/ad/ldap/base@%@']
 
 
@@ -61,7 +62,7 @@ ad_mapping = {
 
 			con_search_filter='(&(objectClass=user)(!objectClass=computer))',
 			match_filter='(|(&(objectClass=posixAccount)(objectClass=sambaSamAccount))(objectClass=user))',
-			ignore_filter='(|(uid=root)(uid=Administrator)(cn=Administrator)(CN=Administrator)(userAccountControl=2080))',
+			ignore_filter='(|(uid=root)(uid=Administrator)(cn=Administrator)(CN=Administrator)(userAccountControl=2080)(uid=pcpatch)(cn=pcpatch)(CN=pcpatch))',
 
 			ignore_subtree = global_ignore_subtree,
 			
