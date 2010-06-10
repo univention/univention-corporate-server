@@ -111,15 +111,14 @@ class TreeView( object ):
 					if item == 'Domain-0':
 						continue
 					node_info = get_node_info(node_uri)
+					icon = 'uvmm/domain'
 					for domain_info in node_info.domains:
-						if domain_info.name != item:
-							continue
-						if domain_info.state in ( 1, 2 ):
-							icon = 'uvmm/domain-on'
-						elif domain_info.state in ( 3, ):
-							icon = 'uvmm/domain-paused'
-					else:
-						icon = 'uvmm/domain'
+						if domain_info.name == item:
+							if domain_info.state in ( 1, 2 ):
+								icon = 'uvmm/domain-on'
+							elif domain_info.state in ( 3, ):
+								icon = 'uvmm/domain-paused'
+							break
 				link = TreeView.button_create( item, icon, command, options, current )
 				treedata.append( link )
 			else: # list or tuple
