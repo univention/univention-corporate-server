@@ -1,3 +1,9 @@
+univention-firewall (3.0.1-1) unstable; urgency=low
+
+  * added ucr info Bug #18407 
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Jun 2010 12:30:04 +0200
+
 univention-firewall (3.0.0-2) unstable; urgency=low
 
   * fixed 20localhost permissions Bug #18407 

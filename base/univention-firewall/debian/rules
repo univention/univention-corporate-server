@@ -57,7 +57,8 @@ install: build
 	mkdir -p $(CURDIR)/debian/univention-firewall/etc/security/netfilter.d
 	cp ./00init $(CURDIR)/debian/univention-firewall/etc/security/netfilter.d
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 
 binary-arch: build install
 
