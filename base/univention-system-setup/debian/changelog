@@ -1,3 +1,10 @@
+univention-system-setup (4.0.2-1) unstable; urgency=low
+
+  * fixed certificate creation for ucs master in basis/12domainname and
+    basis/10hostname Bug #16929 
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Jun 2010 15:16:34 +0200
+
 univention-system-setup (4.0.1-1) unstable; urgency=low
 
   * fix error with "cn" or "ou" ldap/base (Bug #16874)

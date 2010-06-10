@@ -195,12 +195,11 @@ fi
 echo `date` : "Create new host certificate"  >> /var/log/univention/setup.log
 
 if [ "$server_role" = "domaincontroller_master" ]; then  # create the new certificate
-	source /usr/share/univention-ssl/make-certificates.sh;
 	if [ ! -d "/etc/univention/ssl/$hostname.$new_domainname" ]; then
-		gencert $hostname.$new_domainname $hostname.$new_domainname
+		univention-certificate new -name "$new_hostname.$domainname"
 	fi
 	rm -rf /etc/univention/ssl/univention-directory-manager.$old_domainname
-	gencert univention-directory-manager.$new_domainname univention-directory-manager.$new_domainname
+	univention-certificate new -name "univention-directory-manager.$new_domainname"
 	rm -f /etc/univention/ssl/univention-directory-manager
 	ln -sf /etc/univention/ssl/univention-directory-manager.$new_domainname /etc/univention/ssl/univention-directory-manager
 else # download certificate from master
@@ -209,13 +208,11 @@ else # download certificate from master
 		HOSTPWD="/etc/machine.secret"
 		HOSTACCOUNT="$hostname\$"
 		i=0
-		univention-scp $HOSTPWD "-r $HOSTACCOUNT@$ldap_master:/etc/univention/ssl/$hostname /etc/univention/ssl/"
 		univention-scp $HOSTPWD "-r $HOSTACCOUNT@$ldap_master:/etc/univention/ssl/$hostname.$new_domainname /etc/univention/ssl/"
 		while [ ! -d "/etc/univention/ssl/$hostname" ] &&  [ ! -d "/etc/univention/ssl/$hostname.$new_domainname" ]; do
 			i=$((i+1))
 			echo `date` : "Download host certificate (try: $i)"  >> /var/log/univention/setup.log
 			sleep 10
-			univention-scp $HOSTPWD "-r $HOSTACCOUNT@$ldap_master:/etc/univention/ssl/$hostname /etc/univention/ssl/"
 			univention-scp $HOSTPWD "-r $HOSTACCOUNT@$ldap_master:/etc/univention/ssl/$hostname.$new_domainname /etc/univention/ssl/"
 			if [ "$i" -gt 30 ]; then
 				echo `date` : "Failed to download the host certificate"  >> /var/log/univention/setup.log
