@@ -69,6 +69,7 @@ class TreeView( object ):
 	def convert(data, current, level=0, options={}, additional_buttons={}, uvmm=None, node_uri=None, cache={}):
 		"""
 		Convert nested list|tutple into TreeView of buttons.
+		Depth-first recursion which creation on return path.
 
 		data: nested list|tuples.
 		level: recursion level.
@@ -78,6 +79,14 @@ class TreeView( object ):
 		node_uri: URI of node for levels below 2.
 		cache: dictionary for caching data during recursion calls.
 		"""
+		def get_node_info(node_uri):
+			"""Get (cached) node_info."""
+			try:
+				node_info = cache[node_uri]
+			except KeyError, e:
+				node_info = cache.setdefault(node_uri, uvmm.get_node_info(node_uri))
+			return node_info
+
 		treedata = []
 		opt = TreeView.LEVELS[ level ]
 		command = 'uvmm/%s/overview' % opt
@@ -88,33 +97,32 @@ class TreeView( object ):
 			if item == None:
 				continue
 			if type( item ) not in ( list, tuple ):
-				if item == 'Domain-0':
-					continue
 				options[ opt ] = item
 				if level == 2:
 					node_uri = uvmm.node_name2uri( item )
 					icon = 'uvmm/node-off'
 					try:
-						try:
-							node_info = cache[node_uri]
-						except KeyError, e:
-							node_info = cache[node_uri] = uvmm.get_node_info(node_uri)
+						node_info = get_node_info(node_uri)
 						if node_info.last_try == node_info.last_update:
 							icon = 'uvmm/node'
 					except Exception, e:
 						pass
 				elif level == 3:
-					node_info = cache[node_uri]
-					domain_info = [d for d in node_info.domains if d.name == item][0]
-					if domain_info.state in ( 1, 2 ):
-						icon = 'uvmm/domain-on'
-					elif domain_info.state in ( 3, ):
-						icon = 'uvmm/domain-paused'
+					if item == 'Domain-0':
+						continue
+					node_info = get_node_info(node_uri)
+					for domain_info in node_info.domains:
+						if domain_info.name != item:
+							continue
+						if domain_info.state in ( 1, 2 ):
+							icon = 'uvmm/domain-on'
+						elif domain_info.state in ( 3, ):
+							icon = 'uvmm/domain-paused'
 					else:
 						icon = 'uvmm/domain'
 				link = TreeView.button_create( item, icon, command, options, current )
 				treedata.append( link )
-			else:
+			else: # list or tuple
 				# check for additional buttons to append
 				items = []
 				if level in additional_buttons:
@@ -123,7 +131,7 @@ class TreeView( object ):
 						myoptions.update( options )
 						link = TreeView.button_create( text, myicon, mycommand, myoptions, current )
 						items.append( link )
-				items.extend( TreeView.convert( item, current, level + 1, options = copy.copy( options ), additional_buttons = additional_buttons, uvmm = uvmm, node_uri = node_uri ) )
+				items.extend(TreeView.convert(item, current, level + 1, options=copy.copy(options), additional_buttons=additional_buttons, uvmm=uvmm, node_uri=node_uri, cache=cache))
 				treedata.append( items )
 
 		return treedata
