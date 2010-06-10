@@ -158,7 +158,7 @@ class TreeView( object ):
 	def get_tree( uvmm_client, current ):
 		additional_buttons = { 2 : ( ( _( 'Add' ), 'uvmm/add', 'uvmm/domain/create', { 'domain' : 'NONE' } ), ) }
 		table = umcd.SimpleTreeTable( collapsible = 2 )
-		table.set_tree_data( TreeView.convert( uvmm_client.get_node_tree(), current, additional_buttons = additional_buttons, uvmm = uvmm_client ) )
+		table.set_tree_data( TreeView.convert( uvmm_client.get_node_tree(), current, additional_buttons = additional_buttons, uvmm = uvmm_client, cache = {} ) )
 		
 		return table
 
