@@ -1,3 +1,10 @@
+univention-mozilla-firefox (5.0.0-1) unstable; urgency=low
+
+  * bump version for UCS 2.4
+  * merged ucs 2.3 ucd changes Bug #18453
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Jun 2010 16:07:03 +0200
+
 univention-mozilla-firefox (4.0.4-1) unstable; urgency=low
 
   * updated copyright Bug #17222 

@@ -99,12 +99,12 @@ pref("browser.dictionaries.download.url", "https://%LOCALE%.add-ons.mozilla.com/
 // App-specific update preferences
 
 // Whether or not app updates are enabled
-pref("app.update.enabled", true);
+pref("app.update.enabled", false);
 
 // This preference turns on app.update.mode and allows automatic download and
 // install to take place. We use a separate boolean toggle for this to make
 // the UI easier to construct.
-pref("app.update.auto", true);
+pref("app.update.auto", false);
 
 // Defines how the Application Update Service notifies the user about updates:
 //
@@ -181,7 +181,7 @@ pref("keyword.URL", "chrome://browser-region/locale/region.properties");
 
 pref("general.useragent.locale", "en-US");
 pref("general.skins.selectedSkin", "classic/1.0");
-pref("general.useragent.extra.firefox", "Firefox/3.5.3");
+pref("general.useragent.extra.firefox", "Firefox/3.6.2");
 
 pref("general.smoothScroll", false);
 //@line 183 "/builds/moz2_slave/linux_build/build/browser/app/profile/firefox.js"
@@ -348,6 +348,7 @@ pref("browser.tabs.closeButtons", 1);
 // false  return to the adjacent tab (old default)
 pref("browser.tabs.selectOwnerOnClose", true);
 
+pref("browser.allTabs.previews", false);
 pref("browser.ctrlTab.previews", true);
 pref("browser.ctrlTab.recentlyUsedLimit", 7);
 
@@ -560,7 +561,7 @@ pref("browser.backspace_action", 2);
 pref("layout.spellcheckDefault", 1);
 
 @!@
-print 'pref("spellchecker.dictionary", "%s");' % baseConfig.get('firefox/prefs/spellchecker/dictionary', 'en-GB')
+print 'pref("spellchecker.dictionary", "%s");' % baseConfig.get('firefox/prefs/spellchecker/dictionary', 'en-US')
 @!@
 
 pref("browser.send_pings", false);
@@ -651,7 +652,7 @@ pref("browser.safebrowsing.enabled", true);
 pref("browser.safebrowsing.malware.enabled", true);
 
 // Non-enhanced mode (local url lists) URL list to check for updates
-pref("browser.safebrowsing.provider.0.updateURL", "http://safebrowsing.clients.google.com/safebrowsing/downloads?client={moz:client}&appver={moz:version}&pver=2.1");
+pref("browser.safebrowsing.provider.0.updateURL", "http://safebrowsing.clients.google.com/safebrowsing/downloads?client={moz:client}&appver={moz:version}&pver=2.2");
 
 pref("browser.safebrowsing.dataProvider", 0);
 
