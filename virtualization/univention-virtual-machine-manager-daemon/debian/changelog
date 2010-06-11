@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.28-1) unstable; urgency=low
+
+  * Add default <features> agains performance problem (Bug #18636)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 11 Jun 2010 15:48:04 +0200
+
 univention-virtual-machine-manager-daemon (0.9.27-1) unstable; urgency=low
 
   * Sort list of groups, nodes and domains (Bug #18639)

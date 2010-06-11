@@ -42,6 +42,7 @@ import math
 from helpers import TranslatableException, N_ as _
 from uvmm_ldap import ldap_annotation, LdapError, ldap_modify
 import univention.admin.uexceptions
+import traceback
 
 logger = logging.getLogger('uvmmd.node')
 
@@ -143,18 +144,51 @@ class Graphic( object ):
 
 class DomainTemplate(object):
 	'''Container for node capability.'''
+
 	@staticmethod
 	def list_from_xml(xml):
+		"""Convert XML to list.
+		>>> t = DomainTemplate.list_from_xml(TEST_CAPABILITIES)
+		>>> len(t)
+		1
+		>>> t[0].virt_tech
+		u'hvm'
+		>>> t[0].arch
+		u'i686'
+		>>> t[0].emulator
+		u'/usr/bin/qemu'
+		>>> t[0].machines
+		[u'pc']
+		>>> t[0].domains
+		[u'qemu']
+		>>> t[0].features
+		['pae', u'acpi', u'apic']
+		"""
 		doc = parseString(xml)
 		result = []
 		for guest in doc.getElementsByTagName('guest'):
 			virt_tech = guest.getElementsByTagName('os_type')[0].firstChild.nodeValue
+			f_names = []
+			features = guest.getElementsByTagName('features')
+			if features:
+				c = features[0].firstChild
+				while c:
+					if c.nodeType == 1:
+						if c.nodeName == 'pae':
+							if 'nonpae' not in f_names:
+								f_names.append('pae')
+						elif c.nodeName == 'nonpae':
+							if 'pae' not in f_names:
+								f_names.append('nonpae')
+						elif c.getAttribute('default') == 'on':
+							f_names.append(c.nodeName)
+					c = c.nextSibling
 			for arch in guest.getElementsByTagName('arch'):
-				dom = DomainTemplate(virt_tech, arch)
+				dom = DomainTemplate(virt_tech, arch, f_names)
 				result.append(dom)
 		return result
 
-	def __init__(self, virt_tech, arch):
+	def __init__(self, virt_tech, arch, features):
 		self.virt_tech = virt_tech
 		self.arch = arch.getAttribute('name')
 		self.emulator = arch.getElementsByTagName('emulator')[0].firstChild.nodeValue
@@ -164,9 +198,10 @@ class DomainTemplate(object):
 			self.loader = None
 		self.machines = [m.firstChild.nodeValue for m in arch.getElementsByTagName('machine')]
 		self.domains = [d.getAttribute('type') for d in arch.getElementsByTagName('domain')]
+		self.features = features
 
 	def __str__(self):
-		return 'DomainTemplate(type=%s arch=%s): %s, %s, %s, %s' % (self.virt_tech, self.arch, self.emulator, self.loader, self.machines, self.domains)
+		return 'DomainTemplate(type=%s arch=%s): %s, %s, %s, %s, %s' % (self.virt_tech, self.arch, self.emulator, self.loader, self.machines, self.domains, self.features)
 
 class Domain(object):
 	"""Container for domain statistics."""
@@ -496,8 +531,8 @@ nodes = Nodes()
 
 def node_add(uri):
 	"""Add node to watch list.
-	>>> node_add("qemu:///session")
-	>>> node_add("xen:///")"""
+	>>> #node_add("qemu:///session")
+	>>> #node_add("xen:///")"""
 	global nodes
 	if uri in nodes:
 		raise NodeError(_('Hypervisor "%(uri)s" is already connected.'), uri=uri)
@@ -586,6 +621,13 @@ def domain_define( uri, domain ):
 		if template.arch == domain.arch and template.virt_tech == domain.virt_tech and template.loader:
 			loader = doc.createElement( 'loader' )
 			loader.appendChild( doc.createTextNode( template.loader ) )
+
+			if template.features:
+				features = doc.createElement('features')
+				for f_name in template.features:
+					feature = doc.createElement(f_name)
+					features.appendChild(feature)
+				doc.documentElement.appendChild(features)
 
 	type = doc.createElement( 'type' )
 	type.appendChild( doc.createTextNode( domain.virt_tech ) )
@@ -869,3 +911,30 @@ def domain_migrate(source_uri, domain, target_uri):
 		logger.error(e)
 		raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=e)
 
+if __name__ == '__main__':
+	TEST_CAPABILITIES = '''<capabilities>
+		<host>
+			<cpu/>
+			<migration_features/>
+		</host>
+		<guest>
+			<os_type>hvm</os_type>
+			<arch name='i686'>
+				<wordsize>32</wordsize>
+				<emulator>/usr/bin/qemu</emulator>
+				<machine>pc</machine>
+				<domain type='qemu'>
+				</domain>
+			</arch>
+			<features>
+				<cpuselection/>
+				<pae/>
+				<nonpae/>
+				<acpi default='on' toggle='yes'/>
+				<apic default='on' toggle='no'/>
+			</features>
+		</guest>
+	</capabilities>'''
+
+	import doctest
+	doctest.testmod()
