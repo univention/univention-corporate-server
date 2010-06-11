@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.27-1) unstable; urgency=low
+
+  * Sort list of groups, nodes and domains (Bug #18639)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 11 Jun 2010 12:47:51 +0200
+
 univention-virtual-machine-manager-daemon (0.9.26-3) unstable; urgency=low
 
   * Force annotations uuid attribute to correct value (Bug #18385)

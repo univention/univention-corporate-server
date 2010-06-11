@@ -224,6 +224,7 @@ class Client( notifier.signals.Provider ):
 		groups = self.recv_blocking()
 
 		tree_data = []
+		groups.data.sort()
 		for grp in groups.data:
 			group = []
 			req = protocol.Request_NODE_LIST()
@@ -231,6 +232,7 @@ class Client( notifier.signals.Provider ):
 			if not self.send( req.pack() ):
 				raise ConnectionError()
 			node_uris = self.recv_blocking()
+			node_uris.data.sort(lambda a, b: cmp(a[a.find('://')+3:], b[b.find('://')+3:]))
 			for node in node_uris.data:
 				domains = []
 				req = protocol.Request_NODE_QUERY()
@@ -242,6 +244,7 @@ class Client( notifier.signals.Provider ):
 				if self.is_error( node_info ):
 					group.extend( [ node[ node.find( '://' ) + 3 : node.rfind( '/' ) ], None ]  )
 				else:
+					node_info.data.domains.sort(lambda a, b: cmp(a.name, b.name))
 					for dom in node_info.data.domains:
 						domains.append( dom.name )
 					group.extend( [ node_info.data.name, domains ] )
