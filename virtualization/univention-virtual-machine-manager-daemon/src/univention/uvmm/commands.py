@@ -184,7 +184,10 @@ class _Commands:
 			raise CommandError('DOMAIN_DEFINE', _('definition != Domain: %(domain)s'), domain=request.domain)
 		logger.debug('DOMAIN_DEFINE %s %s' % (request.uri, request.domain))
 		try:
-			node.domain_define(request.uri, request.domain)
+			uuid = node.domain_define(request.uri, request.domain)
+			res = protocol.Response_DUMP()
+			res.data = uuid
+			return res
 		except node.NodeError, e:
 			raise CommandError('DOMAIN_DEFINE', e)
 

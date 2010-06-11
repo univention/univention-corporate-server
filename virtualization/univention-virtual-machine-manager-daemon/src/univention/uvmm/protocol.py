@@ -177,7 +177,7 @@ class Response_ERROR(Response):
 class Response_OK(Response):
 	def _default(self):
 		self.status = 'OK'
-class Response_DUMP(Response):
+class Response_DUMP(Response_OK):
 	def _default(self):
 		self.status = 'OK'
 		self.data = {}
@@ -206,6 +206,7 @@ class Data_Domain(object):
 		self.kernel = None
 		self.cmdline = None
 		self.initrd = None
+		self.boot = [] # (fd|hd|cdrom|network)+
 		self.state = None
 		self.maxMem = None
 		self.curMem = None
@@ -224,6 +225,7 @@ class Data_Domain(object):
 			'kernel':self.kernel,
 			'cmdline':self.cmdline,
 			'initrd':self.initrd,
+			'boot': self.boot,
 			'state':self.state,
 			'maxMem':self.maxMem,
 			'curMem':self.curMem,

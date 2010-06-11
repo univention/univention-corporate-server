@@ -248,7 +248,7 @@ if __name__ == '__main__':
 				domain.cmdline = root.find('os').findtext('cmdline')
 				domain.initrd = root.find('os').findtext('initrd')
 			elif domain.virt_tech == 'hvm':
-				try: domain.boot = root.find('os').find('boot').attrib['dev']
+				try: domain.boot = [boot.attrib['dev'] for boot in root.find('os').findall('boot')]
 				except AttributeError: pass
 				except KeyError: pass
 			else:

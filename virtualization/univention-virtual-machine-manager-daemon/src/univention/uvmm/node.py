@@ -600,16 +600,17 @@ def domain_define( uri, domain ):
 		initrd.appendChild( text )
 		os.appendChild( initrd )
 	if domain.virt_tech == 'hvm':
-		boot = doc.createElement('boot')
-		boot.setAttribute('dev', 'hd') # FIXME: (hd|cdrom|network|fd)+
-		os.appendChild(boot)
+		for dev in domain.boot: # (hd|cdrom|network|fd)+
+			boot = doc.createElement('boot')
+			boot.setAttribute('dev', dev)
+			os.appendChild(boot)
 	
 	if False: # FIXME optional
-		boot = doc.createElement('clock')
-		boot.setAttribute('offset', 'localtime') # FIXME: (utc|localtime|timezone|variable)
-		#boot.setAttribute('timezone', '') # @offset='timezone' only
-		#boot.setAttribute('adjustment', 0) # @offset='variable' only
-		os.appendChild(boot)
+		clock = doc.createElement('clock')
+		clock.setAttribute('offset', 'localtime') # FIXME: (utc|localtime|timezone|variable)
+		#clock.setAttribute('timezone', '') # @offset='timezone' only
+		#clock.setAttribute('adjustment', 0) # @offset='variable' only
+		os.appendChild(clock)
 
 	if False: # FIXME optional
 		text = doc.createTextNode('destroy') # (destroy|restart|preserve|rename-restart)
@@ -725,6 +726,7 @@ def domain_define( uri, domain ):
 			record.commit()
 
 	node.wait_update(domain.uuid, old_stat)
+	return domain.uuid
 
 def domain_state(uri, domain, state):
 	"""Change running state of domain on node and wait for updated state."""
