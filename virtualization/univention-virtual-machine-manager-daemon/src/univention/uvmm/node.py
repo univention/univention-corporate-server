@@ -41,6 +41,7 @@ from xml.dom.minidom import getDOMImplementation, parseString
 import math
 from helpers import TranslatableException, N_ as _
 from uvmm_ldap import ldap_annotation, LdapError, ldap_modify
+import univention.admin.uexceptions
 
 logger = logging.getLogger('uvmmd.node')
 
@@ -325,9 +326,14 @@ class Node(object):
 		self.domains = {}
 
 		def timer_callback(timer, *opaque):
-			"""Handle regular poll. Also checks connection liveness."""
-			self.update_autoreconnect()
-			logger.debug("timer_callback#%d: %s)" % (timer, self.uri,))
+			try:
+				"""Handle regular poll. Also checks connection liveness."""
+				self.update_autoreconnect()
+				logger.debug("timer_callback#%d: %s)" % (timer, self.uri,))
+			except Exception, e:
+				logger.error("Exception %s: %s" % (e, traceback.format_exc()))
+				# don't crash the event handler
+
 		self.timerID = virEventAddTimerImpl(Nodes.IDLE_FREQUENCY, timer_callback, (None,None))
 
 	def update_autoreconnect(self):
@@ -374,22 +380,27 @@ class Node(object):
 		self.capabilities = DomainTemplate.list_from_xml(xml)
 
 		def domain_callback(conn, dom, event, detail, node):
-			"""Handle domain addition, update and removal."""
-			eventStrings = ("Added", "Removed", "Started", "Suspended", "Resumed", "Stopped", "Saved", "Restored")
-			logger.debug("domain_callback %s(%s) %s %d" % (dom.name(), dom.ID(), eventStrings[event], detail))
-			uuid = dom.UUIDString()
-			if event == libvirt.VIR_DOMAIN_EVENT_DEFINED:
-				domStat = Domain(dom)
-				self.domains[uuid] = domStat
-			elif event == libvirt.VIR_DOMAIN_EVENT_UNDEFINED:
-				del self.domains[uuid]
-			else: # VIR_DOMAIN_EVENT_STARTED _SUSPENDED _RESUMED _STOPPED
-				try:
-					domStat = self.domains[uuid]
-					domStat.update( dom )
-				except KeyError, e:
-					# during migration events are not ordered causal
-					pass
+			try:
+				"""Handle domain addition, update and removal."""
+				eventStrings = ("Added", "Removed", "Started", "Suspended", "Resumed", "Stopped", "Saved", "Restored")
+				logger.debug("domain_callback %s(%s) %s %d" % (dom.name(), dom.ID(), eventStrings[event], detail))
+				uuid = dom.UUIDString()
+				if event == libvirt.VIR_DOMAIN_EVENT_DEFINED:
+					domStat = Domain(dom)
+					self.domains[uuid] = domStat
+				elif event == libvirt.VIR_DOMAIN_EVENT_UNDEFINED:
+					del self.domains[uuid]
+				else: # VIR_DOMAIN_EVENT_STARTED _SUSPENDED _RESUMED _STOPPED
+					try:
+						domStat = self.domains[uuid]
+						domStat.update( dom )
+					except KeyError, e:
+						# during migration events are not ordered causal
+						pass
+			except Exception, e:
+				logger.error("Exception %s: %s" % (e, traceback.format_exc()))
+				# don't crash the event handler
+
 		self.conn.domainEventRegister(domain_callback, self)
 		self.domainCB = domain_callback
 
@@ -569,9 +580,9 @@ def domain_define( uri, domain ):
 
 	# find loader
 	loader = None
-	logger.warning( 'Searching for loader: %s' % node.capabilities )
+	logger.debug('Searching for loader: %s' % node.capabilities)
 	for template in node.capabilities:
-		logger.warning( 'template: %s' % str( (template.arch, domain.arch, template.virt_tech, domain.virt_tech ) ) )
+		logger.debug('template: %s' % str((template.arch, domain.arch, template.virt_tech, domain.virt_tech)))
 		if template.arch == domain.arch and template.virt_tech == domain.virt_tech and template.loader:
 			loader = doc.createElement( 'loader' )
 			loader.appendChild( doc.createTextNode( template.loader ) )
@@ -715,15 +726,21 @@ def domain_define( uri, domain ):
 	logger.info('New domain "%s"(%s) defined.' % (domain.name, domain.uuid))
 
 	if domain.annotations:
-		record = ldap_modify(domain.uuid)
-		modified = False
-		for key, cur_value in record.items():
-			new_value = domain.annotations.get(key, cur_value)
-			if new_value != cur_value:
-				record[key] = new_value
-				modified = True
-		if modified:
-			record.commit()
+		try:
+			record = ldap_modify(domain.uuid)
+			modified = False
+			for key, cur_value in record.items():
+				if key == 'uuid':
+					new_value = domain.uuid
+				else:
+					new_value = domain.annotations.get(key, cur_value)
+				if new_value != cur_value:
+					record[key] = new_value
+					modified = True
+			if modified:
+				record.commit()
+		except univention.admin.uexceptions.objectExists, e:
+			logger.error('Updating LDAP failed: %s %s' % (e, record))
 
 	node.wait_update(domain.uuid, old_stat)
 	return domain.uuid

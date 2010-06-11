@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.26-3) unstable; urgency=low
+
+  * Force annotations uuid attribute to correct value (Bug #18385)
+  * Protect event_loop agains exceptions in callback.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 11 Jun 2010 12:33:46 +0200
+
 univention-virtual-machine-manager-daemon (0.9.26-2) unstable; urgency=low
 
   * Fix s/uir/uri/ typo (Bug #18414)
