@@ -132,7 +132,11 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 			pass
 		except socket.error, (err, msg):
 			if err != errno.ECONNRESET:
+				logger.error('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
 				raise
+		except Exception, e:
+			logger.critical('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
+			raise
 
 	def finish(self):
 		"""Perform cleanup."""

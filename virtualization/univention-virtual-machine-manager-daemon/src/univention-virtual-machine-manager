@@ -76,7 +76,7 @@ def request(options, req):
 				print str(res)
 			except Exception, e:
 				import traceback
-				print traceback.print_exc()
+				traceback.print_exc()
 				print 'Exception', e
 				print str(res)
 		elif isinstance(res, protocol.Response_ERROR):

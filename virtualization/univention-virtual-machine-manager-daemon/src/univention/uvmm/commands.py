@@ -179,7 +179,7 @@ class _Commands:
 	def DOMAIN_DEFINE(server, request):
 		"""Define new domain on node."""
 		if not isinstance(request.uri, basestring):
-			raise CommandError('DOMAIN_DEFINE', _('uri != string: %(uri)s'), uir=request.uri)
+			raise CommandError('DOMAIN_DEFINE', _('uri != string: %(uri)s'), uri=request.uri)
 		if not isinstance(request.domain, protocol.Data_Domain):
 			raise CommandError('DOMAIN_DEFINE', _('definition != Domain: %(domain)s'), domain=request.domain)
 		logger.debug('DOMAIN_DEFINE %s %s' % (request.uri, request.domain))
