@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.32 (1.0.5-2) unstable; urgency=low
+
+  * don't install firmware-ivtv by default. Bug #18323
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Jun 2010 10:06:58 +0200
+
 univention-kernel-image-2.6.32 (1.0.5-1) unstable; urgency=low
 
   * don't install bcm43xx-fwcutter by default because the firmware will
