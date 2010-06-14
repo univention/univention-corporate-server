@@ -508,6 +508,7 @@ class handler( umch.simpleHandler ):
 			dest = umcd.make( self[ 'uvmm/domain/migrate' ][ 'dest' ] )
 			content.add_row( [ dest, '' ] )
 			opts = copy.copy( object.options )
+			opts[ 'node' ] = object.options[ 'source' ]
 			cmd_success = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = opts ), [ dest.id(), ], status_range = umcd.Action.SUCCESS )
 			opts2 = copy.copy( object.options )
 			opts2[ 'node' ] = object.options[ 'source' ]

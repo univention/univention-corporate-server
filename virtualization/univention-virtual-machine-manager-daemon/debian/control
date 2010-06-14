@@ -12,11 +12,21 @@ XS-Python-Version: 2.4
 
 Package: univention-virtual-machine-manager-daemon
 Architecture: all
-Depends: libvirt-bin, python-libvirt,
- python-univention-management-console (>= 3.0.16),
+Depends: libvirt-bin,
  univention-ssl,
- python-openssl,
  python-elementtree,
+ python-univention-virtual-machine-manager,
+XB-Python-Version: ${python:Versions}
+Description: Univention Virtual Machine Manager Daemon
+ This package contains the Univention Virtual Machine Manager Daemon
+ used to collect informations from a farm of virtualization servers. It
+ is used by the UMC module UVMM for managing virtualization servers.
+
+Package: python-univention-virtual-machine-manager
+Architecture: all
+Depends: python-libvirt,
+ python-univention-management-console (>= 3.0.16),
+ python-openssl,
  ${python:Depends}
 XB-Python-Version: ${python:Versions}
 Description: Univention Virtual Machine Manager Daemon
