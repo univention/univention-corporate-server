@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.30 (1.0.1-5) unstable; urgency=low
+
+  * Update to latest kernel with security patches (Bug #17312)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 14 Jun 2010 09:27:29 +0200
+
 univention-kernel-image-2.6.30 (1.0.1-4) unstable; urgency=low
 
   * Update to latest kernel with security patches (Bug #16023)
