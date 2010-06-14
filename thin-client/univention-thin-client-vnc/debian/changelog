@@ -1,0 +1,5 @@
+univention-thin-client-vnc (1.0.0-1) unstable; urgency=low
+
+  * inital release  Bug #11952
+
+ -- Felix Botner <botner@univention.de>  Mon, 14 Jun 2010 13:06:52 +0200
