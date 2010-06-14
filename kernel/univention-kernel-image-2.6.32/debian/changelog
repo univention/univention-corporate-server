@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.32 (1.0.4-1) unstable; urgency=low
+
+  * install firmware packages by default. Bug #18323
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Jun 2010 06:49:36 +0200
+
 univention-kernel-image-2.6.32 (1.0.3-1) unstable; urgency=low
 
   * update to latest kernel version. Bug #18323
