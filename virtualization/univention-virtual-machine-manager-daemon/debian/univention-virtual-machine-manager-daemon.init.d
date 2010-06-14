@@ -54,7 +54,7 @@ test -x "$DAEMON" || exit 0
 
 # Default options, these can be overriden by the information
 # at /etc/default/$NAME
-DAEMON_OPTS="-d"        # Additional options given to the server
+DAEMON_OPTS="-s 0.0.0.0 -d"        # Additional options given to the server
 
 DIETIME=10              # Time to wait for the server to die, in seconds
                         # If this value is set too low you might not

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.29-1) unstable; urgency=low
+
+  * listen on TCP/SSL socket by default; Bug #18662
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 14 Jun 2010 16:36:13 +0200
+
 univention-virtual-machine-manager-daemon (0.9.28-2) unstable; urgency=low
 
   * move UVMM python modules into an extra package; Bug #18615
