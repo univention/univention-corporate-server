@@ -50,7 +50,7 @@ install: build
 	dh_installdirs
 	univention-install-config-registry
 	install -m 0755 univention-vnc-session-confirm `pwd`/debian/univention-thin-client-vnc-config/usr/bin	
-	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-vnc/var/lib/univention-client-root/thin-client-archive/x-base -p x11vnc
+	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-vnc/var/lib/univention-client-root/thin-client-archive/vnc -p x11vnc
 
 binary-indep: build install
 

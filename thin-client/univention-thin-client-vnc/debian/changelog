@@ -1,3 +1,9 @@
+univention-thin-client-vnc (1.0.0-3) unstable; urgency=low
+
+  * fixed debian/rules Bug #11952 
+
+ -- Felix Botner <botner@univention.de>  Mon, 14 Jun 2010 15:47:54 +0200
+
 univention-thin-client-vnc (1.0.0-2) unstable; urgency=low
 
   * fixed config registry definition  Bug #11952
