@@ -1,3 +1,10 @@
+univention-kernel-image-2.6.32 (1.0.5-1) unstable; urgency=low
+
+  * don't install bcm43xx-fwcutter by default because the firmware will
+    be download from internet which often fails. Bug #18323
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Jun 2010 07:51:28 +0200
+
 univention-kernel-image-2.6.32 (1.0.4-1) unstable; urgency=low
 
   * install firmware packages by default. Bug #18323
