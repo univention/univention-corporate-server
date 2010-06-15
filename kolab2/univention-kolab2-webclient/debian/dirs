@@ -1,9 +1,0 @@
-usr/lib/univention-directory-listener/system
-usr/share/horde3
-usr/share/horde3/lib
-usr/share/horde3/lib/docs
-usr/share/horde3/lib/data
-usr/share/horde3/lib/bin
-usr/share/horde3/lib/tests
-var/log/horde
-var/cache/horde
