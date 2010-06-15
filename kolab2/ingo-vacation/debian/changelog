@@ -1,0 +1,41 @@
+ingo-vacation (0.7) unstable; urgency=low
+
+  * renamed cord to ingo-vacation to make the connection to ingo visibile. Bug #12329 
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 13 Oct 2008 12:00:30 +0200
+
+ingo-vacation (0.6) unstable; urgency=low
+
+  * fixed command order in prerm script. Bug #12329
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue,  7 Oct 2008 14:49:05 +0200
+
+ingo-vacation (0.5) unstable; urgency=low
+
+  * fixed broken postint/postrm scripts. Bug #12329
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue,  7 Oct 2008 14:40:18 +0200
+
+ingo-vacation (0.4) unstable; urgency=low
+
+  * fixed broken dependencies. Bug #12329
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue,  7 Oct 2008 14:12:49 +0200
+
+ingo-vacation (0.3) unstable; urgency=low
+
+  * removed diversions added an HTTP alias for ingo-vacation. Bug #12329
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue,  7 Oct 2008 13:15:24 +0200
+
+ingo-vacation (0.2) unstable; urgency=low
+
+  * First working release of ingo-vacation. Bug #12329
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon,  6 Oct 2008 18:34:20 +0200
+
+ingo-vacation (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu, 02 Oct 2008 17:20:41 +0200

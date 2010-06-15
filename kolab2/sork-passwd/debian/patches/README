@@ -1,0 +1,11 @@
+quilt patch directory
+=====================
+
+Please drop your patches here and add them to "series" file if neccessary.
+
+Note: since original source .tar.gz is extracted directly to debian/PACKAGENAME/ 
+	  all patches have to be a "-p1" patch relative to package root
+
+Example:
+--- gollem/debian/gollem/etc/horde/gollem/conf.xml.TEST	1970-01-01 01:00:00.000000000 +0100
++++ gollem/debian/gollem/etc/horde/gollem/conf.xml.TEST	2007-08-13 13:29:02.000000000 +0200

@@ -1,0 +1,102 @@
+gollem (1.0.3-0-cvs-2008-03-14-4) unstable; urgency=low
+
+  * switch to the offical h3 tgz
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Aug 2008 17:20:18 +0200
+
+gollem (1.0.3-0-cvs-2008-03-14-2) unstable; urgency=low
+
+  * depend on horde or on horde-webmailer
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Aug 2008 16:14:17 +0200
+
+gollem (1.0.3-0-cvs-2008-03-14-1) unstable; urgency=low
+
+  * new upstream release
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 17 Mar 2008 17:49:54 +0100
+
+gollem (1.0.3-0-cvs-2008-03-10-6) unstable; urgency=low
+
+  * bump version
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2008 08:15:36 +0100
+
+gollem (1.0.3-0-cvs-2008-03-10-5) unstable; urgency=low
+
+  * replace corrupted tar.gz file
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2008 07:54:44 +0100
+
+gollem (1.0.3-0-cvs-2008-03-10-4) unstable; urgency=low
+
+  * new upstream release
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2008 07:43:40 +0100
+
+gollem (1.0.3-0-cvs-2008-03-10-3) unstable; urgency=low
+
+  * new upstream release
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2008 07:04:08 +0100
+
+gollem (1.0.3-0-cvs-2008-03-10-2) unstable; urgency=low
+
+  * use FRAMEWORK_3 version
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Mar 2008 16:46:09 +0100
+
+gollem (1.0.3-0-cvs-2008-03-10-1) unstable; urgency=low
+
+  * new upstream snapshot 2008-03-10
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Mar 2008 13:06:08 +0100
+
+gollem (1.0.3-0-cvs-10) unstable; urgency=low
+
+  * package is architecture independent
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 29 Aug 2007 10:19:53 +0200
+
+gollem (1.0.3-0-cvs-9) unstable; urgency=low
+
+  * map the userid from the mail address to the uid
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Aug 2007 16:11:08 +0200
+
+gollem (1.0.3-0-cvs-8) unstable; urgency=low
+
+  * fixed build dependencies (added quilt)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 14 Aug 2007 10:53:12 +0200
+
+gollem (1.0.3-0-cvs-7) unstable; urgency=low
+
+  * added quilt to build process
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 13 Aug 2007 14:32:30 +0200
+
+gollem (1.0.3-0-cvs-6) unstable; urgency=low
+
+  * unify the build process
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 13 Aug 2007 13:28:49 +0200
+
+gollem (1.0.3-0-cvs-5) unstable; urgency=low
+
+  * fix the build process
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 13 Aug 2007 12:52:52 +0200
+
+gollem (1.0.3-0-cvs-2) unstable; urgency=low
+
+  * fix package build typo
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 13 Aug 2007 10:42:26 +0200
+
+gollem (1.0.3-0-cvs-1) unstable; urgency=low
+
+  * initial release
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 13 Aug 2007 09:34:39 +0200
+
