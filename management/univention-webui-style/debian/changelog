@@ -1,3 +1,9 @@
+univention-webui-style (5.0.10-1) unstable; urgency=low
+
+  * stylesheet update (Bug #18627)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 10 Jun 2010 15:27:07 +0200
+
 univention-webui-style (5.0.9-1) unstable; urgency=low
 
   * styles for the dojo popup dialogs; Bug #18409

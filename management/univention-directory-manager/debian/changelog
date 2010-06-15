@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.2-1) unstable; urgency=low
+
+  * display message and link to UMC if UCS update is available (Bug #18627)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 09 Jun 2010 15:29:32 +0200
+
 univention-directory-manager (8.0.1-1) unstable; urgency=low
 
   * recommend python-univention-license (Bug #18518)

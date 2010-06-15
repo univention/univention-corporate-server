@@ -42,6 +42,7 @@ import unimodule
 from local import _
 from uniparts import *
 import univention.admin.uldap
+import univention.config_registry as ucr
 
 class unidialog(unimodule.unimodule):
 
@@ -374,9 +375,56 @@ class unidialog(unimodule.unimodule):
 		# if there's no current module, display welcome dialog
 		if ( self.save.get("uc_module")==None or self.save.get("uc_module")=="none" ) and self.save.get("auth_ok"):
 			if not self.inithandlemessages():
+				# add top header
+				topheader = htmltext('', {}, {'htmltext': ['<div id="content-wrapper-top">&nbsp;</div>']} )
+				self.subobjs.append(topheader)
+				# load UCR
+				configRegistry = ucr.ConfigRegistry()
+				configRegistry.load()
+				if configRegistry.get('update/available','no') in ('yes'):
+					# update is available
+					lo = self.uaccess
+					position=self.save.get('ldap_position')
+					if not position:
+						position=univention.admin.uldap.position(self.uaccess.base)
+					# get user groups from UCR that should get a hint msg
+					updateAvailableGroups = configRegistry.get('directory/manager/web/update/available/groups', None)
+					if updateAvailableGroups:
+						displayMsg = False
+						# get userdn
+						username = self.save.get("user")
+						if username:
+							try:
+								userdn = lo.searchDn(filter='(uid=%s)' % username, base=position.getBase(), scope='sub')[0]
+							except:
+								userdn = None
+						# check all specified groups if user is member
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "unidialog: updatemsg: user=%s" % userdn)
+						for grp in updateAvailableGroups.split(','):
+							grp = grp.strip()
+							try:
+								groups = lo.searchDn(filter='(&(cn=%s)(objectClass=univentionGroup)(uniqueMember=%s))' % (grp,userdn), base=position.getBase(), scope='sub')[0]
+							except:
+								groups = None
+							if groups:
+								univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "unidialog: updatemsg: groups=%s" % groups)
+								displayMsg = True
+								break
+						if displayMsg:
+							updatemsg = htmltext ('', {}, \
+													{'htmltext': ["""
+													<div id="content-wrapper-error">
+													<h3>%(headline)s</h3>
+													<p>%(msg)s</p>
+													</div>
+													""" % { 'headline': _('UCS Update Available'),
+															'msg': _('An update for UCS is available. Please visit <a target="_blank" href="/univention-management-console/index.php?init_umccmd=update/overview">online update module</a> of Univention Management Console to install.')}
+																]})
+							self.subobjs.append(updatemsg)
+
 				welcomemessage = htmltext ('', {}, \
 					{'htmltext': ["""
-					<div id="content-wrapper">
+					<div id="content-wrapper-relative">
 					<!-- @start content-head -->
 					<div id="content-head">
 						<!-- @start tab-navigation -->
@@ -462,7 +510,6 @@ class unidialog(unimodule.unimodule):
 				""" % {'wizard_text': _("The <a target=parent href=/univention-management-console/>Univention Management Console</a> provides the possibilty to configure local settings on every UCS managed machine, e.g. network configuration or local software-installation. A link to the Univention Management Console for a machine can be found at the computer object wizard.")}
 				]})
 				self.subobjs.append(welcomemessage)
-
 				if self.save.get( 'personal_use' ) == '1' and self.have_about:
 					welcomemessage = htmltext ('', {}, \
 						{'htmltext': ["""

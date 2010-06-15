@@ -293,6 +293,49 @@ div#menu li a
 
 /* @group content-wrapper */
 
+div#content-wrapper-error
+{
+	border: 3px solid  #c00000;
+	margin-top: 24px;
+	margin-left: 24px;
+	float: left;
+	height: auto;
+	width: 734px;
+}
+
+div#content-wrapper-error h3, div#content-wrapper-error p
+{
+	margin: 12px 24px;
+}
+
+div#content-wrapper-top
+{
+	width: 739px;
+	margin-left: 24px;
+	height: 1px;
+	float: left;
+	margin-top: 126px;
+}
+
+.component div#content-wrapper-top
+{
+	position: relative;
+}
+
+div#content-wrapper-relative
+{
+	width: 739px;
+	margin-left: 24px;
+	height: auto;
+	float: left;
+	margin-top: 24px;
+}
+
+.component div#content-wrapper-relative
+{
+	position: relative;
+}
+
 .login div#content-wrapper, .start div#content-wrapper
 {
 	width: 948px;
@@ -480,6 +523,10 @@ div#content li a
 	color: #c00000;
 }
 div#content p a
+{
+	color: #c00000;
+}
+div#content-wrapper-error p a
 {
 	color: #c00000;
 }
