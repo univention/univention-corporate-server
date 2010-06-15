@@ -1,0 +1,51 @@
+# The name of PEAR source package
+pear_package='PHPUnit'
+
+# The name of the RPM package
+package='PHPUnit'
+
+# Where to find information about the package
+package_url='http://pear.phpunit.de/'
+
+# How should the source be retrieved?
+#
+# WGET: Download via wget
+package_origin='WGET'
+
+# Version number
+version='3.3.3'
+
+# Package release number
+release='1'
+
+# Source URL to download from
+sourceurl='http://pear.phpunit.de/get'
+
+# In which PHP library location should the library get installed
+php_lib_loc='php'
+
+# Build prerequisites
+buildprereq='                              \
+BuildPreReq:  OpenPKG, openpkg >= 20070603 \
+BuildPreReq:  php, php::with_pear = yes    \
+BuildPreReq:  PEAR-PHPUnit-Channel         \
+'
+
+# Installatin prerequisites
+prereq='                                   \
+PreReq:       OpenPKG, openpkg >= 20070603 \
+PreReq:       php, php::with_pear = yes    \
+'
+
+# Package summary description
+summary='Regression testing framework for unit tests.'
+
+# Long package description
+description=' \
+PHPUnit is a regression testing framework used by the developer who \
+implements unit tests in PHP. This is the version to be used with PHP \
+5. \
+'
+
+# Source code license
+license='BSD-Style'

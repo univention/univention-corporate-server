@@ -1,0 +1,52 @@
+# The name of PEAR source package
+pear_package='Mail'
+
+# The name of the RPM package
+package='PEAR-Mail'
+
+# Where to find information about the package
+package_url='http://pear.php.net/package/'
+
+# How should the source be retrieved?
+#
+# WGET: Download via wget
+package_origin='WGET'
+
+# Version number
+version='1.1.14'
+
+# Package release number
+release='1'
+
+# Source URL to download from
+sourceurl='http://pear.php.net/get'
+
+# In which PHP library location should the library get installed
+php_lib_loc='php'
+
+# Build prerequisites
+buildprereq='                              \
+BuildPreReq:  OpenPKG, openpkg >= 20070603 \
+BuildPreReq:  php, php::with_pear = yes    \
+'
+
+# Installatin prerequisites
+prereq='                                   \
+PreReq:       OpenPKG, openpkg >= 20070603 \
+PreReq:       php, php::with_pear = yes    \
+'
+
+# Package summary description
+summary='PEAR: Class that provides multiple interfaces for sending emails'
+
+# Long package description
+description=' \
+PEARs Mail package defines an interface for implementing mailers under the \
+PEAR hierarchy.  It also provides supporting functions useful to multiple \
+mailer backends.  Currently supported backends include: PHPs native \
+mail() function, sendmail, and SMTP.  This package also provides a RFC822 \
+email address list validation utility class. \
+'
+
+# Source code license
+license='PHP/BSD'

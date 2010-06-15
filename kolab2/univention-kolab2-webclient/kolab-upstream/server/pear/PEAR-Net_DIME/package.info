@@ -1,0 +1,49 @@
+# The name of PEAR source package
+pear_package='Net_DIME'
+
+# The name of the RPM package
+package='PEAR-Net_DIME'
+
+# Where to find information about the package
+package_url='http://pear.php.net/package/'
+
+# How should the source be retrieved?
+#
+# WGET: Download via wget
+package_origin='WGET'
+
+# Version number
+version='1.0.1'
+
+# Package release number
+release='1'
+
+# Source URL to download from
+sourceurl='http://pear.php.net/get'
+
+# In which PHP library location should the library get installed
+php_lib_loc='php'
+
+# Build prerequisites
+buildprereq='                              \
+BuildPreReq:  OpenPKG, openpkg >= 20070603 \
+BuildPreReq:  php, php::with_pear = yes    \
+'
+
+# Installatin prerequisites
+prereq='                                   \
+PreReq:       OpenPKG, openpkg >= 20070603 \
+PreReq:       php, php::with_pear = yes    \
+'
+
+# Package summary description
+summary='The Net_DIME package implements DIME encoding and decoding'
+
+# Long package description
+description=' \
+The Net_DIME package provides an implementation of DIME as defined at \
+http://xml.coverpages.org/draft-nielsen-dime-02.txt \
+'
+
+# Source code license
+license='BSD'

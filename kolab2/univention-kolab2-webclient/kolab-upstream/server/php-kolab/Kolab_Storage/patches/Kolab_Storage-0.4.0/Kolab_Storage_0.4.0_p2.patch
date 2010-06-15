@@ -1,0 +1,96 @@
+From: Gunnar Wrobel <wrobel@pardus.de>
+Subject: [PATCH] Kolab_Storage_0.4.0_p2.patch
+
+Fixes unit testing in Kolab_FreeBusy.
+
+STATUS: MERGED
+
+http://lists.horde.org/archives/cvs/Week-of-Mon-20090420/087649.html
+http://lists.horde.org/archives/cvs/Week-of-Mon-20090420/087650.html
+
+Signed-off-by: Gunnar Wrobel <wrobel@pardus.de>
+
+Index: a/framework/Kolab_Storage/lib/Horde/Kolab/Storage/Folder.php
+===================================================================
+RCS file: /repository/framework/Kolab_Storage/lib/Horde/Kolab/Storage/Folder.php,v
+retrieving revision 1.7.2.19
+diff -u -B -r1.7.2.19 Folder.php
+--- a/framework/Kolab_Storage/lib/Horde/Kolab/Storage/Folder.php	24 Feb 2009 07:40:40 -0000	1.7.2.19
++++ b/framework/Kolab_Storage/lib/Horde/Kolab/Storage/Folder.php	25 Apr 2009 18:41:09 -0000
+@@ -1422,6 +1422,11 @@
+             return $iresult;
+         }
+ 
++        if (!empty($this->_perms)) {
++            /** Refresh the cache after changing the permissions */
++            $this->_perms->getPerm();
++        }
++
+         $result = $this->trigger();
+         if (is_a($result, 'PEAR_Error')) {
+             Horde::logMessage(sprintf('Failed triggering folder %s! Error was: %s',
+Index: a/framework/Kolab_Storage/lib/Horde/Kolab/Storage/List.php
+===================================================================
+RCS file: /repository/framework/Kolab_Storage/lib/Horde/Kolab/Storage/List.php,v
+retrieving revision 1.3.2.7
+diff -u -B -r1.3.2.7 List.php
+--- a/framework/Kolab_Storage/lib/Horde/Kolab/Storage/List.php	23 Feb 2009 21:33:19 -0000	1.3.2.7
++++ b/framework/Kolab_Storage/lib/Horde/Kolab/Storage/List.php	25 Apr 2009 18:41:10 -0000
+@@ -96,7 +96,7 @@
+      *
+      * @return Kolab_Folders_List  The concrete List reference.
+      */
+-    function &singleton()
++    function &singleton($destruct = false)
+     {
+         static $list;
+ 
+@@ -107,7 +107,7 @@
+             $list = $session->query('kolab_folderlist');
+         }
+ 
+-        if (empty($list[Auth::getAuth()])) {
++        if (empty($list[Auth::getAuth()]) || $destruct) {
+             $list[Auth::getAuth()] = new Kolab_List();
+         }
+ 
+Index: a/framework/Kolab_Storage/lib/Horde/Kolab/Test/Storage.php
+===================================================================
+RCS file: /repository/framework/Kolab_Storage/lib/Horde/Kolab/Test/Storage.php,v
+retrieving revision 1.1.2.4
+diff -u -B -r1.1.2.4 Storage.php
+--- a/framework/Kolab_Storage/lib/Horde/Kolab/Test/Storage.php	24 Feb 2009 07:40:40 -0000	1.1.2.4
++++ b/framework/Kolab_Storage/lib/Horde/Kolab/Test/Storage.php	25 Apr 2009 18:41:10 -0000
+@@ -92,6 +92,11 @@
+             $folder->setName($arguments[0]);
+             $world['folder_creation'] = $folder->save(array('type' => 'event',
+                                                             'default' => true));
++            $folder->setACL(Auth::getAuth(), 'alrid');
++            break;
++        case 'allow a group full access to a folder':
++            $folder = $world['storage']->getFolder($arguments[1]);
++            $folder->setACL($arguments[0], 'alrid');
+             break;
+         case 'retrieving the list of shares for the application':
+             require_once 'Horde/Share.php';
+@@ -100,6 +105,11 @@
+ 
+             $world['list'] = $shares->listShares(Auth::getAuth());
+             break;
++        case 'logging in as a user with a password':
++            $world['login'] = $world['auth']->authenticate($arguments[0],
++                                                           array('password' => $arguments[1]));
++            $world['storage'] = &$this->prepareEmptyKolabStorage();
++            return parent::runWhen($world, $action, $arguments);
+         default:
+             return parent::runWhen($world, $action, $arguments);
+         }
+@@ -153,7 +163,7 @@
+         $GLOBALS['KOLAB_TESTING'] = array();
+ 
+         /** Prepare a Kolab test storage */
+-        $storage = Kolab_List::singleton();
++        $storage = Kolab_List::singleton(true);
+         return $storage;
+     }
+ 

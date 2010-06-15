@@ -1,0 +1,52 @@
+# The name of PEAR source package
+pear_package='Auth_SASL'
+
+# The name of the RPM package
+package='PEAR-Auth_SASL'
+
+# Where to find information about the package
+package_url='http://pear.php.net/package/'
+
+# How should the source be retrieved?
+#
+# WGET: Download via wget
+package_origin='WGET'
+
+# Version number
+version='1.0.2'
+
+# Package release number
+release='1'
+
+# Source URL to download from
+sourceurl='http://pear.php.net/get'
+
+# In which PHP library location should the library get installed
+php_lib_loc='php'
+
+# Build prerequisites
+buildprereq='                              \
+BuildPreReq:  OpenPKG, openpkg >= 20070603 \
+BuildPreReq:  php, php::with_pear = yes    \
+'
+
+# Installatin prerequisites
+prereq='                                   \
+PreReq:       OpenPKG, openpkg >= 20070603 \
+PreReq:       php, php::with_pear = yes    \
+'
+
+# Package summary description
+summary='PEAR: Abstraction of various SASL mechanism responses'
+
+# Long package description
+description='Provides code to generate responses to common SASL mechanisms, including: \
+o Digest-MD5               \
+o CramMD5                  \
+o Plain                    \
+o Anonymous                \
+o Login (Pseudo mechanism) \
+'
+
+# Source code license
+license='BSD'

@@ -1,0 +1,57 @@
+# The name of PEAR source package
+pear_package='Net_LDAP2'
+
+# The name of the RPM package
+package='PEAR-Net_LDAP2'
+
+# Where to find information about the package
+package_url='http://pear.php.net/package/'
+
+# How should the source be retrieved?
+#
+# WGET: Download via wget
+package_origin='WGET'
+
+# Version number
+version='2.0.4'
+
+# Package release number
+release='1'
+
+# Source URL to download from
+sourceurl='http://pear.php.net/get'
+
+# In which PHP library location should the library get installed
+php_lib_loc='php'
+
+# Build prerequisites
+buildprereq='                              \
+BuildPreReq:  OpenPKG, openpkg >= 20070603 \
+BuildPreReq:  php, php::with_pear = yes    \
+'
+
+# Installatin prerequisites
+prereq='                                   \
+PreReq:       OpenPKG, openpkg >= 20070603 \
+PreReq:       php, php::with_pear = yes    \
+'
+
+# Package summary description
+summary='Object oriented interface for searching and manipulating LDAP-entries'
+
+# Long package description
+description=' \
+Net_LDAP2 is the successor of Net_LDAP which is a clone of Perls Net::LDAP \
+object interface to directory servers. It does contain most of Net::LDAPs \
+features but has some own too. \
+With Net_LDAP2 you have: \
+* A simple object-oriented interface to connections, searches entries and filters. \
+* Support for tls and ldap v3. \
+* Simple modification, deletion and creation of ldap entries. \
+* Support for schema handling. \
+ \
+Net_LDAP2 layers itself on top of PHPs existing ldap extensions. \
+'
+
+# Source code license
+license='LGPL'

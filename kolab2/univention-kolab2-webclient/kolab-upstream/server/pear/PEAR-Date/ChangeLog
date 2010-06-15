@@ -1,0 +1,8 @@
+2008-09-10  Gunnar Wrobel  <p@rdus.de>
+
+	* PEAR-Date.spec (License): Fixed license.
+
+2007-05-29  Gunnar Wrobel  <p@rdus.de>
+
+	* PEAR-Date.spec: Added package to Kolab CVS.
+

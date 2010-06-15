@@ -1,0 +1,6 @@
+This directory contains RPM spec definitions for several PEAR
+packages.
+
+Most of these packages are required by the Horde packages but some are
+also be relevant for the main Kolab server packages (like
+kolab-webadmin or kolab-filter).

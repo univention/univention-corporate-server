@@ -1,0 +1,80 @@
+# The name of PEAR source package
+pear_package='DB'
+
+# The name of the RPM package
+package='PEAR-DB'
+
+# Where to find information about the package
+package_url='http://pear.php.net/package/'
+
+# How should the source be retrieved?
+#
+# WGET: Download via wget
+package_origin='WGET'
+
+# Version number
+version='1.7.13'
+
+# Package release number
+release='2'
+
+# Source URL to download from
+sourceurl='http://pear.php.net/get'
+
+# In which PHP library location should the library get installed
+php_lib_loc='php'
+
+# Build prerequisites
+buildprereq='                              \
+BuildPreReq:  OpenPKG, openpkg >= 20070603 \
+BuildPreReq:  php, php::with_pear = yes    \
+'
+
+# Installatin prerequisites
+prereq='                                   \
+PreReq:       OpenPKG, openpkg >= 20070603 \
+PreReq:       php, php::with_pear = yes    \
+'
+
+# Package summary description
+summary='Database Abstraction Layer'
+
+# Long package description
+description=' \
+DB is a database abstraction layer providing: \
+* an OO-style query API \
+* portability features that make programs written for one DBMS work with other DBMSs \
+* a DSN (data source name) format for specifying database servers \
+* prepare/execute (bind) emulation for databases that dont support it natively \
+* a result object for each query response \
+* portable error codes \
+* sequence emulation \
+* sequential and non-sequential row fetching as well as bulk fetching \
+* formats fetched rows as associative arrays, ordered arrays or objects \
+* row limit support \
+* transactions support \
+* table information interface \
+* DocBook and phpDocumentor API documentation \
+ \
+DB layers itself on top of PHPs existing \
+database extensions. \
+ \
+Drivers for the following extensions pass \
+the complete test suite and provide \
+interchangeability when all of DBs \
+portability options are enabled: \
+ \
+fbsql, ibase, informix, msql, mssql, \
+mysql, mysqli, oci8, odbc, pgsql, \
+sqlite and sybase. \
+ \
+There is also a driver for the dbase \
+extension, but it cant be used \
+interchangeably because dbase doesnt \
+support many standard DBMS features. \
+ \
+DB is compatible with both PHP 4 and PHP 5. \
+'
+
+# Source code license
+license='PHP'

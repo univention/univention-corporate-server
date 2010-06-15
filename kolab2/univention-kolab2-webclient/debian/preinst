@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+# Univention Kolab2 Webclient
+#  preinst script
+#
+# Copyright (C) 2004-2009 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+oldtemplatelist="
+/etc/horde/horde3/conf.php
+/etc/horde/horde3/motd.php
+/etc/horde/horde3/kolab.php
+/etc/horde/horde3/hooks.php
+/etc/horde/horde3/prefs.php
+/etc/horde/horde3/registry.php
+/etc/horde/imp4/conf.php
+/etc/horde/imp4/prefs.php
+/etc/horde/imp4/servers.php
+/etc/horde/turba2/conf.php
+/etc/horde/turba2/attributes.php
+/etc/horde/turba2/sources.php
+/etc/horde/kronolith2/conf.php
+/etc/horde/ingo1/prefs.php
+/etc/horde/ingo1/conf.php
+/etc/horde/ingo1/backends.php
+/etc/horde/nag2/conf.php
+/etc/horde/nag2/prefs.php
+/etc/horde/mnemo2/conf.php
+/etc/horde/mnemo2/prefs.php"
+
+
+if test "$1" = "upgrade"; then
+	if test -n "$2" && dpkg --compare-versions "$2" lt "5.0.4-2"; then
+		for file in ${oldtemplatelist}; do
+			rm -f "${file}" && dpkg-divert --rename --quiet --divert "${file}.debian" --remove "${file}" || true
+		done
+	fi
+fi
+
+#DEBHELPER#

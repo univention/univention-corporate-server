@@ -1,0 +1,19 @@
+Source: univention-kolab2-webclient
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends-Indep: debhelper, univention-config-dev, php-pear, quilt
+Standards-Version: 3.5.5
+
+Package: univention-kolab2-webclient
+Architecture: all
+Replaces: univention-groupware-webclient
+Provides: univention-groupware-webclient
+Conflicts: univention-groupware-webclient (<= 1.2.1-1)
+Pre-Depends: univention-postgresql
+Depends: horde-webmailer, gollem, sork-passwd, univention-apache (>>2.0.19), univention-config-registry, smbclient, python-pexpect, liburi-perl, libnet-ldap-perl, php-db, php5-pgsql, php5-mcrypt, php5-imap, php5-ldap, heimdal-clients, whois, gnupg, expect
+Description: univention package the UGS webclient based on horde
+ -
+ This package provides configurations for the the horde framework
+ and the mail, calendar and address book components to be used as
+ a UGS web client.

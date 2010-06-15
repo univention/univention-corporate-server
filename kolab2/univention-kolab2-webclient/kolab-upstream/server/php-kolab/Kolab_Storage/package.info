@@ -1,0 +1,65 @@
+# The name of Horde source package
+pear_package='Kolab_Storage'
+
+# The name of the RPM package
+package='Kolab_Storage'
+
+# Where to find information about the package
+package_url='http://pear.horde.org/index.php?package='
+
+# How should the source be retrieved?
+#
+# WGET: Download via wget
+package_origin='WGET'
+
+# Version number
+version='0.4.0'
+
+# Package release number
+release='2010228'
+
+# Source URL to download from
+sourceurl='http://pear.horde.org/get'
+
+# In which PHP library location should the library get installed
+php_lib_loc='php'
+
+# Build prerequisites
+buildprereq='                              \
+BuildPreReq:  OpenPKG, openpkg >= 20070603 \
+BuildPreReq:  php, php::with_pear = yes    \
+BuildPreReq:  PEAR-Horde-Channel           \
+'
+
+# Installatin prerequisites
+prereq='                                   \
+PreReq:       OpenPKG, openpkg >= 20070603 \
+PreReq:       php, php::with_pear = yes    \
+PreReq:       PEAR-Horde-Channel           \
+PreReq:       Kolab_Format >= 1.0.1        \
+PreReq:       Kolab_Server >= 0.5.0        \
+PreReq:       Horde_Auth                   \
+PreReq:       Horde_Cache                  \
+PreReq:       Horde_Group                  \
+PreReq:       Horde_History                \
+PreReq:       Horde_LDAP                   \
+PreReq:       Horde_Perms                  \
+PreReq:       Horde_SessionObjects         \
+PreReq:       Horde_MIME                   \
+PreReq:       Horde_NLS                    \
+PreReq:       Horde_Util                   \
+'
+
+# Package summary description
+summary='A package for handling Kolab data stored on an IMAP server.'
+
+# Long package description
+description=' \
+Storing user data in an IMAP account belonging to the                 \
+user is one of the Kolab server core concepts. This package provides  \
+all the necessary means to deal with this type of data storage        \
+effectively.                                                          \
+'
+
+# Source code license
+license='LGPL'

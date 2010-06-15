@@ -1,0 +1,51 @@
+# The name of PEAR source package
+pear_package='Date_Holidays_Discordian'
+
+# The name of the RPM package
+package='PEAR-Date_Holidays_Discordian'
+
+# Where to find information about the package
+package_url='http://pear.php.net/package/'
+
+# How should the source be retrieved?
+#
+# WGET: Download via wget
+package_origin='WGET'
+
+# Version number
+version='0.1.1'
+
+# Package release number
+release='1'
+
+# Source URL to download from
+sourceurl='http://pear.php.net/get'
+
+# In which PHP library location should the library get installed
+php_lib_loc='php'
+
+# Build prerequisites
+buildprereq='                              \
+BuildPreReq:  OpenPKG, openpkg >= 20070603 \
+BuildPreReq:  php, php::with_pear = yes    \
+'
+
+# Installatin prerequisites
+prereq='                                   \
+PreReq:       OpenPKG, openpkg >= 20070603 \
+PreReq:       php, php::with_pear = yes    \
+PreReq:       PEAR-Date_Holidays >= 0.21.1  \
+'
+
+# Package summary description
+summary='Driver based class to calculate holidays in Discordian.'
+
+# Long package description
+description=' \
+Date_Holidays helps you calculate the dates and titles of holidays and \
+other special celebrations. This is the driver for calculating \
+holidays in Discordian. \
+'
+
+# Source code license
+license='PHP'

@@ -1,0 +1,57 @@
+# The name of PEAR source package
+pear_package='XML_Parser'
+
+# The name of the RPM package
+package='PEAR-XML_Parser'
+
+# Where to find information about the package
+package_url='http://pear.php.net/package/'
+
+# How should the source be retrieved?
+#
+# WGET: Download via wget
+package_origin='WGET'
+
+# Version number
+version='1.3.2'
+
+# Package release number
+release='1'
+
+# Source URL to download from
+sourceurl='http://pear.php.net/get'
+
+# In which PHP library location should the library get installed
+php_lib_loc='php'
+
+# Build prerequisites
+buildprereq='                              \
+BuildPreReq:  OpenPKG, openpkg >= 20070603 \
+BuildPreReq:  php, php::with_pear = yes    \
+'
+
+# Installatin prerequisites
+prereq='                                   \
+PreReq:       OpenPKG, openpkg >= 20070603 \
+PreReq:       php, php::with_pear = yes    \
+'
+
+# Package summary description
+summary='XML parsing class based on PHPs bundled expat'
+
+# Long package description
+description=' \
+This is an XML parser based on PHPs built-in xml extension.  It \
+supports two basic modes of operation: func and event. In func \
+mode, it will look for a function named after each element, and \
+in event mode it uses a set of generic callbacks. \
+ \
+Since version 1.2.0 theres a new XML_Parser_Simple class that makes \
+parsing of most XML documents easier, by automatically providing a \
+stack for the elements.  Furthermore its now possible to split the \
+parser from the handler object, so you do not have to extend \
+XML_Parser anymore in order to parse a document with it. \
+'
+
+# Source code license
+license='BSD'

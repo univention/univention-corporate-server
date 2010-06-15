@@ -1,0 +1,64 @@
+# The name of Horde source package
+pear_package='Kolab_Filter'
+
+# The name of the RPM package
+package='Kolab_Filter'
+
+# Where to find information about the package
+package_url='http://pear.horde.org/index.php?package='
+
+# How should the source be retrieved?
+#
+# WGET: Download via wget
+package_origin='WGET'
+
+# Version number
+version='0.1.8'
+
+# Package release number
+release='20100122'
+
+# Source URL to download from
+sourceurl='http://pear.horde.org/get'
+
+# In which PHP library location should the library get installed
+php_lib_loc='php'
+
+# Build prerequisites
+buildprereq='                              \
+BuildPreReq:  OpenPKG, openpkg >= 20070603 \
+BuildPreReq:  php, php::with_pear = yes    \
+BuildPreReq:  PEAR-Horde-Channel           \
+'
+
+# Installatin prerequisites
+prereq='                                   \
+PreReq:       OpenPKG, openpkg >= 20070603 \
+PreReq:       php, php::with_pear = yes    \
+PreReq:       PEAR-Horde-Channel           \
+PreReq:       Kolab_Format >= 1.0.1        \
+PreReq:       Kolab_Server >= 0.5.0        \
+PreReq:       Kolab_Storage >= 0.4.0       \
+PreReq:       PEAR-HTTP_Request            \
+PreReq:       PEAR-Net_LMTP                \
+PreReq:       PEAR-Net_SMTP                \
+PreReq:       PEAR-Mail                    \
+PreReq:       Horde_iCalendar              \
+PreReq:       Horde_Argv                   \
+PreReq:       Horde_Notification           \
+PreReq:       Horde_Prefs                  \
+                                           \
+Provides:     php-kolab = 2.2.1            \
+Obsoletes:    php-kolab < 2.2.1 PEAR-Net_IMAP kolab-filter \
+'
+
+# Package summary description
+summary='A package for reading/writing Kolab data formats'
+
+# Long package description
+description=' \
+This package allows to convert Kolab data objects from XML to hashes. \
+'
+
+# Source code license
+license='LGPL'

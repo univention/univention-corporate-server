@@ -1,0 +1,35 @@
+2009-04-24  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Format_1.0.1_p1.patch: Removes an additional option that
+	does not help in dealing with XML format problems but instead
+	breaks encoding again.
+
+	Accept ISO-8859-1 encoding even if advertised as UTF-8
+	kolab/issue3528 (Events with broken encoding should work)
+	https://www.intevation.de/roundup/kolab/issue3528
+
+2009-04-02  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Format.spec: Update to 1.0.1.
+
+	Handle parsing errors within the DOM XML extension correctly
+	kolab/issue3520 (calendar with certain entries does not display in web client)
+	https://www.intevation.de/roundup/kolab/issue3520
+	kolab/issue3525 (free/busy regeneration aborts for unparsable events)
+	https://www.intevation.de/roundup/kolab/issue3525
+	Accept ISO-8859-1 encoding even if advertised as UTF-8
+	kolab/issue3528 (Events with broken encoding should work)
+	https://www.intevation.de/roundup/kolab/issue3528
+
+2008-12-12  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Format.spec: Update to 1.0.0.
+
+2008-11-08  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Format.spec: Update to 1.0.0RC1.
+
+2008-08-18  Gunnar Wrobel  <p@rdus.de>
+
+	* PEAR-Date.spec: Added package to Kolab CVS.
+

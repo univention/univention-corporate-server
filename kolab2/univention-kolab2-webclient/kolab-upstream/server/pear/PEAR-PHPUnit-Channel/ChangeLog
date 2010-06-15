@@ -1,0 +1,22 @@
+2009-01-19  Thomas Arendsen Hein  <thomas@intevation.de>
+
+	* Makefile: Fix build after kolab/issue3315.
+	* PEAR-PHPUnit-Channel.spec: Bump release number.
+
+2009-01-07  Gunnar Wrobel  <p@rdus.de>
+
+	* PEAR-PHPUnit-Channel.spec:
+	kolab/issue3315 (PEAR-Horde-Channel-1.0 fails to compile on
+	solaris 10)
+
+2008-12-18  Gunnar Wrobel  <p@rdus.de>
+
+	* PEAR-PHPUnit-Channel.spec:
+	kolab/issue3315 (PEAR-Horde-Channel-1.0 fails to compile on
+	solaris 10)
+
+2008-12-15  Gunnar Wrobel  <p@rdus.de>
+
+	* PEAR-PHPUnit-Channel.spec:
+	kolab/issue2441 (/kolab/RPM/TMP/pear/temp created owned by root)
+

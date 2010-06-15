@@ -1,0 +1,25 @@
+2009-04-25  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Storage_0.4.0_p2.patch: Fixes unit testing in
+	Kolab_FreeBusy.
+
+2009-04-24  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Storage.spec: Fixed unit testing.
+
+2009-02-24  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Storage.spec: Update to 0.4.0.
+
+2008-12-05  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Storage.spec: Update to 0.3.0.
+
+2008-11-08  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Storage.spec: Update to 0.2.0.
+
+2008-09-11  Gunnar Wrobel  <p@rdus.de>
+
+	* PEAR-Date.spec: Added package to Kolab CVS.
+

@@ -1,0 +1,12 @@
+2009-07-20  Gunnar Wrobel  <p@rdus.de>
+
+	* package.info: Converted to new packaging style and updated to tag HORDE_3_3_4.
+
+2008-09-16  Gunnar Wrobel  <p@rdus.de>
+
+	* Horde_Group.spec: Updated to Group-0.1.0.
+
+2008-09-11  Gunnar Wrobel  <p@rdus.de>
+
+	* Horde_DOM.spec: Added package to Kolab CVS.
+

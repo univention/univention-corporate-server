@@ -1,0 +1,111 @@
+Type: file
+File: etc/horde/horde3/conf.d/kolab.ucs.php
+User: www-data
+Mode: 640
+Variables: ldap/server/name
+Variables: ldap/base
+Variables: mail/alias/webmaster
+Variables: mail/hosteddomains
+Variables: ldap/server/master
+Variables: horde/.*
+Variables: domainname
+
+Type: file
+File: etc/horde/horde3/hooks.d/hooks.ucs.php
+Variables: horde/application/.*
+
+Type: file
+File: etc/horde/horde3/prefs.d/prefs.ucs.php
+
+Type: file
+File: etc/horde/horde3/registry.d/registry.ucs.php
+Variables: horde/application/.*
+Variables: horde/webroot
+
+Type: file
+File: etc/horde/imp4/conf.d/conf.ucs.php
+Variables: horde/.*
+
+Type: file
+File: etc/horde/imp4/prefs.d/prefs.ucs.php
+Variables: horde/folder/sent
+Variables: horde/folder/drafts
+Variables: horde/folder/trash
+Variables: horde/folder/spam
+
+Type: file
+File: etc/horde/imp4/servers.d/servers.ucs.php
+
+Type: file
+File: etc/horde/turba2/conf.d/conf.ucs.php
+Variables: horde/.*
+
+Type: file
+File: etc/horde/turba2/sources.d/sources.ucs.php
+
+Type: file
+File: etc/horde/kronolith2/conf.d/kolab.ucs.php
+Variables: domainname
+Variables: horde/.*
+
+Type: file
+File: etc/horde/gollem/conf.php
+
+Type: file
+File: etc/horde/gollem/prefs.php
+
+Type: file
+File: etc/horde/gollem/backends.php
+Variables: horde/webaccess/share.*
+Variables: horde/auth
+
+Type: file
+File: etc/horde/ingo1/conf.d/conf.ucs.php
+
+Type: file
+File: etc/horde/ingo1/backends.d/backends.ucs.php
+
+Type: file
+File: etc/horde/passwd/conf.php
+
+Type: file
+File: etc/horde/passwd/backends.php
+
+Type: file
+File: etc/horde/nag2/conf.d/conf.ucs.php
+
+Type: file
+File: etc/horde/nag2/prefs.d/prefs.ucs.php
+
+Type: file
+File: etc/horde/mnemo2/conf.d/conf.ucs.php
+
+Type: file
+File: etc/horde/mnemo2/prefs.d/prefs.ucs.php
+
+Type: file
+File: etc/cron.d/kronolith2
+Variables: horde/kronolith/reminders/cron
+
+Type: file
+File: etc/univention/apache/96univention-horde
+Variables: interfaces/eth0/type
+Variables: hostname
+Variables: domainname
+Variables: horde/webroot
+
+Type: subfile
+Multifile: etc/postgresql/7.4/main/pg_hba.conf
+Subfile: etc/postgresql/7.4/main/pg_hba.conf.d/11-horde_user
+
+Type: subfile
+Multifile: etc/postgresql/8.3/main/pg_hba.conf
+Subfile: etc/postgresql/8.3/main/pg_hba.conf.d/11-horde_user
+
+Type: subfile
+Multifile: var/www/ucs-overview/de.html
+Subfile: var/www/ucs-overview/de.html.d/60horde-de.html
+
+Type: subfile
+Multifile: var/www/ucs-overview/en.html
+Subfile: var/www/ucs-overview/en.html.d/60horde-en.html

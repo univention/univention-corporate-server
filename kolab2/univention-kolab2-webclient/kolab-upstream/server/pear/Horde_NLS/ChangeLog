@@ -1,0 +1,8 @@
+2009-05-11  Gunnar Wrobel  <p@rdus.de>
+
+	* Horde_NLS.spec: Update to the HORDE_3_3_4 release tag.
+
+2008-09-10  Gunnar Wrobel  <p@rdus.de>
+
+	* Horde_NLS.spec: Added package to Kolab CVS.
+

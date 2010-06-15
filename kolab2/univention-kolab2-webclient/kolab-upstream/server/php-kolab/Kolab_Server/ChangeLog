@@ -1,0 +1,27 @@
+2009-04-25  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Server.spec: Update to 0.5.0
+
+	Support configurable attribute mapping.
+
+	Added getGroupAddresses() to return the mail addresses of groups
+	the user belongs to.
+	kolab/issue3537 (Allowing xfb access to groups does not work)
+	https://www.intevation.de/roundup/kolab/issue3537
+
+2009-02-24  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Server.spec: Update to 0.4.0.
+
+2008-12-16  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Server.spec: Update to 0.3.0.
+
+2008-11-08  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Server.spec: Update to 0.2.0.
+
+2008-08-18  Gunnar Wrobel  <p@rdus.de>
+
+	* PEAR-Date.spec: Added package to Kolab CVS.
+

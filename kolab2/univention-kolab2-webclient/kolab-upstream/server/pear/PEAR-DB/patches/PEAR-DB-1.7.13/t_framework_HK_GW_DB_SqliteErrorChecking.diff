@@ -1,0 +1,35 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/framework/HK/GW/DB/SqliteErrorChecking
+
+Fix error checking in the sqlite PEAR implementation.
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
+
+---
+ horde-webmail/pear/DB/sqlite.php |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/horde-webmail/pear/DB/sqlite.php b/horde-webmail/pear/DB/sqlite.php
+index bf2acec..00e65f4 100644
+--- a/horde-webmail/pear/DB/sqlite.php
++++ b/horde-webmail/pear/DB/sqlite.php
+@@ -742,7 +742,7 @@ class DB_sqlite extends DB_common
+         
+         // PHP 5.2+ prepends the function name to $php_errormsg, so we need
+         // this hack to work around it, per bug #9599.
+-        $errormsg = preg_replace('/^sqlite[a-z_]+\(\): /', '', $errormsg);
++        $errormsg = preg_replace('/^sqlite[a-z_]+\(\) \[[^\]]*\]: /', '', $errormsg);
+         
+         if (!isset($error_regexps)) {
+             $error_regexps = array(
+-- 
+tg: (018dab9..) t/framework/HK/GW/DB/SqliteErrorChecking (depends on: t/framework/HK/GW/Kolab/XfbFixes)
+-- 
+TOPGIT patch commit log
+=======================
+
+commit 1dd36cf01fd707c95af690339799bc5ce73a05c0
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Feb 1 16:52:24 2009 +0000
+
+    Added patch release/HK-GW-DB_sqlite-Incorrect_error_check.patch from the mercurial release queue.

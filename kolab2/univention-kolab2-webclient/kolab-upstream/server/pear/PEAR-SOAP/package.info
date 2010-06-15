@@ -1,0 +1,52 @@
+# The name of PEAR source package
+pear_package='SOAP'
+
+# The name of the RPM package
+package='PEAR-SOAP'
+
+# Where to find information about the package
+package_url='http://pear.php.net/package/'
+
+# How should the source be retrieved?
+#
+# WGET: Download via wget
+package_origin='WGET'
+
+# Version number
+version='0.12.0'
+
+# Package release number
+release='1'
+
+# Source URL to download from
+sourceurl='http://pear.php.net/get'
+
+# In which PHP library location should the library get installed
+php_lib_loc='php'
+
+# Build prerequisites
+buildprereq='                              \
+BuildPreReq:  OpenPKG, openpkg >= 20070603 \
+BuildPreReq:  php, php::with_pear = yes    \
+'
+
+# Installatin prerequisites
+prereq='                                   \
+PreReq:       OpenPKG, openpkg >= 20070603 \
+PreReq:       php, php::with_pear = yes    \
+PreReq:       PEAR-HTTP_Request            \
+PreReq:       PEAR-Mail                    \
+PreReq:       PEAR-Mail_Mime               \
+PreReq:       PEAR-Net_DIME                \
+'
+
+# Package summary description
+summary='SOAP Client/Server for PHP'
+
+# Long package description
+description=' \
+Implementation of SOAP protocol and services \
+'
+
+# Source code license
+license='PHP'

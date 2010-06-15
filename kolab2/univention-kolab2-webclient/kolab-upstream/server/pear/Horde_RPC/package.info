@@ -1,0 +1,63 @@
+# The name of Horde source package
+pear_package='Horde_RPC'
+
+# The name of the RPM package
+package='Horde_RPC'
+
+# Where to find information about the package
+package_url='http://pear.horde.org/index.php?package='
+
+# How should the source be retrieved?
+#
+# WGET: Download via wget
+package_origin='VC-CVS'
+
+# The name of the package in the source repository
+pear_pkgdir='RPC'
+
+# Commit tag or date to user
+repo_commit='HORDE_3_3_6'
+
+# What release number should the source snapshot get (usually a date)?
+repo_release='20091215'
+
+# Version number
+version='0.0.2dev20091215'
+
+# Package release number
+release='20100111'
+
+# Source URL to download from
+sourceurl='http://files.kolab.org/incoming/wrobel'
+
+# In which PHP library location should the library get installed
+php_lib_loc='php'
+
+# Build prerequisites
+buildprereq='                              \
+BuildPreReq:  OpenPKG, openpkg >= 20070603 \
+BuildPreReq:  php, php::with_pear = yes    \
+BuildPreReq:  PEAR-Horde-Channel           \
+'
+
+# Installatin prerequisites
+prereq='                                   \
+PreReq:       OpenPKG, openpkg >= 20070603 \
+PreReq:       php, php::with_pear = yes    \
+PreReq:       PEAR-Horde-Channel           \
+PreReq:       PEAR-SOAP >= 0.8RC3           \
+PreReq:       Horde_Framework              \
+PreReq:       Horde_Lock                   \
+'
+
+# Package summary description
+summary='Horde RPC API'
+
+# Long package description
+description=' \
+The Horde_RPC:: class provides a common abstracted interface to various \
+remote methods of accessing Horde functionality. \
+'
+
+# Source code license
+license='LGPL'

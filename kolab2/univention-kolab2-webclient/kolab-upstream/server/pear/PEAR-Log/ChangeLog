@@ -1,0 +1,12 @@
+2008-11-08  Gunnar Wrobel  <p@rdus.de>
+
+	* PEAR-Log.spec: Update to 1.11.2.
+
+2008-09-10  Gunnar Wrobel  <p@rdus.de>
+
+	* PEAR-Log.spec (License): Fixed license.
+
+2007-05-29  Gunnar Wrobel  <p@rdus.de>
+
+	* PEAR-Log.spec: Added package to Kolab CVS.
+
