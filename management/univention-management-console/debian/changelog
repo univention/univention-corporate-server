@@ -1,3 +1,10 @@
+univention-management-console (3.0.24-1) unstable; urgency=low
+
+  * added additional POST/GET argument to address a specific UMC command
+    directly after login (Bug #18628)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 12 Jun 2010 11:23:56 +0200
+
 univention-management-console (3.0.23-1) unstable; urgency=low
 
   * wizard: the image is optional; Bug #18612

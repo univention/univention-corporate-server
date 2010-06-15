@@ -122,12 +122,17 @@ if(!isset($logout))	{
 			fwrite($pipe, "Sessioninvalid: 1\n");
 	 		$container->set_body_class("login");
 		}
-		if ($relogin == '1') {
+   		if ($relogin == '1') {
 	 		$container->set_body_class("login");
 		}
 		if (!isBrowserSupported() ) {
 			fwrite($pipe, "Unsupportedbrowser: 1\n");
 			$container->set_body_class("login");
+		}
+		if (isset($_POST['init_umccmd'])) {
+				   fwrite($pipe, "init_umccmd: ".$_POST['init_umccmd']."\n");
+		} elseif (isset($_GET['init_umccmd'])) {
+				   fwrite($pipe, "init_umccmd: ".$_GET['init_umccmd']."\n");
 		}
 		fwrite($pipe, "SessionId: ".$config->session_id."\n");
 		fwrite($pipe, "Number: -1\n\n\0");

@@ -45,6 +45,7 @@ from uniparts import *
 import client
 # main widget for UMC (based on notebook)
 import widget
+import pages
 
 import pages
 
@@ -64,6 +65,7 @@ LANG_DEFAULT = configRegistry.get ('umc/web/language', LANG_EN)
 _ = umc.Translation( 'univention.management.console.frontend' ).translate
 
 notebook_widget = None
+init_umccmd = None
 
 def create(a,b,c):
 	return modconsole( a, b, c )
@@ -473,6 +475,7 @@ class modconsole(unimodule.unimodule):
 		return "dialog"
 
 	def myinit(self):
+		global init_umccmd
 		self.save = self.parent.save
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Function: myinit')
@@ -481,6 +484,11 @@ class modconsole(unimodule.unimodule):
 
 		if self.inithandlemessages():
 			return
+
+		if self.req and self.req.meta:
+			if not init_umccmd:
+				init_umccmd = self.req.meta.get('init_umccmd')
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modconsole.myinit(): set init_umccmd=%s' % repr(init_umccmd))
 
 		if self.save.get('logout'): # quit connection and fall back to login...
 			self.save.put('consolemode','logout')
@@ -521,6 +529,43 @@ class modconsole(unimodule.unimodule):
 			global notebook_widget
 			if not notebook_widget:
 				notebook_widget = widget.Notebook( self.save )
+
+				req = umcp.Request( 'GET', args = [ 'modules/list' ] )
+				id = client.request_send( req )
+				response = client.response_wait( id, timeout = 10 )
+				if response:
+					all_modules = response.body[ 'modules' ]
+					# all_modules = { 'MODULENAME' : {
+					#								   'short_description': 'ding',
+					#								   'commands': {
+					#												 'ding/dong/confirm': {
+					#																			 'short_description': 'my foo bar',
+					#																			 'caching': False,
+					#																			 'startup': False,
+					#																			 'long_description': '',
+					#																			 'priority': 0,
+					#																		   },
+					#												  ....
+					#												},
+					#								   'long_description': 'FOOOBAR',
+					#								   'categories': ['system', 'all'],
+					#								   'icon': 'ding/main',
+					#								  },
+					#				   'NEXTMODULE': { .... },
+					#				  }
+					if init_umccmd:
+						modulename = None
+						for modname in all_modules:
+							if init_umccmd in all_modules[modname].get('commands',{}).keys():
+								modulename = modname
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modconsole.myinit(): init_umccmd: module=%s' % modulename)
+						if modulename:
+							if notebook_widget.existsPage( modulename ):
+								notebook_widget.selectPage( modulename )
+							else:
+								mod = pages.Module( modulename, all_modules[ modulename ], init_cmd = init_umccmd )
+								notebook_widget.appendPage( mod )
+								univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modconsole.myinit(): init_umccmd: created module %s' % modulename)
 
 			self.__process()
 

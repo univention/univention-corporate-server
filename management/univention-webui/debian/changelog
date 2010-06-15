@@ -1,3 +1,10 @@
+univention-webui (4.0.14-1) unstable; urgency=low
+
+  * added additional POST/GET argument to address a specific UMC command
+    directly after login (Bug #18628)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 09 Jun 2010 15:27:48 +0200
+
 univention-webui (4.0.13-1) unstable; urgency=low
 
   * add support for saving the visibility status of sections; Bug #18127

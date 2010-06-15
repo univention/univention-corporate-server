@@ -88,7 +88,12 @@ class ActiveProcess( object ):
 		return response
 
 class Module( base.Page ):
-	def __init__( self, module_name, module ):
+	'''
+	module_name:
+	module:
+	init_cmd: UMCP command that shall be selected after module init; if None then default cmd is selected
+	'''
+	def __init__( self, module_name, module, init_cmd = None ):
 		base.Page.__init__( self, module_name, module[ 'short_description' ], closeable = True )
 		self.__module = module
 		self.__storage = mapping.Storage( module )
@@ -110,10 +115,14 @@ class Module( base.Page ):
 		self.__startups = startup.List()
 		self.active = ActiveProcess()
 		for name, cmd in module[ 'commands' ].items():
-			if cmd[ 'startup' ]:
+			if cmd[ 'startup' ] or name == init_cmd:
 				req = umcp.Command( args = [ name ], incomplete = True )
-				self.__startups.add( req, cmd[ 'short_description' ], cmd[ 'long_description' ],
-									 cmd[ 'priority' ], cmd[ 'caching' ] )
+				# add returns the position of new startup command
+				pos = self.__startups.add( req, cmd[ 'short_description' ], cmd[ 'long_description' ],
+										   cmd[ 'priority' ], cmd[ 'caching' ] )
+				# if current command is init_cmd then select this as new active tab
+				if name == init_cmd:
+					self.selected = pos
 
 		# run command of first category
 		cmd = self.__startups[ self.selected ]
