@@ -1,0 +1,33 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/imp/HideGroupwareFolders
+
+Hides special Kolab groupware folders.
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
+
+---
+ horde-webmail/imp/config/hooks.php.dist |   11 +++++++-
+ 3 files changed, 50 insertions(+), 5 deletions(-)
+
+diff --git a/horde-webmail/imp/config/hooks.php.dist b/horde-webmail/imp/config/hooks.php.dist
+index 98e429e..f690ef5 100644
+--- a/config/hooks.php.dist
++++ b/config/hooks.php.dist
+@@ -590,7 +590,7 @@
+             case 'contact':
+                 return $GLOBALS['registry']->get('webroot', 'turba');
+ 
+-            case 'prefs':
++            case 'h-prefs':
+                 return $GLOBALS['registry']->get('webroot', 'horde') . '/services/prefs.php?app=horde';
+ 
+             default:
+@@ -644,7 +644,7 @@
+                     );
+                     break;
+ 
+-                case 'prefs':
++                case 'h-prefs':
+                     $icons[$name] = array(
+                         'icon' => 'prefs.png',
+                         'icondir' => $GLOBALS['registry']->getImageDir('horde'),

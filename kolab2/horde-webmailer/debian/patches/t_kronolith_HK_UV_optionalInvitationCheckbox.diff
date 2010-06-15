@@ -1,0 +1,76 @@
+Patch by schwardt@univention.de (Fri Sep 11 16:20:34 2009 +0200):
+
+kronolith: new config option to hide "send invitation" checkbox
+
+In a environments where most users use a non-groupware-aware mail client
+sending invitations for events is superfluous. This patch adds a config
+option to hide the corresponding checkbox.
+
+
+--- a/horde-webmail/kronolith/config/conf.php
++++ b/horde-webmail/kronolith/config/conf.php
+@@ -5,6 +5,7 @@ $conf['calendar']['driver'] = 'kolab';
+ $conf['calendar']['day']['inline_time'] = false;
+ $conf['calendar']['week']['inline_time'] = false;
+ $conf['calendar']['edit']['save_as_new'] = true;
++$conf['calendar']['edit']['invitation_send'] = true;
+ $conf['storage']['driver'] = 'kolab';
+ $conf['storage']['default_domain'] = '';
+ $conf['storage']['freebusy']['protocol'] = 'https';
+--- a/horde-webmail/kronolith/config/conf.xml
++++ b/horde-webmail/kronolith/config/conf.xml
+@@ -20,6 +20,7 @@
+   <configsection name="edit">
+    <configheader>Display Settings For Events Edit Dialog</configheader>
+    <configboolean name="save_as_new" desc="Should we display a 'save_as_new' button when modifying events?">true</configboolean>
++   <configboolean name="invitation_send" desc="Should we display a 'send invitation to attendees' checkbox when creating/modifying/deleting events?">true</configboolean>
+   </configsection>
+ 
+ 
+--- a/horde-webmail/kronolith/templates/delete/delete.inc
++++ b/horde-webmail/kronolith/templates/delete/delete.inc
+@@ -17,9 +17,11 @@ if (empty($url)) {
+ <table class="striped" cellspacing="0">
+ <tr><td class="warning"><?php echo _("This is a recurring event. Delete the current event only, this<br />occurrence and all future occurences, or all occurences?") ?></td></tr>
+ 
++<?php if ( isset($conf['calendar']['edit']['invitation_send']) ? $conf['calendar']['edit']['invitation_send'] : true ): ?>
+ <?php if (!empty($this->event->attendees)): ?>
+ <tr><td><input id="sendupdates_del" type="checkbox" class="checkbox" name="sendupdates" checked="checked" /><label for="sendupdates_del"> <?php echo _("Send a cancel notification to all attendees when deleting this event?") ?></label></td></tr>
+ <?php endif ?>
++<?php endif; ?>
+ 
+ <tr><td>
+  <input type="submit" class="button" name="current" value="<?php echo _("Current") ?>" />
+--- a/horde-webmail/kronolith/templates/delete/one.inc
++++ b/horde-webmail/kronolith/templates/delete/one.inc
+@@ -15,9 +15,11 @@ if (empty($url)) {
+ <input type="hidden" name="calendar" value="<?php echo htmlspecialchars(Util::getFormData('calendar')) ?>" />
+ 
+ <div class="headerbox">
++<?php if ( isset($conf['calendar']['edit']['invitation_send']) ? $conf['calendar']['edit']['invitation_send'] : true ): ?>
+ <?php if (!empty($this->event->attendees)): ?>
+  <p><input id="sendupdates_del" type="checkbox" class="checkbox" name="sendupdates" checked="checked" /><label for="sendupdates_del"> <?php echo _("Send a cancel notification to all attendees when deleting this event?") ?></label></p>
+ <?php endif ?>
++<?php endif; ?>
+ 
+  <p><?php echo _("Permanently delete this event?") ?></p>
+ 
+--- a/horde-webmail/kronolith/templates/edit/edit.inc
++++ b/horde-webmail/kronolith/templates/edit/edit.inc
+@@ -371,6 +371,7 @@ endif;
+ </tr>
+ 
+ <!-- invitations/updates and buttons -->
++<?php if ( isset($conf['calendar']['edit']['invitation_send']) ? $conf['calendar']['edit']['invitation_send'] : true ): ?>
+ <tr>
+  <td></td>
+  <td colspan="4">
+@@ -378,6 +379,8 @@ endif;
+   <label for="sendupdates"><?php echo $event->isInitialized() ? _("Send updates to all attendees?") : _("Send invitations to all attendees?") ?></label>
+  </td>
+ </tr>
++<?php endif; ?>
++
+ <tr>
+  <td></td>
+  <td colspan="4">

@@ -1,0 +1,21 @@
+Source: horde-webmailer
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, quilt
+
+Package: horde-webmailer
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, libapache2-mod-php5, php-log, php-pear, apache2 | httpd, php-date, php-http-request, php5-mcal | php5-mysql | php5-pgsql | php4-mcal | php4-mysql | php4-pgsql, php-mail-mime, php4-imap | php5-imap
+Conflicts: horde, imp, ingo, kronolith, mnemo, nag, turba
+Replaces: horde, imp, ingo, kronolith, mnemo, nag, turba
+Provides: horde, imp, ingo, kronolith, mnemo, nag, turba
+Description: horde webmailer 
+ The Horde Framework is written in PHP, and provides the common
+ tools a Web application requires: classes for dealing with preferences,
+ compression, browser detection, connection tracking, MIME, and more.
+ .
+ There is a list of Horde applications and projects at
+ http://www.horde.org/projects.php.
+

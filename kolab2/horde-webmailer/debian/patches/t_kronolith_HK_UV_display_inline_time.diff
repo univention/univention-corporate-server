@@ -1,0 +1,110 @@
+Patch by schwardt@univention.de (Wed Sep 9 12:12:26 2009 +0200):
+
+kronolith: new config switch to display event's time range in day/workweek/week view
+
+In day/workweek/week view it's currently impossible distinct between events
+starting/ending at complete hours and events starting/ending with offset.
+This patch adds a new config option to display the events start/end time
+additionally to existing event title.
+
+
+--- a/horde-webmail/kronolith/config/conf.php
++++ b/horde-webmail/kronolith/config/conf.php
+@@ -2,6 +2,8 @@
+ /* CONFIG START. DO NOT CHANGE ANYTHING IN OR AFTER THIS LINE. */
+ // $Horde: kronolith/config/conf.xml,v 1.14.10.5 2007/12/20 14:12:23 jan Exp $
+ $conf['calendar']['driver'] = 'kolab';
++$conf['calendar']['day']['inline_time'] = false;
++$conf['calendar']['week']['inline_time'] = false;
+ $conf['storage']['driver'] = 'kolab';
+ $conf['storage']['default_domain'] = '';
+ $conf['storage']['freebusy']['protocol'] = 'https';
+--- a/horde-webmail/kronolith/config/conf.xml
++++ b/horde-webmail/kronolith/config/conf.xml
+@@ -16,6 +16,15 @@
+ 
+    <case name="kolab" desc="Kolab" />
+   </configswitch>
++
++  <configsection name="week">
++   <configheader>Display Settings For Week View</configheader>
++   <configboolean name="inline_time" desc="Should we display time range of each event in week view?">false</configboolean>
++  </configsection>
++  <configsection name="day">
++   <configheader>Display Settings For Day View</configheader>
++   <configboolean name="inline_time" desc="Should we display time range of each event in day view?">false</configboolean>
++  </configsection>
+  </configsection>
+ 
+  <configsection name="storage">
+--- a/horde-webmail/kronolith/lib/Driver.php
++++ b/horde-webmail/kronolith/lib/Driver.php
+@@ -2214,7 +2214,7 @@ class Kronolith_Event {
+         return Horde::applicationUrl(Util::addParameter('event.php', $params));
+     }
+ 
+-    function getLink($timestamp = null, $icons = true, $from_url = null, $full = false)
++    function getLink($timestamp = null, $icons = true, $from_url = null, $full = false, $inline_time = false)
+     {
+         global $prefs, $registry;
+ 
+@@ -2226,7 +2226,11 @@ class Kronolith_Event {
+         }
+ 
+         $link = '';
+-        $event_title = $this->getTitle();
++        if ( $inline_time ) {
++            $event_title = $this->getTitle() . " " . $this->getTimeRange();
++        } else {
++            $event_title = $this->getTitle();
++        }
+         if (isset($this->external)) {
+             $link = $registry->link($this->external . '/show', $this->external_params);
+             $link = Horde::linkTooltip(Horde::url($link), '', 'event-tentative', '', '', String::wrap($this->description));
+--- a/horde-webmail/kronolith/lib/Views/Day.php
++++ b/horde-webmail/kronolith/lib/Views/Day.php
+@@ -70,6 +70,7 @@ class Kronolith_View_Day extends Kronolith_Day {
+     function html()
+     {
+         global $prefs;
++        global $conf;
+ 
+         if (!$this->_parsed) {
+             $this->parse();
+@@ -237,7 +238,7 @@ class Kronolith_View_Day extends Kronolith_Day {
+                         $row .= '<td class="day-eventbox category' . md5($event->getCategory()) . '" '
+                             . 'width="' . round((90 / count($this->_currentCalendars)) * ($span / $this->_span[$cid]))  . '%" '
+                             . 'valign="top" colspan="' . $span . '" rowspan="' . $event->rowspan . '">'
+-                            . $event->getLink($this->getStamp(), true, $this->link(0, true));
++                            . $event->getLink($this->getStamp(), true, $this->link(0, true), false, isset($conf['calendar']['day']['inline_time']) ? $conf['calendar']['day']['inline_time'] : false );
+                         if ($showTime) {
+                             $row .= '<div class="event-time">' . htmlspecialchars($event->getTimeRange()) . '</div>';
+                         }
+--- a/horde-webmail/kronolith/lib/Views/Week.php
++++ b/horde-webmail/kronolith/lib/Views/Week.php
+@@ -117,6 +117,7 @@ class Kronolith_View_Week {
+     function html()
+     {
+         global $prefs;
++        global $conf;
+ 
+         $more_timeslots = $prefs->getValue('time_between_days');
+         $include_all_events = !$prefs->getValue('show_shared_side_by_side');
+@@ -170,7 +171,7 @@ class Kronolith_View_Week {
+                             $row .= '<td class="week-eventbox category' . md5($event->getCategory()) . '" '
+                                 . 'width="' . round(99 / count($this->days[$j]->_currentCalendars)) . '%" '
+                                 . 'valign="top">'
+-                                . $event->getLink($this->days[$j]->getStamp(), true, $this->link(0, true));
++                                . $event->getLink($this->days[$j]->getStamp(), true, $this->link(0, true), false, isset($conf['calendar']['week']['inline_time']) ? $conf['calendar']['week']['inline_time'] : false);
+                             if ($showLocation) {
+                                 $row .= '<div class="event-location">' . htmlspecialchars($event->getLocation()) . '</div>';
+                             }
+@@ -292,7 +293,7 @@ class Kronolith_View_Week {
+                                     . 'valign="top" '
+                                     . 'width="' . floor(((90 / count($this->days)) / count($this->_currentCalendars)) * ($span / $this->days[$j]->_span[$cid])) . '%" '
+                                     . 'colspan="' . $span . '" rowspan="' . $event->rowspan . '">'
+-                                    . $event->getLink($this->days[$j]->getStamp(), true, $this->link(0, true));
++                                    . $event->getLink($this->days[$j]->getStamp(), true, $this->link(0, true), false, isset($conf['calendar']['week']['inline_time']) ? $conf['calendar']['week']['inline_time'] : false);
+                                 if ($showTime) {
+                                     $row .= '<div class="event-time">' . htmlspecialchars($event->getTimeRange()) . '</div>';
+                                 }

@@ -1,0 +1,67 @@
+KOLAB_META_START
+TARGET=@@@horde_confdir@@@/conf.d/20-kolab_local.php
+PERMISSIONS=0400
+OWNERSHIP=@@@webserver_usr@@@:@@@webserver_grp@@@
+KOLAB_META_END
+<?php
+/*
+@@@warning@@@
+*/
+
+$conf['cookie']['domain'] = '@@@fqdnhostname@@@';
+$conf['cookie']['path'] = '@@@horde_cookie_path@@@';
+$conf['problems']['email'] = 'postmaster@@@@postfix-mydomain@@@';
+$conf['problems']['maildomain'] = '@@@postfix-mydomain@@@';
+$conf['kolab']['ldap']['server'] = '@@@ldap_uri@@@';
+$conf['kolab']['ldap']['basedn'] = '@@@base_dn@@@';
+$conf['kolab']['ldap']['phpdn'] = '@@@php_dn@@@';
+$conf['kolab']['ldap']['phppw'] = '@@@php_pw@@@';
+@@@if cyrus-imap@@@
+$conf['kolab']['imap']['server'] = '@@@fqdnhostname@@@';
+@@@else@@@
+$conf['kolab']['imap']['server'] = '@@@local_addr@@@';
+@@@endif@@@
+$conf['kolab']['imap']['maildomain'] = '@@@postfix-mydomain@@@';
+
+/**
+ * If you use customized LDAP attributes on your LDAP server the
+ * following configuration setting allows you to map the standard
+ * Kolab attribute names to your customizations.
+ *
+ * Specify the mapping line by line:
+ *
+ * $conf['kolab']['ldap']['map']['uid'] = 'uid2';
+ * $conf['kolab']['ldap']['map']['mobile'] = 'handy';
+ *
+ * or use a hash structure:
+ *
+ * $conf['kolab']['ldap']['map'] = array('uid' => 'uid2',
+ *                                       'mobile' => 'handy');
+ *
+ */
+//$conf['kolab']['ldap']['map']['uid'] = 'uid2';
+
+/* Credentials for a proxy user to allow quasi anonymous ICS access
+ * via /public-cal/ics. You will need to create this user first.
+ */
+//$conf['ics']['default_user'] = 'proxy@@@@postfix-mydomain@@@';
+//$conf['ics']['default_pass'] = 'proxy';
+/**
+ * Uncomment if you wish to hide the organizer which is currently the proxy user.
+ */
+//$conf['ics']['hide_organizer'] = true;
+   
+/**
+ * Uncomment if you wish to keep user preferences in LDAP rather than in
+ * file based storage.
+ *
+ * See https://issues.kolab.org/issue3567
+ */
+//$conf['prefs']['driver'] = 'kolab';
+/**
+ * Kolab uses file based preferences by default. There is an alternative
+ * IMAP based driver that allows the users to keep their preferences in
+ * the IMAP storage. You can activate it here.
+ */
+//$conf['prefs']['driver'] = 'kolab_imap';
+

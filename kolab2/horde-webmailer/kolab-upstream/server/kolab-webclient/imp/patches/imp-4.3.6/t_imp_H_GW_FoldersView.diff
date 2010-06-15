@@ -1,0 +1,133 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/dimp/H/GW/FoldersView
+
+Provide a folders menu for dimp.
+
+kolab/issue3456 (There is no view in dimp that allows folder subscription)
+https://www.intevation.de/roundup/kolab/issue3456
+
+[#8059] DIMP provides no view to subscribe/unsubscribe to folders
+http://bugs.horde.org/ticket/8059
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
+
+---
+ folders.php                    |   17 ++++++++++++-----
+ templates/folders/actions.html |    2 ++
+ 4 files changed, 25 insertions(+), 6 deletions(-)
+
+diff --git a/folders.php b/folders.php
+index a0425aa..c46b0e5 100644
+--- a/folders.php
++++ b/folders.php
+@@ -324,7 +324,9 @@ $folders_url = Util::addParameter($folders_url, 'folders_token', $folders_token)
+ 
+ $title = _("Folder Navigator");
+ require IMP_TEMPLATES . '/common-header.inc';
+-IMP::menu();
++if ($_SESSION['imp']['default_view'] != 'dimp') {
++    IMP::menu();
++}
+ IMP::status();
+ IMP::quota();
+ 
+@@ -375,6 +377,7 @@ if ($a_template->get('javascript')) {
+ }
+ 
+ $a_template->set('create_folder', !empty($GLOBALS['conf']['hooks']['permsdenied']) || (IMP::hasPermission('create_folders') && IMP::hasPermission('max_folders')));
++$a_template->set('imp_view', $_SESSION['imp']['default_view'] != 'dimp');
+ if ($prefs->getValue('subscribe')) {
+     $a_template->set('subscribe', true);
+     $subToggleText = ($showAll) ? _("Hide Unsubscribed") : _("Show Unsubscribed");
+@@ -414,9 +417,11 @@ $rowct = 0;
+ $morembox = $rows = array();
+ foreach ($raw_rows as $val) {
+     $val['nocheckbox'] = !empty($val['vfolder']);
+-    if (!empty($val['vfolder']) && ($val['value'] != IMPTREE_VFOLDER_KEY)) {
+-        $val['delvfolder'] = Horde::link($imp_search->deleteURL($val['value']), _("Delete Virtual Folder")) . _("Delete") . '</a>';
+-        $val['editvfolder'] = Horde::link($imp_search->editURL($val['value']), _("Edit Virtual Folder")) . _("Edit") . '</a>';
++    if ($_SESSION['imp']['default_view'] != 'dimp') {
++        if (!empty($val['vfolder']) && ($val['value'] != IMPTREE_VFOLDER_KEY)) {
++            $val['delvfolder'] = Horde::link($imp_search->deleteURL($val['value']), _("Delete Virtual Folder")) . _("Delete") . '</a>';
++            $val['editvfolder'] = Horde::link($imp_search->editURL($val['value']), _("Edit Virtual Folder")) . _("Edit") . '</a>';
++        }
+     }
+ 
+     $val['class'] = (++$rowct % 2) ? 'item0' : 'item1';
+@@ -433,7 +438,9 @@ foreach ($raw_rows as $val) {
+         if (!empty($val['unseen'])) {
+             $val['name'] = '<strong>' . $val['name'] . '</strong>';
+         }
+-        $val['name'] = Horde::link(Util::addParameter($name_url, 'mailbox', $val['value']), sprintf(_("View messages in %s"), ($val['vfolder']) ? $val['base_elt']['l'] : $val['display'])) . $val['name'] . '</a>';
++        if ($_SESSION['imp']['default_view'] != 'dimp') {
++            $val['name'] = Horde::link(Util::addParameter($name_url, 'mailbox', $val['value']), sprintf(_("View messages in %s"), ($val['vfolder']) ? $val['base_elt']['l'] : $val['display'])) . $val['name'] . '</a>';
++        }
+     }
+ 
+     $dir2 = _image($val, null, 'folder');
+diff --git a/templates/folders/actions.html b/templates/folders/actions.html
+index f882a82..619e4de 100644
+--- a/templates/folders/actions.html
++++ b/templates/folders/actions.html
+@@ -12,12 +12,14 @@
+     <select id="action_choose<tag:id />">
+      <option selected="selected"><gettext>Choose Action</gettext></option>
+      <option value="">--------------------</option>
++<if:imp_view>
+ <if:create_folder>
+      <option value="create_folder"><gettext>Create</gettext></option>
+ </if:create_folder>
+      <option value="rename_folder"><gettext>Rename</gettext></option>
+      <option value="delete_folder_confirm"><gettext>Delete</gettext></option>
+      <option value="folders_empty_mailbox_confirm"><gettext>Empty</gettext></option>
++</if:imp_view>
+ <if:notrash>
+      <option value="expunge_folder"><gettext>Purge</gettext></option>
+ </if:notrash>
+-- 
+tg: (a6f8c8b..) t/dimp/H/GW/FoldersView (depends on: t/kronolith/H/GW/UseDayHourStartEndAlsoInFBView)
+-- 
+TOPGIT patch commit log
+=======================
+
+commit c16643e792c3b185bc74bef7a600c06857b19406
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Mon Nov 9 23:16:11 2009 +0100
+
+    Fix tag name from view_imp to imp_view.
+
+commit 93403a869ff14d7868d4cc9c4687ea1270e3c225
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Mon Jun 22 08:39:51 2009 +0200
+
+    Typo
+
+commit ad147a4b42d61800400a2a779e884ee050358811
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Mon Jun 22 00:06:14 2009 +0200
+
+    Fixed menu entry name, added translation, fixed image.
+
+commit a1966161022108d9bf4831a8613b1db9a4e68c4d
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Fri Mar 13 11:06:45 2009 +0000
+
+    Include issue references in the patch description.
+
+commit de8c5e8cac0bfb29c9cf94989016487302da653f
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Fri Mar 13 11:04:54 2009 +0000
+
+    Exclude IMP specific functionality as requested by Sascha wilde in  kolab/issue3456 (There is no view in dimp that allows folder subscription).
+
+commit 9c9a343c04cf11f857bfeb4148f0ab9d9df7dce6
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Mar 8 19:06:05 2009 +0000
+
+    Completed the hack.
+
+commit caa539aac138c4b77376ab9f4a4a86691709a96b
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Mar 8 19:01:41 2009 +0000
+
+    Completed the hack.

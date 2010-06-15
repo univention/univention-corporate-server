@@ -1,0 +1,71 @@
+From: root <Gunnar Wrobel wrobel@pardus.de>
+Subject: [PATCH] t/SyncML/UV/RecurringEventsWeekCount
+
+The attached patch fixes two Bugs in the SyncML code that affect the same
+function. The Patch for A) only changes one line.
+
+A) SyncML sends end dates not as DateTime, causing BB SyncJE to drop events
+B) For recurring events SyncML sends number of incedences in vCal duration
+   instead of the number of weeks.
+
+REF: https://issues.kolab.org/issue3894
+
+Signed-off-by: root <Gunnar Wrobel wrobel@pardus.de>
+
+---
+ lib/Recurrence.php |   17 ++++++++++++++---
+ 1 files changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/lib/Recurrence.php b/lib/Recurrence.php
+index 5aa5960..acbbee7 100644
+--- a/lib/Recurrence.php
++++ b/lib/Recurrence.php
+@@ -944,6 +944,7 @@ class Horde_Date_Recurrence {
+      */
+     function toRRule10($calendar)
+     {
++        $rec_days_per_week = 0;
+         switch ($this->recurType) {
+         case HORDE_DATE_RECUR_NONE:
+             return '';
+@@ -959,6 +960,7 @@ class Horde_Date_Recurrence {
+             for ($i = 0; $i <= 7 ; ++$i) {
+                 if ($this->recurOnDay(pow(2, $i))) {
+                     $rrule .= ' ' . $vcaldays[$i];
++                    $rec_days_per_week++;
+                 }
+             }
+             break;
+@@ -997,9 +999,18 @@ class Horde_Date_Recurrence {
+             return '';
+         }
+ 
+-        return $this->hasRecurEnd() ?
+-            $rrule . ' ' . $calendar->_exportDate($this->recurEnd) :
+-            $rrule . ' #' . (int)$this->getRecurCount();
++        if ( $this->hasRecurEnd() ) {
++            $rrule .= ' ' . $calendar->_exportDateTime($this->recurEnd);
++        } else {
++            if ($rec_days_per_week > 1) {
++                $rec_weeks= (int)floor((int)$this->getRecurCount() / $rec_days_per_week);
++                $rrule .= ' #' . $rec_weeks;
++	    } else {
++                $rrule .= ' #' . (int)$this->getRecurCount();
++            }
++        }
++
++        return $rrule;
+     }
+ 
+     /**
+-- 
+tg: (29677b1..) t/SyncML/UV/RecurringEventsWeekCount (depends on: t/SyncML/UV/message/size/p1i)
+-- 
+TOPGIT patch commit log
+=======================
+
+commit c454efe2987e3f5e735247bffc16e40b282672dc
+Author: root <Gunnar Wrobel wrobel@pardus.de>
+Date:   Tue Nov 24 15:46:04 2009 +0100
+
+     kolab/issue3894 (kronolith writes recurrent event data non-conformant to vCal (1.0) standard)

@@ -1,0 +1,89 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/kronolith/HK/GW/FbviewRelevance
+
+Heed the Free/Busy relevance setting.
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
+
+---
+ calendars/edit.php         |    4 ++++
+ .../kronolith/lib/Forms/CreateCalendar.php         |    4 ++++
+ lib/Forms/EditCalendar.php |    4 ++++
+ 3 files changed, 12 insertions(+), 0 deletions(-)
+
+diff --git a/calendars/edit.php b/calendars/edit.php
+index 67137d2..6357a2c 100644
+--- a/calendars/edit.php
++++ b/calendars/edit.php
+@@ -53,6 +53,10 @@ if ($form->validate($vars)) {
+ 
+ $vars->set('name', $calendar->get('name'));
+ $vars->set('description', $calendar->get('desc'));
++$params = @unserialize($calendar->get('params'));
++if (isset($params['fbrelevance'])) {
++    $vars->set('fbrelevance', $params['fbrelevance']);
++}
+ $title = $form->getTitle();
+ require KRONOLITH_TEMPLATES . '/common-header.inc';
+ require KRONOLITH_TEMPLATES . '/menu.inc';
+diff --git a/lib/Forms/CreateCalendar.php b/lib/Forms/CreateCalendar.php
+index f11ae06..8d1154e 100644
+--- a/lib/Forms/CreateCalendar.php
++++ b/lib/Forms/CreateCalendar.php
+@@ -35,6 +35,9 @@ class Kronolith_CreateCalendarForm extends Horde_Form {
+ 
+         $this->addVariable(_("Name"), 'name', 'text', true);
+         $this->addVariable(_("Description"), 'description', 'longtext', false, false, null, array(4, 60));
++        $this->addVariable(_("Relevance"), 'fbrelevance', 'radio', false, false, null, 
++                           array(array('owners/administrators', 'readers', 'no one'), 
++                                 'This calendar is only included into the free/busy data for ...'));
+ 
+         $this->setButtons(array(_("Create")));
+     }
+@@ -48,6 +51,7 @@ class Kronolith_CreateCalendarForm extends Horde_Form {
+         }
+         $calendar->set('name', $this->_vars->get('name'));
+         $calendar->set('desc', $this->_vars->get('description'));
++        $calendar->set('params', serialize(array('fbrelevance' => (int) $this->_vars->get('fbrelevance', 0))));
+         return $GLOBALS['kronolith_shares']->addShare($calendar);
+     }
+ 
+diff --git a/lib/Forms/EditCalendar.php b/lib/Forms/EditCalendar.php
+index 0a76c57..e0b4659 100644
+--- a/lib/Forms/EditCalendar.php
++++ b/lib/Forms/EditCalendar.php
+@@ -42,6 +42,9 @@ class Kronolith_EditCalendarForm extends Horde_Form {
+         $this->addHidden('', 'c', 'text', true);
+         $this->addVariable(_("Name"), 'name', 'text', true);
+         $this->addVariable(_("Description"), 'description', 'longtext', false, false, null, array(4, 60));
++        $this->addVariable(_("Relevance"), 'fbrelevance', 'radio', false, false, null, 
++                           array(array('owners/administrators', 'readers', 'no one'), 
++                                 'This calendar is only included into the free/busy data for ...'));
+ 
+         $this->setButtons(array(_("Save")));
+     }
+@@ -51,6 +54,7 @@ class Kronolith_EditCalendarForm extends Horde_Form {
+         $original_name = $this->_calendar->get('name');
+         $this->_calendar->set('name', $this->_vars->get('name'));
+         $this->_calendar->set('desc', $this->_vars->get('description'));
++        $this->_calendar->set('params', serialize(array('fbrelevance' => (int) $this->_vars->get('fbrelevance', 0))));
+ 
+         if ($original_name != $this->_vars->get('name')) {
+             $result = $GLOBALS['kronolith_driver']->rename($original_name, $this->_vars->get('name'));
+-- 
+tg: (2b89751..) t/kronolith/HK/GW/FbviewRelevance (depends on: t/kronolith/HK/SB/ExtraParameters)
+-- 
+TOPGIT patch commit log
+=======================
+
+commit 0175a71d1238e9b6907c31b7b97430dd7fc0486e
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sat Mar 14 01:10:44 2009 +0100
+
+    Remove stray .orig file.
+
+commit 6aba4a0d6a6d139204db96eeff2569528088b265
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Feb 1 22:27:55 2009 +0000
+
+    Added patch kronolith/HK-GW-Fbview_relevance.patch from the mercurial release queue.

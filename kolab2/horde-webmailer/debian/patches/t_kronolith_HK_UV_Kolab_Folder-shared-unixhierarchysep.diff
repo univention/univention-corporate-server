@@ -1,0 +1,41 @@
+kronolith: shared folder access with unixhierarchysep (Bug #17440)
+           https://issues.kolab.org/issue4165
+
+--- a/horde-webmail/lib/Horde/Kolab/Storage/Folder.php  2010-02-24 09:43:42.000000000 +0100
++++ b/horde-webmail/lib/Horde/Kolab/Storage/Folder.php	2010-02-24 09:43:48.000000000 +0100
+@@ -241,7 +241,7 @@
+     function setName($name)
+     {
+         $name = str_replace(':', '/', $name);
+-        if (substr($name, 0, 5) != 'user/' && substr($name, 0, 7) != 'shared.') {
++        if (substr($name, 0, 5) != 'user/' && substr($name, 0, 7) != 'shared/') {
+             $name = 'INBOX/' . $name;
+         }
+         $this->new_name = String::convertCharset($name, NLS::getCharset(), 'UTF7-IMAP');
+@@ -485,7 +485,7 @@
+                 $name = $this->name;
+             }
+ 
+-            if (!preg_match(";(shared\.|INBOX[/]?|user/([^/]+)[/]?)([^@]*)(@.*)?;", $name, $matches)) {
++            if (!preg_match(";(shared/|INBOX[/]?|user/([^/]+)[/]?)([^@]*)(@.*)?;", $name, $matches)) {
+                 return PEAR::raiseError(sprintf(_("Owner of folder %s cannot be determined."), $name));
+             }
+ 
+@@ -497,7 +497,7 @@
+                 $domain = strstr(Auth::getAuth(), '@');
+                 $user_domain = isset($matches[4]) ? $matches[4] : $domain;
+                 $this->_owner = $matches[2] . $user_domain;
+-            } elseif ($matches[1] == 'shared.') {
++            } elseif ($matches[1] == 'shared/') {
+                 $this->_owner =  'anonymous';
+             }
+         }
+@@ -522,7 +522,7 @@
+                 }
+             }
+ 
+-            if (!preg_match(";(shared\.|INBOX[/]?|user/([^/]+)[/]?)([^@]*)(@.*)?;", $name, $matches)) {
++            if (!preg_match(";(shared/|INBOX[/]?|user/([^/]+)[/]?)([^@]*)(@.*)?;", $name, $matches)) {
+                 return PEAR::raiseError(sprintf(_("Subpath of folder %s cannot be determined."), $name));
+             }
+ 

@@ -1,0 +1,19 @@
+KOLAB_META_START
+TARGET=@@@kronolith_confdir@@@/conf.d/20-kolab_local.php
+PERMISSIONS=0400
+OWNERSHIP=@@@webserver_usr@@@:@@@webserver_grp@@@
+KOLAB_META_END
+<?php
+/*
+@@@warning@@@
+*/
+
+/* This file can be used to customize your kolab-webclient installation. */
+/* Anything you add to this configuration file will override settings    */
+/* from @@@kronolith_confdir@@@/conf.php
+   Please refer to that file to see which settings you can influence via */
+/* this template.                                                        */
+$conf['storage']['default_domain'] = '@@@postfix-mydomain@@@';
+$conf['reminder']['server_name'] = '@@@fqdnhostname@@@';
+$conf['reminder']['from_addr'] = 'postmaster@@@@postfix-mydomain@@@';
+?>

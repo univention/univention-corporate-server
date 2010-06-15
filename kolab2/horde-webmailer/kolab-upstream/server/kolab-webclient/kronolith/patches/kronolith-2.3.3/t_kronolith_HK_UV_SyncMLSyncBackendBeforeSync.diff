@@ -1,0 +1,72 @@
+From: root <Gunnar Wrobel wrobel@pardus.de>
+Subject: [PATCH] t/SyncML/HK/GW/DoubleSyncFix
+
+Horde is currently agnostic of external clients to the storage backend used by
+Horde/Kolab. For SyncML any storage changes need to get logged in order to be
+exchanged with the mobile clients.
+
+Currently the Kolab drivers within Horde will create the necessary changelog.
+But this currently only happens after Synchronization started. Which means that
+you need to sync twice in order to get changes from an external client if you
+did not log in via Horde after changing something with an external client.
+
+The attached patch has been provided by Univention but needs some cleanup to go
+in upstream. We mainly need a clean library call in the Horde application
+libraries that will be called for synchronization.
+
+REF: https://issues.kolab.org/issue3237
+
+Signed-off-by: root <Gunnar Wrobel wrobel@pardus.de>
+
+diff --git a/lib/api.php b/lib/api.php
+index 202b85e..1450bb1 100644
+--- a/lib/api.php
++++ b/lib/api.php
+@@ -126,6 +126,11 @@ $_services['unsubscribe'] = array(
+     'type' => 'boolean',
+ );
+ 
++$_services['synchronize'] = array(
++    'args' => array(),
++    'type' => 'boolean'
++);
++
+ /**
+  * Returns a list of available permissions.
+  *
+@@ -1422,3 +1427,35 @@ function _kronolith_unsubscribe($calendar)
+         return PEAR::raiseError('Unknown calendar specification');
+     }
+ }
++
++/**
++ * Synchronizes kronolith with the IMAP backend
++ *
++ * @return boolean  False if something went wrong
++ */
++function _kronolith_synchronize()
++{
++    require_once dirname(__FILE__) . '/base.php';
++    global $kronolith_driver;
++
++    $calendar = Kronolith::getDefaultCalendar();
++
++    if (!array_key_exists($calendar,
++                          Kronolith::listCalendars(false, PERMS_READ))) {
++        return False;
++    }
++
++    $kronolith_driver->open($calendar);
++
++    if (get_class ($kronolith_driver) == 'Kronolith_Driver_kolab' &&
++        get_class ($kronolith_driver->_wrapper) == 'Kronolith_Driver_kolab_wrapper_new') {
++
++        $kronolith_driver->_wrapper->synchronize (true);
++
++        if (get_class ($kronolith_driver->_wrapper->_store) == 'Kolab_IMAP') {
++            $kronolith_driver->_wrapper->_store->_synchronize ();
++        }
++    }
++
++    return True;
++}

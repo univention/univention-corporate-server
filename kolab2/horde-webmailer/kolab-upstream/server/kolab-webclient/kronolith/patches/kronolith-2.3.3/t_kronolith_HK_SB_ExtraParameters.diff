@@ -1,0 +1,109 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/kronolith/HK/SB/ExtraParameters
+
+Add additional event parameters to the Free/Busy view.
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
+
+---
+ lib/FBView.php             |   27 +++++++++++++++++--
+ .../kronolith/templates/fbview/busyblock.html      |    2 +-
+ 2 files changed, 25 insertions(+), 4 deletions(-)
+
+diff --git a/lib/FBView.php b/lib/FBView.php
+index f0bb03f..db402d3 100644
+--- a/lib/FBView.php
++++ b/lib/FBView.php
+@@ -87,7 +87,7 @@ class Kronolith_FreeBusy_View {
+             $rows = '';
+             foreach ($this->_requiredMembers as $member) {
+                 $member->simplify();
+-                $blocks = $this->_getBlocks($member, $member->getBusyPeriods(), 'busyblock.html', _("Busy"));
++                $blocks = $this->_getBlocks($member, $member->getBusyPeriods(), 'busyblock.html', _("Busy"), $member->getExtraParams());
+                 $template = new Horde_Template();
+                 $template->set('blocks', $blocks);
+                 $template->set('name', $member->getName());
+@@ -109,7 +109,7 @@ class Kronolith_FreeBusy_View {
+             $rows = '';
+             foreach ($this->_optionalMembers as $member) {
+                 $member->simplify();
+-                $blocks = $this->_getBlocks($member, $member->getBusyPeriods(), 'busyblock.html', _("Busy"));
++                $blocks = $this->_getBlocks($member, $member->getBusyPeriods(), 'busyblock.html', _("Busy"), $member->getExtraParams());
+                 $template = new Horde_Template();
+                 $template->set('blocks', $blocks);
+                 $template->set('name', $member->getName());
+@@ -125,6 +125,9 @@ class Kronolith_FreeBusy_View {
+             $html .= $template->fetch(KRONOLITH_TEMPLATES . '/fbview/section.html');
+         }
+ 
++	//**********
++	//This has been disabled in kolab-fbview. Make this optional?
++
+         // Possible meeting times.
+         $optimal->setAttribute('ORGANIZER', _("All Attendees"));
+         $blocks = $this->_getBlocks($optimal,
+@@ -147,6 +150,9 @@ class Kronolith_FreeBusy_View {
+         $template->set('blocks', $blocks);
+         $rows .= $template->fetch(KRONOLITH_TEMPLATES . '/fbview/row.html');
+ 
++	//This has been disabled in kolab-fbview. Make this optional?
++	//**********
++
+         // Reset locale.
+         setlocale(LC_NUMERIC, $lc);
+ 
+@@ -215,7 +221,7 @@ class Kronolith_FreeBusy_View {
+         return $instances[$view];
+     }
+ 
+-    function _getBlocks($member, $periods, $blockfile, $label)
++    function _getBlocks($member, $periods, $blockfile, $label, $extra = array())
+     {
+         $template = new Horde_Template();
+         $template->set('label', $label);
+@@ -248,6 +254,21 @@ class Kronolith_FreeBusy_View {
+ 
+                 $template->set('left', $left . '%');
+                 $template->set('width', $width . '%');
++                $template->set('evclick', '');
++
++                if (isset($extra[$periodStart])) {
++                    if (!empty($extra[$periodStart]['X-UID'])) {
++                        $link = "javascript:performAction('viewaction', '" 
++			  . addslashes($member->getName() . "#" 
++				       . String::convertCharset(base64_decode($extra[$periodStart]['X-UID']), 
++								'UTF-8',NLS::getCharset())) . "')";
++                        $template->set('evclick', $link);
++                    }
++                    if (!empty($extra[$periodStart]['X-SUMMARY'])) {
++                        $template->set('label', String::convertCharset(base64_decode($extra[$periodStart]['X-SUMMARY']),'UTF-8',
++				       NLS::getCharset()));
++                    }
++                }
+ 
+                 $blocks .= $template->fetch(KRONOLITH_TEMPLATES . '/fbview/' . $blockfile);
+             } else {
+diff --git a/templates/fbview/busyblock.html b/templates/fbview/busyblock.html
+index 223ee21..a442b54 100644
+--- a/templates/fbview/busyblock.html
++++ b/templates/fbview/busyblock.html
+@@ -1 +1 @@
+-<td><div class="busy" style="left:<tag:left />;width:<tag:width />;">&nbsp;</div></td>
++<td><div class="busy" onclick="<tag:evclick />" style="cursor:pointer;left:<tag:left />;width:<tag:width />;" title="<tag:label />">&nbsp;</div></td>
+-- 
+tg: (cd7f4fe..) t/kronolith/HK/SB/ExtraParameters (depends on: t/kronolith/HK/SB/SaveEventAttendees)
+-- 
+TOPGIT patch commit log
+=======================
+
+commit 2b897516731f83d8acfc3d09c4ecb99c4699f6be
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sat Mar 14 01:10:42 2009 +0100
+
+    Removed stray .orig file.
+
+commit 925627f7aa47741226eeacdf09b15dcc38ab5225
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Feb 1 22:26:49 2009 +0000
+
+    Added patch kronolith/HK-SB-Fbview_extra_params.patch from the mercurial release queue.

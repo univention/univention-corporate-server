@@ -1,0 +1,34 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/turba/HK/GW/SyncMLrefresh
+
+Refresh addressbooks before running a synchronization.
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
+
+---
+ lib/Driver/kolab.php |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/lib/Driver/kolab.php b/lib/Driver/kolab.php
+index f97f75a..786f2e2 100644
+--- a/lib/Driver/kolab.php
++++ b/lib/Driver/kolab.php
+@@ -56,6 +56,7 @@ class Turba_Driver_kolab extends Turba_Driver {
+         }
+ 
+         $this->_wrapper = &new $wrapper($this->name, $this->_kolab);
++        $this->_wrapper->connect();        
+     }
+ 
+     /**
+-- 
+tg: (015e842..) t/turba/HK/GW/SyncMLrefresh (depends on: t/turba/HK/GW/FixSyncMLAttributeDeletion)
+-- 
+TOPGIT patch commit log
+=======================
+
+commit d59cb82e5725f53d3f6fa2a84e17ad3e46078e99
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Feb 1 23:53:10 2009 +0000
+
+    Added patch turba/HK-GW-SyncML_refresh.patch  from the mercurial release queue.

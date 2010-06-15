@@ -1,0 +1,70 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/imp/H/GW/DefaultLoginView
+
+Allow to configure the default imp view shown to the user.
+
+STATUS: SUBMIT
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
+
+---
+ config/conf.xml |    8 ++++++++
+ login.php       |    3 ++-
+ 2 files changed, 11 insertions(+), 1 deletions(-)
+
+diff --git a/config/conf.xml b/config/conf.xml
+index 517556e..92171b7 100644
+--- a/config/conf.xml
++++ b/config/conf.xml
+@@ -103,6 +103,14 @@
+      </configenum>
+     </case>
+    </configswitch>
++   <configenum name="default_view" desc="Which application view should be the
++   suggested default on the login page?">imp
++    <values>
++     <value desc="IMP">imp</value>
++     <value desc="DIMP">dimp</value>
++     <value desc="MIMP">mimp</value>
++    </values>
++   </configenum>
+   </configsection>
+  </configtab>
+ 
+diff --git a/login.php b/login.php
+index e6cd3c9..4644e93 100644
+--- a/login.php
++++ b/login.php
+@@ -257,7 +257,8 @@ if (!empty($conf['user']['select_view'])) {
+     $apps = $registry->listApps(null, true);
+     $view_cookie = isset($_COOKIE['default_imp_view'])
+         ? $_COOKIE['default_imp_view']
+-        : ($browser->isMobile() && isset($apps['mimp']) ? 'mimp' : 'imp');
++        : ($browser->isMobile() && isset($apps['mimp']) ? 'mimp' 
++           : isset($conf['user']['default_view']) ? $conf['user']['default_view'] : 'imp');
+     if (isset($apps['dimp']) || isset($apps['mimp'])) {
+         $views[] = array('sel' => $view_cookie == 'imp',
+                          'val' => 'imp', 'name' => _("Traditional"));
+-- 
+tg: (3a70f58..) t/imp/H/GW/DefaultLoginView (depends on: t/imp/H/JS/bug7739)
+-- 
+TOPGIT patch commit log
+=======================
+
+commit 580072bc0b627e05bfe3053efbd31b4215019923
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Thu Mar 26 19:22:37 2009 +0000
+
+    Merge change from http://kolab.org/cgi-bin/viewcvs-kolab.cgi/server/patches/horde-webmail/1.2.0/tg/t_imp_H_GW_DefaultLoginView.diff.diff?r1=1.3&r2=1.4
+
+commit e2430d5bafced289bb0b8ac9d073fca9a4e9bb4a
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Mar 8 20:09:33 2009 +0000
+
+    Add the conf.xml part of the new configuration variable.
+
+commit df4a014051b707ab4bf5ded96264c3b4f3b62ac4
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Mar 8 08:14:20 2009 +0000
+
+    Allow to configure the default view for imp.

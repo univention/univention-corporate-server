@@ -1,0 +1,55 @@
+From: root <Gunnar Wrobel wrobel@pardus.de>
+Subject: [PATCH] t/kronolith/HK/GW/HandleEmptyDates
+
+Enables the Kolab driver to handle empty start and/or end dates
+correctly.
+
+REF: https://issues.kolab.org/issue3656
+
+STATUS: MERGED
+
+Signed-off-by: root <Gunnar Wrobel wrobel@pardus.de>
+
+---
+ lib/Driver/kolab.php |   10 ++++++++--
+ 1 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/lib/Driver/kolab.php b/lib/Driver/kolab.php
+index de49c81..e915475 100644
+--- a/lib/Driver/kolab.php
++++ b/lib/Driver/kolab.php
+@@ -1134,12 +1134,18 @@ class Kronolith_Driver_kolab_wrapper_new extends Kronolith_Driver_kolab_wrapper
+             return $result;
+         }
+ 
+-        if (is_null($startDate)) {
++        if (empty($startDate)) {
+             $startDate = &new Horde_Date(array('mday' => 1, 'month' => 1, 'year' => 0000));
+         }
+-        if (is_null($endDate)) {
++        if (empty($endDate)) {
+             $endDate = &new Horde_Date(array('mday' => 31, 'month' => 12, 'year' => 9999));
+         }
++        if (!is_a($startDate, 'Horde_Date')) {
++            $startDate = &new Horde_Date($startDate);
++        }
++        if (!is_a($endDate, 'Horde_Date')) {
++            $endDate = &new Horde_Date($endDate);
++        }
+ 
+         $ids = array();
+ 
+-- 
+tg: (e6faeaf..) t/kronolith/HK/GW/HandleEmptyDates (depends on: t/framework/H/JS/Form/FixFormSecurityForImageUploads)
+-- 
+TOPGIT patch commit log
+=======================
+
+commit be56600b19e429f4ece1ca685c1e25550b5a02f6
+Author: root <Gunnar Wrobel wrobel@pardus.de>
+Date:   Tue Nov 24 07:37:58 2009 +0100
+
+    Enables the Kolab driver to handle empty start and/or end dates
+    correctly.
+    
+    REF: https://issues.kolab.org/issue3656

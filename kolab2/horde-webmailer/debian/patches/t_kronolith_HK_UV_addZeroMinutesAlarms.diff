@@ -1,0 +1,203 @@
+Patch by schwardt@univention.de (Tue Sep 8 17:53:51 2009 +0200):
+
+kronolith: add ability to display "0 minutes before incident" alarms
+
+currently horde treats alarms that should occur 0 minutes before the
+specific incident as disabled alarms. This patch adds a distiction
+between them.
+
+--- a/horde-webmail/kronolith/lib/Block/monthlist.php
++++ b/horde-webmail/kronolith/lib/Block/monthlist.php
+@@ -119,7 +119,7 @@ class Horde_Block_Kronolith_monthlist extends Horde_Block {
+                     $event->end = new Horde_Date($tomorrow12am);
+                 }
+                 if (($event->end->timestamp() < $now && !$event->isAllDay()) ||
+-                    ($prefs->getValue('summary_alarms') && !$event->alarm)) {
++                    ($prefs->getValue('summary_alarms') && (!isset($event->alarm) || $event->alarm === ''))) {
+                     continue;
+                 }
+ 
+--- a/horde-webmail/kronolith/lib/Driver.php
++++ b/horde-webmail/kronolith/lib/Driver.php
+@@ -415,7 +415,7 @@ class Kronolith_Event {
+      *
+      * @var integer
+      */
+-    var $alarm = 0;
++    var $alarm = null;
+ 
+     /**
+      * The identifier of the calender this event exists on.
+@@ -732,7 +732,7 @@ class Kronolith_Event {
+         }
+ 
+         // Alarms.
+-        if (!empty($this->alarm)) {
++        if (isset($this->alarm) && $this->alarm !== '') {
+             if ($v1) {
+                 $vEvent->setAttribute('AALARM', $this->start->timestamp() - $this->alarm * 60);
+             } else {
+@@ -1108,7 +1108,7 @@ class Kronolith_Event {
+                                                   'sec' => $time[2]));
+             }
+         }
+-        if (!empty($hash['alarm'])) {
++        if (isset($hash['alarm']) && $hash['alarm'] !== '') {
+             $this->setAlarm($hash['alarm']);
+         } elseif (!empty($hash['alarm_date']) &&
+                   !empty($hash['alarm_time'])) {
+@@ -1150,7 +1150,8 @@ class Kronolith_Event {
+      */
+     function toAlarm($time, $user = null, $prefs = null)
+     {
+-        if (!$this->getAlarm()) {
++		file_put_contents ('/tmp/test', 'asdf '.$this->getAlarm(), FILE_APPEND);
++        if ($this->getAlarm() === null || $this->getAlarm() === '') {
+             return;
+         }
+ 
+@@ -1840,7 +1841,7 @@ class Kronolith_Event {
+         if (Util::getFormData('alarm') == 1) {
+             $this->setAlarm(Util::getFormData('alarm_value') * Util::getFormData('alarm_unit'));
+         } else {
+-            $this->setAlarm(0);
++            $this->setAlarm(null);
+         }
+ 
+         // Recurrence.
+@@ -2244,8 +2245,13 @@ class Kronolith_Event {
+                 ($GLOBALS['cManager_fgColors']['_default_'] == '#000' ? '000' : 'fff');
+ 
+             $status = '';
+-            if ($this->alarm) {
+-                if ($this->alarm % 10080 == 0) {
++            if (isset($this->alarm) && $this->alarm !== '') {
++                if ($this->alarm === 0) {
++                    $alarm_value = $this->alarm;
++                    $title = $alarm_value == 1 ?
++                        _("Alarm 1 minute before") :
++                        sprintf(_("Alarm %d minutes before"), $alarm_value);
++                } elseif ($this->alarm % 10080 == 0) {
+                     $alarm_value = $this->alarm / 10080;
+                     $title = $alarm_value == 1 ?
+                         _("Alarm 1 week before") :
+--- a/horde-webmail/kronolith/lib/Driver/kolab.php
++++ b/horde-webmail/kronolith/lib/Driver/kolab.php
+@@ -495,7 +495,9 @@ class Kronolith_Driver_kolab_wrapper_old extends Kronolith_Driver_kolab_wrapper
+         $organizer = &$this->_kolab->initRootElem('organizer');
+         $this->_kolab->setElemStr($organizer, 'smtp-address', $event->getCreatorID());
+ 
+-        $this->_kolab->setVal('alarm', $event->getAlarm());
++        if ($event->getAlarm () !== null && $event->getAlarm () !== '') {
++			$this->_kolab->setVal('alarm', $event->getAlarm());
++		}
+         if ($event->isAllDay()) {
+             $this->_kolab->setVal('start-date', Kolab::encodeDate($event->start->timestamp()));
+             $this->_kolab->setVal('end-date', Kolab::encodeDate($event->end->timestamp()-24*60*60));
+@@ -786,7 +788,11 @@ class Kronolith_Event_kolab_old extends Kronolith_Event {
+         $organizer = &$kolab->getRootElem('organizer');
+         $this->creatorID = $kolab->getElemStr($organizer, 'smtp-address');
+ 
+-        $this->alarm = $kolab->getVal('alarm');
++        if ($kolab->getVal('alarm') !== null && $kolab->getVal('alarm') !== '') {
++			$this->alarm = $kolab->getVal('alarm');
++		} else {
++			$this->alarm = $kolab->getVal('alarm');
++		}
+         $this->start = new Horde_Date(Kolab::decodeDateOrDateTime($kolab->getVal('start-date')));
+         $this->end = new Horde_Date(Kolab::decodeFullDayDate($kolab->getVal('end-date')));
+         $this->durMin = ($this->end->timestamp() - $this->start->timestamp()) / 60;
+@@ -1144,7 +1150,7 @@ class Kronolith_Driver_kolab_wrapper_new extends Kronolith_Driver_kolab_wrapper
+         $ids = array();
+ 
+         foreach($this->_events_cache as $event) {
+-            if ($hasAlarm && !$event->getAlarm()) {
++            if ($hasAlarm && ($event->getAlarm() === null || $event->getAlarm() == '')) {
+                 continue;
+             }
+ 
+@@ -1457,8 +1463,7 @@ class Kronolith_Event_kolab_new extends Kronolith_Event {
+                 $this->creatorID = $event['organizer']['smtp-address'];
+             }
+         }
+-
+-        if (isset($event['alarm'])) {
++        if (isset($event['alarm']) && $event['alarm'] !== '') {
+             $this->alarm = $event['alarm'];
+         }
+ 
+@@ -1570,7 +1575,11 @@ class Kronolith_Event_kolab_new extends Kronolith_Event {
+             $event['organizer'] = $organizer;
+         }
+ 
+-        if ($this->alarm != 0) {
++        if (!isset($this->alarm) || $this->alarm === '') {
++			file_put_contents ('/tmp/out', "no this->alarm\n", FILE_APPEND);
++            $event['alarm'] = null;
++        } else {
++			file_put_contents ('/tmp/out', "this->alarm\n", FILE_APPEND);
+             $event['alarm'] = $this->alarm;
+         }
+ 
+--- a/horde-webmail/kronolith/lib/Driver/sql.php
++++ b/horde-webmail/kronolith/lib/Driver/sql.php
+@@ -967,7 +967,8 @@ class Kronolith_Event_sql extends Kronolith_Event {
+         $this->_properties['event_end'] = date('Y-m-d H:i:s', $this->end->timestamp());
+ 
+         /* Alarm. */
+-        $this->_properties['event_alarm'] = (int)$this->getAlarm();
++        if ($this->getAlarm() !== null && $this->getAlarm() !== '')
++            $this->_properties['event_alarm'] = $this->getAlarm();
+ 
+         /* Recurrence. */
+         if (!$this->recurs()) {
+--- a/horde-webmail/kronolith/templates/edit/edit.inc
++++ b/horde-webmail/kronolith/templates/edit/edit.inc
+@@ -133,9 +133,12 @@
+  </td>
+  <td valign="top">
+   <?php
+-  if ($event->alarm) {
++  if (isset($event->alarm) && $event->alarm !== '') {
+       $alarm_set = true;
+-      if ($event->alarm % 10080 == 0) {
++      if ((int)$event->alarm === 0) {
++          $alarm_value = $event->alarm;
++          $alarm_unit = 'min';
++      } elseif ($event->alarm % 10080 == 0) {
+           $alarm_value = $event->alarm / 10080;
+           $alarm_unit = 'week';
+       } elseif ($event->alarm % 1440 == 0) {
+--- a/horde-webmail/kronolith/templates/prefs/default_alarm_management.inc
++++ b/horde-webmail/kronolith/templates/prefs/default_alarm_management.inc
+@@ -1,10 +1,12 @@
+ <?php if (!$prefs->isLocked('default_alarm')):
+ 
+ $alarm_value = $prefs->getValue('default_alarm');
+-if (!$alarm_value) {
++if (!isset($alarm_value) || $alarm_value === '') {
+     $alarm_unit = 'min';
+ } else {
+-    if ($alarm_value % 10080 == 0) {
++    if ($alarm_value === 0) {
++        $alarm_unit = 'min';
++    } elseif ($alarm_value % 10080 == 0) {
+         $alarm_value /= 10080;
+         $alarm_unit = 'week';
+     } elseif ($alarm_value % 1440 == 0) {
+--- a/horde-webmail/kronolith/templates/view/view.inc
++++ b/horde-webmail/kronolith/templates/view/view.inc
+@@ -47,8 +47,11 @@
+  <td class="rightAlign"><strong><?php echo _("Alarm") ?>&nbsp;&nbsp;</strong></td>
+  <td>
+ <?php
+-if ($this->event->isInitialized() && $this->event->alarm > 0):
+-    if ($this->event->alarm % 10080 == 0) {
++if ($this->event->isInitialized() && isset($this->event->alarm) && $this->event->alarm !== ''):
++    if ((int)$this->event->alarm === 0) {
++        $alarm_value = $this->event->alarm;
++        $alarm_unit = _("Minute(s)");
++    } elseif ($this->event->alarm % 10080 == 0) {
+         $alarm_value = $this->event->alarm / 10080;
+         $alarm_unit = _("Week(s)");
+     } elseif ($this->event->alarm % 1440 == 0) {

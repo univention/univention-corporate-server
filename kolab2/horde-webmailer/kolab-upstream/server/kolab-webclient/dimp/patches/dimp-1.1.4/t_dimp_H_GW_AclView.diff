@@ -1,0 +1,107 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/dimp/H/GW/AclView
+
+Provide a possibility to edit IMAP folder acls within DIMP.
+
+kolab/issue3455 (There is no convenient/dimp-like way in dimp to set folder acls)
+https://www.intevation.de/roundup/kolab/issue3455
+
+[#8060] Additional entry in the folder popup to set IMAP ACLs
+http://bugs.horde.org/ticket/8060
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
+
+---
+ js/DimpBase.js                  |    1 +
+ lib/DIMP.php                    |    1 +
+ .../dimp/locale/de_DE/LC_MESSAGES/dimp.mo          |  Bin 168731 -> 168778 bytes
+ po/de_DE.po                     |    3 +++
+ templates/index/index.inc       |    1 +
+ 7 files changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/js/DimpBase.js b/js/DimpBase.js
+index 39a728b..c4eb9f4 100644
+--- a/js/DimpBase.js
++++ b/js/DimpBase.js
+@@ -1941,6 +1941,7 @@ var DimpBase = {
+         C({ d: $('ctx_folder_rename'), f: function() { this.renameFolder(DimpCore.DMenu.element()); }.bind(this), ns: true });
+         C({ d: $('ctx_folder_empty'), f: function() { if (window.confirm(DIMP.text.empty_folder)) { DimpCore.doAction('EmptyFolder', { folder: DimpCore.DMenu.element().readAttribute('mbox') }, [], this._emptyFolderCallback.bind(this)); } }.bind(this), ns: true });
+         C({ d: $('ctx_folder_delete'), f: function() { if (window.confirm(DIMP.text.delete_folder)) { DimpCore.doAction('DeleteFolder', { folder: DimpCore.DMenu.element().readAttribute('mbox') }, [], this.bcache.get('folderC') || this.bcache.set('folderC', this._folderCallback.bind(this))); } }.bind(this), ns: true });
++        C({ d: $('ctx_folder_rights'), f: function() { this.go('app:horde', DIMP.conf.folder_rights + '&' + $H({ folder: DimpCore.DMenu.element().readAttribute('mbox') }).toQueryString() ) }.bind(this), ns: true });
+         [ 'ctx_folder_seen', 'ctx_folder_unseen' ].each(function(a) {
+             C({ d: $(a), f: function(type) { this.flag(type, null, DimpCore.DMenu.element().readAttribute('mbox')); }.bind(this, a == 'ctx_folder_seen' ? 'allSeen' : 'allUnseen'), ns: true });
+         }, this);
+diff --git a/lib/DIMP.php b/lib/DIMP.php
+index 0aa3b78..92a1e55 100644
+--- a/lib/DIMP.php
++++ b/lib/DIMP.php
+@@ -145,6 +145,7 @@ class DIMP {
+             'message_url' => Horde::url($dimp_webroot . '/message.php'),
+             'compose_url' => Horde::url($dimp_webroot . '/compose.php'),
+             'prefs_url' => str_replace('&amp;', '&', Horde::getServiceLink('options', 'dimp')),
++	    'folder_rights' => Util::addParameter(Horde::url($registry->get('webroot', 'imp') . '/acl.php', true), array('app' => 'imp', 'group'=> 'acl'), null, false),
+ 
+             'sortthread' => SORTTHREAD,
+             'sortdate' => SORTDATE,
+diff --git a/locale/de_DE/LC_MESSAGES/dimp.mo b/locale/de_DE/LC_MESSAGES/dimp.mo
+index 2f1c11c..973776f 100644
+Binary files a/locale/de_DE/LC_MESSAGES/dimp.mo and b/locale/de_DE/LC_MESSAGES/dimp.mo differ
+diff --git a/po/de_DE.po b/po/de_DE.po
+index a536db6..0486297 100644
+--- a/po/de_DE.po
++++ b/po/de_DE.po
+@@ -791,3 +791,6 @@ msgstr "entfernen"
+ #: lib/DIMP.php:191
+ msgid "results found"
+ msgstr "Ergebnisse gefunden"
++
++msgid "Share Folder"
++msgstr "Berechtigungen"
+diff --git a/templates/index/index.inc b/templates/index/index.inc
+index 21939e0..7c02fe7 100644
+--- a/templates/index/index.inc
++++ b/templates/index/index.inc
+@@ -323,6 +323,7 @@ function _createDA($text, $image, $id = null, $class = '', $show_text = true)
+  <a id="ctx_folder_rename"><?php echo $folder_edit . _("Rename Folder") ?></a>
+  <a id="ctx_folder_empty"><?php echo $delete . _("Empty Folder") ?></a>
+  <a id="ctx_folder_delete"><?php echo Horde::img('folders/folder_delete.png') . _("Delete Folder") ?></a>
++ <a id="ctx_folder_rights"><?php echo Horde::img('folders/folder.png') . _("Share Folder") ?></a>
+  <div id="ctx_folder_seen_sep" class="sep"></div>
+  <a id="ctx_folder_seen"><?php echo $mailseen . _("Mark all as Read") ?></a>
+  <a id="ctx_folder_unseen"><?php echo $mailunseen . _("Mark all as New") ?></a>
+
+-- 
+tg: (f251c16..) t/dimp/H/GW/AclView (depends on: t/dimp/H/GW/FoldersView)
+-- 
+TOPGIT patch commit log
+=======================
+
+commit e9630629c7479c73d3eb156f00544c34e95f0597
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Mon Jul 20 09:36:01 2009 +0200
+
+    Fix translation and improve header.
+
+commit 57041c04c322dd7dc57da5b171923b7ab000ec0a
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Jun 21 23:58:30 2009 +0200
+
+    German translation.
+
+commit cac1482cec6c96a8a1d7fb7c0e8c2433877728f5
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Fri Mar 13 12:04:03 2009 +0000
+
+    Complete the patch description.
+
+commit 7a349ad9da06264378e84e54d7424f5dc78a9154
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Fri Mar 13 12:00:43 2009 +0000
+
+    Reduce the functionality of the ACL view when calling from DIMP. In addition add the call to the acl settings page within the folder context menu.
+
+commit 2fdc4d0fcd6e4956129f6ec11501112568b99c6d
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Mar 8 19:59:30 2009 +0000
+
+    Completed a draft.

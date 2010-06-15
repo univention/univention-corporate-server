@@ -1,0 +1,86 @@
+From: root <Gunnar Wrobel wrobel@pardus.de>
+Subject: [PATCH] t/SyncML/HK/GW/DoubleSyncFix
+
+Horde is currently agnostic of external clients to the storage backend used by
+Horde/Kolab. For SyncML any storage changes need to get logged in order to be
+exchanged with the mobile clients.
+
+Currently the Kolab drivers within Horde will create the necessary changelog.
+But this currently only happens after Synchronization started. Which means that
+you need to sync twice in order to get changes from an external client if you
+did not log in via Horde after changing something with an external client.
+
+The attached patch has been provided by Univention but needs some cleanup to go
+in upstream. We mainly need a clean library call in the Horde application
+libraries that will be called for synchronization.
+
+REF: https://issues.kolab.org/issue3237
+
+Signed-off-by: root <Gunnar Wrobel wrobel@pardus.de>
+
+diff --git a/lib/api.php b/lib/api.php
+index 202b85e..1450bb1 100644
+--- a/lib/api.php
++++ b/lib/api.php
+@@ -188,6 +188,11 @@ $_services['hasComments'] = array(
+     'type' => 'boolean'
+ );
+ 
++$_services['synchronize'] = array(
++    'args' => array(),
++    'type' => 'boolean'
++);
++
+ /**
+  * Removes user data.
+  *
+@@ -1967,3 +1972,49 @@ function _turba_deleteField($address = '', $field = '', $sources = array())
+ 
+     return;
+ }
++
++/**
++ * Synchronizes turba with the IMAP backend
++ *
++ * @return boolean  False if something went wrong
++ */
++function _turba_synchronize()
++{
++    global $prefs, $cfgSources;
++    require_once dirname(__FILE__) . '/base.php';
++
++    /* Get default address book from user preferences. */
++    if (empty($sources)) {
++        $sources = @unserialize($prefs->getValue('sync_books'));
++    } elseif (!is_array($sources)) {
++        $sources = array($sources);
++    }
++    if (empty($sources)) {
++        $sources = array(Turba::getDefaultAddressbook());
++    }
++    if (empty($sources)) {
++        return False;
++    }
++
++    foreach ($sources as $source) {
++        if (empty($source) || !isset($cfgSources[$source])) {
++            continue;
++        }
++
++        $driver = &Turba_Driver::singleton($source);
++        if (is_a($driver, 'PEAR_Error')) {
++            continue;
++        }
++        if (get_class ($driver) == 'Turba_Driver_share' &&
++            get_class ($driver->_driver) == 'Turba_Driver_kolab' &&
++            get_class ($driver->_driver->_wrapper) == 'Turba_Driver_kolab_wrapper_new') {
++
++            $driver->_driver->_wrapper->connect ();
++            if (get_class ($driver->_driver->_wrapper->_store) == 'Kolab_IMAP') {
++                $driver->_driver->_wrapper->_store->_synchronize ();
++            }
++        }
++    }
++
++    return True;
++}

@@ -1,0 +1,18 @@
+t_kronolith_HK_UV_addZeroMinutesAlarms.diff
+t_kronolith_HK_UV_fixAddressCompletion.diff
+# t_kronolith_HK_UV_searchTabs.diff # accepted upstream
+# t_kronolith_HK_UV_display_inline_time.diff # does not apply
+t_kronolith_HK_UV_timepicker_and_timespan_wholeday.diff
+t_kronolith_HK_UV_calendarDisplayNameHook.diff
+t_turba_HK_UV_addObjectclassFilter.diff
+univention_objectclasses.diff
+t_turba_HK_UV_formatName_companyName.diff
+t_kronolith_HK_UV_lastModificationOfEvents.diff
+# t_kronolith_HK_UV_optionalSaveAsNewButton.diff # does not apply
+# t_kronolith_HK_UV_optionalInvitationCheckbox.diff # does not apply
+# t_horde_HK_UV_hideOptionsInSidebar.diff # does not apply
+t_kronolith_HK_UV_Kolab_Folder-shared-unixhierarchysep.diff
+t_framework_UV_fixed_group_permissions.diff
+# t_kronolith_HK_UV_fix_group_permissions.diff
+t_imp_HK_UV_fix_login_by_uid.diff
+01_CVE-2008-1284.patch

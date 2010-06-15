@@ -1,0 +1,128 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/dimp/H/GW/AclView
+
+Provide a possibility to edit IMAP folder acls within DIMP.
+
+kolab/issue3455 (There is no convenient/dimp-like way in dimp to set folder acls)
+https://www.intevation.de/roundup/kolab/issue3455
+
+[#8060] Additional entry in the folder popup to set IMAP ACLs
+http://bugs.horde.org/ticket/8060
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
+
+---
+ acl.php                          |   12 ++++++++++--
+ templates/acl/acl.html           |   13 +++++++++++++
+ 2 files changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/acl.php b/acl.php
+index cfa285f..851d8de 100644
+--- a/acl.php
++++ b/acl.php
+@@ -162,14 +162,22 @@ if (is_callable(array('Horde', 'loadConfiguration'))) {
+ }
+ $app = 'imp';
+ $chunk = Util::nonInputVar('chunk');
+-Prefs_UI::generateHeader(null, $chunk);
++if ($_SESSION['imp']['default_view'] != 'dimp') {
++    Prefs_UI::generateHeader(null, $chunk);
++} else {
++    require $registry->get('templates', $app) . '/common-header.inc';
++    $GLOBALS['notification']->notify(array('listeners' => 'status'));
++}
+ 
+ /* Set up template. */
+ $t = new IMP_Template();
+ $t->setOption('gettext', true);
+ $t->set('aclurl', Horde::applicationUrl('acl.php'));
+ $t->set('forminput', Util::formInput());
+-$t->set('aclnavcell', Util::bufferOutput(array('Prefs_UI', 'generateNavigationCell'), 'acl'));
++$t->set('imp_view', $_SESSION['imp']['default_view'] != 'dimp');
++if ($_SESSION['imp']['default_view'] != 'dimp') {
++    $t->set('aclnavcell', Util::bufferOutput(array('Prefs_UI', 'generateNavigationCell'), 'acl'));
++}
+ $t->set('changefolder', Horde::link('#', _("Change Folder"), 'smallheader', '', 'ACLFolderChange(true); return false;'));
+ $t->set('sharedimg', Horde::img('shared.png', _("Change Folder")));
+ $t->set('options', IMP::flistSelect('', true, array(), $folder));
+diff --git a/templates/acl/acl.html b/templates/acl/acl.html
+index 79580aa..ae85ff4 100644
+--- a/templates/acl/acl.html
++++ b/templates/acl/acl.html
+@@ -2,11 +2,14 @@
+ <input type="hidden" name="actionID" value="" />
+ <tag:forminput />
+ 
++<if:imp_view>
+ <div class="header">
+  <tag:aclnavcell />
+  <gettext>Share mail folders</gettext>
+ </div>
++</if:imp_view>
+ 
++<if:imp_view>
+ <div class="header">
+  <ul>
+   <li>
+@@ -17,6 +20,12 @@
+  <span class="smallheader"><tag:current /></span>
+ </div>
+ </form>
++<else:imp_view>
++<div class="header">
++ <span class="smallheader"><tag:current /></span>
++</div>
++</else:imp_view>
++</if:imp_view>
+ 
+ <form method="post" name="acl" id="acl" action="<tag:aclurl />">
+ <input type="hidden" name="actionID" value="imp_acl_set" />
+@@ -76,9 +85,13 @@
+ </tr>
+ <tr>
+  <td colspan = "<tag:maxrule />" class="header" valign="middle">
++<if:imp_view>
+   <input type="button" class="button" id="fbutton" name="fbutton" onclick="$('acl').submit(); $('acl').disable();" value="<gettext>Save</gettext>" />
+   <input type="button" class="button" id="resetbut" name="resetbut" onclick="ACLFolderChange(true); return false;" value="<gettext>Reset</gettext>" />
+   <input type="button" class="button" id="back" name="back" onclick="$('acl').disable(); document.location.href='<tag:prefsurl />'" value="<gettext>Return to Options</gettext>" />
++<else:imp_view>
++  <input type="submit" class="button" id="fbutton" name="fbutton" value="<gettext>Save</gettext>" />
++</if:imp_view>
+  </td>
+  <td class="header">&nbsp;</td>
+ </tr>
+-- 
+tg: (f251c16..) t/dimp/H/GW/AclView (depends on: t/dimp/H/GW/FoldersView)
+-- 
+TOPGIT patch commit log
+=======================
+
+commit e9630629c7479c73d3eb156f00544c34e95f0597
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Mon Jul 20 09:36:01 2009 +0200
+
+    Fix translation and improve header.
+
+commit 57041c04c322dd7dc57da5b171923b7ab000ec0a
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Jun 21 23:58:30 2009 +0200
+
+    German translation.
+
+commit cac1482cec6c96a8a1d7fb7c0e8c2433877728f5
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Fri Mar 13 12:04:03 2009 +0000
+
+    Complete the patch description.
+
+commit 7a349ad9da06264378e84e54d7424f5dc78a9154
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Fri Mar 13 12:00:43 2009 +0000
+
+    Reduce the functionality of the ACL view when calling from DIMP. In addition add the call to the acl settings page within the folder context menu.
+
+commit 2fdc4d0fcd6e4956129f6ec11501112568b99c6d
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Mar 8 19:59:30 2009 +0000
+
+    Completed a draft.

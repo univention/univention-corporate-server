@@ -1,0 +1,100 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/dimp/H/GW/FoldersView
+
+Provide a folders menu for dimp.
+
+kolab/issue3456 (There is no view in dimp that allows folder subscription)
+https://www.intevation.de/roundup/kolab/issue3456
+
+[#8059] DIMP provides no view to subscribe/unsubscribe to folders
+http://bugs.horde.org/ticket/8059
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
+
+---
+ config/menu.php               |    9 ++++++++-
+ po/de_DE.po                   |    3 +++
+ 2 files changed, 25 insertions(+), 6 deletions(-)
+
+diff --git a/config/menu.php b/config/menu.php
+index 0c6ebe9..b5e0a5c 100644
+--- a/config/menu.php.dist
++++ b/config/menu.php.dist
+@@ -28,3 +28,14 @@
+ //         'text' => 'Say Hi!',
+ //         'icon' => $GLOBALS['registry']->getImageDir('horde') . '/horde.png'),
+ // );
++
++// Load configuration files in .d directory
++$directory = dirname(__FILE__) . '/menu.d';
++if (file_exists($directory) && is_dir($directory)) {
++    $sub_files = glob("$directory/*.php");
++    if ($sub_files) {
++        foreach ($sub_files as $sub_file) {
++            require_once $sub_file;
++        }
++    }
++ }
+
+diff --git a/po/de_DE.po b/po/de_DE.po
+index 65e8824..a536db6 100644
+--- a/po/de_DE.po
++++ b/po/de_DE.po
+@@ -16,6 +16,9 @@ msgstr ""
+ "Content-Transfer-Encoding: 8bit\n"
+ "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+ 
++msgid "Folder Subscription"
++msgstr "Ordner verwalten"
++
+ #: lib/Views/ShowMessage.php:295
+ #, php-format
+ msgid "%d Attachment"
+
+-- 
+tg: (a6f8c8b..) t/dimp/H/GW/FoldersView (depends on: t/kronolith/H/GW/UseDayHourStartEndAlsoInFBView)
+-- 
+TOPGIT patch commit log
+=======================
+
+commit c16643e792c3b185bc74bef7a600c06857b19406
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Mon Nov 9 23:16:11 2009 +0100
+
+    Fix tag name from view_imp to imp_view.
+
+commit 93403a869ff14d7868d4cc9c4687ea1270e3c225
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Mon Jun 22 08:39:51 2009 +0200
+
+    Typo
+
+commit ad147a4b42d61800400a2a779e884ee050358811
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Mon Jun 22 00:06:14 2009 +0200
+
+    Fixed menu entry name, added translation, fixed image.
+
+commit a1966161022108d9bf4831a8613b1db9a4e68c4d
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Fri Mar 13 11:06:45 2009 +0000
+
+    Include issue references in the patch description.
+
+commit de8c5e8cac0bfb29c9cf94989016487302da653f
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Fri Mar 13 11:04:54 2009 +0000
+
+    Exclude IMP specific functionality as requested by Sascha wilde in  kolab/issue3456 (There is no view in dimp that allows folder subscription).
+
+commit 9c9a343c04cf11f857bfeb4148f0ab9d9df7dce6
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Mar 8 19:06:05 2009 +0000
+
+    Completed the hack.
+
+commit caa539aac138c4b77376ab9f4a4a86691709a96b
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Mar 8 19:01:41 2009 +0000
+
+    Completed the hack.

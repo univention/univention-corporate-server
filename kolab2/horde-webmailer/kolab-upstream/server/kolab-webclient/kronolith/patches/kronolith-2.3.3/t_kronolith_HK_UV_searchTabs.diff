@@ -1,0 +1,63 @@
+Patch by schwardt@univention.de (Tue Sep 8 17:34:44 2009 +0200):
+
+kronolith: display "Basic Search" and "Advanced Search" as tabs in place of a small table header.
+
+REF: https://issues.kolab.org/issue3848
+
+STATUS: SUBMIT
+
+--- a/templates/search/search.inc
++++ b/templates/search/search.inc
+@@ -3,13 +3,17 @@
+ <input type="hidden" name="actionID" value="search_calendar" />
+ <input type="hidden" name="search_mode" value="basic" />
+ 
+-<br /><br />
+-<h1 class="header">
+- <span class="smallheader rightFloat">
+-  <?php echo Horde::widget(Util::addParameter(Horde::applicationUrl('search.php'), 'search_mode', 'advanced'), _("Advanced Search"), 'smallheader', '', '', _("Ad_vanced Search")) ?>
+- </span>
+- <?php echo _("Basic Search") ?>
+-</h1>
++<?php
++/* build search mode tabs. */
++require_once 'Horde/UI/Tabs.php';
++require_once 'Horde/Variables.php';
++$sUrl = Horde::applicationUrl('search.php');
++$vars = Variables::getDefaultVariables();
++$tabs = new Horde_UI_Tabs('search_mode', $vars);
++$tabs->addTab(_("Basic Search"), $sUrl, 'basic');
++$tabs->addTab(_("Advanced Search"), $sUrl, 'advanced');
++echo $tabs->render('basic');
++?>
+ 
+ <table cellspacing="0" class="striped">
+ <!-- search pattern -->
+
+--- a/templates/search/search_advanced.inc
++++ b/templates/search/search_advanced.inc
+@@ -4,13 +4,17 @@
+ <input type="hidden" name="actionID" value="search_calendar" />
+ <input type="hidden" name="search_mode" value="advanced" />
+ 
+-<br /><br />
+-<h1 class="header">
+- <span class="smallheader rightFloat">
+-  <?php echo Horde::widget(Util::addParameter(Horde::applicationUrl('search.php'), 'search_mode', 'basic'), _("Basic Search"), 'smallheader', '', '', _("_Basic Search")) ?>
+- </span>
+- <?php echo _("Advanced Search") ?>
+-</h1>
++<?php
++/* build search mode tabs. */
++require_once 'Horde/UI/Tabs.php';
++require_once 'Horde/Variables.php';
++$sUrl = Horde::applicationUrl('search.php');
++$vars = Variables::getDefaultVariables();
++$tabs = new Horde_UI_Tabs('search_mode', $vars);
++$tabs->addTab(_("Basic Search"), $sUrl, 'basic');
++$tabs->addTab(_("Advanced Search"), $sUrl, 'advanced');
++echo $tabs->render('advanced');
++?>
+ 
+ <table cellspacing="0" class="striped">
+ 

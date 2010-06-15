@@ -1,0 +1,16 @@
+2010-02-09  Gunnar Wrobel  <p@rdus.de>
+
+	* templates/passwd-3.1.2/webclient-passwd_conf.php.template:
+	(TARGET): fixed path.
+
+	* templates/passwd-3.1.2/webclient-passwd_backends.php.template
+	(TARGET): fixed path.
+
+2010-01-28  Sascha Wilde  <wilde@intevation.de>
+
+	* templates/passwd-3.1.2/webclient-passwd_conf.php.template:
+	(TARGET): fixed path.
+
+	* templates/passwd-3.1.2/webclient-passwd_backends.php.template
+	(TARGET): fixed path.
+

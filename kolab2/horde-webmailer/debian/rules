@@ -1,0 +1,119 @@
+#!/usr/bin/make -f
+
+D=$(CURDIR)/debian/horde-webmailer/
+HORDESHARE=$(D)/usr/share/horde3/
+
+# WEBMAILERSOURCE_DIR is prepared by running debian/upstream-pkgs.sh
+WEBMAILERSOURCE_DIR=$(CURDIR)/horde-webmailer
+
+include /usr/share/quilt/quilt.make
+
+prepare: debian/prepare-stamp
+debian/prepare-stamp:
+	## to pull upstream packages:
+	# debian/upstream-pkgs.sh
+	touch debian/prepare-stamp
+
+configure: configure-stamp
+configure-stamp: prepare patch
+	dh_testdir
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	# rm -f horde-webmail-1.2.0_kolab_openpkg.patch
+	rm -rf horde-webmail
+	rm -rf $(QUILT_STAMPFN)
+	rm -rf debian/prepare-stamp
+	rm -f *~
+	rm -Rf .pc framework
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	## The Univention patches in debian/patches are applied here:
+	QUILT_PATCH_OPTS="-d $(WEBMAILERSOURCE_DIR)" quilt --quiltrc /dev/null push -a || test $? = 2
+
+	# install
+	mkdir -p `dirname $(HORDESHARE)`
+	cp $(WEBMAILERSOURCE_DIR) $(HORDESHARE)
+
+	# translation
+	msgfmt -o ${HORDESHARE}/kronolith/locale/de_DE/LC_MESSAGES/kronolith.mo ${HORDESHARE}/kronolith/po/de_DE.po
+
+	(cd ${HORDESHARE}/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/horde3/{} \;)
+	rm -R ${HORDESHARE}/config
+	#(cd $(D)/etc/horde/horde3/; for f in *.dist; do cp $$f `basename $$f .dist`; done)
+	ln -sf /etc/horde/horde3 ${HORDESHARE}/config
+
+	(cd ${HORDESHARE}/kronolith/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/kronolith2/{} \;)
+	rm -R ${HORDESHARE}/kronolith/config
+	#(cd $(D)/etc/horde/kronolith2; for f in *.dist; do cp $$f `basename $$f .dist`; done)
+	ln -sf /etc/horde/kronolith2 ${HORDESHARE}/kronolith/config
+	sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/kronolith/lib/\1';|" $(D)/etc/horde/kronolith2/prefs.php ; \
+
+	(cd ${HORDESHARE}/imp/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/imp4/{} \;)
+	rm -R ${HORDESHARE}/imp/config
+	#(cd $(D)/etc/horde/imp4; for f in *.dist; do cp $$f `basename $$f .dist`; done)
+	ln -sf /etc/horde/imp4 ${HORDESHARE}/imp/config
+	sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/imp/lib/\1';|" $(D)/etc/horde/imp4/prefs.php ; \
+
+	(cd ${HORDESHARE}/turba/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/turba2/{} \;)
+	rm -R ${HORDESHARE}/turba/config
+	#(cd $(D)/etc/horde/turba2; for f in *.dist; do cp $$f `basename $$f .dist`; done)
+	ln -sf /etc/horde/turba2 ${HORDESHARE}/turba/config
+	sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/turba/lib/\1';|" $(D)/etc/horde/turba2/prefs.php ; \
+
+	(cd ${HORDESHARE}/mnemo/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/mnemo2/{} \;)
+	rm -R ${HORDESHARE}/mnemo/config
+	#(cd $(D)/etc/horde/mnemo2; for f in *.dist; do cp $$f `basename $$f .dist`; done)
+	ln -sf /etc/horde/mnemo2 ${HORDESHARE}/mnemo/config
+	sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/mnemo/lib/\1';|" $(D)/etc/horde/mnemo2/prefs.php ; \
+
+	(cd ${HORDESHARE}/nag/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/nag2/{} \;)
+	rm -R ${HORDESHARE}/nag/config
+	#(cd $(D)/etc/horde/nag2; for f in *.dist; do cp $$f `basename $$f .dist`; done)
+	ln -sf /etc/horde/nag2 ${HORDESHARE}/nag/config
+	sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/nag/lib/\1';|" $(D)/etc/horde/nag2/prefs.php ; \
+
+	(cd ${HORDESHARE}/ingo/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/ingo1/{} \;)
+	rm -R ${HORDESHARE}/ingo/config
+	#(cd $(D)/etc/horde/ingo1; for f in *.dist; do cp $$f `basename $$f .dist`; done)
+	ln -sf /etc/horde/ingo1 ${HORDESHARE}/ingo/config
+	sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/ingo/lib/\1';|" $(D)/etc/horde/ingo1/prefs.php ; \
+
+binary-arch: build install
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installcron
+	dh_installman
+	dh_installinfo
+	dh_installchangelogs
+	dh_installlogrotate
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_link
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

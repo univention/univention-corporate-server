@@ -1,0 +1,50 @@
+kronolith: shared folder access with group ACLs (Bug #12527, Bug #15440)
+
+--- a/horde-webmail/lib/Horde/Group/ldap.php.orig	2008-09-26 12:26:15.000000000 +0200
++++ b/horde-webmail/lib/Horde/Group/ldap.php	2010-02-24 11:47:02.000000000 +0100
+@@ -474,12 +474,9 @@
+             $groupDN = $this->getGroupId($group);
+             $group = $this->getGroupShortName($group);
+ 
+-            $res = @ldap_compare($this->_ds, $groupDN, $this->_params['gid'], $group);
+-            if ($res === false) {
+-                return PEAR::raiseError(sprintf(_("Internal Error: An attribute must ALWAYS match itself: %s"), @ldap_error($this->_ds)));
+-            }
+-            // $res is True if the group exists, -1 if not, false never
+-            $cache[$group] = ($res === true);
++            if (!is_a($groupDN, 'PEAR_Error')) {
++			  $cache[$group] = true;
++			}
+         }
+ 
+         return $cache[$group];
+@@ -667,7 +664,7 @@
+             if ($GLOBALS['conf']['group']['params']['attrisdn']) {
+                 $filter .= $GLOBALS['conf']['auth']['params']['uid'] . '=';
+             }
+-            $filter .= $user;
++			$filter .= _hook_default_username($user);
+             if ($GLOBALS['conf']['group']['params']['attrisdn']) {
+                 $filter .= ',' . $GLOBALS['conf']['auth']['params']['basedn'];
+             }
+--- a/horde-webmail/lib/Horde/Kolab/Storage/Perms.php.orig	2008-09-26 12:26:15.000000000 +0200
++++ b/horde-webmail/lib/Horde/Kolab/Storage/Perms.php	2010-02-24 11:54:32.000000000 +0100
+@@ -367,10 +367,17 @@
+         if (!empty($groupperms)) {
+             require_once 'Horde/Group.php';
+             $groups = &Group::singleton();
++            $groupList = $groups->listGroups();
+ 
+             $composite_perm = null;
+             foreach ($this->data['groups'] as $group => $perm) {
+-                $result = $groups->userIsInGroup($user, $group);
++                $grp = $group;
++                foreach ($groupList as $entryGid => $entryGroup) {
++                    if ($entryGroup == $grp) {
++                         $grp = $entryGid;
++                    }
++                }
++                $result = $groups->userIsInGroup($user, $grp);
+                 if (is_a($result, 'PEAR_Error')) {
+                     return $result;
+                 }

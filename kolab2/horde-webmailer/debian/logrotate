@@ -1,0 +1,10 @@
+# Log rotation for horde-webmailer
+
+/var/log/horde/horde3.log {
+	weekly
+	missingok
+	rotate 12
+	compress
+	create 640 www-data www-data
+	notifempty
+}
