@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.5-1) unstable; urgency=low
+
+  * avoid 0, 1, and 254 as last part of ip address suggestion Bug #18581
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 Jun 2010 12:40:15 +0200
+
 univention-directory-manager-modules (6.0.4-1) unstable; urgency=low
 
   * initialize the LDAP_Search syntax. Bug #18499
