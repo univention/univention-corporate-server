@@ -1,5 +1,11 @@
 xen-3.4 (3.4.3-2) unstable; urgency=low
 
+  * Reduce MINIMUM_RESTART_TIME to 10s (Bug #18668)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 15 Jun 2010 14:04:54 +0200
+
+xen-3.4 (3.4.3-2) unstable; urgency=low
+
   * update patches to new upstream version. Bug #18356
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 29 May 2010 20:06:43 +0200
