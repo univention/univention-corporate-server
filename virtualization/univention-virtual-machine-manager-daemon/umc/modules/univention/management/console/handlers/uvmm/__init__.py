@@ -42,6 +42,7 @@ import univention.uvmm.node as uuv_node
 import univention.uvmm.protocol as uuv_proto
 
 import copy
+import operator
 import os
 import socket
 
@@ -233,11 +234,12 @@ class handler( umch.simpleHandler ):
 	def _create_domain_buttons( self, object, node, domain, overview = 'node', migrate = False, remove = False, remove_failure = 'domain' ):
 		buttons = []
 		overview_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % overview, options = object.options )
-		
+		comma = umcd.HTML( ',&nbsp;' )
 		# migrate? if parameter set
 		if migrate:
 			cmd = umcp.SimpleCommand( 'uvmm/domain/migrate', options = { 'group' : object.options[ 'group' ], 'source' : node.name, 'domain' : domain.name } )
 			buttons.append( umcd.LinkButton( _( 'Migrate' ), actions = [ umcd.Action( cmd ) ] ) )
+			buttons.append( comma )
 
 		# Start? if state is not running, blocked or suspended
 		cmd_opts = { 'group' : object.options[ 'group' ], 'node' : node.name, 'domain' : domain.name }
@@ -246,6 +248,7 @@ class handler( umch.simpleHandler ):
 			opts[ 'state' ] = 'RUN' 
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
 			buttons.append( umcd.LinkButton( _( 'Start' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
+			buttons.append( comma )
 
 		# Stop? if state is not stopped or suspended
 		if not domain.state in ( 3, 4, 5 ):
@@ -253,6 +256,7 @@ class handler( umch.simpleHandler ):
 			opts[ 'state' ] = 'SHUTDOWN' 
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
 			buttons.append( umcd.LinkButton( _( 'Stop' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
+			buttons.append( comma )
 
 		# Suspend? if state is running or blocked
 		if domain.state in ( 1, 2):
@@ -260,6 +264,7 @@ class handler( umch.simpleHandler ):
 			opts[ 'state' ] = 'PAUSE' 
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
 			buttons.append( umcd.LinkButton( _( 'Suspend' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
+			buttons.append( comma )
 
 		# Resume? if state is paused
 		if domain.state in ( 3, ):
@@ -267,12 +272,14 @@ class handler( umch.simpleHandler ):
 			opts[ 'state' ] = 'RUN' 
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
 			buttons.append( umcd.LinkButton( _( 'Resume' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
+			buttons.append( comma )
 
 		# Remove? always
 		if remove:
 			opts = copy.copy( cmd_opts )
 			cmd = umcp.SimpleCommand( 'uvmm/domain/remove/images', options = opts )
 			buttons.append( umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( cmd ), ] ) )
+			buttons.append( comma )
 
 		# VNC? if running and activated
 		if domain.state in ( 1, 2 ) and domain.graphics and domain.graphics[ 0 ].port != -1:
@@ -291,9 +298,11 @@ class handler( umch.simpleHandler ):
 			except: pass
 			vnc = domain.graphics[ 0 ]
 			uri = 'vnc://%s:%s' % (host, vnc.port)
-			buttons.append( umcd.Link( 'VNC', uri ) )
+			html = umcd.HTML( '<a class="nounderline" target="_blank" href="%s"><span class="content">VNC</span></a>' % uri )
+			buttons.append( html )
+			buttons.append( comma )
 
-		return buttons
+		return buttons[ : -1 ]
 
 	def uvmm_node_overview( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Node overview' )		
@@ -323,25 +332,33 @@ class handler( umch.simpleHandler ):
 		mem_usage = percentage( float( node.curMem ) / node.phyMem * 100, '%s / %s' % ( block2byte( node.curMem ), block2byte( node.phyMem ) ), width = 150 )
 		node_table.add_row( [ _( 'Physical server' ), node_btn ] )
 		node_table.add_row( [ _( 'CPU usage' ), cpu_usage ] )
-		node_table.add_row( [ _( 'Memory usage' ), mem_usage ] )
+		node_table.add_row( [ _( 'Memory' ), mem_usage ] )
 		content.add_row( [ umcd.Section( _( 'Physical server' ), node_table ), umcd.Cell( reload_btn, attributes = { 'align' : 'right', 'valign' : 'top' } ) ] )
 
 		table = umcd.List()
 		num_buttons = 0
-		for domain in node.domains:
+		for domain in sorted( node.domains, key = operator.attrgetter( 'name' ) ):
 			# ignore XEN Domain-0
 			if domain.name == 'Domain-0':
 				continue
 			domain_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = { 'group' : object.options[ 'group' ], 'node' : node.name, 'domain' : domain.name } )
-			domain_btn = umcd.LinkButton( domain.name, actions = [ umcd.Action( domain_cmd ) ] )
+			domain_icon = 'uvmm/domain'
+			if domain.state in ( 1, 2 ):
+				domain_icon = 'uvmm/domain-on'
+			elif domain.state in ( 3, ):
+				domain_icon = 'uvmm/domain-paused'
+			domain_btn = umcd.LinkButton( domain.name, tag = domain_icon, actions = [ umcd.Action( domain_cmd ) ] )
+			domain_btn.set_size( umct.SIZE_SMALL )
 			buttons = self._create_domain_buttons( object, node, domain, remove_failure = 'node' )
 			if len( buttons ) > num_buttons:
 				num_buttons = len( buttons )
-			mem_usage = percentage( int( float( domain.curMem ) / domain.maxMem * 100 ), label = '%s / %s' % ( block2byte( domain.curMem ), block2byte( domain.maxMem ) ), width = 120 )
-			table.add_row( [ domain_btn, handler.STATES[ domain.state ], getattr(domain, 'annotations', {}).get('os', ''), percentage( float( domain.cputime[ 0 ] ) / 10, width = 80 ), mem_usage, ] + buttons )
+			os = getattr( domain, 'annotations', {} ).get( 'os', '' )
+			if len( os ) > 15:
+				os = os[ : 13 ] + '...'
+			table.add_row( [ domain_btn, os, percentage( float( domain.cputime[ 0 ] ) / 10, width = 80 ), umcd.Number( block2byte( domain.maxMem ) ), buttons ] )# + buttons )
 
 		if len( table.get_content() ):
-			table.set_header( [ _( 'Instance' ), _( 'Status' ), _( 'Operating System' ), _( 'CPU usage' ), _( 'Memory usage' ) ] )
+			table.set_header( [ _( 'Instance' ), _( 'Operating System' ), _( 'CPU usage' ), _( 'Memory' ) ] )
 
 		content.add_row( [ umcd.Cell( table, attributes = { 'colspan' : '2' } ), ] )
 		res.dialog[ 0 ].set_dialog( content )
