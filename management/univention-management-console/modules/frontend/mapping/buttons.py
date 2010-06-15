@@ -130,10 +130,12 @@ class ButtonMap( IButtonMap, mapper.IMapper ):
 				attributes.update( { 'webui-confirm-title' : '%s - %s' % ( storage.get_module_name(), str( confirm.title ) ), 'webui-confirm-question' : str( confirm.question ), 'webui-confirm-yes' : str( confirm.yes ), 'webui-confirm-no' : str( confirm.no ) } )
 		
 	def layout( self, storage, umcp_part, attributes = {} ):
+		attributes = copy.copy( attributes )
 		attributes.update( utils.attributes( umcp_part ) )
 		if umcp_part.get_tag():
 			icon = umcp_part.get_image()
 			attributes.update( { 'icon' : icon } )
+			
 			if umcp_part.icon_right:
 				attributes.update( { 'icon_side' : 'right' } )
 			else:
@@ -476,8 +478,8 @@ class SignalButtonMap( ButtonMap, mapper.IMapper ):
 		mapper.IMapper.__init__( self )
 
 	def layout( self, storage, umcp_part, attributes = {} ):
-		ret = ButtonMap.layout( self, storage, umcp_part, attributes )
 		attributes[ 'class' ] = 'cancel'
+		ret = ButtonMap.layout( self, storage, umcp_part, attributes )
 		return ret
 
 	def apply( self, storage, umcp_part, parameters, *args ):
@@ -497,8 +499,8 @@ class ResetButtonMap( ButtonMap, mapper.IMapper ):
 		mapper.IMapper.__init__( self )
 
 	def layout( self, storage, umcp_part, attributes = {} ):
-		ret = ButtonMap.layout( self, storage, umcp_part, attributes )
 		attributes[ 'class' ] = 'cancel'
+		ret = ButtonMap.layout( self, storage, umcp_part, attributes )
 		return ret
 
 	def apply( self, storage, umcp_part, parameters, *args ):
