@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.31-1) unstable; urgency=low
+
+  * first steps for a wizard to create devices; Bug #18612
+  * minor layout fixes in domain and node overview; Bug #18665
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 15 Jun 2010 11:55:08 +0200
+
 univention-virtual-machine-manager-daemon (0.9.30-1) unstable; urgency=low
 
   * overworked the node overview page; Bug #18665

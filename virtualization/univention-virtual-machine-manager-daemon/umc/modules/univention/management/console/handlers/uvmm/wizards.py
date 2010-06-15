@@ -29,7 +29,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import univention.management.console as umc
 import univention.management.console.dialog as umcd
+
+_ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
 class Page( object ):
 	def __init__( self, title = '', description = '' ):
@@ -58,6 +61,8 @@ class Page( object ):
 				prev_btn = ''
 
 			wizard._content.add_row( [ prev_btn, next_btn ] )
+		else:
+			wizard._content.add_row( self.buttons )
 
 		return wizard.setup()
 
@@ -76,6 +81,8 @@ class IWizard( list ):
 
 		if action in self.actions:
 			return self.actions[ action ]( object )
+
+		return None
 
 	def next( self, object ):
 		if self.current == None:
@@ -98,6 +105,35 @@ class IWizard( list ):
 class DeviceWizard( IWizard ):
 	def __init__( self ):
 		IWizard.__init__( self )
+
+		page = Page( _( 'Create Device' ), _( 'What type of device should be created?' ) )
+		page.options.append( umcd.make( ( 'device_type', DriveTypeSelect( _( 'Type of device' ) ) ) ) )
+		self.append( page )
+
+		page = Page( _( 'New or existing harddrive' ), _( 'For the harddrive a new image can be created or an existing image can be used. If you choose to use an existing image make sure that it is not used by another virtual instance at the same time.' ) )
+		page.options.append( umcd.make( ( 'device_type', DiskSelect( '' ) ) ) )
+		self.append( page )
+
+		page = Page( _( '' ), _( 'For the harddrive a new image can be created or an existing image can be used. If you choose to use an existing image make sure that it is not used by another virtual instance at the same time.' ) )
+		page.options.append( umcd.make( ( 'existing-or-new-disk', DiskSelect( '' ) ) ) )
+		self.append( page )
+
+	def next( self, object ):
+		if self.current == 0:
+			if object.options[ 'device_type' ] == 'disk':
+				self.current = 1
+			else:
+				self.current = 2
+		elif self.current == 1: # new or existing disk image?
+			self.current = 3
+			if object.options[ 'existing-or-new-disk' ] == 'disk-new':
+				pass
+			else:
+				self.current = 3
+		else:
+			self.current += 1
+
+		return self[ self.current ]
 
 class InstanceWizard( IWizard ):
 	def __init__( self ):

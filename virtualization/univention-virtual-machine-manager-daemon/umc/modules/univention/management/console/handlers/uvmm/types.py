@@ -61,6 +61,10 @@ class DriveTypSelect( umc.StaticSelection ):
 	def choices( self ):
 		return ( ( 'disk', _( 'Hard drive' ) ), ( 'cdrom', _( 'CD/DVD-ROM' ) ) )
 
+class DiskSelect( umc.StaticSelection ):
+	def choices( self ):
+		return ( ( 'disk-new', _( 'Create a new image' ) ), ( 'disk-exists', _( 'Choose existing image' ) ) )
+
 class NodeSelect( umc.StaticSelection ):
 	def __init__( self, label, required = True, may_change = True ):
 		self._choices = []
@@ -79,3 +83,4 @@ umcd.copy( umc.StaticSelection, KBLayoutSelect )
 umcd.copy( umc.StaticSelection, NumberSelect )
 umcd.copy( umc.StaticSelection, DriveTypSelect )
 umcd.copy( umc.StaticSelection, NodeSelect )
+umcd.copy( umc.StaticSelection, DiskSelect )

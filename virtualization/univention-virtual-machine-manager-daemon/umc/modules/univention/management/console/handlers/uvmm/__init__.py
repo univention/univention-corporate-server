@@ -234,7 +234,7 @@ class handler( umch.simpleHandler ):
 	def _create_domain_buttons( self, object, node, domain, overview = 'node', migrate = False, remove = False, remove_failure = 'domain' ):
 		buttons = []
 		overview_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % overview, options = object.options )
-		comma = umcd.HTML( ',&nbsp;' )
+		comma = umcd.HTML( '&nbsp;' )
 		# migrate? if parameter set
 		if migrate:
 			cmd = umcp.SimpleCommand( 'uvmm/domain/migrate', options = { 'group' : object.options[ 'group' ], 'source' : node.name, 'domain' : domain.name } )

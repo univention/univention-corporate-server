@@ -38,7 +38,7 @@ def percentage( percent, label = None, width = 100 ):
 	return umcd.Progressbar( percent, label = label, attributes = { 'width' : '%dpx' % width } )
 
 UNITS = ( 'B', 'KB', 'MB', 'GB', 'TB' )
-SIZE_REGEX = re.compile( '(?P<size>[0-9.]+)(?P<unit>(%s))?' % '|'.join( UNITS ) )
+SIZE_REGEX = re.compile( '(?P<size>[0-9.]+)[ \t]*(?P<unit>(%s))?' % '|'.join( UNITS ) )
 
 def block2byte( size, block_size = 1 ):
 	global UNITS
@@ -48,7 +48,7 @@ def block2byte( size, block_size = 1 ):
 		size /= 1024.0
 		unit += 1
 
-	return '%.1f%s' % ( size, UNITS[ unit ] )
+	return '%.1f %s' % ( size, UNITS[ unit ] )
 
 def byte2block( size, block_size = 1 ):
 	global UNITS, SIZE_REGEX
