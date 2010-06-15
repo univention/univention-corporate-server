@@ -43,13 +43,11 @@ from helpers import TranslatableException, N_ as _
 from uvmm_ldap import ldap_annotation, LdapError, ldap_modify
 import univention.admin.uexceptions
 import traceback
+import os.path as path
+from univention.uvmm.eventloop import *
+import threading
 
 logger = logging.getLogger('uvmmd.node')
-
-# Create global event loop
-from univention.uvmm.eventloop import *
-virEventLoopPureStart()
-virEventLoopPureRegister()
 
 STATES = ['NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED']
 
@@ -209,16 +207,20 @@ class Domain(object):
 	def __init__(self, domain):
 		self.uuid = domain.UUIDString()
 		self.state = 0
+		self.maxMem = 0L
+		self.curMem = 0L
+		self.vcpus = 1
 		self.arch = 'i686'
 		self.virt_tech = domain.OSType()
 		self.kernel = ''
 		self.cmdline = ''
 		self.initrd = ''
+		self.boot = ['hd', 'cdrom']
 		self.interfaces = []
 		self.disks = []
 		self.graphics = []
 		self._time_stamp = 0.0
-		self._time_used = domain.info()[4]
+		self._time_used = 0L
 		self.cputime = [0.0, 0.0, 0.0] # percentage in last 10s 60s 5m
 		self.annotations = {}
 		self.update(domain)
@@ -229,9 +231,16 @@ class Domain(object):
 	def update(self, domain):
 		"""Update statistics."""
 		self.name = domain.name()
-		state, maxMem, curMem, self.vcpus, runtime = domain.info()
-		if state != libvirt.VIR_DOMAIN_NOSTATE: # ignore =?= libvirt's transient error
-			self.state = state
+		for i in range(5):
+			info = domain.info()
+			if info[0] != libvirt.VIR_DOMAIN_NOSTATE: # ignore =?= libvirt's transient error
+				break
+			time.sleep(1)
+		else:
+			logger.warning('No state for %s: %s' % (self.name, info))
+			return
+
+		self.state, maxMem, curMem, self.vcpus, runtime = info
 
 		if domain.ID() == 0 and domain.connect().getURI().startswith('xen'):
 			# xen://#Domain-0 always reports (1<<32)-1
@@ -240,26 +249,29 @@ class Domain(object):
 		else:
 			self.maxMem = long(maxMem) << 10 # KiB
 
-		if self.state in (libvirt.VIR_DOMAIN_NOSTATE, libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
+		if self.state in (libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
 			self.curMem = 0L
+			delta_used = 0L
+			self._time_used = 0L
 		else:
 			self.curMem = long(curMem) << 10 # KiB
+			delta_used = runtime - self._time_used # running [ns]
+			self._time_used = runtime
 
 		# Calculate historical CPU usage
 		# http://www.teamquest.com/resources/gunther/display/5/
 		now = time.time()
-		delta_t = now - self._time_stamp # wall clock [s]
-		delta_used = runtime - self._time_used # running [ns]
-		usage = delta_used / delta_t / self.vcpus / 1000000 # ms
-		for i in range(len(Domain.CPUTIMES)):
-			if delta_t < Domain.CPUTIMES[i]:
-				e = math.exp(-1.0 * delta_t / Domain.CPUTIMES[i])
-				self.cputime[i] *= e
-				self.cputime[i] += (1.0 - e) * usage
-			else:
-				self.cputime[i] = usage
+		if self._time_stamp > 0.0:
+			delta_t = now - self._time_stamp # wall clock [s]
+			usage = delta_used / delta_t / self.vcpus / 1000000 # ms
+			for i in range(len(Domain.CPUTIMES)):
+				if delta_t < Domain.CPUTIMES[i]:
+					e = math.exp(-1.0 * delta_t / Domain.CPUTIMES[i])
+					self.cputime[i] *= e
+					self.cputime[i] += (1.0 - e) * usage
+				else:
+					self.cputime[i] = usage
 		self._time_stamp = now
-		self._time_used = runtime
 		self.update_expensive(domain)
 
 	def update_expensive(self, domain):
@@ -292,6 +304,9 @@ class Domain(object):
 			initrd = os.getElementsByTagName( 'initrd' )
 			if initrd and initrd[ 0 ].firstChild and initrd[ 0 ].firstChild.nodeValue:
 				self.initrd = initrd[ 0 ].firstChild.nodeValue
+			boot = os.getElementsByTagName('boot')
+			if boot:
+				self.boot = [dev.attributes['dev'].value for dev in boot]
 
 		self.disks = []
 		disks = devices.getElementsByTagName( 'disk' )
@@ -356,6 +371,7 @@ class Node(object):
 	"""Container for node statistics."""
 	def __init__(self, uri):
 		self.uri = uri
+		self._lock = threading.Lock()
 		self.conn = None
 		self.storages = {}
 		self.domains = {}
@@ -363,8 +379,12 @@ class Node(object):
 		def timer_callback(timer, *opaque):
 			try:
 				"""Handle regular poll. Also checks connection liveness."""
-				self.update_autoreconnect()
 				logger.debug("timer_callback#%d: %s)" % (timer, self.uri,))
+				try:
+					self._lock.acquire()
+					self.update_autoreconnect()
+				finally:
+					self._lock.release()
 			except Exception, e:
 				logger.error("Exception %s: %s" % (e, traceback.format_exc()))
 				# don't crash the event handler
@@ -384,7 +404,7 @@ class Node(object):
 			logger.warning("'%s' broken? %s" % (self.uri, e))
 			if self.conn != None:
 				try:
-				  if False: # libvirt-BUG domainEventDeregister SEGVs!!!
+				  if False: # libvirt FIXME domainEventDeregister SEGVs!!!
 					self.conn.domainEventDeregister(self.domainCB)
 				except:
 					pass
@@ -396,7 +416,7 @@ class Node(object):
 				self.conn = None
 
 	def __eq__(self, other):
-		return (self.conn.getURI(), self.name) == (other.conn.getURI(), other.name);
+		return (self.uri, self.name) == (other.uri, other.name)
 
 	def __del__(self):
 		"""Free Node and deregister callbacks."""
@@ -555,7 +575,10 @@ def node_query(uri):
 	"""Get domain data from node."""
 	global nodes
 	try:
-		return nodes[uri]
+		node = nodes[uri]
+		if node.conn is None:
+			raise NodeError(_('Hypervisor "%(uri)s" is unavailable.'), uri=uri)
+		return node
 	except KeyError:
 		raise NodeError(_('Hypervisor "%(uri)s" is not connected.'), uri=uri)
 
@@ -688,6 +711,7 @@ def domain_define( uri, domain ):
 		emulator = doc.createElement('emulator')
 		emulator.appendChild(text)
 		os.appendChild(emulator)
+
 	logger.debug('DISKS: %s' % domain.disks)
 	for disk in domain.disks:
 		logger.debug('DISK: %s' % disk)
@@ -708,6 +732,61 @@ def domain_define( uri, domain ):
 		if disk.readonly:
 			readonly = doc.createElement( 'readonly' )
 			elem.appendChild( readonly )
+
+		if disk.device != Disk.DEVICE_DISK:
+			continue
+
+		pool_name = 'default' # FIXME
+		try:
+			v = conn.storageVolLookupByPath(disk.source)
+			logger.warning('Storage volume "%s" already exists for domain "%s"' % (disk.source, domain.name))
+			continue
+		except libvirt.libvirtError, e:
+			if e.get_error_code() != libvirt.VIR_ERR_INVALID_STORAGE_VOL:
+				raise NodeError(_('Error finding storage volume "%(volume)s" for "%(domain)s": %(error)s'), volume=disk.source, domain=domain.name, error=e)
+
+		try:
+			p = conn.storagePoolLookupByName(pool_name)
+		except libvirt.libvirtError, e:
+			if e.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_POOL:
+				raise NodeError(_('Error finding storage pool "%(pool)s" for "%(domain)s": %(error)s'), pool=pool_name, domain=domain.name, error=e)
+			xml = '''
+			<pool type="dir">
+				<name>%(pool)s</name>
+				<target>
+					<path>%(path)s</path>
+				</target>
+			</pool>
+			''' % {
+					'pool': pool_name,
+					'path': path.dirname(disk.source),
+					}
+			try:
+				p = conn.storagePoolDefineXML(xml, 0)
+				p.setAutostart(True)
+			except libvirt.libvirtError, e:
+				raise NodeError(_('Error creating storage pool "%(pool)s" for "%(domain)s": %(error)s'), pool=pool_name, domain=domain.name, error=e)
+
+		xml = '''
+		<volume>
+			<name>%(name)s</name>
+			<allocation unit="G">0</allocation>
+			<capacity unit="G">%(size)d</capacity>
+			<target>
+				<format type="raw"/>
+			</target>
+		</volume>
+		''' % {
+				'name': path.basename(disk.source),
+				'size': 8, # FIXME
+				}
+		try:
+			v = p.createXML(xml, 0)
+			logger.info('New disk "%s" for "%s"(%s) defined.' % (v.path(), domain.name, domain.uuid))
+		except libvirt.libvirtError, e:
+			if e.get_error_code() != libvirt.VIR_ERR_INVALID_STORAGE_POOL:
+				raise NodeError(_('Error creating storage volume "%(name)s" for "%(domain)s": %(error)s'), name=disk.source, domain=domain.name, error=e)
+
 	for iface in domain.interfaces:
 		logger.debug('INTERFACE: %s' % iface)
 		elem = doc.createElement( 'interface' )
@@ -728,6 +807,7 @@ def domain_define( uri, domain ):
 			target.setAttribute( 'dev', iface.target )
 			elem.appendChild( target )
 		devices.appendChild( elem )
+
 	for graphic in domain.graphics:
 		logger.debug('GRAPHIC: %s' % graphic)
 		elem = doc.createElement( 'graphics' )
@@ -907,6 +987,12 @@ def domain_migrate(source_uri, domain, target_uri):
 		# Updates are handled via the callback mechanism
 		#del source_node.domains[domain]
 		#target_node.domains[domain] = Domain(target_dom)
+		for t in range(10):
+			if domain not in source_node.domains and domain in target_node.domains:
+				break
+			time.sleep(1)
+		else:
+			logger.warning('Domain "%(domain)s" still not migrated from "%(source)s" to "%(target)s"' % {'domain':domain, 'source':source_uri, 'target':target_uri})
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=e)

@@ -199,7 +199,12 @@ if __name__ == '__main__':
 
 	if options.verbose:
 		logger.setLevel(logging.DEBUG)
-	
+
+	# Create global event loop
+	from univention.uvmm.eventloop import *
+	virEventLoopPureStart()
+	virEventLoopPureRegister()
+
 	from univention.uvmm.node import node_add
 	# Add nodes from .ini file
 	for section in config.sections():

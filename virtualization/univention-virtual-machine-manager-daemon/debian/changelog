@@ -1,3 +1,15 @@
+univention-virtual-machine-manager-daemon (0.9.32-1) unstable; urgency=low
+
+  * Create empty default images (Bug #18611, #18578)
+  * Allow selecting the boot devices (UVMMd part 2) (Bug #18625)
+  * Wait after migration (Bug #18634)
+  * Fix negative CPU time (Bug #18631)
+  * Initialize all variables (Bug #18635)
+  * Use dh_install.
+  * Update translation.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 15 Jun 2010 12:43:59 +0200
+
 univention-virtual-machine-manager-daemon (0.9.31-1) unstable; urgency=low
 
   * first steps for a wizard to create devices; Bug #18612

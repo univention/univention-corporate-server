@@ -106,10 +106,12 @@ class _Commands:
 				domain_data = protocol.Data_Domain()
 				domain_data.uuid = domain.uuid
 				domain_data.name = domain.name
-				domain_data.virt_tech = domain.virt_tech
 				domain_data.arch = domain.arch
+				domain_data.virt_tech = domain.virt_tech
 				domain_data.kernel = domain.kernel
 				domain_data.cmdline = domain.cmdline
+				domain_data.initrd = domain.initrd
+				domain_data.boot = domain.boot
 				domain_data.state = domain.state
 				domain_data.maxMem = domain.maxMem
 				domain_data.curMem = domain.curMem

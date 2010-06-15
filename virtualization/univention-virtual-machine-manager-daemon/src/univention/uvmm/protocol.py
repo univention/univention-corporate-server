@@ -231,9 +231,9 @@ class Data_Domain(object):
 			'curMem':self.curMem,
 			'vcpus':self.vcpus,
 			'cputime':self.cputime,
-			'graphics': [ str( g ) for g in self.graphics ],
 			'interfaces': [ str( i ) for i in self.interfaces ],
 			'disks': [ str( d ) for d in self.disks ],
+			'graphics': [str(g) for g in self.graphics],
 			'annotations': self.annotations,
 			}
 class Data_Node(object):

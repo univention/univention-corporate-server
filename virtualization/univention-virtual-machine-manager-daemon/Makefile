@@ -19,12 +19,12 @@ all:: $(MO_FILES) $(IMAGES)
 install:: install-modules install-locales install-images
 	install -m 0755 -d $(DESTDIR)/etc/univention
 	install -m 0755 -t $(DESTDIR)/etc/univention src/uvmmd.ini
+	install -m 0755 -d $(DESTDIR)/usr/share/pyshared/univention/uvmm
+	install -m 0644 -t $(DESTDIR)/usr/share/pyshared/univention/uvmm src/univention/uvmm/*.py
 	install -m 0755 -d $(DESTDIR)/usr/sbin
 	install -m 0755 -t $(DESTDIR)/usr/sbin src/univention-virtual-machine-manager-daemon
 	install -m 0755 -t $(DESTDIR)/usr/sbin src/univention-virtual-machine-manager
 	ln -s univention-virtual-machine-manager $(DESTDIR)/usr/sbin/uvmm
-	install -m 0755 -d debian/python-univention-virtual-machine-manager/usr/share/pyshared/univention/uvmm
-	install -m 0644 -t debian/python-univention-virtual-machine-manager/usr/share/pyshared/univention/uvmm src/univention/uvmm/*.py
 
 .PHONY: uninstall
 uninstall:
@@ -32,10 +32,10 @@ uninstall:
 	$(RM) $(DESTDIR)/usr/sbin/uvmm
 	$(RM) $(DESTDIR)/usr/sbin/univention-virtual-machine-manager-daemon
 	-rmdir -p $(DESTDIR)/usr/sbin
+	$(RM) $(DESTDIR)/usr/share/pyshared/univention/uvmm/*
+	-rmdir -p $(DESTDIR)/usr/share/pyshared/univention/uvmm
 	$(RM) $(DESTDIR)/etc/univention/uvmmd.ini
 	-rmdir -p $(DESTDIR)/etc/univention
-	$(RM) debian/python-univention-virtual-machine-manager/usr/share/pyshared/univention/uvmm/*
-	-rmdir -p debian/python-univention-virtual-machine-manager/usr/share/pyshared/univention/uvmm
 
 .PHONY: clean
 clean::
