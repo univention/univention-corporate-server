@@ -260,7 +260,7 @@ class SimpleTreeTable( List ):
 
 class Section( Element ):
 	def __init__( self, title = '', body = '', hideable = False, hidden = False, name = 'section', attributes = {} ):
-		Element.__init__( self )
+		Element.__init__( self, attributes )
 		self.title = title
 		self.body = body
 		self.hideable = hideable

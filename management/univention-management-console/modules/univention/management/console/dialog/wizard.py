@@ -35,7 +35,7 @@ class Wizard( base.Element ):
 	def __init__( self, title = '' ):
 		base.Element.__init__( self )
 		self._title = title
-		self._content = base.List()
+		self._content = base.List( attributes = { 'width' : '100%' } )
 		self._image = None
 
 	def set_image( self, image ):
@@ -55,8 +55,8 @@ class Wizard( base.Element ):
 	def setup( self ):
 		if self._image:
 			self._image[ 'width' ] = '100'
-			return base.Frame( [ base.List( content = [ [ base.Cell( self._image, { 'valign' : 'top' } ), self._content ] ] ) ], self._title )
+			return base.Frame( [ base.List( content = [ [ base.Cell( self._image, { 'valign' : 'top' } ), self._content ] ], attributes = { 'width' : '100%' } ) ], self._title )
 		else:
-			return base.Frame( [ base.List( content = [ [ self._content ] ] ) ], self._title )
+			return base.Section( self._title, self._content, attributes = { 'width' : '100%' } )
 
 WizardTypes = ( type( Wizard() ), )
