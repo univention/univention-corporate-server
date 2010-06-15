@@ -1,3 +1,9 @@
+univention-webui (4.0.16-1) unstable; urgency=low
+
+  * added single sign on and redirect feature (Bug #14593)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 15 Jun 2010 11:55:31 +0200
+
 univention-webui (4.0.15-1) unstable; urgency=low
 
   * added additional POST arguments to login by requesting URL (Bug #14593)

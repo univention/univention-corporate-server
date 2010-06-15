@@ -1,3 +1,10 @@
+univention-directory-manager (8.0.4-1) unstable; urgency=low
+
+  * added single sign on redirect to UMC for "update available" msg on
+    startup screen (Bug #14593)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 15 Jun 2010 11:54:11 +0200
+
 univention-directory-manager (8.0.3-1) unstable; urgency=low
 
   * added additional POST arguments to login by requesting URL (Bug #14593)

@@ -35,7 +35,7 @@ os.chdir(ldir)
 import univention.debug
 
 uniconf_mods={}
-for m in ['modabout', 'modspacer','modbrowse', 'modedit', 'modlogout', 'modrelogin', 'modwizard', 'modself']:
+for m in ['modabout', 'modspacer','modbrowse', 'modedit', 'modlogout', 'modrelogin', 'modwizard', 'modself', 'modredirect']:
 	uniconf_mods[m] = __import__(m)
 
 import unimodule
@@ -248,7 +248,7 @@ class unidialog(unimodule.unimodule):
 						smbutlist.append([smbut, moduleinfo.id, submod.id])
 						submenulist.append(menuitem("",{},{"item":smbut},n=submod.id))
 
-					if not moduleinfo.id in [ 'about', 'logout', 'browse' ]:
+					if not moduleinfo.id in [ 'about', 'logout', 'browse', 'redirect' ]:
 						self.smbutlistlist.append(smbutlist)
 						mit=menuitem("",{},{"item":mbut,"menu":menu("",{},{"items":submenulist})})
 						menulist.append(mit)
@@ -378,6 +378,7 @@ class unidialog(unimodule.unimodule):
 				# add top header
 				topheader = htmltext('', {}, {'htmltext': ['<div id="content-wrapper-top">&nbsp;</div>']} )
 				self.subobjs.append(topheader)
+
 				# load UCR
 				configRegistry = ucr.ConfigRegistry()
 				configRegistry.load()
@@ -415,12 +416,27 @@ class unidialog(unimodule.unimodule):
 													{'htmltext': ["""
 													<div id="content-wrapper-error">
 													<h3>%(headline)s</h3>
-													<p>%(msg)s</p>
-													</div>
-													""" % { 'headline': _('UCS Update Available'),
-															'msg': _('An update for UCS is available. Please visit <a target="_blank" href="/univention-management-console/index.php?init_umccmd=update/overview">online update module</a> of Univention Management Console to install.')}
-																]})
+													<p>%(msg)s""" % { 'headline': _('UCS Update Available'),
+															'msg': _('An update for UCS is available. Please visit&nbsp;')
+																	}]})
 							self.subobjs.append(updatemsg)
+
+							singlesignon = configRegistry.is_true('directory/manager/web/singlesignon/umc', True)
+							if singlesignon:
+								# Single Sign On
+								mbut=button(_('Online Update Module'),{'link':'1', 'type': 'h-link'},{"helptext":_('Link to Online Update Module of Univention Management Console')})
+								self.mbutlist.append([mbut, 'redirect', os.environ["HTTP_HOST"], ['init_umccmd=update/overview'] ])
+								self.subobjs.append(mbut)
+							else:
+								# Manual Login
+								updatemsg = htmltext ('', {}, \
+													{'htmltext': [""" <a href="/univention-management-console/index.php?init_umccmd=update/overview" target="_blank">%s</a> """ % _('Online Update Module')
+																]})
+								self.subobjs.append(updatemsg)
+
+							updatemsg = htmltext ('', {}, {'htmltext': ["""%s</p></div>""" % _('&nbsp;of Univention Management Console to install updates.')]})
+							self.subobjs.append(updatemsg)
+
 
 				welcomemessage = htmltext ('', {}, \
 					{'htmltext': ["""
@@ -439,7 +455,7 @@ class unidialog(unimodule.unimodule):
 					""" % {'welcome': _("Welcome to Univention Directory Manager")}
 					]})
 				self.subobjs.append(welcomemessage)
-					
+
 				welcomemessage = htmltext ('', {}, \
 					{'htmltext': ["""
 					<!-- @start content -->
@@ -454,7 +470,8 @@ class unidialog(unimodule.unimodule):
 					{'introduction_text': _("Univention Directory Manager enables you to manage all components of your Univention Corporate Server (UCS) Domain.")}
 					]})
 				self.subobjs.append(welcomemessage)
-					
+
+
 				if self.have_users:
 					welcomemessage = htmltext ('', {}, \
 						{'htmltext': ["""

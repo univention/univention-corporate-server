@@ -325,6 +325,7 @@ class modrelogin(unimodule.unimodule):
 			if self.req.meta.get('pre_session_language'):
 				language = self.req.meta.get('pre_session_language')
 
+			self.save.put("language", language)
 			if language:
 				if language == 'de':
 					language = LANG_DE

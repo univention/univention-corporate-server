@@ -315,6 +315,12 @@ function umc_info_dialog( title, message ) {
 <!-- @end content-wrapper -->
 </form>
 
+<form name="redirectsignon" target="_blank" id="redirectsignon" method="post" enctype="multipart/form-data" action="/">
+  <input type="hidden" name="usrinput[0]" value="" />
+  <input type="hidden" name="session_id" value="" />
+  <input type="hidden" name="is_js" value="1" />
+</form>
+
 
 <!-- ####### cache-control ####### -->
 
