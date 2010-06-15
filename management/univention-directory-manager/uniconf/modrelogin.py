@@ -283,15 +283,23 @@ class modrelogin(unimodule.unimodule):
 			self.save.put("authfail","1")
 			return
 
-		self.save.put("relogin_username",self.usernamein.xvars.get("usertext",""))
-		self.save.put("relogin_password",self.passwdin.xvars.get("usertext",""))
+		pre_session_login = bool(self.req) and bool(self.req.meta) and bool(self.req.meta.get('pre_session_username')) and bool(self.req.meta.get('pre_session_password'))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "modrelogin: apply: pre_session_login=%s" % pre_session_login)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "modrelogin: apply: pre_session_username=%s" % self.req.meta.get('pre_session_username'))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "modconsole: apply: pre_session_language=%s" % self.req.meta.get('pre_session_language'))
+
+		if pre_session_login:
+			self.save.put("relogin_username",self.req.meta.get('pre_session_username'))
+			self.save.put("relogin_password",self.req.meta.get('pre_session_password'))
+		else:
+			self.save.put("relogin_username",self.usernamein.xvars.get("usertext",""))
+			self.save.put("relogin_password",self.passwdin.xvars.get("usertext",""))
 		mu=0
-		
 
 		if self.cabut.pressed():
 			self.save.put("logout",1)
 
-		if self.okbut.pressed() or mu and self.input:
+		if self.okbut.pressed() or mu and self.input or pre_session_login:
 			self.save.put("user",self.save.get("relogin_username"))
 			self.save.put("pass",self.save.get("relogin_password"))
 
@@ -304,6 +312,9 @@ class modrelogin(unimodule.unimodule):
 			else:
 				domain=position.getBase()
 
+			if not domain:
+				domain=position.getBase()
+
 			position.setLoginDomain(domain)
 			position.setDn(domain)
 			self.save.put('ldap_position', position)
@@ -311,6 +322,8 @@ class modrelogin(unimodule.unimodule):
 			language = None
 			if hasattr(self, 'chooselang'):
 				language = self.chooselang.getselected()
+			if self.req.meta.get('pre_session_language'):
+				language = self.req.meta.get('pre_session_language')
 
 			if language:
 				if language == 'de':

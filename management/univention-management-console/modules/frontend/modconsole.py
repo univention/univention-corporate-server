@@ -581,16 +581,25 @@ class modconsole(unimodule.unimodule):
 			self.save.put('about','1')
 			return
 
+		pre_session_login = bool(self.req) and bool(self.req.meta) and bool(self.req.meta.get('pre_session_username')) and bool(self.req.meta.get('pre_session_password'))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modconsole: apply: pre_session_login = %s' % pre_session_login )
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "modconsole: apply: pre_session_username=%s" % self.req.meta.get('pre_session_username'))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "modconsole: apply: pre_session_language=%s" % self.req.meta.get('pre_session_language'))
+
 		if self.save.get('consolemode') == 'login':
-			self.save.put("relogin_username",self.usernamein.xvars.get("usertext",""))
-			self.save.put("relogin_password",self.passwdin.xvars.get("usertext",""))
+			if pre_session_login:
+				self.save.put("relogin_username",self.req.meta.get('pre_session_username'))
+				self.save.put("relogin_password",self.req.meta.get('pre_session_password'))
+			else:
+				self.save.put("relogin_username",self.usernamein.xvars.get("usertext",""))
+				self.save.put("relogin_password",self.passwdin.xvars.get("usertext",""))
 
 			if self.cabut.pressed():
 				self.save.put( 'auth_ok', False ) # just to be sure
 
-			if self.okbut.pressed():
-				authUsername = self.usernamein.xvars.get("usertext","")
-				authPassword = self.passwdin.xvars.get("usertext","")
+			if self.okbut.pressed() or pre_session_login:
+				authUsername = self.save.get("relogin_username",'')
+				authPassword = self.save.get("relogin_password",'')
 
 				#if not authUsername or not authPassword:
 				#	return
@@ -622,6 +631,8 @@ class modconsole(unimodule.unimodule):
 					language = None
 					if hasattr(self, 'chooselang'):
 						language = self.chooselang.getselected()
+					if self.req.meta.get('pre_session_language'):
+						language = self.req.meta.get('pre_session_language')
 
 					if language:
 						if language == 'de':

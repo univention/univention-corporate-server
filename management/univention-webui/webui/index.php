@@ -134,6 +134,19 @@ if(!isset($logout))	{
 		} elseif (isset($_GET['init_umccmd'])) {
 				   fwrite($pipe, "init_umccmd: ".$_GET['init_umccmd']."\n");
 		}
+		if (isset($_POST['pre_session_username']) && isset($_POST['pre_session_password'])) {
+		  if($config->layout_type && $config->layout_type=='menuless') {
+			$container->set_body_class("component-menuless");
+		  } else {
+			$container->set_body_class("component");
+		  }
+
+		  fwrite($pipe, "pre_session_username: ".$_POST['pre_session_username']."\n");
+		  fwrite($pipe, "pre_session_password: ".$_POST['pre_session_password']."\n");
+		  if (isset($_POST['pre_session_language'])) {
+			fwrite($pipe, "pre_session_language: ".$_POST['pre_session_language']."\n");
+		  }
+		}
 		fwrite($pipe, "SessionId: ".$config->session_id."\n");
 		fwrite($pipe, "Number: -1\n\n\0");
 

@@ -1,3 +1,9 @@
+univention-webui (4.0.15-1) unstable; urgency=low
+
+  * added additional POST arguments to login by requesting URL (Bug #14593)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 10 Jun 2010 16:08:30 +0200
+
 univention-webui (4.0.14-1) unstable; urgency=low
 
   * added additional POST/GET argument to address a specific UMC command

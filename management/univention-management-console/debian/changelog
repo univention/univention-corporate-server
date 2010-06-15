@@ -1,3 +1,9 @@
+univention-management-console (3.0.25-1) unstable; urgency=low
+
+  * added additional POST arguments to login by requesting URL (Bug #14593)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 12 Jun 2010 12:08:06 +0200
+
 univention-management-console (3.0.24-1) unstable; urgency=low
 
   * added additional POST/GET argument to address a specific UMC command

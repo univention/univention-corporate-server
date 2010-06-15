@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.3-1) unstable; urgency=low
+
+  * added additional POST arguments to login by requesting URL (Bug #14593)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 10 Jun 2010 16:07:16 +0200
+
 univention-directory-manager (8.0.2-1) unstable; urgency=low
 
   * display message and link to UMC if UCS update is available (Bug #18627)
