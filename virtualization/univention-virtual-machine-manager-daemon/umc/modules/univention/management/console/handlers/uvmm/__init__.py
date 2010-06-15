@@ -52,6 +52,7 @@ import uvmmd
 from treeview import TreeView
 from tools import *
 from types import *
+from wizards import *
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
@@ -63,7 +64,7 @@ categories = [ 'system', 'all' ]
 hide_tabs = True
 
 # fields of a drive definition
-drive_type = umcd.make( ( 'type', DriveTypSelect( _( 'Type' ) ) ), attributes = { 'width' : '250' } )
+drive_type = umcd.make( ( 'type', DriveTypeSelect( _( 'Type' ) ) ), attributes = { 'width' : '250' } )
 drive_uri = umcd.make( ( 'uri', umc.String( 'URI' ) ), attributes = { 'width' : '250' } )
 drive_dev = umcd.make( ( 'dev', umc.String( _( 'Device' ) ) ), attributes = { 'width' : '250' } )
 
@@ -166,6 +167,12 @@ command_description = {
 				   'state' : umc.String( 'State' ),
 				  },
 		),
+	'uvmm/device/create': umch.command(
+		short_description = _( 'New Device' ),
+		long_description = _('Create a new device' ),
+		method = 'uvmm_device_create',
+		values = {},
+		),
 }
 
 class handler( umch.simpleHandler ):
@@ -184,6 +191,7 @@ class handler( umch.simpleHandler ):
 		global command_description
 		umch.simpleHandler.__init__( self, command_description )
 		self.uvmm = uvmmd.Client( auto_connect = False )
+		self.device_wizard = DeviceWizard( 'uvmm/device/create' )
 
 	@staticmethod
 	def _getattr( object, attr, default = '' ):
@@ -231,12 +239,12 @@ class handler( umch.simpleHandler ):
 		res.dialog[ 0 ].set_dialog( content )
 		self.finished(object.id(), res)
 
-	def _create_domain_buttons( self, object, node, domain, overview = 'node', migrate = False, remove = False, remove_failure = 'domain' ):
+	def _create_domain_buttons( self, object, node, domain, overview = 'node', operations = False, remove_failure = 'domain' ):
 		buttons = []
 		overview_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % overview, options = object.options )
 		comma = umcd.HTML( '&nbsp;' )
 		# migrate? if parameter set
-		if migrate:
+		if operations:
 			cmd = umcp.SimpleCommand( 'uvmm/domain/migrate', options = { 'group' : object.options[ 'group' ], 'source' : node.name, 'domain' : domain.name } )
 			buttons.append( umcd.LinkButton( _( 'Migrate' ), actions = [ umcd.Action( cmd ) ] ) )
 			buttons.append( comma )
@@ -275,12 +283,19 @@ class handler( umch.simpleHandler ):
 			buttons.append( comma )
 
 		# Remove? always
-		if remove:
+		if operations:
 			opts = copy.copy( cmd_opts )
 			cmd = umcp.SimpleCommand( 'uvmm/domain/remove/images', options = opts )
 			buttons.append( umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( cmd ), ] ) )
 			buttons.append( comma )
 
+		# create device
+		if operations:
+			opts = copy.copy( cmd_opts )
+			cmd = umcp.SimpleCommand( 'uvmm/device/create', options = opts )
+			buttons.append( umcd.LinkButton( _( 'New Device' ), actions = [ umcd.Action( cmd ), ] ) )
+			buttons.append( comma )
+			
 		# VNC? if running and activated
 		if domain.state in ( 1, 2 ) and domain.graphics and domain.graphics[ 0 ].port != -1:
 			host = node.name
@@ -312,12 +327,11 @@ class handler( umch.simpleHandler ):
 			return
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-		node = self.uvmm.get_node_info( node_uri )
-
-		if not node:
-			res.dialog[ 0 ].set_dialog( umcd.Text( 'The host is not available at the moment' ) )
+		if not node_uri:
+			res.dialog[ 0 ].set_dialog( umcd.InfoBox( _( 'The physical server is not available at the moment' ) ) )
 			self.finished(object.id(), res)
 			return
+		node = self.uvmm.get_node_info( node_uri )
 
 		content = umcd.List()
 		reload_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : object.options[ 'node' ] } )
@@ -488,7 +502,7 @@ class handler( umch.simpleHandler ):
 		stats.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'CPU usage' ) ), cpu_usage ] )
 
 		ops = umcd.List()
-		buttons = self._create_domain_buttons( object, node, domain_info, overview = 'domain', migrate = True, remove = True )
+		buttons = self._create_domain_buttons( object, node, domain_info, overview = 'domain', operations = True )
 		ops.add_row( buttons )
 
 		tab = umcd.List()
@@ -688,3 +702,16 @@ class handler( umch.simpleHandler ):
 		else:
 			res.status( 201 )
 			self.finished( object.id(), res, report = _( 'The instance <i>%(domain)s</i> was removed successfully' ) % { 'domain' : object.options[ 'domain' ] } )
+
+	def uvmm_device_create( self, object ):
+		ud.debug( ud.ADMIN, ud.INFO, 'Device create' )		
+		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
+		if not success:
+			self.finished(object.id(), res)
+			return
+
+		self.device_wizard.action( object )
+		page = self.device_wizard.setup( object )
+		res.dialog[ 0 ].set_dialog( page )
+		
+		self.finished(object.id(), res)

@@ -57,7 +57,7 @@ class NumberSelect( umc.StaticSelection ):
 	def choices( self ):
 		return map( lambda x: ( str( x ), str( x ) ), range( 1, self.max + 1 ) )
 
-class DriveTypSelect( umc.StaticSelection ):
+class DriveTypeSelect( umc.StaticSelection ):
 	def choices( self ):
 		return ( ( 'disk', _( 'Hard drive' ) ), ( 'cdrom', _( 'CD/DVD-ROM' ) ) )
 
@@ -81,6 +81,6 @@ class NodeSelect( umc.StaticSelection ):
 umcd.copy( umc.StaticSelection, DynamicSelect )
 umcd.copy( umc.StaticSelection, KBLayoutSelect )
 umcd.copy( umc.StaticSelection, NumberSelect )
-umcd.copy( umc.StaticSelection, DriveTypSelect )
+umcd.copy( umc.StaticSelection, DriveTypeSelect )
 umcd.copy( umc.StaticSelection, NodeSelect )
 umcd.copy( umc.StaticSelection, DiskSelect )
