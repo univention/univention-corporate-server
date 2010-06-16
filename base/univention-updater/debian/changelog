@@ -1,3 +1,9 @@
+univention-updater (5.0.87-1) unstable; urgency=low
+
+  * added path to ucr call in univention-updater-check (Bug #18627)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 16 Jun 2010 18:51:21 +0200
+
 univention-updater (5.0.86-1) unstable; urgency=low
 
   * added univention-updater-check cron job / boot job (Bug #18627)

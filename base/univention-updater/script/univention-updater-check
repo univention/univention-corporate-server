@@ -30,10 +30,10 @@
 
 if /usr/sbin/univention-updater net --check ; then
 	# return $? == 0  if system is uptodate
-	ucr set update/available=no
+	/usr/sbin/univention-config-registry set update/available=no
 else
 	# return $? == 1  if system is requires at least one update
-	ucr set update/available=yes
+	/usr/sbin/univention-config-registry set update/available=yes
 fi
 
 exit 0
