@@ -382,7 +382,7 @@ class unidialog(unimodule.unimodule):
 				# load UCR
 				configRegistry = ucr.ConfigRegistry()
 				configRegistry.load()
-				if configRegistry.get('update/available','no') in ('yes'):
+				if configRegistry.is_true('update/available',False):
 					# update is available
 					lo = self.uaccess
 					position=self.save.get('ldap_position')

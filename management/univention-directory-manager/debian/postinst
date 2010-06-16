@@ -30,7 +30,7 @@
 
 #DEBHELPER#
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 createLogfile () {
 	if [ ! -e $1 ] ; then
@@ -72,8 +72,6 @@ univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *"
 univention-config-registry set directory/reports/cleanup/age?43200
 univention-config-registry set \
 	directory/manager/web/modules/policies/repositoryserver/additional?"apt.univention.de"
-
-eval $(univention-config-registry shell)
 
 # change default timeout too 15 minutes
 defaulttimeout=$((15*60))
@@ -167,7 +165,8 @@ if [ -n "${VARIABLES}" ]; then
 fi
 
 univention-config-registry set directory/manager/web/modules/advancedview?"0" \
-	directory/manager/web/modules/groups/group/checks/circular_dependency?"yes"
+	directory/manager/web/modules/groups/group/checks/circular_dependency?"yes" \
+	directory/manager/web/update/available/groups?"Domain Admins"
 
 for path in /usr/share/univention-directory-manager/www/icon /usr/share/univention-directory-manager/www/style /usr/share/univention-directory-manager/www/includes; do
 	if [ -d $path -a ! -h $path ]; then
@@ -205,3 +204,5 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 else
 	/etc/init.d/apache2 reload || true
 fi
+
+exit 0

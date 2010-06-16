@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.5-1) unstable; urgency=low
+
+  * set directory/manager/web/update/available/groups during postinst (Bug #18627)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 15 Jun 2010 12:23:09 +0200
+
 univention-directory-manager (8.0.4-1) unstable; urgency=low
 
   * added single sign on redirect to UMC for "update available" msg on
