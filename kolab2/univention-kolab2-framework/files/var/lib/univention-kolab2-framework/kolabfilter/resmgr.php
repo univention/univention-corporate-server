@@ -718,10 +718,37 @@ function expire_events( $imap, $when )
   // normal user accounts
 }
 
-function iCalDate2Kolab($ical_date)
+function iCalDate2Kolab($ical_date, $type= ' ')
 {
     // $ical_date should be a timestamp
-    return gmstrftime('%Y-%m-%dT%H:%M:%SZ', $ical_date);
+
+        myLog(sprintf('Converting to kolab format %s',
+                                  print_r($ical_date, true)), 'DEBUG');
+
+        // $ical_date should be a timestamp
+        if (is_array($ical_date)) {
+            // going to create date again
+            $temp = cleanArray($ical_date);
+            if (array_key_exists('DATE', $temp)) {
+                if ($type == 'ENDDATE') {
+                    // substract a day (86400 seconds) using epochs to take number of days per month into account
+                    $epoch= convert2epoch($temp) - 86400;
+                    $date = gmstrftime('%Y-%m-%d', $epoch);
+                } else {
+                    $date= sprintf('%04d-%02d-%02d', $temp['year'], $temp['month'], $temp['mday']);
+                }
+            } else {
+                $time = sprintf('%02d:%02d:%02d', $temp['hour'], $temp['minute'], $temp['second']);
+                if ($temp['zone'] == 'UTC') {
+                    $time .= 'Z';
+                }
+                $date = sprintf('%04d-%02d-%02d', $temp['year'], $temp['month'], $temp['mday']) . 'T' . $time;
+            }
+        }  else {
+            $date = gmstrftime('%Y-%m-%dT%H:%M:%SZ', $ical_date);
+        }
+        myLog(sprintf('To <%s>', $date), 'DEBUG');
+        return $date;
 }
 
 function &buildKolabEvent(&$itip)
@@ -779,7 +806,7 @@ function &buildKolabEvent(&$itip)
 
     $kolab_node = $kolab_event->append_child($kolab_xml->create_element('end-date'));
     $kolab_node->append_child($kolab_xml->create_text_node(
-        iCalDate2Kolab($itip->getAttributeDefault('DTEND', 0))
+        iCalDate2Kolab($itip->getAttributeDefault('DTEND', 0), "ENDDATE")
     ));
     
     // Attendees
@@ -1018,7 +1045,56 @@ function &buildKolabEvent(&$itip)
 }
 
 
+    /**
+     * Clear information from a date array.
+     *
+     * @param array $ical_date  The array to clear.
+     *
+     * @return array The cleaned array.
+     */
+    function cleanArray($ical_date)
+    {
+        if (!is_array($ical_date)) {
+		  return $ical_date;
+		}
 
+        if (!array_key_exists('hour', $ical_date)) {
+            $temp['DATE'] = '1';
+        }
+        $temp['hour']   = array_key_exists('hour', $ical_date) ? $ical_date['hour'] :  '00';
+        $temp['minute']   = array_key_exists('minute', $ical_date) ? $ical_date['minute'] :  '00';
+        $temp['second']   = array_key_exists('second', $ical_date) ? $ical_date['second'] :  '00';
+        $temp['year']   = array_key_exists('year', $ical_date) ? $ical_date['year'] :  '0000';
+        $temp['month']   = array_key_exists('month', $ical_date) ? $ical_date['month'] :  '00';
+        $temp['mday']   = array_key_exists('mday', $ical_date) ? $ical_date['mday'] :  '00';
+        $temp['zone']   = array_key_exists('zone', $ical_date) ? $ical_date['zone'] :  'UTC';
+
+        return $temp;
+    }
+
+    /**
+     * Convert a date to an epoch.
+     *
+     * @param array  $values  The array to convert.
+     *
+     * @return int Time.
+     */
+    function convert2epoch($values)
+    {
+        myLog(sprintf('Converting to epoch %s',
+                                  print_r($values, true)), 'DEBUG');
+
+        if (is_array($values)) {
+            $temp = cleanArray($values);
+            $epoch = gmmktime($temp['hour'], $temp['minute'], $temp['second'],
+                              $temp['month'], $temp['mday'], $temp['year']);
+        } else {
+            $epoch=$values;
+        }
+
+        myLog(sprintf('Converted <%s>', $epoch), 'DEBUG');
+        return $epoch;
+    }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -1103,6 +1179,10 @@ function resmgr_filter( $fqhostname, $sender, $resource, $tmpfname ) {
 
   $dtstart = $itip->getAttributeDefault('DTSTART', 0);
   $dtend = $itip->getAttributeDefault('DTEND', 0);
+  myLog( 'DTSTART='. print_r($dtstart,True), RM_LOG_DEBUG);
+  myLog( 'DTEND='. print_r($dtend,True), RM_LOG_DEBUG);
+  $dtstart = convert2epoch( cleanArray($dtstart) );
+  $dtend = convert2epoch( cleanArray($dtend) );
 
   myLog('Event starts on ' . strftime('%a, %d %b %Y %H:%M:%S %z', $dtstart) .
 	' and ends on ' . strftime('%a, %d %b %Y %H:%M:%S %z', $dtend), RM_LOG_DEBUG);
@@ -1180,6 +1260,7 @@ function resmgr_filter( $fqhostname, $sender, $resource, $tmpfname ) {
 	    // Ignore
 	    continue;
 	  }
+	  myLog( 'Busy period test: ( ' . $dtstart . ' <= ' . $busyfrom .' < '. $dtend .' ) OR ( ' . $busyfrom . ' <= ' . $dtstart .' < '. $busyto );
 	  if (($busyfrom >= $dtstart && $busyfrom < $dtend) || ($dtstart >= $busyfrom && $dtstart < $busyto)) {
 	    myLog('Request overlaps', RM_LOG_DEBUG);
 	    $conflict = true;
@@ -1273,7 +1354,7 @@ function resmgr_filter( $fqhostname, $sender, $resource, $tmpfname ) {
 
     // Delete any old events that we updated
     if( !empty( $updated_messages ) ) {
-      myLog("Deleting ".join(', ',$deleted_messages)." because of update", RM_LOG_DEBUG);
+      myLog("Deleting ".join(', ',$updated_messages)." because of update", RM_LOG_DEBUG);
       $imap->deleteMessages( $updated_messages );
       $status = $imap->expunge();
       if (is_a($status, 'PEAR_Error')) {

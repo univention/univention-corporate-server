@@ -1,3 +1,9 @@
+univention-kolab2-framework (3.0.3-1) unstable; urgency=low
+
+  * fixed dtstart/dtend handling of whole day events for invitation (Bug #18543) 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 16 Jun 2010 12:49:20 +0200
+
 univention-kolab2-framework (3.0.2-1) unstable; urgency=low
 
   * updated copyright Bug #16818 
