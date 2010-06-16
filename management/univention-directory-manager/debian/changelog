@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.6-1) unstable; urgency=low
+
+  * set directory/manager/web/singlesignon/umc during postinst (Bug #14593)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 16 Jun 2010 18:21:28 +0200
+
 univention-directory-manager (8.0.5-1) unstable; urgency=low
 
   * set directory/manager/web/update/available/groups during postinst (Bug #18627)

@@ -76,3 +76,8 @@ Description[en]=No icons will be shown in the search result if this option is se
 Type=str
 Categories=management-udm
 
+[directory/manager/web/singlesignon/umc]
+Description[de]=Wenn diese Option auf yes gesetzt ist, wird vom UDM ein SingleSignOn für die UMC durchgeführt (default: yes)
+Description[en]=Single sign on is done when redirecting to UMC if this option is set to yes (default: yes)
+Type=str
+Categories=management-udm
