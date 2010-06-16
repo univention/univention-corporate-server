@@ -36,6 +36,9 @@ case "$1" in
 		/usr/lib/univention-install/43univention-virtual-machine-manager-node-common.inst || true
 	fi
 	invoke-rc.d univention-directory-listener restart
+	update-rc.d -f libvirt-bin remove
+	test -e /etc/runit/univention/univention-libvirt || \
+		ln -s ../univention-libvirt /etc/runit/univention/univention-libvirt
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
@@ -50,4 +53,3 @@ esac
 #DEBHELPER#
 
 exit 0
-

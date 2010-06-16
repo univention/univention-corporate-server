@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+source /etc/default/libvirt-bin
+
+exec /usr/sbin/libvirtd ${libvirtd_opts/-d/}

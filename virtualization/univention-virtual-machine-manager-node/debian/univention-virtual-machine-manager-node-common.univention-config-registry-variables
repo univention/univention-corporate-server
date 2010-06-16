@@ -3,3 +3,9 @@ Description[de]=Liste der Hostnamen, die die virtuellen Instanzen dieses Knotens
 Description[en]=List of host names allowed to manage the virtual instances of this node
 Type=str
 Categories=uvmm
+
+[libvirt/autostart]
+Description[de]=Definiert, ob der libvirt-Dienst automatisch gestartet werden soll
+Description[en]=Defines if the libvirt service should be started automatically
+Type=str
+Categories=uvmm,system-services

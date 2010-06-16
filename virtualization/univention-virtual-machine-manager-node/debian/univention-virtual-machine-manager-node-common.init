@@ -1,0 +1,84 @@
+#!/bin/sh
+#
+# Univention libvirt
+#  init script for libvirtd
+#
+# Copyright (C) 2010 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+if [ ! -e /etc/runit/univention/univention-libvirt ]
+then
+	exit 0
+fi
+
+. /lib/lsb/init-functions
+
+case "$1" in
+	start)
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]
+		then
+			source "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart univention-libvirt libvirt/autostart
+		fi
+		log_action_msg "Starting univention-libvirt daemon:"
+		sv up univention-libvirt
+		log_action_end_msg 0
+		;;
+	stop)
+		log_action_msg "Stopping univention-libvirt daemon: "
+		sv down univention-libvirt
+		log_action_end_msg 0
+		;;
+	restart|force-reload)
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]
+		then
+			source "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart univention-libvirt libvirt/autostart
+		fi
+		log_action_msg "Restarting univention-libvirt daemon: "
+		sv restart univention-libvirt
+		log_action_end_msg 0
+		;;
+	crestart)
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]
+		then
+			source "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart univention-libvirt libvirt/autostart
+		fi
+		if sv status univention-libvirt | grep -q -s ^run:
+		then
+			"$0" restart
+		else
+			log_action_msg "sv status return no running libvirt, don't need to restart."
+		fi
+		;;
+	*)
+		log_action_msg "Usage: $0 {start|stop|restart|crestart|force-reload}"
+		exit 1
+		;;
+esac

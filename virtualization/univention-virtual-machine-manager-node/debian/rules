@@ -50,6 +50,10 @@ install: build
 	done
 	install -m 0755 43univention-virtual-machine-manager-node-common.inst debian/univention-virtual-machine-manager-node-common/usr/lib/univention-install/
 
+	install -m 755 conffiles/etc/runit/univention-libvirt/run debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/
+	touch debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/down
+	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/finish
+
 # Build architecture-independent files here.
 binary-indep: build install
 
@@ -59,9 +63,11 @@ binary-arch: build install
 	dh_testroot
 	dh_installchangelogs
 	dh_installdocs
+	dh_installinit --no-restart-on-upgrade
 #	dh_install
 	univention-install-config-registry
 	univention-install-config-registry-info
+	univention-install-service-info
 	dh_link
 	dh_compress
 	dh_fixperms
