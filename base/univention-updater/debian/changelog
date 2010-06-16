@@ -1,3 +1,9 @@
+univention-updater (5.0.86-1) unstable; urgency=low
+
+  * added univention-updater-check cron job / boot job (Bug #18627)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 16 Jun 2010 17:03:25 +0200
+
 univention-updater (5.0.85-2) unstable; urgency=low
 
   * Fix typo when using repository/online/httpmethod=HEAD (Bug #18366)

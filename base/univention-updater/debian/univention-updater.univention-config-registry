@@ -66,3 +66,11 @@ Variables: repository/mirror/version/.*
 Variables: online/repository/clean
 Variables: repository/mirror/sources
 Variables: repository/mirror/httpmethod
+
+Type: file
+File: etc/cron.d/univention-updater-check
+Variables: update/check/cron/enabled
+Variables: update/check/cron/entry
+Variables: update/check/cron/debug
+Variables: update/check/boot/enabled
+Variables: update/check/boot/debug

@@ -195,3 +195,39 @@ Description[de]=HTTP-Methode zum Testen der Verfügbarkeit von Updates [GET]
 Description[en]=HTTP methode for testing the availability of updates [GET]
 Type=str
 Categories=service-software-management
+
+[update/check/cron/entry]
+Description[de]=Das Cronjob-Intervall, in dem automatisch nach Updates für dieses System gesucht wird (Default: 5 * * * *)
+Description[en]=Automatically search for system updates defined by this cronjob interval (default: 5 * * * *)
+Type=str
+Categories=service-software-management
+
+[update/check/cron/enabled]
+Description[de]=Diese Variable de-/aktiviert den Cronjob, der automatisch nach Updates sucht (Default: yes)
+Description[en]=This variable de-/activates the cronjob that looks for system updates (default: yes)
+Type=bool
+Categories=service-software-management
+
+[update/check/boot/enabled]
+Description[de]=Diese Variable de-/aktiviert die Updatesuche während des Bootvorgangs (Default: yes)
+Description[en]=This variable de-/activates updatesearch during boot process (default: yes)
+Type=bool
+Categories=service-software-management
+
+[update/check/cron/debug]
+Description[de]=Diese Variable unterdrückt Cronjob-Ausgaben, wenn automatisch nach Updates gesucht wird (Default: no)
+Description[en]=This variable deactivates debug output if cronjob looks for system updates (default: no)
+Type=bool
+Categories=service-software-management
+
+[update/check/boot/debug]
+Description[de]=Diese Variable unterdrückt Cronjob-Ausgaben, wenn automatisch nach Updates gesucht wird (Default: no)
+Description[en]=This variable deactivates debug output if cronjob looks for system updates (default: no)
+Type=bool
+Categories=service-software-management
+
+[update/available]
+Description[de]=Diese Variable wird automatisch gesetzt und gibt an, ob Updates verfügbar sind (boolean)
+Description[en]=This variable is set automatically and indicates if updates are available (boolean)
+Type=bool
+Categories=service-software-management

@@ -101,6 +101,8 @@ install-ext-%:
 
 	install -m 644 script/reboot.at debian/univention-updater/var/lib/univention-updater/
 
+	install -m 755 script/univention-updater-check debian/univention-updater/usr/share/univention-updater/
+
 	install -m 644 script/preup.sh debian/univention-updater/usr/share/univention-updater/
 	install -m 644 script/postup.sh debian/univention-updater/usr/share/univention-updater/
 
