@@ -444,7 +444,8 @@ class Node(object):
 					domStat = Domain(dom)
 					self.domains[uuid] = domStat
 				elif event == libvirt.VIR_DOMAIN_EVENT_UNDEFINED:
-					del self.domains[uuid]
+					if uuid in self.domains:
+						del self.domains[uuid]
 				else: # VIR_DOMAIN_EVENT_STARTED _SUSPENDED _RESUMED _STOPPED
 					try:
 						domStat = self.domains[uuid]
@@ -985,7 +986,7 @@ def domain_migrate(source_uri, domain, target_uri):
 			raise NodeError(_('Domain "%(domain)s" in state "%(state)s" can not be migrated'), domain=domain, state=STATES[source_state])
 
 		# Updates are handled via the callback mechanism
-		#del source_node.domains[domain]
+		del source_node.domains[domain]
 		#target_node.domains[domain] = Domain(target_dom)
 		for t in range(10):
 			if domain not in source_node.domains and domain in target_node.domains:

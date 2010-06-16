@@ -36,6 +36,7 @@ import univention.management.console.dialog as umcd
 import univention.management.console.protocol as umcp
 
 from types import *
+import udm
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
@@ -210,3 +211,23 @@ class DeviceWizard( IWizard ):
 class InstanceWizard( IWizard ):
 	def __init__( self, command ):
 		IWizard.__init__( self, command )
+		self.title = _( 'Create new virtual instance' )
+		self.udm = udm.Client()
+		self.node = None
+		self.profile_syntax = DynamicSelect( _( 'Profiles' ) )
+		self.profile_syntax.update_choices( [ item[ 'name' ] for item in self.udm.get_profiles() ] )
+
+		# page 0
+		page = Page( self.title, _( 'By selecting a profile for the virtual instance most of the settings will be filled out with default values. In the following steps these values may be modified.' ) )
+		page.options.append( umcd.make( ( 'instance-profile', self.profile_syntax ) ) )
+		self.append( page )
+
+		# page 1
+		page = Page( self.title, _( '' ) )
+		page.options.append( umcd.make( ( 'instance-name', umc.String( _( 'Name' ) ) ) ) )
+		page.options.append( umcd.make( ( 'instance-arch', umc.String( _( 'Name' ) ) ) ) )
+		self.append( page )
+
+	def action( self, object, node ):
+		self.node = node
+		return IWizard.action( self, object )

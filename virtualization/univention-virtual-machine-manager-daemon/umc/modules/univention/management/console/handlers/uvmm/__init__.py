@@ -474,7 +474,13 @@ class handler( umch.simpleHandler ):
 		return content
 
 	def uvmm_domain_overview( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Domain overview' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain overview' )
+
+		migrate = object.options.get( 'migrate' )
+		if migrate == 'success':
+			object.options[ 'node' ] = object.options[ 'dest' ]
+		elif  migrate == 'failure':
+			object.options[ 'node' ] = object.options[ 'source' ]
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
 		if not success:
 			self.finished(object.id(), res)
@@ -485,7 +491,7 @@ class handler( umch.simpleHandler ):
 		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 
 		blind_table = umcd.List()
-		
+
 		reload_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = { 'group' : object.options[ 'group' ], 'node' : object.options[ 'node' ], 'domain' : object.options[ 'domain' ] } )
 		reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
 		reload_btn.set_size( umct.SIZE_SMALL )
@@ -513,12 +519,12 @@ class handler( umch.simpleHandler ):
 
 		content = self._dlg_domain_settings( object, node, domain_info )
 		blind_table.add_row( [ umcd.Cell( umcd.Section( _( 'Settings' ), content, hideable = True, hidden = True, name = 'section.%s' % domain_info.name ), attributes = { 'colspan' : '2' } ) ] )
-		
+
 		res.dialog[ 0 ].set_dialog( blind_table )
 		self.finished(object.id(), res)
 
 	def uvmm_domain_migrate( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Domain migrate' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain migrate' )
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'source', 'domain' ) )
 		if not success:
 			self.finished(object.id(), res)
@@ -531,7 +537,6 @@ class handler( umch.simpleHandler ):
 			domain_info = self.uvmm.get_domain_info( src_uri, object.options[ 'domain' ] )
 			ud.debug( ud.ADMIN, ud.INFO, 'Domain migrate: %s, %s, %s' % ( src_uri, dest_uri, domain_info ) )
 			resp = self.uvmm.domain_migrate( src_uri, dest_uri, domain_info.uuid )
-			# res.dialog[ 0 ].set_dialog( umcd.InfoBox( _( 'The migration was successfull' ) ) )
 		else:
 			domains = self.uvmm.get_group_info( object.options[ 'group' ] )
 			dest_node_select.update_choices( [ domain.name for domain in domains ], object.options[ 'source' ] )
@@ -539,12 +544,12 @@ class handler( umch.simpleHandler ):
 			dest = umcd.make( self[ 'uvmm/domain/migrate' ][ 'dest' ] )
 			content.add_row( [ dest, '' ] )
 			opts = copy.copy( object.options )
-			opts[ 'node' ] = object.options[ 'source' ]
+			opts[ 'migrate' ] = 'success'
 			cmd_success = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = opts ), [ dest.id(), ], status_range = umcd.Action.SUCCESS )
 			opts2 = copy.copy( object.options )
-			opts2[ 'node' ] = object.options[ 'source' ]
+			opts2[ 'migrate' ] = 'failure'
 			cmd_failure = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = opts2 ), status_range = umcd.Action.FAILURE )
-			
+
 			content.add_row( [ '', umcd.Button( _( 'Migrate' ), actions = [ umcd.Action( umcp.SimpleCommand( 'uvmm/domain/migrate', options = object.options ), [ dest.id() ] ), cmd_success, cmd_failure ] ) ] )
 			res.dialog[ 0 ].set_dialog( content )
 			resp = None
