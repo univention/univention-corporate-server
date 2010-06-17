@@ -49,24 +49,21 @@ install:
 	install -m 0644 uvmm.py     debian/$(PACKAGE_NAME)/usr/lib/univention-directory-listener/system/
 	install -m 0755 44univention-virtual-machine-manager-daemon.inst debian/$(PACKAGE_NAME)/usr/lib/univention-install/
 
-binary-arch: build install
-	dh_pycentral
+binary-arch:
 
 binary-indep: build install
 	dh_testdir
 	dh_testroot
-	dh_pycentral -i
 	dh_installdocs
 	dh_installexamples
 	dh_install --sourcedir=debian/tmp --list-missing
+	dh_pycentral -i
 	dh_installinit
 	dh_installchangelogs
 	univention-install-service-info
 	dh_link
-	dh_strip
 	dh_compress
 	dh_installdeb
-	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

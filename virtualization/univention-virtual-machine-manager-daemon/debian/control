@@ -16,6 +16,7 @@ Depends: libvirt-bin,
  univention-ssl,
  python-elementtree,
  python-univention-virtual-machine-manager,
+ ${python:Depends}, ${misc:Depends}
 XB-Python-Version: ${python:Versions}
 Description: Univention Virtual Machine Manager Daemon
  This package contains the Univention Virtual Machine Manager Daemon
@@ -27,7 +28,8 @@ Architecture: all
 Depends: python-libvirt,
  python-univention-management-console (>= 3.0.16),
  python-openssl,
- ${python:Depends}
+ ${python:Depends}, ${misc:Depends}
+Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: Univention Virtual Machine Manager Daemon
  This package contains the Univention Virtual Machine Manager Daemon
