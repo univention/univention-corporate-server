@@ -1,3 +1,9 @@
+univention-updater (5.0.88-1) unstable; urgency=low
+
+  * restore preup.sh ssh/term message (Bug #17258)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 17 Jun 2010 15:42:54 +0200
+
 univention-updater (5.0.87-1) unstable; urgency=low
 
   * added path to ucr call in univention-updater-check (Bug #18627)
