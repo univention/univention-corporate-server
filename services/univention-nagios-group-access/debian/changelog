@@ -1,0 +1,5 @@
+univention-nagios-group-access (1.0.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 17 Jun 2010 12:33:09 +0200

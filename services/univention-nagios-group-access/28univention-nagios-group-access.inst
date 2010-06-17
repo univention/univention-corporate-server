@@ -1,0 +1,48 @@
+#! /bin/sh
+#
+# Univention Nagios Group Access
+#  join script
+#
+# Copyright (C) 2010 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+VERSION=1
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+eval "$(univention-config-registry shell)"
+
+# test if joinscript has never been executed
+if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+	# create nagios service
+	univention-directory-manager groups/group create "$@" --ignore_exists \
+		--position "cn=groups,$ldap_base" \
+		--set name="NagiosAdmins" \
+		--set description="Group of users with granted permission for Nagios web interface"
+fi
+
+joinscript_save_current_version
+
+exit 0

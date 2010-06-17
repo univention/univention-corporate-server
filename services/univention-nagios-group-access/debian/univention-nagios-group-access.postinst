@@ -1,0 +1,48 @@
+#!/bin/sh
+#
+# Univention Nagios Group Access
+#
+# Copyright (C) 2010 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+#DEBHELPER#
+
+eval "$(univention-config-registry shell)"
+
+# run join script
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ] ; then
+	/usr/lib/univention-install/28univention-nagios-group-access.inst
+fi
+
+# add "nagios" to UCR variable "auth/user/services"
+if ! ucr get auth/user/services | tr " " "\n" | egrep -q '^nagios$' ; then
+	ucr set auth/user/services="$auth_user_services nagios"
+fi
+
+# set groups that gain access to nagios interface
+univention-config-registry set nagios/server/webaccess/groups?"Domain Admins,NagiosAdmins" \
+							   auth/nagios/accessfile?"/etc/security/access-nagios-webinterface.conf"
+
+exit 0
