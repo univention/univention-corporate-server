@@ -1,0 +1,75 @@
+Bug #18690 - Falsche Anzeige bzgl. loop-Mount
+
+http://lists.xensource.com/archives/html/xen-devel/2007-07/msg00084.html
+Index: xen-3.4/xen-3.4.3/tools/hotplug/Linux/block
+===================================================================
+--- xen-3.4.orig/xen-3.4.3/tools/hotplug/Linux/block	2010-06-17 16:16:22.000000000 +0200
++++ xen-3.4/xen-3.4.3/tools/hotplug/Linux/block	2010-06-17 16:20:21.000000000 +0200
+@@ -230,6 +230,7 @@
+         file=$(readlink -f "$p") || fatal "$p does not exist."
+         test -f "$file" || fatal "$file does not exist."
+         mode=$(canonicalise_mode "$mode")
++        major_minor=$(stat -c [%D]:%i "$file")
+ 
+         claim_lock "block"
+ 
+@@ -241,31 +242,20 @@
+ mount it read-write in a guest domain."
+         fi
+ 
+-        loopdev=''
+-        for dev in /dev/loop*
+-        do
+-          if [ ! -b "$dev" ]
+-          then
+-            continue
+-          fi
+-
+-          f=$(losetup "$dev" 2>/dev/null) || f=''
+-
+-          if [ "$f" ]
+-          then
+-            # $dev is in use.  Check sharing.
+-            if [ "x$mode" = 'x!' ]
++        if [ "x$mode" != 'x!' ]
++        then
++          while IFS=$'\t' read dev lmajor_minor f
++          do
++            if [ "$major_minor" != "$lmajor_minor" ]
+             then
+               continue
+             fi
+ 
+-            f=$(echo "$f" | sed -e 's/.*(\(.*\)).*/\1/g')
+-
+             # $f is the filename, as read from losetup, but the loopback
+             # driver truncates filenames at 64 characters, so we need to go
+             # trawling through the store if it's longer than that.  Truncation
+             # is indicated by an asterisk at the end of the filename.
+-            if expr index "$f" '*' >/dev/null
++            if [ "${f:62}" = "*" ]
+             then
+               found=""
+               for dom in $(xenstore-list "$XENBUS_BASE_PATH")
+@@ -318,18 +308,10 @@
+             then
+               check_file_sharing "$file" "$dev" "$mode"
+             fi
+-          else
+-            # $dev is not in use, so we'll remember it for use later; we want
+-            # to finish the sharing check first.
+-
+-            if [ "$loopdev" = '' ]
+-            then
+-              loopdev="$dev"
+-            fi
+-          fi
+-        done
++          done < <(losetup -a | sed -e 's,\(/dev/.*\): \(\[[0-9a-f]\+\]:[0-9]\+\) (\(.*\))$,\1\t\2\t\3,')
++        fi
+ 
+-        if [ "$loopdev" = '' ]
++        if ! loopdev=$(losetup -f)
+         then
+           release_lock "block"
+           fatal 'Failed to find an unused loop device'
