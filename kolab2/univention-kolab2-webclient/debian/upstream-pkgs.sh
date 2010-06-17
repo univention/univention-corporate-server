@@ -64,14 +64,15 @@ for pkginfo in ${KOLAB_SRCDIR}/${KOLABPEAR}/*/package.info ${KOLAB_SRCDIR}/${KOL
 		rm "${TARGET_DIR}/${outputfile}"
 		wget ${SOURCEURL}/${file}
 		tar xf "${file}"
-		if [ "${PEAR_PACKAGE}" == Date_Holidays ]; then
+		if [ "${PEAR_PACKAGE}" == Date_Holidays -o "${PEAR_PACKAGE}" == Kolab_Storage ]; then
 			# Workaround for broken patch prefix
+			sed -i -e 's/md5sum="[^"]*"//' package.xml
 			mv package.xml "${pkgfullname}"
 		fi
 		for patchfile in ${patchlist}; do
-			patch -d "${pkgfullname}" -p3 < "${patchfile}"
+			patch -d "${pkgfullname}" -p3 < "${patchfile}" || exit 1
 		done
-		if [ "${PEAR_PACKAGE}" == Date_Holidays ]; then
+		if [ "${PEAR_PACKAGE}" == Date_Holidays -o "${PEAR_PACKAGE}" == Kolab_Storage ]; then
 			# Workaround for broken patch prefix
 			mv "${pkgfullname}/package.xml" .
 		fi
