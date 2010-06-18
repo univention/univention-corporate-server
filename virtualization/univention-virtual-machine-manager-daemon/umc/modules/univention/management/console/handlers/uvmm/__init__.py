@@ -397,7 +397,7 @@ class handler( umch.simpleHandler ):
 		os = umcd.make( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
 		cpus_select.max = int( node.cpus )
 		cpus = umcd.make( self[ 'uvmm/domain/configure' ][ 'cpus' ], default = handler._getattr( domain_info, 'vcpus', '1' ), attributes = { 'width' : '250' } )
-		mem = handler._getattr( domain_info, 'maxMem', '0' )
+		mem = handler._getattr( domain_info, 'maxMem', '536870912' )
 		memory = umcd.make( self[ 'uvmm/domain/configure' ][ 'memory' ], default = block2byte( mem ), attributes = { 'width' : '250' } )
 		if domain_info and domain_info.interfaces:
 			iface = domain_info.interfaces[ 0 ]
@@ -405,8 +405,7 @@ class handler( umch.simpleHandler ):
 			iface_source = iface.source
 		else:
 			iface_mac = ''
-			iface_device = ''
-			iface_source = ''
+			iface_source = 'eth0'
 		mac = umcd.make( self[ 'uvmm/domain/configure' ][ 'mac' ], default = iface_mac, attributes = { 'width' : '250' } )
 		interface = umcd.make( self[ 'uvmm/domain/configure' ][ 'interface' ], default = iface_source, attributes = { 'width' : '250' } )
 		ram_disk = umcd.make( self[ 'uvmm/domain/configure' ][ 'initrd' ], default = handler._getattr( domain_info, 'initrd', '' ), attributes = { 'width' : '250' } )
