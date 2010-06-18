@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.36-1) unstable; urgency=low
+
+  * replaced icon for offline node (using oxygen theme); Bug #18459
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 18 Jun 2010 16:07:34 +0200
+
 univention-virtual-machine-manager-daemon (0.9.35-1) unstable; urgency=low
 
   * Implement 1st storage pool and volume commands (Bug #18611)
