@@ -269,9 +269,26 @@ class _Commands:
 		except node.NodeError, e:
 			raise CommandError('DOMAIN_MIGRATE', e)
 
+	@staticmethod
+	def STORAGE_POOLS(server, request):
+		"""List all volumes in pool."""
+		if not isinstance(request.uri, basestring):
+			raise CommandError('STORAGE_POOLS', _('uri != string: %(uri)s'), uri=request.uri)
+		logger.debug('STORAGE_POOLS %s]' % (request.uri,))
+		try:
+			pools = node.storage_pools(request.uri)
+			res = protocol.Response_DUMP()
+			res.data = pools
+			return res
+		except node.NodeError, e:
+			raise CommandError('STORAGE_POOLS', e)
+
 	def __getitem__(self, cmd):
 		if cmd.startswith('_'):
 			raise CommandError(cmd, _('Command "%(command)s" is restricted'))
-		return getattr(self, cmd)
+		try:
+			return getattr(self, cmd)
+		except AttributeError, e:
+			raise CommandError(cmd, _('Unknown command "%(command)s'))
 
 commands = _Commands()

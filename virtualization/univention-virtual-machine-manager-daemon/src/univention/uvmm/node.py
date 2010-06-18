@@ -43,9 +43,9 @@ from helpers import TranslatableException, N_ as _
 from uvmm_ldap import ldap_annotation, LdapError, ldap_modify
 import univention.admin.uexceptions
 import traceback
-import os.path as path
 from univention.uvmm.eventloop import *
 import threading
+from storage import create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError
 
 logger = logging.getLogger('uvmmd.node')
 
@@ -534,7 +534,7 @@ class Node(object):
 
 class Nodes(dict):
 	"""Handle registered nodes."""
-	IDLE_FREQUENCY = 60*1000; # ms
+	IDLE_FREQUENCY = 15*1000; # ms
 	USED_FREQUENCY = 10*1000; # ms
 	def __init__(self):
 		super(Nodes,self).__init__()
@@ -594,6 +594,7 @@ def node_frequency(hz=Nodes.IDLE_FREQUENCY, uri=None):
 
 def node_list(group):
 	"""Return list of watched nodes."""
+	global nodes
 	if group == 'default': # FIXME
 		return [uri for uri in nodes]
 	else:
@@ -734,59 +735,12 @@ def domain_define( uri, domain ):
 			readonly = doc.createElement( 'readonly' )
 			elem.appendChild( readonly )
 
-		if disk.device != Disk.DEVICE_DISK:
-			continue
-
-		pool_name = 'default' # FIXME
-		try:
-			v = conn.storageVolLookupByPath(disk.source)
-			logger.warning('Storage volume "%s" already exists for domain "%s"' % (disk.source, domain.name))
-			continue
-		except libvirt.libvirtError, e:
-			if e.get_error_code() != libvirt.VIR_ERR_INVALID_STORAGE_VOL:
-				raise NodeError(_('Error finding storage volume "%(volume)s" for "%(domain)s": %(error)s'), volume=disk.source, domain=domain.name, error=e)
-
-		try:
-			p = conn.storagePoolLookupByName(pool_name)
-		except libvirt.libvirtError, e:
-			if e.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_POOL:
-				raise NodeError(_('Error finding storage pool "%(pool)s" for "%(domain)s": %(error)s'), pool=pool_name, domain=domain.name, error=e)
-			xml = '''
-			<pool type="dir">
-				<name>%(pool)s</name>
-				<target>
-					<path>%(path)s</path>
-				</target>
-			</pool>
-			''' % {
-					'pool': pool_name,
-					'path': path.dirname(disk.source),
-					}
+		if disk.device == Disk.DEVICE_DISK:
 			try:
-				p = conn.storagePoolDefineXML(xml, 0)
-				p.setAutostart(True)
-			except libvirt.libvirtError, e:
-				raise NodeError(_('Error creating storage pool "%(pool)s" for "%(domain)s": %(error)s'), pool=pool_name, domain=domain.name, error=e)
-
-		xml = '''
-		<volume>
-			<name>%(name)s</name>
-			<allocation unit="G">0</allocation>
-			<capacity unit="G">%(size)d</capacity>
-			<target>
-				<format type="raw"/>
-			</target>
-		</volume>
-		''' % {
-				'name': path.basename(disk.source),
-				'size': 8, # FIXME
-				}
-		try:
-			v = p.createXML(xml, 0)
-			logger.info('New disk "%s" for "%s"(%s) defined.' % (v.path(), domain.name, domain.uuid))
-		except libvirt.libvirtError, e:
-			if e.get_error_code() != libvirt.VIR_ERR_INVALID_STORAGE_POOL:
-				raise NodeError(_('Error creating storage volume "%(name)s" for "%(domain)s": %(error)s'), name=disk.source, domain=domain.name, error=e)
+				# FIXME: If the volume is outside any pool, ignore error
+				create_storage_volume(conn, domain, disk)
+			except StorageError, e:
+				raise NodeError(e)
 
 	for iface in domain.interfaces:
 		logger.debug('INTERFACE: %s' % iface)
@@ -944,17 +898,9 @@ def domain_undefine(uri, domain, volumes=[]):
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
 		if volumes is None:
-			volumes = []
-			doc = parseString(dom.XMLDesc(0))
-			devices = doc.getElementsByTagName('devices')[0]
-			disks = devices.getElementsByTagName('disk')
-			for disk in disks:
-				source = disk.getElementsByTagName('source')[0]
-				volumes.append(source.getAttribute('file'))
+			volumes = get_all_storage_volumes(conn, dom,)
+		destroy_storage_volumes(conn, volumes, ignore_error=True)
 		dom.undefine()
-		for vol_name in volumes:
-			vol = conn.storageVolLookupByKey(vol_name)
-			vol.delete(0)
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise NodeError(_('Error undefining domain "%(domain)s": %(error)s'), domain=domain, error=e)

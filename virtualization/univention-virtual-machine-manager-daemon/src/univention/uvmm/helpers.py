@@ -29,7 +29,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
-__all__ = ['_', 'TranslatableException']
+__all__ = ['_', 'N_', 'TranslatableException', 'LIBVIRT_ERR']
 
 import gettext
 N_ = lambda msg: msg
@@ -57,3 +57,6 @@ class TranslatableException(Exception):
 	@property
 	def dict(self):
 		return self.args[1]
+
+import libvirt
+LIBVIRT_ERR = dict([(getattr(libvirt, err), err) for err in dir(libvirt) if err.startswith('VIR_ERR_')])

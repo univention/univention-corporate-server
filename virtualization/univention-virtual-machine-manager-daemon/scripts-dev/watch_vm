@@ -1,0 +1,35 @@
+#!/usr/bin/python2.4
+
+import sys
+import time
+import libvirt
+
+from univention.uvmm.eventloop import *
+virEventLoopPureStart()
+virEventLoopPureRegister()
+
+sys.argv += ['xen:///', 'DOS3']
+sys.argv += ['xen://xen4.opendvdi.local/', 'DOS3']
+
+c = libvirt.open(sys.argv[1])
+
+def cb(*a):
+	print '|'.join(map(str,a))
+c.domainEventRegister(cb, 42)
+
+d = c.lookupByName(sys.argv[2])
+state = None
+try:
+	while True:
+	  s = d.info()[0]
+	  if s != state:
+		print "%s\t%s" % (time.time(), s)
+		state = s
+	  time.sleep(1)
+except KeyboardInterrupt:
+	pass
+
+if __name__ == '__main__':
+	import readline
+	import rlcompleter
+	readline.parse_and_bind("tab: complete")

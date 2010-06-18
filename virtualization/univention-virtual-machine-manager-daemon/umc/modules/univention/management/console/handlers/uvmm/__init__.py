@@ -392,7 +392,7 @@ class handler( umch.simpleHandler ):
 		arch_select.update_choices( archs )
 									
 		name = umcd.make( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ), attributes = { 'width' : '250' } )
-		virt_tech = umcd.make( self[ 'uvmm/domain/configure' ][ 'type' ], default = handler._getattr( domain_info, 'virt_tech', 'xen' ), attributes = { 'width' : '250' } )
+		virt_tech = umcd.make( self[ 'uvmm/domain/configure' ][ 'type' ], default = handler._getattr( domain_info, 'virt_tech', 'hvm' ), attributes = { 'width' : '250' } )
 		arch = umcd.make( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ), attributes = { 'width' : '250' } )
 		os = umcd.make( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
 		cpus_select.max = int( node.cpus )

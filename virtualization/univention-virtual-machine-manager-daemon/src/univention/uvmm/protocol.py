@@ -85,6 +85,7 @@ class Packet(object):
 class Request(Packet):
 	"""Super class of all requests to UVMM daemon."""
 	def _default(self):
+		"""Set default values. Called from __init__(self)."""
 		self.command = None
 
 class Request_NODE_ADD(Request):
@@ -161,6 +162,29 @@ class Request_DOMAIN_MIGRATE(Request):
 		self.uri = None
 		self.domain = None
 		self.target_uri = None
+
+class Request_STORAGE_POOLS(Request):
+	"""List all pools."""
+	def _default(self):
+		self.command = 'STORAGE_POOLS'
+		self.uri = None
+
+class Request_STORAGE_VOLUMES(Request):
+	"""List all volumes in pool."""
+	def _default(self):
+		self.command = 'STORAGE_VOLUMES'
+		self.uri = None
+		self.pool = None
+		self.type = None # DISK CDROM
+
+class Request_STORAGE_DEFINE(Request):
+	"""Create new volume in pool."""
+	def _default(self):
+		self.command = 'STORAGE_DEFINE'
+		self.uri = None
+		self.pool = None
+		self.name = None
+		self.size = 0 # bytes
 
 class Response(Packet):
 	"""Super class of all responses from UVMM daemon."""
@@ -265,3 +289,21 @@ class Data_Node(object):
 			'last_update': self.last_update,
 			}
 
+class Data_Pool(object):
+	"""Container for storage pool statistics."""
+
+	def __init__(self):
+		self.name = None
+		self.uuid = None
+		self.capacity = 0L
+		self.available = 0L
+		self.path = None # optional
+
+	def _json(self):
+		return {
+				'name': self.name,
+				'uuid': self.uuid,
+				'capacity': self.capacity,
+				'available': self.available,
+				'path': self.path,
+				}

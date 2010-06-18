@@ -1,6 +1,17 @@
+univention-virtual-machine-manager-daemon (0.9.35-1) unstable; urgency=low
+
+  * Implement 1st storage pool and volume commands (Bug #18611)
+  * Handle unknown command.
+  * Change default virt-tech to hvm (Bug #17733)
+  * Reduce polling interval to 15s.
+  * Better handle volume creation and deletion (Bug #18611)
+  * Translation and spelling updates.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Jun 2010 14:57:14 +0200
+
 univention-virtual-machine-manager-daemon (0.9.34-1) unstable; urgency=low
 
-  * UMC modul: set default values for memory and interface of new virtual
+  * UMC module: set default values for memory and interface of new virtual
     instances; Bug #17733
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 18 Jun 2010 09:15:10 +0200
@@ -16,9 +27,9 @@ univention-virtual-machine-manager-daemon (0.9.33-2) unstable; urgency=low
 univention-virtual-machine-manager-daemon (0.9.33-1) unstable; urgency=low
 
   * UVVM daemon: remove internal information of domain after successful migration
-  * UMC modul: if migration was successfull show domain on destination
+  * UMC module: if migration was successful show domain on destination
     host; Bug #18634
-  * UMC modul: add code to read UVMM profiles
+  * UMC module: add code to read UVMM profiles
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 16 Jun 2010 14:37:27 +0200
 
@@ -61,7 +72,7 @@ univention-virtual-machine-manager-daemon (0.9.28-2) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.28-1) unstable; urgency=low
 
-  * Add default <features> agains performance problem (Bug #18636)
+  * Add default <features> against performance problem (Bug #18636)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 11 Jun 2010 15:48:04 +0200
 
@@ -74,7 +85,7 @@ univention-virtual-machine-manager-daemon (0.9.27-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (0.9.26-3) unstable; urgency=low
 
   * Force annotations uuid attribute to correct value (Bug #18385)
-  * Protect event_loop agains exceptions in callback.
+  * Protect event_loop against exceptions in callback.
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 11 Jun 2010 12:33:46 +0200
 
@@ -106,7 +117,7 @@ univention-virtual-machine-manager-daemon (0.9.24-3) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.24-2) unstable; urgency=low
 
-  * Fix traceback turing domain creation (Bug #18385)
+  * Fix traceback during domain creation (Bug #18385)
   * Fix caching during TreeView traversal.
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 10 Jun 2010 13:17:25 +0200
@@ -252,7 +263,7 @@ univention-virtual-machine-manager-daemon (0.9.10-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (0.9.9-1) unstable; urgency=low
 
   * Add timestamps to NODE_QUERY (Bug #18459)
-  * Disbale query during initial connect (Bug #18310)
+  * Disable query during initial connect (Bug #18310)
   * Add functionality to edit domains (remove+redefine).
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 26 May 2010 12:06:14 +0200
@@ -436,6 +447,6 @@ univention-virtual-machine-manager-daemon (0.2.0-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.1.0-1) unstable; urgency=low
 
-  * Inital release (Bug #17733)
+  * Initial release (Bug #17733)
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 29 Mar 2010 10:49:37 +0200

@@ -71,7 +71,10 @@ def request(options, req):
 			print "DATA:"
 			try:
 				from pprint import pprint
-				pprint(res.data._json())
+				if isinstance(res.data, list):
+					pprint([i._json() for i in res.data])
+				else:
+					pprint(res.data._json())
 			except AttributeError, e:
 				print str(res)
 			except Exception, e:
@@ -123,6 +126,8 @@ modes += ['groups', 'nodes']
 modes += ['add', 'remove', 'frequency', 'nodes', 'query', 'ldap']
 # Domain
 modes += ['save', 'restore', 'migrate', 'state', 'define', 'undefine']
+# Storage
+modes += ['pools', 'volumes', 'volume_define']
 
 if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, '')
@@ -314,6 +319,29 @@ if __name__ == '__main__':
 			try: domain = arguments.pop(0)
 			except IndexError: raise TranslatableException(N_('Domain required'))
 			req = protocol.Request_DOMAIN_UNDEFINE(uri=uri, domain=domain, volumes=arguments)
+		elif mode == 'pools':
+			try: uri = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('URI required'))
+			req = protocol.Request_STORAGE_POOLS(uri=uri)
+		elif mode == 'volumes':
+			try: uri = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('URI required'))
+			try: pool = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('Pool name required'))
+			try: type = arguments.pop(0)
+			except IndexError: type = None
+			req = protocol.Request_STORAGE_VOLUMES(uri=uri, pool=pool, type=type)
+		elif mode == 'volume_define':
+			try: uri = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('URI required'))
+			try: pool = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('Pool name required'))
+			try: name = arguments.pop(0)
+			except IndexError: raise TranslatableException(N_('Volume name required'))
+			try: size = int(arguments.pop(0))
+			except IndexError: raise TranslatableException(N_('Volume size required'))
+			except ValueError: raise TranslatableException(N_('Volume size required'))
+			req = protocol.Request_STORAGE_DEFINE(uri=uri, pool=pool, name=name, size=size)
 		else:
 			raise TranslatableException(N_('Unknown mode "%(mode)s"'), mode=mode)
 	except TranslatableException, (translatable_text, dict):
