@@ -128,21 +128,24 @@ class ButtonMap( IButtonMap, mapper.IMapper ):
 			confirm = storage.confirmation_required( action.command )
 			if confirm:
 				attributes.update( { 'webui-confirm-title' : '%s - %s' % ( storage.get_module_name(), str( confirm.title ) ), 'webui-confirm-question' : str( confirm.question ), 'webui-confirm-yes' : str( confirm.yes ), 'webui-confirm-no' : str( confirm.no ) } )
-		
+
 	def layout( self, storage, umcp_part, attributes = {} ):
 		attributes = copy.copy( attributes )
 		attributes.update( utils.attributes( umcp_part ) )
 		if umcp_part.get_tag():
 			icon = umcp_part.get_image()
 			attributes.update( { 'icon' : icon } )
-			
+
 			if umcp_part.icon_right:
 				attributes.update( { 'icon_side' : 'right' } )
 			else:
 				attributes.update( { 'icon_side' : 'left' } )
 
 		self.confirm_attributes( storage, umcp_part, attributes )
-	
+
+		# if the button is instanciated directly via umcd.Button set a default class
+		if type( umcp_part ) == umcd.Button and not 'class' in attributes:
+			attributes[ 'class' ] = 'submit'
 		but = button( unicode( umcp_part ), attributes, { 'helptext' : unicode( umcp_part ) } )
 		storage[ umcp_part.id() ] = ( but, umcp_part )
 
