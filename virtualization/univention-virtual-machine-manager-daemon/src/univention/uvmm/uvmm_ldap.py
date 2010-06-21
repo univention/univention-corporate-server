@@ -36,7 +36,7 @@ try:
 	import cPickle as pickle
 except ImportError:
 	import pickle
-import univention.baseconfig
+import univention.config_registry as ucr
 import univention.uldap
 from ldap import LDAPError
 import ldapurl
@@ -45,6 +45,9 @@ import univention.admin.modules
 import univention.admin.handlers.uvmm.info as uvmm_info
 from helpers import TranslatableException, N_ as _
 import logging
+
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
 
 logger = logging.getLogger('uvmmd.ldap')
 
@@ -72,7 +75,11 @@ class LdapConnectionError(LdapError):
 
 def ldap2fqdn(ldap_result):
 	"""Convert LDAP result to fqdn."""
-	return "%s.%s" % (ldap_result['cn'][0], ldap_result['associatedDomain'][0])
+	if not 'associatedDomain' in ldap_result:
+		domain = configRegistry.get( 'domainname', '' )
+	else:
+		domain = ldap_result[ 'associatedDomain' ][ 0 ]
+	return "%s.%s" % (ldap_result['cn'][0], domain)
 
 class _ldap_uri(object):
 	"""LDAP URI."""
@@ -82,11 +89,9 @@ class _ldap_uri(object):
 			u = ldapurl.LDAPUrl(uri)
 		except ValueError, e:
 			raise LdapConfigurationError(_('Illegal URI: %(uri)s'), uri=uri)
-		
-		baseConfig = univention.baseconfig.baseConfig()
-		baseConfig.load()
+
 		if not u.hostport:
-			u.hostport = baseConfig['ldap/server/name']
+			u.hostport = configRegistry['ldap/server/name']
 			logger.debug('Retrieved ldap-host %s' % (u.hostport,))
 			if not u.hostport:
 				raise LdapConfigurationError(_('No LDAP server in ldap/server/name.'))
@@ -98,7 +103,7 @@ class _ldap_uri(object):
 			import socket
 			self.port = socket.getservbyname(u.urlscheme)
 		if not u.dn:
-			u.dn = baseConfig['ldap/base']
+			u.dn = configRegistry['ldap/base']
 			logger.debug('Retrieved ldap-dn %s' % (u.dn,))
 			if not u.dn:
 				raise LdapConfigurationError(_('No LDAP base in ldap/base.'))
@@ -106,7 +111,7 @@ class _ldap_uri(object):
 			self.dn = "%s,%s" % (rdn, u.dn)
 		else:
 			self.dn = u.dn
-	
+
 	def connect(self):
 		"""Connect to ldap://host/base."""
 		try:
