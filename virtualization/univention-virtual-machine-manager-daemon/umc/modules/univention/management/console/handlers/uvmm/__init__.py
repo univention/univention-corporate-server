@@ -68,6 +68,8 @@ drive_type = umcd.make( ( 'type', DriveTypeSelect( _( 'Type' ) ) ), attributes =
 drive_uri = umcd.make( ( 'uri', umc.String( 'URI' ) ), attributes = { 'width' : '250' } )
 drive_dev = umcd.make( ( 'dev', umc.String( _( 'Device' ) ) ), attributes = { 'width' : '250' } )
 
+boot_dev = umcd.make( ( 'bootdev', BootDeviceSelect( _( 'Boot device' ) ) ), attributes = { 'width' : '250' } )
+
 dest_node_select = NodeSelect( _( 'Destination host' ) )
 arch_select = DynamicSelect( _( 'Architecture' ) )
 type_select = DynamicSelect( _( 'Virtualization Technique' ) )
@@ -147,6 +149,7 @@ command_description = {
 				   'initrd' : umc.String( _( 'RAM disk' ), required = False ),
 				   'cmdline' : umc.String( _( 'Kernel parameter' ), required = False ),
 				   'kernel' : umc.String( _( 'Kernel' ), required = False ),
+				   'bootdevs' : umc.StringList( _( 'Boot device' ), required = False ),
 				   },
 		),
 	'uvmm/domain/migrate': umch.command(
@@ -214,7 +217,7 @@ class handler( umch.simpleHandler ):
 		self.finished( object.id(), res )
 
 	def uvmm_group_overview( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Group overview' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Group overview' )
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', ) )
 		if not success:
 			self.finished(object.id(), res)
@@ -226,7 +229,7 @@ class handler( umch.simpleHandler ):
 		reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
 		reload_btn.set_size( umct.SIZE_SMALL )
 		content.add_row( [ umcd.Cell( reload_btn, attributes = { 'align' : 'right' } ), ] )
-						   
+
 		table = umcd.List()
 		table.set_header( [ _( 'Physical server' ), _( 'CPU usage' ), _( 'Memory usage' ) ] )
 		for node in nodes:
@@ -253,7 +256,7 @@ class handler( umch.simpleHandler ):
 		cmd_opts = { 'group' : object.options[ 'group' ], 'node' : node.name, 'domain' : domain.name }
 		if not domain.state in ( 1, 2, 3 ):
 			opts = copy.copy( cmd_opts )
-			opts[ 'state' ] = 'RUN' 
+			opts[ 'state' ] = 'RUN'
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
 			buttons.append( umcd.LinkButton( _( 'Start' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
 			buttons.append( comma )
@@ -261,7 +264,7 @@ class handler( umch.simpleHandler ):
 		# Stop? if state is not stopped or suspended
 		if not domain.state in ( 3, 4, 5 ):
 			opts = copy.copy( cmd_opts )
-			opts[ 'state' ] = 'SHUTDOWN' 
+			opts[ 'state' ] = 'SHUTDOWN'
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
 			buttons.append( umcd.LinkButton( _( 'Stop' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
 			buttons.append( comma )
@@ -269,7 +272,7 @@ class handler( umch.simpleHandler ):
 		# Suspend? if state is running or blocked
 		if domain.state in ( 1, 2):
 			opts = copy.copy( cmd_opts )
-			opts[ 'state' ] = 'PAUSE' 
+			opts[ 'state' ] = 'PAUSE'
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
 			buttons.append( umcd.LinkButton( _( 'Suspend' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
 			buttons.append( comma )
@@ -277,7 +280,7 @@ class handler( umch.simpleHandler ):
 		# Resume? if state is paused
 		if domain.state in ( 3, ):
 			opts = copy.copy( cmd_opts )
-			opts[ 'state' ] = 'RUN' 
+			opts[ 'state' ] = 'RUN'
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
 			buttons.append( umcd.LinkButton( _( 'Resume' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
 			buttons.append( comma )
@@ -295,7 +298,7 @@ class handler( umch.simpleHandler ):
 			cmd = umcp.SimpleCommand( 'uvmm/device/create', options = opts )
 			buttons.append( umcd.LinkButton( _( 'New Device' ), actions = [ umcd.Action( cmd ), ] ) )
 			buttons.append( comma )
-			
+
 		# VNC? if running and activated
 		if domain.state in ( 1, 2 ) and domain.graphics and domain.graphics[ 0 ].port != -1:
 			host = node.name
@@ -320,7 +323,7 @@ class handler( umch.simpleHandler ):
 		return buttons[ : -1 ]
 
 	def uvmm_node_overview( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Node overview' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Node overview' )
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node' ) )
 		if not success:
 			self.finished(object.id(), res)
@@ -390,7 +393,7 @@ class handler( umch.simpleHandler ):
 				archs.append( template.arch )
 		type_select.update_choices( types )
 		arch_select.update_choices( archs )
-									
+
 		name = umcd.make( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ), attributes = { 'width' : '250' } )
 		virt_tech = umcd.make( self[ 'uvmm/domain/configure' ][ 'type' ], default = handler._getattr( domain_info, 'virt_tech', 'hvm' ), attributes = { 'width' : '250' } )
 		arch = umcd.make( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ), attributes = { 'width' : '250' } )
@@ -411,6 +414,18 @@ class handler( umch.simpleHandler ):
 		ram_disk = umcd.make( self[ 'uvmm/domain/configure' ][ 'initrd' ], default = handler._getattr( domain_info, 'initrd', '' ), attributes = { 'width' : '250' } )
 		root_part = umcd.make( self[ 'uvmm/domain/configure' ][ 'cmdline' ], default = handler._getattr( domain_info, 'cmdline', '' ), attributes = { 'width' : '250' } )
 		kernel = umcd.make( self[ 'uvmm/domain/configure' ][ 'kernel' ], default = handler._getattr( domain_info, 'kernel', '' ), attributes = { 'width' : '250' } )
+		bootdev_default = getattr( domain_info, 'boot', [ 'cdrom', 'hd' ] )
+		bd_default = []
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: boot devices: %s' % bootdev_default )
+		if bootdev_default:
+			for dev in bootdev_default:
+				for key, descr in BootDeviceSelect.CHOICES:
+					ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: boot devices (compare): %s == %s' % ( key, dev ) )
+					if key == str( dev ):
+						bd_default.append( ( key, descr ) )
+						break
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: boot devices (found): %s' % bd_default )
+		bootdevs = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'bootdevs' ], fields = [ boot_dev ], default = bd_default, attributes = { 'width' : '250' } )
 		if domain_info and domain_info.disks:
 			defaults = []
 			for disk in domain_info.disks:
@@ -437,7 +452,7 @@ class handler( umch.simpleHandler ):
 						vnc_global = False
 					vnc_keymap = gfx.keymap
 					break
-		
+
 		vnc = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc' ], default = vnc_bool, attributes = { 'width' : '250' } )
 		kblayout = umcd.make( self[ 'uvmm/domain/configure' ][ 'kblayout' ], default = vnc_keymap, attributes = { 'width' : '250' } )
 		vnc_global = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc_global' ], default = vnc_global, attributes = { 'width' : '250' } )
@@ -448,9 +463,10 @@ class handler( umch.simpleHandler ):
 		content.add_row( [ memory, interface ] )
 
 		content2 = umcd.List()
-		content2.add_row( [ ram_disk, umcd.Cell( drives, attributes = { 'rowspan' : '7' } ) ] )
-		content2.add_row( [ root_part ] )
+		content2.add_row( [ bootdevs, umcd.Cell( drives, attributes = { 'rowspan' : '4', 'valign' : 'top' } ) ] )
 		content2.add_row( [ kernel ] )
+		content2.add_row( [ ram_disk ] )
+		content2.add_row( [ root_part ] )
 
 		content2.add_row( [ umcd.Text( '' ) ] )
 
@@ -465,7 +481,7 @@ class handler( umch.simpleHandler ):
 		else:
 			content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'subsection.%s' % domain_info.name ), attributes = { 'colspan' : '2' } ), ] )
 
-		ids = ( name.id(), os.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), drives.id(), vnc.id(), vnc_global.id(), kblayout.id() )
+		ids = ( name.id(), os.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), drives.id(), vnc.id(), vnc_global.id(), kblayout.id(), bootdevs.id() )
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
 		overview_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = object.options )
 		content.add_row( [ '', umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ] ) ] )
@@ -561,7 +577,7 @@ class handler( umch.simpleHandler ):
 			self.finished( object.id(), res )
 
 	def uvmm_domain_configure( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure' )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure' )
 		res = umcp.Response( object )
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
@@ -576,11 +592,12 @@ class handler( umch.simpleHandler ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: operating system: %s' % handler._getstr( object, 'os' ) )
 		domain.annotations['os'] = handler._getstr( object, 'os' )
 		domain.arch = object.options[ 'arch' ]
-		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: architecture: %s' % domain.arch )		
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: architecture: %s' % domain.arch )
 		domain.vcpus = int( object.options[ 'cpus' ] )
 		domain.kernel = handler._getstr( object, 'kernel' )
 		domain.cmdline = handler._getstr( object, 'cmdline' )
 		domain.initrd = handler._getstr( object, 'initrd' )
+		domain.boot = handler._getstr( object, 'bootdevs' )
 		domain.maxMem = byte2block( object.options[ 'memory' ] )
 
 		# interface

@@ -49,11 +49,17 @@ class KBLayoutSelect( umc.StaticSelection ):
 	def choices( self ):
 		return ( ( 'de', _( 'German' ) ), ( 'en-us', _( 'American' ) ) )
 
+class BootDeviceSelect( umc.StaticSelection ):
+	CHOICES = ( ( 'fd', _( 'Floppy disk' ) ), ( 'hd', _( 'Hard drive' ) ), ( 'cdrom', _( 'CDROM drive' ) ), ( 'network', _( 'Network' ) ) )
+
+	def choices( self ):
+		return BootDeviceSelect.CHOICES
+
 class NumberSelect( umc.StaticSelection ):
 	def __init__( self, label, max = 8, required = True, may_change = True ):
 		self.max = max
 		umc.StaticSelection.__init__( self, label, required = required, may_change = may_change )
-		
+
 	def choices( self ):
 		return map( lambda x: ( str( x ), str( x ) ), range( 1, self.max + 1 ) )
 
@@ -80,6 +86,7 @@ class NodeSelect( umc.StaticSelection ):
 
 umcd.copy( umc.StaticSelection, DynamicSelect )
 umcd.copy( umc.StaticSelection, KBLayoutSelect )
+umcd.copy( umc.StaticSelection, BootDeviceSelect )
 umcd.copy( umc.StaticSelection, NumberSelect )
 umcd.copy( umc.StaticSelection, DriveTypeSelect )
 umcd.copy( umc.StaticSelection, NodeSelect )

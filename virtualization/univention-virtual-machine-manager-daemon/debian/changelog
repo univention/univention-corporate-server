@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.37-1) unstable; urgency=low
+
+  * add an option for the boot devices of a virtual instance; Bug #18625
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 21 Jun 2010 10:58:14 +0200
+
 univention-virtual-machine-manager-daemon (0.9.36-1) unstable; urgency=low
 
   * replaced icon for offline node (using oxygen theme); Bug #18459
