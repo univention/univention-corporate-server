@@ -1,3 +1,51 @@
+univention-mail-cyrus-kolab2 (3.0.7-1) unstable; urgency=low
+
+  * fix cyrus-sieve.py to not do create_cyrus_mailbox()
+    if mailbox renaming is enabled (Bug #17348)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 21 Jun 2010 13:33:56 +0200
+
+univention-mail-cyrus-kolab2 (3.0.6-2) unstable; urgency=low
+
+  * fixed typo (Bug #17315)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 14 May 2010 13:51:00 +0200
+
+univention-mail-cyrus-kolab2 (3.0.5-1) unstable; urgency=low
+
+  * fixed renaming (Bug #17315)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 14 May 2010 12:32:26 +0200
+
+univention-mail-cyrus-kolab2 (3.0.4-1) unstable; urgency=low
+
+  * consider subscription files as well on rename (Bug #17315)
+  * rewrite subscription files to new mailPrimaryAddress on rename
+
+ -- Arvid Requate <requate@univention.de>  Fri, 15 Jan 2010 10:17:58 +0100
+
+univention-mail-cyrus-kolab2 (3.0.3-1) unstable; urgency=low
+
+  * unregistered mail/cyrus/mailbox/delete from imapd.conf
+  * modified subprocess.calls to work without shell (Bug #17315)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 14 Jan 2010 14:09:27 +0100
+
+univention-mail-cyrus-kolab2 (3.0.2-1) unstable; urgency=low
+
+  * add code for mail/cyrus/mailbox/rename and mail/cyrus/mailbox/delete
+  * new scripts univention-cyrus-mailbox-rename and -delete (Bug #17315)
+  * adjusted cyrus.py listener module to scrip mailbox creation if rename
+  * new listener module cyrus-mailboxrename.py (Bug #17315)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 13 Jan 2010 17:37:55 +0100
+
+univention-mail-cyrus-kolab2 (3.0.1-1) unstable; urgency=low
+
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 18 Jun 2010 13:07:21 +0200
+
 univention-mail-cyrus-kolab2 (2.0.10-1) unstable; urgency=low
 
   * fixed set-quota skript, Bug #15220

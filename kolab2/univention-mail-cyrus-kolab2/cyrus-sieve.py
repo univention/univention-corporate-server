@@ -50,7 +50,10 @@ def handler(dn, new, old):
 		pass
 	else:
 		if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0] and new['mailPrimaryAddress'][0].lower() != listener.baseConfig.get('mail/antispam/globalfolder', '').lower():
-
+			if old and old.has_key('mailPrimaryAddress') and old['mailPrimaryAddress'][0] != new['mailPrimaryAddress'][0]: # changed mailPrimaryAddress
+				mailboxrename = listener.baseConfig.get('mail/cyrus/mailbox/rename')
+				if mailboxrename and mailboxrename.lower() in ['true', 'yes']:
+					return # do not create mailbox/sieve files if renaming is enabled (cyrus-mailboxrename.py will handle that)
 			if new.has_key( 'univentionKolabDisableSieve' ) and new[ 'univentionKolabDisableSieve' ][0].lower( ) in [ 'true', 'yes' ]:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Do not not write a  sieve script for user: %s' % new['mailPrimaryAddress'][0])
 				return

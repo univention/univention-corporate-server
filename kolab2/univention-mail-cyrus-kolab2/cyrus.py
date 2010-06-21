@@ -100,16 +100,25 @@ def handler(dn, new, old):
 		if not old:
 				create_cyrus_mailbox(new)
 		else:
+			old_mailPrimaryAddress = old.get('mailPrimaryAddress', [''])[0]
 			if not is_cyrus_murder_backend():
+				mailboxrename = listener.baseConfig.get('mail/cyrus/mailbox/rename')
+				if old_mailPrimaryAddress and mailboxrename and mailboxrename.lower() in ['true', 'yes']:
+					# cyrus-mailboxrename.py will take care of this case
+					pass
+				else:
 					create_cyrus_mailbox(new)
-					# FIXME: case for mailbox rename
 			else:
 				if (is_groupware_user(new) and (not is_groupware_user(old))):
 				# if the groupware option changed to yes
 					create_cyrus_mailbox(new)
 					# FIXME: case for mailbox rename
-				elif (old.has_key('kolabHomeServer') and old['kolabHomeServer'][0] != fqdn):
-				# if the groupware option was not toggled but the kolabHomeServer changed:
-					move_cyrus_murder_mailbox(new, old)
-					# FIXME: case for mailbox rename
+				else: # the groupware option is unchanged or changed to no
+					# no behaviour change here just a bit improved readability
+					old_kolabHomeServer = old.get('kolabHomeServer', [''])[0]
+					if (old_kolabHomeServer and old_kolabHomeServer != fqdn):
+						# the kolabHomeServer changed:
+						move_cyrus_murder_mailbox(new, old)
+					#elif (old_kolabHomeServer == fqdn):
+						# cyrus-mailboxrename.py will take care of this case
 

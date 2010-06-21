@@ -1,5 +1,6 @@
 Type: file
 File: etc/imapd/imapd.conf
+Variables: mail/cyrus/mailbox/rename
 Variables: mail/cyrus/murder/backend/id
 Variables: mail/cyrus/admins
 Variables: mail/cyrus/imap/admins

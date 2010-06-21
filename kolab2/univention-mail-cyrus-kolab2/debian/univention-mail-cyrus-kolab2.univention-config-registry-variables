@@ -100,3 +100,15 @@ Description[de]=Definiert den Intervall, in der Indexservice squatter Mails indi
 Description[en]=Defines the interval to have the indexservice squatter process mails
 Type=str
 Categories=service-mail
+
+[mail/cyrus/mailbox/rename]
+Description[de]=Definiert, ob eine Cyrus Mailbox umbenannt werden soll, wenn eine primäre Mailadresse geändert wurde
+Description[en]=Defines if a cyrus mailbox should be renamed, if a primary mailaddress was modified
+Type=str
+Categories=service-mail
+
+[mail/cyrus/mailbox/delete]
+Description[de]=Definiert, ob eine Cyrus Mailbox gelöscht werden soll, wenn eine primäre Mailadresse entfernt oder ein Benutzerobjekt gelöscht wurde
+Description[en]=Defines if a cyrus mailbox should be deleted, if a primary mailaddress was removed or a user object has been deleted
+Type=str
+Categories=service-mail

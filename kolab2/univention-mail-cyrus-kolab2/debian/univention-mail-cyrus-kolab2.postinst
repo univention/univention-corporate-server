@@ -73,7 +73,9 @@ univention-config-registry set mail/cyrus?yes \
 								ldap/port=389 \
 								mail/cyrus/sieve/listen_host?all \
 								mail/cyrus/idlemethod?idled \
-								mail/cyrus/imap/quotaintervall=60
+								mail/cyrus/imap/quotaintervall=60 \
+								mail/cyrus/mailbox/rename?no \
+								mail/cyrus/mailbox/delete?no
 
 dpkg-statoverride --add root sasl 660 /etc/sasldb2 || true
 
