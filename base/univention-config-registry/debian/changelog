@@ -1,3 +1,9 @@
+univention-config-registry (6.0.6-1) unstable; urgency=low
+
+  * removed category from default ucr search output, Bug #18568
+
+ -- Tim Petersen <petersen@univention.de>  Wed, 21 Jun 2010 09:26:23 +0200
+
 univention-config-registry (6.0.5-1) unstable; urgency=low
 
   * removed unnecessary debhelper files in univention-install-service-info

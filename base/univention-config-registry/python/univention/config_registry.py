@@ -1159,7 +1159,6 @@ def print_variable_info_string( key, value, variable_info, scope=None, show_scop
 			description = 'no description available'
 		info.append ( ' ' + description )
 
-		info.append ( ' Categories: ' + variable_info.get ( 'categories', 'none' ) )
 		info_string = '\n'.join (info)
 
 	if brief:
