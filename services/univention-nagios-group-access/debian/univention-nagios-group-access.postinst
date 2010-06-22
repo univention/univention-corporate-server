@@ -42,7 +42,7 @@ if ! ucr get auth/user/services | tr " " "\n" | egrep -q '^nagios$' ; then
 fi
 
 # set groups that gain access to nagios interface
-univention-config-registry set nagios/server/webaccess/groups?"Domain Admins,NagiosAdmins" \
+univention-config-registry set nagios/server/webaccess/groups?"Domain Admins,Nagios Admins" \
 							   auth/nagios/accessfile?"/etc/security/access-nagios-webinterface.conf"
 
 exit 0

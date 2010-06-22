@@ -9,7 +9,7 @@ Package: univention-nagios-group-access
 Architecture: all
 Depends: univention-nagios-server
 Description: Group Access for Nagios
- This package implements a special NagiosAdmin group to 
+ This package implements a special group "Nagios Admins" to 
  handle access to Nagios web interface.
  .
  It is part of Univention Corporate Server (UCS), an

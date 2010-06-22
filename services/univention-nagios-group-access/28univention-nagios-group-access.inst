@@ -36,11 +36,11 @@ eval "$(univention-config-registry shell)"
 
 # test if joinscript has never been executed
 if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-	# create nagios service
+	# create new group with permission to access nagios web interface
 	univention-directory-manager groups/group create "$@" --ignore_exists \
 		--position "cn=groups,$ldap_base" \
-		--set name="NagiosAdmins" \
-		--set description="Group of users with granted permission for Nagios web interface"
+		--set name="Nagios Admins" \
+		--set description="Group of users with permission to access Nagios web interface"
 fi
 
 joinscript_save_current_version
