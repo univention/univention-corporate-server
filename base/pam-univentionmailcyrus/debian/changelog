@@ -1,3 +1,10 @@
+pam-univentionmailcyrus (3.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 14:19:40 +0200
+
 pam-univentionmailcyrus (2.0.0-0) unstable; urgency=low
 
   * build fixes for UCS 2.3 (Bug: #14661)
