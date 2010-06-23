@@ -1,3 +1,9 @@
+univention-printserver (4.0.3-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 23 Jun 2010 15:52:04 +0200
+
 univention-printserver (4.0.2-1) unstable; urgency=low
 
   * only register to nagios service if nagios is enabled for host object
