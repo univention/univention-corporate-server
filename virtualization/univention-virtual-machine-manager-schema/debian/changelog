@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (1.0.7-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 15:39:57 +0200
+
 univention-virtual-machine-manager-schema (1.0.6-1) unstable; urgency=low
 
   * add LDAP ACLs for access to the UVMM information object by any
