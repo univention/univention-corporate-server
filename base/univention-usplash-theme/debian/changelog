@@ -1,3 +1,10 @@
+univention-usplash-theme (2.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 15:25:10 +0200
+
 univention-usplash-theme (1.0.2-4) unstable; urgency=low
 
   * change verbose textbox height (Bug: #14524) 
