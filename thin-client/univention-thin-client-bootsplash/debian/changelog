@@ -1,3 +1,10 @@
+univention-thin-client-bootsplash (1.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 14:01:29 +0200
+
 univention-thin-client-bootsplash (0.0.11-1) unstable; urgency=low
 
   * readded the initrd generation. Bug #16290 and Bug #16291
