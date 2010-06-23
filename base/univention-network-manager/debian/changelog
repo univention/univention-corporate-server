@@ -1,3 +1,10 @@
+univention-network-manager (1.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 15:28:25 +0200
+
 univention-network-manager (0.4.12-1) unstable; urgency=low
 
   * fixed the comment for the UCR header, Bug #17816
