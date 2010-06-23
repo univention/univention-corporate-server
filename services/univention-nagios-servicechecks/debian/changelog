@@ -1,3 +1,9 @@
+univention-nagios-servicechecks (1.0.2-1) unstable; urgency=low
+
+  * stop joinscript if registering host to OPSI nagios service fails (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 23 Jun 2010 10:23:29 +0200
+
 univention-nagios-servicechecks (1.0.1-2) unstable; urgency=low
 
   * registration is done in service packages (Bug #17957)
