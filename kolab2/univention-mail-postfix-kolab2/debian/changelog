@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (4.0.4-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 13:22:42 +0200
+
 univention-mail-postfix-kolab2 (4.0.3-1) unstable; urgency=low
 
   * fixed header in pam.d/smtp template (Bug #18526)
