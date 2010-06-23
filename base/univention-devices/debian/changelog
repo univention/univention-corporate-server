@@ -1,3 +1,10 @@
+univention-devices (3.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 14:20:11 +0200
+
 univention-devices (2.0.0-1) unstable; urgency=low
 
   * Make init script LSB-compliant (Bug #14421)
