@@ -1,3 +1,9 @@
+univention-nagios-smart (1.0.1-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 15:52:07 +0200
+
 univention-nagios-smart (1.0.0-2) unstable; urgency=low
 
   * some cleanups (Bug #17288)
