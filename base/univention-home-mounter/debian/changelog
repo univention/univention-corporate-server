@@ -1,3 +1,10 @@
+univention-home-mounter (3.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 15:29:36 +0200
+
 univention-home-mounter (2.0.1-0) unstable; urgency=low
 
   * added UCR Header, Bug #17816
