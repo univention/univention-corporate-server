@@ -1,3 +1,9 @@
+univention-installer (6.0.23-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 14:22:08 +0200
+
 univention-installer (6.0.22-1) unstable; urgency=low
 
   * use udevadm settle to wait for udev Bug #12524
