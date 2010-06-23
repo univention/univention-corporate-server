@@ -1,3 +1,10 @@
+univention-bacula (2.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 16:07:21 +0200
+
 univention-bacula (1.0.0-3) unstable; urgency=low
 
   * fixed depedencies. Bug #15702
