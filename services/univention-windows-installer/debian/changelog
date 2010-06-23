@@ -1,3 +1,10 @@
+univention-windows-installer (4.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 16:06:23 +0200
+
 univention-windows-installer (3.0.1-2) unstable; urgency=low
 
   * add UCR template header to perl.bat Bug #17621)
