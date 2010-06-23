@@ -8,7 +8,7 @@ XS-Python-Version: 2.4
 
 Package: univention-nagios-server
 Architecture: any
-Depends: nagios2, nagios2-common, nagios2-doc, nagios-images, univention-nagios-client, nagios-plugins, nagios-nrpe-plugin, libapache2-mod-auth-pam, python-univention-directory-manager, univention-directory-listener, univention-nagios-cups, univention-nagios-squid, univention-nagios-dansguardian, univention-nagios-opsi
+Depends: nagios2, nagios2-common, nagios2-doc, nagios-images, univention-nagios-client, nagios-plugins, nagios-nrpe-plugin, libapache2-mod-auth-pam, python-univention-directory-manager, univention-directory-listener, univention-nagios-cups, univention-nagios-squid, univention-nagios-dansguardian
 XB-Python-Version: ${python:Versions}
 Conflicts: univention-management-console (<<0.9.34-6)
 Description: UCS: nagios server support
