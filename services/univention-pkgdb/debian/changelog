@@ -1,3 +1,10 @@
+univention-pkgdb (4.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 16:08:52 +0200
+
 univention-pkgdb (3.0.5-1) unstable; urgency=low
 
   * listener module pkgdb-watch just checks if the service is set at the
