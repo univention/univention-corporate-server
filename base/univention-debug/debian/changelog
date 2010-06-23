@@ -1,3 +1,10 @@
+univention-debug (4.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 14:20:30 +0200
+
 univention-debug (3.0.2-2) unstable; urgency=low
 
   * set the build dependency to python 2.4. Bug #14709
