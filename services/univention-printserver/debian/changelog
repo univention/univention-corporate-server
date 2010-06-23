@@ -1,3 +1,10 @@
+univention-printserver (4.0.2-1) unstable; urgency=low
+
+  * only register to nagios service if nagios is enabled for host object
+    (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 23 Jun 2010 10:22:02 +0200
+
 univention-printserver (4.0.1-2) unstable; urgency=low
 
   * run joinscript on DC backup too (Bug #17957)

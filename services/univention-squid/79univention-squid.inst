@@ -41,9 +41,13 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		echo "Cannot find nagios object cn=UNIVENTION_SQUID,cn=nagios,$ldap_base (ldapsearch error $?)"
 		echo "Please check if univention-nagios-server is installed on a system in UCS domain to enable nagios functionality."
 	else
-		univention-directory-manager nagios/service modify "$@" \
-			--dn "cn=UNIVENTION_SQUID,cn=nagios,$ldap_base" \
-			--append assignedHosts="${ldap_hostdn}"
+		if [ "$(ldapsearch -xLLL -b "$ldap_hostdn" univentionNagiosEnabled | sed -ne 's/univentionNagiosEnabled: //p')" = "1" ] ; then
+			univention-directory-manager nagios/service modify "$@" \
+				--dn "cn=UNIVENTION_SQUID,cn=nagios,$ldap_base" \
+				--append assignedHosts="${ldap_hostdn}"
+		else
+			echo "univentionNagiosEnabled is not set for $ldap_hostdn"
+		fi
 	fi
 fi
 
