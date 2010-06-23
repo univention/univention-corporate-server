@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.6-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 13:42:15 +0200
+
 univention-directory-manager-modules (6.0.5-1) unstable; urgency=low
 
   * avoid 0, 1, and 254 as last part of ip address suggestion Bug #18581
