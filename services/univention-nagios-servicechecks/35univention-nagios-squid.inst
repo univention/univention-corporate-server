@@ -36,10 +36,9 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-if [ ! "$nagios_client_autoregister" = "no" ] ; then
-	if ! ldapsearch -xLLL -s base -b "cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
-	 	echo "Creation of nagios service skipped - cannot find container cn=nagios,$ldap_base (ldapsearch error $?)"
-	else
+if ! ldapsearch -xLLL -s base -b "cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
+	echo "Creation of nagios service skipped - cannot find container cn=nagios,$ldap_base (ldapsearch error $?)"
+else
 	 	# create nagios service for squid
 	 	univention-directory-manager nagios/service create "$@" --ignore_exists \
 	 	 	--position "cn=nagios,$ldap_base" \
@@ -57,7 +56,6 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 	 	 	--set checkArgs='' \
 	 	 	--set useNRPE=1 \
 	 	 	--set notificationOptionCritical=1
-	fi
 fi
 
 joinscript_save_current_version
