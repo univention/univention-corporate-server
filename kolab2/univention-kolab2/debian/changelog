@@ -1,3 +1,10 @@
+univention-kolab2 (3.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 13:25:25 +0200
+
 univention-kolab2 (2.0.1-1) unstable; urgency=low
 
   * move UCR variables to category service-mail (Bug #13505)
