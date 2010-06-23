@@ -1,3 +1,10 @@
+univention-ooffice2 (4.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 15:40:51 +0200
+
 univention-ooffice2 (3.0.1-2) unstable; urgency=low
 
   * rename installation paths too (Bug #16752)
