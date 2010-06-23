@@ -1,3 +1,9 @@
+univention-kolab2-webclient (6.0.1-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 13:08:49 +0200
+
 univention-kolab2-webclient (6.0.0-0) unstable; urgency=low
 
   * package from ucs-2.3/component/horde-experimental merged with
