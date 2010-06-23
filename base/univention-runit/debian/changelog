@@ -1,3 +1,10 @@
+univention-runit (3.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 15:04:05 +0200
+
 univention-runit (2.0.1-1) unstable; urgency=low
 
   * respect migration of /var/service to /etc/service in runit (Bug #15335)
