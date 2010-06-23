@@ -1,3 +1,10 @@
+univention-thin-client-cups (5.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 14:18:54 +0200
+
 univention-thin-client-cups (4.0.3-2) unstable; urgency=low
 
   * Also install cups-bsd into the amd64 environment (Bug #17230)
