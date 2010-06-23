@@ -1,3 +1,10 @@
+univention-licence (3.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 15:26:51 +0200
+
 univention-licence (2.0.8-2) unstable; urgency=low
 
   * allow Spaces in univentionLicenseOEMProduct (Bug #18212)
