@@ -1,3 +1,9 @@
+univention-bind (5.0.2-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 16:02:01 +0200
+
 univention-bind (5.0.1-1) unstable; urgency=low
 
   * stop bind before installing univention-bind-proxy Bug #16832
