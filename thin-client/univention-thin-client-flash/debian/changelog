@@ -1,3 +1,10 @@
+univention-thin-client-flash (4.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 14:04:16 +0200
+
 univention-thin-client-flash (3.3.3-2) unstable; urgency=low
 
   * Umount the boot partition before writing to it. If the thin
