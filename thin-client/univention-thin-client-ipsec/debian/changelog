@@ -1,3 +1,10 @@
+univention-thin-client-ipsec (4.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 14:06:59 +0200
+
 univention-thin-client-ipsec (3.0.0-1) unstable; urgency=low
 
   * Make init scripts LSB-compliant (Bug #14421)
