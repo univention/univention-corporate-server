@@ -1,3 +1,10 @@
+univention-kolab2-framework (4.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 13:23:24 +0200
+
 univention-kolab2-framework (3.0.3-1) unstable; urgency=low
 
   * fixed dtstart/dtend handling of whole day events for invitation (Bug #18543) 
