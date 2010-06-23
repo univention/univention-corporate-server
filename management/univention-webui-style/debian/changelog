@@ -1,3 +1,9 @@
+univention-webui-style (5.0.11-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 13:37:10 +0200
+
 univention-webui-style (5.0.10-1) unstable; urgency=low
 
   * stylesheet update (Bug #18627)
