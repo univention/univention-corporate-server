@@ -1,3 +1,9 @@
+univention-config-registry (6.0.7-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 15:03:21 +0200
+
 univention-config-registry (6.0.6-1) unstable; urgency=low
 
   * removed category from default ucr search output, Bug #18568
