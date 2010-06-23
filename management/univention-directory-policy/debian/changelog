@@ -1,3 +1,10 @@
+univention-directory-policy (4.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 13:35:01 +0200
+
 univention-directory-policy (3.0.3-1) unstable; urgency=low
 
   * check if script univention-ldap-server-available exists; Bug #9981
