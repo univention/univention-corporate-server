@@ -37,9 +37,13 @@ import sys
 import re
 import os
 import copy
-import httplib, base64, string
+import httplib
+import base64
 import socket
 import univention.config_registry
+import traceback
+import urlparse
+import urllib
 
 HTTP_PROXY_DEFAULT_PORT = 3128
 
@@ -216,7 +220,6 @@ class UniventionUpdater:
 	'''Handle Univention package repositories.'''
 	def __init__(self):
 		self.connection = None
-		self.proxy_prefix = None
 		self.architectures = [ os.popen('dpkg-architecture -qDEB_BUILD_ARCH 2>/dev/null').readline()[:-1] ]
 
 		self.ucr_reinit()
@@ -232,7 +235,7 @@ class UniventionUpdater:
 		self.repository_port = self.configRegistry.get('repository/online/port', '80')
 		self.repository_prefix = self.configRegistry.get('repository/online/prefix', '').strip('/')
 		self.sources = self.configRegistry.get('repository/online/sources', 'no' ).lower() in ('yes', 'true', 'enabled', '1')
-		self.http_method = self.configRegistry.get('repository/online/httpmethod', 'GET').upper()
+		self.http_method = self.configRegistry.get('repository/online/httpmethod', 'HEAD').upper()
 
 	def open_connection(self, server=None, port=None):
 		'''Open http-connection to server:port'''
@@ -245,11 +248,8 @@ class UniventionUpdater:
 			raise socket.gaierror, (socket.EAI_NONAME, 'The repository server %s could not be resolved.' % server)
 
 		if self.proxy not in (None, ''):
-			self.proxy_prefix = "%s:%s" % (server, port)
-
 			if '://' in self.proxy:
-				from urlparse import urlsplit
-				r = urlsplit(self.proxy)
+				r = urlparse.urlsplit(self.proxy)
 				if r[0] != 'http':
 					raise NotImplemented('Scheme %s not supported' % r[0])
 				netloc = r[1]
@@ -261,17 +261,16 @@ class UniventionUpdater:
 			if "@" in netloc:
 				userinfo, netloc = netloc.rsplit("@", 1)
 				if ":" in userinfo:
-					from urllib import unquote
-					username, password = map(unquote, userinfo.split(":", 1))
+					username, password = map(urllib.unquote, userinfo.split(":", 1))
 					# setup basic authentication
-					user_pass = base64.encodestring('%s:%s' % (username, password))
-					proxy_headers['Proxy-Authorization'] = string.strip ('Basic %s' % user_pass)
+					user_pass = base64.encodestring('%s:%s' % (username, password)).strip()
+					proxy_headers['Proxy-Authorization'] = 'Basic %s' % user_pass
 			if ":" in netloc:
 				hostname, port = netloc.rsplit(":", 1)
 			else:
 				hostname, port = netloc, HTTP_PROXY_DEFAULT_PORT
 
-			#print "# %s:%s %s" % (hostname, port, self.proxy_prefix)
+			#print "# %s:%s" % (hostname, port)
 			self.connection = httplib.HTTPConnection(hostname, int(port))
 
 			return proxy_headers
@@ -296,7 +295,6 @@ class UniventionUpdater:
 			self.proxy = os.environ['http_proxy']
 		else:
 			self.proxy = None
-		self.proxy_prefix = ''
 
 		# check for maintained and unmaintained
 		self.parts = []
@@ -338,36 +336,32 @@ class UniventionUpdater:
 	def net_path_exists (self, path, server='', port='', prefix='', username='', password='', debug=False):
 		# path MUST NOT contain the schema and hostname
 		proxy_headers = self.open_connection(server=server, port=port)
-		if server: #if we use a different server we should also use a different prefix
-			if prefix:
-				site = '%s/%s/%s' % (self.proxy_prefix, prefix, path)
-			else:
-				site = '%s/%s' % (self.proxy_prefix, path)
-		else:
-			site = '%s/%s/%s' % (self.proxy_prefix, self.repository_prefix, path)
+		#if we use a different server we should also use a different prefix
+		if not server:
+			server = self.repository_server
+			port = self.repository_port
+			prefix = self.repository_prefix
+		site = '/%s' % '/'.join(filter(None, [prefix, path]))
+		site = re.sub('[/]{2,}', '/', site)
+		url = 'http://%s:%s%s' % (server, port, site)
 
-		replace_slash = re.compile ('[/]{2,}')
-		site = replace_slash.sub ('/', site)
-		if not site.startswith ('http://') and proxy_headers != None:
-			site = 'http://%s' % site
-
-		if proxy_headers != None:
-			self.connection.putrequest(self.http_method, site, skip_accept_encoding=1)
+		if proxy_headers is not None:
+			# proxy needs full URL
+			self.connection.putrequest(self.http_method, url, skip_accept_encoding=1)
+			for k, v in proxy_headers.items():
+				self.connection.putheader(k, v)
 		else:
+			# direct connection only gets path
 			self.connection.putrequest(self.http_method, site)
 
 		if username and password:
-			auth = 'Basic ' + string.strip(base64.encodestring(username + ':' + password))
-			self.connection.putheader('Authorization', auth)
-
-		if proxy_headers != None:
-			for k, v in proxy_headers.items ():
-				self.connection.putheader (k, v)
+			user_pass = base64.encodestring('%s:%s' % (username, password)).strip()
+			self.connection.putheader('Authorization', 'Basic %s' % user_pass)
 		self.connection.endheaders ()
 		response = self.connection.getresponse()
 		response.read()
-		ud.debug(ud.NETWORK, ud.ALL, "%d %s %s" % (response.status, self.http_method, site))
-		#print "# %d %s %s" % (response.status, self.http_method, site) # TODO
+		ud.debug(ud.NETWORK, ud.ALL, "%d %s %s" % (response.status, self.http_method, url))
+		#print "# %d %s %s" % (response.status, self.http_method, url) # TODO
 
 		if response.status == httplib.OK: # 200
 			self.close_connection()
@@ -375,24 +369,55 @@ class UniventionUpdater:
 
 		if response.status == httplib.NOT_IMPLEMENTED and self.http_method == 'HEAD': # 501
 			# fall-back to GET if not implemented
-			ud.debug(ud.NETWORK, ud.INFO, "HEAD not implemented at %s, switching to GET." % site)
+			ud.debug(ud.NETWORK, ud.INFO, "HEAD not implemented at %s, switching to GET." % url)
 			self.http_method = 'GET'
 			self.close_connection()
 			return self.net_path_exists(self, path, server, port, prefix, username, password, debug)
 
 		if debug:
 			if response.status == httplib.NOT_FOUND: # 404
-				print '# The site http://%s:%s%s was not found' % (server, port, site)
+				print '# The site %s was not found' % (url,)
 			elif response.status == httplib.UNAUTHORIZED: # 401
 				if username and password:
-					print '# Authentication failure for http://%s:%s@%s:%s%s' % (username, password, server, port, site)
+					url = 'http://%s:%s%s' % (username, password, url[len('http://'):])
+					print '# Authentication failure for %s' % (url,)
 				else:
-					print '# Username and password are required for http://%s:%s%s' % (server, port, site)
+					print '# Username and password are required for %s' % (url,)
 			else:
-				print '# The http error code (%d) was returned for the site http://%s:%s%s' % (response.status, server, port, site)
+				print '# The http error code (%d) was returned for %s' % (response.status, url)
 
 		self.close_connection()
 		return False
+
+	def retrieve_url(self, path):
+		'''downloads the given path from the repository server'''
+		# path MUST NOT contain the schema and hostname
+		proxy_headers = self.open_connection()
+		site = '/%s' % (path,)
+		site = re.sub('[/]{2,}', '/', site)
+
+		if proxy_headers is not None:
+			# proxy needs full URL
+			url = 'http://%s:%s%s' % (self.repository_server, self.repository_port, site)
+			self.connection.putrequest('GET', url, skip_accept_encoding=1)
+			for k, v in proxy_headers.items():
+				self.connection.putheader(k, v)
+		else:
+			self.connection.putrequest('GET', site)
+
+		try:
+			self.connection.endheaders()
+			response = self.connection.getresponse()
+			body = response.read()
+
+			if response.status == httplib.OK: # 200
+				self.close_connection()
+				return body
+		except:
+			print >>sys.stderr, traceback.format_exc()
+
+		self.close_connection()
+		return None
 
 	def get_next_version(self, version, components=[]):
 		'''Check if a new patchlevel, minor or major release is available for the given version.
@@ -654,9 +679,9 @@ class UniventionUpdater:
 
 		repo.prefix = "http://"
 		if netConf['username'] and netConf['password']:
-			from urllib import quote # rfc1738: unsafe characters
+			# rfc1738: unsafe characters
 			# FIXME http://bugs.debian.org/500560: [@:/] don't work
-			repo.prefix += "%s:%s@" % (quote(netConf['username'],''), quote(netConf['password'],''))
+			repo.prefix += "%s:%s@" % (urllib.quote(netConf['username'],''), urllib.quote(netConf['password'],''))
 		repo.prefix += "%(server)s:%(port)s/" % netConf
 		# allow None as a component prefix
 		if not repository_prefix:

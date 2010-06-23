@@ -143,43 +143,20 @@ def copy_sh_files(tempdir,path):
 def download_sh_files(updater, server_path, tempdir):
 	""" Retrieve pre- und postup.sh from remote repository into tempdir. """
 	for sh in ['preup.sh', 'postup.sh']:
-		if os.path.exists(os.path.join(tempdir,sh)):
-			os.remove(os.path.join(tempdir,sh))
+		filename = os.path.join(tempdir, sh)
+		if os.path.exists(filename):
+			os.remove(filename)
 
-		proxy_headers = updater.open_connection()
-		path="%s/%s" % ( server_path, sh )
-		site = '%s/%s/%s' % (updater.proxy_prefix, updater.repository_prefix, path)
-		replace_slash = re.compile ('[/]{2,}')
-		site = replace_slash.sub ('/', site)
-		if not site.startswith ('http://') and proxy_headers != None:
-			site = 'http://%s' % site
-		if proxy_headers != None:
-			updater.connection.putrequest('GET', site, skip_accept_encoding=1)
-		else:
-			updater.connection.putrequest('GET', site)
+		path = "%s/%s/%s" % (updater.repository_prefix, server_path, sh)
+		response_data = updater.retrieve_url(path)
+		if not response_data:
+			log('failed to download %s' % path)
+			continue
 
-		if proxy_headers != None:
-			for k, v in proxy_headers.items ():
-				updater.connection.putheader (k, v)
-		try:
-			updater.connection.endheaders ()
-			response = updater.connection.getresponse()
-			response_data = response.read()
-
-			if response.status != 200:
-				log('failed to download %s' % path)
-				log(' %s: %s' % (response.status,response.reason))
-				continue
-		except:
-			log( traceback.format_exc ())
-
-		f=open(os.path.join(tempdir, sh), 'w+' )
+		f = open(filename, 'w+' )
 		f.write(response_data)
 		f.close()
-		os.chmod(os.path.join(tempdir, sh), 0744)
-
-		updater.close_connection()
-
+		os.chmod(filename, 0744)
 
 def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None):
 	""" Checks if there is an update available.
@@ -382,10 +359,16 @@ def main():
 	log('Version=%s' % vv)
 	log('Patchlevel=%s' % vp)
 
-	tempdir=tempfile.mktemp()
-	os.mkdir(tempdir)
-
+	tempdir = tempfile.mkdtemp()
 	log('using tempdir = %s' % tempdir)
+
+	old_exitfunc = getattr(sys, 'exitfunc', None)
+	def do_cleanup():
+		"""Remove temporary direcotry on exit."""
+		shutil.rmtree(tempdir, ignore_errors=True)
+		if (old_exitfunc):
+			old_exitfunc()
+	sys.exitfunc = do_cleanup
 
 	architecture=os.popen('dpkg-architecture -qDEB_BUILD_ARCH 2>/dev/null').readline()[:-1]
 
@@ -455,6 +438,7 @@ def main():
 				calllocal += ['--updateto', updateto]
 			if not clean:
 				calllocal.append('--no-clean')
+			do_cleanup()
 			os.execv(sys.argv[0], calllocal)
 		else:
 			dprint('Error: You are trying to install from a cdrom/dvd image')
@@ -478,6 +462,7 @@ def main():
 				calllocal += ['--updateto', updateto]
 			if not clean:
 				calllocal.append('--no-clean')
+			do_cleanup()
 			os.execv(sys.argv[0], calllocal)
 
 		updater = UniventionUpdater()
@@ -571,6 +556,7 @@ def main():
 	if os.path.exists(failure):
 		os.unlink(failure)
 	subprocess.call(['touch', reboot_required])
+	do_cleanup()
 	os.execv(sys.argv[0], sys.argv)
 
 if __name__ == '__main__':

@@ -119,8 +119,8 @@ Type=bool
 Categories=service-software-management
 
 [repository/online/httpmethod]
-Description[de]=HTTP-Methode zum Testen der Verfügbarkeit von Updates [GET]
-Description[en]=HTTP methode for testing the availability of updates [GET]
+Description[de]=HTTP-Methode zum Testen der Verfügbarkeit von Updates [HEAD]
+Description[en]=HTTP methode for testing the availability of updates [HEAD]
 Type=str
 Categories=service-software-management
 
@@ -191,8 +191,8 @@ Type=str
 Categories=service-software-management
 
 [repository/mirror/httpmethod]
-Description[de]=HTTP-Methode zum Testen der Verfügbarkeit von Updates [GET]
-Description[en]=HTTP methode for testing the availability of updates [GET]
+Description[de]=HTTP-Methode zum Testen der Verfügbarkeit von Updates [HEAD]
+Description[en]=HTTP methode for testing the availability of updates [HEAD]
 Type=str
 Categories=service-software-management
 

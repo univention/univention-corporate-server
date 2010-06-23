@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Debmirror
 #  mirrors a repository server
@@ -53,7 +54,7 @@ class UniventionMirror( UniventionUpdater ):
 		archs = self.configRegistry.get( 'repository/mirror/architectures', '' )
 		if archs:
 			self.architectures = archs.split( ' ' )
-	
+
 	def config_repository( self ):
 		""" Retrieve configuration to access repository. Overrides UniventionUpdater. """
 		self.online_repository = self.configRegistry.get('repository/mirror', 'yes').lower() in ('yes', 'true', 'enabled', '1')
@@ -61,41 +62,8 @@ class UniventionMirror( UniventionUpdater ):
 		self.repository_port = self.configRegistry.get( 'repository/mirror/port', '80' )
 		self.repository_prefix = self.configRegistry.get( 'repository/mirror/prefix', '' ).strip('/')
 		self.sources = self.configRegistry.get( 'repository/mirror/sources', 'no' ).lower() in ( 'true', 'yes' )
-		self.http_method = self.configRegistry.get('repository/mirror/httpmethod', 'GET').upper()
+		self.http_method = self.configRegistry.get('repository/mirror/httpmethod', 'HEAD').upper()
 
-	def retrieve_url( self, path ):
-		'''downloads the given path from the repository server'''
-		# path MUST NOT contain the schema and hostname
-		proxy_headers = self.open_connection()
-		site = '%s/%s' % (self.proxy_prefix, path)
-
-		replace_slash = re.compile ('[/]{2,}')
-		site = replace_slash.sub ('/', site)
-		if not site.startswith ('http://') and proxy_headers != None:
-			site = 'http://%s' % site
-
-		if proxy_headers != None:
-			self.connection.putrequest('GET', site, skip_accept_encoding=1)
-		else:
-			self.connection.putrequest('GET', site)
-
-		if proxy_headers != None:
-			for k, v in proxy_headers.items ():
-				self.connection.putheader (k, v)
-		try:
-			self.connection.endheaders ()
-			response = self.connection.getresponse()
-			body = response.read()
-
-			if response.status == 200:
-				self.close_connection()
-				return body
-		except:
-			import traceback
-			print traceback.format_exc ()
-
-		self.close_connection()
-		return None
 
 	def copy_script( self, script, repository, directory ):
 		'''retriebes a script from a remote repository and copies it to

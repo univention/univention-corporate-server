@@ -1,3 +1,12 @@
+univention-updater (6.0.1-1) unstable; urgency=low
+
+  * Change default HTTP-Methode for checks to HEAD (Bug #18366)
+  * Move net_path_exists() to tools.py and reuse in univention-updater.
+  * Fix broken error messages.
+  * Clean up temporary files (Bug #17501)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Jun 2010 12:56:39 +0200
+
 univention-updater (6.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

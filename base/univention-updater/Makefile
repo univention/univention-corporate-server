@@ -21,6 +21,7 @@ install-locales-admin: $(MO_FILES_ADMIN)
 
 clean:
 	@find modules/ -name '*.mo' -exec rm \{\} \;
+	$(RM) tags
 
 install-modules: modules
 	install -d debian/$(PACKAGE)/usr/share/pyshared
@@ -45,3 +46,7 @@ install-locales-backend: $(MO_FILES_BACKEND)
 		install -d "`dirname $$o`";\
 		install -m 644 $$i $$o;\
 	done
+
+.PHONY: tags
+tags:
+	ctags -f $@ --languages=Python --recurse=yes .
