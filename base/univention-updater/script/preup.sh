@@ -161,7 +161,7 @@ done
 # Update package lists
 apt-get update >>"$UPDATER_LOG" 2>&1
 #
-for pkg in univention-ssl univention-thin-client-basesystem univention-thin-client-x-base ; do
+for pkg in univention-ssl univention-thin-client-basesystem univention-thin-client-x-base usplash ; do
 	# pre-update $pkg to avoid pre-dependency-problems
 	if dpkg -l $pkg 2>> "$UPDATER_LOG" | grep ^ii  >>"$UPDATER_LOG" ; then
 	    echo -n "Starting preupdate of $pkg..."
