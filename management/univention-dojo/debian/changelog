@@ -1,3 +1,9 @@
+univention-dojo (4.0.2-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 13:41:23 +0200
+
 univention-dojo (4.0.1-1) unstable; urgency=low
 
   * new upstream release: Dojo 1.4.3. Bug #18423
