@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.7-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 13:44:01 +0200
+
 univention-directory-manager (8.0.6-1) unstable; urgency=low
 
   * set directory/manager/web/singlesignon/umc during postinst (Bug #14593)
