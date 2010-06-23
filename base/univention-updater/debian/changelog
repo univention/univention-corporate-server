@@ -1,3 +1,10 @@
+univention-updater (6.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 14:22:44 +0200
+
 univention-updater (5.0.88-1) unstable; urgency=low
 
   * restore preup.sh ssh/term message (Bug #17258)
