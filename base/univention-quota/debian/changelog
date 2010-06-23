@@ -1,3 +1,10 @@
+univention-quota (5.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 14:56:05 +0200
+
 univention-quota (4.0.3-1) unstable; urgency=low
 
   * enable logging of univention-user-quota controlled by UCR quota/logfile (Bug #18114)
