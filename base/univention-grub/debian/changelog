@@ -1,3 +1,10 @@
+univention-grub (4.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 15:09:51 +0200
+
 univention-grub (3.0.2-1) unstable; urgency=low
 
   * added the UCR variable grub/loglevel and set them to 0 and in return
