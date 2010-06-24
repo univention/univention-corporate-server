@@ -1062,6 +1062,8 @@ class object(content):
 				return '%s%s' % (device,number)
 
 		def run_cmd(self, command, debug=True):
+			self.parent.debug('wait for udev to create device file')
+			os.system("udevadm settle || true")
 			self.parent.debug('(profile) run command: %s' % command)
 			p=os.popen(command)
 			output = p.read()
@@ -1138,9 +1140,6 @@ class object(content):
 							self.run_cmd('/sbin/PartedCreate -d %s -t %s -s %s -e %s 2>&1' % (disk, type, start, end))
 						else:
 							self.run_cmd('/sbin/PartedCreate -d %s -t %s -f %s -s %s -e %s 2>&1' % (disk, type, fstype, start, end))
-						self.parent.debug('wait for udev to create device file')
-						os.system("udevadm settle || true")
-
 						if 'lvm' in flaglist:
 							device = self.get_real_partition_device_name(disk,num)
 							self.parent.debug('%s: lvm flag' % device)
