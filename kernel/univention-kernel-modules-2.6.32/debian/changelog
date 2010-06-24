@@ -1,3 +1,9 @@
+univention-kernel-modules-2.6.32 (1.0.1-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 24 Jun 2010 16:10:27 +0200
+
 univention-kernel-modules-2.6.32 (1.0.0-1) unstable; urgency=low
 
   * Initial release. Bug #18323
