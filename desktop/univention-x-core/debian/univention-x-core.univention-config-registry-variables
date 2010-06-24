@@ -195,3 +195,26 @@ Description[en]=Amount of video memory installed on the graphics board (in kB)
 Type=str
 Categories=system-desktop
 
+[xorg/display/virtual]
+Description[de]=Die Größe des virtuellen Gesamt-Displays im Dualmonitorbetrieb (im Format "x y")
+Description[en]=The overall size of the virtual display when running in dual monitor mode (format "x y")
+Type=str
+Categories=system-desktop
+
+[xorg/display/primary]
+Description[de]=Der Xserver-interne Bezeichner für den primären Monitor (ermittelbar durch Aufruf von xrandr)
+Description[en]=The Xserver internal specifier for the primary monitor (can be queried with xrandr)
+Type=str
+Categories=system-desktop
+
+[xorg/display/secondary]
+Description[de]=Der Xserver-interne Bezeichner für den sekundären Monitor (ermittelbar durch Aufruf von xrandr)
+Description[en]=The Xserver internal specifier for the primary monitor (can be queried with xrandr)
+Type=str
+Categories=system-desktop
+
+[xorg/display/relative-position]
+Description[de]=Die relative Position des zweiten Monitors gegenüber dem primären (mögliche Werte: left, right, above, below)
+Description[en]=The relative position of the secondary monitor to the first primary (mögliche Werte: left, right, above, below)
+Type=str
+Categories=system-desktop

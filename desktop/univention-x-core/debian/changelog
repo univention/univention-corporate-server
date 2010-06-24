@@ -1,3 +1,24 @@
+univention-x-core (4.0.0-2) unstable; urgency=low
+
+  * Support dual monitor setups through RandR. This introduces three
+    new UCR variables: xorg/display/primary, xorg/display/secondary
+    and xorg/display/relative-position. (Bug #12124)
+    
+    xorg/display/primary and xorg/display/secondary have to be specified
+    in driver-specific identifiers, which can be queried with the "xrandr"
+    command.
+
+    xorg/display/relative-position describes the relative position of the
+    secondary display to the first. Possible choices are "left", "right",
+    "below" and "above".
+
+    The overall size of the virtual desktop as composed by the two screens
+    also needs to be noted in the previously introduced xorg/display/virtual
+    variable.
+  * Add a description for the previously introduced xorg/display/virtual
+	
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 24 Jun 2010 15:08:52 +0200
+
 univention-x-core (4.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
