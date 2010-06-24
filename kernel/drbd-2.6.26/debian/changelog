@@ -1,3 +1,10 @@
+drbd-2.6.26 (2.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 24 Jun 2010 16:15:39 +0200
+
 drbd-2.6.26 (1.0-1) unstable; urgency=low
 
   * Bump epoch (Bug #17687)
