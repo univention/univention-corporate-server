@@ -1,3 +1,10 @@
+srvmagt-modules (6.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 24 Jun 2010 16:12:12 +0200
+
 srvmagt-modules (5.0.1-4) unstable; urgency=low
 
   * include asm/semaphore.h if kernel < 2.6.19 (Bug: #14286)
