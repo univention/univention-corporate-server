@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.18 (4.0.1-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 24 Jun 2010 16:13:26 +0200
+
 univention-kernel-image-2.6.18 (4.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 2.4
