@@ -1,3 +1,10 @@
+univention-ldap (7.0.3-2) unstable; urgency=low
+
+  * Add four new attributes to control dual monitor setups
+    (Bug #12124)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 24 Jun 2010 16:47:31 +0200
+
 univention-ldap (7.0.3-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

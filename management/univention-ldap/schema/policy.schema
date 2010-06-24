@@ -151,6 +151,26 @@ attributetype ( 1.3.6.1.4.1.10176.1000.3.1.14 NAME 'univentionXAutoDetect'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
 
+attributetype ( 1.3.6.1.4.1.10176.1000.3.1.15 NAME 'univentionXDisplayPrimary'
+	DESC 'The primary display in dual monitor setups'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1000.3.1.16 NAME 'univentionXDisplaySecondary'
+	DESC 'The secondary display in dual monitor setups'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1000.3.1.17 NAME 'univentionXDisplayPosition'
+	DESC 'The relative position of the secondary display in dual monitor setups'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1000.3.1.18 NAME 'univentionXDisplayVirtualSize'
+	DESC 'The relative position of the secondary display in dual monitor setups'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
 objectclass ( 1.3.6.1.4.1.10176.1000.3.2.1 NAME 'univentionPolicyXConfiguration'
 	SUP 'univentionPolicy' STRUCTURAL
 	DESC 'X configuration policy object'
@@ -160,7 +180,9 @@ objectclass ( 1.3.6.1.4.1.10176.1000.3.2.1 NAME 'univentionPolicyXConfiguration'
 	      univentionXKeyboardVariant $ univentionXHSync $
 	      univentionXVRefresh $ univentionXModule $
 		  univentionXVNCExportType $ univentionXVNCExportViewonly  $
-		  univentionXVideoRam $ univentionXDisplaySize $ univentionXAutoDetect))
+		  univentionXVideoRam $ univentionXDisplaySize $ univentionXAutoDetect $
+		  univentionXDisplayPrimary $ univentionXDisplaySecondary $ 
+		  univentionXDisplayPosition $ univentionXDisplayVirtualSize ))
 
 # $OID: 1.3.6.1.4.1.10176.1000.4 (Sound) $
 attributetype ( 1.3.6.1.4.1.10176.1000.4.1.1 NAME 'univentionSoundEnabled'
