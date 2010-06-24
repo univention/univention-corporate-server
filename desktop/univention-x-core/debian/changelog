@@ -16,6 +16,7 @@ univention-x-core (4.0.0-2) unstable; urgency=low
     also needs to be noted in the previously introduced xorg/display/virtual
     variable.
   * Add a description for the previously introduced xorg/display/virtual
+  * Drop historic Conflicts
 	
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 24 Jun 2010 15:08:52 +0200
 
