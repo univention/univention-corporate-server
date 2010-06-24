@@ -3245,11 +3245,10 @@ class object(content):
 				self.parent.parent.debug('running "%s"' % command)
 				proc = subprocess.Popen(command,bufsize=0,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 				(stdout, stderr) = proc.communicate()
-				self.parent.parent.debug('===(exitcode=%d)====> %s\nSTDOUT:\n=> %s\nSTDERR:\n=> %s' %
+				self.parent.parent.debug('===(exitcode=%d)====> %s\nSTDERR:\n=> %s\nSTDOUT:\n=> %s' %
 										 (proc.returncode, command, stderr.replace('\n','\n=> '), stdout.replace('\n','\n=> ')))
-				if "mkpart" in command:
-					self.parent.parent.debug('waiting for udev to create device file')
-					os.system("udevadm settle || true")
+				self.parent.parent.debug('waiting for udev to settle down')
+				os.system("udevadm settle || true")
 
 				if proc.returncode:
 					self.parent.container['history']=[]

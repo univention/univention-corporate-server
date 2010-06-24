@@ -1,3 +1,9 @@
+univention-installer (6.0.24-1) unstable; urgency=low
+
+  * always wait for udev in 12_partition.py Bug #12524
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 Jun 2010 10:04:44 +0200
+
 univention-installer (6.0.23-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
