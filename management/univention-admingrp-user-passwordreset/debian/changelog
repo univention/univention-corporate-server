@@ -1,3 +1,9 @@
+univention-admingrp-user-passwordreset (1.0.2-2) unstable; urgency=low
+
+  * fixed UCR variable descriptions (Bug #18685)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 24 Jun 2010 16:10:47 +0200
+
 univention-admingrp-user-passwordreset (1.0.2-1) unstable; urgency=low
 
   * perform groups in groups lookup if enabled (Bug #18685)
