@@ -49,6 +49,7 @@ class StorageError(TranslatableException):
 
 def create_storage_pool(conn, dir, pool_name='default'):
 	"""Create directory pool."""
+	# FIXME: support other types than dir
 	xml = '''
 	<pool type="dir">
 		<name>%(pool)s</name>
@@ -151,24 +152,32 @@ def destroy_storage_volumes(conn, volumes, ignore_error=False):
 				logger.error("Error deleting volume: %s. Ignored." % e)
 				raise
 
-def storage_pools(uri):
-	"""List all pools."""
+def get_storage_pool_info( node, name ):
 	from protocol import Data_Pool
+	p = node.conn.storagePoolLookupByName( name )
+	xml = p.XMLDesc( 0 )
+	doc = parseString( xml )
+	pool = Data_Pool()
+	pool.name = name
+	pool.uuid = doc.getElementsByTagName( 'uuid' )[ 0 ].firstChild.nodeValue
+	pool.capacity = int( doc.getElementsByTagName( 'capacity' )[ 0 ].firstChild.nodeValue )
+	pool.available = int( doc.getElementsByTagName( 'available' )[ 0 ].firstChild.nodeValue )
+	pool.path = doc.getElementsByTagName( 'path' )[ 0 ].firstChild.nodeValue
+
+	return pool
+
+def storage_pools( uri = None, node = None ):
+	"""List all pools."""
+	from node import node_query
+
 	try:
-		node = node_query(uri)
+		if uri and not node:
+			node = node_query( uri )
 		conn = node.conn
 		pools = []
 		for name in conn.listStoragePools() + conn.listDefinedStoragePools():
-			p = conn.storagePoolLookupByName(name)
-			xml = p.XMLDesc(0)
-			doc = parseString(xml)
-			pool = Data_Pool()
-			pool.name = name
-			pool.uuid = doc.getElementsByTagName('uuid')[0].firstChild.nodeValue
-			pool.capacity = int(doc.getElementsByTagName('capacity')[0].firstChild.nodeValue)
-			pool.available = int(doc.getElementsByTagName('available')[0].firstChild.nodeValue)
-			pool.path = doc.getElementsByTagName('path')[0].firstChild.nodeValue
-			pools.append(pool)
+			pool = get_storage_pool_info( node, name )
+			pools.append( pool )
 		return pools
 	except libvirt.libvirtError, e:
 		logger.error(e)

@@ -64,6 +64,17 @@ class Client( object ):
 
 		return res
 
+	def get_profile( self, name ):
+		try:
+			name = name.replace( '(', '\(' )
+			name = name.replace( ')', '\)' )
+			res = univention.admin.modules.lookup( uvmm_profile, self.co, self.lo, filter = 'cn=%s' % name, scope='one', base = self.base, required = False, unique = True )
+		except univention.admin.uexceptions.base, e:
+			ud.debug( ud.ADMIN, ud.ERROR, 'UVMM/UDM: get_profiles: error while searching for template: %s' % str( e ) )
+			return {}
+
+		return res[ 0 ]
+
 if __name__ == '__main__':
 	udm = Client()
 	print udm.get_profiles()

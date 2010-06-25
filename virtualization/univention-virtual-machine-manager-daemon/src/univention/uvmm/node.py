@@ -47,7 +47,7 @@ import univention.admin.uexceptions
 import traceback
 from univention.uvmm.eventloop import *
 import threading
-from storage import create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError
+from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools
 
 logger = logging.getLogger('uvmmd.node')
 
@@ -401,6 +401,8 @@ class Node(object):
 				self.conn = libvirt.open(self.uri)
 				logger.info("Connected to '%s'" % (self.uri,))
 				self.update_once()
+				self._get_storages()
+				self._register_default_pool()
 			self.update()
 		except libvirt.libvirtError, e:
 			logger.warning("'%s' broken? %s" % (self.uri, e))
@@ -425,6 +427,17 @@ class Node(object):
 		self.unregister()
 		del self.storages
 		del self.domains
+
+	def _register_default_pool( self ):
+		'''create a default storage pool if not available'''
+		for pool in self.storages:
+			if pool.name == 'default':
+				logger.debug( "default pool already registered on %s" % self.name )
+				break
+		else:
+			logger.debug( "register default pool on %s" % self.name )
+			create_storage_pool( self.conn, '/var/lib/libvirt/images' )
+			self.storages.append( get_storage_pool_info( self, 'default' ) )
 
 	def update_once(self):
 		"""Update once on (re-)connect."""
@@ -478,25 +491,12 @@ class Node(object):
 		"""Set polling frequency for update."""
 		virEventUpdateTimerImpl(self.timerID, hz)
 
+	def _get_storages( self ):
+		'''read the list of available storage pool'''
+		self.storages = storage_pools( node = self )
+
 	def update(self):
 		"""Update node statistics."""
-		cached_pools = self.storages.keys()
-		for pool_name in self.conn.listStoragePools():
-			pool = self.conn.storagePoolLookupByName(pool_name)
-			uuid = pool.UUIDString()
-			if uuid in self.storages:
-				# Update existing pools
-				poolStat = self.storages[uuid]
-				poolStat.update(pool)
-				cached_pools.remove(uuid)
-			else:
-				# Add new pools
-				poolStat = StoragePool(pool)
-				self.storages[uuid] = poolStat
-		for uuid in cached_pools:
-			# Remove obsolete pools
-			del self.storages[uuid]
-
 		curMem = 0
 		maxMem = 0
 		cached_domains = self.domains.keys()

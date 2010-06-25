@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.40-1) unstable; urgency=low
+
+  * overworked storage management in UVMM daemon
+  * create default storage if it does not exist on a node; Bug #18737
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 25 Jun 2010 17:34:54 +0200
+
 univention-virtual-machine-manager-daemon (0.9.39-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

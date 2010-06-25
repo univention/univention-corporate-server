@@ -92,7 +92,7 @@ class Client( notifier.signals.Provider ):
 
 	def _receive( self, socket ):
 		data = self._socket.recv( 4096 )
-	
+
 		# connection closed?
 		if not data:
 			return False
@@ -126,7 +126,7 @@ class Client( notifier.signals.Provider ):
 
 		if self.is_error( self._packet ):
 			ud.debug( ud.ADMIN, ud.ERROR, 'UVMM: request failed: %s' % self._packet.msg )
-			
+
 		return self._packet
 
 	def send( self, packet, retry = True ):
@@ -173,7 +173,7 @@ class Client( notifier.signals.Provider ):
 		req = protocol.Request_GROUP_LIST()
 		if not self.send( req.pack() ):
 			raise ConnectionError()
-		
+
 		groups = self.recv_blocking()
 
 		tree_data = []
@@ -217,12 +217,12 @@ class Client( notifier.signals.Provider ):
 				group.append( node_info.data )
 
 		return group
-		
+
 	def get_node_tree( self ):
 		req = protocol.Request_GROUP_LIST()
 		if not self.send( req.pack() ):
 			raise ConnectionError()
-		
+
 		groups = self.recv_blocking()
 
 		tree_data = []
@@ -293,7 +293,7 @@ class Client( notifier.signals.Provider ):
 		if not self.send( req.pack() ):
 			raise ConnectionError()
 		return self.recv_blocking()
-		
+
 if __name__ == '__main__':
 	notifier.init()
 

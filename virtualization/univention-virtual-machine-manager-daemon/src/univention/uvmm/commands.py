@@ -35,9 +35,11 @@
 This module implements parsing the protocol packets, checking parameters for
 validity and invoking the real implementation.
 """
+import copy
 
 import protocol
 import node
+import storage
 import logging
 from helpers import TranslatableException, N_ as _
 
@@ -95,14 +97,14 @@ class _Commands:
 			pkg_data.maxMem = local_data.maxMem
 			pkg_data.cpus = local_data.cpus
 			pkg_data.cores = tuple(local_data.cores)
-			pkg_data.storages = []
-			for store in local_data.storages.values():
-				store_data = protocol.Data_StoragePool()
-				store_data.uuid = store.uuid
-				store_data.name = store.name
-				store_data.capacity = store.capacity
-				store_data.available = store.available
-				pkg_data.storages.append(store_data)
+			pkg_data.storages = copy.copy( local_data.storages )
+			# for store in local_data.storages:
+			# 	store_data = protocol.Data_StoragePool()
+			# 	store_data.uuid = store.uuid
+			# 	store_data.name = store.name
+			# 	store_data.capacity = store.capacity
+			# 	store_data.available = store.available
+			# 	pkg_data.storages.append(store_data)
 			pkg_data.domains = []
 			for domain in local_data.domains.values():
 				domain_data = protocol.Data_Domain()
@@ -278,7 +280,7 @@ class _Commands:
 			raise CommandError('STORAGE_POOLS', _('uri != string: %(uri)s'), uri=request.uri)
 		logger.debug('STORAGE_POOLS %s]' % (request.uri,))
 		try:
-			pools = node.storage_pools(request.uri)
+			pools = storage.storage_pools(request.uri)
 			res = protocol.Response_DUMP()
 			res.data = pools
 			return res

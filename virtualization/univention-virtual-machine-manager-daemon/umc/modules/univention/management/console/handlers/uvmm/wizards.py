@@ -47,12 +47,13 @@ class Page( object ):
 		self.title = title
 		self.description = description
 		self.options = []
+		self.actions = []
 		self.buttons = []
 
 	def setup( self, command, options, prev = True, next = True, finish = False ):
 		wizard = umcd.Wizard( self.title )
-		wizard._content.add_row( [ umcd.Fill( 2, self.description ), ] )
-		wizard._content.add_row( [ umcd.Fill( 2, umcd.Text( '' ) ), ] )
+		wizard._content.add_row( [ umcd.Fill( 2, str( self.description ) ), ] )
+		wizard._content.add_row( [ umcd.Fill( 2, '' ), ] )
 		items = []
 		for option in self.options:
 			if hasattr( option, 'option' ):
@@ -60,7 +61,15 @@ class Page( object ):
 				if option.option in options:
 					option.default = options[ option.option ]
 			wizard._content.add_row( [ option, ] )
-		wizard._content.add_row( [ umcd.Fill( 2, umcd.Text( '' ) ), ] )
+		wizard._content.add_row( [ umcd.Fill( 2, '' ), ] )
+		if self.actions:
+			# add already collected options to actions
+			for button in self.actions:
+				for action in button.actions:
+					action.command.options.update( options )
+			wizard._content.add_row( [ umcd.List( content = [ self.actions, ], attributes = { 'colspan' : '2' } ), ] )
+			wizard._content.add_row( [ umcd.Fill( 2, '' ), ] )
+
 		if not self.buttons:
 			if next:
 				opts = copy.copy( options )
@@ -138,12 +147,15 @@ class IWizard( list ):
 
 		return self[ self.current ]
 
+	def reset( self ):
+		self.current = None
+
 class DeviceWizard( IWizard ):
 	def __init__( self, command ):
 		IWizard.__init__( self, command )
 		self.title = _( 'Add a device' )
 		self.pool_syntax = DynamicSelect( _( 'Storage pool' ) )
-		self.pool_syntax.update_choices( [ '/var/lib/libvirt/images', '/var/lib/xen/images' ] )
+		# self.pool_syntax.update_choices( [ '/var/lib/libvirt/images', '/var/lib/xen/images' ] )
 		self.image_syntax = DynamicSelect( _( 'Device image' ) )
 
 		# page 0
@@ -172,6 +184,14 @@ class DeviceWizard( IWizard ):
 		# page 4
 		page = Page( self.title, _( 'The following device will be create:' ) )
 		self.append( page )
+
+	def action( self, object, node ):
+		self.node = node
+		if self.current == None:
+			# read pool
+			self.pool_syntax.update_choices( [ storage.name for storage in self.node.storages ] )
+
+		return IWizard.action( object )
 
 	def next( self, object ):
 		if self.current == 0: #which device type?
@@ -218,18 +238,93 @@ class InstanceWizard( IWizard ):
 		self.node = None
 		self.profile_syntax = DynamicSelect( _( 'Profiles' ) )
 		self.profile_syntax.update_choices( [ item[ 'name' ] for item in self.udm.get_profiles() ] )
+		self.arch_syntax = DynamicSelect( _( 'Architecture' ) )
+		self.virttech_syntax = DynamicSelect( _( 'Virtualisation Technique' ) )
+		self.device_wizard = DeviceWizard( command )
+		self.device_wizard_active = False
+		self.actions[ 'new-device' ] = self.new_device
 
 		# page 0
-		page = Page( self.title, _( 'By selecting a profile for the virtual instance most of the settings will be filled out with default values. In the following steps these values may be modified.' ) )
+		page = Page( self.title, _( 'By selecting a profile for the virtual instance most of the settings will be filled out with default values. In the following step these values may be modified.' ) )
 		page.options.append( umcd.make( ( 'instance-profile', self.profile_syntax ) ) )
 		self.append( page )
 
 		# page 1
-		page = Page( self.title, _( '' ) )
-		page.options.append( umcd.make( ( 'instance-name', umc.String( _( 'Name' ) ) ) ) )
-		page.options.append( umcd.make( ( 'instance-arch', umc.String( _( 'Name' ) ) ) ) )
+		page = Page( self.title, _( 'The settings shown below are all read from the selected profile. Please verify that these values fits your environment. At least the name for the virtual instance should be modified.' ) )
+		page.options.append( umcd.make( ( 'name', umc.String( _( 'Name' ) ) ) ) )
+		page.options.append( umcd.make( ( 'arch', self.arch_syntax ) ) )
+		page.options.append( umcd.make( ( 'type', self.virttech_syntax ) ) )
+		page.options.append( umcd.make( ( 'memory', umc.String( _( 'Memory' ) ) ) ) )
+		page.options.append( umcd.make( ( 'cpus', NumberSelect( _( 'CPUs' ) ) ) ) )
+		page.options.append( umcd.make( ( 'vnc', umc.Boolean( _( 'VNC' ) ) ) ) )
+		page.options.append( umcd.make( ( 'kblayout', KBLayoutSelect( _( 'Keyboard layout' ) ) ) ) )
+		self.append( page )
+
+		# page 2
+		page = Page( self.title, _( 'The virtual instance will be created with the following settings. ' ) )
+		# FIXME: show settings
+		page.options.append( umcd.HTML( _( '<b>Attached devices</b>' ) ) )
+		# FIXME: show devices
+		page.options.append( umcd.Text( _( "You may now add additional devices by clicking the button 'Add device'" ) ) )
+		add_btn = umcd.Button( _( 'Add device' ), 'uvmm/add', ( umcd.Action( umcp.SimpleCommand( command, options = { 'action' : 'new-device' } ) ), ) )
+		page.actions.append( add_btn )
 		self.append( page )
 
 	def action( self, object, node ):
 		self.node = node
+		# at startup
+		if self.current == None:
+			# read capabilities
+			types = []
+			archs = []
+			for template in node.capabilities:
+				if not template.virt_tech in types:
+					types.append( template.virt_tech )
+				if not template.arch in archs:
+					archs.append( template.arch )
+			self.virttech_syntax.update_choices( types )
+			self.arch_syntax.update_choices( archs )
 		return IWizard.action( self, object )
+
+	def next( self, object ):
+		if self.device_wizard_active:
+			return self.device_wizard.next( object )
+		if self.current == 0:
+			profile = self.udm.get_profile( object.options[ 'instance-profile' ] )
+			object.options[ 'name' ] = profile[ 'name_prefix' ]
+			object.options[ 'arch' ] = profile[ 'virttech' ]
+			object.options[ 'memory' ] = profile[ 'ram' ]
+			object.options[ 'cpus' ] = profile[ 'cpus' ]
+			object.options[ 'vnc' ] = profile[ 'vnc' ]
+			object.options[ 'kblayout' ] = profile[ 'kblayout' ]
+
+		return IWizard.next( self, object )
+
+	def prev( self, object ):
+		if self.device_wizard_active:
+			return self.device_wizard.prev( object )
+
+		return IWizard.prev( self, object )
+
+	def finish( self, object ):
+		if self.device_wizard_active:
+			self.device_wizard_active = False
+			# FIXME: read result, temporarily store the device in UVMM data structure
+			self.device_wizard.reset()
+			return self[ self.current ]
+		else:
+			pass # FIXME: create instance
+
+	def new_device( self, object ):
+		# all next, prev and finished events must be redirected to the device wizard
+		self.device_wizard_active = True
+		return self.device_wizard.next( object )
+
+	def setup( self, object ):
+		if self.device_wizard_active:
+			return self.device_wizard.setup( object )
+		return IWizard.setup( self, object )
+
+	def reset( self ):
+		# FIXME: reset list of devices
+		IWizard.reset( self )
