@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (1.0.8-1) unstable; urgency=low
+
+  * add order of boot devices to profile; Bug #18516
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 25 Jun 2010 13:39:33 +0200
+
 univention-virtual-machine-manager-schema (1.0.7-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

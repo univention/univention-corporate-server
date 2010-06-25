@@ -167,6 +167,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'bootdev': univention.admin.property(
+			short_description= _('Boot devices'),
+			long_description= _('Order of boot devices'),
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 }
 
 
@@ -180,11 +190,9 @@ layout=[
 			[ univention.admin.field( "interface" ), ],
 			[ univention.admin.field( "vnc" ), univention.admin.field( "kblayout" ) ],
 			[ univention.admin.field( "kernel" ), univention.admin.field( "kernel_parameter" ) ],
-			[ univention.admin.field( "initramfs" ),  ],
+			[ univention.admin.field( "bootdev" ), univention.admin.field( "initramfs" ),  ],
 		  ] )
 	]
-
-
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
@@ -199,7 +207,7 @@ mapping.register('kblayout', 'univentionVirtualMachineProfileKBLayout', None, un
 mapping.register('kernel', 'univentionVirtualMachineProfileKernel', None, univention.admin.mapping.ListToString)
 mapping.register('kernel_parameter', 'univentionVirtualMachineProfileKernelParameter', None, univention.admin.mapping.ListToString)
 mapping.register('initramfs', 'univentionVirtualMachineProfileInitRAMfs', None, univention.admin.mapping.ListToString)
-
+mapping.register('bootdev', 'univentionVirtualMachineProfileBootDevices', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
