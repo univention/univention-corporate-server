@@ -351,10 +351,9 @@ layout=[
 		[univention.admin.field('mouseProtocol'), univention.admin.field('mouseDevice')],
 		[univention.admin.field('keyboardLayout'), univention.admin.field('keyboardVariant')],
 		[univention.admin.field('hSync'), univention.admin.field('vRefresh')],
-		[univention.admin.field('displaySize'), univention.admin.field('filler')],
-        [univention.admin.field('videoRam'),univention.admin.field('virtualsize')],
- 		[univention.admin.field('primarydisplay'), univention.admin.field('secondarydisplay')],
-	    [univention.admin.field('displayposition')],
+		[univention.admin.field('displaySize'), univention.admin.field('videoRam')],
+		[univention.admin.field('virtualsize'), univention.admin.field('primarydisplay')],
+		[univention.admin.field('secondarydisplay'), univention.admin.field('displayposition')],
 
         [univention.admin.field('vncExport'), univention.admin.field('vncExportViewonly')],
 	]),

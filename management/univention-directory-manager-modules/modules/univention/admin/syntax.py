@@ -975,10 +975,10 @@ class XDisplayPosition(select):
 	name='XDisplayPosition'
 	choices=[
 		('', ''),
-		('left', 'Left of primary display'),
-		('right', 'Right of primary display'),
-		('above', 'Above primary display'),
-		('below', 'Below primary display')
+		('left', _('Left of primary display')),
+		('right', _('Right of primary display')),
+		('above', _('Above primary display')),
+		('below', _('Below primary display'))
 	]
 
 class XMouseDevice(select):
