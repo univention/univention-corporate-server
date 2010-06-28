@@ -34,7 +34,7 @@
 
 log_action_msg "Setting up Thin Client policy configuration"
 
-eval $(univention-baseconfig shell ldap/server/name ldap/hostdn)
+eval $(univention-config-registry shell ldap/server/name ldap/hostdn)
 
 policy_file=$(mktemp)
 policy_file_result=$(mktemp)
@@ -57,12 +57,14 @@ cat $policy_file | while read line; do
 
 done
 
-univention-baseconfig set $(cat $policy_file_result) >/dev/tty8 2>&1
+cat $policy_file_result | while read line; do
+    univention-config-registry set "${line}"
+done
 
 # interpret configuration registry policies
 /usr/lib/univention-directory-policy/univention-policy-update-config-registry --setall "$ldap_hostdn" >>/dev/tty8 2>&1
 
-eval $(univention-baseconfig shell)
+eval $(univention-config-registry shell)
 
 # set several basic configurations
 
@@ -109,8 +111,8 @@ if [ -z "$kerberos_realm" ]; then
 	fi
 fi
 
-univention-baseconfig set $registry_vals >>/dev/tty8 2>&1
-univention-baseconfig commit /etc/init.d/portmap /etc/krb5.conf >>/dev/tty8 2>&1
+univention-config-registry set $registry_vals >>/dev/tty8 2>&1
+univention-config-registry commit /etc/init.d/portmap /etc/krb5.conf >>/dev/tty8 2>&1
 
 # load kernel modules defined by policy
 for module in $(echo $kernel_modules | sed 's/;/ /g'); do
@@ -126,8 +128,8 @@ if [ -n "$thinclient_debug" ]; then
 	echo "Local-Settings:" > /dev/tty8
 	echo "Policy-Settings:" > /dev/tty9
 
-	univention-baseconfig dump | grep -v univention > /dev/tty8
-	univention-baseconfig dump | grep univention > /dev/tty9
+	univention-config-registry dump | grep -v univention > /dev/tty8
+	univention-config-registry dump | grep univention > /dev/tty9
 fi
 
 log_action_end_msg 0

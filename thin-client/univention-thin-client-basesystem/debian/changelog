@@ -1,3 +1,10 @@
+univention-thin-client-basesystem (7.1.0-2) unstable; urgency=low
+
+  * Escape the univention-config-registry set all after the mappings
+    have been applied (Bug #18809)	  
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 28 Jun 2010 12:20:04 +0200
+
 univention-thin-client-basesystem (7.1.0-1) unstable; urgency=low
 
   * bump version for UCS TCS compatibility (Bug #17543)
