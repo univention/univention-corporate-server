@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Admin Modules
-#  admin policy for the xfree configuration
+# Univention Directory Manager modules
+#  policy for the xorg configuration
 #
 # Copyright 2004-2010 Univention GmbH
 #
@@ -56,6 +56,10 @@ class xfreeFixedAttributes(univention.admin.syntax.select):
 		('univentionXVNCExportType',_('Enable VNC export')),
 		('univentionXVNCExportViewonly',_('Viewonly VNC export')),
 		('univentionXVideoRam',_('Amount of RAM on the graphics adapter')),
+		('univentionXDisplayPrimary',_('Primary display')),
+		('univentionXDisplaySecondary',_('Secondary display')),
+		('univentionXDisplayPosition',_('Relative position of secondary display')),
+		('univentionXDisplayVirtualSize',_('Virtual size of dual monitor desktop')),
 		]
 
 module='policies/xfree'
@@ -264,6 +268,50 @@ property_descriptions={
 			identifies=0,
 			default=('1', [])
 		),
+	'virtualsize': univention.admin.property(
+			short_description=_('Virtual size of dual monitor desktop'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			default=('1', [])
+		),
+	'displayposition': univention.admin.property(
+			short_description=_('Display position'),
+			long_description='',
+			syntax=univention.admin.syntax.XDisplayPosition,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			default=('1', [])
+		),
+	'primarydisplay': univention.admin.property(
+			short_description=_('Primary display'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			default=('1', [])
+		),
+	'secondarydisplay': univention.admin.property(
+			short_description=_('Secondary display'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			default=('1', [])
+		),
 	'videoRam': univention.admin.property(
 			short_description=_('RAM on the graphics adapter in kB'),
 			long_description='',
@@ -304,8 +352,11 @@ layout=[
 		[univention.admin.field('keyboardLayout'), univention.admin.field('keyboardVariant')],
 		[univention.admin.field('hSync'), univention.admin.field('vRefresh')],
 		[univention.admin.field('displaySize'), univention.admin.field('filler')],
-		[univention.admin.field('videoRam')],
-		[univention.admin.field('vncExport'), univention.admin.field('vncExportViewonly')],
+        [univention.admin.field('videoRam'),univention.admin.field('virtualsize')],
+ 		[univention.admin.field('primarydisplay'), univention.admin.field('secondarydisplay')],
+	    [univention.admin.field('displayposition')],
+
+        [univention.admin.field('vncExport'), univention.admin.field('vncExportViewonly')],
 	]),
 	univention.admin.tab(_('Object'),_('Object'), [
 		[univention.admin.field('requiredObjectClasses') , univention.admin.field('prohibitedObjectClasses') ],
@@ -329,6 +380,12 @@ mapping.register('vncExport', 'univentionXVNCExportType', None, univention.admin
 mapping.register('videoRam', 'univentionXVideoRam', None, univention.admin.mapping.ListToString)
 mapping.register('vncExportViewonly', 'univentionXVNCExportViewonly', None, univention.admin.mapping.ListToString)
 mapping.register('autodetect', 'univentionXAutoDetect', None, univention.admin.mapping.ListToString)
+
+mapping.register('primarydisplay', 'univentionXDisplayPrimary', None, univention.admin.mapping.ListToString)
+mapping.register('secondarydisplay', 'univentionXDisplaySecondary', None, univention.admin.mapping.ListToString)
+mapping.register('displayposition', 'univentionXDisplayPosition', None, univention.admin.mapping.ListToString)
+mapping.register('virtualsize', 'univentionXDisplayVirtualSize', None, univention.admin.mapping.ListToString)
+
 mapping.register('requiredObjectClasses', 'requiredObjectClasses')
 mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
 mapping.register('fixedAttributes', 'fixedAttributes')

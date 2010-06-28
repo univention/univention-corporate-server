@@ -1,3 +1,11 @@
+univention-directory-manager-modules (6.0.6-2) unstable; urgency=low
+
+  * Make dual monitor setup configurable in Univention Directory
+    Manager: (Bug #12124)
+    - Create a new syntax XDisplayPosition
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 24 Jun 2010 15:44:52 +0200
+
 univention-directory-manager-modules (6.0.6-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
