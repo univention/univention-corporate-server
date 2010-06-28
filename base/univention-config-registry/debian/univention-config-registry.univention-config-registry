@@ -87,11 +87,6 @@ Variables: proxy/username
 Variables: proxy/password
 
 Type: file
-File: etc/apt/apt.conf.d/60invoke
-Variables: pkgdb/scan
-Variables: pkgdb/overwrite/joincheck
-
-Type: file
 File: etc/apt/apt.conf.d/20secureapt
 Variables: update/secure_apt
 

@@ -1,3 +1,9 @@
+univention-pkgdb (4.0.1-1) unstable; urgency=low
+
+  * deactivate pkgdb if service is unset (Bug #18107)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 25 Jun 2010 13:18:12 +0200
+
 univention-pkgdb (4.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

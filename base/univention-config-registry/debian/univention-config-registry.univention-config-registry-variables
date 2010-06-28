@@ -340,18 +340,6 @@ Description[en]=After how may seconds the next DNS servers is used
 Type=str
 Categories=system-network
 
-[pkgdb/overwrite/joincheck]
-Description[de]=Der Software-Monitor prüft den Join-Status nicht vor dem Update der Datenbank
-Description[en]=The software monitor does not check the join status before updating the database
-Type=str
-Categories=system-swmon
-
-[pkgdb/scan]
-Description[de]=Konfiguriert die Aktualisierung der Software-Monitor-Datenbank
-Description[en]=Configure update of the software monitor database
-Type=str
-Categories=system-swmon
-
 [proxy/password]
 Description[de]=Passwort für die Authentifizierung am HTTP-Proxy-Server
 Description[en]=Password for the proxy authentication

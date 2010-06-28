@@ -10,3 +10,14 @@ Description[en]=Netmask for access to the pkgdb
 Type=str
 Categories=service-pkgdb
 
+[pkgdb/overwrite/joincheck]
+Description[de]=Der Software-Monitor prüft den Join-Status nicht vor dem Update der Datenbank
+Description[en]=The software monitor does not check the join status before updating the database
+Type=str
+Categories=system-swmon
+
+[pkgdb/scan]
+Description[de]=Konfiguriert die Aktualisierung der Software-Monitor-Datenbank (Diese Variable wird automatisch gesetzt)
+Description[en]=Configure update of the software monitor database (This variable is set automatically)
+Type=str
+Categories=system-swmon
