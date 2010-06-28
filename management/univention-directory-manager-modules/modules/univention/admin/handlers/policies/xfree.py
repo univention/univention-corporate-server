@@ -277,7 +277,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default=('1', [])
+			default=('', [])
 		),
 	'displayposition': univention.admin.property(
 			short_description=_('Display position'),
@@ -299,7 +299,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default=('1', [])
+			default=('', [])
 		),
 	'secondarydisplay': univention.admin.property(
 			short_description=_('Secondary display'),
@@ -310,7 +310,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default=('1', [])
+			default=('', [])
 		),
 	'videoRam': univention.admin.property(
 			short_description=_('RAM on the graphics adapter in kB'),

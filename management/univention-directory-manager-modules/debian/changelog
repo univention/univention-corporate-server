@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.6-3) unstable; urgency=low
+
+  * Fix default values in policy creation (Bug #12124)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 28 Jun 2010 15:37:29 +0200
+
 univention-directory-manager-modules (6.0.6-2) unstable; urgency=low
 
   * Make dual monitor setup configurable in Univention Directory
