@@ -24,6 +24,14 @@ univentionXKeyboardLayout="xorg/keyboard/options/XkbLayout"
 
 univentionXAutoDetect="xorg/autodetect"
 
+univentionXDisplayPrimary="xorg/display/primary"
+
+univentionXDisplaySecondary="xorg/display/secondary"
+
+univentionXDisplayPosition="xorg/display/relative-position"
+
+univentionXDisplayVirtualSize="xorg/display/virtual"
+
 X_VNC_Export_Type="xorg/vnc/exporttype"
 
 X_Mouse_Device="xorg/mouse/device"
