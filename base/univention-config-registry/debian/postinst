@@ -119,7 +119,19 @@ fi
 univention-baseconfig set sshd/port?22
 univention-baseconfig set sshd/permitroot?yes
 univention-baseconfig set sshd/xforwarding?no
-univention-baseconfig set sshd/challengeresponse?no
+
+# to use pam_tally (account locking) via ssh the passwordauthentication
+# must be disabled otherwise the pam stack won't use for authentication
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=18750
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.7-1; then
+	univention-baseconfig set	sshd/challengeresponse?no \
+								sshd/passwordauthentication?yes
+elif [ "$1" = configure -a -z "$2" ]; then
+	univention-baseconfig set	sshd/challengeresponse?yes \
+								sshd/passwordauthentication?no
+fi
+
 
 # http://en.wikipedia.org/wiki/Nothofagus_solandri
 # univention-baseconfig set version/releasename="mountain beech" # UCS 2.1

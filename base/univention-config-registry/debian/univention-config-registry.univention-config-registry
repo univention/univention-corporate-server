@@ -11,6 +11,8 @@ Variables: sshd/permitroot
 Variables: sshd/xforwarding
 Variables: sshd/xdisplayoffset
 Variables: sshd/xuselocalhost
+Variables: sshd/challengeresponse
+Variables: sshd/passwordauthentication
 
 Type: file
 File: etc/ssh/ssh_config

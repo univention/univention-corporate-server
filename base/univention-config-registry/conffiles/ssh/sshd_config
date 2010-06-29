@@ -29,7 +29,7 @@ PermitEmptyPasswords no
 # Change to yes to enable challenge-response passwords (beware issues with
 # some PAM modules and threads)
 ChallengeResponseAuthentication @%@sshd/challengeresponse@%@
-PasswordAuthentication yes
+PasswordAuthentication @%@sshd/passwordauthentication@%@
 
 # Kerberos options
 KerberosAuthentication no

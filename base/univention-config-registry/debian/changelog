@@ -1,3 +1,10 @@
+univention-config-registry (6.0.9-1) unstable; urgency=low
+
+  * added ucr variable for sshd password authentication and change the
+    default, so sshd will use pam by default. Bug #18776
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Jun 2010 14:05:57 +0200
+
 univention-config-registry (6.0.8-1) unstable; urgency=low
 
   * move pkgdb/* UCR variables to univention-pkgdb (Bug #18107)

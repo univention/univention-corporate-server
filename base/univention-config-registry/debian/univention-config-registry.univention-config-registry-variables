@@ -58,6 +58,12 @@ Description[en]=Enalbe/Disable challenge response authentication
 Type=str
 Categories=service-ssh
 
+[sshd/passwordauthentication]
+Description[de]=Aktiviere/Deaktiviere password authentication direkt √ber sshd
+Description[en]=Enalbe/Disable password authentication via sshd directly
+Type=str
+Categories=service-ssh
+
 [domainname]
 Description[de]=DNS-Dom√§ne
 Description[en]=DNS domain
