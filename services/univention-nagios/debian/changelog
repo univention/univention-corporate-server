@@ -1,3 +1,9 @@
+univention-nagios (4.0.3-2) unstable; urgency=low
+
+  * remove symlink on package removal (Bug #18821)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 29 Jun 2010 11:25:04 +0200
+
 univention-nagios (4.0.3-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
