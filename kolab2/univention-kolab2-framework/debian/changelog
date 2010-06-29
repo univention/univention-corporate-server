@@ -1,3 +1,11 @@
+univention-kolab2-framework (4.0.1-1) unstable; urgency=low
+
+  * a2disable-site kolab2-freebusy on uninstall (Bug #18705)
+  * debian/rules: Fix install target.
+  * svn:ignore temporary packaging files in debian/.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 29 Jun 2010 10:19:50 +0200
+
 univention-kolab2-framework (4.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

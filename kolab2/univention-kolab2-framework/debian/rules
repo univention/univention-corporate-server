@@ -31,12 +31,9 @@
 # <http://www.gnu.org/licenses/>.
 
 package=univention-kolab2-framework
+DIR := $(CURDIR)/debian/$(package)
 
-build: build-stamp
-
-build-stamp:
-	dh_testdir
-	touch build-stamp
+build:
 
 clean:
 	dh_testdir
@@ -51,41 +48,41 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/
-	install -m755 files/var/lib/univention-kolab2-framework/kolabmailboxfilter.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/
-	install -m755 files/var/lib/univention-kolab2-framework/kolab_smtpdpolicy debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/
-	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter/kolabmailtransport.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/kolabfilter/
-	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter/misc.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/kolabfilter/
-	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter/olhacks.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/kolabfilter/
-	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter/resmgr.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/kolabfilter/
+	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter.php $(DIR)/var/lib/univention-kolab2-framework/
+	install -m755 files/var/lib/univention-kolab2-framework/kolabmailboxfilter.php $(DIR)/var/lib/univention-kolab2-framework/
+	install -m755 files/var/lib/univention-kolab2-framework/kolab_smtpdpolicy $(DIR)/var/lib/univention-kolab2-framework/
+	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter/kolabmailtransport.php $(DIR)/var/lib/univention-kolab2-framework/kolabfilter/
+	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter/misc.php $(DIR)/var/lib/univention-kolab2-framework/kolabfilter/
+	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter/olhacks.php $(DIR)/var/lib/univention-kolab2-framework/kolabfilter/
+	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter/resmgr.php $(DIR)/var/lib/univention-kolab2-framework/kolabfilter/
 
-	install -m755 files/var/www/freebusy/freebusy.php debian/univention-kolab2-framework/var/www/freebusy/
-	install -m755 files/var/www/freebusy/pfb.php debian/univention-kolab2-framework/var/www/freebusy/
+	install -m755 files/var/www/freebusy/freebusy.php $(DIR)/var/www/freebusy/
+	install -m755 files/var/www/freebusy/pfb.php $(DIR)/var/www/freebusy/
 
-	install -m755 files/var/lib/univention-kolab2-framework/freebusy/freebusycache.class.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
-	install -m755 files/var/lib/univention-kolab2-framework/freebusy/freebusy.class.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
-	install -m755 files/var/lib/univention-kolab2-framework/freebusy/freebusycollector.class.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
-	install -m755 files/var/lib/univention-kolab2-framework/freebusy/freebusyldap.class.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
-	install -m755 files/var/lib/univention-kolab2-framework/freebusy/misc.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
-	install -m755 files/var/lib/univention-kolab2-framework/freebusy/recurrence.class.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
-	install -m755 files/var/lib/univention-kolab2-framework/freebusy/domxml-php4-to-php5.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
-	install -m755 files/var/lib/univention-kolab2-framework/generate_pfbcache.pl debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/freebusycache.class.php $(DIR)/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/freebusy.class.php $(DIR)/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/freebusycollector.class.php $(DIR)/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/freebusyldap.class.php $(DIR)/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/misc.php $(DIR)/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/recurrence.class.php $(DIR)/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/domxml-php4-to-php5.php $(DIR)/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/generate_pfbcache.pl $(DIR)/var/lib/univention-kolab2-framework/
 
-	sh -c " cd files; find usr/share/php/PEAR/ ! \( -name CVS -o -name .svn -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
-	sh -c " cd files; find var/lib/univention-kolab2-framework/fbview/ ! \( -name CVS -o -name .svn -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
-	sh -c " cd files; find var/lib/univention-kolab2-framework/kolab-pear/ ! \( -name CVS -o -name .svn -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
+	cd files; find usr/share/php/PEAR/ \( -name CVS -o -name .svn \) -prune -o -type f -exec cp {} $(DIR)/{} \;
+	cd files; find var/lib/univention-kolab2-framework/fbview/ \( -name CVS -o -name .svn \) -prune -o -type f -exec cp {} $(DIR)/{} \;
+	cd files; find var/lib/univention-kolab2-framework/kolab-pear/ \( -name CVS -o -name .svn \) -prune -o -type f -exec cp {} $(DIR)/{} \;
 
-	install -m 755 65univention-kolab2-framework.inst debian/univention-kolab2-framework/usr/lib/univention-install
-	install -m 755 kolabserver.py debian/univention-kolab2-framework/usr/lib/univention-directory-listener/system/
-	install -m 755 kolabdomain.py debian/univention-kolab2-framework/usr/lib/univention-directory-listener/system/
-	install -m 755 files/usr/share/outlook-setup/konfig2000.txt debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
-	install -m 755 files/usr/share/outlook-setup/konfig2003.txt debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
-	install -m 755 files/usr/share/outlook-setup/readme.txt debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
-	install -m 755 files/usr/share/outlook-setup/UGS-Outlook-2000-de-setup.au3 debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
-	install -m 755 files/usr/share/outlook-setup/UGS-Outlook-2000-de-setup.exe debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
-	install -m 755 files/usr/share/outlook-setup/UGS-Outlook-2003-de-setup.au3 debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
-	install -m 755 files/usr/share/outlook-setup/UGS-Outlook-2003-de-setup.exe debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
-	install -m 755 files/usr/share/outlook-setup/univention_logo.gif debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 65univention-kolab2-framework.inst $(DIR)/usr/lib/univention-install
+	install -m 755 kolabserver.py $(DIR)/usr/lib/univention-directory-listener/system/
+	install -m 755 kolabdomain.py $(DIR)/usr/lib/univention-directory-listener/system/
+	install -m 755 files/usr/share/outlook-setup/konfig2000.txt $(DIR)/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/konfig2003.txt $(DIR)/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/readme.txt $(DIR)/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/UGS-Outlook-2000-de-setup.au3 $(DIR)/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/UGS-Outlook-2000-de-setup.exe $(DIR)/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/UGS-Outlook-2003-de-setup.au3 $(DIR)/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/UGS-Outlook-2003-de-setup.exe $(DIR)/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/univention_logo.gif $(DIR)/usr/share/univention-kolab2-framework/outlook-setup/
 
 	univention-install-baseconfig
 	dh_install
