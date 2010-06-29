@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-29 13:44+0200\n"
+"POT-Creation-Date: 2010-06-29 14:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,7 +39,7 @@ msgstr "Betriebssystem"
 msgid "Name of the operation system"
 msgstr "Name des Betriebssystem"
 
-#: info.py:86 profile.py:192
+#: info.py:86 profile.py:193
 msgid "General"
 msgstr "Allgemein"
 
@@ -63,87 +63,90 @@ msgstr "CDROM-Laufwerk"
 msgid "floppy disk"
 msgstr "Diskettenlaufwerk"
 
-#: profile.py:59 profile.py:60
+#: profile.py:55
+msgid "Network"
+msgstr "Netz"
+
+#: profile.py:60 profile.py:61
 msgid "Name"
 msgstr "Name"
 
-#: profile.py:69
+#: profile.py:70
 msgid "Name prefix"
 msgstr "Namenspräfix"
 
-#: profile.py:70
+#: profile.py:71
 msgid "Prefix for the name of virtual machines"
 msgstr "Präfix für den Namen von virtuellen Maschinen"
 
-#: profile.py:79
+#: profile.py:80
 msgid "Architecture"
 msgstr "Architektur"
 
-#: profile.py:80
+#: profile.py:81
 msgid "Architecture of the virtual machine"
 msgstr "Architektur der virtuellen Maschine"
 
-#: profile.py:89 profile.py:90
+#: profile.py:90 profile.py:91
 msgid "Virtualisation Technology"
 msgstr "Virtualisierungstechnology"
 
-#: profile.py:99
+#: profile.py:100
 msgid "CPUs"
 msgstr "Processoren"
 
-#: profile.py:100
+#: profile.py:101
 msgid "Number of virtual CPUs"
 msgstr "Anzahl der Prozessoren"
 
-#: profile.py:109
+#: profile.py:110
 msgid "Memory"
 msgstr "Speicher"
 
-#: profile.py:110
+#: profile.py:111
 msgid "Amount of memory"
 msgstr "Größe des Speichers"
 
-#: profile.py:119
+#: profile.py:120
 msgid "Network interface"
 msgstr "Netz-Interface"
 
-#: profile.py:120
+#: profile.py:121
 msgid "Bridging interface"
 msgstr "Bridging Interface"
 
-#: profile.py:129
+#: profile.py:130
 msgid "Remote access"
 msgstr "Fernzugriff"
 
-#: profile.py:130
+#: profile.py:131
 msgid "Active VNC remote acess"
 msgstr "Aktiviert den VNC Fernzugriff"
 
-#: profile.py:139 profile.py:140
+#: profile.py:140 profile.py:141
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
-#: profile.py:149 profile.py:150
+#: profile.py:150 profile.py:151
 msgid "Kernel"
 msgstr "Kernel"
 
-#: profile.py:159 profile.py:160
+#: profile.py:160 profile.py:161
 msgid "Kernel parameter"
 msgstr "Kernel Parameter"
 
-#: profile.py:169 profile.py:170
+#: profile.py:170 profile.py:171
 msgid "Initramfs disk"
 msgstr "Iinitramfs Disk"
 
-#: profile.py:179
+#: profile.py:180
 msgid "Boot devices"
 msgstr "Boot-Device"
 
-#: profile.py:180
+#: profile.py:181
 msgid "Order of boot devices"
 msgstr "Reihenfolge der Boot-Devices"
 
-#: profile.py:192
+#: profile.py:193
 msgid "Virtual machine profile"
 msgstr "Profil für eine virtuelle Maschine"
-
