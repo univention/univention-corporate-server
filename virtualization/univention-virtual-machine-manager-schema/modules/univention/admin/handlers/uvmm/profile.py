@@ -46,6 +46,14 @@ short_description = _('UVMM: Profile')
 long_description = ''
 operations = [ 'search', 'edit', 'add', 'remove' ]
 
+class BootDevice( univention.admin.syntax.select ):
+	name = 'BootDevice'
+	choices = [
+		('hd', _( 'hard drive' ) ),
+		('cdrom', _( 'CDROM drive' ) ),
+		('fd', _( 'floppy disk' ) ),
+	]
+
 property_descriptions={
 	'name': univention.admin.property(
 			short_description= _('Name'),
@@ -147,7 +155,7 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'kernel_parammeter': univention.admin.property(
+	'kernel_parameter': univention.admin.property(
 			short_description= _('Kernel parameter'),
 			long_description= _('Kernel parameter'),
 			syntax=univention.admin.syntax.string,
@@ -170,7 +178,7 @@ property_descriptions={
 	'bootdev': univention.admin.property(
 			short_description= _('Boot devices'),
 			long_description= _('Order of boot devices'),
-			syntax=univention.admin.syntax.string,
+			syntax = BootDevice,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -207,7 +215,7 @@ mapping.register('kblayout', 'univentionVirtualMachineProfileKBLayout', None, un
 mapping.register('kernel', 'univentionVirtualMachineProfileKernel', None, univention.admin.mapping.ListToString)
 mapping.register('kernel_parameter', 'univentionVirtualMachineProfileKernelParameter', None, univention.admin.mapping.ListToString)
 mapping.register('initramfs', 'univentionVirtualMachineProfileInitRAMfs', None, univention.admin.mapping.ListToString)
-mapping.register('bootdev', 'univentionVirtualMachineProfileBootDevices', None, univention.admin.mapping.ListToString)
+mapping.register('bootdev', 'univentionVirtualMachineProfileBootDevices' )
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
