@@ -32,13 +32,21 @@
 # <http://www.gnu.org/licenses/>.
 
 import copy
+import os
 
 import univention.management.console as umc
 import univention.management.console.dialog as umcd
 import univention.management.console.protocol as umcp
 
+import univention.debug as ud
+
+import univention.uvmm.node as uvmmn
+import univention.uvmm.protocol as uvmmp
+
 from types import *
+from tools import *
 import udm
+import uvmmd
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
@@ -102,6 +110,10 @@ class IWizard( list ):
 		self.current = None
 		self.command = command
 		self.actions = { 'next' : self.next, 'prev' : self.prev, 'finish' : self.finish }
+		self._result = None
+
+	def result( self ):
+		return self._result
 
 	def action( self, object ):
 		if 'action' in object.options:
@@ -149,14 +161,16 @@ class IWizard( list ):
 
 	def reset( self ):
 		self.current = None
+		self._result = None
 
 class DeviceWizard( IWizard ):
 	def __init__( self, command ):
 		IWizard.__init__( self, command )
 		self.title = _( 'Add a device' )
 		self.pool_syntax = DynamicSelect( _( 'Storage pool' ) )
-		# self.pool_syntax.update_choices( [ '/var/lib/libvirt/images', '/var/lib/xen/images' ] )
 		self.image_syntax = DynamicSelect( _( 'Device image' ) )
+		self.actions[ 'pool-selected' ] = self.pool_selected
+		self.uvmm = uvmmd.Client( auto_connect = False )
 
 		# page 0
 		page = Page( self.title, _( 'What type of device should be created?' ) )
@@ -170,13 +184,13 @@ class DeviceWizard( IWizard ):
 
 		# page 2
 		page = Page( self.title )
-		page.options.append( umcd.make( ( 'device-pool', self.pool_syntax ) ) ) # FIXME: this must be a button
+		page.options.append( umcd.Text( '' ) ) # will be replaced with pool selection button
 		page.options.append( umcd.make( ( 'device-image', self.image_syntax ) ) )
 		self.append( page )
 
 		# page 3
 		page = Page( self.title, _( 'Select a storage pool that should be used for the image. The filename and size for the virtual harddrive have been set to default values. You may change these values to fit your needs.' ) )
-		page.options.append( umcd.make( ( 'device-pool', self.pool_syntax ) ) )
+		page.options.append( umcd.Text( '' ) ) # will be replaced with pool selection button
 		page.options.append( umcd.make( ( 'image-name', umc.String( _( 'Filename' ) ) ) ) )
 		page.options.append( umcd.make( ( 'image-size', umc.String( _( 'Size' ) ) ) ) )
 		self.append( page )
@@ -185,16 +199,40 @@ class DeviceWizard( IWizard ):
 		page = Page( self.title, _( 'The following device will be create:' ) )
 		self.append( page )
 
+	def _create_pool_select_button( self, options ):
+		choices = []
+		for storage in self.node.storages:
+			opts = copy.copy( options )
+			opts[ 'action' ] = 'pool-selected'
+			opts[ 'device-pool' ] = storage.name
+			action = umcd.Action( umcp.SimpleCommand( self.command, options = opts ) )
+			choices.append( { 'description' : storage.name, 'actions' : [ action, ] } )
+		return umcd.ChoiceButton( _( 'Pool' ), choices = choices )
+
 	def action( self, object, node ):
-		self.node = node
+		ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: action! (current: %s)' % str( self.current ) )
+		self.node_uri, self.node = node
 		if self.current == None:
 			# read pool
-			self.pool_syntax.update_choices( [ storage.name for storage in self.node.storages ] )
+			ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: node storage pools: %s' % str( self.node.storages ) )
+			btn = self._create_pool_select_button( object.options )
+			object.options[ 'device-pool' ] = 'default'
+			self[ 2 ].options[ 0 ] = btn
+			self[ 3 ].options[ 0 ] = btn
 
-		return IWizard.action( object )
+		return IWizard.action( self, object )
+
+	def pool_selected( self, object ):
+		vols = self.uvmm.storage_pool_volumes( self.node_uri, object.options.get( 'device-pool', 'default' ), object.options[ 'device-type' ] )
+		ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: node storage volumes: %s' % str( vols ) )
+		self.image_syntax.update_choices( [ vol.source for vol in vols ] )
+
+		return self[ self.current ]
 
 	def next( self, object ):
-		if self.current == 0: #which device type?
+		if self.current == 0: # which device type?
+			# initialize pool and image selection
+			self.pool_selected( object )
 			if object.options[ 'device-type' ] == 'disk':
 				self.current = 1
 			else:
@@ -209,6 +247,14 @@ class DeviceWizard( IWizard ):
 				else:
 					self[ self.current ].description = _( 'Select the storage pool and afterwards one of the existing ISO image' )
 		elif self.current in ( 2, 3 ): # select existing disk image
+			if self.current == 2:
+				ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: collect information about existing disk image: %s' % object.options[ 'device-image' ] )
+				vols = self.uvmm.storage_pool_volumes( self.node_uri, object.options.get( 'device-pool', 'default' ), object.options[ 'device-type' ] )
+				for vol in vols:
+					if vol.source == object.options[ 'device-image' ]:
+						ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: set information about existing disk image: %s' % object.options[ 'device-image' ] )
+						object.options[ 'image-name' ] = os.path.basename( object.options[ 'device-image' ] )
+						object.options[ 'image-size' ] = block2byte( vol.size )
 			self.current = 4
 			self[ self.current ].options = []
 			self[ self.current ].options.append( umcd.HTML( _( '<b>Device type</b>: %(type)s' ) % { 'type' : object.options[ 'device-type' ] } ) )
@@ -230,6 +276,24 @@ class DeviceWizard( IWizard ):
 
 		return IWizard.prev( self, object )
 
+	def finish( self, object ):
+		# collect information about the device
+		disk = uvmmn.Disk()
+		if object.options[ 'device-type' ] == 'disk':
+			disk.device = uvmmn.Disk.DEVICE_DISK
+		else:
+			disk.device = uvmmn.Disk.DEVICE_CDROM
+		disk.size = byte2block( object.options[ 'image-size' ] )
+
+		for pool in self.node.storages:
+			if pool.name == object.options[ 'device-pool' ]:
+				disk.source = pool.path
+				break
+		disk.source = os.path.join( disk.source, object.options[ 'image-name' ] )
+
+		self._result = disk
+		return IWizard.finish( self, object )
+
 class InstanceWizard( IWizard ):
 	def __init__( self, command ):
 		IWizard.__init__( self, command )
@@ -239,10 +303,11 @@ class InstanceWizard( IWizard ):
 		self.profile_syntax = DynamicSelect( _( 'Profiles' ) )
 		self.profile_syntax.update_choices( [ item[ 'name' ] for item in self.udm.get_profiles() ] )
 		self.arch_syntax = DynamicSelect( _( 'Architecture' ) )
-		self.virttech_syntax = DynamicSelect( _( 'Virtualisation Technique' ) )
+		self.virttech_syntax = DynamicSelect( _( 'Virtualisation Technology' ) )
 		self.device_wizard = DeviceWizard( command )
 		self.device_wizard_active = False
 		self.actions[ 'new-device' ] = self.new_device
+		self.devices = []
 
 		# page 0
 		page = Page( self.title, _( 'By selecting a profile for the virtual instance most of the settings will be filled out with default values. In the following step these values may be modified.' ) )
@@ -261,23 +326,22 @@ class InstanceWizard( IWizard ):
 		self.append( page )
 
 		# page 2
-		page = Page( self.title, _( 'The virtual instance will be created with the following settings. ' ) )
-		# FIXME: show settings
-		page.options.append( umcd.HTML( _( '<b>Attached devices</b>' ) ) )
-		# FIXME: show devices
+		page = Page( self.title, _( 'The virtual instance will be created with the following settings.' ) )
+		page.options.append( umcd.HTML( '<b>%s</b><br>' %_( 'Attached devices' ) ) )
+		page.options.append( umcd.HTML( '' ) )
 		page.options.append( umcd.Text( _( "You may now add additional devices by clicking the button 'Add device'" ) ) )
 		add_btn = umcd.Button( _( 'Add device' ), 'uvmm/add', ( umcd.Action( umcp.SimpleCommand( command, options = { 'action' : 'new-device' } ) ), ) )
 		page.actions.append( add_btn )
 		self.append( page )
 
 	def action( self, object, node ):
-		self.node = node
+		self.node_uri, self.node = node
 		# at startup
 		if self.current == None:
 			# read capabilities
 			types = []
 			archs = []
-			for template in node.capabilities:
+			for template in self.node.capabilities:
 				if not template.virt_tech in types:
 					types.append( template.virt_tech )
 				if not template.arch in archs:
@@ -292,11 +356,14 @@ class InstanceWizard( IWizard ):
 		if self.current == 0:
 			profile = self.udm.get_profile( object.options[ 'instance-profile' ] )
 			object.options[ 'name' ] = profile[ 'name_prefix' ]
-			object.options[ 'arch' ] = profile[ 'virttech' ]
+			object.options[ 'arch' ] = profile[ 'arch' ]
+			object.options[ 'type' ] = profile[ 'virttech' ]
 			object.options[ 'memory' ] = profile[ 'ram' ]
 			object.options[ 'cpus' ] = profile[ 'cpus' ]
+			object.options[ 'bootdev' ] = profile[ 'bootdev' ]
 			object.options[ 'vnc' ] = profile[ 'vnc' ]
 			object.options[ 'kblayout' ] = profile[ 'kblayout' ]
+			object.options[ 'interface' ] = profile[ 'interface' ]
 
 		return IWizard.next( self, object )
 
@@ -306,19 +373,68 @@ class InstanceWizard( IWizard ):
 
 		return IWizard.prev( self, object )
 
+	def _list_attached_devices( self ):
+		'''add list of attached devices to page 2'''
+		dev_template = _( '<li>%(type)s: %(size)s (image file %(image)s in pool %(pool)s)</li>' )
+		html = '<ul>'
+		for dev in self.devices:
+			values = {}
+			if dev.device == uvmmn.Disk.DEVICE_DISK:
+				values[ 'type' ] = _( 'hard drive' )
+			else:
+				values[ 'type' ] = _( 'CDROM drive' )
+			values[ 'size' ] = block2byte( dev.size )
+			values[ 'image' ] = os.path.basename( dev.source )
+			dir = os.path.dirname( dev.source )
+			values[ 'pool' ] = dir
+			for pool in self.node.storages:
+				if pool.path == dir:
+					values[ 'pool' ] = pool.name
+					break
+			html += dev_template % values
+		html += '</ul>'
+		self[ 2 ].options[ 1 ] = umcd.HTML( html )
+
 	def finish( self, object ):
 		if self.device_wizard_active:
 			self.device_wizard_active = False
-			# FIXME: read result, temporarily store the device in UVMM data structure
+			self.device_wizard.finish( object )
+			self.devices.append( self.device_wizard.result() )
+			self._list_attached_devices()
 			self.device_wizard.reset()
 			return self[ self.current ]
 		else:
-			pass # FIXME: create instance
+			domain = uvmmp.Data_Domain()
+			domain.name = object.options[ 'name' ]
+			domain.arch = object.options[ 'arch' ]
+			domain.virt_tech = object.options[ 'type' ]
+			domain.maxMem = byte2block( object.options[ 'memory' ] )
+			domain.vcpus = object.options[ 'cpus' ]
+			if object.options[ 'bootdev' ] and object.options[ 'bootdev' ][ 0 ]:
+				ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: boot devices: %s' % str( object.options[ 'bootdev' ] ) )
+				domain.boot = object.options[ 'bootdev' ]
+			if object.options[ 'vnc' ]:
+				gfx = uvmmn.Graphic()
+				gfx.listen = '0.0.0.0'
+				gfx.keymap = object.options[ 'kblayout' ]
+				domain.graphics = [ gfx, ]
+			# set device names
+			dev_name = 'a'
+			for dev in self.devices:
+				dev.target_dev = 'hd%s' % dev_name
+				dev_name = chr( ord( dev_name ) + 1 )
+			domain.disks = self.devices
+			iface = uvmmn.Interface()
+			iface.source = object.options[ 'interface' ]
+			self._result = domain
 
 	def new_device( self, object ):
 		# all next, prev and finished events must be redirected to the device wizard
 		self.device_wizard_active = True
-		return self.device_wizard.next( object )
+		self.device_number += 1
+		object.options[ 'image-name' ] = object.options[ 'name' ] + '-%d.img' % self.device_number
+		object.options[ 'image-size' ] = '8 GB'
+		return self.device_wizard.action( object, ( self.node_uri, self.node ) )
 
 	def setup( self, object ):
 		if self.device_wizard_active:
@@ -326,5 +442,7 @@ class InstanceWizard( IWizard ):
 		return IWizard.setup( self, object )
 
 	def reset( self ):
-		# FIXME: reset list of devices
+		self.devices = []
+		self.device_number = 0
+		self.device_wizard.reset()
 		IWizard.reset( self )

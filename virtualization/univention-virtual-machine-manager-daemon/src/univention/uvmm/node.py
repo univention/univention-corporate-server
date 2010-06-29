@@ -94,6 +94,7 @@ class Disk( object ):
 		self.readonly = False
 		self.target_dev = ''
 		self.target_bus = 'ide'
+		self.size = None # not defined
 
 	@staticmethod
 	def map_device( id = None, name = None ):
@@ -663,7 +664,7 @@ def domain_define( uri, domain ):
 	os.appendChild( type )
 	if loader:
 		os.appendChild( loader )
-		
+
 	if domain.kernel:
 		text = doc.createTextNode( domain.kernel )
 		kernel = doc.createElement( 'kernel' )
@@ -684,7 +685,7 @@ def domain_define( uri, domain ):
 			boot = doc.createElement('boot')
 			boot.setAttribute('dev', dev)
 			os.appendChild(boot)
-	
+
 	if False: # FIXME optional
 		clock = doc.createElement('clock')
 		clock.setAttribute('offset', 'localtime') # FIXME: (utc|localtime|timezone|variable)
@@ -798,6 +799,7 @@ def domain_define( uri, domain ):
 				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.uuid, error=e)
 
 	try:
+		logger.info( 'XML DUMP: ' + doc.toxml() )
 		d = conn.defineXML(doc.toxml())
 		domain.uuid = d.UUIDString()
 	except libvirt.libvirtError, e:

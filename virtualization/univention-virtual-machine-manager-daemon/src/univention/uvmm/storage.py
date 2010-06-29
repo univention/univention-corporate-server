@@ -96,18 +96,22 @@ def create_storage_volume(conn, domain, disk):
 		#raise StorageError(_('Volume "%(volume)s" for "%(domain)s" in not located in any storage pool.'), volume=disk.source, domain=domain.name)
 		#create_storage_pool(conn, path.dirname(disk.source))
 
+	if disk.size:
+		size = disk.size
+	else:
+		size = 8589934592
 	xml = '''
 	<volume>
 		<name>%(name)s</name>
-		<allocation unit="G">0</allocation>
-		<capacity unit="G">%(size)d</capacity>
+		<allocation>0</allocation>
+		<capacity>%(size)ld</capacity>
 		<target>
 			<format type="raw"/>
 		</target>
 	</volume>
 	''' % {
 			'name': os.path.basename(disk.source),
-			'size': 8, # FIXME
+			'size': size,
 			}
 	try:
 		v = p.createXML(xml, 0)
@@ -116,8 +120,33 @@ def create_storage_volume(conn, domain, disk):
 	except libvirt.libvirtError, e:
 		raise StorageError(_('Error creating storage volume "%(name)s" for "%(domain)s": %(error)s'), name=disk.source, domain=domain.name, error=e)
 
+def get_storage_volumes( uri, pool_name, type = None ):
+	from node import Disk, node_query
+
+	node = node_query( uri )
+	pool = node.conn.storagePoolLookupByName( pool_name )
+	pool.refresh( 0 )
+	volumes = []
+	for name in pool.listVolumes():
+		disk = Disk()
+		vol = pool.storageVolLookupByName( name )
+		xml = vol.XMLDesc( 0 )
+		doc = parseString( xml )
+		disk.size = int( doc.getElementsByTagName( 'capacity' )[ 0 ].firstChild.nodeValue )
+		target = doc.getElementsByTagName( 'target' )[ 0 ]
+		disk.source = target.getElementsByTagName( 'path' )[ 0 ].firstChild.nodeValue
+		format = target.getElementsByTagName( 'format' )[ 0 ].getAttribute( 'type' )
+		if format == 'iso':
+			disk.device = Disk.DEVICE_CDROM
+		else:
+			disk.device = Disk.DEVICE_DISK
+		if not type or Disk.map_device( disk.device ) == type:
+			volumes.append( disk )
+
+	return volumes
+
 def get_all_storage_volumes(conn, domain):
-	"""Retrieve alls referenced storage volumes."""
+	"""Retrieve all referenced storage volumes."""
 	volumes = []
 	doc = parseString(domain.XMLDesc(0))
 	devices = doc.getElementsByTagName('devices')[0]

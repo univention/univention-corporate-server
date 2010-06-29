@@ -665,24 +665,24 @@ class handler( umch.simpleHandler ):
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		node = self.uvmm.get_node_info( node_uri )
 
-		self.domain_wizard.action( object, node )
-		page = self.domain_wizard.setup( object )
-		res.dialog[ 0 ].set_dialog( page )
+		if not 'action' in object.options:
+			self.domain_wizard.reset()
+		self.domain_wizard.action( object, ( node_uri, node ) )
+		# domain wizard finished?
+		if self.domain_wizard.result():
+			resp = self.uvmm.domain_configure( object.options[ 'node' ], self.domain_wizard.result() )
+			object.options[ 'domain' ] = object.options[ 'name' ]
+			if self.uvmm.is_error( resp ):
+				res.status( 301 )
+				self.finished( object.id(), res, report = resp.msg )
+			else:
+				self.uvmm_domain_overview( object )
+				return
+		else:
+			page = self.domain_wizard.setup( object )
+			res.dialog[ 0 ].set_dialog( page )
 
 		self.finished(object.id(), res)
-		# ud.debug( ud.ADMIN, ud.INFO, 'Domain create' )
-		# ( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-		# if not success:
-		# 	self.finished(object.id(), res)
-		# 	return
-
-		# node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-		# node = self.uvmm.get_node_info( node_uri )
-		# content = self._dlg_domain_settings( object, node, None )
-
-		# res.dialog[ 0 ].set_dialog( umcd.Section( _( 'Add virtual instance' ), content, hideable = False ) )
-
-		# self.finished(object.id(), res)
 
 	def uvmm_domain_remove_images( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain remove images' )
@@ -750,7 +750,7 @@ class handler( umch.simpleHandler ):
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		node = self.uvmm.get_node_info( node_uri )
 
-		self.device_wizard.action( object, node )
+		self.device_wizard.action( object, ( node_uri, node ) )
 		page = self.device_wizard.setup( object )
 		res.dialog[ 0 ].set_dialog( page )
 

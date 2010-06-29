@@ -70,9 +70,10 @@ class Client( object ):
 			name = name.replace( ')', '\)' )
 			res = univention.admin.modules.lookup( uvmm_profile, self.co, self.lo, filter = 'cn=%s' % name, scope='one', base = self.base, required = False, unique = True )
 		except univention.admin.uexceptions.base, e:
-			ud.debug( ud.ADMIN, ud.ERROR, 'UVMM/UDM: get_profiles: error while searching for template: %s' % str( e ) )
+			ud.debug( ud.ADMIN, ud.ERROR, 'UVMM/UDM: get_profile: error while searching for template: %s' % str( e ) )
 			return {}
 
+		ud.debug( ud.ADMIN, ud.ERROR, 'UVMM/UDM: get_profile: profile: %s' % str( res ) )
 		return res[ 0 ]
 
 if __name__ == '__main__':

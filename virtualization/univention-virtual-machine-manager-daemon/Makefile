@@ -115,7 +115,7 @@ IMAGES_12 := domain group node
 IMAGES_16 := add domain-on domain-paused domain group node node-off refresh
 IMAGES_64 := module
 
-SIZES := 12 16 64
+SIZES := 12 16 24 64
 FORMATS := png gif
 
 IMAGES := $(foreach format,$(FORMATS),$(foreach size,$(SIZES),$(foreach img,$(IMAGES_$(size)),umc/images/default/$(size)x$(size)/$(MODULENAME)/$(img).$(format))))

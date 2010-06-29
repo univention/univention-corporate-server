@@ -275,7 +275,7 @@ class _Commands:
 
 	@staticmethod
 	def STORAGE_POOLS(server, request):
-		"""List all volumes in pool."""
+		"""List all pools."""
 		if not isinstance(request.uri, basestring):
 			raise CommandError('STORAGE_POOLS', _('uri != string: %(uri)s'), uri=request.uri)
 		logger.debug('STORAGE_POOLS %s]' % (request.uri,))
@@ -286,6 +286,20 @@ class _Commands:
 			return res
 		except node.NodeError, e:
 			raise CommandError('STORAGE_POOLS', e)
+
+	@staticmethod
+	def STORAGE_VOLUMES( server, request ):
+		'''List all volumes in a pool.'''
+		if not isinstance( request.uri, basestring ):
+			raise CommandError( 'STORAGE_VOLUMES' , _( 'uri != string: %(uri)s' ), uri = request.uri )
+		logger.debug('STORAGE_VOLUMES %s]' % request.uri )
+		try:
+			volumes = storage.get_storage_volumes( request.uri, request.pool, request.type )
+			res = protocol.Response_DUMP()
+			res.data = volumes
+			return res
+		except node.NodeError, e:
+			raise CommandError( 'STORAGE_VOLUMES', e )
 
 	def __getitem__(self, cmd):
 		if cmd.startswith('_'):
