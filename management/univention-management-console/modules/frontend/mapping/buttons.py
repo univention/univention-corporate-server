@@ -145,9 +145,6 @@ class ButtonMap( IButtonMap, mapper.IMapper ):
 
 		self.confirm_attributes( storage, umcp_part, attributes )
 
-		# if the button is instanciated directly via umcd.Button set a default class
-		if type( umcp_part ) == umcd.Button and not 'class' in attributes:
-			attributes[ 'class' ] = 'submit'
 		but = button( unicode( umcp_part ), attributes, { 'helptext' : unicode( umcp_part ) } )
 		storage[ umcp_part.id() ] = ( but, umcp_part )
 

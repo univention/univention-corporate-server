@@ -84,7 +84,7 @@ class ActiveProcess( object ):
 			response = ( response, )
 
 		# if this is a _final_ response
-		if response and response[ -1 ].status() == 200:
+		if response and response[ -1 ].isFinal():
 			self.reset()
 
 		return response
@@ -106,10 +106,10 @@ class Module( base.Page ):
 		self.__dialog = None
 		self.__restore_referrer = False
 		self.__operation_is_progress = False
-		
+
 		if module[ 'hide_tabs' ]:
 			self.categorylist_hide = True
-			
+
 		# check for icon
 		if self.__module.has_key( 'icon' ) and self.__module[ 'icon' ]:
 			self.icon = umc_tools.image_get( self.__module[ 'icon' ],
@@ -222,6 +222,7 @@ class Module( base.Page ):
 					return None
 				# we should display a report dialog and continue with the normal processing of responses
 				elif response.status() in ( 201, 301 ):
+					ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: found response containg message for a pop dialog' )
 					popup_infos.append( response.report.replace( '\n', ' ' ) )
 				elif response.status() != 200:
 					reports.append( response.report )
@@ -257,16 +258,16 @@ class Module( base.Page ):
 							ud.debug(ud.ADMIN, ud.ERROR, 'Module.layout: B: self.selected points to None-startup: all other startups are None too!' )
 
 						cmd = self.__startups[ self.selected ]
-					ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: check last response message ...' )
 					last_resp = responses[ -1 ]
-					# if there is no dialog 
+					ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: check last response message: %s' % str( last_resp.arguments ) )
+					# if there is no dialog
 					if len( last_resp.dialog ) == 1 and list.__getitem__( last_resp.dialog, 0 ) == None:
 						ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: info layout' )
 						# ... display simple info message if report is set
 						if last_resp.report:
 							self.__layout = cmd.info_message( last_resp.report )
-						# ... re-invoke startup command or show cache 
-						else:	
+						# ... re-invoke startup command or show cache
+						else:
 							# see pages/base.py apply
 							self.active.single( client.request_send( cmd.request ) )
 							self._in_progress( rows )
@@ -284,6 +285,7 @@ class Module( base.Page ):
 
 				self.__storage.clear()
 				if popup_infos:
+					ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: show popup dialog' )
 					js = '''<script type="text/javascript">
 dojo.addOnLoad( function () {
 umc_info_dialog( '%s', '%s' );
