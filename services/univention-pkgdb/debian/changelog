@@ -1,3 +1,9 @@
+univention-pkgdb (4.0.2-1) unstable; urgency=low
+
+  * downgrade WARN to INFO (Bug #18107)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 30 Jun 2010 09:09:08 +0200
+
 univention-pkgdb (4.0.1-1) unstable; urgency=low
 
   * deactivate pkgdb if service is unset (Bug #18107)

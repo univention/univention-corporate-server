@@ -56,7 +56,7 @@ def handler( dn, new, old ):
 			listener.unsetuid()
 
 def ldap_reconnect():
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'pkgdb-watch: ldap reconnect triggered')
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'pkgdb-watch: ldap reconnect triggered')
 	if 'ldapserver' in ldap_info and 'basedn' in ldap_info and 'binddn' in ldap_info and 'bindpw' in ldap_info:
 		try:
 			ldap_info['lo'] = univention.uldap.access(host = ldap_info['ldapserver'],
@@ -83,5 +83,5 @@ def setdata(key, value):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'pkgdb-watch: listener passed unknown data (key="%s" value="%s")' % (key, value))
 
 	if key == 'ldapserver':
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'pkgdb-watch: ldap server changed to %s' % value)
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'pkgdb-watch: ldap server changed to %s' % value)
 		ldap_reconnect()
