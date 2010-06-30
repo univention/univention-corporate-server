@@ -5351,6 +5351,8 @@ class modedit(unimodule.unimodule):
 
 			property = current_module.property_descriptions[key]
 
+			if not property.editable:
+				continue
 			if univention.admin.objects.fixedAttribute(current_object, key) or \
 				   check_options(property.options):
 				continue

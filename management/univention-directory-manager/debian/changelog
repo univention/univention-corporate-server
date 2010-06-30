@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.8-1) unstable; urgency=low
+
+  * Fix non-editable multi-valued fields (Bug #18833)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 30 Jun 2010 08:16:11 +0200
+
 univention-directory-manager (8.0.7-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
