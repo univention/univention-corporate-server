@@ -1,3 +1,12 @@
+univention-directory-manager-modules (6.0.7-1) unstable; urgency=low
+
+  * Modify disable / lock state of a user. Starting from now the
+    attributes disabled/locked are drop down boxes which could become
+    different states none, all, windows, posix,... Bug #18825
+  * unify POSIX / Linux / UNIX labelling. Bug #18835
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 30 Jun 2010 06:47:26 +0200
+
 univention-directory-manager-modules (6.0.6-3) unstable; urgency=low
 
   * Fix default values in policy creation (Bug #12124)

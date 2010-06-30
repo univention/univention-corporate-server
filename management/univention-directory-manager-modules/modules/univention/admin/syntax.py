@@ -2060,7 +2060,7 @@ class optionsUsersUser(select):
 		('kerberos', _('Kerberos Principal')),
 		('person', _('Personal Information')),
 		('samba', _('Samba Account')),
-		('posix', _('Posix Account')),
+		('posix', _('POSIX Account')),
 		('mail', _('Mail Account')),
 	]
 
@@ -2219,3 +2219,25 @@ class translationTupleLongDescription(translationTuple):
 class translationTupleTabName(translationTuple):
 	subsyntaxes = [(_('Language code (e.g. en_US)'), languageCode), (_('Translated tab name'), string)]
 
+class disabled( select ):
+	name = 'disabled'
+	choices = (
+		( 'none', _( 'None' ) ),
+		( 'all', _( 'All disabled' ) ),
+		( 'none2', '----' ),
+		( 'windows', _( 'Windows disabled' ) ),
+		( 'kerberos', _( 'Kerberos disabled' ) ),
+		( 'posix', _( 'POSIX disabled' ) ),
+		( 'windows_posix', _( 'Windows and POSIX disabled' ) ),
+		( 'windows_kerberos', _( 'Windows and Kerberos disabled' ) ),
+		( 'posix_kerberos', _( 'POSIX and Kerbeors disabled' ) ),
+	)
+
+class locked( select ):
+	name = 'locked'
+	choices = (
+		( 'none', _( 'None locked login method' ) ),
+		( 'all', _( 'Locked all login method' ) ),
+		( 'windows', _( 'Locked Windows only' ) ),
+		( 'posix', _( 'Locked POSIX/LDAP only' ) ),
+	)

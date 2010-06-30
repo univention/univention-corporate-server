@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-28 14:40+0200\n"
+"POT-Creation-Date: 2010-06-30 06:31+0200\n"
 "PO-Revision-Date: 2010-05-04 14:40+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -727,7 +727,7 @@ msgstr "asynchron"
 msgid "\"%s\" is not a Univention Admin Module."
 msgstr "\"%s\" ist kein Univention Admin Modul"
 
-#: syntax.py:2033
+#: syntax.py:2033 syntax.py:2225
 msgid "None"
 msgstr "Keine"
 
@@ -772,8 +772,8 @@ msgid "Samba Account"
 msgstr "Samba Konto"
 
 #: syntax.py:2063
-msgid "Posix Account"
-msgstr "Posix Konto"
+msgid "POSIX Account"
+msgstr "POSIX Konto"
 
 #: syntax.py:2064
 msgid "Mail Account"
@@ -850,6 +850,50 @@ msgstr "Übersetzte Langbeschreibung"
 #: syntax.py:2220
 msgid "Translated tab name"
 msgstr "Übersetzter Karteikartenname"
+
+#: syntax.py:2226
+msgid "All disabled"
+msgstr "Alle deaktiviert"
+
+#: syntax.py:2228
+msgid "Windows disabled"
+msgstr "Windows deaktiviert"
+
+#: syntax.py:2229
+msgid "Kerberos disabled"
+msgstr "Kerberos deaktiviert"
+
+#: syntax.py:2230
+msgid "POSIX disabled"
+msgstr "POSIX deaktiviert"
+
+#: syntax.py:2231
+msgid "Windows and POSIX disabled"
+msgstr "Windows und POSIX deaktiviert"
+
+#: syntax.py:2232
+msgid "Windows and Kerberos disabled"
+msgstr "Windows und Kerberos deaktiviert"
+
+#: syntax.py:2233
+msgid "POSIX and Kerbeors disabled"
+msgstr "POSIX und Kerberos deaktiviert"
+
+#: syntax.py:2239
+msgid "None locked login method"
+msgstr "Kein gesperrtes Anmeldeverfahren"
+
+#: syntax.py:2240
+msgid "Locked all login method"
+msgstr "Alle Anmeldeverfahren sind gesperrt"
+
+#: syntax.py:2241
+msgid "Locked Windows only"
+msgstr "Nur Windows gesperrt"
+
+#: syntax.py:2242
+msgid "Locked POSIX/LDAP only"
+msgstr "Nur POSIX/LDAP gesperrt"
 
 #: uexceptions.py:44
 msgid "Object exists."
@@ -1157,6 +1201,42 @@ msgstr "Authentisierung fehlgeschlagen"
 #: uldap.py:363
 msgid "Moving childs is not supported."
 msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
+
+#~ msgid "Posix Account"
+#~ msgstr "Posix Konto"
+
+#~ msgid "Fully"
+#~ msgstr "Vollständig"
+
+#~ msgid "Kerberos only"
+#~ msgstr "Nur Kerberos"
+
+#~ msgid "Linux only"
+#~ msgstr "Nur Linux"
+
+#~ msgid "The user is not disabled"
+#~ msgstr "Der Benutzer ist nicht deaktiviert"
+
+#~ msgid "The user is full disabled"
+#~ msgstr "Der Benutzer ist vollständg deaktiviert"
+
+#~ msgid "The user is disabled for Windows only"
+#~ msgstr "Der Benutzer ist für Windows deaktiviert"
+
+#~ msgid "The user is disabled for Linux only"
+#~ msgstr "Der Benutzer ist für Linux deaktiviert"
+
+#~ msgid "The user is not locked"
+#~ msgstr "Der Benutzer ist nicht gesperrt"
+
+#~ msgid "The user is full locked"
+#~ msgstr "Der Benutzer ist vollständig gesperrt"
+
+#~ msgid "The user is locked for Windows only"
+#~ msgstr "Der Benutzer ist für Windows gesperrt"
+
+#~ msgid "The user is locked for Linux only"
+#~ msgstr "Der Benutzer ist für Linux gesperrt"
 
 #~ msgid "Language"
 #~ msgstr "Sprache"
