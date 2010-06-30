@@ -59,7 +59,7 @@ class Architecture( univention.admin.syntax.select ):
 	name = 'Architecture'
 	choices = [
 		('i686', '32 Bit' ),
-		('x86_64', '64 Bit' ) ),
+		('x86_64', '64 Bit' ),
 	]
 
 property_descriptions={
