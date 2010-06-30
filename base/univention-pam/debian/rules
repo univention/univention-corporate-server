@@ -53,6 +53,8 @@ install: build
 
 	install -m 0755 univention-create-homedir debian/univention-pam/usr/sbin/univention-create-homedir
 	install -m 0755 nscd.py debian/univention-pam/usr/lib/univention-directory-listener/system/
+	install -m 0755 faillog.py debian/univention-pam/usr/lib/univention-directory-listener/system/
+	install -m 0755 lock-user debian/univention-pam/usr/lib/univention-pam/
 	univention-install-config-registry
 	univention-install-config-registry-info
 	dh_install

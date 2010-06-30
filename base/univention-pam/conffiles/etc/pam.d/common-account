@@ -8,6 +8,11 @@
 # 	/etc/univention/templates/files/etc/pam.d/common-account
 # 
 
+@!@
+if baseConfig.get('auth/faillog', 'no').lower() in ['yes', 'true', 'enabled', '1']:
+	print 'account	required	pam_tally.so'
+@!@
+
 # local unix authentification; don't cache passwords, deny access if account is expired
 account [success=done new_authtok_reqd=done acct_expired=bad default=ignore]    pam_unix.so
 

@@ -5,6 +5,9 @@ Variables: homedir/mount
 Variables: quota/userdefault
 Variables: auth/kdeprofile
 Variables: auth/user/methods
+Variables: auth/faillog
+Variables: auth/faillog/limit
+Variables: auth/faillog/root
 
 Type: subfile
 Multifile: etc/pam.d/common-session
@@ -72,16 +75,25 @@ Variables: auth/kdeprofile
 Type: file
 File: etc/pam.d/admin-account
 Variables: auth/admin/methods
+Variables: auth/faillog
 
 Type: file
 File: etc/pam.d/admin-auth
 Variables: auth/admin/methods
 Variables: auth/passwdcache/max_user
+Variables: auth/faillog
+Variables: auth/faillog/root
+Variables: auth/faillog/unlock_time
+Variables: auth/faillog/limit
 
 Type: file
 File: etc/pam.d/admin-auth-nowrite
 Variables: auth/admin/methods
 Variables: auth/user/methods
+Variables: auth/faillog
+Variables: auth/faillog/root
+Variables: auth/faillog/unlock_time
+Variables: auth/faillog/limit
 
 Type: file
 File: etc/pam.d/admin-password
@@ -95,11 +107,16 @@ Variables: auth/kdeprofile
 Type: file
 File: etc/pam.d/common-account
 Variables: auth/user/methods
+Variables: auth/faillog
 
 Type: multifile
 Multifile: etc/pam.d/common-auth
 Variables: auth/user/methods
 Variables: auth/passwdcache/max_user
+Variables: auth/faillog
+Variables: auth/faillog/root
+Variables: auth/faillog/unlock_time
+Variables: auth/faillog/limit
 
 Type: subfile
 Multifile: etc/pam.d/common-auth
@@ -108,6 +125,10 @@ Subfile: etc/pam.d/common-auth.d/10univention-pam_header
 Type: subfile
 Multifile: etc/pam.d/common-auth
 Subfile: etc/pam.d/common-auth.d/30univention-pam_local
+Variables: auth/faillog
+Variables: auth/faillog/root
+Variables: auth/faillog/unlock_time
+Variables: auth/faillog/limit
 
 Type: subfile
 Multifile: etc/pam.d/common-auth
@@ -122,6 +143,10 @@ Subfile: etc/pam.d/common-auth.d/70univention-pam_env
 Type: file
 File: etc/pam.d/common-auth-nowrite
 Variables: auth/user/methods
+Variables: auth/faillog
+Variables: auth/faillog/root
+Variables: auth/faillog/unlock_time
+Variables: auth/faillog/limit
 
 Type: file
 File: etc/pam.d/common-password

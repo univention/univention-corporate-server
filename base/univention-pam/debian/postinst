@@ -46,7 +46,8 @@ univention-config-registry set \
 	auth/user/services?"chfn chsh kde kscreensaver kcheckpass rsh ssh su sudo passwd cron screen" \
 	auth/admin/methods?"krb5 ldap unix" \
 	auth/admin/services?"ftp gdm login other ppp rlogin screen" \
-	nssldap/tls/checkpeer?no
+	nssldap/tls/checkpeer?no \
+	auth/faillog?no
 
 if [ "$1" = "configure" -a -z "$2" ]; then
 	univention-config-registry set nscd/group/invalidate_cache_on_changes="true"

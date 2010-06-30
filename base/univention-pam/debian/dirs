@@ -1,2 +1,3 @@
 usr/sbin
 usr/lib/univention-directory-listener/system/
+usr/lib/univention-pam

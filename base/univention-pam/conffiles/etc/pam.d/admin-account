@@ -8,6 +8,10 @@
 # 	/etc/univention/templates/files/etc/pam.d/admin-account
 # 
 
+@!@
+if baseConfig.get('auth/faillog', 'no').lower() in ['yes', 'true', 'enabled', '1']:
+	print 'account	required	pam_tally.so'
+@!@
 
 account  required                pam_access.so accessfile=/etc/security/access-admin.conf listsep=,
 

@@ -136,3 +136,32 @@ Description[en]=Specifies the initial value of the corresponding limit for users
 Type=str
 Categories=system-base
 
+[auth/faillog]
+Description[de]=Aktiviert das automatische Sperren von Benutzern falls die Anmeldung zu h√ufig fehlschl√§g. (default: no)
+Description[en]=Enabled user locking if too many login attemps fail. (default: no)
+Type=str
+Categories=system-base
+
+[auth/faillog/limit]
+Description[de]=Die Anzahl an erlaubten fehlerhaften Anmeldeversuchen bevor der Account gesperrt wird. (default: 5)
+Description[en]=The maximum allowed attempts before the account will be locked. (default: 5)
+Type=str
+Categories=system-base
+
+[auth/faillog/root]
+Description[de]=Der Root Account kann bei aktiviertem auth/faillog gesperrt werden. (default: no)
+Description[en]=The root account can become locked if auth/faillog is enabled. (default: no)
+Type=str
+Categories=system-base
+
+[auth/faillog/unlock_time]
+Description[de]=Definiert die Zeit in Sekunden an ab wann der Benutzer automatisch wieder entsperrt wird, nachdem die maximale Anzahl an fehlgeschlagenen Anmeldeversuchen erreicht wurde. Der Wert 0 deaktiviert das automatische Entsperren. (default: 0)
+Description[en]=The user will be locked out for the specified amount of time (seconds) after he exceeded his maximum allowed attempts. The value 0 disables the auto locked out. (default: 0)
+Type=str
+Categories=system-base
+
+[auth/faillog/lock_global]
+Description[de]=Das Sperren des Benutzers wird global durchgef√hrt, wenn die Anzahl der erlaubten fehlerhaften Anmeldeversuche erreicht wurde. (default: no)
+Description[en]=The user lock will be saved global if maximum allowed attempts has been reached. (default: no)
+Type=str
+Categories=system-base
