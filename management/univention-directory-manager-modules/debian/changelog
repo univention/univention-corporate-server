@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.8-1) unstable; urgency=low
+
+  * fixed search filter for disabled. Bug #18825
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 30 Jun 2010 08:04:43 +0200
+
 univention-directory-manager-modules (6.0.7-1) unstable; urgency=low
 
   * Modify disable / lock state of a user. Starting from now the

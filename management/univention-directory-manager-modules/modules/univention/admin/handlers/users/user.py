@@ -2931,11 +2931,11 @@ def rewrite(filter, mapping):
 
 	elif filter.variable == 'disabled':
 		if filter.value == 'none':
-			filter.variable='(&(!(shadowExpire=1))(!(krb5KDCFlags=254))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
-			filter.value='[ULD       ]))))'
-		elif filter.value == 'all':
-			filter.variable='(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
+			filter.variable='&(!(shadowExpire=1))(!(krb5KDCFlags=254))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
 			filter.value='[ULD       ])))'
+		elif filter.value == 'all':
+			filter.variable='&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags'
+			filter.value='[ULD       ]))'
 		elif filter.value == 'posix':
 			filter.variable='shadowExpire'
 			filter.value='1'
