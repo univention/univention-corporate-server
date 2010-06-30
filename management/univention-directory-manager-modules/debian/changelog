@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.9-1) unstable; urgency=low
+
+  * userPassword substing match does not work. The locked filter should
+    not use the substring search. Bug #18819 and Bug #18825
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 30 Jun 2010 08:54:55 +0200
+
 univention-directory-manager-modules (6.0.8-1) unstable; urgency=low
 
   * fixed search filter for disabled. Bug #18825

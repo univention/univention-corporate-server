@@ -2961,17 +2961,21 @@ def rewrite(filter, mapping):
 		# substring match for userPassword is not possible
 		if filter.value in ['posix', 'windows', 'all', 'none']:
 			if filter.value == 'all':
-				filter.variable='|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ])(userPassword'
-				filter.value = '{crypt}!*)'
+				filter.variable='|(sambaAcctFlags=[UL       ])(sambaAcctFlags'
+				filter.value='[ULD       ])'
+				#filter.variable='|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ])(userPassword'
+				#filter.value = '{crypt}!*)'
 			if filter.value == 'windows':
 				filter.variable='|(sambaAcctFlags=[UL       ])(sambaAcctFlags'
 				filter.value = '[ULD       ])'
-			if filter.value == 'posix':
-				filter.variable='userPassword'
-				filter.value = '{crypt}!*'
+			#if filter.value == 'posix':
+			#	filter.variable='userPassword'
+			#	filter.value = '{crypt}!*'
 			if filter.value == 'none':
-				filter.variable='&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ]))(!(userPassword'
-				filter.value = '{crypt}!*))'
+				#filter.variable='&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ]))(!(userPassword'
+				#filter.value = '{crypt}!*))'
+				filter.variable='&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags'
+				filter.value='[ULD       ]))'
 		elif filter.value == '*':
 			filter.variable='uid'
 	else:
