@@ -55,6 +55,13 @@ class BootDevice( univention.admin.syntax.select ):
 		('network', _( 'Network' ) ),
 	]
 
+class Architecture( univention.admin.syntax.select ):
+	name = 'Architecture'
+	choices = [
+		('i686', '32 Bit' ),
+		('x86_64', '64 Bit' ) ),
+	]
+
 property_descriptions={
 	'name': univention.admin.property(
 			short_description= _('Name'),
@@ -79,7 +86,7 @@ property_descriptions={
 	'arch': univention.admin.property(
 			short_description= _('Architecture'),
 			long_description= _('Architecture of the virtual machine'),
-			syntax=univention.admin.syntax.string,
+			syntax = Architecture,
 			multivalue=0,
 			options=[],
 			required=0,
