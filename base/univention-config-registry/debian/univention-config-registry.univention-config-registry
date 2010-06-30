@@ -189,3 +189,7 @@ Variables: kernel/postinst_hook
 Type: file
 File: etc/default/locale
 Variables: locale/default
+
+Type: file
+File: etc/cron.d/univention-ucr-cronjobs
+Variables: cron/*

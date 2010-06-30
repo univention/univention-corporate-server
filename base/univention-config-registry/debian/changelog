@@ -1,3 +1,9 @@
+univention-config-registry (6.0.10-1) unstable; urgency=low
+
+  * include univention-ucr-cron (Bug #16541)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 30 Jun 2010 13:07:02 +0200
+
 univention-config-registry (6.0.9-1) unstable; urgency=low
 
   * added ucr variable for sshd password authentication and change the
