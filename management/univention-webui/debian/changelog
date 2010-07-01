@@ -1,3 +1,9 @@
+univention-webui (4.0.18-1) unstable; urgency=low
+
+  * class col: support width attribute; Bug #18164
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 01 Jul 2010 15:20:20 +0200
+
 univention-webui (4.0.17-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

@@ -2348,6 +2348,8 @@ class col extends webui_translator
 			$attrib_str .= ' align="'.$this->attribute['align'].'"';
 		if(isset($this->attribute['valign']))
 			$attrib_str .= ' valign="'.$this->attribute['valign'].'"';
+		if(isset($this->attribute['width']))
+			$attrib_str .= ' width="'.$this->attribute['width'].'"';
 		if(isset($this->attribute['nofill']))
 			$attrib_str .= ' width="1" ';
 		$all=$this->conti_ref->show_all();
