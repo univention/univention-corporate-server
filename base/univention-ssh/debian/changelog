@@ -1,8 +1,9 @@
 univention-ssh (4.0.0-2) unstable; urgency=low
 
   * Save filename for exception (Bug #17874)
+  * Fix bad file descriptor exception.
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 01 Jul 2010 16:32:39 +0200
+ -- Philipp Hahn <hahn@univention.de>  Thu, 01 Jul 2010 20:24:29 +0200
 
 univention-ssh (4.0.0-1) unstable; urgency=low
 

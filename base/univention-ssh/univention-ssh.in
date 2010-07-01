@@ -215,6 +215,13 @@ try:
 							os.close(fd)
 						except OSError:
 							pass
+				# re-open stdin, stdout, stderr
+				for target_fd in range(3):
+					mode = [os.O_RDONLY, os.O_WRONLY, os.O_WRONLY][target_fd]
+					fd = os.open(os.devnull, mode)
+					if fd != target_fd:
+						os.dup2(fd, target_fd)
+						os.close(fd)
 
 				try:
 					# setup timeout
