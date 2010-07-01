@@ -1438,6 +1438,13 @@ td.umc_list_element img.icon
 padding-right: 8px;
 }
 
+.umc_mini_padding {
+	padding-left: 2px;
+	padding-top: 0px;
+	padding-right: 2px;
+	padding-bottom: 0px;
+}
+
 span.h4
 {
 	font-size: 16px;
@@ -1618,7 +1625,7 @@ table.content_main_menuless
 #category .categoryitem {
         padding: 6px 8px 5px 8px;
         border-bottom: 2px solid #FFFFFF;
-        border-left: 1px solid #FFFFFF;
+/*        border-left: 1px solid #FFFFFF;*/
         border-right: 1px solid #FFFFFF;
         margin: 0px -2px 0px -2px;
         background: #EEEEEE; }
@@ -1629,7 +1636,7 @@ table.content_main_menuless
         margin: 0 -2px 0 -2px;
         border-bottom: 2px solid #FFFFFF;
         /* border-left: 1px solid #FFFFFF; */
-        /* border-right: 1px solid #FFFFFF;*/
+        border-right: 1px solid #FFFFFF;
         background: #EEEEEE url(category_activearrow.gif) no-repeat;
         color: #CC0033;
 }
@@ -1679,7 +1686,8 @@ table.content_main_menuless
         padding: 6px 8px 5px 18px;
         margin: 0 -2px 0 -2px;
         border-bottom: 2px solid #FFFFFF;
-        border-left: 1px solid #FFFFFF;
+/*        border-left: 1px solid #FFFFFF;*/
+		border-right: none !important;
         color: #CC0033;
 }
 

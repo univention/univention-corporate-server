@@ -1,3 +1,10 @@
+univention-webui-style (5.0.12-1) unstable; urgency=low
+
+  * add new style for blind tables that should use a smaller padding; Bug #18164
+  * fix style of category tabs; Bug #8397
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 01 Jul 2010 17:02:27 +0200
+
 univention-webui-style (5.0.11-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
